@@ -36,7 +36,7 @@ class KFooApi { // correct!
 
 * Indentation of the code is 4 space symbols, *not tab characters*
 * The open curly brace *must* be on the same line for *everything* (methods, loops, ifs etc.) and be followed with a space before it
-```java
+```cpp
 if (condition) // incorrect
 {
     
@@ -51,7 +51,7 @@ if (condition) { // correct!
 }
 ```
 * Always wrap expressions in braces. No exceptions!
-```java
+```cpp
 if (condition)  // incorrect
     method1();
 
