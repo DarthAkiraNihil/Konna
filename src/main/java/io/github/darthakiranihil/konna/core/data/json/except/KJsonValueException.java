@@ -14,9 +14,6 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KJsonValueException extends KRuntimeException {
 
-    public KJsonValueException() {
-    }
-
     public KJsonValueException(String message) {
         super(message);
     }
