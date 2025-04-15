@@ -3,6 +3,7 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class KJsonValue {
@@ -11,8 +12,44 @@ public class KJsonValue {
     private final Object value;
 
     public KJsonValue(KJsonValueType type, Object value) {
-        this.type = type;
+        if (value == null) {
+            this.type = KJsonValueType.NULL;
+        } else {
+            this.type = type;
+        }
         this.value = value;
+    }
+
+    public static KJsonValue fromNumber(int value) {
+        return new KJsonValue(KJsonValueType.NUMBER, value);
+    }
+
+    public static KJsonValue fromNumber(long value) {
+        return new KJsonValue(KJsonValueType.NUMBER, value);
+    }
+
+    public static KJsonValue fromNumber(short value) {
+        return new KJsonValue(KJsonValueType.NUMBER, value);
+    }
+
+    public static KJsonValue fromNumber(float value) {
+        return new KJsonValue(KJsonValueType.NUMBER, value);
+    }
+
+    public static KJsonValue fromNumber(double value) {
+        return new KJsonValue(KJsonValueType.NUMBER, value);
+    }
+
+    public static KJsonValue fromBoolean(boolean value) {
+        return new KJsonValue(KJsonValueType.BOOLEAN, value);
+    }
+
+    public static KJsonValue fromList(List<KJsonValue> list) {
+        return new KJsonValue(KJsonValueType.ARRAY, list);
+    }
+
+    public static KJsonValue fromMap(Map<String, KJsonValue> map) {
+        return new KJsonValue(KJsonValueType.OBJECT, map);
     }
 
     public KJsonValueType getType() {
@@ -73,6 +110,16 @@ public class KJsonValue {
         }
 
         return (long) this.value;
+    }
+
+    public short getShort() {
+        if (this.type != KJsonValueType.NUMBER) {
+            throw new KJsonValueException(
+                String.format("Cannot get short from the json value: it's not a short. The actual type is: %s", this.type)
+            );
+        }
+
+        return (short) this.value;
     }
 
     public float getFloat() {
