@@ -34,7 +34,8 @@ public class KStandardJsonParser implements KJsonParser {
     private KJsonValue value(KJsonTokenizer tokenizer, KJsonTokenPair token) throws KJsonParseException {
         return switch (token.token()) {
             case STRING -> new KJsonValue(KJsonValueType.STRING, token.value());
-            case NUMBER_INT, NUMBER_FLOAT -> new KJsonValue(KJsonValueType.NUMBER, token.value());
+            case NUMBER_INT -> new KJsonValue(KJsonValueType.NUMBER_INT, token.value());
+            case NUMBER_FLOAT -> new KJsonValue(KJsonValueType.NUMBER_FLOAT, token.value());
             case TRUE -> new KJsonValue(KJsonValueType.BOOLEAN, true);
             case FALSE -> new KJsonValue(KJsonValueType.BOOLEAN, false);
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
@@ -49,7 +50,8 @@ public class KStandardJsonParser implements KJsonParser {
 
         return switch (token.token()) {
             case STRING -> new KJsonValue(KJsonValueType.STRING, token.value());
-            case NUMBER_INT, NUMBER_FLOAT -> new KJsonValue(KJsonValueType.NUMBER, token.value());
+            case NUMBER_INT -> new KJsonValue(KJsonValueType.NUMBER_INT, token.value());
+            case NUMBER_FLOAT -> new KJsonValue(KJsonValueType.NUMBER_FLOAT, token.value());
             case TRUE -> new KJsonValue(KJsonValueType.BOOLEAN, true);
             case FALSE -> new KJsonValue(KJsonValueType.BOOLEAN, false);
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);

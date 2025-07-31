@@ -14,9 +14,13 @@ public enum KJsonValueType {
      */
     ARRAY,
     /**
-     * The value is a number
+     * The value is an integral number
      */
-    NUMBER,
+    NUMBER_INT,
+    /**
+     * The value is a float
+     */
+    NUMBER_FLOAT,
     /**
      * The value is a string
      */

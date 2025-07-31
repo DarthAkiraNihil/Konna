@@ -5,6 +5,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Representation of a Json value for different purposes
@@ -35,7 +36,7 @@ public class KJsonValue {
      * @return Constructed json value
      */
     public static KJsonValue fromNumber(int value) {
-        return new KJsonValue(KJsonValueType.NUMBER, value);
+        return new KJsonValue(KJsonValueType.NUMBER_INT, value);
     }
 
     /**
@@ -44,7 +45,7 @@ public class KJsonValue {
      * @return Constructed json value
      */
     public static KJsonValue fromNumber(long value) {
-        return new KJsonValue(KJsonValueType.NUMBER, value);
+        return new KJsonValue(KJsonValueType.NUMBER_INT, value);
     }
 
     /**
@@ -53,7 +54,7 @@ public class KJsonValue {
      * @return Constructed json value
      */
     public static KJsonValue fromNumber(short value) {
-        return new KJsonValue(KJsonValueType.NUMBER, value);
+        return new KJsonValue(KJsonValueType.NUMBER_INT, value);
     }
 
     /**
@@ -62,7 +63,7 @@ public class KJsonValue {
      * @return Constructed json value
      */
     public static KJsonValue fromNumber(float value) {
-        return new KJsonValue(KJsonValueType.NUMBER, value);
+        return new KJsonValue(KJsonValueType.NUMBER_FLOAT, value);
     }
 
     /**
@@ -71,7 +72,7 @@ public class KJsonValue {
      * @return Constructed json value
      */
     public static KJsonValue fromNumber(double value) {
-        return new KJsonValue(KJsonValueType.NUMBER, value);
+        return new KJsonValue(KJsonValueType.NUMBER_FLOAT, value);
     }
 
     /**
@@ -134,6 +135,17 @@ public class KJsonValue {
         return ((Iterable<KJsonValue>) this.value).iterator();
     }
 
+    @SuppressWarnings("unchecked")
+    public Set<Map.Entry<String, KJsonValue>> entrySet() {
+        if (this.type != KJsonValueType.OBJECT) {
+            throw new KJsonValueException(
+                String.format("Cannot iterate over json object: it's not an object. The actual type is: %s", this.type)
+            );
+        }
+
+        return ((Map<String, KJsonValue>) this.value).entrySet();
+    }
+
     /**
      * Returns the json value with specified key of a json object. If the value is not an object,
      * KJsonValueException will be thrown
@@ -173,7 +185,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public int getInt() {
-        if (this.type != KJsonValueType.NUMBER) {
+        if (this.type != KJsonValueType.NUMBER_INT) {
             throw new KJsonValueException(
                 String.format("Cannot get int from the json value: it's not an int. The actual type is: %s", this.type)
             );
@@ -188,7 +200,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public long getLong() {
-        if (this.type != KJsonValueType.NUMBER) {
+        if (this.type != KJsonValueType.NUMBER_INT) {
             throw new KJsonValueException(
                 String.format("Cannot get long from the json value: it's not a long. The actual type is: %s", this.type)
             );
@@ -203,7 +215,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public short getShort() {
-        if (this.type != KJsonValueType.NUMBER) {
+        if (this.type != KJsonValueType.NUMBER_INT) {
             throw new KJsonValueException(
                 String.format("Cannot get short from the json value: it's not a short. The actual type is: %s", this.type)
             );
@@ -218,7 +230,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public float getFloat() {
-        if (this.type != KJsonValueType.NUMBER) {
+        if (this.type != KJsonValueType.NUMBER_FLOAT) {
             throw new KJsonValueException(
                 String.format("Cannot get float from the json value: it's not a float. The actual type is: %s", this.type)
             );
@@ -233,7 +245,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public double getDouble() {
-        if (this.type != KJsonValueType.NUMBER) {
+        if (this.type != KJsonValueType.NUMBER_FLOAT) {
             throw new KJsonValueException(
                 String.format("Cannot get double from the json value: it's not a double. The actual type is: %s", this.type)
             );

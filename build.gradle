@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'distribution'
+    id 'application'
 }
 
 group = 'io.github.darthakiranihil.konna'
@@ -11,6 +12,10 @@ subprojects {
     archivesBaseName = "Konna.${it.name}"
 }
 
+application {
+    mainClass = 'debug.StrTest' // Replace with your actual main class
+}
+
 repositories {
     mavenCentral()
 }
@@ -18,6 +23,8 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation(project(":core"))
 }
 
 test {
