@@ -9,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Standard implementation of KJsonParser
+ */
 public class KStandardJsonParser implements KJsonParser {
 
 

@@ -5,6 +5,9 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 
+/**
+ * Standard implementation of KJsonTokenizer
+ */
 public class KStandardJsonTokenizer extends KJsonTokenizer {
 
     private static class State {

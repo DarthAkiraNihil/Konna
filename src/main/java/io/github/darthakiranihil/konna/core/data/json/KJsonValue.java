@@ -6,11 +6,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Representation of a Json value for different purposes
+ */
 public class KJsonValue {
 
     private final KJsonValueType type;
     private final Object value;
 
+    /**
+     * Default constructor. Requires specification of concrete value type, and it may be a bit
+     * difficult to specify it in all cases when you need this. from* methods should be used instead
+     * @param type Type of json value
+     * @param value The value itself
+     */
     public KJsonValue(KJsonValueType type, Object value) {
         if (value == null) {
             this.type = KJsonValueType.NULL;
@@ -20,46 +29,100 @@ public class KJsonValue {
         this.value = value;
     }
 
+    /**
+     * Constructs a number value from integer
+     * @param value The value itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromNumber(int value) {
         return new KJsonValue(KJsonValueType.NUMBER, value);
     }
 
+    /**
+     * Constructs a number value from long
+     * @param value The value itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromNumber(long value) {
         return new KJsonValue(KJsonValueType.NUMBER, value);
     }
 
+    /**
+     * Constructs a number value from short
+     * @param value The value itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromNumber(short value) {
         return new KJsonValue(KJsonValueType.NUMBER, value);
     }
 
+    /**
+     * Constructs a number value from float
+     * @param value The value itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromNumber(float value) {
         return new KJsonValue(KJsonValueType.NUMBER, value);
     }
 
+    /**
+     * Constructs a number value from value
+     * @param value The value itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromNumber(double value) {
         return new KJsonValue(KJsonValueType.NUMBER, value);
     }
 
+    /**
+     * Constructs a boolean value from boolean
+     * @param value The value itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromBoolean(boolean value) {
         return new KJsonValue(KJsonValueType.BOOLEAN, value);
     }
 
+    /**
+     * Constructs an array value from list
+     * @param list The list itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromList(List<KJsonValue> list) {
         return new KJsonValue(KJsonValueType.ARRAY, list);
     }
 
+    /**
+     * Constructs an object value from map
+     * @param map The map itself
+     * @return Constructed json value
+     */
     public static KJsonValue fromMap(Map<String, KJsonValue> map) {
         return new KJsonValue(KJsonValueType.OBJECT, map);
     }
 
+    /**
+     * Returns type of json value
+     * @return The type of the value
+     */
     public KJsonValueType getType() {
         return type;
     }
 
+    /**
+     * Null-check. The value is null if its type is specified as NULL or its value is null
+     * @return If the value is null
+     */
     public boolean isNull() {
         return this.value == null || this.type == KJsonValueType.NULL;
     }
 
+    /**
+     * Returns an iterator for iterating over array elements. Pay attention to the fact it may
+     * throw KJsonValueException if the value type differs from ARRAY
+     * @return The iterator for json array
+     * @see KJsonValueException
+     */
     @SuppressWarnings("unchecked")
     public Iterator<KJsonValue> iterator() {
         if (this.type != KJsonValueType.ARRAY) {
@@ -71,6 +134,13 @@ public class KJsonValue {
         return ((Iterable<KJsonValue>) this.value).iterator();
     }
 
+    /**
+     * Returns the json value with specified key of a json object. If the value is not an object,
+     * KJsonValueException will be thrown
+     * @param key The key of the property
+     * @return The value assigned to the key
+     * @see KJsonValueException
+     */
     @SuppressWarnings("unchecked")
     public KJsonValue getProperty(String key) {
         if (this.type != KJsonValueType.OBJECT) {
@@ -82,6 +152,11 @@ public class KJsonValue {
         return ((Map<String, KJsonValue>) this.value).get(key);
     }
 
+    /**
+     * Returns json value as a boolean
+     * @return Boolean representation of a value.
+     * @see KJsonValueException
+     */
     public boolean getBoolean() {
         if (this.type != KJsonValueType.BOOLEAN) {
             throw new KJsonValueException(
@@ -92,6 +167,11 @@ public class KJsonValue {
         return (boolean) this.value;
     }
 
+    /**
+     * Returns json value as an int
+     * @return Int representation of a value.
+     * @see KJsonValueException
+     */
     public int getInt() {
         if (this.type != KJsonValueType.NUMBER) {
             throw new KJsonValueException(
@@ -102,6 +182,11 @@ public class KJsonValue {
         return (int) this.value;
     }
 
+    /**
+     * Returns json value as a long
+     * @return Long representation of a value.
+     * @see KJsonValueException
+     */
     public long getLong() {
         if (this.type != KJsonValueType.NUMBER) {
             throw new KJsonValueException(
@@ -112,6 +197,11 @@ public class KJsonValue {
         return (long) this.value;
     }
 
+    /**
+     * Returns json value as a short
+     * @return Short representation of a value.
+     * @see KJsonValueException
+     */
     public short getShort() {
         if (this.type != KJsonValueType.NUMBER) {
             throw new KJsonValueException(
@@ -122,6 +212,11 @@ public class KJsonValue {
         return (short) this.value;
     }
 
+    /**
+     * Returns json value as a float
+     * @return Float representation of a value.
+     * @see KJsonValueException
+     */
     public float getFloat() {
         if (this.type != KJsonValueType.NUMBER) {
             throw new KJsonValueException(
@@ -132,6 +227,11 @@ public class KJsonValue {
         return (float) this.value;
     }
 
+    /**
+     * Returns json value as a double
+     * @return Double representation of a value.
+     * @see KJsonValueException
+     */
     public double getDouble() {
         if (this.type != KJsonValueType.NUMBER) {
             throw new KJsonValueException(
@@ -142,6 +242,11 @@ public class KJsonValue {
         return (double) this.value;
     }
 
+    /**
+     * Returns json value as a string.
+     * @return String representation of a value or null if the contained value is null
+     * @see KJsonValueException
+     */
     public String getString() {
         if (this.type != KJsonValueType.STRING) {
             throw new KJsonValueException(
@@ -156,6 +261,11 @@ public class KJsonValue {
         return (String) this.value;
     }
 
+    /**
+     * Returns json value as a object
+     * @return Object representation of a value or null if the contained value is null
+     * @see KJsonValueException
+     */
     public KJsonValue getObject() {
         if (this.type != KJsonValueType.OBJECT) {
             throw new KJsonValueException(
@@ -169,7 +279,5 @@ public class KJsonValue {
 
         return (KJsonValue) this.value;
     }
-
-
 
 }

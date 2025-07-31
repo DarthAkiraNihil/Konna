@@ -5,5 +5,10 @@ package io.github.darthakiranihil.konna.core.except;
  * @see KThrowable
  */
 public abstract class KException extends Exception implements KThrowable {
-
+    /**
+     * Default constructor
+     */
+    public KException() {
+        super();
+    }
 }
