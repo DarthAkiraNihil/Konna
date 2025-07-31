@@ -185,12 +185,12 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
             default: {
                 int currentColumn = this.state.column;
 
-                StringBuilder literal = new StringBuilder(String.valueOf(current));
+                StringBuilder literal = new StringBuilder();
 
                 char next;
                 while (KStandardJsonTokenizer.isNotSpace(next = this.source.charAt(this.state.index)) && this.state.index < sourceLength) {
                     if (!Character.isAlphabetic(next)) {
-                        throw new KJsonTokenException(this.state.line, currentColumn);
+                        break;
                     }
 
                     this.next(literal, next);
