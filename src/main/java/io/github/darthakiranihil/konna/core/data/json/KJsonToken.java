@@ -28,9 +28,13 @@ public enum KJsonToken {
      */
     STRING,
     /**
-     * An integer or a float (can be written in exponential form)
+     * An integer
      */
-    NUMBER,
+    NUMBER_INT,
+    /**
+     * A float (can be written in exponential form)
+     */
+    NUMBER_FLOAT,
 
     /**
      * Symbol of ","

@@ -234,7 +234,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                 this.next(numberCandidate, next);
 
                 if (this.state.index >= sourceLength) {
-                    return new KJsonTokenPair(KJsonToken.NUMBER, Integer.parseInt(numberCandidate.toString()));
+                    return new KJsonTokenPair(KJsonToken.NUMBER_INT, Integer.parseInt(numberCandidate.toString()));
                 }
 
             } else if (next == 'e' || next == 'E') {
@@ -261,12 +261,12 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                     } else if (next == 'e' || next == 'E') {
                         return this.parseExponential(next, numberCandidate, sourceLength, currentColumn);
                     } else {
-                        return new KJsonTokenPair(KJsonToken.NUMBER, Float.parseFloat(numberCandidate.toString()));
+                        return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
                     }
                 }
 
             } else {
-                return new KJsonTokenPair(KJsonToken.NUMBER, Integer.parseInt(numberCandidate.toString()));
+                return new KJsonTokenPair(KJsonToken.NUMBER_INT, Integer.parseInt(numberCandidate.toString()));
             }
         }
 
@@ -304,7 +304,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
             if (Character.isDigit(next)) {
                 this.next(numberCandidate, next);
             } else {
-                return new KJsonTokenPair(KJsonToken.NUMBER, Float.parseFloat(numberCandidate.toString()));
+                return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
             }
         }
 
