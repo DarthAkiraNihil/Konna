@@ -1,9 +1,9 @@
 package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonToken;
-import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
+import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 
 /**
  * Standard implementation of KJsonTokenizer

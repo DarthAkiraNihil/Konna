@@ -1,7 +1,7 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
-import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KThrowable;
 
 /**
  * Exception that is caused when json parser could not parse a json.

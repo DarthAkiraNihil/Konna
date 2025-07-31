@@ -1,10 +1,11 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 
 /**
  * Interface for json parsers that constructs json values from tokens got from source
- * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser
+ * @see KStandardJsonParser
  */
 public interface KJsonParser {
 

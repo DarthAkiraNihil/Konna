@@ -1,15 +1,9 @@
 plugins {
     id 'java'
-    id 'distribution'
 }
 
 group = 'io.github.darthakiranihil.konna'
 version = '1.0-SNAPSHOT'
-
-subprojects {
-    apply plugin: 'java'
-    archivesBaseName = "Konna.${it.name}"
-}
 
 repositories {
     mavenCentral()
@@ -24,10 +18,16 @@ test {
     useJUnitPlatform()
 }
 
-distributions {
-    main {
-        contents {
-            from subprojects.collect { it.tasks.withType(Jar) }
+tasks.register('copyJar') {
+    doLast {
+        copy {
+            from 'build/libs'
+            into "../build/libs"
+            include '**/*.jar'
         }
     }
+}
+
+tasks.named("build") {
+    finalizedBy('copyJar')
 }

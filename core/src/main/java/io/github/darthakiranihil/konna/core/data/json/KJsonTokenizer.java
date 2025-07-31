@@ -1,6 +1,7 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 
 /**
  * Base class for a json tokenizer.
@@ -9,7 +10,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
  * construct a json value
  * @see KJsonTokenPair
  * @see KJsonValue
- * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer
+ * @see KStandardJsonTokenizer
  */
 public abstract class KJsonTokenizer {
 
