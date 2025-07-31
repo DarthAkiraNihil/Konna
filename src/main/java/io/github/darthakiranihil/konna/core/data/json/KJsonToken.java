@@ -52,6 +52,10 @@ public enum KJsonToken {
     /**
      * Null literal
      */
-    NULL
+    NULL,
+    /**
+     * Signalizes the end of a file
+     */
+    EOF,
 
 }

@@ -38,10 +38,16 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
 
     private KJsonTokenPair scan() throws KJsonTokenException {
+
+        if (this.state.index >= this.source.length()) {
+            return new KJsonTokenPair(KJsonToken.EOF, '\0');
+        }
+
         while (true) {
             char current = this.source.charAt(this.state.index);
             switch (current) {
                 case '\t':
+                case '\r':
                 case ' ': {
                     this.state.index++;
                     this.state.column++;
@@ -141,6 +147,8 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
                             this.state.index += 4;
                             this.state.column += 4;
+
+                            continue;
 
                         }
                     } else if (next == '\"') {
