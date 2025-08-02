@@ -23,7 +23,7 @@ public class KStandardJsonSerializer implements KJsonSerializer {
     }
 
     @Override
-    public <T> KJsonValue serialize(T object, Class<? extends T> clazz) {
+    public <T> KJsonValue serialize(T object, Class<? extends T> clazz) throws KJsonSerializationException {
         if (clazz == Integer.class || clazz == int.class) {
             return KJsonValue.fromNumber((int) object);
         }
