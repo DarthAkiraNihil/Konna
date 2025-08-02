@@ -17,6 +17,10 @@ public class KJsonSerializationException extends Exception implements KThrowable
         super(cause);
     }
 
+    public KJsonSerializationException(String message) {
+        super(message);
+    }
+
     @Override
     public KThrowableSeverity getSeverity() {
         return KThrowableSeverity.FATAL;

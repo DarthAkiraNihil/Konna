@@ -1,5 +1,6 @@
 package io.github.darthakiranihil.konna.core.data.json.std;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonArray;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
@@ -68,6 +69,11 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                 //todo annotation to get array element type
                 List<?> list = new ArrayList<>();
 
+                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
+                    var entry = it.next();
+                    list.add(this.deserialize(entry, clazz));
+                }
+
                 return (T) list;
             }
             case OBJECT -> {
@@ -78,9 +84,26 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
                     for (var entry: value.entrySet()) {
 
-                        Field field = clazz.getDeclaredField(entry.getKey());
+                        Field field = this.getField(clazz, entry.getKey());
                         field.setAccessible(true);
-                        field.set(deserialized, this.deserialize(entry.getValue(), field.getType()));
+
+                        if (entry.getValue().getType() == KJsonValueType.ARRAY) {
+                            if (!field.isAnnotationPresent(KJsonArray.class)) {
+                                throw new KJsonSerializationException(
+                                    String.format(
+                                        "Could not deserialize field %s, as it is an list-like and the KJsonArray annotation is not provided",
+                                        field.getName()
+                                    )
+                                );
+                            }
+
+                            KJsonArray meta = field.getAnnotation(KJsonArray.class);
+                            field.set(deserialized, this.deserialize(entry.getValue(), meta.elementType()));
+                        } else {
+                            field.set(deserialized, this.deserialize(entry.getValue(), field.getType()));
+                        }
+
+
 
                     }
 
@@ -92,5 +115,18 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
         }
 
         return null;
+    }
+
+    private Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
+        Class<?> klass = clazz;
+        while (klass != Object.class) {
+            for (Field field : klass.getDeclaredFields()) {
+                if (field.getName().equals(name)) {
+                    return field;
+                }
+            }
+            klass = klass.getSuperclass();
+        }
+        throw new NoSuchFieldException(name);
     }
 }
