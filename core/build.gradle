@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.github.darthakiranihil.konna'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('copyJar') {
+    doLast {
+        copy {
+            from 'build/libs'
+            into "../build/libs"
+            include '**/*.jar'
+        }
+    }
+}
+
+tasks.named("build") {
+    finalizedBy('copyJar')
+}
