@@ -1,12 +1,10 @@
 package io.github.darthakiranihil.konna.core.data.json.std;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonCustomName;
-import io.github.darthakiranihil.konna.core.data.json.KJsonIgnored;
-import io.github.darthakiranihil.konna.core.data.json.KJsonSerializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -19,9 +17,17 @@ public class KStandardJsonSerializer implements KJsonSerializer {
         Class<?> clazz = t.getClass();
         while (clazz != Object.class) {
             for (var field: clazz.getDeclaredFields()) {
-                if (!field.isAnnotationPresent(KJsonIgnored.class)) {
-                    fields.add(field);
+
+                if (field.isAnnotationPresent(KJsonIgnored.class)) {
+                    continue;
                 }
+
+                if (Modifier.isPrivate(field.getModifiers()) && !field.isAnnotationPresent(KJsonSerialized.class)) {
+                    continue;
+                }
+
+                fields.add(field);
+
             }
             clazz = clazz.getSuperclass();
         }

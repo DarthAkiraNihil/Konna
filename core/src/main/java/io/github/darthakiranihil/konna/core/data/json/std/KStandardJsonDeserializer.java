@@ -5,6 +5,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -63,7 +64,6 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                 return (T) value.getString();
             }
             case ARRAY -> {
-                //todo annotation to get array element type
                 List<?> list = new ArrayList<>();
 
                 for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
@@ -118,6 +118,16 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
         Class<?> klass = clazz;
         while (klass != Object.class) {
             for (Field field : klass.getDeclaredFields()) {
+
+                if (field.isAnnotationPresent(KJsonIgnored.class)) {
+                    continue;
+                }
+
+                if (Modifier.isPrivate(field.getModifiers()) && !field.isAnnotationPresent(KJsonSerialized.class)) {
+                    continue;
+                }
+
+
                 if (field.isAnnotationPresent(KJsonCustomName.class)) {
                     KJsonCustomName meta = field.getAnnotation(KJsonCustomName.class);
                     if (meta.name().equals(name)) {
