@@ -1,9 +1,6 @@
 package io.github.darthakiranihil.konna.core.data.json.std;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonArray;
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
@@ -121,6 +118,13 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
         Class<?> klass = clazz;
         while (klass != Object.class) {
             for (Field field : klass.getDeclaredFields()) {
+                if (field.isAnnotationPresent(KJsonCustomName.class)) {
+                    KJsonCustomName meta = field.getAnnotation(KJsonCustomName.class);
+                    if (meta.name().equals(name)) {
+                        return field;
+                    }
+                }
+
                 if (field.getName().equals(name)) {
                     return field;
                 }

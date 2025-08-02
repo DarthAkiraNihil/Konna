@@ -1,5 +1,7 @@
 package io.github.darthakiranihil.konna.core.data.json.std;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonCustomName;
+import io.github.darthakiranihil.konna.core.data.json.KJsonIgnored;
 import io.github.darthakiranihil.konna.core.data.json.KJsonSerializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
@@ -16,7 +18,11 @@ public class KStandardJsonSerializer implements KJsonSerializer {
         List<Field> fields = new ArrayList<>();
         Class<?> clazz = t.getClass();
         while (clazz != Object.class) {
-            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            for (var field: clazz.getDeclaredFields()) {
+                if (!field.isAnnotationPresent(KJsonIgnored.class)) {
+                    fields.add(field);
+                }
+            }
             clazz = clazz.getSuperclass();
         }
         return fields;
@@ -73,12 +79,18 @@ public class KStandardJsonSerializer implements KJsonSerializer {
 
         for (var field: fields) {
 
-            String fieldName = field.getName();
             var fieldType = field.getType();
-
             field.setAccessible(true);
 
             try {
+                String fieldName;
+                if (field.isAnnotationPresent(KJsonCustomName.class)) {
+                    KJsonCustomName meta = field.getAnnotation(KJsonCustomName.class);
+                    fieldName = meta.name();
+                } else {
+                    fieldName = field.getName();
+                }
+
                 objectData.put(fieldName, this.serialize(field.get(object), fieldType));
             } catch (IllegalAccessException e) {
                 throw new KJsonSerializationException(e);
