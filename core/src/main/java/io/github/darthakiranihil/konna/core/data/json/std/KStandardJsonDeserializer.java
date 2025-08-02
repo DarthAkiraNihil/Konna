@@ -3,56 +3,53 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
-import sun.reflect.ReflectionFactory; //!
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 public class KStandardJsonDeserializer implements KJsonDeserializer {
 
-    private <T> List<Field> getFields(T t) {
-        List<Field> fields = new ArrayList<>();
-        Class<?> clazz = t.getClass();
-        while (clazz != Object.class) {
-            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-            clazz = clazz.getSuperclass();
+    private static Unsafe theUnsafe;
+
+    public KStandardJsonDeserializer() {
+
+        try {
+            Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafeField.setAccessible(true);
+            KStandardJsonDeserializer.theUnsafe = (Unsafe) theUnsafeField.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new KJsonSerializationException();
         }
-        return fields;
+
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T deserialize(KJsonValue value, Class<?> clazz) {
 
         KJsonValueType valueType = value.getType();
 
         switch (valueType) {
             case NUMBER_INT -> {
-                return (T) Integer.class.cast(value.getInt());
+                return (T) (Integer) value.getInt();
             }
             case NUMBER_FLOAT -> {
-                return (T) Float.class.cast(value.getInt());
+                return (T) (Float) value.getFloat();
             }
             case NULL -> {
                 return null;
             }
             case BOOLEAN -> {
-                return (T) Boolean.class.cast(value.getBoolean());
+                return (T) (Boolean) value.getBoolean();
             }
             case STRING -> {
-                return (T) String.class.cast(value.getString());
+                return (T) value.getString();
             }
             case ARRAY -> {
+                //todo annotation to get array element type
                 List<?> list = new ArrayList<>();
-
-//                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
-//                    var entry = it.next();
-//                    list.add(this.deserialize(entry, (Class<?>) ((ParameterizedType)getClass().getGenericSuperclass())
-//                        .getActualTypeArguments()[0]));
-//                }
 
                 return (T) list;
             }
@@ -60,13 +57,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
                 try {
 
-                    Field f = Unsafe.class.getDeclaredField("theUnsafe");
-                    f.setAccessible(true);
-                    Unsafe unsafe = (Unsafe) f.get(null);
-
-                    // Allocate an instance without invoking the constructo
-
-                    var deserialized = unsafe.allocateInstance(clazz);
+                    var deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
 
                     for (var entry: value.entrySet()) {
 
@@ -77,15 +68,9 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                     }
 
                     return (T) deserialized;
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (NoSuchFieldException e) {
-                    throw new RuntimeException(e);
+                } catch (InstantiationException | IllegalAccessException | NoSuchFieldException e) {
+                    throw new KJsonSerializationException(e);
                 }
-
-
             }
         }
 

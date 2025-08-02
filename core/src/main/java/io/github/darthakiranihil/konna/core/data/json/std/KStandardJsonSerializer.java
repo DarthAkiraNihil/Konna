@@ -2,6 +2,7 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonSerializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -77,7 +78,7 @@ public class KStandardJsonSerializer implements KJsonSerializer {
             try {
                 objectData.put(fieldName, this.serialize(field.get(object), fieldType));
             } catch (IllegalAccessException e) {
-                //ignore for now
+                throw new KJsonSerializationException(e);
             }
 
         }
