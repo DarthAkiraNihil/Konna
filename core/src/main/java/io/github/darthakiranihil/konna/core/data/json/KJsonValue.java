@@ -116,7 +116,7 @@ public class KJsonValue {
      * @return The type of the value
      */
     public KJsonValueType getType() {
-        return type;
+        return this.type;
     }
 
     /**
