@@ -85,6 +85,15 @@ public class KJsonValue {
     }
 
     /**
+     * Constructs a string value from string
+     * @param value The value itself
+     * @return Constructed json value
+     */
+    public static KJsonValue fromString(String value) {
+        return new KJsonValue(KJsonValueType.STRING, value);
+    }
+
+    /**
      * Constructs an array value from list
      * @param list The list itself
      * @return Constructed json value
