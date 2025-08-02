@@ -3,6 +3,7 @@ package io.github.darthakiranihil.konna.core.data.json;
 /**
  * Interface for Json stringifiers that converts a json value to a json string that can ve written
  * to other places like files, streams etc.
+ * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonStringifier
  */
 public interface KJsonStringifier {
 

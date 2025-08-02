@@ -9,11 +9,18 @@ import sun.misc.Unsafe; //! I don't like this but there is no other way
 import java.lang.reflect.Field;
 import java.util.*;
 
+/**
+ * Standard implementation of KJsonDeserializer
+ */
 public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     private static Unsafe theUnsafe;
 
-    public KStandardJsonDeserializer() {
+    /**
+     * Constructs the deserializer, initializing its unsafe (static field) for creating objects without constructor
+     * @throws KJsonSerializationException If it fails to get the Unsafe
+     */
+    public KStandardJsonDeserializer() throws KJsonSerializationException {
 
         try {
             Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
@@ -25,9 +32,19 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     }
 
+    /**
+     * Deserializes a json value into a new object of passed type.
+     * This implementation requires that all list-like fields are provided with ... annotation,
+     * since type erasure does not allow to get list generic type at runtime
+     * @param value Json value to deserialize
+     * @param clazz Class of destination object
+     * @return Deserialized object
+     * @param <T> Generic type of deserialized object
+     * @throws KJsonSerializationException If it fails to deserialize, mostly because of attempting to deserialize object with structure that differs from json value
+     */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(KJsonValue value, Class<?> clazz) {
+    public <T> T deserialize(KJsonValue value, Class<?> clazz) throws KJsonSerializationException {
 
         KJsonValueType valueType = value.getType();
 

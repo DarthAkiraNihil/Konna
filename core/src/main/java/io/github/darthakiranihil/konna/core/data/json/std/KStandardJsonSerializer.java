@@ -7,6 +7,9 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import java.lang.reflect.Field;
 import java.util.*;
 
+/**
+ * Standard implementation of KJsonSerializer
+ */
 public class KStandardJsonSerializer implements KJsonSerializer {
 
     private <T> List<Field> getFields(T t) {
