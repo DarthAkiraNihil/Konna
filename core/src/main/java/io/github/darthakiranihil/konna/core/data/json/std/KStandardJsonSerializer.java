@@ -12,6 +12,12 @@ import java.util.*;
  */
 public class KStandardJsonSerializer implements KJsonSerializer {
 
+    /**
+     * Default constructor
+     */
+    public KStandardJsonSerializer() {
+    }
+
     private <T> List<Field> getFields(T t) {
         List<Field> fields = new ArrayList<>();
         Class<?> clazz = t.getClass();
@@ -54,6 +60,10 @@ public class KStandardJsonSerializer implements KJsonSerializer {
 
         if (clazz == Double.class || clazz == double.class) {
             return KJsonValue.fromNumber((double) object);
+        }
+
+        if (clazz == Boolean.class || clazz == boolean.class) {
+            return KJsonValue.fromBoolean((boolean) object);
         }
 
         if (clazz == String.class) {

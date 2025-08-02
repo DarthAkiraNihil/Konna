@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class KStandardJsonParser implements KJsonParser {
 
+    /**
+     * Default constructor
+     */
+    public KStandardJsonParser() {
+    }
 
     @Override
     public KJsonValue parse(String string) throws KJsonParseException {

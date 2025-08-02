@@ -24,6 +24,10 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
     private final State state;
 
+    /**
+     * Default constructor. Creates tokenizer from string json source
+     * @param source String source of a json
+     */
     public KStandardJsonTokenizer(String source) {
         super(source);
 

@@ -4,6 +4,9 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonStringifier;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import java.util.Iterator;
 
+/**
+ * Standard implementation of KJsonStringifier
+ */
 public class KStandardJsonStringifier implements KJsonStringifier {
 
     @Override

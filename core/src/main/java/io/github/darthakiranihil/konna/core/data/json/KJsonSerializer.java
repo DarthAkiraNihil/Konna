@@ -15,6 +15,7 @@ public interface KJsonSerializer {
      * @param clazz Class of the serialized object
      * @return Serialized object into KJsonValue
      * @param <T> Generic parameter of type of the serialized object
+     * @throws KJsonSerializationException If it fails to serialize the object
      */
     <T> KJsonValue serialize(T object, Class<? extends T> clazz) throws KJsonSerializationException;
 

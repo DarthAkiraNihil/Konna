@@ -14,5 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface KJsonArray {
+    /**
+     * Returns the type of list elements
+     * @return The actual type
+     */
     Class<?> elementType();
 }

@@ -144,6 +144,10 @@ public class KJsonValue {
         return ((Iterable<KJsonValue>) this.value).iterator();
     }
 
+    /**
+     * Returns all json object key-value entries. If the value is not an object, KJsonValueException will be thrown
+     * @return Set of key-value entries of the object
+     */
     @SuppressWarnings("unchecked")
     public Set<Map.Entry<String, KJsonValue>> entrySet() {
         if (this.type != KJsonValueType.OBJECT) {
