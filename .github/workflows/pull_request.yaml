@@ -18,30 +18,6 @@ jobs:
                 run: chmod +x ./gradlew
             -   name: Run tests
                 run: ./gradlew clean test
-            -   name: Run tests
-                run: ./gradlew clean test
-            -   name: Run coverage
-                run: ./gradlew jacocoRootReport
-            -   name: Jacoco Report to PR
-                id: jacoco
-                uses: madrapps/jacoco-report@v1.3
-                with:
-                    paths: ${{ github.workspace }}/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
-                    token: ${{ secrets.GITHUB_TOKEN }}
-                    min-coverage-overall: 90
-                    min-coverage-changed-files: 80
-                    debug-mode: false
-                    title: Code Coverage
-            -   name: Get the Coverage info
-                run: |
-                    echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-                    echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
-            -   name: Coverage check
-                if: ${{ steps.jacoco.outputs.coverage-overall < 90.0 }}
-                uses: actions/github-script@v6
-                with:
-                    script: |
-                        core.setFailed('Overall coverage is less than 90%!')
     coverage:
         permissions:
             pull-requests: write
