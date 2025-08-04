@@ -46,6 +46,8 @@ jobs:
         permissions:
             pull-requests: write
         runs-on: ubuntu-latest
+        needs:
+            - test
         steps:
             -   name: Collect coverage
                 run: ./gradlew jacocoRootReport
