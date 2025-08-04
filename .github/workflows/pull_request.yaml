@@ -1,4 +1,4 @@
-name: Run tests
+name: Tests and coverage
 on:
     pull_request:
         branches:
@@ -6,6 +6,8 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
         steps:
             -   uses: actions/checkout@v4
             
@@ -18,13 +20,6 @@ jobs:
                 run: chmod +x ./gradlew
             -   name: Run tests
                 run: ./gradlew clean test
-    coverage:
-        permissions:
-            pull-requests: write
-        runs-on: ubuntu-latest
-        needs:
-            - test
-        steps:
             -   name: Collect coverage
                 run: ./gradlew jacocoRootReport
             -   name: Add coverage to PR
@@ -47,3 +42,4 @@ jobs:
                 with:
                     script: |
                         core.setFailed('Overall coverage is less than 90%!')
+            
