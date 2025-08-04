@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'distribution'
     id 'application'
+    id 'jacoco'
 }
 
 group = 'io.github.darthakiranihil.konna'
@@ -9,7 +10,12 @@ version = '1.0-SNAPSHOT'
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
     archivesBaseName = "Konna.${it.name}"
+}
+
+jacoco {
+    toolVersion = "0.8.13"
 }
 
 application {
@@ -29,14 +35,26 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    // finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required =  false
+        csv.required = false
+        html.required = true
+        html.destination file("${layout.buildDirectory}/jacocoHtml")
+    }
+    additionalSourceDirs new File(rootProject.projectDir, 'core/src/main/java')
 }
 
 distributions {
-    main(({
+    main {
         contents {
             from subprojects.collect { it.tasks.withType(Jar) }
         }
-    } as String))
+    }
 }
 
 def exportedProjects = [
