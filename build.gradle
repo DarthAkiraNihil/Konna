@@ -16,6 +16,7 @@ subprojects {
 
 jacoco {
     toolVersion = "0.8.13"
+    reportsDirectory = layout.buildDirectory.dir('reports/jacoco/')
 }
 
 application {
@@ -38,17 +39,6 @@ test {
     // finalizedBy jacocoTestReport
 }
 
-jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
-    reports {
-        xml.required =  false
-        csv.required = false
-        html.required = true
-        html.destination file("${layout.buildDirectory}/jacocoHtml")
-    }
-    additionalSourceDirs new File(rootProject.projectDir, 'core/src/main/java')
-}
-
 distributions {
     main {
         contents {
@@ -66,4 +56,36 @@ tasks.register('allJavadoc', Javadoc) {
     source exportedProjects.collect { project(it).sourceSets.main.allJava }
     classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
     destinationDir = file("${layout.buildDirectory}/docs/javadoc-all")
+}
+
+tasks.register('jacocoRootReport', JacocoReport) {
+    description = 'Generates an aggregate report from all subprojects'
+    dependsOn(subprojects.test)
+
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+
+    reports {
+        html.required = true
+        xml.required = true
+    }
+
+//    doFirst {
+//        executionData = files(executionData.findAll { it.exists() })
+//    }
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required =  false
+        csv.required = false
+        html.required = true
+        html.destination file("${layout.buildDirectory}/jacocoHtml")
+    }
+//    sourceSets
+    sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    // jacocoReportPath = "${layout.buildDirectory}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
