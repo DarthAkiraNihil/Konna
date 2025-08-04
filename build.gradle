@@ -32,11 +32,11 @@ test {
 }
 
 distributions {
-    main {
+    main(({
         contents {
             from subprojects.collect { it.tasks.withType(Jar) }
         }
-    }
+    } as String))
 }
 
 def exportedProjects = [
@@ -47,5 +47,5 @@ def exportedProjects = [
 tasks.register('allJavadoc', Javadoc) {
     source exportedProjects.collect { project(it).sourceSets.main.allJava }
     classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = file("${buildDir}/docs/javadoc-all")
+    destinationDir = file("${layout.buildDirectory}/docs/javadoc-all")
 }
