@@ -153,9 +153,9 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                             this.state.index += 4;
                             this.state.column += 4;
 
-                            continue;
-
                         }
+
+                        continue;
                     } else if (next == '\"') {
                         this.next();
                         break;
@@ -195,7 +195,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                 StringBuilder literal = new StringBuilder();
 
                 char next;
-                while (KStandardJsonTokenizer.isNotSpace(next = this.source.charAt(this.state.index)) && this.state.index < sourceLength) {
+                while (this.state.index < sourceLength && KStandardJsonTokenizer.isNotSpace(next = this.source.charAt(this.state.index))) {
                     if (!Character.isAlphabetic(next)) {
                         break;
                     }
@@ -206,18 +206,9 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
                 String result = literal.toString();
                 return switch (result) {
-                    case "true" -> {
-                        this.next();
-                        yield new KJsonTokenPair(KJsonToken.TRUE, result);
-                    }
-                    case "false" -> {
-                        this.next();
-                        yield new KJsonTokenPair(KJsonToken.FALSE, result);
-                    }
-                    case "null" -> {
-                        this.next();
-                        yield new KJsonTokenPair(KJsonToken.NULL, result);
-                    }
+                    case "true" -> new KJsonTokenPair(KJsonToken.TRUE, result);
+                    case "false" -> new KJsonTokenPair(KJsonToken.FALSE, result);
+                    case "null" -> new KJsonTokenPair(KJsonToken.NULL, result);
                     default -> throw new KJsonTokenException(this.state.line, currentColumn);
                 };
 
@@ -272,6 +263,8 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                     }
                 }
 
+                return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
+
             } else {
                 return new KJsonTokenPair(KJsonToken.NUMBER_INT, Integer.parseInt(numberCandidate.toString()));
             }
@@ -280,6 +273,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         throw new KJsonTokenException(this.state.line, currentColumn);
     }
 
+    @SuppressWarnings("DuplicateExpressions")
     private KJsonTokenPair parseExponential(char next, StringBuilder numberCandidate, int sourceLength, int currentColumn) throws KJsonTokenException {
         this.next(numberCandidate, next);
 
@@ -315,6 +309,6 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
             }
         }
 
-        throw new KJsonTokenException(this.state.line, currentColumn);
+        return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
     }
 }
