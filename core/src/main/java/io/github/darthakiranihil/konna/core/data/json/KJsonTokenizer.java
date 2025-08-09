@@ -33,5 +33,5 @@ public abstract class KJsonTokenizer {
      * @throws KJsonTokenException If it fails to read the token
      */
     public abstract KJsonTokenPair getNextToken() throws KJsonTokenException;
-
+    public abstract void reset(String newSource);
 }

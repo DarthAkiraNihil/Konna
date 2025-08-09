@@ -14,20 +14,23 @@ import java.util.Map;
  */
 public class KStandardJsonParser implements KJsonParser {
 
+    private final KJsonTokenizer tokenizer;
+
     /**
-     * Default constructor
+     * Constructs parser with concrete tokenizer
+     * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser() {
+    public KStandardJsonParser(KJsonTokenizer tokenizer) {
+        this.tokenizer = tokenizer;
     }
 
     @Override
     public KJsonValue parse(String string) throws KJsonParseException {
-        KJsonTokenizer tokenizer = new KStandardJsonTokenizer(string);
+        this.tokenizer.reset(string);
 
+        KJsonValue result = this.value(this.tokenizer);
 
-        KJsonValue result = this.value(tokenizer);
-
-        KJsonTokenPair last = this.getTokenOrFail(tokenizer);
+        KJsonTokenPair last = this.getTokenOrFail(this.tokenizer);
         if (last.token() != KJsonToken.EOF) {
             throw new KJsonParseException(last);
         }

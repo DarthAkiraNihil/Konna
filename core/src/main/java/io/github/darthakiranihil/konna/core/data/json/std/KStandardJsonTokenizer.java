@@ -16,6 +16,10 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         public int index;
 
         public State() {
+            this.reset();
+        }
+
+        public void reset() {
             this.line = 1;
             this.column = 1;
             this.index = 0;
@@ -32,6 +36,12 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         super(source);
 
         this.state = new State();
+    }
+
+    @Override
+    public void reset(String newSource) {
+        this.source = newSource;
+        this.state.reset();
     }
 
     @Override
