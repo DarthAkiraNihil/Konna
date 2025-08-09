@@ -129,9 +129,8 @@ public class KJsonValue {
 
     /**
      * Returns an iterator for iterating over array elements. Pay attention to the fact it may
-     * throw KJsonValueException if the value type differs from ARRAY
+     * throw {@link KJsonValueException} if the value type differs from {@link KJsonValueType}.ARRAY
      * @return The iterator for json array
-     * @see KJsonValueException
      */
     @SuppressWarnings("unchecked")
     public Iterator<KJsonValue> iterator() {
@@ -145,7 +144,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns all json object key-value entries. If the value is not an object, KJsonValueException will be thrown
+     * Returns all json object key-value entries. If the value is not an object, {@link KJsonValueException} will be thrown
      * @return Set of key-value entries of the object
      */
     @SuppressWarnings("unchecked")
@@ -161,10 +160,9 @@ public class KJsonValue {
 
     /**
      * Returns the json value with specified key of a json object. If the value is not an object,
-     * KJsonValueException will be thrown
+     * {@link KJsonValueException} will be thrown
      * @param key The key of the property
      * @return The value assigned to the key
-     * @see KJsonValueException
      */
     @SuppressWarnings("unchecked")
     public KJsonValue getProperty(String key) {
@@ -284,6 +282,15 @@ public class KJsonValue {
         }
 
         return (String) this.value;
+    }
+
+    /**
+     * Returns raw json value without casting to any type. It is useful for different test purposes,
+     * however it is not limited, though you need to cast it to required time yourself
+     * @return Raw json value represented by {@link java.lang.Object}
+     */
+    public Object getRawObject() {
+        return this.value;
     }
 
     /**
