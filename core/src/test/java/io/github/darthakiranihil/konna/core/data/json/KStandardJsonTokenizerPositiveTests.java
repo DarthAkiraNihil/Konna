@@ -5,7 +5,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KStandardJsonTokenizerTest {
+public class KStandardJsonTokenizerPositiveTests {
 
     private void singleTokenTest(String input, KJsonToken token) {
 
@@ -201,6 +201,49 @@ public class KStandardJsonTokenizerTest {
                 KJsonToken.CLOSE_BRACE,
                 KJsonToken.CLOSE_BRACE,
                 KJsonToken.EOF
+            }
+        );
+    }
+
+    @Test
+    public void multiTestGetTokensAndCheckValues() {
+        this.multiTokenTest(
+            "{\"asdf\\\"ghjk\": 123, \"qwer\": 1.0e+4, \"zxcv\": []}",
+            new KJsonTokenPair[]{
+                new KJsonTokenPair(KJsonToken.OPEN_BRACE, '{'),
+                new KJsonTokenPair(KJsonToken.STRING, "asdf\\\"ghjk"),
+                new KJsonTokenPair(KJsonToken.SEMICOLON, ':'),
+                new KJsonTokenPair(KJsonToken.NUMBER_INT, 123),
+                new KJsonTokenPair(KJsonToken.COMMA, ','),
+                new KJsonTokenPair(KJsonToken.STRING, "qwer"),
+                new KJsonTokenPair(KJsonToken.SEMICOLON, ':'),
+                new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, 10000.0f),
+                new KJsonTokenPair(KJsonToken.COMMA, ','),
+                new KJsonTokenPair(KJsonToken.STRING, "zxcv"),
+                new KJsonTokenPair(KJsonToken.SEMICOLON, ':'),
+                new KJsonTokenPair(KJsonToken.OPEN_SQUARE_BRACKET, '['),
+                new KJsonTokenPair(KJsonToken.CLOSE_SQUARE_BRACKET, ']'),
+                new KJsonTokenPair(KJsonToken.CLOSE_BRACE, '}'),
+                new KJsonTokenPair(KJsonToken.EOF, '\0'),
+            }
+        );
+    }
+
+    @Test
+    public void multiTestGetTokensAndCheckValuesArray() {
+        this.multiTokenTest(
+            "[-1, 2, -3, 4]",
+            new KJsonTokenPair[]{
+                new KJsonTokenPair(KJsonToken.OPEN_SQUARE_BRACKET, '['),
+                new KJsonTokenPair(KJsonToken.NUMBER_INT, -1),
+                new KJsonTokenPair(KJsonToken.COMMA, ','),
+                new KJsonTokenPair(KJsonToken.NUMBER_INT, 2),
+                new KJsonTokenPair(KJsonToken.COMMA, ','),
+                new KJsonTokenPair(KJsonToken.NUMBER_INT, -3),
+                new KJsonTokenPair(KJsonToken.COMMA, ','),
+                new KJsonTokenPair(KJsonToken.NUMBER_INT, 4),
+                new KJsonTokenPair(KJsonToken.CLOSE_SQUARE_BRACKET, ']'),
+                new KJsonTokenPair(KJsonToken.EOF, '\0'),
             }
         );
     }
