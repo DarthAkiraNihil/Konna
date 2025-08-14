@@ -19,7 +19,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeInteger() {
+    public void testSerializeInteger() {
 
         int testVariable = 1;
         Integer boxedTestVariable = 2;
@@ -41,7 +41,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeByte() {
+    public void testSerializeByte() {
 
         byte testVariable = 1;
         Byte boxedTestVariable = 2;
@@ -63,7 +63,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeShort() {
+    public void testSerializeShort() {
 
         short testVariable = 1;
         Short boxedTestVariable = 2;
@@ -85,7 +85,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeLong() {
+    public void testSerializeLong() {
 
         long testVariable = 1;
         Long boxedTestVariable = 2L;
@@ -107,7 +107,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeFloat() {
+    public void testSerializeFloat() {
 
         float testVariable = 1.0f;
         Float boxedTestVariable = 2.0f;
@@ -129,7 +129,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeDouble() {
+    public void testSerializeDouble() {
 
         double testVariable = 1.0;
         Double boxedTestVariable = 2.0;
@@ -151,7 +151,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeBoolean() {
+    public void testSerializeBoolean() {
 
         boolean testVariable = true;
         Boolean boxedTestVariable = false;
@@ -173,7 +173,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeChar() {
+    public void testSerializeChar() {
 
         char testVariable = 'a';
         Character boxedTestVariable = 'b';
@@ -195,7 +195,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeString() {
+    public void testSerializeString() {
 
         String testVariable = "123_test";
 
@@ -213,7 +213,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeList() {
+    public void testSerializeList() {
 
         List<String> testList = List.of("aboba_123");
 
@@ -238,7 +238,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void voidTestSerializeMap() {
+    public void voidTestSerializeMap() {
 
         Map<String, Integer> testMap = Map.of(
             "aboba", 1, "giggity", 2
@@ -295,7 +295,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    void testSerializeObject() {
+    public void testSerializeObject() {
         KJsonSerializer serializer = new KStandardJsonSerializer();
 
         List<Float> testList = List.of(1.0f, 2.0f);

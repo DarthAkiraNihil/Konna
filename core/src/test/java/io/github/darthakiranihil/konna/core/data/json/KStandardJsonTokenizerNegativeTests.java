@@ -39,7 +39,7 @@ public class KStandardJsonTokenizerNegativeTests extends KStandardTestClass {
     }
 
     @Test
-    void testUnexpectedEof() {
+    public void testUnexpectedEof() {
 
         for (var data: KStandardJsonTokenizerNegativeTests.invalidInputTestData) {
 
