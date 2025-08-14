@@ -281,15 +281,15 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
         }
 
         public int getField1() {
-            return field1;
+            return this.field1;
         }
 
         public String getField3() {
-            return field3;
+            return this.field3;
         }
 
         public List<Float> getField4() {
-            return field4;
+            return this.field4;
         }
 
     }
