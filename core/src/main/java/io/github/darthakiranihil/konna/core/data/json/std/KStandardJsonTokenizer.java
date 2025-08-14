@@ -1,6 +1,5 @@
 package io.github.darthakiranihil.konna.core.data.json.std;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonToken;
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
@@ -74,7 +73,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
     private KJsonTokenPair scan() throws KJsonTokenException {
 
         if (this.state.index >= this.source.length()) {
-            return new KJsonTokenPair(KJsonToken.EOF, '\0');
+            return KJsonTokenPair.EOF;
         }
 
         while (true) {
@@ -106,27 +105,27 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
             // single char tokens
             case '{': {
                 this.next();
-                return new KJsonTokenPair(KJsonToken.OPEN_BRACE, current);
+                return KJsonTokenPair.OPEN_BRACE;
             }
             case '}': {
                 this.next();
-                return new KJsonTokenPair(KJsonToken.CLOSE_BRACE, current);
+                return KJsonTokenPair.CLOSE_BRACE;
             }
             case '[': {
                 this.next();
-                return new KJsonTokenPair(KJsonToken.OPEN_SQUARE_BRACKET, current);
+                return KJsonTokenPair.OPEN_SQUARE_BRACKET;
             }
             case ']': {
                 this.next();
-                return new KJsonTokenPair(KJsonToken.CLOSE_SQUARE_BRACKET, current);
+                return KJsonTokenPair.CLOSE_SQUARE_BRACKET;
             }
             case ',': {
                 this.next();
-                return new KJsonTokenPair(KJsonToken.COMMA, current);
+                return KJsonTokenPair.COMMA;
             }
             case ':': {
                 this.next();
-                return new KJsonTokenPair(KJsonToken.SEMICOLON, current);
+                return KJsonTokenPair.SEMICOLON;
             }
             case '\"': {
                 int currentColumn = this.state.column;
@@ -184,7 +183,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
                 }
 
-                return new KJsonTokenPair(KJsonToken.STRING, string.toString());
+                return KJsonTokenPair.fromString(string.toString());
 
             }
 
@@ -223,9 +222,9 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
                 String result = literal.toString();
                 return switch (result) {
-                    case "true" -> new KJsonTokenPair(KJsonToken.TRUE, result);
-                    case "false" -> new KJsonTokenPair(KJsonToken.FALSE, result);
-                    case "null" -> new KJsonTokenPair(KJsonToken.NULL, result);
+                    case "true" -> KJsonTokenPair.TRUE;
+                    case "false" -> KJsonTokenPair.FALSE;
+                    case "null" -> KJsonTokenPair.NULL;
                     default -> throw new KJsonTokenException(this.state.line, currentColumn);
                 };
 
@@ -233,7 +232,6 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         }
     }
 
-    @SuppressWarnings("DuplicateExpressions")
     private KJsonTokenPair parseNumber(char current, int sourceLength) throws KJsonTokenException {
 
         int currentColumn = this.state.column;
@@ -249,7 +247,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                 this.next(numberCandidate, next);
 
                 if (this.state.index >= sourceLength) {
-                    return new KJsonTokenPair(KJsonToken.NUMBER_INT, Integer.parseInt(numberCandidate.toString()));
+                    return KJsonTokenPair.fromInteger(Integer.parseInt(numberCandidate.toString()));
                 }
 
             } else if (next == 'e' || next == 'E') {
@@ -276,21 +274,20 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                     } else if (next == 'e' || next == 'E') {
                         return this.parseExponential(next, numberCandidate, sourceLength, currentColumn);
                     } else {
-                        return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
+                        return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
                     }
                 }
 
-                return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
+                return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
 
             } else {
-                return new KJsonTokenPair(KJsonToken.NUMBER_INT, Integer.parseInt(numberCandidate.toString()));
+                return KJsonTokenPair.fromInteger(Integer.parseInt(numberCandidate.toString()));
             }
         }
 
         throw new KJsonTokenException(this.state.line, currentColumn);
     }
 
-    @SuppressWarnings("DuplicateExpressions")
     private KJsonTokenPair parseExponential(char next, StringBuilder numberCandidate, int sourceLength, int currentColumn) throws KJsonTokenException {
         this.next(numberCandidate, next);
 
@@ -322,10 +319,10 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
             if (Character.isDigit(next)) {
                 this.next(numberCandidate, next);
             } else {
-                return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
+                return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
             }
         }
 
-        return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, Float.parseFloat(numberCandidate.toString()));
+        return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
     }
 }

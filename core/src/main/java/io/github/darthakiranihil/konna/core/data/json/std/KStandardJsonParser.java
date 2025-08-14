@@ -32,7 +32,7 @@ public class KStandardJsonParser implements KJsonParser {
 
         KJsonTokenPair last = this.getTokenOrFail(this.tokenizer);
         if (last.token() != KJsonToken.EOF) {
-            throw new KJsonParseException(last);
+            throw new KJsonParseException(last.token());
         }
 
         return result;
@@ -49,7 +49,7 @@ public class KStandardJsonParser implements KJsonParser {
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
             case OPEN_BRACE -> this.object(tokenizer);
             case OPEN_SQUARE_BRACKET -> this.array(tokenizer);
-            default -> throw new KJsonParseException(token);
+            default -> throw new KJsonParseException(token.token());
         };
     }
 
@@ -65,7 +65,7 @@ public class KStandardJsonParser implements KJsonParser {
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
             case OPEN_BRACE -> this.object(tokenizer);
             case OPEN_SQUARE_BRACKET -> this.array(tokenizer);
-            default -> throw new KJsonParseException(token);
+            default -> throw new KJsonParseException(token.token());
         };
 
     }

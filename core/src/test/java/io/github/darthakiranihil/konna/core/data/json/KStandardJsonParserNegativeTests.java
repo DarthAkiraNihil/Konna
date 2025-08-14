@@ -13,7 +13,7 @@ public class KStandardJsonParserNegativeTests extends KStandardTestClass {
         this.parser = KStandardTestClass.jsonParser;
     }
 
-    private void test(String input, KJsonTokenPair expectedUnexpectedToken) {
+    private void test(String input, KJsonToken expectedUnexpectedToken) {
 
         Exception thrown = Assertions.assertThrowsExactly(
             KJsonParseException.class, () -> parser.parse(input)
@@ -25,32 +25,32 @@ public class KStandardJsonParserNegativeTests extends KStandardTestClass {
     }
 
     @Test
-    void testTryParseIncorrectValue() {
-        this.test("]", new KJsonTokenPair(KJsonToken.CLOSE_SQUARE_BRACKET, );
+    public void testTryParseIncorrectValue() {
+        this.test("]", KJsonToken.CLOSE_SQUARE_BRACKET);
     }
 
     @Test
-    void testTryParseIncorrectArrayValue() {
-        this.test("[]]", KJsonToken.CLOSE_SQUARE_BRACKET);
+    public void testTryParseIncorrectArrayValue() {
+        this.test("[}]", KJsonToken.CLOSE_BRACE);
     }
 
     @Test
-    void testTryParseObjectWithIncorrectKey() {
+    public void testTryParseObjectWithIncorrectKey() {
         this.test("{123:14}", KJsonToken.NUMBER_INT);
     }
 
     @Test
-    void testTryParseObjectWithoutSemicolonAfterKey() {
+    public void testTryParseObjectWithoutSemicolonAfterKey() {
         this.test("{\"123\",14}", KJsonToken.COMMA);
     }
 
     @Test
-    void testParseMultiJson() {
+    public void testParseMultiJson() {
         Assertions.assertThrowsExactly(KJsonParseException.class, () -> this.parser.parse("{}{}"));
     }
 
     @Test
-    void testParseIncorrectToken() {
+    public void testParseIncorrectToken() {
         Assertions.assertThrows(KJsonParseException.class, () -> this.parser.parse("{asdasdasda}"));
     }
 }

@@ -18,15 +18,15 @@ public record KJsonTokenPair(KJsonToken token, Object value) {
     public static final KJsonTokenPair NULL = new KJsonTokenPair(KJsonToken.NULL, null);
     public static final KJsonTokenPair EOF = new KJsonTokenPair(KJsonToken.EOF, '\0');
 
-    public static KJsonTokenPair ofString(String value) {
+    public static KJsonTokenPair fromString(String value) {
         return new KJsonTokenPair(KJsonToken.STRING, value);
     }
 
-    public static KJsonTokenPair ofInteger(int value) {
+    public static KJsonTokenPair fromInteger(int value) {
         return new KJsonTokenPair(KJsonToken.NUMBER_INT, value);
     }
 
-    public static KJsonTokenPair ofFloat(float value) {
+    public static KJsonTokenPair fromFloat(float value) {
         return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, value);
     }
 }
