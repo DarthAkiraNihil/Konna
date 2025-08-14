@@ -49,6 +49,15 @@ public class KJsonValue {
     }
 
     /**
+     * Constructs a number value from byte
+     * @param value The value itself
+     * @return Constructed json value
+     */
+    public static KJsonValue fromNumber(byte value) {
+        return new KJsonValue(KJsonValueType.NUMBER_INT, value);
+    }
+
+    /**
      * Constructs a number value from short
      * @param value The value itself
      * @return Constructed json value
@@ -91,6 +100,15 @@ public class KJsonValue {
      */
     public static KJsonValue fromString(String value) {
         return new KJsonValue(KJsonValueType.STRING, value);
+    }
+
+    /**
+     * Constructs a string value from char. The json value will be represented as string
+     * @param value The value itself
+     * @return Constructed json value
+     */
+    public static KJsonValue fromChar(char value) {
+        return new KJsonValue(KJsonValueType.STRING, String.valueOf(value));
     }
 
     /**
@@ -176,6 +194,23 @@ public class KJsonValue {
     }
 
     /**
+     * Returns status of object key containment of json value. If the value is not an object,
+     * {@link KJsonValueException} will be thrown
+     * @param key The key of the property
+     * @return true if the object contains specified property
+     */
+    @SuppressWarnings("unchecked")
+    public boolean hasProperty(String key) {
+        if (this.type != KJsonValueType.OBJECT) {
+            throw new KJsonValueException(
+                String.format("Cannot get information of property containment in the json value: it's not an object. The actual type is: %s", this.type)
+            );
+        }
+
+        return ((Map<String, KJsonValue>) this.value).containsKey(key);
+    }
+
+    /**
      * Returns json value as a boolean
      * @return Boolean representation of a value.
      * @see KJsonValueException
@@ -221,6 +256,21 @@ public class KJsonValue {
     }
 
     /**
+     * Returns json value as a byte
+     * @return Byte representation of a value.
+     * @see KJsonValueException
+     */
+    public byte getByte() {
+        if (this.type != KJsonValueType.NUMBER_INT) {
+            throw new KJsonValueException(
+                String.format("Cannot get short from the json value: it's not a short. The actual type is: %s", this.type)
+            );
+        }
+
+        return (byte) this.value;
+    }
+
+    /**
      * Returns json value as a short
      * @return Short representation of a value.
      * @see KJsonValueException
@@ -263,6 +313,35 @@ public class KJsonValue {
         }
 
         return (double) this.value;
+    }
+
+    /**
+     * Returns json value as a char. Throws {@link KJsonValueException} if the string representation of char
+     * has more than one symbol in length
+     * @return Char representation of a value
+     * @see KJsonValueException
+     */
+    public char getChar() {
+        if (this.type != KJsonValueType.STRING) {
+            throw new KJsonValueException(
+                String.format("Cannot get string from the json value: it's not a string. The actual type is: %s", this.type)
+            );
+        }
+
+        if (this.isNull()) {
+            throw new KJsonValueException(
+                "Cannot get char value from the json value: the value is null"
+            );
+        }
+
+        String string = (String) this.value;
+        if (string.length() > 1) {
+            throw new KJsonValueException(
+                "Cannot get char value from the json value: the string is more than 1 symbol in length!"
+            );
+        }
+
+        return string.charAt(0);
     }
 
     /**
