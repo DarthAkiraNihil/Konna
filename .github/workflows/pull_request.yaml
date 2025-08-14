@@ -32,6 +32,7 @@ jobs:
                     min-coverage-changed-files: 80
                     debug-mode: false
                     title: Code Coverage
+                    update-comment: true
             -   name: Get coverage info
                 run: |
                     echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
