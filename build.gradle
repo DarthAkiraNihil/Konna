@@ -34,11 +34,6 @@ dependencies {
     implementation(project(":core"))
 }
 
-test {
-    useJUnitPlatform()
-    // finalizedBy jacocoTestReport
-}
-
 distributions {
     main {
         contents {
@@ -71,10 +66,11 @@ tasks.register('jacocoRootReport', JacocoReport) {
         html.required = true
         xml.required = true
     }
+}
 
-//    doFirst {
-//        executionData = files(executionData.findAll { it.exists() })
-//    }
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoRootReport
 }
 
 jacocoTestReport {

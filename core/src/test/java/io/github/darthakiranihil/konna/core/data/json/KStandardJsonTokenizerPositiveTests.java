@@ -1,174 +1,56 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.core.util.KPair;
+import io.github.darthakiranihil.konna.core.util.KTriplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KStandardJsonTokenizerPositiveTests {
+import java.util.Arrays;
+import java.util.List;
 
-    private void singleTokenTest(String input, KJsonToken token) {
+public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
 
-        KJsonTokenizer tokenizer = new KStandardJsonTokenizer(input);
-        try {
-            KJsonToken result = tokenizer.getNextToken().token();
-            Assertions.assertEquals(token, result);
-        } catch (KJsonTokenException e) {
-            Assertions.fail(e);
-        }
+    private final static List<KPair<String, KJsonToken>> singleTokenTestData = Arrays.asList(
+        new KPair<>("{", KJsonToken.OPEN_BRACE),
+        new KPair<>("}", KJsonToken.CLOSE_BRACE),
+        new KPair<>("[", KJsonToken.OPEN_SQUARE_BRACKET),
+        new KPair<>("]", KJsonToken.CLOSE_SQUARE_BRACKET),
+        new KPair<>(",", KJsonToken.COMMA),
+        new KPair<>(":", KJsonToken.SEMICOLON),
+        new KPair<>("true", KJsonToken.TRUE),
+        new KPair<>("true ", KJsonToken.TRUE),
+        new KPair<>("false\n", KJsonToken.FALSE),
+        new KPair<>("null", KJsonToken.NULL),
+        new KPair<>("null\t", KJsonToken.NULL),
+        new KPair<>("", KJsonToken.EOF)
+    );
 
-    }
+    private final static List<KTriplet<String, KJsonToken, Object>> singleTokenWithValueTestData = Arrays.asList(
+        new KTriplet<>("\"123\"", KJsonToken.STRING, "123"),
+        new KTriplet<>("\"123\\\"123\"", KJsonToken.STRING, "123\\\"123"),
+        new KTriplet<>("\"ሴABOBA\"", KJsonToken.STRING, "ሴABOBA"),
+        new KTriplet<>("\"\\uabcd\"", KJsonToken.STRING, "\\uabcd"),
+        new KTriplet<>("123", KJsonToken.NUMBER_INT, 123),
+        new KTriplet<>("+123", KJsonToken.NUMBER_INT, 123),
+        new KTriplet<>("-123", KJsonToken.NUMBER_INT, -123),
+        new KTriplet<>("123.3", KJsonToken.NUMBER_FLOAT, 123.3f),
+        new KTriplet<>("+123.3", KJsonToken.NUMBER_FLOAT, 123.3f),
+        new KTriplet<>("-123.3", KJsonToken.NUMBER_FLOAT, -123.3f),
+        new KTriplet<>("123.3e+1", KJsonToken.NUMBER_FLOAT, 1233.0f),
+        new KTriplet<>("123e+1", KJsonToken.NUMBER_FLOAT, 1230.0f),
+        new KTriplet<>("123E+1", KJsonToken.NUMBER_FLOAT, 1230.0f),
+        new KTriplet<>("+123.3e+1", KJsonToken.NUMBER_FLOAT, 1233.0f),
+        new KTriplet<>("+123.3e+10", KJsonToken.NUMBER_FLOAT, 123.3e+10f),
+        new KTriplet<>("-123.3e+1", KJsonToken.NUMBER_FLOAT, -1233.0f),
+        new KTriplet<>("-123.3E+1", KJsonToken.NUMBER_FLOAT, -1233.0f),
+        new KTriplet<>("-123.356e+1", KJsonToken.NUMBER_FLOAT, -1233.56f),
+        new KTriplet<>("-123.356a", KJsonToken.NUMBER_FLOAT, -123.356f)
+    );
 
-    private <T> void singleTokenTest(String input, KJsonToken token, T expectedValue) {
-
-        KJsonTokenizer tokenizer = new KStandardJsonTokenizer(input);
-        try {
-            KJsonTokenPair result = tokenizer.getNextToken();
-            Assertions.assertEquals(token, result.token());
-            Assertions.assertEquals(expectedValue, result.value());
-        } catch (KJsonTokenException e) {
-            Assertions.fail(e);
-        }
-
-    }
-
-    private void multiTokenTest(String input, KJsonToken[] tokens) {
-
-        KJsonTokenizer tokenizer = new KStandardJsonTokenizer(input);
-        try {
-            for (KJsonToken token: tokens) {
-                KJsonToken result = tokenizer.getNextToken().token();
-                Assertions.assertEquals(token, result);
-            }
-        } catch (KJsonTokenException e) {
-            Assertions.fail(e);
-        }
-
-    }
-
-    private void multiTokenTest(String input, KJsonTokenPair[] tokens) {
-
-        KJsonTokenizer tokenizer = new KStandardJsonTokenizer(input);
-        try {
-            for (KJsonTokenPair token: tokens) {
-                KJsonTokenPair result = tokenizer.getNextToken();
-                Assertions.assertEquals(token.token(), result.token());
-                Assertions.assertEquals(token.value(), result.value());
-            }
-        } catch (KJsonTokenException e) {
-            Assertions.fail(e);
-        }
-
-    }
-
-    @Test
-    public void basicTestGetOpenBraceToken() {
-        this.singleTokenTest("{", KJsonToken.OPEN_BRACE);
-    }
-
-    @Test
-    public void basicTestGetCloseBraceToken() {
-        this.singleTokenTest("}", KJsonToken.CLOSE_BRACE);
-    }
-
-    @Test
-    public void basicTestGetOpenSquareBracketToken() {
-        this.singleTokenTest("[", KJsonToken.OPEN_SQUARE_BRACKET);
-    }
-
-    @Test
-    public void basicTestGetCloseSquareBracketToken() {
-        this.singleTokenTest("]", KJsonToken.CLOSE_SQUARE_BRACKET);
-    }
-
-    @Test
-    public void basicTestGetStringToken() {
-        this.singleTokenTest("\"123\"", KJsonToken.STRING, "123");
-    }
-
-    @Test
-    public void basicTestGetStringTokenWithEscape() {
-        this.singleTokenTest("\"123\\\"123\"", KJsonToken.STRING, "123\\\"123");
-    }
-
-    @Test
-    public void basicTestGetIntegerNumberToken() {
-        this.singleTokenTest("123", KJsonToken.NUMBER_INT, 123);
-    }
-
-    @Test
-    public void basicTestGetIntegerPositiveNumberToken() {
-        this.singleTokenTest("+123", KJsonToken.NUMBER_INT, 123);
-    }
-
-    @Test
-    public void basicTestGetIntegerNegativeNumberToken() {
-        this.singleTokenTest("-123", KJsonToken.NUMBER_INT, -123);
-    }
-
-    @Test
-    public void basicTestGetFloatNumberToken() {
-        this.singleTokenTest("123.3", KJsonToken.NUMBER_FLOAT, 123.3f);
-    }
-
-    @Test
-    public void basicTestGetPositiveFloatNumberToken() {
-        this.singleTokenTest("+123.3", KJsonToken.NUMBER_FLOAT, 123.3f);
-    }
-
-    @Test
-    public void basicTestGetNegativeFloatNumberToken() {
-        this.singleTokenTest("-123.3", KJsonToken.NUMBER_FLOAT, -123.3f);
-    }
-
-    @Test
-    public void basicTestGetExponentialFloatNumberToken() {
-        this.singleTokenTest("123.3e+1", KJsonToken.NUMBER_FLOAT, 1233.0f);
-    }
-
-    @Test
-    public void basicTestGetExponentialPositiveFloatNumberToken() {
-        this.singleTokenTest("+123.3e+1", KJsonToken.NUMBER_FLOAT, 1233.0f);
-    }
-
-    @Test
-    public void basicTestGetExponentialNegativeFloatNumberToken() {
-        this.singleTokenTest("-123.3e+1", KJsonToken.NUMBER_FLOAT, -1233.0f);
-    }
-
-    @Test
-    public void basicTestGetCommaToken() {
-        this.singleTokenTest(",", KJsonToken.COMMA);
-    }
-
-    @Test
-    public void basicTestGetSemicolonToken() {
-        this.singleTokenTest(":", KJsonToken.SEMICOLON);
-    }
-
-    @Test
-    public void basicTestGetTrueToken() {
-        this.singleTokenTest("true", KJsonToken.TRUE);
-    }
-
-    @Test
-    public void basicTestGetFalseToken() {
-        this.singleTokenTest("false", KJsonToken.FALSE);
-    }
-
-    @Test
-    public void basicTestGetNullToken() {
-        this.singleTokenTest("null", KJsonToken.NULL);
-    }
-
-    @Test
-    public void basicTestGetEofToken() {
-        this.singleTokenTest("", KJsonToken.EOF);
-    }
-
-    @Test
-    public void multiTestGetArrayTokens() {
-        this.multiTokenTest(
+    private final static List<KPair<String, KJsonToken[]>> multiTokenTestData = Arrays.asList(
+        new KPair<>(
             "[123, {\"aboba\": true}]",
             new KJsonToken[]{
                 KJsonToken.OPEN_SQUARE_BRACKET,
@@ -182,12 +64,8 @@ public class KStandardJsonTokenizerPositiveTests {
                 KJsonToken.CLOSE_SQUARE_BRACKET,
                 KJsonToken.EOF
             }
-        );
-    }
-
-    @Test
-    public void multiTestGetObjectTokens() {
-        this.multiTokenTest(
+        ),
+        new KPair<>(
             "{\"aboba\": false, \"tete\": {}}",
             new KJsonToken[]{
                 KJsonToken.OPEN_BRACE,
@@ -202,13 +80,102 @@ public class KStandardJsonTokenizerPositiveTests {
                 KJsonToken.CLOSE_BRACE,
                 KJsonToken.EOF
             }
-        );
+        )
+    );
+
+    private void singleTokenTest(String input, KJsonToken token) {
+
+        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        tokenizer.reset(input);
+
+        try {
+            KJsonToken result = tokenizer.getNextToken().token();
+            Assertions.assertEquals(token, result);
+        } catch (KJsonTokenException e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    private void singleTokenTest(String input, KJsonToken token, Object expectedValue) {
+
+        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        tokenizer.reset(input);
+
+        try {
+            KJsonTokenPair result = tokenizer.getNextToken();
+            Assertions.assertEquals(token, result.token());
+            Assertions.assertEquals(expectedValue, result.value());
+        } catch (KJsonTokenException e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    private void multiTokenTest(String input, KJsonToken[] tokens) {
+
+        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        tokenizer.reset(input);
+
+        try {
+            for (KJsonToken token: tokens) {
+                KJsonToken result = tokenizer.getNextToken().token();
+                Assertions.assertEquals(token, result);
+            }
+        } catch (KJsonTokenException e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    private void multiTokenTest(String input, KJsonTokenPair[] tokens) {
+
+        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        tokenizer.reset(input);
+
+        try {
+            for (KJsonTokenPair token: tokens) {
+                KJsonTokenPair result = tokenizer.getNextToken();
+                Assertions.assertEquals(token.token(), result.token());
+                Assertions.assertEquals(token.value(), result.value());
+            }
+        } catch (KJsonTokenException e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    @Test
+    void testGetSingleToken() {
+
+        for (var data: KStandardJsonTokenizerPositiveTests.singleTokenTestData) {
+            this.singleTokenTest(data.getFirst(), data.getSecond());
+        }
+
+    }
+
+    @Test
+    void testSetSingleTokenWithValueCheck() {
+
+        for (var data: KStandardJsonTokenizerPositiveTests.singleTokenWithValueTestData) {
+            this.singleTokenTest(data.getFirst(), data.getSecond(), data.getThird());
+        }
+
+    }
+
+    @Test
+    void testGetMultiTokens() {
+
+        for (var data: KStandardJsonTokenizerPositiveTests.multiTokenTestData) {
+            this.multiTokenTest(data.getFirst(), data.getSecond());
+        }
+
     }
 
     @Test
     public void multiTestGetTokensAndCheckValues() {
         this.multiTokenTest(
-            "{\"asdf\\\"ghjk\": 123, \"qwer\": 1.0e+4, \"zxcv\": []}",
+            "{\"asdf\\\"ghjk\": 123,\n\"qwer\": 1.0e+4, \"zxcv\": []}",
             new KJsonTokenPair[]{
                 new KJsonTokenPair(KJsonToken.OPEN_BRACE, '{'),
                 new KJsonTokenPair(KJsonToken.STRING, "asdf\\\"ghjk"),

@@ -1,5 +1,6 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
@@ -9,7 +10,7 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * By default, exception is an error because it is certainly not good, but it depends on goals, sometimes invalid json
  * just leads to not loading some kind of content
  */
-public class KJsonTokenException extends Exception implements KThrowable {
+public class KJsonTokenException extends KException implements KThrowable {
 
     /**
      * Default constructor with error message
