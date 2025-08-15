@@ -22,7 +22,7 @@ public class KJsonValue {
      * @param value The value itself
      */
     public KJsonValue(KJsonValueType type, Object value) {
-        if (value == null) {
+        if (value == null && type != KJsonValueType.STRING) {
             this.type = KJsonValueType.NULL;
         } else {
             this.type = type;
