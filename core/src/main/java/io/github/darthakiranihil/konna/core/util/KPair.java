@@ -1,21 +1,12 @@
 package io.github.darthakiranihil.konna.core.util;
 
-public class KPair<F, S> {
-
-    private final F first;
-    private final S second;
-
-    public KPair(F first, S second) {
-        this.first = first;
-        this.second = second;
-    }
-
-    public F getFirst() {
-        return this.first;
-    }
-
-    public S getSecond() {
-        return this.second;
-    }
+/**
+ * Represents an immutable pair of values of different types like a tuple.
+ * @param first The first element of the pair
+ * @param second The second element of the pair
+ * @param <F> Type of the first pair
+ * @param <S> Type of the second pair
+ */
+public record KPair<F, S>(F first, S second) {
 
 }

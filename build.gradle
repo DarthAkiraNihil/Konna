@@ -50,7 +50,7 @@ def exportedProjects = [
 tasks.register('allJavadoc', Javadoc) {
     source exportedProjects.collect { project(it).sourceSets.main.allJava }
     classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = file("${layout.buildDirectory}/docs/javadoc-all")
+    destinationDir = layout.buildDirectory.dir("/docs/javadoc-all").get().asFile
 }
 
 tasks.register('jacocoRootReport', JacocoReport) {

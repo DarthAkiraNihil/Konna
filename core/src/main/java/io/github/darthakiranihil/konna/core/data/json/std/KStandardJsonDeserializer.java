@@ -15,6 +15,12 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     private static Unsafe theUnsafe;
 
+    /**
+     * Default constructor
+     */
+    public KStandardJsonDeserializer() {
+    }
+
     static {
         try {
             Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");

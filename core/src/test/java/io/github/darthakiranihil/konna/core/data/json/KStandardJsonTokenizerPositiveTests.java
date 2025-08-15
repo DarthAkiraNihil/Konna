@@ -149,7 +149,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     public void testGetSingleToken() {
 
         for (var data: KStandardJsonTokenizerPositiveTests.singleTokenTestData) {
-            this.singleTokenTest(data.getFirst(), data.getSecond());
+            this.singleTokenTest(data.first(), data.second());
         }
 
     }
@@ -158,7 +158,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     public void testSetSingleTokenWithValueCheck() {
 
         for (var data: KStandardJsonTokenizerPositiveTests.singleTokenWithValueTestData) {
-            this.singleTokenTest(data.getFirst(), data.getSecond(), data.getThird());
+            this.singleTokenTest(data.first(), data.second(), data.third());
         }
 
     }
@@ -167,7 +167,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     public void testGetMultiTokens() {
 
         for (var data: KStandardJsonTokenizerPositiveTests.multiTokenTestData) {
-            this.multiTokenTest(data.getFirst(), data.getSecond());
+            this.multiTokenTest(data.first(), data.second());
         }
 
     }

@@ -56,7 +56,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
         for (var data: KStandardJsonParserPositiveTests.dataForSimpleTests) {
 
-            this.simpleTest(data.getFirst(), data.getSecond(), data.getThird());
+            this.simpleTest(data.first(), data.second(), data.third());
 
         }
 
@@ -143,8 +143,8 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
                 KJsonValue entry = it.next();
 
                 var match = KStandardJsonParserPositiveTests.arrayMatchList.get(i);
-                Assertions.assertEquals(match.getFirst(), entry.getType());
-                Assertions.assertEquals(match.getSecond(), entry.getRawObject());
+                Assertions.assertEquals(match.first(), entry.getType());
+                Assertions.assertEquals(match.second(), entry.getRawObject());
 
                 i++;
             }

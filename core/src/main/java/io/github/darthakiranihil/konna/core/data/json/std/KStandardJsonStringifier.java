@@ -5,9 +5,15 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import java.util.Iterator;
 
 /**
- * Standard implementation of KJsonStringifier
+ * Standard implementation of {@link KJsonStringifier}
  */
 public class KStandardJsonStringifier implements KJsonStringifier {
+
+    /**
+     * Default constructor
+     */
+    public KStandardJsonStringifier() {
+    }
 
     @Override
     public String stringify(KJsonValue value) {

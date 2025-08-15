@@ -86,8 +86,8 @@ public class KStandardJsonStringifierPositiveTests extends KStandardTestClass {
         for (var data: KStandardJsonStringifierPositiveTests.simpleStringifyTestData) {
 
             Assertions.assertEquals(
-                data.getSecond(),
-                this.stringifier.stringify(data.getFirst())
+                data.second(),
+                this.stringifier.stringify(data.first())
             );
 
         }
@@ -100,8 +100,8 @@ public class KStandardJsonStringifierPositiveTests extends KStandardTestClass {
         for (var data: KStandardJsonStringifierPositiveTests.prettyStringifyTestData) {
 
             Assertions.assertEquals(
-                data.getSecond(),
-                this.stringifier.stringify(data.getFirst(), KStandardJsonStringifierPositiveTests.TEST_INDENT)
+                data.second(),
+                this.stringifier.stringify(data.first(), KStandardJsonStringifierPositiveTests.TEST_INDENT)
             );
 
         }

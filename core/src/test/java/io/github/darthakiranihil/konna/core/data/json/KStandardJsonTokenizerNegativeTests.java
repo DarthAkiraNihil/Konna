@@ -43,7 +43,7 @@ public class KStandardJsonTokenizerNegativeTests extends KStandardTestClass {
 
         for (var data: KStandardJsonTokenizerNegativeTests.invalidInputTestData) {
 
-            this.testForInvalidInput(data.getFirst(), data.getSecond(), data.getThird());
+            this.testForInvalidInput(data.first(), data.second(), data.third());
 
         }
 

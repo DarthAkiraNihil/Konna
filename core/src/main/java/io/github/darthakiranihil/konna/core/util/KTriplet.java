@@ -1,26 +1,14 @@
 package io.github.darthakiranihil.konna.core.util;
 
-public class KTriplet<F, S, T> {
+/**
+ * Represents an immutable group of three values of different types like a tuple.
+ * @param first The first element of the triplet
+ * @param second The second element of the triplet
+ * @param third The third element of the triplet
+ * @param <F> Type of the first element
+ * @param <S> Type of the second element
+ * @param <T> Type of the third element
+ */
+public record KTriplet<F, S, T>(F first, S second, T third) {
 
-    private final F first;
-    private final S second;
-    private final T third;
-
-    public KTriplet(F first, S second, T third) {
-        this.first = first;
-        this.second = second;
-        this.third = third;
-    }
-
-    public F getFirst() {
-        return this.first;
-    }
-
-    public S getSecond() {
-        return this.second;
-    }
-
-    public T getThird() {
-        return this.third;
-    }
 }

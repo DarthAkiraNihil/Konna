@@ -18,14 +18,29 @@ public record KJsonTokenPair(KJsonToken token, Object value) {
     public static final KJsonTokenPair NULL = new KJsonTokenPair(KJsonToken.NULL, null);
     public static final KJsonTokenPair EOF = new KJsonTokenPair(KJsonToken.EOF, '\0');
 
+    /**
+     * Constructs token pair from a string
+     * @param value The token value
+     * @return A new token pair with {@link KJsonToken}.STRING type
+     */
     public static KJsonTokenPair fromString(String value) {
         return new KJsonTokenPair(KJsonToken.STRING, value);
     }
 
+    /**
+     * Constructs token pair from an integer
+     * @param value The token value
+     * @return A new token pair with {@link KJsonToken}.NUMBER_INT type
+     */
     public static KJsonTokenPair fromInteger(int value) {
         return new KJsonTokenPair(KJsonToken.NUMBER_INT, value);
     }
 
+    /**
+     * Constructs token pair from a float
+     * @param value The token value
+     * @return A new token pair with {@link KJsonToken}.NUMBER_FLOAT type
+     */
     public static KJsonTokenPair fromFloat(float value) {
         return new KJsonTokenPair(KJsonToken.NUMBER_FLOAT, value);
     }
