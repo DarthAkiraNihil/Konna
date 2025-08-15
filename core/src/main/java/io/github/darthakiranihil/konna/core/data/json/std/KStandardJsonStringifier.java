@@ -126,7 +126,7 @@ public class KStandardJsonStringifier implements KJsonStringifier {
                         comma = ",\n";
                     }
                 }
-                builder.append(indentPrefix).append('}');
+                builder.append('\n').append(indentPrefix).append('}');
             }
             default -> builder.append(this.stringify(value));
         }

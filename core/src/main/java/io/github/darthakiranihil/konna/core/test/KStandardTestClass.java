@@ -1,13 +1,7 @@
 package io.github.darthakiranihil.konna.core.test;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.KJsonSerializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonSerializer;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.data.json.std.*;
 
 public class KStandardTestClass {
 
@@ -15,6 +9,7 @@ public class KStandardTestClass {
     protected static KJsonParser jsonParser;
     protected static KJsonSerializer jsonSerializer;
     protected static KJsonDeserializer jsonDeserializer;
+    protected static KJsonStringifier jsonStringifier;
 
     static {
 
@@ -22,6 +17,7 @@ public class KStandardTestClass {
         KStandardTestClass.jsonParser = new KStandardJsonParser(KStandardTestClass.jsonTokenizer);
         KStandardTestClass.jsonSerializer = new KStandardJsonSerializer();
         KStandardTestClass.jsonDeserializer = new KStandardJsonDeserializer();
+        KStandardTestClass.jsonStringifier = new KStandardJsonStringifier();
 
     }
 

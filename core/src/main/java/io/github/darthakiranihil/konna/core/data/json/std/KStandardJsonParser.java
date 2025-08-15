@@ -4,7 +4,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -74,10 +74,10 @@ public class KStandardJsonParser implements KJsonParser {
         KJsonTokenPair token = this.getTokenOrFail(tokenizer);
 
         if (token.token() == KJsonToken.CLOSE_BRACE) {
-            return KJsonValue.fromMap(new HashMap<>());
+            return KJsonValue.fromMap(new LinkedHashMap<>());
         }
 
-        Map<String, KJsonValue> result = new HashMap<>();
+        Map<String, KJsonValue> result = new LinkedHashMap<>();
 
         do {
 
