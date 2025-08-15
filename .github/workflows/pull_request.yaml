@@ -1,0 +1,46 @@
+name: Tests and coverage
+on:
+    pull_request:
+        branches:
+            - dev
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+        steps:
+            -   uses: actions/checkout@v4
+            
+            -   name: Set up JDK
+                uses: actions/setup-java@v4
+                with:
+                    distribution: 'temurin'
+                    java-version: 21
+            -   name: Change wrapper permissions
+                run: chmod +x ./gradlew
+            -   name: Run tests
+                run: ./gradlew clean test
+            -   name: Collect coverage
+                run: ./gradlew jacocoRootReport
+            -   name: Add coverage to PR
+                id: jacoco
+                uses: madrapps/jacoco-report@v1.3
+                with:
+                    paths: ${{ github.workspace }}/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
+                    token: ${{ secrets.GITHUB_TOKEN }}
+                    min-coverage-overall: 90
+                    min-coverage-changed-files: 80
+                    debug-mode: false
+                    title: Code Coverage
+                    update-comment: true
+            -   name: Get coverage info
+                run: |
+                    echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
+                    echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+            -   name: Check
+                if: ${{ steps.jacoco.outputs.coverage-overall < 90.0 }}
+                uses: actions/github-script@v6
+                with:
+                    script: |
+                        core.setFailed('Overall coverage is less than 90%!')
+            

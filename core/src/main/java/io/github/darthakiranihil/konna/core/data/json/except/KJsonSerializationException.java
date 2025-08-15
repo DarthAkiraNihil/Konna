@@ -10,14 +10,18 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KJsonSerializationException extends KException implements KThrowable {
 
-    public KJsonSerializationException() {
-        super("Could not initialize JSON deserializator: theUnsafe field of Unsafe does not exist");
-    }
-
+    /**
+     * Constructs exception with a provided cause
+     * @param cause Cause of the exception
+     */
     public KJsonSerializationException(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Constructs exception with a provided message
+     * @param message Exception message
+     */
     public KJsonSerializationException(String message) {
         super(message);
     }

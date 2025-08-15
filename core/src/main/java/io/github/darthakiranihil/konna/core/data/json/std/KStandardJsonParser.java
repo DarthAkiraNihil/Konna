@@ -4,7 +4,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,22 +14,25 @@ import java.util.Map;
  */
 public class KStandardJsonParser implements KJsonParser {
 
+    private final KJsonTokenizer tokenizer;
+
     /**
-     * Default constructor
+     * Constructs parser with concrete tokenizer
+     * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser() {
+    public KStandardJsonParser(KJsonTokenizer tokenizer) {
+        this.tokenizer = tokenizer;
     }
 
     @Override
     public KJsonValue parse(String string) throws KJsonParseException {
-        KJsonTokenizer tokenizer = new KStandardJsonTokenizer(string);
+        this.tokenizer.reset(string);
 
+        KJsonValue result = this.value(this.tokenizer);
 
-        KJsonValue result = this.value(tokenizer);
-
-        KJsonTokenPair last = this.getTokenOrFail(tokenizer);
+        KJsonTokenPair last = this.getTokenOrFail(this.tokenizer);
         if (last.token() != KJsonToken.EOF) {
-            throw new KJsonParseException(last);
+            throw new KJsonParseException(last.token());
         }
 
         return result;
@@ -46,7 +49,7 @@ public class KStandardJsonParser implements KJsonParser {
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
             case OPEN_BRACE -> this.object(tokenizer);
             case OPEN_SQUARE_BRACKET -> this.array(tokenizer);
-            default -> throw new KJsonParseException(token);
+            default -> throw new KJsonParseException(token.token());
         };
     }
 
@@ -62,7 +65,7 @@ public class KStandardJsonParser implements KJsonParser {
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
             case OPEN_BRACE -> this.object(tokenizer);
             case OPEN_SQUARE_BRACKET -> this.array(tokenizer);
-            default -> throw new KJsonParseException(token);
+            default -> throw new KJsonParseException(token.token());
         };
 
     }
@@ -71,10 +74,10 @@ public class KStandardJsonParser implements KJsonParser {
         KJsonTokenPair token = this.getTokenOrFail(tokenizer);
 
         if (token.token() == KJsonToken.CLOSE_BRACE) {
-            return KJsonValue.fromMap(new HashMap<>());
+            return KJsonValue.fromMap(new LinkedHashMap<>());
         }
 
-        Map<String, KJsonValue> result = new HashMap<>();
+        Map<String, KJsonValue> result = new LinkedHashMap<>();
 
         do {
 

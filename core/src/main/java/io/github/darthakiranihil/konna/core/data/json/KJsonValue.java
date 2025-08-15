@@ -22,7 +22,7 @@ public class KJsonValue {
      * @param value The value itself
      */
     public KJsonValue(KJsonValueType type, Object value) {
-        if (value == null) {
+        if (value == null && type != KJsonValueType.STRING) {
             this.type = KJsonValueType.NULL;
         } else {
             this.type = type;
@@ -45,6 +45,15 @@ public class KJsonValue {
      * @return Constructed json value
      */
     public static KJsonValue fromNumber(long value) {
+        return new KJsonValue(KJsonValueType.NUMBER_INT, value);
+    }
+
+    /**
+     * Constructs a number value from byte
+     * @param value The value itself
+     * @return Constructed json value
+     */
+    public static KJsonValue fromNumber(byte value) {
         return new KJsonValue(KJsonValueType.NUMBER_INT, value);
     }
 
@@ -94,6 +103,15 @@ public class KJsonValue {
     }
 
     /**
+     * Constructs a string value from char. The json value will be represented as string
+     * @param value The value itself
+     * @return Constructed json value
+     */
+    public static KJsonValue fromChar(char value) {
+        return new KJsonValue(KJsonValueType.STRING, String.valueOf(value));
+    }
+
+    /**
      * Constructs an array value from list
      * @param list The list itself
      * @return Constructed json value
@@ -129,9 +147,8 @@ public class KJsonValue {
 
     /**
      * Returns an iterator for iterating over array elements. Pay attention to the fact it may
-     * throw KJsonValueException if the value type differs from ARRAY
+     * throw {@link KJsonValueException} if the value type differs from {@link KJsonValueType}.ARRAY
      * @return The iterator for json array
-     * @see KJsonValueException
      */
     @SuppressWarnings("unchecked")
     public Iterator<KJsonValue> iterator() {
@@ -145,7 +162,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns all json object key-value entries. If the value is not an object, KJsonValueException will be thrown
+     * Returns all json object key-value entries. If the value is not an object, {@link KJsonValueException} will be thrown
      * @return Set of key-value entries of the object
      */
     @SuppressWarnings("unchecked")
@@ -161,10 +178,9 @@ public class KJsonValue {
 
     /**
      * Returns the json value with specified key of a json object. If the value is not an object,
-     * KJsonValueException will be thrown
+     * {@link KJsonValueException} will be thrown
      * @param key The key of the property
      * @return The value assigned to the key
-     * @see KJsonValueException
      */
     @SuppressWarnings("unchecked")
     public KJsonValue getProperty(String key) {
@@ -175,6 +191,23 @@ public class KJsonValue {
         }
 
         return ((Map<String, KJsonValue>) this.value).get(key);
+    }
+
+    /**
+     * Returns status of object key containment of json value. If the value is not an object,
+     * {@link KJsonValueException} will be thrown
+     * @param key The key of the property
+     * @return true if the object contains specified property
+     */
+    @SuppressWarnings("unchecked")
+    public boolean hasProperty(String key) {
+        if (this.type != KJsonValueType.OBJECT) {
+            throw new KJsonValueException(
+                String.format("Cannot get information of property containment in the json value: it's not an object. The actual type is: %s", this.type)
+            );
+        }
+
+        return ((Map<String, KJsonValue>) this.value).containsKey(key);
     }
 
     /**
@@ -223,6 +256,21 @@ public class KJsonValue {
     }
 
     /**
+     * Returns json value as a byte
+     * @return Byte representation of a value.
+     * @see KJsonValueException
+     */
+    public byte getByte() {
+        if (this.type != KJsonValueType.NUMBER_INT) {
+            throw new KJsonValueException(
+                String.format("Cannot get short from the json value: it's not a short. The actual type is: %s", this.type)
+            );
+        }
+
+        return (byte) this.value;
+    }
+
+    /**
      * Returns json value as a short
      * @return Short representation of a value.
      * @see KJsonValueException
@@ -268,6 +316,35 @@ public class KJsonValue {
     }
 
     /**
+     * Returns json value as a char. Throws {@link KJsonValueException} if the string representation of char
+     * has more than one symbol in length
+     * @return Char representation of a value
+     * @see KJsonValueException
+     */
+    public char getChar() {
+        if (this.type != KJsonValueType.STRING) {
+            throw new KJsonValueException(
+                String.format("Cannot get string from the json value: it's not a string. The actual type is: %s", this.type)
+            );
+        }
+
+        if (this.isNull()) {
+            throw new KJsonValueException(
+                "Cannot get char value from the json value: the value is null"
+            );
+        }
+
+        String string = (String) this.value;
+        if (string.length() > 1) {
+            throw new KJsonValueException(
+                "Cannot get char value from the json value: the string is more than 1 symbol in length!"
+            );
+        }
+
+        return string.charAt(0);
+    }
+
+    /**
      * Returns json value as a string.
      * @return String representation of a value or null if the contained value is null
      * @see KJsonValueException
@@ -284,6 +361,15 @@ public class KJsonValue {
         }
 
         return (String) this.value;
+    }
+
+    /**
+     * Returns raw json value without casting to any type. It is useful for different test purposes,
+     * however it is not limited, though you need to cast it to required time yourself
+     * @return Raw json value represented by {@link java.lang.Object}
+     */
+    public Object getRawObject() {
+        return this.value;
     }
 
     /**

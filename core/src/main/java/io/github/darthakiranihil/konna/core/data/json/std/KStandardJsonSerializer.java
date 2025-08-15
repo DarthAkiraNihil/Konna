@@ -46,6 +46,10 @@ public class KStandardJsonSerializer implements KJsonSerializer {
             return KJsonValue.fromNumber((int) object);
         }
 
+        if (clazz == Byte.class || clazz == byte.class) {
+            return KJsonValue.fromNumber((byte) object);
+        }
+
         if (clazz == Short.class || clazz == short.class) {
             return KJsonValue.fromNumber((short) object);
         }
@@ -64,6 +68,10 @@ public class KStandardJsonSerializer implements KJsonSerializer {
 
         if (clazz == Boolean.class || clazz == boolean.class) {
             return KJsonValue.fromBoolean((boolean) object);
+        }
+
+        if (clazz == Character.class || clazz == char.class) {
+            return KJsonValue.fromChar((char) object);
         }
 
         if (clazz == String.class) {

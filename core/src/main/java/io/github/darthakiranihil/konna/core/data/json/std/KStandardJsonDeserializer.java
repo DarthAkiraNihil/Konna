@@ -16,19 +16,19 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
     private static Unsafe theUnsafe;
 
     /**
-     * Constructs the deserializer, initializing its unsafe (static field) for creating objects without constructor
-     * @throws KJsonSerializationException If it fails to get the Unsafe
+     * Default constructor
      */
-    public KStandardJsonDeserializer() throws KJsonSerializationException {
+    public KStandardJsonDeserializer() {
+    }
 
+    static {
         try {
             Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafeField.setAccessible(true);
             KStandardJsonDeserializer.theUnsafe = (Unsafe) theUnsafeField.get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new KJsonSerializationException();
+            throw new RuntimeException(e);
         }
-
     }
 
     /**

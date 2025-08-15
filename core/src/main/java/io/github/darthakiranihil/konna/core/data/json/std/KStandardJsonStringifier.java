@@ -5,9 +5,15 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import java.util.Iterator;
 
 /**
- * Standard implementation of KJsonStringifier
+ * Standard implementation of {@link KJsonStringifier}
  */
 public class KStandardJsonStringifier implements KJsonStringifier {
+
+    /**
+     * Default constructor
+     */
+    public KStandardJsonStringifier() {
+    }
 
     @Override
     public String stringify(KJsonValue value) {
@@ -55,38 +61,80 @@ public class KStandardJsonStringifier implements KJsonStringifier {
         }
     }
 
-    // TODO: fix pretty json
     private void deepStringify(StringBuilder builder, KJsonValue value, int indent, int level) {
+        String indentPrefix = " ".repeat(indent * level);
+
         switch (value.getType()) {
-            case NULL -> builder.append(" ".repeat(indent * level)).append("null");
-            case BOOLEAN -> builder.append(" ".repeat(indent * level)).append(value.getBoolean());
-            case STRING -> builder.append(" ".repeat(indent * level)).append(String.format("\"%s\"", value.getString()));
+            case NULL -> builder.append(indentPrefix).append("null");
+            case BOOLEAN -> builder.append(indentPrefix).append(value.getBoolean());
+            case STRING -> builder.append(indentPrefix).append(String.format("\"%s\"", value.getString()));
             case ARRAY -> {
-                builder.append(" ".repeat(indent * level)).append("[\n");
+                builder.append(indentPrefix).append("[\n");
                 String comma = "";
                 for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
+
                     var e = it.next();
+
                     builder.append(comma);
                     this.deepStringify(builder, e, indent, level + 1);
-                    comma = ",";
-                    builder.append("\n");
+                    comma = ",\n";
+
                 }
-                builder.append(" ".repeat(indent * level)).append("]");
+                builder.append('\n').append(indentPrefix).append("]");
             }
             case OBJECT -> {
-                builder.append(" ".repeat(indent * level)).append("{\n");
+                builder.append(indentPrefix).append("{\n");
                 String comma = "";
+
                 for (var e: value.entrySet()) {
+
                     builder.append(comma);
-                    builder.append(" ".repeat(indent * (level + 1))).append(String.format("\"%s\": ", e.getKey()));
-                    this.deepStringify(builder, e.getValue(), indent, level + 1);
-                    comma = ",";
-                    builder.append("\n");
+                    this.stringifyKeyValue(builder, e.getKey(), e.getValue(), indent, level + 1);
+                    comma = ",\n";
+
                 }
-                builder.append(" ".repeat(indent * level)).append("}");
+                builder.append('\n').append(indentPrefix).append("}");
             }
-            case NUMBER_INT -> builder.append(" ".repeat(indent * level)).append(value.getInt());
-            case NUMBER_FLOAT -> builder.append(" ".repeat(indent * level)).append(value.getFloat());
+            case NUMBER_INT -> builder.append(indentPrefix).append(value.getInt());
+            case NUMBER_FLOAT -> builder.append(indentPrefix).append(value.getFloat());
+        }
+    }
+
+    private void stringifyKeyValue(StringBuilder builder, String key, KJsonValue value, int indent, int level) {
+
+        String indentPrefix = " ".repeat(indent * level);
+        builder
+            .append(indentPrefix)
+            .append(String.format("\"%s\": ", key));
+
+        switch (value.getType()) {
+            case ARRAY -> {
+                builder.append("[\n");
+
+                String comma = "";
+                for (var it = value.iterator(); it.hasNext(); ) {
+                    builder.append(comma);
+                    KJsonValue entry = it.next();
+                    this.deepStringify(builder, entry, indent, level + 1);
+                    if (comma.isEmpty()) {
+                        comma = ",\n";
+                    }
+                }
+                builder.append('\n').append(indentPrefix).append(']');
+            }
+            case OBJECT -> {
+                builder.append("{\n");
+                String comma = "";
+                for (var entry: value.entrySet()) {
+                    builder.append(comma);
+                    this.stringifyKeyValue(builder, entry.getKey(), entry.getValue(), indent, level + 1);
+                    if (comma.isEmpty()) {
+                        comma = ",\n";
+                    }
+                }
+                builder.append('\n').append(indentPrefix).append('}');
+            }
+            default -> builder.append(this.stringify(value));
         }
     }
 }

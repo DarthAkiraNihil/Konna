@@ -15,6 +15,10 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KJsonValueException extends KRuntimeException implements KThrowable {
 
+    /**
+     * Constructs exception with a provided message
+     * @param message Exception message
+     */
     public KJsonValueException(String message) {
         super(message);
     }

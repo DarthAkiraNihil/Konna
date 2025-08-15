@@ -34,4 +34,9 @@ public abstract class KJsonTokenizer {
      */
     public abstract KJsonTokenPair getNextToken() throws KJsonTokenException;
 
+    /**
+     * Resets tokenizer state and sets new source of possible json tokens
+     * @param newSource New source to tokenize
+     */
+    public abstract void reset(String newSource);
 }
