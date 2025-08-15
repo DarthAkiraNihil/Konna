@@ -24,27 +24,6 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
             this.field4 = field4;
             this.field5 = field5;
         }
-
-        public int getField1() {
-            return this.field1;
-        }
-
-        public float getField2() {
-            return this.field2;
-        }
-
-        public String getField3() {
-            return this.field3;
-        }
-
-        public List<Float> getField4() {
-            return this.field4;
-        }
-
-        public boolean getField5() {
-            return this.field5;
-        }
-
     }
 
     @Test
