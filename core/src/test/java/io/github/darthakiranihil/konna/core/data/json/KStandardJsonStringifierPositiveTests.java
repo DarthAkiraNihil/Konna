@@ -33,13 +33,7 @@ public class KStandardJsonStringifierPositiveTests extends KStandardTestClass {
                 KJsonValue.fromNumber(2),
                 KJsonValue.fromNumber(3)
             )
-        ), "[1,2,3]"),
-        new KPair<>(KJsonValue.fromMap(
-            new LinkedHashMap<>(Map.of(
-                "123", KJsonValue.fromNumber(1),
-                "124", KJsonValue.fromNumber(2)
-            ))
-        ), "{\"123\":1,\"124\":2}")
+        ), "[1,2,3]")
     );
 
     private static final List<KPair<KJsonValue, String>> prettyStringifyTestData = List.of(
@@ -54,30 +48,7 @@ public class KStandardJsonStringifierPositiveTests extends KStandardTestClass {
                 KJsonValue.fromNumber(2),
                 KJsonValue.fromNumber(3)
             )
-        ), "[\n 1,\n 2,\n 3\n]"),
-        new KPair<>(KJsonValue.fromMap(
-            new LinkedHashMap<>(Map.of(
-                "123", KJsonValue.fromNumber(1),
-                "124", KJsonValue.fromNumber(2)
-            ))
-        ), "{\n \"123\": 1,\n \"124\": 2\n}"),
-        new KPair<>(KJsonValue.fromMap(
-            new LinkedHashMap<>(Map.of(
-                "k1", KJsonValue.fromList(
-                    List.of(
-                        KJsonValue.fromNumber(1),
-                        KJsonValue.fromNumber(2),
-                        KJsonValue.fromNumber(3)
-                    )
-                ),
-                "k2", KJsonValue.fromMap(
-                    new LinkedHashMap<>(Map.of(
-                        "123", KJsonValue.fromNumber(1),
-                        "124", KJsonValue.fromNumber(2)
-                    ))
-                )
-            ))
-        ), "{\n \"k1\": [\n  1,\n  2,\n  3\n ],\n \"k2\": {\n  \"123\": 1,\n  \"124\": 2\n }\n}")
+        ), "[\n 1,\n 2,\n 3\n]")
     );
 
     @Test
@@ -105,6 +76,49 @@ public class KStandardJsonStringifierPositiveTests extends KStandardTestClass {
             );
 
         }
+
+    }
+
+    @Test
+    public void testSimpleStringifyComplexValue() {
+
+        Map<String, KJsonValue> source = new LinkedHashMap<>();
+        source.put("123", KJsonValue.fromNumber(1));
+        source.put("124", KJsonValue.fromNumber(2));
+
+        Assertions.assertEquals("{\"123\":1,\"124\":2}", this.stringifier.stringify(KJsonValue.fromMap(source)));
+
+    }
+
+    @Test
+    public void testPrettyStringifyComplexValue() {
+
+        Map<String, KJsonValue> source1 = new LinkedHashMap<>();
+        source1.put("123", KJsonValue.fromNumber(1));
+        source1.put("124", KJsonValue.fromNumber(2));
+
+        KJsonValue check1 = KJsonValue.fromMap(source1);
+
+        Map<String, KJsonValue> source2 = new LinkedHashMap<>();
+        source2.put("k1", KJsonValue.fromList(
+            List.of(
+                KJsonValue.fromNumber(1),
+                KJsonValue.fromNumber(2),
+                KJsonValue.fromNumber(3)
+            )
+        ));
+        source2.put("k2", check1);
+
+        KJsonValue check2 = KJsonValue.fromMap(source2);
+
+        Assertions.assertEquals(
+            "{\n \"123\": 1,\n \"124\": 2\n}",
+            this.stringifier.stringify(check1, KStandardJsonStringifierPositiveTests.TEST_INDENT)
+        );
+        Assertions.assertEquals(
+            "{\n \"k1\": [\n  1,\n  2,\n  3\n ],\n \"k2\": {\n  \"123\": 1,\n  \"124\": 2\n }\n}",
+            this.stringifier.stringify(check2, KStandardJsonStringifierPositiveTests.TEST_INDENT)
+        );
 
     }
 }
