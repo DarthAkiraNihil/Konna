@@ -16,4 +16,14 @@ public class KUniversalMapTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(ClassCastException.class, () -> map.get("test", String.class));
     }
 
+    @Test
+    public void testGetSafeValueOfItsAndAnotherType() {
+
+        KUniversalMap map = new KUniversalMap();
+        map.put("test", 1);
+
+        Assertions.assertEquals(1, map.getSafe("test", Integer.class));
+        Assertions.assertNull(map.getSafe("test", String.class));
+    }
+
 }
