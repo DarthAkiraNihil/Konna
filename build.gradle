@@ -3,6 +3,7 @@ plugins {
     id 'distribution'
     id 'application'
     id 'jacoco'
+    id 'maven-publish'
 }
 
 group = 'io.github.darthakiranihil.konna'
@@ -20,7 +21,7 @@ jacoco {
 }
 
 application {
-    mainClass = 'debug.StrTest' // Replace with your actual main class
+    mainClass = 'debug.StrTest'
 }
 
 repositories {

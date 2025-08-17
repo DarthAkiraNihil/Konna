@@ -1,9 +1,7 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
-
-group = 'io.github.darthakiranihil.konna'
-version = '0.1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -30,4 +28,20 @@ tasks.register('copyJar') {
 
 tasks.named("build") {
     finalizedBy('copyJar')
+}
+
+publishing {
+    repositories {
+        maven {
+            setUrl(layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+    publications {
+        create("release", MavenPublication) {
+            from(components.java)
+            groupId = component_group_id
+            artifactId = component_artifact_id
+            version = component_version
+        }
+    }
 }
