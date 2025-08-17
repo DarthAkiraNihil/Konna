@@ -1,9 +1,30 @@
 plugins {
     id 'java'
+    id 'distribution'
+    id 'application'
+    id 'jacoco'
+    id 'maven-publish'
+    id 'org.jreleaser' version '1.19.0'
 }
 
 group = 'io.github.darthakiranihil.konna'
-version = '1.0-SNAPSHOT'
+version = '0.1.0-SNAPSHOT'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'org.jreleaser'
+    archivesBaseName = "Konna.${it.name}"
+}
+
+jacoco {
+    toolVersion = "0.8.13"
+    reportsDirectory = layout.buildDirectory.dir('reports/jacoco/')
+}
+
+application {
+    mainClass = 'debug.StrTest'
+}
 
 repositories {
     mavenCentral()
@@ -12,8 +33,58 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation(project(":core"))
+}
+
+distributions {
+    main {
+        contents {
+            from subprojects.collect { it.tasks.withType(Jar) }
+        }
+    }
+}
+
+def exportedProjects = [
+    ":",
+    ":core",
+]
+
+tasks.register('allJavadoc', Javadoc) {
+    source exportedProjects.collect { project(it).sourceSets.main.allJava }
+    classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
+    destinationDir = layout.buildDirectory.dir("/docs/javadoc-all").get().asFile
+}
+
+tasks.register('jacocoRootReport', JacocoReport) {
+    description = 'Generates an aggregate report from all subprojects'
+    dependsOn(subprojects.test)
+
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+
+    reports {
+        html.required = true
+        xml.required = true
+    }
 }
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoRootReport
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required =  false
+        csv.required = false
+        html.required = true
+        html.destination file("${layout.buildDirectory}/jacocoHtml")
+    }
+//    sourceSets
+    sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    // jacocoReportPath = "${layout.buildDirectory}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
