@@ -3,6 +3,8 @@ plugins {
     id 'distribution'
     id 'application'
     id 'jacoco'
+    id 'maven-publish'
+    id 'org.jreleaser' version '1.19.0'
 }
 
 group = 'io.github.darthakiranihil.konna'
@@ -11,6 +13,7 @@ version = '0.1.0-SNAPSHOT'
 subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
+    apply plugin: 'org.jreleaser'
     archivesBaseName = "Konna.${it.name}"
 }
 
@@ -20,7 +23,7 @@ jacoco {
 }
 
 application {
-    mainClass = 'debug.StrTest' // Replace with your actual main class
+    mainClass = 'debug.StrTest'
 }
 
 repositories {
