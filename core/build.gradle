@@ -91,7 +91,15 @@ jreleaser {
     project {
         inceptionYear = "2025"
         author("@AkiraNihil")
-        version=component_version.toString()
+
+        version=component_version
+        languages {
+            java {
+                groupId=component_group_id.toString()
+                artifactId=component_artifact_id.toString()
+                version=component_version.toString()
+            }
+        }
     }
     release {
         github {
