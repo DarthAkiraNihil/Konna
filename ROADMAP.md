@@ -3,34 +3,75 @@
 ## ⚠️ Warning! ⚠️
 
 The roadmap is not final and may change in the future depending
-on many aspects that might be unforeseen
+on many aspects that might be unforeseen. Also, this may not cover features post-1.0.0 and
+version names may be different in the future
 
 ## The roadmap
 
-### v. 0.1.0 - JSON and UniversalDictionary
+### v. 0.1.0 - JSON and UniversalMap
 The foundation that is essential for the whole engine
 
-- [ ] Implement standard JSON Serializer and Deserializer
-- [ ] Setup test pipeline with JUnit and GitHub Actions
-- [ ] Add annotations that would be used to guide JSON serializer and deserializer
-- [ ] Implement UniversalDictionary - a universal container for data that don't need to be serialized to JSON
+- [x] Implement standard JSON Serializer and Deserializer
+- [x] Setup test pipeline with JUnit and GitHub Actions
+- [x] Add annotations that would be used to guide JSON serializer and deserializer
+- [x] Implement UniversalMap - a universal container for data that don't need to be serialized to JSON
 
 ### v. 0.2.0 - The Base Core
 
 - [ ] Add classes that describe engine components and engine hypervisor
-    - [ ] Implement Engine components are to be able to be loaded from a .jar file
     - [ ] Implement Engine component loader
-    - [ ] Add support for Engine component Api - methods that can be called from the hypervisor by name
+    - [ ] Add support for Engine component Api
+      - [ ] Add services - group of component endpoints
+      - [ ] Add clerks - util classes (aka "real services") for services
+      - [ ] Add necessary annotations that helps hypervisor to configure endpoint routing automatically
 - [ ] Add wrapper class for Java AWT Window
+  - [ ] Add abstraction for renderable object that holds primitive information such as color, image etc.
+  - [ ] Add geometrical primitives classes
+  - [ ] Add methods for window wrapper to draw renderable objects
 - [ ] Implement methods for inter-component messaging
     - [ ] Add Event system
-    - [ ] Abb base for tunnels - Engine component wrappers that may be a dependency for other components 
-
-### v. 0.3.0 - Dependency Injection
-
+    - [ ] Add base for tunnels - message translators to help components understand each other
+    - [ ] Add translating Java AWT events to Konna events 
+- [ ] Add app class - Konna
+  - [ ] Add feature to select classes of engine components to be used in engine
+  - [ ] Add exception handling
+- [ ] Add object model - KObject
+  - [ ] Add Activator - wrapper for creating/"deleting" objects
+  - [ ] Add annotations to define ways to create an object (poolable, singleton etc.)
+- [ ] Add Logging
+  - [ ] Implement simple logger class that allows to write logs to stdout or a file
+- [ ] Add asset and resource (?) management
+  - [ ] Add abstractions for assets and resources 
+  - [ ] Add asset loader
+  - [ ] Allow components to load their components by themselves
+  - [ ] Add post-init asset loading (would be helpful for modloaders)
+  - [ ] Add feature to define assets in json
 - [ ] Implement container system
-    - [ ] Add interface-implementation registration system
-    - [ ] Add getting interface implementation by type method
-    - [ ] Manage to make up automatic dependency injection
+  - [ ] Add interface-implementation registration system
+  - [ ] Add getting interface implementation by type method
+  - [ ] Manage to make up automatic dependency injection
+  - [ ] Add system to configure dependencies from code
+  - [ ] Add automatic dependency injection in the Activator
+- [ ] Make everything concurrent and make the system work in different threads
 
-### v. 0.4.0 - To be continued
+### v. 0.3.0 - The beginning of Entity
+
+- [ ] Implement entity component that contains methods to work with different entities, including the Player itself
+    - [ ] Add base class for all entities
+    - [ ] Add classes that holds different values that represent entity properties
+    - [ ] Add feature to define entities in json files (so component will create them automatically)
+    - [ ] Add feature to treat entity descriptors (aka definitions) as assets
+    - [ ] Add support for entity behaviours - it will be just like script system
+    - [ ] Add entity model - entity class with list of properties to concrete class with concrete fields (?)
+
+### v. 0.4.0 - The beginning of Level
+
+### v. 0.5.0 - Monsters and Combat
+
+### v. 0.6.0 - Item system
+
+### v. 0.7.0 - Kreaktive - the GUI component
+
+### v. 0.8.0 - Saving
+
+### v. 0.9.0 - To be continued...
