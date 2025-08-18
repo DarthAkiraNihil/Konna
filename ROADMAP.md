@@ -34,6 +34,10 @@ The foundation that is essential for the whole engine
     - [ ] Add translating Java AWT events to Konna events 
 - [ ] Add app class - Konna
   - [ ] Add feature to select classes of engine components to be used in engine
+  - [ ] Add exception handling
+- [ ] Add object model - KObject
+  - [ ] Add Activator - wrapper for creating/"deleting" objects
+  - [ ] Add annotations to define ways to create an object (poolable, singleton etc.)
 - [ ] Add Logging
   - [ ] Implement simple logger class that allows to write logs to stdout or a file
 - [ ] Add asset and resource (?) management
@@ -47,6 +51,7 @@ The foundation that is essential for the whole engine
   - [ ] Add getting interface implementation by type method
   - [ ] Manage to make up automatic dependency injection
   - [ ] Add system to configure dependencies from code
+  - [ ] Add automatic dependency injection in the Activator
 - [ ] Make everything concurrent and make the system work in different threads
 
 ### v. 0.3.0 - The beginning of Entity
