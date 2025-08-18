@@ -1,3 +1,5 @@
+import org.jreleaser.model.Active
+
 plugins {
     id 'java'
     id 'distribution'
@@ -78,6 +80,21 @@ test {
 
 jreleaser {
     gitRootSearch = true
+    release {
+        github {
+            skipRelease = true
+            skipTag = true
+            sign = true
+            branch = "master"
+            branchPush = "master"
+            overwrite = true
+        }
+    }
+    signing {
+        active = Active.ALWAYS
+        armored = true
+        verify = true
+    }
 }
 
 jacocoTestReport {
