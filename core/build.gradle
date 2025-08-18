@@ -97,7 +97,6 @@ jreleaser {
             java {
                 groupId=component_group_id.toString()
                 artifactId=component_artifact_id.toString()
-                version=component_version.toString()
             }
         }
     }

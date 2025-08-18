@@ -1,3 +1,5 @@
+import org.jreleaser.model.Active
+
 plugins {
     id 'java'
     id 'distribution'
@@ -8,7 +10,7 @@ plugins {
 }
 
 group = 'io.github.darthakiranihil.konna'
-version = '0.1.0-SNAPSHOT'
+version = '0.1.0'
 
 subprojects {
     apply plugin: 'java'
@@ -74,6 +76,25 @@ tasks.register('jacocoRootReport', JacocoReport) {
 test {
     useJUnitPlatform()
     finalizedBy jacocoRootReport
+}
+
+jreleaser {
+    gitRootSearch = true
+    release {
+        github {
+            skipRelease = true
+            skipTag = true
+            sign = true
+            branch = "master"
+            branchPush = "master"
+            overwrite = true
+        }
+    }
+    signing {
+        active = Active.ALWAYS
+        armored = true
+        verify = true
+    }
 }
 
 jacocoTestReport {
