@@ -2,11 +2,16 @@ import org.jreleaser.model.Active
 
 plugins {
     id 'java'
+
     id 'distribution'
     id 'application'
+
     id 'jacoco'
     id 'maven-publish'
+
     id 'org.jreleaser' version '1.19.0'
+    id 'checkstyle'
+
 }
 
 group = 'io.github.darthakiranihil.konna'
@@ -16,6 +21,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'org.jreleaser'
+    apply plugin: 'checkstyle'
 
     archivesBaseName = "Konna.${it.name}"
 }
@@ -23,6 +29,10 @@ subprojects {
 jacoco {
     toolVersion = "0.8.13"
     reportsDirectory = layout.buildDirectory.dir('reports/jacoco/')
+}
+
+checkstyle {
+    toolVersion = "11.0.0"
 }
 
 application {

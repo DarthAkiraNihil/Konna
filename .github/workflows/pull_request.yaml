@@ -44,4 +44,22 @@ jobs:
                 with:
                     script: |
                         core.setFailed('Overall coverage is less than 90%!')
+    check_style:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Set up JDK
+                uses: actions/setup-java@v4
+                with:
+                    distribution: 'temurin'
+                    java-version: 21
+            -   name: Change wrapper permissions
+                run: chmod +x ./gradlew
+            -   name: Run checkstyle
+                run: ./gradlew checkstyleMain
+            -   name: Publish report
+                uses: actions/upload-artifact@v4
+                with:
+                    name: checkstyleReport
+                    path: '**/build/reports/checkstyle/'
             
