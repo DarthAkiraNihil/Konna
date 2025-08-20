@@ -24,15 +24,12 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
- * Standard implementation of KJsonSerializer
+ * Standard implementation of {@link KJsonSerializer}
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonSerializer implements KJsonSerializer {
-
-    /**
-     * Default constructor
-     */
-    public KStandardJsonSerializer() {
-    }
 
     private <T> List<Field> getFields(T t) {
         List<Field> fields = new ArrayList<>();

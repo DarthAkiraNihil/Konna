@@ -16,6 +16,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'org.jreleaser'
+
     archivesBaseName = "Konna.${it.name}"
 }
 
@@ -51,6 +52,14 @@ def exportedProjects = [
     ":",
     ":core",
 ]
+
+tasks.withType(Javadoc).configureEach {
+    options {
+        addStringOption('Xdoclint:none', '-quiet')
+    }
+    options.author = true
+    options.tags = [ "apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:" ]
+}
 
 tasks.register('allJavadoc', Javadoc) {
     source exportedProjects.collect { project(it).sourceSets.main.allJava }

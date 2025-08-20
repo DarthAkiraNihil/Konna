@@ -21,7 +21,9 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 
 /**
  * Interface for json parsers that constructs json values from tokens got from source
- * @see KStandardJsonParser
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public interface KJsonParser {
 

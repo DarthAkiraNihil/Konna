@@ -23,9 +23,13 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates the type of list-like field elements (the generic type).
- * It is required as Java uses type erasure on generics so it is impossible
+ * It is required as Java uses type erasure on generics, so it is impossible
  * to get list generic parameter at runtime.
  * Other fields are not affected by this annotation, at least in the standard implementation of deserializer
+ *
+ * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
+ * @author Darth Akira Nihil
+ * @since 0.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

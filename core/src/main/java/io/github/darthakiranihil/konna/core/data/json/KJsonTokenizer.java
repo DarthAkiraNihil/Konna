@@ -24,9 +24,11 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer
  * It provides base methods to extract tokens from a json-containing value like string (so far).
  * Tokenizer extracts symbols from a source and then converts to a token pair that is used by parser to
  * construct a json value
+ *
  * @see KJsonTokenPair
  * @see KJsonValue
- * @see KStandardJsonTokenizer
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public abstract class KJsonTokenizer {
 

@@ -19,13 +19,20 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
 /**
- * Interface that provides methods to deserialize json values into objects
+ * Interface providing methods to deserialize json values into objects
  * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public interface KJsonDeserializer {
 
     /**
      * Deserializes a json value into a new object of passed type.
+     * @implSpec Implementation of this should have capability to handle list-like elements, that includes correct deserialization of list
+     *           elements. As Java uses type erasure for generics, there should be a way to get list element type by another way.
+     *           It can be achieved using {@link KJsonArray} annotation
+     *
      * @param value Json value to deserialize
      * @param clazz Class of destination object
      * @return Deserialized object

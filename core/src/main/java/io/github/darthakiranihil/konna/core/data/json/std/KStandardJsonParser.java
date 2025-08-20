@@ -26,7 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Standard implementation of KJsonParser
+ * Standard implementation of {@link KJsonParser}
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonParser implements KJsonParser {
 

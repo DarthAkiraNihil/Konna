@@ -19,7 +19,11 @@ package io.github.darthakiranihil.konna.core.data.json;
 /**
  * Record for storing json token information
  * @param token Token descriptor
- * @param value Token match. Can be an int, float, string, boolean or null, or char if token is a single-character one (like braces etc.)
+ * @param value Token match. Can be an int, float, string, boolean or null,
+ *              or char if token is a single-character one (like braces etc.)
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public record KJsonTokenPair(KJsonToken token, Object value) {
 

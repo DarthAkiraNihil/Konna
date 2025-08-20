@@ -21,20 +21,24 @@ import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
 /**
- * Exception that is caused when json tokenizer can't get the next token due to different errors
+ * Exception thrown when json tokenizer can't get the next token because of reasons
  * such as unclosed string, incorrect exponential-format number or so on.
- * By default, exception is an error because it is certainly not good, but it depends on goals, sometimes invalid json
- * just leads to not loading some kind of content
+ * By default, exception is an error because it is certainly not good, but it depends on goals,
+ * sometimes invalid json just leads to not loading some kind of content
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KJsonTokenException extends KException implements KThrowable {
 
+    private static final String DEFAULT_MESSAGE_TEMPLATE = "Error reading json token at line: %d, column: %d";
     /**
-     * Default constructor with error message
+     * Constructs exception with error message containing line and column of tokenizer error occurring
      * @param line Line of error occurring
      * @param column Column of error occurring
      */
     public KJsonTokenException(long line, long column) {
-        super(String.format("Error reading json token at line: %d, column: %d", line, column));
+        super(String.format(KJsonTokenException.DEFAULT_MESSAGE_TEMPLATE, line, column));
     }
 
     @Override

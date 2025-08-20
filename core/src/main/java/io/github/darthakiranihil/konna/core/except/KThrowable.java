@@ -17,7 +17,11 @@
 package io.github.darthakiranihil.konna.core.except;
 
 /**
- * Interface for all standard Konna exceptions
+ * Interface for all standard Konna exceptions that provides
+ * basic meta information like exception severity (or fatal-level)
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public interface KThrowable {
     /**

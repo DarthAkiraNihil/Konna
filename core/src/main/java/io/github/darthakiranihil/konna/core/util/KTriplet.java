@@ -24,6 +24,9 @@ package io.github.darthakiranihil.konna.core.util;
  * @param <F> Type of the first element
  * @param <S> Type of the second element
  * @param <T> Type of the third element
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public record KTriplet<F, S, T>(F first, S second, T third) {
 

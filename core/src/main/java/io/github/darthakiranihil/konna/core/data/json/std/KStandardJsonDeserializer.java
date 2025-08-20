@@ -25,17 +25,14 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
- * Standard implementation of KJsonDeserializer
+ * Standard implementation of {@link KJsonDeserializer}
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     private static Unsafe theUnsafe;
-
-    /**
-     * Default constructor
-     */
-    public KStandardJsonDeserializer() {
-    }
 
     static {
         try {
@@ -49,7 +46,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     /**
      * Deserializes a json value into a new object of passed type.
-     * This implementation requires that all list-like fields are provided with ... annotation,
+     * This implementation requires that all list-like fields are provided with {@link KJsonArray} annotation,
      * since type erasure does not allow to get list generic type at runtime
      * @param value Json value to deserialize
      * @param clazz Class of destination object

@@ -22,8 +22,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Provides serializer a custom name for serialized field key in a json value.
+ * Provides to a serializer a custom name for serialized field key in a json value.
  * Also used by deserializer to recognize the required field if its json name differs from class-declared
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

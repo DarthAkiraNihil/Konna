@@ -22,14 +22,11 @@ import java.util.Iterator;
 
 /**
  * Standard implementation of {@link KJsonStringifier}
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonStringifier implements KJsonStringifier {
-
-    /**
-     * Default constructor
-     */
-    public KStandardJsonStringifier() {
-    }
 
     @Override
     public String stringify(KJsonValue value) {

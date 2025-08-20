@@ -21,6 +21,9 @@ import java.util.*;
 /**
  * Universal container for data that can be absolutely everything. Literally just represents
  * a wrapper of {@link HashMap}(String, Object) with some methods that simplify working with the container.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KUniversalMap extends HashMap<String, Object> {
 

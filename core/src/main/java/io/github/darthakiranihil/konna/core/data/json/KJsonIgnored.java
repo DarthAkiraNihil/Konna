@@ -24,6 +24,9 @@ import java.lang.annotation.Target;
 /**
  * Indicates that the field should be ignored in serialization process
  * and not regenerated during deserialization
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

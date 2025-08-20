@@ -19,9 +19,12 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
 /**
- * Interface that provides methods to serialize different objects into json values,
- * presented by KJsonValue
+ * Interface that provides methods to serialize different objects
+ * into json values, presented by {@link KJsonValue}
+ *
  * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonSerializer
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public interface KJsonSerializer {
 

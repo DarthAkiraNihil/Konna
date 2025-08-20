@@ -19,14 +19,11 @@ package io.github.darthakiranihil.konna.core.except;
 /**
  * Class for unchecked Konna exceptions
  * @see KThrowable
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public abstract class KRuntimeException extends RuntimeException implements KThrowable {
-    /**
-     * Default constructor
-     */
-    public KRuntimeException() {
-        super();
-    }
 
     /**
      * Constructs exception with a provided message

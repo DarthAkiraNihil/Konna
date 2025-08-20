@@ -21,6 +21,9 @@ import io.github.darthakiranihil.konna.core.data.json.std.*;
 
 /**
  * Standard test class, containing implementations of most common Konna classes
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardTestClass {
 

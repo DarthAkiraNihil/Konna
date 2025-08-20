@@ -21,20 +21,21 @@ import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
 /**
- * Exception that is caused by incorrect way of handling a Json value
- * The common reason may include:
+ * Exception that is caused by incorrect way of handling a Json value.
+ * The common reasons are:
  * <ul>
- *      <li>returning iterator from a non-array</li>
+ *      <li>returning iterator from a non-array Json value</li>
  *      <li>casting internal value into invalid type</li>
+ *      <li>getting entry set of a non-object JsonValue</li>
  * </ul>
+ *
  * By default, the exception is fatal
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KJsonValueException extends KRuntimeException implements KThrowable {
 
-    /**
-     * Constructs exception with a provided message
-     * @param message Exception message
-     */
     public KJsonValueException(String message) {
         super(message);
     }

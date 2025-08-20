@@ -19,7 +19,10 @@ package io.github.darthakiranihil.konna.core.except;
 /**
  * Represents severity level of an engine exception (throwable).
  * The level could be important in exception handling since some
- * error are not direct the application to crash, so the work continues.
+ * error are not directing the application to crash, so the work continues.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public enum KThrowableSeverity {
 

@@ -18,6 +18,9 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 /**
  * Enumeration for representing the type of json value
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public enum KJsonValueType {
 

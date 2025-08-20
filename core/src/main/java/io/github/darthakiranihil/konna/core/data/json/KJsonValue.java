@@ -25,6 +25,9 @@ import java.util.Set;
 
 /**
  * Representation of a Json value for different purposes
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KJsonValue {
 

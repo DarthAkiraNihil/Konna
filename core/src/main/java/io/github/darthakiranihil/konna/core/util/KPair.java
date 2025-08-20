@@ -22,6 +22,9 @@ package io.github.darthakiranihil.konna.core.util;
  * @param second The second element of the pair
  * @param <F> Type of the first pair
  * @param <S> Type of the second pair
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public record KPair<F, S>(F first, S second) {
 
