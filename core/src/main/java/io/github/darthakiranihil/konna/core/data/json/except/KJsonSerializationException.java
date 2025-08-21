@@ -29,11 +29,11 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KJsonSerializationException extends KException implements KThrowable {
 
-    public KJsonSerializationException(Throwable cause) {
+    public KJsonSerializationException(final Throwable cause) {
         super(cause);
     }
 
-    public KJsonSerializationException(String message) {
+    public KJsonSerializationException(final String message) {
         super(message);
     }
 

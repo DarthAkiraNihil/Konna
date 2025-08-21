@@ -31,7 +31,7 @@ import java.util.*;
  */
 public class KStandardJsonSerializer implements KJsonSerializer {
 
-    private <T> List<Field> getFields(T t) {
+    private <T> List<Field> getFields(final T t) {
         List<Field> fields = new ArrayList<>();
         Class<?> clazz = t.getClass();
         while (clazz != Object.class) {
@@ -41,7 +41,11 @@ public class KStandardJsonSerializer implements KJsonSerializer {
                     continue;
                 }
 
-                if (Modifier.isPrivate(field.getModifiers()) && !field.isAnnotationPresent(KJsonSerialized.class)) {
+                boolean isPrivateAndNotSerialized =
+                        Modifier.isPrivate(field.getModifiers())
+                    && !field.isAnnotationPresent(KJsonSerialized.class);
+
+                if (isPrivateAndNotSerialized) {
                     continue;
                 }
 
@@ -54,7 +58,10 @@ public class KStandardJsonSerializer implements KJsonSerializer {
     }
 
     @Override
-    public <T> KJsonValue serialize(T object, Class<? extends T> clazz) throws KJsonSerializationException {
+    public <T> KJsonValue serialize(
+        final T object,
+        final Class<? extends T> clazz
+    ) throws KJsonSerializationException {
         if (clazz == Integer.class || clazz == int.class) {
             return KJsonValue.fromNumber((int) object);
         }

@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.data.json.except;
 
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 
@@ -31,19 +32,20 @@ import io.github.darthakiranihil.konna.core.except.KThrowable;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KJsonParseException extends Exception implements KThrowable {
+public class KJsonParseException extends KException implements KThrowable {
 
-    private static final String UNEXPECTED_TOKEN_MESSAGE_TEMPLATE = "Error parsing json, unexpected token: %s";
+    private static final String
+        UNEXPECTED_TOKEN_MESSAGE_TEMPLATE = "Error parsing json, unexpected token: %s";
 
     /**
      * Constructs exception with unexpected token-like message.
      * @param tokenValue Token value
      */
-    public KJsonParseException(Object tokenValue) {
+    public KJsonParseException(final Object tokenValue) {
         super(String.format(KJsonParseException.UNEXPECTED_TOKEN_MESSAGE_TEMPLATE, tokenValue));
     }
 
-    public KJsonParseException(Throwable cause) {
+    public KJsonParseException(final Throwable cause) {
         super(cause);
     }
 

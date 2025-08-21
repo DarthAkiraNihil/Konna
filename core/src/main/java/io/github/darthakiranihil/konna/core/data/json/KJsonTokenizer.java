@@ -21,8 +21,8 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
 /**
  * Base class for a json tokenizer.
  * It provides base methods to extract tokens from a json-containing value like string (so far).
- * Tokenizer extracts symbols from a source and then converts to a token pair that is used by parser to
- * construct a json value
+ * Tokenizer extracts symbols from a source and then converts
+ * to a token pair that is used by parser to construct a json value
  *
  * @see KJsonTokenPair
  * @see KJsonValue

@@ -29,7 +29,7 @@ public abstract class KRuntimeException extends RuntimeException implements KThr
      * Constructs exception with a provided message.
      * @param message Exception message
      */
-    public KRuntimeException(String message) {
+    public KRuntimeException(final String message) {
         super(message);
     }
 }

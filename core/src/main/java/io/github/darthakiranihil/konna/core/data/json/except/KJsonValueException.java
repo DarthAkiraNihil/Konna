@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.data.json.except;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
@@ -36,7 +37,20 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KJsonValueException extends KRuntimeException implements KThrowable {
 
-    public KJsonValueException(String message) {
+    private static final String
+        TYPE_MISMATCH_MESSAGE_TEMPLATE =
+                "Cannot get object from the json value: type mismatch."
+            +   "Requested: %s, actual type: %s";
+
+    public KJsonValueException(final KJsonValueType requestedType, final KJsonValueType actualType) {
+        super(String.format(
+            KJsonValueException.TYPE_MISMATCH_MESSAGE_TEMPLATE,
+            requestedType,
+            actualType
+        ));
+    }
+
+    public KJsonValueException(final String message) {
         super(message);
     }
 

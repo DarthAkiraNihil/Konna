@@ -33,6 +33,9 @@ import java.util.Map;
  */
 public class KStandardJsonParser implements KJsonParser {
 
+    /**
+     * Assigned tokenizer
+     */
     private final KJsonTokenizer tokenizer;
 
     /**
@@ -58,7 +61,10 @@ public class KStandardJsonParser implements KJsonParser {
 
     }
 
-    private KJsonValue value(KJsonTokenizer tokenizer, KJsonTokenPair token) throws KJsonParseException {
+    private KJsonValue value(
+        KJsonTokenizer tokenizer,
+        KJsonTokenPair token
+    ) throws KJsonParseException {
         return switch (token.token()) {
             case STRING -> new KJsonValue(KJsonValueType.STRING, token.value());
             case NUMBER_INT -> new KJsonValue(KJsonValueType.NUMBER_INT, token.value());
@@ -89,7 +95,7 @@ public class KStandardJsonParser implements KJsonParser {
 
     }
 
-    private KJsonValue object(KJsonTokenizer tokenizer) throws KJsonParseException{
+    private KJsonValue object(KJsonTokenizer tokenizer) throws KJsonParseException {
         KJsonTokenPair token = this.getTokenOrFail(tokenizer);
 
         if (token.token() == KJsonToken.CLOSE_BRACE) {
@@ -124,7 +130,7 @@ public class KStandardJsonParser implements KJsonParser {
 
     }
 
-    private KJsonValue array(KJsonTokenizer tokenizer) throws KJsonParseException{
+    private KJsonValue array(KJsonTokenizer tokenizer) throws KJsonParseException {
         KJsonTokenPair token = this.getTokenOrFail(tokenizer);
 
         if (token.token() == KJsonToken.CLOSE_SQUARE_BRACKET) {

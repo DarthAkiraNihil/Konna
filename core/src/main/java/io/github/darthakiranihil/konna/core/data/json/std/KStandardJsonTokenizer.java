@@ -33,7 +33,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         public int column;
         public int index;
 
-        public State() {
+        State() {
             this.reset();
         }
 
@@ -230,7 +230,12 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                 StringBuilder literal = new StringBuilder();
 
                 char next;
-                while (this.state.index < sourceLength && KStandardJsonTokenizer.isNotSpace(next = this.source.charAt(this.state.index))) {
+                while (
+                        this.state.index < sourceLength
+                    && KStandardJsonTokenizer.isNotSpace(
+                        next = this.source.charAt(this.state.index)
+                    )
+                ) {
                     if (!Character.isAlphabetic(next)) {
                         break;
                     }
@@ -291,9 +296,13 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                     if (Character.isDigit(next)) {
                         this.next(numberCandidate, next);
                     } else if (next == 'e' || next == 'E') {
-                        return this.parseExponential(next, numberCandidate, sourceLength, currentColumn);
+                        return this.parseExponential(
+                            next, numberCandidate, sourceLength, currentColumn
+                        );
                     } else {
-                        return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
+                        return KJsonTokenPair.fromFloat(
+                            Float.parseFloat(numberCandidate.toString())
+                        );
                     }
                 }
 
@@ -307,7 +316,12 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         throw new KJsonTokenException(this.state.line, currentColumn);
     }
 
-    private KJsonTokenPair parseExponential(char next, StringBuilder numberCandidate, int sourceLength, int currentColumn) throws KJsonTokenException {
+    private KJsonTokenPair parseExponential(
+        char next,
+        StringBuilder numberCandidate,
+        int sourceLength,
+        int currentColumn
+    ) throws KJsonTokenException {
         this.next(numberCandidate, next);
 
         if (this.state.index >= sourceLength) {

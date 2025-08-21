@@ -46,8 +46,9 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     /**
      * Deserializes a json value into a new object of passed type.
-     * This implementation requires that all list-like fields are provided with {@link KJsonArray} annotation,
-     * since type erasure does not allow to get list generic type at runtime
+     * This implementation requires that all list-like fields are provided
+     * with {@link KJsonArray} annotation, since type erasure does not allow
+     * to get list generic type at runtime
      * @param value Json value to deserialize
      * @param clazz Class of destination object
      * @return Deserialized object
@@ -101,16 +102,23 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                             if (!field.isAnnotationPresent(KJsonArray.class)) {
                                 throw new KJsonSerializationException(
                                     String.format(
-                                        "Could not deserialize field %s, as it is an list-like and the KJsonArray annotation is not provided",
+                                        "Could not deserialize field %s, as it is an list-like" +
+                                        "and the KJsonArray annotation is not provided",
                                         field.getName()
                                     )
                                 );
                             }
 
                             KJsonArray meta = field.getAnnotation(KJsonArray.class);
-                            field.set(deserialized, this.deserialize(entry.getValue(), meta.elementType()));
+                            field.set(
+                                deserialized,
+                                this.deserialize(entry.getValue(), meta.elementType())
+                            );
                         } else {
-                            field.set(deserialized, this.deserialize(entry.getValue(), field.getType()));
+                            field.set(
+                                deserialized,
+                                this.deserialize(entry.getValue(), field.getType())
+                            );
                         }
 
 
@@ -118,7 +126,11 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                     }
 
                     return (T) deserialized;
-                } catch (InstantiationException | IllegalAccessException | NoSuchFieldException e) {
+                } catch (
+                        InstantiationException
+                    |   IllegalAccessException
+                    |   NoSuchFieldException e
+                ) {
                     throw new KJsonSerializationException(e);
                 }
             }
@@ -136,7 +148,11 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                     continue;
                 }
 
-                if (Modifier.isPrivate(field.getModifiers()) && !field.isAnnotationPresent(KJsonSerialized.class)) {
+                boolean isPrivateAndNotSerialized =
+                        Modifier.isPrivate(field.getModifiers())
+                    && !field.isAnnotationPresent(KJsonSerialized.class);
+
+                if (isPrivateAndNotSerialized) {
                     continue;
                 }
 

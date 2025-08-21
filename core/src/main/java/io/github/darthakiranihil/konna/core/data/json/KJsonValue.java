@@ -36,7 +36,8 @@ public class KJsonValue {
 
     /**
      * Default constructor. Requires specification of concrete value type, and it may be a bit
-     * difficult to specify it in all cases when you need this. from* methods should be used instead
+     * difficult to specify it in all cases when you need this,
+     * from* methods should be used instead
      * @param type Type of json value
      * @param value The value itself
      */
@@ -173,7 +174,10 @@ public class KJsonValue {
     public Iterator<KJsonValue> iterator() {
         if (this.type != KJsonValueType.ARRAY) {
             throw new KJsonValueException(
-                String.format("Cannot iterate over json value: it's not an array. The actual type is: %s", this.type)
+                String.format(
+                    "Cannot iterate over json value: it's not an array. The actual type is: %s",
+                    this.type
+                )
             );
         }
 
@@ -181,14 +185,18 @@ public class KJsonValue {
     }
 
     /**
-     * Returns all json object key-value entries. If the value is not an object, {@link KJsonValueException} will be thrown
+     * Returns all json object key-value entries.
+     * If the value is not an object, {@link KJsonValueException} will be thrown
      * @return Set of key-value entries of the object
      */
     @SuppressWarnings("unchecked")
     public Set<Map.Entry<String, KJsonValue>> entrySet() {
         if (this.type != KJsonValueType.OBJECT) {
             throw new KJsonValueException(
-                String.format("Cannot iterate over json object: it's not an object. The actual type is: %s", this.type)
+                String.format(
+                    "Cannot iterate over json object: it's not an object. The actual type is: %s",
+                    this.type
+                )
             );
         }
 
@@ -205,7 +213,11 @@ public class KJsonValue {
     public KJsonValue getProperty(String key) {
         if (this.type != KJsonValueType.OBJECT) {
             throw new KJsonValueException(
-                String.format("Cannot get property from the json value: it's not an object. The actual type is: %s", this.type)
+                String.format(
+                    "Cannot get property from the json value: it's not an object." +
+                    "The actual type is: %s",
+                    this.type
+                )
             );
         }
 
@@ -222,11 +234,21 @@ public class KJsonValue {
     public boolean hasProperty(String key) {
         if (this.type != KJsonValueType.OBJECT) {
             throw new KJsonValueException(
-                String.format("Cannot get information of property containment in the json value: it's not an object. The actual type is: %s", this.type)
+                String.format(
+                    "Cannot get information of property containment in the json value:" +
+                    "it's not an object. The actual type is: %s",
+                    this.type
+                )
             );
         }
 
         return ((Map<String, KJsonValue>) this.value).containsKey(key);
+    }
+
+    private void checkTypeMatch(KJsonValueType requested) {
+        if (this.type != requested) {
+            throw new KJsonValueException(requested, this.type);
+        }
     }
 
     /**
@@ -235,11 +257,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public boolean getBoolean() {
-        if (this.type != KJsonValueType.BOOLEAN) {
-            throw new KJsonValueException(
-                String.format("Cannot get boolean from the json value: it's not a boolean. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.BOOLEAN);
 
         return (boolean) this.value;
     }
@@ -250,11 +268,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public int getInt() {
-        if (this.type != KJsonValueType.NUMBER_INT) {
-            throw new KJsonValueException(
-                String.format("Cannot get int from the json value: it's not an int. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
         return (int) this.value;
     }
@@ -265,11 +279,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public long getLong() {
-        if (this.type != KJsonValueType.NUMBER_INT) {
-            throw new KJsonValueException(
-                String.format("Cannot get long from the json value: it's not a long. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
         return (long) this.value;
     }
@@ -280,11 +290,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public byte getByte() {
-        if (this.type != KJsonValueType.NUMBER_INT) {
-            throw new KJsonValueException(
-                String.format("Cannot get short from the json value: it's not a short. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
         return (byte) this.value;
     }
@@ -295,11 +301,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public short getShort() {
-        if (this.type != KJsonValueType.NUMBER_INT) {
-            throw new KJsonValueException(
-                String.format("Cannot get short from the json value: it's not a short. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
         return (short) this.value;
     }
@@ -310,11 +312,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public float getFloat() {
-        if (this.type != KJsonValueType.NUMBER_FLOAT) {
-            throw new KJsonValueException(
-                String.format("Cannot get float from the json value: it's not a float. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.NUMBER_FLOAT);
 
         return (float) this.value;
     }
@@ -325,17 +323,14 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public double getDouble() {
-        if (this.type != KJsonValueType.NUMBER_FLOAT) {
-            throw new KJsonValueException(
-                String.format("Cannot get double from the json value: it's not a double. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.NUMBER_FLOAT);
 
         return (double) this.value;
     }
 
     /**
-     * Returns json value as a char. Throws {@link KJsonValueException} if the string representation of char
+     * Returns json value as a char.
+     * Throws {@link KJsonValueException} if the string representation of char
      * has more than one symbol in length
      * @return Char representation of a value
      * @see KJsonValueException
@@ -343,7 +338,11 @@ public class KJsonValue {
     public char getChar() {
         if (this.type != KJsonValueType.STRING) {
             throw new KJsonValueException(
-                String.format("Cannot get string from the json value: it's not a string. The actual type is: %s", this.type)
+                String.format(
+                    "Cannot get char from the json value: it's not a string." +
+                    "The actual type is: %s",
+                    this.type
+                )
             );
         }
 
@@ -356,7 +355,8 @@ public class KJsonValue {
         String string = (String) this.value;
         if (string.length() > 1) {
             throw new KJsonValueException(
-                "Cannot get char value from the json value: the string is more than 1 symbol in length!"
+                "Cannot get char value from the json value:" +
+                "the string has more than 1 symbol in length!"
             );
         }
 
@@ -369,11 +369,7 @@ public class KJsonValue {
      * @see KJsonValueException
      */
     public String getString() {
-        if (this.type != KJsonValueType.STRING) {
-            throw new KJsonValueException(
-                String.format("Cannot get string from the json value: it's not a string. The actual type is: %s", this.type)
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.STRING);
 
         if (this.isNull()) {
             return null;
@@ -383,31 +379,13 @@ public class KJsonValue {
     }
 
     /**
-     * Returns raw json value without casting to any type. It is useful for different test purposes,
+     * Returns raw json value without casting to any type.
+     * It is useful for different test purposes,
      * however it is not limited, though you need to cast it to required time yourself
      * @return Raw json value represented by {@link java.lang.Object}
      */
     public Object getRawObject() {
         return this.value;
-    }
-
-    /**
-     * Returns json value as a object
-     * @return Object representation of a value or null if the contained value is null
-     * @see KJsonValueException
-     */
-    public KJsonValue getObject() {
-        if (this.type != KJsonValueType.OBJECT) {
-            throw new KJsonValueException(
-                String.format("Cannot get object from the json value: it's not an int. The actual type is: %s", this.type)
-            );
-        }
-
-        if (this.isNull()) {
-            return null;
-        }
-
-        return (KJsonValue) this.value;
     }
 
 }

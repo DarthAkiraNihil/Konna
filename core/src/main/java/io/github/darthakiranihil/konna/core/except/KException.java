@@ -29,7 +29,7 @@ public abstract class KException extends Exception implements KThrowable {
      * Constructs exception with a provided message.
      * @param message Exception message
      */
-    public KException(String message) {
+    public KException(final String message) {
         super(message);
     }
 
@@ -37,7 +37,7 @@ public abstract class KException extends Exception implements KThrowable {
      * Constructs exception with a provided cause.
      * @param cause The throwable caused the exception
      */
-    public KException(Throwable cause) {
+    public KException(final Throwable cause) {
         super(cause);
     }
 }
