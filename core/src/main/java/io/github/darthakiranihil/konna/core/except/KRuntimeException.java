@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.except;
 
 /**
- * Class for unchecked Konna exceptions
+ * Class for unchecked Konna exceptions.
  * @see KThrowable
  *
  * @since 0.1.0
@@ -26,7 +26,7 @@ package io.github.darthakiranihil.konna.core.except;
 public abstract class KRuntimeException extends RuntimeException implements KThrowable {
 
     /**
-     * Constructs exception with a provided message
+     * Constructs exception with a provided message.
      * @param message Exception message
      */
     public KRuntimeException(String message) {

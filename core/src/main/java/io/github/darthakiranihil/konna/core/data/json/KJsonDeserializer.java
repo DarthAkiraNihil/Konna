@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
 /**
- * Interface providing methods to deserialize json values into objects
+ * Interface providing methods to deserialize json values into objects.
  * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
  *
  * @since 0.1.0

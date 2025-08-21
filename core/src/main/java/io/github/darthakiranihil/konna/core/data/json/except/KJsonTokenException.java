@@ -33,7 +33,7 @@ public class KJsonTokenException extends KException implements KThrowable {
 
     private static final String DEFAULT_MESSAGE_TEMPLATE = "Error reading json token at line: %d, column: %d";
     /**
-     * Constructs exception with error message containing line and column of tokenizer error occurring
+     * Constructs exception with error message containing line and column of tokenizer error occurring.
      * @param line Line of error occurring
      * @param column Column of error occurring
      */

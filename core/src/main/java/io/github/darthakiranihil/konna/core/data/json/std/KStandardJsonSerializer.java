@@ -24,7 +24,7 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
- * Standard implementation of {@link KJsonSerializer}
+ * Standard implementation of {@link KJsonSerializer}.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

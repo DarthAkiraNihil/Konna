@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 /**
- * Record for storing json token information
+ * Record for storing json token information.
  * @param token Token descriptor
  * @param value Token match. Can be an int, float, string, boolean or null,
  *              or char if token is a single-character one (like braces etc.)
@@ -39,7 +39,7 @@ public record KJsonTokenPair(KJsonToken token, Object value) {
     public static final KJsonTokenPair EOF = new KJsonTokenPair(KJsonToken.EOF, '\0');
 
     /**
-     * Constructs token pair from a string
+     * Constructs token pair from a string.
      * @param value The token value
      * @return A new token pair with {@link KJsonToken}.STRING type
      */
@@ -48,7 +48,7 @@ public record KJsonTokenPair(KJsonToken token, Object value) {
     }
 
     /**
-     * Constructs token pair from an integer
+     * Constructs token pair from an integer.
      * @param value The token value
      * @return A new token pair with {@link KJsonToken}.NUMBER_INT type
      */
@@ -57,7 +57,7 @@ public record KJsonTokenPair(KJsonToken token, Object value) {
     }
 
     /**
-     * Constructs token pair from a float
+     * Constructs token pair from a float.
      * @param value The token value
      * @return A new token pair with {@link KJsonToken}.NUMBER_FLOAT type
      */

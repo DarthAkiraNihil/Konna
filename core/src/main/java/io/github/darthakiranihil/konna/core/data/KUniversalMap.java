@@ -28,7 +28,7 @@ import java.util.*;
 public class KUniversalMap extends HashMap<String, Object> {
 
     /**
-     * Default constructor that calls parent class' constructor
+     * Default constructor that calls parent class' constructor.
      */
     public KUniversalMap() {
         super();

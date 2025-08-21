@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.except;
 
 /**
- * Class for checked Konna exceptions
+ * Class for checked Konna exceptions.
  * @see KThrowable
  *
  * @since 0.1.0
@@ -26,7 +26,7 @@ package io.github.darthakiranihil.konna.core.except;
 public abstract class KException extends Exception implements KThrowable {
 
     /**
-     * Constructs exception with a provided message
+     * Constructs exception with a provided message.
      * @param message Exception message
      */
     public KException(String message) {
@@ -34,7 +34,7 @@ public abstract class KException extends Exception implements KThrowable {
     }
 
     /**
-     * Constructs exception with a provided cause
+     * Constructs exception with a provided cause.
      * @param cause The throwable caused the exception
      */
     public KException(Throwable cause) {

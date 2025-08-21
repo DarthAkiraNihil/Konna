@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 /**
- * Enumeration that describes a json token
+ * Enumeration that describes a json token.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -25,59 +25,59 @@ package io.github.darthakiranihil.konna.core.data.json;
 public enum KJsonToken {
 
     /**
-     * Symbol of "{"
+     * Symbol of "{".
      */
     OPEN_BRACE,
     /**
-     * Symbol of "}"
+     * Symbol of "}".
      */
     CLOSE_BRACE,
 
     /**
-     * Symbol of "["
+     * Symbol of "[".
      */
     OPEN_SQUARE_BRACKET,
     /**
-     * Symbol of "]"
+     * Symbol of "]".
      */
     CLOSE_SQUARE_BRACKET,
 
     /**
-     * A string
+     * A string.
      */
     STRING,
     /**
-     * An integer
+     * An integer.
      */
     NUMBER_INT,
     /**
-     * A float (can be written in exponential form)
+     * A float (can be written in exponential form).
      */
     NUMBER_FLOAT,
 
     /**
-     * Symbol of ","
+     * Symbol of ",".
      */
     COMMA,
     /**
-     * Symbol of ":"
+     * Symbol of ":".
      */
     SEMICOLON,
 
     /**
-     * True literal
+     * True literal.
      */
     TRUE,
     /**
-     * False literal
+     * False literal.
      */
     FALSE,
     /**
-     * Null literal
+     * Null literal.
      */
     NULL,
     /**
-     * Signalizes the end of a file
+     * Signalizes the end of a file.
      */
     EOF,
 

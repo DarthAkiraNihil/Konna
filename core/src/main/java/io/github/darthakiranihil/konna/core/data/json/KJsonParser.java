@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 
 /**
- * Interface for json parsers that constructs json values from tokens got from source
+ * Interface for json parsers that constructs json values from tokens got from source.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

@@ -36,7 +36,7 @@ public class KJsonParseException extends Exception implements KThrowable {
     private static final String UNEXPECTED_TOKEN_MESSAGE_TEMPLATE = "Error parsing json, unexpected token: %s";
 
     /**
-     * Constructs exception with unexpected token-like message
+     * Constructs exception with unexpected token-like message.
      * @param tokenValue Token value
      */
     public KJsonParseException(Object tokenValue) {

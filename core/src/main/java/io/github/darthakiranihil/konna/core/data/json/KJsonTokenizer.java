@@ -32,12 +32,12 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
 public abstract class KJsonTokenizer {
 
     /**
-     * String source of a json
+     * String source of a json.
      */
     protected String source;
 
     /**
-     * Constructs tokenizer from a string as a Json source
+     * Constructs tokenizer from a string as a Json source.
      * @param source String source of a json
      */
     public KJsonTokenizer(String source) {
@@ -45,14 +45,14 @@ public abstract class KJsonTokenizer {
     }
 
     /**
-     * Returns the next token from json source
+     * Returns the next token from json source.
      * @return The next json token
      * @throws KJsonTokenException If it fails to read the token
      */
     public abstract KJsonTokenPair getNextToken() throws KJsonTokenException;
 
     /**
-     * Resets tokenizer state and sets new source of possible json tokens
+     * Resets tokenizer state and sets new source of possible json tokens.
      * @param newSource New source to tokenize
      */
     public abstract void reset(String newSource);

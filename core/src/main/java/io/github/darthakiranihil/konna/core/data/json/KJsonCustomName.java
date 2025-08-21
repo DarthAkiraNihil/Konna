@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface KJsonCustomName {
     /**
-     * Returns the custom name of the field
+     * Returns the custom name of the field.
      * @return The actual name
      */
     String name();

@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Forces serializer to serialize a private field
+ * Forces serializer to serialize a private field.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

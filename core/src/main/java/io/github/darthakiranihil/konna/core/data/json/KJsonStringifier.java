@@ -27,14 +27,14 @@ package io.github.darthakiranihil.konna.core.data.json;
 public interface KJsonStringifier {
 
     /**
-     * Stringifies json value into one-line string, without prettifying
+     * Stringifies json value into one-line string, without prettifying.
      * @param value Value to stringify
      * @return Stringified json value
      */
     String stringify(KJsonValue value);
 
     /**
-     * Stringifies json value into a pretty string, with new lines and indentations
+     * Stringifies json value into a pretty string, with new lines and indentations.
      * @param value Value to stringify
      * @param indent Indentation
      * @return Stringified json value

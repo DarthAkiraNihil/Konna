@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Representation of a Json value for different purposes
+ * Representation of a Json value for different purposes.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -50,7 +50,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a number value from integer
+     * Constructs a number value from integer.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -59,7 +59,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a number value from long
+     * Constructs a number value from long.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -68,7 +68,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a number value from byte
+     * Constructs a number value from byte.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -77,7 +77,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a number value from short
+     * Constructs a number value from short.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -86,7 +86,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a number value from float
+     * Constructs a number value from float.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -95,7 +95,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a number value from value
+     * Constructs a number value from value.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -104,7 +104,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a boolean value from boolean
+     * Constructs a boolean value from boolean.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -113,7 +113,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs a string value from string
+     * Constructs a string value from string.
      * @param value The value itself
      * @return Constructed json value
      */
@@ -131,7 +131,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs an array value from list
+     * Constructs an array value from list.
      * @param list The list itself
      * @return Constructed json value
      */
@@ -140,7 +140,7 @@ public class KJsonValue {
     }
 
     /**
-     * Constructs an object value from map
+     * Constructs an object value from map.
      * @param map The map itself
      * @return Constructed json value
      */
@@ -149,7 +149,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns type of json value
+     * Returns type of json value.
      * @return The type of the value
      */
     public KJsonValueType getType() {
@@ -230,7 +230,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as a boolean
+     * Returns json value as a boolean.
      * @return Boolean representation of a value.
      * @see KJsonValueException
      */
@@ -245,7 +245,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as an int
+     * Returns json value as an int.
      * @return Int representation of a value.
      * @see KJsonValueException
      */
@@ -260,7 +260,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as a long
+     * Returns json value as a long.
      * @return Long representation of a value.
      * @see KJsonValueException
      */
@@ -275,7 +275,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as a byte
+     * Returns json value as a byte.
      * @return Byte representation of a value.
      * @see KJsonValueException
      */
@@ -290,7 +290,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as a short
+     * Returns json value as a short.
      * @return Short representation of a value.
      * @see KJsonValueException
      */
@@ -305,7 +305,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as a float
+     * Returns json value as a float.
      * @return Float representation of a value.
      * @see KJsonValueException
      */
@@ -320,7 +320,7 @@ public class KJsonValue {
     }
 
     /**
-     * Returns json value as a double
+     * Returns json value as a double.
      * @return Double representation of a value.
      * @see KJsonValueException
      */

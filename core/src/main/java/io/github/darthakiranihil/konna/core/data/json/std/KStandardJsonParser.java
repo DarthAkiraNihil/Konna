@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Standard implementation of {@link KJsonParser}
+ * Standard implementation of {@link KJsonParser}.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -36,7 +36,7 @@ public class KStandardJsonParser implements KJsonParser {
     private final KJsonTokenizer tokenizer;
 
     /**
-     * Constructs parser with concrete tokenizer
+     * Constructs parser with concrete tokenizer.
      * @param tokenizer Any Json tokenizer
      */
     public KStandardJsonParser(KJsonTokenizer tokenizer) {

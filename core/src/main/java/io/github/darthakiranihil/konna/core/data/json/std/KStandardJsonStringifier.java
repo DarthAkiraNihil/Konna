@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import java.util.Iterator;
 
 /**
- * Standard implementation of {@link KJsonStringifier}
+ * Standard implementation of {@link KJsonStringifier}.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

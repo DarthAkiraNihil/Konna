@@ -1,5 +1,5 @@
 /**
- * Provides exceptions connected with different Json errors
+ * Provides exceptions connected with different Json errors.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

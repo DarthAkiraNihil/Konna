@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 
 /**
  * Interface that provides methods to serialize different objects
- * into json values, presented by {@link KJsonValue}
+ * into json values, presented by {@link KJsonValue}.
  *
  * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonSerializer
  * @since 0.1.0
@@ -29,7 +29,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 public interface KJsonSerializer {
 
     /**
-     * Serializes an object into a json value
+     * Serializes an object into a json value.
      * @param object Object to serialize
      * @param clazz Class of the serialized object
      * @return Serialized object into KJsonValue

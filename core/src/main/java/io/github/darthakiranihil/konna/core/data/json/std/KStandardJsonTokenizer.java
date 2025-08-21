@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 
 /**
- * Standard implementation of {@link KJsonTokenizer}
+ * Standard implementation of {@link KJsonTokenizer}.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -55,7 +55,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
     }
 
     /**
-     * Creates tokenizer from string json source
+     * Creates tokenizer from string json source.
      * @param source String source of a json
      */
     public KStandardJsonTokenizer(String source) {

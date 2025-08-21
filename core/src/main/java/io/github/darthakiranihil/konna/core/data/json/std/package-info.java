@@ -1,5 +1,5 @@
 /**
- * Provides standard implementations of all json interfaces (tokenizer, parser etc.)
+ * Provides standard implementations of all json interfaces (tokenizer, parser etc.).
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
