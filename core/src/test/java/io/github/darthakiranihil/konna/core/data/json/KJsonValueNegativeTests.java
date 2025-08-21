@@ -52,9 +52,9 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         Exception thrownNull = Assertions.assertThrowsExactly(KJsonValueException.class, nullChar::getChar);
         Exception thrownLong = Assertions.assertThrowsExactly(KJsonValueException.class, longChar::getChar);
 
-        Assertions.assertEquals(String.format("Cannot get string from the json value: it's not a string. The actual type is: %s", KJsonValueType.NUMBER_INT), thrownNonString.getMessage());
+        Assertions.assertEquals(String.format("Cannot get char from the json value: it's not a string. The actual type is: %s", KJsonValueType.NUMBER_INT), thrownNonString.getMessage());
         Assertions.assertEquals("Cannot get char value from the json value: the value is null", thrownNull.getMessage());
-        Assertions.assertEquals("Cannot get char value from the json value: the string is more than 1 symbol in length!", thrownLong.getMessage());
+        Assertions.assertEquals("Cannot get char value from the json value: the string has more than 1 symbol in length!", thrownLong.getMessage());
 
     }
 

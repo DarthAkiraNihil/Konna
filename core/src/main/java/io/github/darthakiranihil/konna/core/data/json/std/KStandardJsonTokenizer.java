@@ -29,9 +29,9 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 public class KStandardJsonTokenizer extends KJsonTokenizer {
 
     private static class State {
-        public int line;
-        public int column;
-        public int index;
+        private int line;
+        private int column;
+        private int index;
 
         State() {
             this.reset();
@@ -47,7 +47,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
     private final State state;
 
     /**
-     * Creates empty tokenizer without any source
+     * Creates empty tokenizer without any source.
      */
     public KStandardJsonTokenizer() {
         super(null);

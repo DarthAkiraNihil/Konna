@@ -339,7 +339,7 @@ public class KJsonValue {
         if (this.type != KJsonValueType.STRING) {
             throw new KJsonValueException(
                 String.format(
-                    "Cannot get char from the json value: it's not a string." +
+                    "Cannot get char from the json value: it's not a string. " +
                     "The actual type is: %s",
                     this.type
                 )
@@ -355,7 +355,7 @@ public class KJsonValue {
         String string = (String) this.value;
         if (string.length() > 1) {
             throw new KJsonValueException(
-                "Cannot get char value from the json value:" +
+                "Cannot get char value from the json value: " +
                 "the string has more than 1 symbol in length!"
             );
         }
