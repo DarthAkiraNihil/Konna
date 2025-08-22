@@ -56,6 +56,16 @@ public interface KJsonTokenizer {
      * @return sequence token that describes source in tokenization process
      */
     int addSource(String source);
+    /**
+     * Adds a reader as new json source to tokenize.
+     * @param source Source to tokenize
+     * @return sequence token that describes source in tokenization process
+     */
     int addSource(Reader source);
+    /**
+     * Adds a char array as new json source to tokenize.
+     * @param source Source to tokenize
+     * @return sequence token that describes source in tokenization process
+     */
     int addSource(char[] source);
 }
