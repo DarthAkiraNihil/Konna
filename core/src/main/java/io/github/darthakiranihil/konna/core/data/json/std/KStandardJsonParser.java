@@ -47,9 +47,9 @@ public class KStandardJsonParser implements KJsonParser {
     public KJsonValue parse(final String string) throws KJsonParseException {
         int sequenceToken = this.tokenizer.addSource(string);
 
-        KJsonValue result = this.value(this.tokenizer, sequenceToken);
+        KJsonValue result = this.value(sequenceToken);
 
-        KJsonTokenPair last = this.getTokenOrFail(this.tokenizer, sequenceToken);
+        KJsonTokenPair last = this.getTokenOrFail(sequenceToken);
         if (last.token() != KJsonToken.EOF) {
             throw new KJsonParseException(last.token());
         }
@@ -59,8 +59,7 @@ public class KStandardJsonParser implements KJsonParser {
     }
 
     private KJsonValue value(
-        KJsonTokenizer tokenizer,
-        KJsonTokenPair token,
+        final KJsonTokenPair token,
         int sequenceToken
     ) throws KJsonParseException {
         return switch (token.token()) {
@@ -70,14 +69,14 @@ public class KStandardJsonParser implements KJsonParser {
             case TRUE -> new KJsonValue(KJsonValueType.BOOLEAN, true);
             case FALSE -> new KJsonValue(KJsonValueType.BOOLEAN, false);
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
-            case OPEN_BRACE -> this.object(tokenizer, sequenceToken);
-            case OPEN_SQUARE_BRACKET -> this.array(tokenizer, sequenceToken);
+            case OPEN_BRACE -> this.object(sequenceToken);
+            case OPEN_SQUARE_BRACKET -> this.array(sequenceToken);
             default -> throw new KJsonParseException(token.token());
         };
     }
 
-    private KJsonValue value(KJsonTokenizer tokenizer, int sequenceToken) throws KJsonParseException {
-        KJsonTokenPair token = this.getTokenOrFail(tokenizer, sequenceToken);
+    private KJsonValue value(int sequenceToken) throws KJsonParseException {
+        KJsonTokenPair token = this.getTokenOrFail(sequenceToken);
 
         return switch (token.token()) {
             case STRING -> new KJsonValue(KJsonValueType.STRING, token.value());
@@ -86,15 +85,15 @@ public class KStandardJsonParser implements KJsonParser {
             case TRUE -> new KJsonValue(KJsonValueType.BOOLEAN, true);
             case FALSE -> new KJsonValue(KJsonValueType.BOOLEAN, false);
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
-            case OPEN_BRACE -> this.object(tokenizer, sequenceToken);
-            case OPEN_SQUARE_BRACKET -> this.array(tokenizer, sequenceToken);
+            case OPEN_BRACE -> this.object(sequenceToken);
+            case OPEN_SQUARE_BRACKET -> this.array(sequenceToken);
             default -> throw new KJsonParseException(token.token());
         };
 
     }
 
-    private KJsonValue object(KJsonTokenizer tokenizer, int sequenceToken) throws KJsonParseException {
-        KJsonTokenPair token = this.getTokenOrFail(tokenizer, sequenceToken);
+    private KJsonValue object(int sequenceToken) throws KJsonParseException {
+        KJsonTokenPair token = this.getTokenOrFail(sequenceToken);
 
         if (token.token() == KJsonToken.CLOSE_BRACE) {
             return KJsonValue.fromMap(new LinkedHashMap<>());
@@ -110,16 +109,16 @@ public class KStandardJsonParser implements KJsonParser {
 
             String key = (String) token.value();
 
-            token = this.getTokenOrFail(tokenizer, sequenceToken);
+            token = this.getTokenOrFail(sequenceToken);
             if (token.token() != KJsonToken.SEMICOLON) {
                 throw new KJsonParseException(token.token());
             }
 
-            result.put(key, this.value(tokenizer, sequenceToken));
+            result.put(key, this.value(sequenceToken));
 
-            token = this.getTokenOrFail(tokenizer, sequenceToken);
+            token = this.getTokenOrFail(sequenceToken);
             if (token.token() == KJsonToken.COMMA) {
-                token = this.getTokenOrFail(tokenizer, sequenceToken);
+                token = this.getTokenOrFail(sequenceToken);
             }
 
         } while (token.token() != KJsonToken.CLOSE_BRACE);
@@ -128,8 +127,8 @@ public class KStandardJsonParser implements KJsonParser {
 
     }
 
-    private KJsonValue array(KJsonTokenizer tokenizer, int sequenceToken) throws KJsonParseException {
-        KJsonTokenPair token = this.getTokenOrFail(tokenizer, sequenceToken);
+    private KJsonValue array(int sequenceToken) throws KJsonParseException {
+        KJsonTokenPair token = this.getTokenOrFail(sequenceToken);
 
         if (token.token() == KJsonToken.CLOSE_SQUARE_BRACKET) {
             return KJsonValue.fromList(new LinkedList<>());
@@ -138,11 +137,11 @@ public class KStandardJsonParser implements KJsonParser {
         List<KJsonValue> result = new LinkedList<>();
 
         do {
-            result.add(this.value(tokenizer, token, sequenceToken));
+            result.add(this.value(token, sequenceToken));
 
-            token = this.getTokenOrFail(tokenizer, sequenceToken);
+            token = this.getTokenOrFail(sequenceToken);
             if (token.token() == KJsonToken.COMMA) {
-                token = this.getTokenOrFail(tokenizer, sequenceToken);
+                token = this.getTokenOrFail(sequenceToken);
             }
 
         } while (token.token() != KJsonToken.CLOSE_SQUARE_BRACKET);
@@ -150,9 +149,9 @@ public class KStandardJsonParser implements KJsonParser {
         return KJsonValue.fromList(result);
     }
 
-    private KJsonTokenPair getTokenOrFail(final KJsonTokenizer tokenizer, int sequenceToken) throws KJsonParseException {
+    private KJsonTokenPair getTokenOrFail(int sequenceToken) throws KJsonParseException {
         try {
-            return tokenizer.getNextToken(sequenceToken);
+            return this.tokenizer.getNextToken(sequenceToken);
         } catch (KJsonTokenException e) {
             throw new KJsonParseException(e);
         }
