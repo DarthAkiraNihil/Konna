@@ -18,8 +18,11 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 
+import java.io.InputStream;
+import java.io.Reader;
+
 /**
- * Base class for a json tokenizer.
+ * Interface for a json tokenizer.
  * It provides base methods to extract tokens from a json-containing value like string (so far).
  * Tokenizer extracts symbols from a source and then converts
  * to a token pair that is used by parser to construct a json value
@@ -29,31 +32,30 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public abstract class KJsonTokenizer {
-
-    /**
-     * String source of a json.
-     */
-    protected String source;
-
-    /**
-     * Constructs tokenizer from a string as a Json source.
-     * @param source String source of a json
-     */
-    public KJsonTokenizer(final String source) {
-        this.source = source;
-    }
+public interface KJsonTokenizer {
 
     /**
      * Returns the next token from json source.
+     * @param sequenceToken Sequence token, returned by {@link #addSource(InputStream)} method,
+     *                      that describes tokenizing sequence
      * @return The next json token
      * @throws KJsonTokenException If it fails to read the token
      */
-    public abstract KJsonTokenPair getNextToken() throws KJsonTokenException;
+    KJsonTokenPair getNextToken(int sequenceToken) throws KJsonTokenException;
 
     /**
-     * Resets tokenizer state and sets new source of possible json tokens.
-     * @param newSource New source to tokenize
+     * Adds an input stream as new json source to tokenize.
+     * @param source Source to tokenize
+     * @return sequence token that describes source in tokenization process
      */
-    public abstract void reset(String newSource);
+    int addSource(InputStream source);
+
+    /**
+     * Adds a string as new json source to tokenize.
+     * @param source Source to tokenize
+     * @return sequence token that describes source in tokenization process
+     */
+    int addSource(String source);
+    int addSource(Reader source);
+    int addSource(char[] source);
 }

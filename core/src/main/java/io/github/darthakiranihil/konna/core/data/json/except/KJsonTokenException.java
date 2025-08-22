@@ -44,6 +44,10 @@ public class KJsonTokenException extends KException implements KThrowable {
         super(String.format(KJsonTokenException.DEFAULT_MESSAGE_TEMPLATE, line, column));
     }
 
+    public KJsonTokenException(final Throwable cause) {
+        super(cause);
+    }
+
     @Override
     public KThrowableSeverity getSeverity() {
         return KThrowableSeverity.ERROR;

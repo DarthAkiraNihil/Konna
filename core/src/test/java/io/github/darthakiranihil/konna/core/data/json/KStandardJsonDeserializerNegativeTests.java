@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
 
     private static class SerializerTestClass {

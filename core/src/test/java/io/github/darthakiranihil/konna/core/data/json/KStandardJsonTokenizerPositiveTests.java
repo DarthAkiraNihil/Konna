@@ -102,10 +102,10 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void singleTokenTest(String input, KJsonToken token) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
-            KJsonToken result = tokenizer.getNextToken().token();
+            KJsonToken result = tokenizer.getNextToken(sequenceToken).token();
             Assertions.assertEquals(token, result);
         } catch (KJsonTokenException e) {
             Assertions.fail(e);
@@ -116,10 +116,10 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void singleTokenTest(String input, KJsonToken token, Object expectedValue) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
-            KJsonTokenPair result = tokenizer.getNextToken();
+            KJsonTokenPair result = tokenizer.getNextToken(sequenceToken);
             Assertions.assertEquals(token, result.token());
             Assertions.assertEquals(expectedValue, result.value());
         } catch (KJsonTokenException e) {
@@ -131,11 +131,11 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void multiTokenTest(String input, KJsonToken[] tokens) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
             for (KJsonToken token: tokens) {
-                KJsonToken result = tokenizer.getNextToken().token();
+                KJsonToken result = tokenizer.getNextToken(sequenceToken).token();
                 Assertions.assertEquals(token, result);
             }
         } catch (KJsonTokenException e) {
@@ -147,11 +147,11 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void multiTokenTest(String input, KJsonTokenPair[] tokens) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
             for (KJsonTokenPair token: tokens) {
-                KJsonTokenPair result = tokenizer.getNextToken();
+                KJsonTokenPair result = tokenizer.getNextToken(sequenceToken);
                 Assertions.assertEquals(token.token(), result.token());
                 Assertions.assertEquals(token.value(), result.value());
             }
