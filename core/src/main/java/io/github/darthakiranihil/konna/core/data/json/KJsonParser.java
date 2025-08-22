@@ -18,6 +18,9 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 
+import java.io.InputStream;
+import java.io.Reader;
+
 /**
  * Interface for json parsers that constructs json values from tokens got from source.
  *
@@ -26,8 +29,6 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
  */
 public interface KJsonParser {
 
-    // TODO: add stream overloadings etc.
-
     /**
      * Parses json string and constructs a json value if given string is a valid json.
      * @param string String source of a json
@@ -35,5 +36,29 @@ public interface KJsonParser {
      * @throws KJsonParseException If json is invalid (incorrect token or syntax)
      */
     KJsonValue parse(String string) throws KJsonParseException;
+    /**
+     * Parses json from an input stream and constructs a json
+     * value if given stream contains a valid json.
+     * @param stream Stream source of a json
+     * @return Parsed json value
+     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     */
+    KJsonValue parse(InputStream stream) throws KJsonParseException;
+    /**
+     * Parses json from a reader and constructs a json
+     * value if given reader contains a valid json.
+     * @param reader Reader source of a json
+     * @return Parsed json value
+     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     */
+    KJsonValue parse(Reader reader) throws KJsonParseException;
+    /**
+     * Parses json from a char array and constructs a json value
+     * if given array contains a valid json.
+     * @param chars Array source of a json
+     * @return Parsed json value
+     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     */
+    KJsonValue parse(char[] chars) throws KJsonParseException;
 
 }

@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.*;
 
+import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,17 @@ public class KStandardJsonParser implements KJsonParser {
 
     @Override
     public KJsonValue parse(final String string) throws KJsonParseException {
-        int sequenceToken = this.tokenizer.addSource(string);
+        return this.parse(new StringReader(string));
+    }
+
+    @Override
+    public KJsonValue parse(final InputStream stream) throws KJsonParseException {
+        return this.parse(new InputStreamReader(stream));
+    }
+
+    @Override
+    public KJsonValue parse(final Reader reader) throws KJsonParseException {
+        int sequenceToken = this.tokenizer.addSource(reader);
 
         KJsonValue result = this.value(sequenceToken);
 
@@ -55,7 +66,11 @@ public class KStandardJsonParser implements KJsonParser {
         }
 
         return result;
+    }
 
+    @Override
+    public KJsonValue parse(final char[] chars) throws KJsonParseException {
+        return this.parse(new CharArrayReader(chars));
     }
 
     private KJsonValue value(

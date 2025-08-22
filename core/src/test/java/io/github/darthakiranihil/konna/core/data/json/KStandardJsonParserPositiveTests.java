@@ -25,14 +25,20 @@ import io.github.darthakiranihil.konna.core.util.KTriplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.util.List.of;
 
 public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
     private final KJsonParser parser;
 
-    private static final List<KTriplet<String, KJsonValueType, Object>> dataForSimpleTests = List.of(
+    private static final List<KTriplet<String, KJsonValueType, Object>> dataForSimpleTests = of(
         new KTriplet<>("123", KJsonValueType.NUMBER_INT, 123),
         new KTriplet<>("123.0", KJsonValueType.NUMBER_FLOAT, 123.0f),
         new KTriplet<>("\"123\"", KJsonValueType.STRING, "123"),
@@ -41,7 +47,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
         new KTriplet<>("null", KJsonValueType.NULL, null)
     );
 
-    private static final List<KPair<KJsonValueType, Object>> arrayMatchList = List.of(
+    private static final List<KPair<KJsonValueType, Object>> arrayMatchList = of(
         new KPair<>(KJsonValueType.NUMBER_INT, 123),
         new KPair<>(KJsonValueType.STRING, "OLOLO"),
         new KPair<>(KJsonValueType.NUMBER_FLOAT, 123.0f),
@@ -56,12 +62,17 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
     private void simpleTest(String input, KJsonValueType expectedType, Object expectedValue) {
         try {
+            List<KJsonValue> parsedFromDifferentSources = List.of(
+                this.parser.parse(input),
+                this.parser.parse(input.toCharArray()),
+                this.parser.parse(new StringReader(input)),
+                this.parser.parse(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)))
+            );
 
-            KJsonValue parsed = this.parser.parse(input);
-
-            Assertions.assertEquals(expectedType, parsed.getType());
-            Assertions.assertEquals(expectedValue, parsed.getRawObject());
-
+            for (var parsed: parsedFromDifferentSources) {
+                Assertions.assertEquals(expectedType, parsed.getType());
+                Assertions.assertEquals(expectedValue, parsed.getRawObject());
+            }
         } catch (KJsonParseException e) {
             Assertions.fail(e);
         }

@@ -23,6 +23,11 @@ import io.github.darthakiranihil.konna.core.util.KTriplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -116,12 +121,24 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void singleTokenTest(String input, KJsonToken token, Object expectedValue) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        int sequenceToken = tokenizer.addSource(input);
+
+        Reader reader = new StringReader(input);
+        InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        char[] chars = input.toCharArray();
+
+        int[] tokens = new int[] {
+            tokenizer.addSource(input),
+            tokenizer.addSource(reader),
+            tokenizer.addSource(stream),
+            tokenizer.addSource(chars)
+        };
 
         try {
-            KJsonTokenPair result = tokenizer.getNextToken(sequenceToken);
-            Assertions.assertEquals(token, result.token());
-            Assertions.assertEquals(expectedValue, result.value());
+            for (var sequenceToken: tokens) {
+                KJsonTokenPair result = tokenizer.getNextToken(sequenceToken);
+                Assertions.assertEquals(token, result.token());
+                Assertions.assertEquals(expectedValue, result.value());
+            }
         } catch (KJsonTokenException e) {
             Assertions.fail(e);
         }
@@ -231,4 +248,15 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
         );
     }
 
+    @Test
+    public void testGetNonExistentSequenceToken() {
+        try {
+            Assertions.assertEquals(
+                KJsonTokenPair.EOF,
+                KStandardTestClass.jsonTokenizer.getNextToken(0)
+            );
+        } catch (KJsonTokenException e) {
+            Assertions.fail(e);
+        }
+    }
 }
