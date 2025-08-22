@@ -4,7 +4,6 @@ plugins {
     id 'java'
 
     id 'distribution'
-    id 'application'
 
     id 'jacoco'
     id 'maven-publish'
@@ -24,6 +23,9 @@ subprojects {
     apply plugin: 'checkstyle'
 
     archivesBaseName = "Konna.${it.name}"
+    checkstyle {
+        toolVersion = "11.0.0"
+    }
 }
 
 jacoco {
@@ -33,10 +35,6 @@ jacoco {
 
 checkstyle {
     toolVersion = "11.0.0"
-}
-
-application {
-    mainClass = 'debug.StrTest'
 }
 
 repositories {

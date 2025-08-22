@@ -40,7 +40,7 @@ public abstract class KJsonTokenizer {
      * Constructs tokenizer from a string as a Json source.
      * @param source String source of a json
      */
-    public KJsonTokenizer(String source) {
+    public KJsonTokenizer(final String source) {
         this.source = source;
     }
 

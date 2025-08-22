@@ -33,21 +33,18 @@ import java.util.Map;
  */
 public class KStandardJsonParser implements KJsonParser {
 
-    /**
-     * Assigned tokenizer
-     */
     private final KJsonTokenizer tokenizer;
 
     /**
      * Constructs parser with concrete tokenizer.
      * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser(KJsonTokenizer tokenizer) {
+    public KStandardJsonParser(final KJsonTokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
 
     @Override
-    public KJsonValue parse(String string) throws KJsonParseException {
+    public KJsonValue parse(final String string) throws KJsonParseException {
         this.tokenizer.reset(string);
 
         KJsonValue result = this.value(this.tokenizer);

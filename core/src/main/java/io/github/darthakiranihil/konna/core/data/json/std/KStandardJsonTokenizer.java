@@ -28,6 +28,10 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
  */
 public class KStandardJsonTokenizer extends KJsonTokenizer {
 
+    private static final int UNICODE_DIGITS_COUNT = 4;
+
+    private static final int UNICODE_BASE = 16;
+
     private static class State {
         private int line;
         private int column;
@@ -58,13 +62,13 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
      * Creates tokenizer from string json source.
      * @param source String source of a json
      */
-    public KStandardJsonTokenizer(String source) {
+    public KStandardJsonTokenizer(final String source) {
         super(source);
         this.state = new State();
     }
 
     @Override
-    public void reset(String newSource) {
+    public void reset(final String newSource) {
         this.source = newSource;
         this.state.reset();
     }
@@ -83,7 +87,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
         this.state.column++;
     }
 
-    private void next(StringBuilder builder, char ch) {
+    private void next(final StringBuilder builder, char ch) {
         this.next();
         builder.append(ch);
     }
@@ -172,21 +176,28 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
                         string.append(afterNext);
 
                         if (afterNext == 'u') {
-                            if (this.state.index + 4 >= sourceLength) {
+                            int shift =
+                                this.state.index + KStandardJsonTokenizer.UNICODE_DIGITS_COUNT;
+
+                            if (shift >= sourceLength) {
                                 throw new KJsonTokenException(this.state.line, currentColumn);
                             }
 
-                            for (int i = 1; i < 5; i++) {
+                            for (
+                                int i = 1;
+                                i < KStandardJsonTokenizer.UNICODE_DIGITS_COUNT + 1;
+                                i++
+                            ) {
                                 char u = this.source.charAt(this.state.index + i);
-                                if (Character.digit(u, 16) == -1) {
+                                if (Character.digit(u, KStandardJsonTokenizer.UNICODE_BASE) == -1) {
                                     throw new KJsonTokenException(this.state.line, currentColumn);
                                 }
 
                                 string.append(u);
                             }
 
-                            this.state.index += 4;
-                            this.state.column += 4;
+                            this.state.index += KStandardJsonTokenizer.UNICODE_DIGITS_COUNT;
+                            this.state.column += KStandardJsonTokenizer.UNICODE_DIGITS_COUNT;
 
                         }
 
@@ -318,7 +329,7 @@ public class KStandardJsonTokenizer extends KJsonTokenizer {
 
     private KJsonTokenPair parseExponential(
         char next,
-        StringBuilder numberCandidate,
+        final StringBuilder numberCandidate,
         int sourceLength,
         int currentColumn
     ) throws KJsonTokenException {

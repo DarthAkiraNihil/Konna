@@ -61,6 +61,6 @@ public class KStandardTestClass {
     /**
      * Default constructor.
      */
-    public KStandardTestClass() {
+    protected KStandardTestClass() {
     }
 }

@@ -53,11 +53,15 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
      * @param clazz Class of destination object
      * @return Deserialized object
      * @param <T> Generic type of deserialized object
-     * @throws KJsonSerializationException If it fails to deserialize, mostly because of attempting to deserialize object with structure that differs from json value
+     * @throws KJsonSerializationException If it fails to deserialize, mostly because
+     * of attempting to deserialize object with structure that differs from json value
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(KJsonValue value, Class<?> clazz) throws KJsonSerializationException {
+    public <T> T deserialize(
+        final KJsonValue value,
+        final Class<?> clazz
+    ) throws KJsonSerializationException {
 
         KJsonValueType valueType = value.getType();
 
@@ -80,7 +84,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
             case ARRAY -> {
                 List<?> list = new ArrayList<>();
 
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
+                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
                     var entry = it.next();
                     list.add(this.deserialize(entry, clazz));
                 }
@@ -102,8 +106,8 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                             if (!field.isAnnotationPresent(KJsonArray.class)) {
                                 throw new KJsonSerializationException(
                                     String.format(
-                                        "Could not deserialize field %s, as it is an list-like" +
-                                        "and the KJsonArray annotation is not provided",
+                                            "Could not deserialize field %s, as it is an list-like"
+                                        +   "and the KJsonArray annotation is not provided",
                                         field.getName()
                                     )
                                 );
@@ -139,7 +143,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
         return null;
     }
 
-    private Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
+    private Field getField(final Class<?> clazz, final String name) throws NoSuchFieldException {
         Class<?> klass = clazz;
         while (klass != Object.class) {
             for (Field field : klass.getDeclaredFields()) {

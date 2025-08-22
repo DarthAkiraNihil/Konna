@@ -41,7 +41,7 @@ public class KJsonValue {
      * @param type Type of json value
      * @param value The value itself
      */
-    public KJsonValue(KJsonValueType type, Object value) {
+    public KJsonValue(final KJsonValueType type, final Object value) {
         if (value == null && type != KJsonValueType.STRING) {
             this.type = KJsonValueType.NULL;
         } else {
@@ -118,7 +118,7 @@ public class KJsonValue {
      * @param value The value itself
      * @return Constructed json value
      */
-    public static KJsonValue fromString(String value) {
+    public static KJsonValue fromString(final String value) {
         return new KJsonValue(KJsonValueType.STRING, value);
     }
 
@@ -136,7 +136,7 @@ public class KJsonValue {
      * @param list The list itself
      * @return Constructed json value
      */
-    public static KJsonValue fromList(List<KJsonValue> list) {
+    public static KJsonValue fromList(final List<KJsonValue> list) {
         return new KJsonValue(KJsonValueType.ARRAY, list);
     }
 
@@ -145,7 +145,7 @@ public class KJsonValue {
      * @param map The map itself
      * @return Constructed json value
      */
-    public static KJsonValue fromMap(Map<String, KJsonValue> map) {
+    public static KJsonValue fromMap(final Map<String, KJsonValue> map) {
         return new KJsonValue(KJsonValueType.OBJECT, map);
     }
 
@@ -210,12 +210,12 @@ public class KJsonValue {
      * @return The value assigned to the key
      */
     @SuppressWarnings("unchecked")
-    public KJsonValue getProperty(String key) {
+    public KJsonValue getProperty(final String key) {
         if (this.type != KJsonValueType.OBJECT) {
             throw new KJsonValueException(
                 String.format(
-                    "Cannot get property from the json value: it's not an object." +
-                    "The actual type is: %s",
+                        "Cannot get property from the json value: it's not an object."
+                    +   "The actual type is: %s",
                     this.type
                 )
             );
@@ -231,12 +231,12 @@ public class KJsonValue {
      * @return true if the object contains specified property
      */
     @SuppressWarnings("unchecked")
-    public boolean hasProperty(String key) {
+    public boolean hasProperty(final String key) {
         if (this.type != KJsonValueType.OBJECT) {
             throw new KJsonValueException(
                 String.format(
-                    "Cannot get information of property containment in the json value:" +
-                    "it's not an object. The actual type is: %s",
+                        "Cannot get information of property containment in the json value:"
+                    +   "it's not an object. The actual type is: %s",
                     this.type
                 )
             );
@@ -245,7 +245,7 @@ public class KJsonValue {
         return ((Map<String, KJsonValue>) this.value).containsKey(key);
     }
 
-    private void checkTypeMatch(KJsonValueType requested) {
+    private void checkTypeMatch(final KJsonValueType requested) {
         if (this.type != requested) {
             throw new KJsonValueException(requested, this.type);
         }
@@ -339,8 +339,8 @@ public class KJsonValue {
         if (this.type != KJsonValueType.STRING) {
             throw new KJsonValueException(
                 String.format(
-                    "Cannot get char from the json value: it's not a string. " +
-                    "The actual type is: %s",
+                        "Cannot get char from the json value: it's not a string. "
+                    +   "The actual type is: %s",
                     this.type
                 )
             );
@@ -355,8 +355,8 @@ public class KJsonValue {
         String string = (String) this.value;
         if (string.length() > 1) {
             throw new KJsonValueException(
-                "Cannot get char value from the json value: " +
-                "the string has more than 1 symbol in length!"
+                    "Cannot get char value from the json value: "
+                +   "the string has more than 1 symbol in length!"
             );
         }
 

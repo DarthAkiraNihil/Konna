@@ -42,7 +42,10 @@ public class KJsonValueException extends KRuntimeException implements KThrowable
                 "Cannot get object from the json value: type mismatch."
             +   "Requested: %s, actual type: %s";
 
-    public KJsonValueException(final KJsonValueType requestedType, final KJsonValueType actualType) {
+    public KJsonValueException(
+        final KJsonValueType requestedType,
+        final KJsonValueType actualType
+    ) {
         super(String.format(
             KJsonValueException.TYPE_MISMATCH_MESSAGE_TEMPLATE,
             requestedType,

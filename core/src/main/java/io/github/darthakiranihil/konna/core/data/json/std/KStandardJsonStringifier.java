@@ -29,20 +29,20 @@ import java.util.Iterator;
 public class KStandardJsonStringifier implements KJsonStringifier {
 
     @Override
-    public String stringify(KJsonValue value) {
+    public String stringify(final KJsonValue value) {
         StringBuilder builder = new StringBuilder();
         this.deepStringify(builder, value);
         return builder.toString();
     }
 
     @Override
-    public String stringify(KJsonValue value, int indent) {
+    public String stringify(final KJsonValue value, int indent) {
         StringBuilder builder = new StringBuilder();
         this.deepStringify(builder, value, indent, 0);
         return builder.toString();
     }
 
-    private void deepStringify(StringBuilder builder, KJsonValue value) {
+    private void deepStringify(final StringBuilder builder, final KJsonValue value) {
         switch (value.getType()) {
             case NULL -> builder.append("null");
             case BOOLEAN -> builder.append(value.getBoolean());
@@ -74,7 +74,12 @@ public class KStandardJsonStringifier implements KJsonStringifier {
         }
     }
 
-    private void deepStringify(StringBuilder builder, KJsonValue value, int indent, int level) {
+    private void deepStringify(
+        final StringBuilder builder,
+        final KJsonValue value,
+        int indent,
+        int level
+    ) {
         String indentPrefix = " ".repeat(indent * level);
 
         switch (value.getType()) {
@@ -116,9 +121,9 @@ public class KStandardJsonStringifier implements KJsonStringifier {
     }
 
     private void stringifyKeyValue(
-        StringBuilder builder,
-        String key,
-        KJsonValue value,
+        final StringBuilder builder,
+        final String key,
+        final KJsonValue value,
         int indent,
         int level
     ) {
