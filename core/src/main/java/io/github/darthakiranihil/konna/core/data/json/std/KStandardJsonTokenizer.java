@@ -39,22 +39,34 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
     private static class State {
         private int line;
         private int column;
-        private int index;
 
-        private boolean rooledBack;
+        private boolean rolledBack;
         private int rolledBackChar;
 
         private final Reader source;
 
         State(final Reader source) {
             this.source = source;
-            this.reset();
-        }
-
-        public void reset() {
             this.line = 1;
             this.column = 0;
-            this.index = 0;
+        }
+
+        public void rollback(int lastReadChar) {
+            this.rolledBack = true;
+            this.rolledBackChar = lastReadChar;
+        }
+
+        public void backOnTrack() {
+            this.rolledBack = false;
+        }
+
+        public void nextLine() {
+            this.line++;
+            this.column = 0;
+        }
+
+        public void next() {
+            this.column++;
         }
     }
 
@@ -114,10 +126,10 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
     }
 
     private int next(final State state) {
-        state.index++;
-        state.column++;
-        
+
+        state.next();
         return this.read(state.source);
+
     }
 
     private int next(final State state, final StringBuilder builder, char ch) {
@@ -137,8 +149,8 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
     private KJsonTokenPair scan(final State state) throws KJsonTokenException {
 
         int readData;
-        if (state.rooledBack) {
-            state.rooledBack = false;
+        if (state.rolledBack) {
+            state.backOnTrack();
             readData = state.rolledBackChar;
         } else {
             readData = this.next(state);
@@ -151,19 +163,16 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
         while (true) {
             char current = (char) readData;
             switch (current) {
+                case '\n': {
+                    state.nextLine();
+                }
                 case '\t':
                 case '\r':
                 case ' ': {
                     readData = this.next(state);
                     break;
                 }
-                case '\n': {
-                    state.index++;
-                    state.line++;
-                    state.column = 0;
-                    readData = this.next(state);
-                    break;
-                }
+
                 default: {
                     return this.processLiter(state, current);
                 }
@@ -179,27 +188,21 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
         switch (current) {
             // single char tokens
             case '{': {
-//                this.next(state);
                 return KJsonTokenPair.OPEN_BRACE;
             }
             case '}': {
-//                this.next(state);
                 return KJsonTokenPair.CLOSE_BRACE;
             }
             case '[': {
-//                this.next(state);
                 return KJsonTokenPair.OPEN_SQUARE_BRACKET;
             }
             case ']': {
-//                this.next(state);
                 return KJsonTokenPair.CLOSE_SQUARE_BRACKET;
             }
             case ',': {
-//                this.next(state);
                 return KJsonTokenPair.COMMA;
             }
             case ':': {
-//                this.next(state);
                 return KJsonTokenPair.SEMICOLON;
             }
             case '\"': {
@@ -247,15 +250,11 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
                                 string.append(u);
                             }
 
-//                            state.index += KStandardJsonTokenizer.UNICODE_DIGITS_COUNT;
-//                            state.column += KStandardJsonTokenizer.UNICODE_DIGITS_COUNT;
-
                         }
 
                         continue;
                     } else if (next == '\"') {
-                        state.rolledBackChar = this.next(state);
-                        state.rooledBack = true;
+                        state.rollback(this.next(state));
                         break;
                     } else if (next == '\n') {
                         throw new KJsonTokenException(state.line, currentColumn);
@@ -297,8 +296,7 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
                     char next = (char) data;
                     
                     if (!Character.isAlphabetic(next) || !isNotSpace(next)) {
-                        state.rooledBack = true;
-                        state.rolledBackChar = data;
+                        state.rollback(data);
                         break;
                     }
 
@@ -360,8 +358,7 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
                             state, next, numberCandidate, currentColumn
                         );
                     } else {
-                        state.rooledBack = true;
-                        state.rolledBackChar = nextData;
+                        state.rollback(nextData);
                         return KJsonTokenPair.fromFloat(
                             Float.parseFloat(numberCandidate.toString())
                         );
@@ -371,9 +368,7 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
                 return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
 
             } else {
-
-                state.rooledBack = true;
-                state.rolledBackChar = data;
+                state.rollback(data);
                 return KJsonTokenPair.fromInteger(Integer.parseInt(numberCandidate.toString()));
             }
         }
@@ -416,8 +411,7 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
             if (Character.isDigit(next)) {
                 data = this.next(state, numberCandidate, next);
             } else {
-                state.rooledBack = true;
-                state.rolledBackChar = data;
+                state.rollback(data);
                 return KJsonTokenPair.fromFloat(Float.parseFloat(numberCandidate.toString()));
             }
         }
