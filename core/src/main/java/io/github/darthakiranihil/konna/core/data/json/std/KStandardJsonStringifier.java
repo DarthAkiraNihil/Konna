@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonStringifier;
@@ -5,31 +21,28 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import java.util.Iterator;
 
 /**
- * Standard implementation of {@link KJsonStringifier}
+ * Standard implementation of {@link KJsonStringifier}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonStringifier implements KJsonStringifier {
 
-    /**
-     * Default constructor
-     */
-    public KStandardJsonStringifier() {
-    }
-
     @Override
-    public String stringify(KJsonValue value) {
+    public String stringify(final KJsonValue value) {
         StringBuilder builder = new StringBuilder();
         this.deepStringify(builder, value);
         return builder.toString();
     }
 
     @Override
-    public String stringify(KJsonValue value, int indent) {
+    public String stringify(final KJsonValue value, int indent) {
         StringBuilder builder = new StringBuilder();
         this.deepStringify(builder, value, indent, 0);
         return builder.toString();
     }
 
-    private void deepStringify(StringBuilder builder, KJsonValue value) {
+    private void deepStringify(final StringBuilder builder, final KJsonValue value) {
         switch (value.getType()) {
             case NULL -> builder.append("null");
             case BOOLEAN -> builder.append(value.getBoolean());
@@ -37,7 +50,7 @@ public class KStandardJsonStringifier implements KJsonStringifier {
             case ARRAY -> {
                 builder.append("[");
                 String comma = "";
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
+                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
                     var e = it.next();
                     builder.append(comma);
                     this.deepStringify(builder, e);
@@ -61,17 +74,24 @@ public class KStandardJsonStringifier implements KJsonStringifier {
         }
     }
 
-    private void deepStringify(StringBuilder builder, KJsonValue value, int indent, int level) {
+    private void deepStringify(
+        final StringBuilder builder,
+        final KJsonValue value,
+        int indent,
+        int level
+    ) {
         String indentPrefix = " ".repeat(indent * level);
 
         switch (value.getType()) {
             case NULL -> builder.append(indentPrefix).append("null");
             case BOOLEAN -> builder.append(indentPrefix).append(value.getBoolean());
-            case STRING -> builder.append(indentPrefix).append(String.format("\"%s\"", value.getString()));
+            case STRING -> builder
+                            .append(indentPrefix)
+                            .append(String.format("\"%s\"", value.getString()));
             case ARRAY -> {
                 builder.append(indentPrefix).append("[\n");
                 String comma = "";
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
+                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
 
                     var e = it.next();
 
@@ -100,7 +120,13 @@ public class KStandardJsonStringifier implements KJsonStringifier {
         }
     }
 
-    private void stringifyKeyValue(StringBuilder builder, String key, KJsonValue value, int indent, int level) {
+    private void stringifyKeyValue(
+        final StringBuilder builder,
+        final String key,
+        final KJsonValue value,
+        int indent,
+        int level
+    ) {
 
         String indentPrefix = " ".repeat(indent * level);
         builder
@@ -112,7 +138,7 @@ public class KStandardJsonStringifier implements KJsonStringifier {
                 builder.append("[\n");
 
                 String comma = "";
-                for (var it = value.iterator(); it.hasNext(); ) {
+                for (var it = value.iterator(); it.hasNext();) {
                     builder.append(comma);
                     KJsonValue entry = it.next();
                     this.deepStringify(builder, entry, indent, level + 1);
@@ -127,7 +153,9 @@ public class KStandardJsonStringifier implements KJsonStringifier {
                 String comma = "";
                 for (var entry: value.entrySet()) {
                     builder.append(comma);
-                    this.stringifyKeyValue(builder, entry.getKey(), entry.getValue(), indent, level + 1);
+                    this.stringifyKeyValue(
+                        builder, entry.getKey(), entry.getValue(), indent, level + 1
+                    );
                     if (comma.isEmpty()) {
                         comma = ",\n";
                     }

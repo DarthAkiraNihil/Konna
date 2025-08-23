@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
@@ -8,17 +24,14 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
- * Standard implementation of KJsonSerializer
+ * Standard implementation of {@link KJsonSerializer}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonSerializer implements KJsonSerializer {
 
-    /**
-     * Default constructor
-     */
-    public KStandardJsonSerializer() {
-    }
-
-    private <T> List<Field> getFields(T t) {
+    private <T> List<Field> getFields(final T t) {
         List<Field> fields = new ArrayList<>();
         Class<?> clazz = t.getClass();
         while (clazz != Object.class) {
@@ -28,7 +41,11 @@ public class KStandardJsonSerializer implements KJsonSerializer {
                     continue;
                 }
 
-                if (Modifier.isPrivate(field.getModifiers()) && !field.isAnnotationPresent(KJsonSerialized.class)) {
+                boolean isPrivateAndNotSerialized =
+                        Modifier.isPrivate(field.getModifiers())
+                    && !field.isAnnotationPresent(KJsonSerialized.class);
+
+                if (isPrivateAndNotSerialized) {
                     continue;
                 }
 
@@ -41,7 +58,10 @@ public class KStandardJsonSerializer implements KJsonSerializer {
     }
 
     @Override
-    public <T> KJsonValue serialize(T object, Class<? extends T> clazz) throws KJsonSerializationException {
+    public <T> KJsonValue serialize(
+        final T object,
+        final Class<? extends T> clazz
+    ) throws KJsonSerializationException {
         if (clazz == Integer.class || clazz == int.class) {
             return KJsonValue.fromNumber((int) object);
         }

@@ -2,11 +2,15 @@ import org.jreleaser.model.Active
 
 plugins {
     id 'java'
+
     id 'distribution'
-    id 'application'
+
     id 'jacoco'
     id 'maven-publish'
+
     id 'org.jreleaser' version '1.19.0'
+    id 'checkstyle'
+
 }
 
 group = 'io.github.darthakiranihil.konna'
@@ -16,7 +20,12 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'org.jreleaser'
+    apply plugin: 'checkstyle'
+
     archivesBaseName = "Konna.${it.name}"
+    checkstyle {
+        toolVersion = "11.0.0"
+    }
 }
 
 jacoco {
@@ -24,8 +33,8 @@ jacoco {
     reportsDirectory = layout.buildDirectory.dir('reports/jacoco/')
 }
 
-application {
-    mainClass = 'debug.StrTest'
+checkstyle {
+    toolVersion = "11.0.0"
 }
 
 repositories {
@@ -51,6 +60,14 @@ def exportedProjects = [
     ":",
     ":core",
 ]
+
+tasks.withType(Javadoc).configureEach {
+    options {
+        addStringOption('Xdoclint:none', '-quiet')
+    }
+    options.author = true
+    options.tags = [ "apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:" ]
+}
 
 tasks.register('allJavadoc', Javadoc) {
     source exportedProjects.collect { project(it).sourceSets.main.allJava }

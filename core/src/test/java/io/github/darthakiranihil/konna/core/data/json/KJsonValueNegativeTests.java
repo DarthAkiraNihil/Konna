@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
@@ -36,9 +52,9 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         Exception thrownNull = Assertions.assertThrowsExactly(KJsonValueException.class, nullChar::getChar);
         Exception thrownLong = Assertions.assertThrowsExactly(KJsonValueException.class, longChar::getChar);
 
-        Assertions.assertEquals(String.format("Cannot get string from the json value: it's not a string. The actual type is: %s", KJsonValueType.NUMBER_INT), thrownNonString.getMessage());
+        Assertions.assertEquals(String.format("Cannot get char from the json value: it's not a string. The actual type is: %s", KJsonValueType.NUMBER_INT), thrownNonString.getMessage());
         Assertions.assertEquals("Cannot get char value from the json value: the value is null", thrownNull.getMessage());
-        Assertions.assertEquals("Cannot get char value from the json value: the string is more than 1 symbol in length!", thrownLong.getMessage());
+        Assertions.assertEquals("Cannot get char value from the json value: the string has more than 1 symbol in length!", thrownLong.getMessage());
 
     }
 

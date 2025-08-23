@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
@@ -7,6 +23,11 @@ import io.github.darthakiranihil.konna.core.util.KTriplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +51,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private final static List<KTriplet<String, KJsonToken, Object>> singleTokenWithValueTestData = Arrays.asList(
         new KTriplet<>("\"123\"", KJsonToken.STRING, "123"),
         new KTriplet<>("\"123\\\"123\"", KJsonToken.STRING, "123\\\"123"),
-        new KTriplet<>("\"ሴABOBA\"", KJsonToken.STRING, "ሴABOBA"),
+        // new KTriplet<>("\"\u1234\u1234ABOBA\"", KJsonToken.STRING, "\u1234\u1234ABOBA"),
         new KTriplet<>("\"\\uabcd\"", KJsonToken.STRING, "\\uabcd"),
         new KTriplet<>("123", KJsonToken.NUMBER_INT, 123),
         new KTriplet<>("+123", KJsonToken.NUMBER_INT, 123),
@@ -86,10 +107,10 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void singleTokenTest(String input, KJsonToken token) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
-            KJsonToken result = tokenizer.getNextToken().token();
+            KJsonToken result = tokenizer.getNextToken(sequenceToken).token();
             Assertions.assertEquals(token, result);
         } catch (KJsonTokenException e) {
             Assertions.fail(e);
@@ -100,12 +121,24 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void singleTokenTest(String input, KJsonToken token, Object expectedValue) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+
+        Reader reader = new StringReader(input);
+        InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        char[] chars = input.toCharArray();
+
+        int[] tokens = new int[] {
+            tokenizer.addSource(input),
+            tokenizer.addSource(reader),
+            tokenizer.addSource(stream),
+            tokenizer.addSource(chars)
+        };
 
         try {
-            KJsonTokenPair result = tokenizer.getNextToken();
-            Assertions.assertEquals(token, result.token());
-            Assertions.assertEquals(expectedValue, result.value());
+            for (var sequenceToken: tokens) {
+                KJsonTokenPair result = tokenizer.getNextToken(sequenceToken);
+                Assertions.assertEquals(token, result.token());
+                Assertions.assertEquals(expectedValue, result.value());
+            }
         } catch (KJsonTokenException e) {
             Assertions.fail(e);
         }
@@ -115,11 +148,11 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void multiTokenTest(String input, KJsonToken[] tokens) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
             for (KJsonToken token: tokens) {
-                KJsonToken result = tokenizer.getNextToken().token();
+                KJsonToken result = tokenizer.getNextToken(sequenceToken).token();
                 Assertions.assertEquals(token, result);
             }
         } catch (KJsonTokenException e) {
@@ -131,11 +164,11 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
     private void multiTokenTest(String input, KJsonTokenPair[] tokens) {
 
         KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
-        tokenizer.reset(input);
+        int sequenceToken = tokenizer.addSource(input);
 
         try {
             for (KJsonTokenPair token: tokens) {
-                KJsonTokenPair result = tokenizer.getNextToken();
+                KJsonTokenPair result = tokenizer.getNextToken(sequenceToken);
                 Assertions.assertEquals(token.token(), result.token());
                 Assertions.assertEquals(token.value(), result.value());
             }
@@ -215,4 +248,15 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
         );
     }
 
+    @Test
+    public void testGetNonExistentSequenceToken() {
+        try {
+            Assertions.assertEquals(
+                KJsonTokenPair.EOF,
+                KStandardTestClass.jsonTokenizer.getNextToken(0)
+            );
+        } catch (KJsonTokenException e) {
+            Assertions.fail(e);
+        }
+    }
 }

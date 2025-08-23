@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
@@ -9,17 +25,14 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
- * Standard implementation of KJsonDeserializer
+ * Standard implementation of {@link KJsonDeserializer}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
 public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     private static Unsafe theUnsafe;
-
-    /**
-     * Default constructor
-     */
-    public KStandardJsonDeserializer() {
-    }
 
     static {
         try {
@@ -33,17 +46,22 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
 
     /**
      * Deserializes a json value into a new object of passed type.
-     * This implementation requires that all list-like fields are provided with ... annotation,
-     * since type erasure does not allow to get list generic type at runtime
+     * This implementation requires that all list-like fields are provided
+     * with {@link KJsonArray} annotation, since type erasure does not allow
+     * to get list generic type at runtime
      * @param value Json value to deserialize
      * @param clazz Class of destination object
      * @return Deserialized object
      * @param <T> Generic type of deserialized object
-     * @throws KJsonSerializationException If it fails to deserialize, mostly because of attempting to deserialize object with structure that differs from json value
+     * @throws KJsonSerializationException If it fails to deserialize, mostly because
+     * of attempting to deserialize object with structure that differs from json value
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(KJsonValue value, Class<?> clazz) throws KJsonSerializationException {
+    public <T> T deserialize(
+        final KJsonValue value,
+        final Class<?> clazz
+    ) throws KJsonSerializationException {
 
         KJsonValueType valueType = value.getType();
 
@@ -66,7 +84,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
             case ARRAY -> {
                 List<?> list = new ArrayList<>();
 
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext(); ) {
+                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
                     var entry = it.next();
                     list.add(this.deserialize(entry, clazz));
                 }
@@ -88,16 +106,23 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                             if (!field.isAnnotationPresent(KJsonArray.class)) {
                                 throw new KJsonSerializationException(
                                     String.format(
-                                        "Could not deserialize field %s, as it is an list-like and the KJsonArray annotation is not provided",
+                                            "Could not deserialize field %s, as it is an list-like"
+                                        +   "and the KJsonArray annotation is not provided",
                                         field.getName()
                                     )
                                 );
                             }
 
                             KJsonArray meta = field.getAnnotation(KJsonArray.class);
-                            field.set(deserialized, this.deserialize(entry.getValue(), meta.elementType()));
+                            field.set(
+                                deserialized,
+                                this.deserialize(entry.getValue(), meta.elementType())
+                            );
                         } else {
-                            field.set(deserialized, this.deserialize(entry.getValue(), field.getType()));
+                            field.set(
+                                deserialized,
+                                this.deserialize(entry.getValue(), field.getType())
+                            );
                         }
 
 
@@ -105,7 +130,11 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                     }
 
                     return (T) deserialized;
-                } catch (InstantiationException | IllegalAccessException | NoSuchFieldException e) {
+                } catch (
+                        InstantiationException
+                    |   IllegalAccessException
+                    |   NoSuchFieldException e
+                ) {
                     throw new KJsonSerializationException(e);
                 }
             }
@@ -114,7 +143,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
         return null;
     }
 
-    private Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
+    private Field getField(final Class<?> clazz, final String name) throws NoSuchFieldException {
         Class<?> klass = clazz;
         while (klass != Object.class) {
             for (Field field : klass.getDeclaredFields()) {
@@ -123,7 +152,11 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
                     continue;
                 }
 
-                if (Modifier.isPrivate(field.getModifiers()) && !field.isAnnotationPresent(KJsonSerialized.class)) {
+                boolean isPrivateAndNotSerialized =
+                        Modifier.isPrivate(field.getModifiers())
+                    && !field.isAnnotationPresent(KJsonSerialized.class);
+
+                if (isPrivateAndNotSerialized) {
                     continue;
                 }
 

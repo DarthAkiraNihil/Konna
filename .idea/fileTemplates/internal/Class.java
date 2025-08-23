@@ -14,19 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.except;
-
-/**
- * Interface for all standard Konna exceptions that provides
- * basic meta information like exception severity (or fatal-level).
- *
- * @since 0.1.0
- * @author Darth Akira Nihil
- */
-public interface KThrowable {
-    /**
-     * Getter for a severity level of a throwable.
-     * @return The severity level of the throwable
-     */
-    KThrowableSeverity getSeverity();
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+public class ${NAME} {
 }
