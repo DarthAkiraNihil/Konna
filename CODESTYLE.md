@@ -5,6 +5,45 @@
 All the statements listed below are not final and may change in the future depending
 on many aspects that might be unforeseen
 
+## Source file basis
+* Encoding of all source files must be only UTF-8
+* Indentation uses _spaces_ (not tabs)
+* All lines must be no more than or equal to 100 characters in length
+
+## Source file structure
+A source file consists of the following, in this exact order:
+
+* License
+* Package statement
+* Import statements
+* Exactly one top-level class
+
+The license is located at the very top of the file and contains this content:
+```java
+/*
+* Copyright 2025-present the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      https://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+  */
+```
+
+## Codestyle basis
+
+* Most of required codestyle statements can be read from [this file](config/checkstyle/checkstyle.xml), that is
+the config of Checkstyle tool
+* So all Checkstyle rules must be applied to all added code
+* It is based mostly of Sun conventions but also adapted according to some things. See the file for more information
+
 ## Naming convention
 
 * All names of classes (except internal), annotations and interfaces must begin with "K". The rest of the name use PascalCase (without separators)
@@ -66,13 +105,39 @@ public void method(
     int a,
     int b,
     int c,
-    String d
+    final String d
     // ...
 ) {
     // ... 
 }
 ```
 
+## Other statements
+* case-block in switch should be wrapped in braces:
+```java
+public class Main {
+    public static void main(String[] args) {
+        int condition = 1;
+        switch(condition) {
+            case 1: {
+                //...
+                break;
+            }
+            case 2: {
+                break;
+            }
+            case 3: {
+                break;
+            }
+        }
+    }
+    
+}
+```
+* default block of switch have to be included if and only if condition
+variable does not belong to an enum, or it belongs to but cases does not cover all enum values
+* All methods parameters of non-primitive types should be final
+* Magic numbers are not allowed
 ## Commit messages
 
 * The first line of a message must match:
