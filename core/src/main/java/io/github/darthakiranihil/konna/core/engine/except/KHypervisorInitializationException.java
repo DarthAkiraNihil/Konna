@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.except;
+package io.github.darthakiranihil.konna.core.engine.except;
+
+import io.github.darthakiranihil.konna.core.except.KRuntimeException;
+import io.github.darthakiranihil.konna.core.except.KThrowable;
+import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
 /**
- * Class for unchecked Konna exceptions.
- * @see KThrowable
+ * Exception thrown when Konna hypervisor could not be instantiated.
  *
- * @since 0.1.0
+ * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public abstract class KRuntimeException extends RuntimeException implements KThrowable {
+public class KHypervisorInitializationException extends KRuntimeException implements KThrowable {
 
-    /**
-     * Constructs exception with a provided message.
-     * @param message Exception message
-     */
-    public KRuntimeException(final String message) {
-        super(message);
+    public KHypervisorInitializationException(final Throwable cause) {
+        super(cause);
     }
 
-    /**
-     * Constructs exception with a provided cause.
-     * @param cause The throwable caused the exception
-     */
-    public KRuntimeException(final Throwable cause) {
-        super(cause);
+    @Override
+    public KThrowableSeverity getSeverity() {
+        return KThrowableSeverity.FATAL;
     }
 }

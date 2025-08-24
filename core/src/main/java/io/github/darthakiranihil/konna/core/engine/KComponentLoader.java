@@ -16,5 +16,20 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-public class KComponentLoader {
+/**
+ * Interface for a component loader - class which task is to instantiate and initialize
+ * given component that is prepared for subsequent configuring.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
+public interface KComponentLoader {
+
+    /**
+     * Loads engine component with given class.
+     * @param component Class of component to load
+     * @return Loaded (instantiated and initialized) component
+     */
+    KComponent load(Class<? extends KComponent> component);
+
 }

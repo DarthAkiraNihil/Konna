@@ -18,10 +18,8 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Representation of a Json value for different purposes.
@@ -29,7 +27,7 @@ import java.util.Set;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KJsonValue {
+public class KJsonValue implements Iterable<KJsonValue> {
 
     private final KJsonValueType type;
     private final Object value;
@@ -170,6 +168,7 @@ public class KJsonValue {
      * throw {@link KJsonValueException} if the value type differs from {@link KJsonValueType}.ARRAY
      * @return The iterator for json array
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Iterator<KJsonValue> iterator() {
         if (this.type != KJsonValueType.ARRAY) {
@@ -182,6 +181,47 @@ public class KJsonValue {
         }
 
         return ((Iterable<KJsonValue>) this.value).iterator();
+    }
+
+    /**
+     * Returns an action for each element of the array. Pay attention to the fact it may
+     * throw {@link KJsonValueException} if the value type differs from {@link KJsonValueType}.ARRAY
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public void forEach(final Consumer<? super KJsonValue> action) {
+        if (this.type != KJsonValueType.ARRAY) {
+            throw new KJsonValueException(
+                String.format(
+                        "Cannot apply forEach to a json value: it's not an array. "
+                    +   "The actual type is: %s",
+                    this.type
+                )
+            );
+        }
+
+        ((Iterable<KJsonValue>) this.value).forEach(action);
+    }
+
+    /**
+     * Returns a spliterator for iterating over array elements. Pay attention to the fact it may
+     * throw {@link KJsonValueException} if the value type differs from {@link KJsonValueType}.ARRAY
+     * @return The iterator for json array
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Spliterator<KJsonValue> spliterator() {
+        if (this.type != KJsonValueType.ARRAY) {
+            throw new KJsonValueException(
+                String.format(
+                        "Cannot get spliterator from a json value: it's not an array. "
+                    +   "The actual type is: %s",
+                    this.type
+                )
+            );
+        }
+
+        return ((Iterable<KJsonValue>) this.value).spliterator();
     }
 
     /**
