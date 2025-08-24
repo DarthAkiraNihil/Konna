@@ -97,17 +97,17 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
     }
 
     @Override
-    public int addSource(final InputStream source) {
+    public synchronized int addSource(final InputStream source) {
         return this.addSource(new InputStreamReader(source));
     }
 
     @Override
-    public int addSource(final String source) {
+    public synchronized int addSource(final String source) {
         return this.addSource(new StringReader(source));
     }
 
     @Override
-    public int addSource(final Reader source) {
+    public synchronized int addSource(final Reader source) {
 
         int key = KStandardJsonTokenizer.addedSequences;
         states.put(key, new State(source));
@@ -117,7 +117,7 @@ public class KStandardJsonTokenizer implements KJsonTokenizer {
     }
 
     @Override
-    public int addSource(final char[] source) {
+    public synchronized int addSource(final char[] source) {
         return this.addSource(new CharArrayReader(source));
     }
 
