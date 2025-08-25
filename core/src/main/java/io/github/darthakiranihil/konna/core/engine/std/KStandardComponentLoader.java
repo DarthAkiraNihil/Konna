@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 
 import java.io.InputStream;
@@ -32,7 +33,6 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@SuppressWarnings("unused")
 public class KStandardComponentLoader implements KComponentLoader {
 
     private final ClassLoader classLoader;
@@ -46,6 +46,7 @@ public class KStandardComponentLoader implements KComponentLoader {
     @Override
     public void load(
         final Class<? extends KComponent> component,
+        final KServiceLoader serviceLoader,
         final Map<String, KComponent> loadedComponentMap
     ) throws KComponentLoadingException {
         try {
@@ -77,10 +78,15 @@ public class KStandardComponentLoader implements KComponentLoader {
                 parsedConfig = this.parser.parse(config);
             }
 
-            var constructor = component.getConstructor(String.class, KJsonValue.class);
+            var constructor = component.getConstructor(
+                KServiceLoader.class,
+                String.class,
+                KJsonValue.class
+            );
+
             loadedComponentMap.put(
                 componentName,
-                constructor.newInstance(meta.servicesPackage(), parsedConfig)
+                constructor.newInstance(serviceLoader, meta.servicesPackage(), parsedConfig)
             );
         } catch (Exception e) {
             throw new KComponentLoadingException(e);

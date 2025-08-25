@@ -33,6 +33,7 @@ import java.util.Map;
 public class KEngineHypervisor {
 
     private final KComponentLoader componentLoader;
+    private final KServiceLoader serviceLoader;
     private final Map<String, KComponent> engineComponents;
     private final KJsonParser jsonParser;
 
@@ -51,10 +52,16 @@ public class KEngineHypervisor {
                                                 .componentLoader()
                                                 .getConstructor(KJsonParser.class);
             this.componentLoader = componentLoaderConstructor.newInstance(this.jsonParser);
+
+            var serviceLoaderConstructor = config
+                .serviceLoader()
+                .getConstructor();
+            this.serviceLoader = serviceLoaderConstructor.newInstance();
+
             this.engineComponents = new HashMap<>();
 
             for (var component: config.components()) {
-                this.componentLoader.load(component, this.engineComponents);
+                this.componentLoader.load(component, this.serviceLoader, this.engineComponents);
             }
 
         } catch (

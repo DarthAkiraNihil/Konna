@@ -18,12 +18,13 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for Konna engine component.
@@ -36,9 +37,10 @@ public abstract class KComponent {
     /**
      * List of component services.
      */
-    protected final List<Object> services;
+    protected final Map<String, KServiceEntry> services;
 
     public KComponent(
+        final KServiceLoader serviceLoader,
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
@@ -53,19 +55,16 @@ public abstract class KComponent {
             throw new KComponentLoadingException(e);
         }
 
-        List<Object> instantiatedServices = new ArrayList<>();
+        Map<String, KServiceEntry> instantiatedServices = new HashMap<>();
         try {
             for (var serviceClass: serviceClasses) {
-                var serviceConstructor = serviceClass.getConstructor();
-                instantiatedServices.add(
-                    serviceConstructor.newInstance()
+                serviceLoader.load(
+                    serviceClass,
+                    instantiatedServices
                 );
             }
         } catch (
-                NoSuchMethodException
-            |   InstantiationException
-            |   IllegalAccessException
-            |   InvocationTargetException e
+            KServiceLoadingException e
         ) {
             throw new KComponentLoadingException(e);
         }

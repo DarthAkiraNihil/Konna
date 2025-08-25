@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * Record class of initial Konna hypervisor configuration.
  * @param componentLoader Class of engine component loader
+ * @param serviceLoader Class of component services loader
  * @param components List of engine components classes to load
  *
  * @since 0.2.0
@@ -32,10 +33,12 @@ import java.util.List;
  */
 public record KEngineHypervisorConfig(
     Class<? extends KComponentLoader> componentLoader,
+    Class<? extends KServiceLoader> serviceLoader,
     List<Class<? extends KComponent>> components
 ) {
 
     private static final String COMPONENT_LOADER_KEY = "component_loader";
+    private static final String SERVICE_LOADER_KEY = "service_loader";
     private static final String COMPONENTS_KEY = "components";
 
     /**
@@ -57,10 +60,15 @@ public record KEngineHypervisorConfig(
     private static KEngineHypervisorConfig getConfig(final KJsonValue json) throws Exception {
 
         String componentLoaderClassName = json.getProperty(COMPONENT_LOADER_KEY).getString();
+        String serviceLoaderClassName = json.getProperty(SERVICE_LOADER_KEY).getString();
 
-        Class<?> rawClass = Class.forName(componentLoaderClassName);
+        Class<?> rawComponentLoaderClass = Class.forName(componentLoaderClassName);
         Class<? extends KComponentLoader>
-            compoentLoaderClass = (Class<? extends KComponentLoader>) rawClass;
+            compoentLoaderClass = (Class<? extends KComponentLoader>) rawComponentLoaderClass;
+
+        Class<?> rawServiceLoaderClass = Class.forName(serviceLoaderClassName);
+        Class<? extends KServiceLoader>
+            serviceLoaderClass = (Class<? extends KServiceLoader>) rawServiceLoaderClass;
 
         List<Class<? extends KComponent>> components = new ArrayList<>();
         json.getProperty(COMPONENTS_KEY).forEach((component) -> {
@@ -74,7 +82,11 @@ public record KEngineHypervisorConfig(
 
         });
 
-        return new KEngineHypervisorConfig(compoentLoaderClass, components);
+        return new KEngineHypervisorConfig(
+            compoentLoaderClass,
+            serviceLoaderClass,
+            components
+        );
 
     }
 

@@ -32,6 +32,7 @@ public interface KComponentLoader {
     /**
      * Loads engine component with given class and puts it in loadedComponentMap.
      * @param component Class of component to load
+     * @param serviceLoader Instance of component services loader
      * @param loadedComponentMap Map of loaded components. Used to prevent loading two components
      *                           with the same name, provided by {@link KComponentMetaInfo}
      *                           annotation
@@ -40,6 +41,7 @@ public interface KComponentLoader {
      */
     void load(
         Class<? extends KComponent> component,
+        KServiceLoader serviceLoader,
         Map<String, KComponent> loadedComponentMap
     ) throws KComponentLoadingException;
 
