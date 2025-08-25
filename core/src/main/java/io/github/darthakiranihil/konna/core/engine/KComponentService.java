@@ -16,5 +16,18 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Marks that this class should be used as a component service.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 public @interface KComponentService {
 }

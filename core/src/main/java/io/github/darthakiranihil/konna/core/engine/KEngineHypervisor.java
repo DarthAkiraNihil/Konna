@@ -38,7 +38,8 @@ public class KEngineHypervisor {
 
     /**
      * Constructs hypervisor with provided config.
-     * @param config Config of the hypervisor.
+     * @param jsonParser Json parser
+     * @param config Config of the hypervisor
      */
     public KEngineHypervisor(final KJsonParser jsonParser, final KEngineHypervisorConfig config) {
 

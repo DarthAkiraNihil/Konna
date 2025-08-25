@@ -43,7 +43,9 @@ public class KStandardComponentLoader implements KComponentLoader {
     }
 
     @Override
-    public KComponent load(final Class<? extends KComponent> component) throws KComponentLoadingException {
+    public KComponent load(
+        final Class<? extends KComponent> component
+    ) throws KComponentLoadingException {
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
@@ -62,8 +64,8 @@ public class KStandardComponentLoader implements KComponentLoader {
                 parsedConfig = this.parser.parse(config);
             }
 
-            var constructor = component.getConstructor(KJsonValue.class);
-            return constructor.newInstance(parsedConfig);
+            var constructor = component.getConstructor(String.class, KJsonValue.class);
+            return constructor.newInstance(meta.servicesPackage(), parsedConfig);
         } catch (Exception e) {
             throw new KComponentLoadingException(e);
         }
