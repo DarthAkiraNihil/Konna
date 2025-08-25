@@ -428,4 +428,25 @@ public class KJsonValue implements Iterable<KJsonValue> {
         return this.value;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        KJsonValue that = (KJsonValue) o;
+        return this.type == that.type && Objects.equals(this.value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.type, this.value);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("KJsonValue[%s]{%s}", this.type, this.value);
+    }
 }
