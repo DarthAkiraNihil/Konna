@@ -16,5 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+
+import java.util.List;
+
 public abstract class KComponent {
+
+    protected final List<KComponentService> services;
+
+    public KComponent(final KJsonValue config) {
+
+        this.services = null;
+
+    }
 }

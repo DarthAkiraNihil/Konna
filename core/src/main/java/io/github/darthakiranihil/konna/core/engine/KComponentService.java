@@ -16,5 +16,5 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-public abstract class KComponentService {
+public @interface KComponentService {
 }

@@ -16,8 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.engine.std;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
+import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+
+import java.io.InputStream;
 
 /**
  * Standard implementation of {@link KComponentLoader}.
@@ -25,14 +31,41 @@ import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@SuppressWarnings("unused")
 public class KStandardComponentLoader implements KComponentLoader {
 
+    private final ClassLoader classLoader;
+    private final KJsonParser parser;
+
+    public KStandardComponentLoader(final KJsonParser parser) {
+        this.classLoader = Thread.currentThread().getContextClassLoader();
+        this.parser = parser;
+    }
+
     @Override
-    public KComponent load(final Class<? extends KComponent> component) {
+    public KComponent load(final Class<? extends KComponent> component) throws KComponentLoadingException {
         try {
-            return component.getConstructor().newInstance();
-        } catch (Exception e) { // remove this and wrap into specified exception
-            throw new RuntimeException(e);
+
+            if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
+                throw new KComponentLoadingException(
+                    String.format(
+                        "Cannot load component %s: meta info not provided",
+                        component
+                    )
+                );
+            }
+
+            KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
+
+            KJsonValue parsedConfig;
+            try (InputStream config = this.classLoader.getResourceAsStream(meta.configFilename())) {
+                parsedConfig = this.parser.parse(config);
+            }
+
+            var constructor = component.getConstructor(KJsonValue.class);
+            return constructor.newInstance(parsedConfig);
+        } catch (Exception e) {
+            throw new KComponentLoadingException(e);
         }
     }
 }

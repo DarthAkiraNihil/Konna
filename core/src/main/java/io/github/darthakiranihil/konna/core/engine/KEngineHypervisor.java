@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,16 +34,20 @@ public class KEngineHypervisor {
 
     private final KComponentLoader componentLoader;
     private final List<KComponent> engineComponents;
+    private final KJsonParser jsonParser;
 
     /**
      * Constructs hypervisor with provided config.
      * @param config Config of the hypervisor.
      */
-    public KEngineHypervisor(final KEngineHypervisorConfig config) {
+    public KEngineHypervisor(final KJsonParser jsonParser, final KEngineHypervisorConfig config) {
+
+        this.jsonParser = jsonParser;
 
         try {
 
-            this.componentLoader = config.componentLoader().getConstructor().newInstance();
+            var componentLoaderConstructor = config.componentLoader().getConstructor(KJsonParser.class);
+            this.componentLoader = componentLoaderConstructor.newInstance(this.jsonParser);
             this.engineComponents = new ArrayList<>();
 
             for (var component: config.components()) {
@@ -54,11 +60,11 @@ public class KEngineHypervisor {
                 NoSuchMethodException
             |   InvocationTargetException
             |   InstantiationException
-            |   IllegalAccessException e
+            |   IllegalAccessException
+            |   KComponentLoadingException e
         ) {
             throw new KHypervisorInitializationException(e);
         }
-
 
     }
 

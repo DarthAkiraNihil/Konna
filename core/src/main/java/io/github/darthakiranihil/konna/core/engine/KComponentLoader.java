@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+
 /**
  * Interface for a component loader - class which task is to instantiate and initialize
  * given component that is prepared for subsequent configuring.
@@ -29,7 +31,8 @@ public interface KComponentLoader {
      * Loads engine component with given class.
      * @param component Class of component to load
      * @return Loaded (instantiated and initialized) component
+     * @throws KComponentLoadingException when component failed to be loaded
      */
-    KComponent load(Class<? extends KComponent> component);
+    KComponent load(Class<? extends KComponent> component) throws KComponentLoadingException;
 
 }
