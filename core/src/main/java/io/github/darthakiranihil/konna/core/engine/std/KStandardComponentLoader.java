@@ -29,6 +29,10 @@ public class KStandardComponentLoader implements KComponentLoader {
 
     @Override
     public KComponent load(final Class<? extends KComponent> component) {
-        return null;
+        try {
+            return component.getConstructor().newInstance();
+        } catch (Exception e) { // remove this and wrap into specified exception
+            throw new RuntimeException(e);
+        }
     }
 }
