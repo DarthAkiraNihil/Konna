@@ -21,8 +21,8 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Konna Engine Hypervisor - the primal class for the engine that controls the whole system.
@@ -33,7 +33,7 @@ import java.util.List;
 public class KEngineHypervisor {
 
     private final KComponentLoader componentLoader;
-    private final List<KComponent> engineComponents;
+    private final Map<String, KComponent> engineComponents;
     private final KJsonParser jsonParser;
 
     /**
@@ -47,14 +47,14 @@ public class KEngineHypervisor {
 
         try {
 
-            var componentLoaderConstructor = config.componentLoader().getConstructor(KJsonParser.class);
+            var componentLoaderConstructor = config
+                                                .componentLoader()
+                                                .getConstructor(KJsonParser.class);
             this.componentLoader = componentLoaderConstructor.newInstance(this.jsonParser);
-            this.engineComponents = new ArrayList<>();
+            this.engineComponents = new HashMap<>();
 
             for (var component: config.components()) {
-                this.engineComponents.add(
-                    this.componentLoader.load(component)
-                );
+                this.componentLoader.load(component, this.engineComponents);
             }
 
         } catch (

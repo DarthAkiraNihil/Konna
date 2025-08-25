@@ -14,7 +14,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface KComponentMetaInfo {
-    // String name();
+    /**
+     * Unique name of the component. It is used in message routing process as
+     * the first path coordinate.
+     * @return Name of the component.
+     */
+    String name();
 
     /**
      * Returns config filename of the component. The config is read from java resources

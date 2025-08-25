@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 
+import java.util.Map;
+
 /**
  * Interface for a component loader - class which task is to instantiate and initialize
  * given component that is prepared for subsequent configuring.
@@ -28,11 +30,17 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 public interface KComponentLoader {
 
     /**
-     * Loads engine component with given class.
+     * Loads engine component with given class and puts it in loadedComponentMap.
      * @param component Class of component to load
-     * @return Loaded (instantiated and initialized) component
+     * @param loadedComponentMap Map of loaded components. Used to prevent loading two components
+     *                           with the same name, provided by {@link KComponentMetaInfo}
+     *                           annotation
      * @throws KComponentLoadingException when component failed to be loaded
+ *                                        (see cause for details)
      */
-    KComponent load(Class<? extends KComponent> component) throws KComponentLoadingException;
+    void load(
+        Class<? extends KComponent> component,
+        Map<String, KComponent> loadedComponentMap
+    ) throws KComponentLoadingException;
 
 }

@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine;
+package io.github.darthakiranihil.konna.core.engine.except;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KThrowable;
+import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
-/**
- * Marks that this class should be used as a component service.
- *
- * @since 0.2.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface KComponentService {
-    /**
-     * Unique name of the service. It is used in message routing process as
-     * the second path coordinate.
-     * @return Name of the service.
-     */
-    String name();
+public class KEndpointRoutingException extends KException implements KThrowable {
+
+    public KEndpointRoutingException(final String message) {
+        super(message);
+    }
+
+    @Override
+    public KThrowableSeverity getSeverity() {
+        return KThrowableSeverity.ERROR;
+    }
 }

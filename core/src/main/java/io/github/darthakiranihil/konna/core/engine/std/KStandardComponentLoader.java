@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Standard implementation of {@link KComponentLoader}.
@@ -43,8 +44,9 @@ public class KStandardComponentLoader implements KComponentLoader {
     }
 
     @Override
-    public KComponent load(
-        final Class<? extends KComponent> component
+    public void load(
+        final Class<? extends KComponent> component,
+        final Map<String, KComponent> loadedComponentMap
     ) throws KComponentLoadingException {
         try {
 
@@ -58,6 +60,17 @@ public class KStandardComponentLoader implements KComponentLoader {
             }
 
             KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
+            String componentName = meta.name();
+            
+            if (loadedComponentMap.containsKey(componentName)) {
+                throw new KComponentLoadingException(
+                    String.format(
+                        "Cannot load component %s: there is a component with the same name: %s",
+                        component,
+                        componentName
+                    )
+                );
+            }
 
             KJsonValue parsedConfig;
             try (InputStream config = this.classLoader.getResourceAsStream(meta.configFilename())) {
@@ -65,7 +78,10 @@ public class KStandardComponentLoader implements KComponentLoader {
             }
 
             var constructor = component.getConstructor(String.class, KJsonValue.class);
-            return constructor.newInstance(meta.servicesPackage(), parsedConfig);
+            loadedComponentMap.put(
+                componentName,
+                constructor.newInstance(meta.servicesPackage(), parsedConfig)
+            );
         } catch (Exception e) {
             throw new KComponentLoadingException(e);
         }
