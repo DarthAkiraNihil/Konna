@@ -77,4 +77,22 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(KJsonValueException.class, nonArray::iterator);
 
     }
+
+    @Test
+    public void testApplyForEachOfNonArray() {
+
+        KJsonValue nonArray = KJsonValue.fromNumber(0);
+
+        Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonArray.forEach((_p) -> {}));
+
+    }
+
+    @Test
+    public void testGetSpliteratorOfNonArray() {
+
+        KJsonValue nonArray = KJsonValue.fromNumber(0);
+
+        Assertions.assertThrowsExactly(KJsonValueException.class, nonArray::spliterator);
+
+    }
 }
