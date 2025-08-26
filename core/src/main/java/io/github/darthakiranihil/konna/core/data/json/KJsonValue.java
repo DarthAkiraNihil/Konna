@@ -447,6 +447,6 @@ public class KJsonValue implements Iterable<KJsonValue> {
 
     @Override
     public String toString() {
-        return String.format("KJsonValue[%s]{%s}", this.type, this.value);
+        return String.format("KJsonValue[%s]{%s}", this.type, this.value.getClass());
     }
 }
