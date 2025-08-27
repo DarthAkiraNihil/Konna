@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.except;
+package io.github.darthakiranihil.konna.core.engine.except;
+
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KThrowable;
+import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
 /**
- * Class for unchecked Konna exceptions.
- * @see KThrowable
+ * Exception thrown when an engine component could not be loaded.
  *
- * @since 0.1.0
+ * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public abstract class KRuntimeException extends RuntimeException implements KThrowable {
+public class KComponentLoadingException extends KException implements KThrowable {
 
-    /**
-     * Constructs exception with a provided message.
-     * @param message Exception message
-     */
-    public KRuntimeException(final String message) {
+    public KComponentLoadingException(final Throwable cause) {
+        super(cause);
+    }
+
+    public KComponentLoadingException(final String message) {
         super(message);
     }
 
-    /**
-     * Constructs exception with a provided cause.
-     * @param cause The throwable caused the exception
-     */
-    public KRuntimeException(final Throwable cause) {
-        super(cause);
+    @Override
+    public KThrowableSeverity getSeverity() {
+        return KThrowableSeverity.FATAL;
     }
 }

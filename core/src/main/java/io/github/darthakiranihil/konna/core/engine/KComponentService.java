@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.except;
+package io.github.darthakiranihil.konna.core.engine;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Class for unchecked Konna exceptions.
- * @see KThrowable
+ * Marks that this class should be used as a component service.
  *
- * @since 0.1.0
+ * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public abstract class KRuntimeException extends RuntimeException implements KThrowable {
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface KComponentService {
     /**
-     * Constructs exception with a provided message.
-     * @param message Exception message
+     * Unique name of the service. It is used in message routing process as
+     * the second path coordinate.
+     * @return Name of the service.
      */
-    public KRuntimeException(final String message) {
-        super(message);
-    }
-
-    /**
-     * Constructs exception with a provided cause.
-     * @param cause The throwable caused the exception
-     */
-    public KRuntimeException(final Throwable cause) {
-        super(cause);
-    }
+    String name();
 }
