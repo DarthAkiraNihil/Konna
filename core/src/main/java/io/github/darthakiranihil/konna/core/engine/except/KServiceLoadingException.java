@@ -20,6 +20,12 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown when a component service fails to load.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KServiceLoadingException extends KException implements KThrowable {
 
     public KServiceLoadingException(final String message) {

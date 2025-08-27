@@ -28,6 +28,12 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Standard implementation of {@link KServiceLoader}.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KStandardServiceLoader implements KServiceLoader {
 
     @Override

@@ -20,6 +20,14 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown when an endpoint of a component service failed to invoke.
+ * Usually reason for it is calling non-existent endpoint by providing
+ * endpoint route.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KEndpointRoutingException extends KException implements KThrowable {
 
     public KEndpointRoutingException(final String message) {
