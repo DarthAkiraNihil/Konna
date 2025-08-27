@@ -18,12 +18,12 @@ The foundation that is essential for the whole engine
 
 ### v. 0.2.0 - The Base Core
 
-- [ ] Add classes that describe engine components and engine hypervisor
-    - [ ] Implement Engine component loader
-    - [ ] Add support for Engine component Api
-      - [ ] Add services - group of component endpoints
-      - [ ] Add clerks - util classes (aka "real services") for services
-      - [ ] Add necessary annotations that helps hypervisor to configure endpoint routing automatically
+- [x] Add classes that describe engine components and engine hypervisor
+    - [x] Implement Engine component loader
+    - [x] Add support for Engine component Api
+      - [x] Add services - group of component endpoints
+      - [x] Add clerks - util classes (aka "real services") for services
+      - [x] Add necessary annotations that helps hypervisor to configure endpoint routing automatically
 - [ ] Add json schema validators (?)
 - [ ] Add wrapper class for Java AWT Window
   - [ ] Add abstraction for renderable object that holds primitive information such as color, image etc.
