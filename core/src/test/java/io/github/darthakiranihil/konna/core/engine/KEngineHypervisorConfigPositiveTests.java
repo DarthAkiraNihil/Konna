@@ -32,7 +32,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
 
         String config = "{" +
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
-            "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader\"," +
+            "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
             "\"components\": [" +
                 "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";
