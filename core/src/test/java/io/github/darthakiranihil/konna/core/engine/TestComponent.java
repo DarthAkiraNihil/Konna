@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 @KComponentMetaInfo(
     name = "TestComponent",
     configFilename = "test_config.json",
-    servicesPackage = "aboba.test"
+    servicesPackage = "io.github.darthakiranihil.konna.core.engine.impl"
 )
 public class TestComponent extends KComponent {
 

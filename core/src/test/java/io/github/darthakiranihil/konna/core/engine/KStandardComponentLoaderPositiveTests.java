@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
+import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,13 +34,14 @@ public class KStandardComponentLoaderPositiveTests extends KStandardTestClass {
         KStandardComponentLoader loader = new KStandardComponentLoader(
             KStandardTestClass.jsonParser
         );
+        KStandardComponentServiceLoader serviceLoader = new KStandardComponentServiceLoader();
 
         Map<String, KComponent> loadedComponents = new HashMap<>();
 
         try {
             loader.load(
                 TestComponent.class,
-                null,
+                serviceLoader,
                 loadedComponents
             );
 
