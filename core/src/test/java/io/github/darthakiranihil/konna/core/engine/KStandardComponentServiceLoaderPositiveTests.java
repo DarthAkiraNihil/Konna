@@ -16,31 +16,30 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
+import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class KComponentPositiveTests extends KStandardTestClass {
-
-
+public class KStandardComponentServiceLoaderPositiveTests extends KStandardTestClass {
 
     @Test
-    public void testInstantiateComponentSuccess() {
-        KServiceLoader serviceLoader = new KStandardComponentServiceLoader();
+    public void testLoadComponentSuccess() {
+
+        KServiceLoader loader = new KStandardComponentServiceLoader();
+        Map<String, KServiceEntry> loadedServices = new HashMap<>();
 
         try {
-            new TestComponent(
-                serviceLoader,
-                "io.github.darthakiranihil.konna.core.engine.impl",
-                KJsonValue.fromMap(new HashMap<>())
-            );
-        } catch (KComponentLoadingException e) {
+            loader.load(TestService.class, loadedServices);
+            Assertions.assertTrue(loadedServices.containsKey("TestService"));
+        } catch (KServiceLoadingException e) {
             Assertions.fail(e);
         }
+
     }
 }

@@ -36,11 +36,7 @@ public class KStandardComponentServiceLoader implements KServiceLoader {
         final Map<String, KServiceEntry> loadedServicesMap
     ) throws KServiceLoadingException {
 
-        // in normal pipeline, service will contain KComponentService annotation because KComponent
-        // looks for them in specific package
-
-        KComponentService meta = service.getAnnotation(KComponentService.class);
-        String serviceName = meta.name();
+        String serviceName = service.getAnnotation(KComponentService.class).name();
 
         if (loadedServicesMap.containsKey(serviceName)) {
             throw new KServiceLoadingException(
@@ -71,7 +67,7 @@ public class KStandardComponentServiceLoader implements KServiceLoader {
         try {
              serviceConstructor = service.getConstructor();
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new KServiceLoadingException(e);
         }
 
         try {
@@ -84,7 +80,7 @@ public class KStandardComponentServiceLoader implements KServiceLoader {
                 )
             );
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new KServiceLoadingException(e);
         }
     }
 }

@@ -14,10 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine;
+package io.github.darthakiranihil.konna.core.engine.impl;
+
+import io.github.darthakiranihil.konna.core.engine.KComponentService;
+import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 
 @KComponentService(
     name = "TestService"
 )
 public class TestService {
+
+    @KServiceEndpoint(route = "testEndpoint")
+    public void testEndpoint() {
+
+    }
+
+    public void notEndpoint() {
+
+    }
+
 }

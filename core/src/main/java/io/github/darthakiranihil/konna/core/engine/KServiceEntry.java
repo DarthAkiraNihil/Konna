@@ -32,7 +32,7 @@ public class KServiceEntry {
         this.endpoints = endpoints;
     }
 
-    public void callEndpoint(final String route) throws KEndpointRoutingException {
+    public void callEndpoint(final String route, final Object... args) throws KEndpointRoutingException {
         if (!this.endpoints.containsKey(route)) {
             throw new KEndpointRoutingException(
                 String.format(
@@ -43,7 +43,7 @@ public class KServiceEntry {
         }
 
         try {
-            this.endpoints.get(route).invoke(this.service);
+            this.endpoints.get(route).invoke(this.service, args);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
