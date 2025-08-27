@@ -19,6 +19,11 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 
+@KComponentMetaInfo(
+    name = "TestComponent",
+    configFilename = "test_config.json",
+    servicesPackage = "aboba.test"
+)
 public class TestComponent extends KComponent {
 
     public TestComponent(
