@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
-import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -69,7 +69,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             engineComponents.setAccessible(true);
 
             Assertions.assertEquals(KStandardComponentLoader.class, componentLoader.get(hypervisor).getClass());
-            Assertions.assertEquals(KStandardComponentServiceLoader.class, serviceLoader.get(hypervisor).getClass());
+            Assertions.assertEquals(KStandardServiceLoader.class, serviceLoader.get(hypervisor).getClass());
 
             Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
             Assertions.assertTrue(mapOfComponents.containsKey("TestComponent"));

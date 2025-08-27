@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KStandardComponentServiceLoader implements KServiceLoader {
+public class KStandardServiceLoader implements KServiceLoader {
 
     @Override
     public void load(

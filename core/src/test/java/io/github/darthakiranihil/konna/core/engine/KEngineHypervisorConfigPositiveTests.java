@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
-import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(TestComponent.class, loadedConfig.components().getFirst());
             Assertions.assertEquals(KStandardComponentLoader.class, loadedConfig.componentLoader());
-            Assertions.assertEquals(KStandardComponentServiceLoader.class, loadedConfig.serviceLoader());
+            Assertions.assertEquals(KStandardServiceLoader.class, loadedConfig.serviceLoader());
 
         } catch (KHypervisorInitializationException e) {
             Assertions.fail(e);
