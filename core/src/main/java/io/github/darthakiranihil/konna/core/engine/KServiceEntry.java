@@ -22,6 +22,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+/**
+ * Convenience wrapper for a component service.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KServiceEntry {
 
     private final Object service;
@@ -32,7 +38,17 @@ public class KServiceEntry {
         this.endpoints = endpoints;
     }
 
-    public void callEndpoint(final String route, final Object... args) throws KEndpointRoutingException {
+    /**
+     * Calls a service endpoint.
+     * @param route Route of called endpoint
+     * @param args Endpoint method arguments
+     * @throws KEndpointRoutingException If component with given route does not exist
+     *                                   in the service
+     */
+    public void callEndpoint(
+        final String route,
+        final Object... args
+    ) throws KEndpointRoutingException {
         if (!this.endpoints.containsKey(route)) {
             throw new KEndpointRoutingException(
                 String.format(
