@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -43,8 +44,15 @@ public class KStandardServiceLoader implements KServiceLoader {
     ) throws KServiceLoadingException {
 
         String serviceName = service.getAnnotation(KComponentService.class).name();
+        KLogger.info("Loading service %s [%s]", serviceName, service);
 
         if (loadedServicesMap.containsKey(serviceName)) {
+            KLogger.fatal(
+            "Cannot load service %s: there is a service with the same name"
+                +   "within the component: %s",
+                service,
+                serviceName
+            );
             throw new KServiceLoadingException(
                 String.format(
                         "Cannot load service %s: there is a service with the same name"
@@ -68,11 +76,18 @@ public class KStandardServiceLoader implements KServiceLoader {
                 method
             );
         }
+        KLogger.info(
+            "Found %d service endpoints in %s [%s]",
+            endpoints.size(),
+            serviceName,
+            service
+        );
 
         Constructor<?> serviceConstructor;
         try {
              serviceConstructor = service.getConstructor();
         } catch (NoSuchMethodException e) {
+            KLogger.fatal(e);
             throw new KServiceLoadingException(e);
         }
 
@@ -85,7 +100,9 @@ public class KStandardServiceLoader implements KServiceLoader {
                     endpoints
                 )
             );
+            KLogger.info("Loaded service %s [%s]", serviceName, service);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            KLogger.fatal(e);
             throw new KServiceLoadingException(e);
         }
     }

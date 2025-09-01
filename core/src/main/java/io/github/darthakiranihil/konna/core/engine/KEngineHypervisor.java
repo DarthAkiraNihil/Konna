@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -44,6 +45,8 @@ public class KEngineHypervisor {
      */
     public KEngineHypervisor(final KJsonParser jsonParser, final KEngineHypervisorConfig config) {
 
+        KLogger.info("Initializing engine hypervisor [config = %s]", config);
+
         this.jsonParser = jsonParser;
 
         try {
@@ -53,16 +56,22 @@ public class KEngineHypervisor {
                                                 .getConstructor(KJsonParser.class);
             this.componentLoader = componentLoaderConstructor.newInstance(this.jsonParser);
 
+            KLogger.info("Created component loader %s", config.componentLoader());
+
             var serviceLoaderConstructor = config
                 .serviceLoader()
                 .getConstructor();
             this.serviceLoader = serviceLoaderConstructor.newInstance();
+
+            KLogger.info("Created service loader %s", config.serviceLoader());
 
             this.engineComponents = new HashMap<>();
 
             for (var component: config.components()) {
                 this.componentLoader.load(component, this.serviceLoader, this.engineComponents);
             }
+
+            KLogger.info("Loaded %d components", this.engineComponents.size());
 
         } catch (
                 NoSuchMethodException
@@ -71,6 +80,7 @@ public class KEngineHypervisor {
             |   IllegalAccessException
             |   KComponentLoadingException e
         ) {
+            KLogger.error(e);
             throw new KHypervisorInitializationException(e);
         }
 

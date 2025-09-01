@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
 import java.io.IOException;
@@ -44,7 +45,8 @@ public abstract class KComponent {
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
-
+        String componentClass = this.getClass().toString();
+        KLogger.info("Creating component %s", componentClass);
 
         List<Class<?>> serviceClasses;
         try {
@@ -52,8 +54,10 @@ public abstract class KComponent {
                 servicesPackage, KComponentService.class
             );
         } catch (ClassNotFoundException | IOException e) {
+            KLogger.fatal(e);
             throw new KComponentLoadingException(e);
         }
+        KLogger.info("Found %d services of component %s", serviceClasses.size(), componentClass);
 
         Map<String, KServiceEntry> instantiatedServices = new HashMap<>();
         try {
@@ -66,11 +70,19 @@ public abstract class KComponent {
         } catch (
             KServiceLoadingException e
         ) {
+            KLogger.fatal(e);
             throw new KComponentLoadingException(e);
         }
+        KLogger.info(
+            "Loaded %d services of component %s",
+            instantiatedServices.size(),
+            componentClass
+        );
 
         this.services = instantiatedServices;
+        KLogger.info("Applying config for %s", componentClass);
         this.applyConfig(config);
+        KLogger.info("Created component %s", componentClass);
     }
 
     protected abstract void applyConfig(KJsonValue config);

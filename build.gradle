@@ -115,7 +115,16 @@ jreleaser {
 }
 
 jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
+    dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'io/github/darthakiranihil/konna/core/log/**'
+            ])
+        }))
+    }
+
     reports {
         xml.required =  false
         csv.required = false
