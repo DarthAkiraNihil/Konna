@@ -20,10 +20,21 @@ import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 
+/**
+ * Implementation of {@link KLogHandler} that writes log
+ * messages to stdout (just like terminal). Requires formatter
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KTerminalLogHandler implements KLogHandler {
 
     private final KLogFormatter logFormatter;
 
+    /**
+     * Constructs handler with provided formatter.
+     * @param logFormatter Log formatter
+     */
     public KTerminalLogHandler(final KLogFormatter logFormatter) {
         this.logFormatter = logFormatter;
     }

@@ -21,6 +21,13 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
 
 import java.time.Instant;
 
+/**
+ * Implementation of {@link KLogFormatter} that formats given message
+ * and adds timestamp to it.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KTimestampLogFormatter implements KLogFormatter {
 
     @Override

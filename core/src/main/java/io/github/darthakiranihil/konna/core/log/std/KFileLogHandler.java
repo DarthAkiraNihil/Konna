@@ -24,11 +24,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * Implementation of {@link KLogHandler} that writes log
+ * messages to a file (it appends to it). Requires formatter
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KFileLogHandler implements KLogHandler, AutoCloseable {
 
     private final KLogFormatter logFormatter;
     private final Writer fileWriter;
 
+    /**
+     * Constructs handler with opening file with given name and provided formatter.
+     * @param filename Filename of log to open
+     * @param logFormatter Log formatter
+     */
     public KFileLogHandler(final String filename, final KLogFormatter logFormatter) {
 
         this.logFormatter = logFormatter;
@@ -65,6 +77,6 @@ public class KFileLogHandler implements KLogHandler, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-//        this.fileWriter.close();
-}
+        this.fileWriter.close();
+    }
 }

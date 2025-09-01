@@ -73,7 +73,11 @@ public abstract class KComponent {
             KLogger.fatal(e);
             throw new KComponentLoadingException(e);
         }
-        KLogger.info("Loaded %d services of component %s", instantiatedServices.size(), componentClass);
+        KLogger.info(
+            "Loaded %d services of component %s",
+            instantiatedServices.size(),
+            componentClass
+        );
 
         this.services = instantiatedServices;
         KLogger.info("Applying config for %s", componentClass);

@@ -23,7 +23,7 @@ import java.time.Instant;
 
 /**
  * Implementation of {@link KLogFormatter} that formats given message
- * and adds timestamp to it and colors the message log level.
+ * and adds timestamp to it and colors of the message log level.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
