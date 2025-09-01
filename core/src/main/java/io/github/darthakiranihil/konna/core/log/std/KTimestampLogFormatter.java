@@ -26,7 +26,7 @@ public class KTimestampLogFormatter implements KLogFormatter {
     @Override
     public String format(final KLogLevel level, final String message, final Object... args) {
         return String.format(
-            "[%s][%s][%s]\n",
+            "[%s] [%s]: %s\n",
             Instant.now(),
             level,
             String.format(message, args)

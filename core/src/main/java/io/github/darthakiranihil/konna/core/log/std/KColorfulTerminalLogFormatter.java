@@ -43,7 +43,7 @@ public class KColorfulTerminalLogFormatter implements KLogFormatter {
     @Override
     public String format(final KLogLevel level, final String message, final Object... args) {
         return String.format(
-            "[%s][%s%s\033[0m][%s]",
+            "[%s] [%s%s\033[0m]: %s",
             Instant.now(),
             KColorfulTerminalLogFormatter.levelToColor(level),
             level,

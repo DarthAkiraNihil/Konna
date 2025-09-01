@@ -65,6 +65,6 @@ public class KFileLogHandler implements KLogHandler, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        this.fileWriter.close();
-    }
+//        this.fileWriter.close();
+}
 }

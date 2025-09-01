@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -52,6 +53,7 @@ public class KStandardComponentLoader implements KComponentLoader {
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
+                KLogger.fatal("Cannot load component %s: meta info not provided", component);
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: meta info not provided",
@@ -62,8 +64,16 @@ public class KStandardComponentLoader implements KComponentLoader {
 
             KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
             String componentName = meta.name();
+
+            KLogger.info("Loading component %s", componentName);
             
             if (loadedComponentMap.containsKey(componentName)) {
+                KLogger.fatal(
+                    "Cannot load component %s: there is a component with the same name: %s",
+                    component,
+                    componentName
+                );
+
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: there is a component with the same name: %s",
@@ -88,7 +98,9 @@ public class KStandardComponentLoader implements KComponentLoader {
                 componentName,
                 constructor.newInstance(serviceLoader, meta.servicesPackage(), parsedConfig)
             );
+            KLogger.info("Loaded component %s", componentName);
         } catch (Exception e) {
+            KLogger.fatal(e);
             throw new KComponentLoadingException(e);
         }
     }

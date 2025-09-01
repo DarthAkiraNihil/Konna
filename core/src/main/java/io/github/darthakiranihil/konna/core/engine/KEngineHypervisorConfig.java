@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ public record KEngineHypervisorConfig(
                     (Class<? extends KComponent>) Class.forName(component.getString())
                 );
             } catch (ClassNotFoundException e) {
+                KLogger.error(e);
                 throw new KHypervisorInitializationException(e);
             }
 
