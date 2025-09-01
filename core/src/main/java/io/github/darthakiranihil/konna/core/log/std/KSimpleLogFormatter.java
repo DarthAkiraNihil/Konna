@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.log;
+package io.github.darthakiranihil.konna.core.log.std;
+
+import io.github.darthakiranihil.konna.core.log.KLogFormatter;
+import io.github.darthakiranihil.konna.core.log.KLogLevel;
 
 /**
- * Interface for a log formatter that is designed to prepare log messages
- * to be handled by {@link KLogHandler} in specified format.
+ * Implementation of {@link KLogFormatter} that just formats the message with
+ * args without any other things.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public interface KLogFormatter {
+public class KSimpleLogFormatter implements KLogFormatter {
 
-    /**
-     * Formats a log message.
-     *
-     * @param level Log message level
-     * @param message Base message
-     * @param args Format arguments
-     * @return Formatted log message
-     */
-    String format(KLogLevel level, String message, Object... args);
+    @Override
+    public String format(final KLogLevel level, final String message, final Object... args) {
+        return String.format(message, args);
+    }
 
 }

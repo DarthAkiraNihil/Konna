@@ -36,6 +36,7 @@ public final class KLogger {
     }
 
     private static boolean isInitialized;
+    private static final Object LOG_LOCK = new Object();
 
     private static KLogLevel logLevel;
     private static KLogFormatter defaultLogFormatter;
@@ -82,13 +83,14 @@ public final class KLogger {
         }
 
         for (var handler: KLogger.logHandlers) {
-            if (handler.hasFormatter()) {
-                handler.handleLog(level, message, args);
-            } else {
-                handler.handleLog(
-                    level,
-                    KLogger.defaultLogFormatter.format(message, args)
-                );
+            synchronized (KLogger.LOG_LOCK) {
+                if (handler.hasFormatter()) {
+                    handler.handleLog(level, message, args);
+                } else {
+                    handler.handleLog(
+                        level, KLogger.defaultLogFormatter.format(level, message, args)
+                    );
+                }
             }
         }
 
