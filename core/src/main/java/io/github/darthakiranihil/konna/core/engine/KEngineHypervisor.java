@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KEngineHypervisor {
+public class KEngineHypervisor extends KObject {
 
     private final KComponentLoader componentLoader;
     private final KServiceLoader serviceLoader;
@@ -44,6 +45,8 @@ public class KEngineHypervisor {
      * @param config Config of the hypervisor
      */
     public KEngineHypervisor(final KJsonParser jsonParser, final KEngineHypervisorConfig config) {
+
+        super(KEngineHypervisor.class.getSimpleName());
 
         KLogger.info("Initializing engine hypervisor [config = %s]", config);
 

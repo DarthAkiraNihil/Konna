@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.log.std;
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
 /**
  * Implementation of {@link KLogHandler} that writes log
@@ -27,7 +28,7 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KTerminalLogHandler implements KLogHandler {
+public class KTerminalLogHandler extends KObject implements KLogHandler {
 
     private final KLogFormatter logFormatter;
 
@@ -36,6 +37,7 @@ public class KTerminalLogHandler implements KLogHandler {
      * @param logFormatter Log formatter
      */
     public KTerminalLogHandler(final KLogFormatter logFormatter) {
+        super(KTerminalLogHandler.class.getSimpleName());
         this.logFormatter = logFormatter;
     }
 

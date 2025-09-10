@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.log.std;
 
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
 /**
  * Implementation of {@link KLogFormatter} that just formats the message with
@@ -26,7 +27,11 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KSimpleLogFormatter implements KLogFormatter {
+public class KSimpleLogFormatter extends KObject implements KLogFormatter {
+
+    public KSimpleLogFormatter() {
+        super(KSimpleLogFormatter.class.getSimpleName());
+    }
 
     @Override
     public String format(final KLogLevel level, final String message, final Object... args) {

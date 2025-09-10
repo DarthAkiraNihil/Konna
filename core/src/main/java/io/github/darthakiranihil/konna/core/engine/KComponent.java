@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author DarthAkiraNihil
  */
-public abstract class KComponent {
+public abstract class KComponent extends KObject {
 
     /**
      * List of component services.
@@ -45,6 +46,7 @@ public abstract class KComponent {
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
+        super(KComponent.class.getSimpleName());
         String componentClass = this.getClass().toString();
         KLogger.info("Creating component %s", componentClass);
 

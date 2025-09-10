@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.log.std;
 
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
 import java.time.Instant;
 
@@ -28,7 +29,11 @@ import java.time.Instant;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KTimestampLogFormatter implements KLogFormatter {
+public class KTimestampLogFormatter extends KObject implements KLogFormatter {
+
+    public KTimestampLogFormatter() {
+        super(KTimestampLogFormatter.class.getSimpleName());
+    }
 
     @Override
     public String format(final KLogLevel level, final String message, final Object... args) {

@@ -34,11 +34,24 @@ public class KObject implements Serializable {
 
     private static long createdObjects = 0;
 
-    private final UUID id;
+    /**
+     * Unique id of an object.
+     * It is assigned when object is created, and it is final, so id cannot be changed
+     */
+    protected final UUID id;
 
-    private final String name;
-    private List<KTag> tags;
-    private KObject parent;
+    /**
+     * Name of the object.
+     */
+    protected final String name;
+    /**
+     * Object tags.
+     */
+    protected List<KTag> tags;
+    /**
+     * Parent object.
+     */
+    protected KObject parent;
 
     /**
      * Zero-args KObject constructor.
@@ -143,6 +156,11 @@ public class KObject implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("KObject[%s][%s]", this.id.toString(), this.name);
+        return String.format(
+            "%s[%s][%s]",
+            this.getClass().getSimpleName(),
+            this.id.toString(),
+            this.name
+        );
     }
 }

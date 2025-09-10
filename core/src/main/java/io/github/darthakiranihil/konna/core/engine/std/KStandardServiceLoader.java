@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +36,11 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KStandardServiceLoader implements KServiceLoader {
+public class KStandardServiceLoader extends KObject implements KServiceLoader {
+
+    public KStandardServiceLoader() {
+        super(KStandardServiceLoader.class.getSimpleName());
+    }
 
     @Override
     public void load(

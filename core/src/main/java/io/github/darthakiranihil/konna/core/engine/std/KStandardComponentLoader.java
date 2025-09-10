@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -34,12 +35,13 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KStandardComponentLoader implements KComponentLoader {
+public class KStandardComponentLoader extends KObject implements KComponentLoader {
 
     private final ClassLoader classLoader;
     private final KJsonParser parser;
 
     public KStandardComponentLoader(final KJsonParser parser) {
+        super(KStandardComponentLoader.class.getSimpleName());
         this.classLoader = Thread.currentThread().getContextClassLoader();
         this.parser = parser;
     }
