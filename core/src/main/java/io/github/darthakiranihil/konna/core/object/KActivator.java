@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
+import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 
 import java.lang.ref.SoftReference;
@@ -29,6 +30,10 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public final class KActivator {
 
+    private KActivator() {
+
+    }
+
     private enum ObjectInstantiationType {
         IMMORTAL,
         SINGLETON,
@@ -39,22 +44,26 @@ public final class KActivator {
         TEMPORAL
     }
 
-    private static final Map<Class<?>, ObjectInstantiationType> objectInstantiationTypes = new HashMap<>();
+    private static final
+    Map<Class<?>, ObjectInstantiationType> OBJECT_INSTANTIATION_TYPES = new HashMap<>();
 
-    private static final Map<Class<?>, KObject> SINGLETONS = new HashMap<>();
-    private static final Map<Class<?>, WeakReference<KObject>> WEAK_SINGLETONS = new HashMap<>();
-    private static final Map<Class<?>, SoftReference<Class<?>>> cachedDependencies = new HashMap<>();
+    private static final
+    Map<Class<?>, KObject> SINGLETONS = new HashMap<>();
+    private static final
+    Map<Class<?>, WeakReference<KObject>> WEAK_SINGLETONS = new HashMap<>();
+    private static final
+    Map<Class<?>, SoftReference<Class<?>>> CACHED_DEPENDENCIES = new HashMap<>();
 
     public static <T> T create(final Class<? extends T> clazz, final KContainer container) {
 
         var klass = KActivator.getClassImplementation(clazz, container);
 
         ObjectInstantiationType instantiationType;
-        if (KActivator.objectInstantiationTypes.containsKey(klass)) {
-            instantiationType = KActivator.objectInstantiationTypes.get(klass);
+        if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
+            instantiationType = KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
         } else {
             instantiationType = KActivator.getInstantiationType(klass);
-            KActivator.objectInstantiationTypes.put(klass, instantiationType);
+            KActivator.OBJECT_INSTANTIATION_TYPES.put(klass, instantiationType);
         }
 
         return switch (instantiationType) {
@@ -64,13 +73,27 @@ public final class KActivator {
         };
     }
 
-    public static void delete() {
+    public static <T> T delete(T object) {
+        var klass = object.getClass();
 
+        ObjectInstantiationType instantiationType;
+        if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
+            instantiationType = KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
+        } else {
+            instantiationType = KActivator.getInstantiationType(klass);
+            KActivator.OBJECT_INSTANTIATION_TYPES.put(klass, instantiationType);
+        }
+
+        return switch (instantiationType) {
+            case SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, false);
+            case WEAK_SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, true);
+            default -> throw new RuntimeException("fuck fuck");
+        };
     }
 
     private static <T> Class<T> getClassImplementation(final Class<T> clazz, final KContainer container) {
-        if (KActivator.cachedDependencies.containsKey(clazz)) {
-            var ref = KActivator.cachedDependencies.get(clazz);
+        if (KActivator.CACHED_DEPENDENCIES.containsKey(clazz)) {
+            var ref = KActivator.CACHED_DEPENDENCIES.get(clazz);
             var klass = ref.get();
             if (klass != null) {
                 return (Class<T>) klass;
@@ -79,7 +102,7 @@ public final class KActivator {
 
         try {
             var klass = container.resolve(clazz);
-            KActivator.cachedDependencies.put(clazz, new SoftReference<>(klass));
+            KActivator.CACHED_DEPENDENCIES.put(clazz, new SoftReference<>(klass));
             return klass;
         } catch (KDependencyResolveException e) {
             throw new KInstantiationException(clazz, e);
@@ -137,5 +160,33 @@ public final class KActivator {
         var object = KActivator.createNewObject(clazz, container);
         KActivator.SINGLETONS.put(clazz, (KObject) object);
         return object;
+    }
+
+    private static <T> T deleteSingleton(final T object, final Class<T> clazz, boolean weak) {
+        if (weak) {
+            if (!KActivator.WEAK_SINGLETONS.containsKey(clazz)) {
+                throw new KDeletionException(
+                    object,
+                    "cannot delete a non-instantiated weak singleton"
+                );
+            }
+
+            var ref = KActivator.WEAK_SINGLETONS.get(clazz);
+            KObject deleted = ref.get();
+            if (deleted != null) {
+                KActivator.WEAK_SINGLETONS.remove(clazz);
+            }
+            return null;
+        }
+
+        if (!KActivator.SINGLETONS.containsKey(clazz)) {
+            throw new KDeletionException(
+                object,
+                "cannot delete a non-instantiated singleton"
+            );
+        }
+
+        KActivator.SINGLETONS.remove(clazz);
+        return null;
     }
 }

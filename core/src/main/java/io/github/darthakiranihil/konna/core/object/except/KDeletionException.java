@@ -22,31 +22,28 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
 /**
  * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KActivator}
- * failed to create an object.
- * By default, the exception is fatal.
+ * failed to "delete" an object.
+ * By default, the exception is a warning
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KInstantiationException extends KRuntimeException implements KThrowable {
+public class KDeletionException extends KRuntimeException implements KThrowable {
 
     /**
-     * Constructs exception with given class and cause.
-     * @param clazz Class that failed to be instantiated
+     * Constructs exception with provided object that failed to delete
+     * and provided string cause.
+     * @param object Object that failed to be deleted
      * @param cause Cause of failure
      */
-    public KInstantiationException(final Class<?> clazz, final Throwable cause) {
+    public KDeletionException(final Object object, final String cause) {
         super(
-            String.format(
-                "Cannot instantiate an object of class: %s - %s",
-                clazz,
-                cause
-            )
+            String.format("Cannot delete object %s - %s", object, cause)
         );
     }
 
     @Override
     public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+        return KThrowableSeverity.WARNING;
     }
 }
