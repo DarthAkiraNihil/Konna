@@ -123,6 +123,14 @@ public class KObject implements Serializable {
     }
 
     /**
+     * Sets a new parent object for current one.
+     * @param parent New parent object.
+     */
+    public void setParent(final KObject parent) {
+        this.parent = parent;
+    }
+
+    /**
      * Compares a KObject to another object.
      * The comparison does not involve object ids since it is generated randomly
      * for all created objects, so two "most likely to be equal" objects will have
