@@ -16,72 +16,123 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import java.util.Map;
+import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
+import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
+import sun.misc.Unsafe;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class KObjectPool<T extends KObject> extends KObject {
+public class KObjectPool<T> extends KObject {
 
-    private final class PoolRecord {
-        private final T object;
-        private boolean inUse;
+    private static Unsafe theUnsafe;
 
-        public T getObject() {
-            return this.object;
-        }
-
-        public boolean isInUse() {
-            return this.inUse;
-        }
-
-        private void setInUse(boolean flag) {
-            this.inUse = flag;
-        }
-
-        public PoolRecord(final T object) {
-            this.object = object;
-            this.inUse = false;
+    static {
+        try {
+            Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafeField.setAccessible(true);
+            KObjectPool.theUnsafe = (Unsafe) theUnsafeField.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            KLogger.fatal(e);
+            throw new RuntimeException(e);
         }
     }
 
-    private final Map<T, PoolRecord> objects;
+    private final List<T> objects;
     private final Queue<T> unusedObjects;
-    private final KPoolableObjectPolicy<T> objectPolicy;
 
-    public KObjectPool(int initialSize, final KPoolableObjectPolicy<T> objectPolicy) {
-        this.objects = new ConcurrentHashMap<>();
+    private final Method onObjectObtain;
+    private final Method onObjectRelease;
+
+    private final Class<T> clazz;
+    private final Class<?>[] onObtainParameterClasses;
+
+    @SuppressWarnings("unchecked")
+    public KObjectPool(final Class<T> clazz, int initialSize) {
+        this.clazz = clazz;
+        this.objects = new CopyOnWriteArrayList<>();
         this.unusedObjects = new ConcurrentLinkedQueue<>();
-        this.objectPolicy = objectPolicy;
+
+        Method onObtain = null;
+        Method onRelease = null;
+        for (var method: clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(KOnPoolableObjectObtain.class)) {
+                method.setAccessible(true);
+                onObtain = method;
+            }
+            if (method.isAnnotationPresent(KOnPoolableObjectRelease.class)) {
+                method.setAccessible(true);
+                onRelease = method;
+            }
+
+            if (onObtain != null && onRelease != null) {
+                break;
+            }
+        }
+
+        if (onObtain == null || onRelease == null) {
+            throw new KInvalidPoolableClassException(
+                String.format(
+                    "Cannot create pool for %s -"
+                    + " the class does not have both methods invoked"
+                    + " for obtaining and releasing the object",
+                    clazz
+                )
+            );
+        }
+
+        this.onObtainParameterClasses = onObtain.getParameterTypes();
+
+        this.onObjectObtain = onObtain;
+        this.onObjectRelease = onRelease;
 
         for (int i = 0; i < initialSize; i++) {
-            var object = this.objectPolicy.createInstance();
-
-            this.objects.put(object, new PoolRecord(object));
+            T object;
+            try {
+                object = (T) clazz.getConstructor().newInstance();
+                // object = (T) KObjectPool.theUnsafe.allocateInstance(clazz);
+            } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new KInstantiationException(clazz, e);
+            }
+            this.objects.add(object);
             this.unusedObjects.add(object);
         }
     }
 
-    public T obtain(final Object... args) {
+    public T obtain(final KContainer container, final Object... args) {
 
-        var obtained = this.unusedObjects.poll();
+        var obtained = this.unusedObjects.peek();
+        try {
+            Object[] parameters = new Object[this.onObtainParameterClasses.length];
+            for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
+                parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);
+            }
+            this.onObjectObtain.invoke(obtained, parameters);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new KInstantiationException(clazz, e);
+        }
 
-        PoolRecord poolRecord = this.objects.get(obtained);
-        poolRecord.setInUse(true);
-        this.objects.put(obtained, poolRecord);
-
-        this.objectPolicy.onObtain(obtained, args);
+        this.unusedObjects.poll();
         return obtained;
 
     }
 
     public void release(final T object) {
 
-        this.objectPolicy.onRelease(object);
-
-        PoolRecord poolRecord = this.objects.get(object);
-        poolRecord.setInUse(false);
-        this.objects.put(object, poolRecord);
+        try {
+            this.onObjectRelease.invoke(object);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new KDeletionException(object, e.getMessage());
+        }
 
         this.unusedObjects.add(object);
 

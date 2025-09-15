@@ -20,11 +20,15 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
+import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
@@ -52,7 +56,40 @@ public final class KActivator {
     private static final
     Map<Class<?>, WeakReference<KObject>> WEAK_SINGLETONS = new HashMap<>();
     private static final
+    Map<Class<?>, KObjectPool<?>> POOLS = new HashMap<>();
+
+
+    private static final
     Map<Class<?>, SoftReference<Class<?>>> CACHED_DEPENDENCIES = new HashMap<>();
+
+    static {
+
+        List<Class<?>> poolableClasses;
+        List<String> poolableCandidates = Arrays.stream(Package.getPackages())
+            .map(Package::getName)
+            .filter((name) -> !(name.startsWith("java") || name.startsWith("jdk") || name.startsWith("sun")))
+            .toList();
+
+        try {
+            poolableClasses = KAnnotationUtils.findAnnotatedClasses(KPoolable.class, poolableCandidates);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new KInstantiationException(KActivator.class, e);
+        }
+
+        for (var poolableClass: poolableClasses) {
+            KPoolable poolableMeta = poolableClass.getAnnotation(KPoolable.class);
+            int initialSize = poolableMeta.initialPoolSize();
+
+            KObjectPool<?> pool = new KObjectPool<>(
+                (Class<? extends KObject>) poolableClass,
+                initialSize
+            );
+
+            KActivator.POOLS.put(poolableClass, pool);
+
+        }
+
+    }
 
     public static <T> T create(final Class<? extends T> clazz, final KContainer container) {
 
@@ -63,6 +100,7 @@ public final class KActivator {
         return switch (instantiationType) {
             case SINGLETON -> KActivator.createSingleton(klass,  container, false);
             case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true);
+            case POOLABLE -> KActivator.createPoolable(klass, container);
             default -> throw new RuntimeException("fuck fuck");
         };
     }
@@ -76,6 +114,7 @@ public final class KActivator {
         switch (instantiationType) {
             case SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, false);
             case WEAK_SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, true);
+            case POOLABLE -> KActivator.deletePoolable(object, (Class<T>) klass);
             default -> throw new RuntimeException("fuck fuck");
         };
     }
@@ -114,6 +153,10 @@ public final class KActivator {
             return meta.weak()
                 ? ObjectInstantiationType.WEAK_SINGLETON
                 : ObjectInstantiationType.SINGLETON;
+        }
+
+        if (clazz.isAnnotationPresent(KPoolable.class)) {
+            return ObjectInstantiationType.POOLABLE;
         }
 
         throw new RuntimeException("fuck");
@@ -161,6 +204,11 @@ public final class KActivator {
         return object;
     }
 
+    private static <T> T createPoolable(final Class<T> clazz, final KContainer container) {
+        KObjectPool<?> pool = KActivator.POOLS.get(clazz);
+        return (T) pool.obtain(container);
+    }
+
     private static <T> void deleteSingleton(final T object, final Class<T> clazz, boolean weak) {
         if (weak) {
             if (!KActivator.WEAK_SINGLETONS.containsKey(clazz)) {
@@ -185,5 +233,10 @@ public final class KActivator {
         }
 
         KActivator.SINGLETONS.remove(clazz);
+    }
+
+    private static <T> void deletePoolable(final T object, final Class<T> clazz) {
+        KObjectPool<T> pool = (KObjectPool<T>) KActivator.POOLS.get(clazz);
+        pool.release(object);
     }
 }

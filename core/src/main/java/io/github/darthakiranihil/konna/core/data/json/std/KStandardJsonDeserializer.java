@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
 import java.lang.reflect.Field;
@@ -40,6 +41,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
             theUnsafeField.setAccessible(true);
             KStandardJsonDeserializer.theUnsafe = (Unsafe) theUnsafeField.get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
+            KLogger.fatal(e);
             throw new RuntimeException(e);
         }
     }

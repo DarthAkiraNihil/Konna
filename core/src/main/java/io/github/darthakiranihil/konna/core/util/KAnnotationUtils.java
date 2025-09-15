@@ -20,9 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class that provides different useful annotation utils.
@@ -68,7 +66,17 @@ public final class KAnnotationUtils {
                 continue;
             }
 
-            for (File file : files) {
+            Queue<File> fileQueue = new LinkedList<>(Arrays.stream(files).toList());
+            while (fileQueue.peek() != null) {
+                File file = fileQueue.poll();
+
+                if (file.isDirectory()) {
+                    File[] subdirFiles = file.listFiles();
+                    if (subdirFiles != null) {
+                        fileQueue.addAll(Arrays.stream(subdirFiles).toList());
+                    }
+                }
+
                 if (!file.getName().endsWith(".class")) {
                     continue;
                 }
@@ -82,9 +90,60 @@ public final class KAnnotationUtils {
                 if (clazz.isAnnotationPresent(annotation)) {
                     annotatedClasses.add(clazz);
                 }
-
             }
 
+        }
+        return annotatedClasses;
+    }
+
+    /**
+     * Searches for classes with specific annotation in whole classpath.
+     * @param annotation Annotation that class must have
+     * @return List of annotated classes
+     * @throws ClassNotFoundException If it somehow fails to find a class in a package
+     * @throws IOException If resources failed to read
+     */
+    public static List<Class<?>> findAnnotatedClasses(
+        final Class<? extends Annotation> annotation,
+        final List<String> packages
+    ) throws ClassNotFoundException, IOException {
+
+        List<Class<?>> annotatedClasses = new ArrayList<>();
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        for (String packageName: packages) {
+
+            String path = packageName.replace('.', '/');
+            Enumeration<URL> resources = classLoader.getResources(path);
+
+            while (resources.hasMoreElements()) {
+                URL resource = resources.nextElement();
+                File directory = new File(resource.getFile());
+                if (!directory.exists()) {
+                    continue;
+                }
+
+                File[] files = directory.listFiles();
+                if (files == null) {
+                    continue;
+                }
+
+                for (File file : files) {
+                    if (!file.getName().endsWith(".class")) {
+                        continue;
+                    }
+
+                    String classFilename = file.getName().substring(0, file.getName().length() - CLASS_EXT_LENGTH);
+
+                    String className = packageName + "." + classFilename;
+                    Class<?> clazz = Class.forName(className);
+                    if (clazz.isAnnotationPresent(annotation)) {
+                        annotatedClasses.add(clazz);
+                    }
+
+                }
+
+            }
         }
         return annotatedClasses;
     }

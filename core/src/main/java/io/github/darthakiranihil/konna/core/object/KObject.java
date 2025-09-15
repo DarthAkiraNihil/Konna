@@ -167,7 +167,7 @@ public class KObject implements Serializable {
         return String.format(
             "%s[%s][%s]",
             this.getClass().getSimpleName(),
-            this.id.toString(),
+            this.id == null ? "unknown" : this.id.toString(),
             this.name
         );
     }
