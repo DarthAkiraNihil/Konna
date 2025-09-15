@@ -58,13 +58,7 @@ public final class KActivator {
 
         var klass = KActivator.getClassImplementation(clazz, container);
 
-        ObjectInstantiationType instantiationType;
-        if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
-            instantiationType = KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
-        } else {
-            instantiationType = KActivator.getInstantiationType(klass);
-            KActivator.OBJECT_INSTANTIATION_TYPES.put(klass, instantiationType);
-        }
+        ObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
         return switch (instantiationType) {
             case SINGLETON -> KActivator.createSingleton(klass,  container, false);
@@ -73,18 +67,13 @@ public final class KActivator {
         };
     }
 
-    public static <T> T delete(T object) {
+    public static <T> void delete(final T object) {
         var klass = object.getClass();
 
-        ObjectInstantiationType instantiationType;
-        if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
-            instantiationType = KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
-        } else {
-            instantiationType = KActivator.getInstantiationType(klass);
-            KActivator.OBJECT_INSTANTIATION_TYPES.put(klass, instantiationType);
-        }
+        ObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
-        return switch (instantiationType) {
+
+        switch (instantiationType) {
             case SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, false);
             case WEAK_SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, true);
             default -> throw new RuntimeException("fuck fuck");
@@ -106,6 +95,16 @@ public final class KActivator {
             return klass;
         } catch (KDependencyResolveException e) {
             throw new KInstantiationException(clazz, e);
+        }
+    }
+
+    private static <T> ObjectInstantiationType getOrResolveInstantiationType(final Class<T> klass) {
+        if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
+            return KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
+        } else {
+            var instantiationType = KActivator.getInstantiationType(klass);
+            KActivator.OBJECT_INSTANTIATION_TYPES.put(klass, instantiationType);
+            return instantiationType;
         }
     }
 
@@ -162,7 +161,7 @@ public final class KActivator {
         return object;
     }
 
-    private static <T> T deleteSingleton(final T object, final Class<T> clazz, boolean weak) {
+    private static <T> void deleteSingleton(final T object, final Class<T> clazz, boolean weak) {
         if (weak) {
             if (!KActivator.WEAK_SINGLETONS.containsKey(clazz)) {
                 throw new KDeletionException(
@@ -176,7 +175,6 @@ public final class KActivator {
             if (deleted != null) {
                 KActivator.WEAK_SINGLETONS.remove(clazz);
             }
-            return null;
         }
 
         if (!KActivator.SINGLETONS.containsKey(clazz)) {
@@ -187,6 +185,5 @@ public final class KActivator {
         }
 
         KActivator.SINGLETONS.remove(clazz);
-        return null;
     }
 }
