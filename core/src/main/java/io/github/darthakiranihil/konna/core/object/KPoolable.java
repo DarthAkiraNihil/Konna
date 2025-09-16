@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 public @interface KPoolable {
 
     int initialPoolSize();
+    boolean weak() default false;
 
 }

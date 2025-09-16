@@ -21,15 +21,16 @@ import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class KObjectPool<T> extends KAbstractObjectPool<T> {
+public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
 
-    private final Queue<T> unusedObjects;
+    private final Queue<WeakReference<T>> unusedObjects;
 
-    public KObjectPool(final Class<T> clazz, int initialSize) {
+    public KWeakObjectPool(final Class<T> clazz, int initialSize) {
         super(clazz, initialSize);
         this.unusedObjects = new ConcurrentLinkedQueue<>();
         for (int i = 0; i < initialSize; i++) {
@@ -39,15 +40,23 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 throw new KInstantiationException(clazz, e);
             }
-            this.unusedObjects.add(object);
+            this.unusedObjects.add(new WeakReference<>(object));
         }
     }
 
     public T obtain(final KContainer container) throws KEmptyObjectPoolException {
 
-        var obtained = this.unusedObjects.peek();
-        if (obtained == null) {
+        var ref = this.unusedObjects.peek();
+        if (ref == null) {
             throw new KEmptyObjectPoolException(this.clazz);
+        }
+        T obtained = ref.get();
+        if (obtained == null) {
+            try {
+                obtained = clazz.getConstructor().newInstance();
+            } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new KInstantiationException(clazz, e);
+            }
         }
 
         try {
@@ -73,7 +82,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             throw new KDeletionException(object, e.getMessage());
         }
 
-        this.unusedObjects.add(object);
+        this.unusedObjects.add(new WeakReference<>(object));
 
     }
 
