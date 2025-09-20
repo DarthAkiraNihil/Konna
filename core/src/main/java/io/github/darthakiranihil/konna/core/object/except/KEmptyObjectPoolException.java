@@ -20,8 +20,22 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KObjectPool} or
+ * {@link io.github.darthakiranihil.konna.core.object.KWeakObjectPool} do not contain an
+ * object that is not used by anyone. At the moment it is default behaviour but may be changed
+ * later. By default, the exception is fatal.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KEmptyObjectPoolException extends KException implements KThrowable {
 
+    /**
+     * Constructs exception with provided class which obtaining from pool
+     * has been failed.
+     * @param clazz Class that failed to be retrieved from pool
+     */
     public KEmptyObjectPoolException(final Class<?> clazz) {
         super(
             String.format(

@@ -20,6 +20,16 @@ import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown when there is an attempt of creating an {@link io.github.darthakiranihil.konna.core.object.KObjectPool}
+ * or {@link io.github.darthakiranihil.konna.core.object.KWeakObjectPool} of a class that
+ * does not fit poolable object criteria: the class contains two methods annotated with
+ * {@link io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain} and
+ * {@link io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease}.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KInvalidPoolableClassException extends KRuntimeException implements KThrowable {
 
     public KInvalidPoolableClassException(final String message) {
