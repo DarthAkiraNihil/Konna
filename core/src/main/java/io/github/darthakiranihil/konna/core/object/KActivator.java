@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveExceptio
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
 import java.io.IOException;
@@ -39,18 +40,8 @@ public final class KActivator {
 
     }
 
-    private enum ObjectInstantiationType {
-        IMMORTAL,
-        SINGLETON,
-        WEAK_SINGLETON,
-        POOLABLE,
-        WEAK_POOLABLE,
-        TRANSIENT,
-        TEMPORAL
-    }
-
     private static final
-    Map<Class<?>, ObjectInstantiationType> OBJECT_INSTANTIATION_TYPES = new HashMap<>();
+    Map<Class<?>, KObjectInstantiationType> OBJECT_INSTANTIATION_TYPES = new HashMap<>();
 
     private static final
     Map<Class<?>, KObject> SINGLETONS = new HashMap<>();
@@ -103,21 +94,27 @@ public final class KActivator {
 
         var klass = KActivator.getClassImplementation(clazz, container);
 
-        ObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
+        KObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
-        return switch (instantiationType) {
+        T created = switch (instantiationType) {
             case SINGLETON, IMMORTAL -> KActivator.createSingleton(klass,  container, false);
             case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true);
             case POOLABLE -> KActivator.createPoolable(klass, container, false);
             case WEAK_POOLABLE -> KActivator.createPoolable(klass, container, true);
             case TRANSIENT, TEMPORAL -> KActivator.createNewObject(klass, container);
         };
+
+        if (instantiationType != KObjectInstantiationType.TEMPORAL && created instanceof KObject) {
+            KObjectRegistry.push((KObject) created, instantiationType);
+        }
+
+        return created;
     }
 
     public static <T> void delete(final T object) {
         var klass = object.getClass();
 
-        ObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
+        KObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
 
         switch (instantiationType) {
@@ -126,7 +123,10 @@ public final class KActivator {
             case WEAK_SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, true);
             case POOLABLE -> KActivator.deletePoolable(object, (Class<T>) klass, false);
             case WEAK_POOLABLE -> KActivator.deletePoolable(object, (Class<T>) klass, true);
-            default -> throw new RuntimeException("fuck fuck");
+        }
+
+        if (instantiationType != KObjectInstantiationType.TEMPORAL && object instanceof KObject) {
+            KObjectRegistry.remove(((KObject) object).id());
         }
     }
 
@@ -148,7 +148,7 @@ public final class KActivator {
         }
     }
 
-    private static <T> ObjectInstantiationType getOrResolveInstantiationType(final Class<T> klass) {
+    private static <T> KObjectInstantiationType getOrResolveInstantiationType(final Class<T> klass) {
         if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
             return KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
         } else {
@@ -158,33 +158,33 @@ public final class KActivator {
         }
     }
 
-    private static <T> ObjectInstantiationType getInstantiationType(final Class<T> clazz) {
+    private static <T> KObjectInstantiationType getInstantiationType(final Class<T> clazz) {
         if (clazz.isAnnotationPresent(KSingleton.class)) {
             KSingleton meta = clazz.getAnnotation(KSingleton.class);
             if (meta.immortal()) {
-                return ObjectInstantiationType.IMMORTAL;
+                return KObjectInstantiationType.IMMORTAL;
             }
 
             return meta.weak()
-                ? ObjectInstantiationType.WEAK_SINGLETON
-                : ObjectInstantiationType.SINGLETON;
+                ? KObjectInstantiationType.WEAK_SINGLETON
+                : KObjectInstantiationType.SINGLETON;
         }
 
         if (clazz.isAnnotationPresent(KPoolable.class)) {
             KPoolable meta = clazz.getAnnotation(KPoolable.class);
             return meta.weak()
-                ? ObjectInstantiationType.WEAK_POOLABLE
-                : ObjectInstantiationType.POOLABLE;
+                ? KObjectInstantiationType.WEAK_POOLABLE
+                : KObjectInstantiationType.POOLABLE;
         }
 
         if (clazz.isAnnotationPresent(KTransient.class)) {
             KTransient meta = clazz.getAnnotation(KTransient.class);
             return meta.temporal()
-                ? ObjectInstantiationType.TEMPORAL
-                : ObjectInstantiationType.TRANSIENT;
+                ? KObjectInstantiationType.TEMPORAL
+                : KObjectInstantiationType.TRANSIENT;
         }
 
-        return ObjectInstantiationType.TRANSIENT;
+        return KObjectInstantiationType.TRANSIENT;
     }
 
     private static <T> T createNewObject(final Class<T> clazz, final KContainer container) {

@@ -131,6 +131,15 @@ public class KObject implements Serializable {
     }
 
     /**
+     * Returns id of the object.
+     * @return ID of the object
+     */
+    public UUID id() {
+        return this.id;
+    }
+
+
+    /**
      * Compares a KObject to another object.
      * The comparison does not involve object ids since it is generated randomly
      * for all created objects, so two "most likely to be equal" objects will have

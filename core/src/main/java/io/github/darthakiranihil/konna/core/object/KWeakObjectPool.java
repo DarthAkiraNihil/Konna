@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
@@ -41,6 +42,9 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
                 throw new KInstantiationException(clazz, e);
             }
             this.unusedObjects.add(new WeakReference<>(object));
+            if (object instanceof KObject) {
+                KObjectRegistry.push((KObject) object, KObjectInstantiationType.WEAK_POOLABLE);
+            }
         }
     }
 

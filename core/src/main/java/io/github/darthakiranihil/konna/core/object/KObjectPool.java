@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
@@ -40,6 +41,9 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
                 throw new KInstantiationException(clazz, e);
             }
             this.unusedObjects.add(object);
+            if (object instanceof KObject) {
+                KObjectRegistry.push((KObject) object, KObjectInstantiationType.POOLABLE);
+            }
         }
     }
 
