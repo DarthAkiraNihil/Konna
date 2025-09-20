@@ -106,7 +106,7 @@ public final class KActivator {
         ObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
         return switch (instantiationType) {
-            case SINGLETON -> KActivator.createSingleton(klass,  container, false);
+            case SINGLETON, IMMORTAL -> KActivator.createSingleton(klass,  container, false);
             case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true);
             case POOLABLE -> KActivator.createPoolable(klass, container, false);
             case WEAK_POOLABLE -> KActivator.createPoolable(klass, container, true);
@@ -121,12 +121,13 @@ public final class KActivator {
 
 
         switch (instantiationType) {
+            case IMMORTAL -> throw new KDeletionException(object, "object is immortal");
             case SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, false);
             case WEAK_SINGLETON -> KActivator.deleteSingleton(object, (Class<T>) klass, true);
             case POOLABLE -> KActivator.deletePoolable(object, (Class<T>) klass, false);
             case WEAK_POOLABLE -> KActivator.deletePoolable(object, (Class<T>) klass, true);
             default -> throw new RuntimeException("fuck fuck");
-        };
+        }
     }
 
     private static <T> Class<T> getClassImplementation(final Class<T> clazz, final KContainer container) {
@@ -160,6 +161,10 @@ public final class KActivator {
     private static <T> ObjectInstantiationType getInstantiationType(final Class<T> clazz) {
         if (clazz.isAnnotationPresent(KSingleton.class)) {
             KSingleton meta = clazz.getAnnotation(KSingleton.class);
+            if (meta.immortal()) {
+                return ObjectInstantiationType.IMMORTAL;
+            }
+
             return meta.weak()
                 ? ObjectInstantiationType.WEAK_SINGLETON
                 : ObjectInstantiationType.SINGLETON;

@@ -18,4 +18,5 @@ public @interface KSingleton {
      * @return Flag of weak reference usage
      */
     boolean weak() default false;
+    boolean immortal() default false;
 }
