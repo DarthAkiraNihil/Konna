@@ -110,7 +110,7 @@ public final class KActivator {
             case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true);
             case POOLABLE -> KActivator.createPoolable(klass, container, false);
             case WEAK_POOLABLE -> KActivator.createPoolable(klass, container, true);
-            default -> throw new RuntimeException("fuck fuck");
+            case TRANSIENT, TEMPORAL -> KActivator.createNewObject(klass, container);
         };
     }
 
@@ -177,7 +177,14 @@ public final class KActivator {
                 : ObjectInstantiationType.POOLABLE;
         }
 
-        throw new RuntimeException("fuck");
+        if (clazz.isAnnotationPresent(KTransient.class)) {
+            KTransient meta = clazz.getAnnotation(KTransient.class);
+            return meta.temporal()
+                ? ObjectInstantiationType.TEMPORAL
+                : ObjectInstantiationType.TRANSIENT;
+        }
+
+        return ObjectInstantiationType.TRANSIENT;
     }
 
     private static <T> T createNewObject(final Class<T> clazz, final KContainer container) {
