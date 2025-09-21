@@ -72,7 +72,9 @@ public enum KObjectInstantiationType {
     /**
      * Created object is a transient object.
      * When {@link KActivator} creates a transient object, it will create
-     * a new instance for each call.
+     * a new instance for each call. Default type if instantiation type is
+     * not specified by corresponding annotations ({@link KSingleton}, {@link KPoolable}
+     * or {@link KTransient} with temporal flag set true)
      *
      * @see KTransient
      */

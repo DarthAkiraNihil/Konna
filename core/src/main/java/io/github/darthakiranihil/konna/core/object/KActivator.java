@@ -33,6 +33,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The most important utility class in Konna which purpose is to create new objects.
+ * Unlike standard instantiating objects with {@code new}, this class can do this
+ * with automatic dependency resolution, dispatching different instantiation types
+ * and so on.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 @SuppressWarnings("unchecked")
 public final class KActivator {
 
@@ -61,11 +70,21 @@ public final class KActivator {
         List<Class<?>> poolableClasses;
         List<String> poolableCandidates = Arrays.stream(Package.getPackages())
             .map(Package::getName)
-            .filter((name) -> !(name.startsWith("java") || name.startsWith("jdk") || name.startsWith("sun")))
+            .filter(
+                (name) -> !(
+                        name.startsWith("java")
+                    ||  name.startsWith("jdk")
+                    ||  name.startsWith("sun")
+                )
+            )
             .toList();
 
         try {
-            poolableClasses = KAnnotationUtils.findAnnotatedClasses(KPoolable.class, poolableCandidates);
+            poolableClasses = KAnnotationUtils.findAnnotatedClasses(
+                KPoolable.class,
+                poolableCandidates
+            );
+
         } catch (IOException | ClassNotFoundException e) {
             throw new KInstantiationException(KActivator.class, e);
         }
@@ -90,11 +109,24 @@ public final class KActivator {
         }
     }
 
+    /**
+     * Creates a new object or returns it if it already instantiated (depends on created class).
+     * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
+     * @param clazz Class to instantiate
+     * @param container Container (used for dependency resolution)
+     * @return Created object
+     * @param <T> Type of object to instantiate
+     *
+     * @see KContainer
+     * @see KObjectInstantiationType
+     * @see KObjectRegistry
+     */
     public static <T> T create(final Class<? extends T> clazz, final KContainer container) {
 
         var klass = KActivator.getClassImplementation(clazz, container);
 
-        KObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
+        KObjectInstantiationType
+        instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
         T created = switch (instantiationType) {
             case SINGLETON, IMMORTAL -> KActivator.createSingleton(klass,  container, false);
@@ -111,10 +143,22 @@ public final class KActivator {
         return created;
     }
 
+    /**
+     * "deletes" a created object.
+     * Actually, there is no such action as "deleting an object", however, this method's
+     * purpose exists - it removes all possible references of the object, making it unreachable
+     * by none, so tha garbage collected will delete the object at last. However, poolable objects
+     * are just returned to their pool, not wiped.
+     * Additionally, it removes record from {@link KObjectRegistry} of the deleted object.
+     *
+     * @param object Object to delete
+     * @param <T> Type of object to delete
+     */
     public static <T> void delete(final T object) {
         var klass = object.getClass();
 
-        KObjectInstantiationType instantiationType = KActivator.getOrResolveInstantiationType(klass);
+        KObjectInstantiationType
+        instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
 
         switch (instantiationType) {
@@ -130,7 +174,10 @@ public final class KActivator {
         }
     }
 
-    private static <T> Class<T> getClassImplementation(final Class<T> clazz, final KContainer container) {
+    private static <T> Class<T> getClassImplementation(
+        final Class<T> clazz,
+        final KContainer container
+    ) {
         if (KActivator.CACHED_DEPENDENCIES.containsKey(clazz)) {
             var ref = KActivator.CACHED_DEPENDENCIES.get(clazz);
             var klass = ref.get();
@@ -148,7 +195,9 @@ public final class KActivator {
         }
     }
 
-    private static <T> KObjectInstantiationType getOrResolveInstantiationType(final Class<T> klass) {
+    private static <T> KObjectInstantiationType getOrResolveInstantiationType(
+        final Class<T> klass
+    ) {
         if (KActivator.OBJECT_INSTANTIATION_TYPES.containsKey(klass)) {
             return KActivator.OBJECT_INSTANTIATION_TYPES.get(klass);
         } else {
@@ -205,7 +254,11 @@ public final class KActivator {
         }
     }
 
-    private static <T> T createSingleton(final Class<T> clazz, final KContainer container, boolean weak) {
+    private static <T> T createSingleton(
+        final Class<T> clazz,
+        final KContainer container,
+        boolean weak
+    ) {
         if (weak) {
             if (KActivator.WEAK_SINGLETONS.containsKey(clazz)) {
                 var ref = KActivator.WEAK_SINGLETONS.get(clazz);
@@ -229,7 +282,11 @@ public final class KActivator {
         return object;
     }
 
-    private static <T> T createPoolable(final Class<T> clazz, final KContainer container, boolean weak) {
+    private static <T> T createPoolable(
+        final Class<T> clazz,
+        final KContainer container,
+        boolean weak
+    ) {
         KAbstractObjectPool<?> pool = weak
             ? KActivator.WEAK_POOLS.get(clazz)
             : KActivator.POOLS.get(clazz);

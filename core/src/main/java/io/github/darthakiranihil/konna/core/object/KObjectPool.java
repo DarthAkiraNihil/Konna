@@ -26,6 +26,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Implementation of {@link KAbstractObjectPool} that represents
+ * object pool in its classic meaning.
+ * @param <T> Class of poolable object
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KObjectPool<T> extends KAbstractObjectPool<T> {
 
     private final Queue<T> unusedObjects;
@@ -37,7 +45,12 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             T object;
             try {
                 object = clazz.getConstructor().newInstance();
-            } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            } catch (
+                    InstantiationException
+                |   NoSuchMethodException
+                |   IllegalAccessException
+                |   InvocationTargetException e
+            ) {
                 throw new KInstantiationException(clazz, e);
             }
             this.unusedObjects.add(object);
@@ -47,6 +60,14 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
         }
     }
 
+    /**
+     * Obtains an object from the pool. Calling this is a risky operation
+     * if pool is not extensible and behaviour of getting object from an
+     * empty pool is not specified.
+     * @param container Container (for resolving dependencies for onObtain method)
+     * @return A pooled object
+     * @throws KEmptyObjectPoolException If there is no unused objects in the pool
+     */
     public T obtain(final KContainer container) throws KEmptyObjectPoolException {
 
         var obtained = this.unusedObjects.peek();
@@ -69,6 +90,11 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
 
     }
 
+    /**
+     * Returns object back to the pool, making it available to be taken
+     * by another requester class (through {@link KActivator}).
+     * @param object Object to return
+     */
     public void release(final T object) {
 
         try {

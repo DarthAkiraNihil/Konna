@@ -22,16 +22,51 @@ import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassE
 
 import java.lang.reflect.Method;
 
+/**
+ * Abstract class for object pools that provide opportunity
+ * to create and delete objects without actual creating and deleting them
+ * i.e. reuse objects.
+ *
+ * @param <T> Class to create pool for
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public abstract class KAbstractObjectPool<T> extends KObject {
 
+    /**
+     * Reference to the method of pooled class that is called
+     * when an object is obtained from the pool.
+     */
     protected final Method onObjectObtain;
+    /**
+     * Reference to the method of pooled class that is called
+     * when an object is returned to the pool (released).
+     */
     protected final Method onObjectRelease;
 
+    /**
+     * Class of poolable object.
+     */
     protected final Class<T> clazz;
+
+    /**
+     * Cached parameters of the object obtaining method.
+     */
     protected final Class<?>[] onObtainParameterClasses;
 
+    /**
+     * Initial pool size, measured in objects stored in the pool.
+     */
     protected final int initialSize;
 
+    /**
+     * Constructs abstract pool. Also retrieves onObtain and onRelease
+     * methods of poolable class and if it fails to do it, {@link KInvalidPoolableClassException}
+     * is thrown (a poolable class must contain either both of them or none).
+     * @param clazz Poolable class
+     * @param initialSize Initial size
+     */
     public KAbstractObjectPool(final Class<T> clazz, int initialSize) {
         Method onObtain = null;
         Method onRelease = null;
@@ -74,7 +109,21 @@ public abstract class KAbstractObjectPool<T> extends KObject {
 
     }
 
+    /**
+     * Obtains an object from the pool. Calling this is a risky operation
+     * if pool is not extensible and behaviour of getting object from an
+     * empty pool is not specified.
+     * @param container Container (for resolving dependencies for onObtain method)
+     * @return A pooled object
+     * @throws KEmptyObjectPoolException If there is no unused objects in the pool
+     */
     public abstract T obtain(KContainer container) throws KEmptyObjectPoolException;
+
+    /**
+     * Returns object back to the pool, making it available to be taken
+     * by another requester class (through {@link KActivator}).
+     * @param object Object to return
+     */
     public abstract void release(T object);
 
 }

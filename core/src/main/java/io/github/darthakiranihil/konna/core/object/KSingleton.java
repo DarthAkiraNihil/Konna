@@ -8,6 +8,9 @@ import java.lang.annotation.Target;
 /**
  * Marks class as a singleton so {@link KActivator} should create only one
  * instance of it.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -18,5 +21,12 @@ public @interface KSingleton {
      * @return Flag of weak reference usage
      */
     boolean weak() default false;
+
+    /**
+     * Flag that indicates if singleton is immortal, so it cannot be deleted with {@link KActivator}
+     * and only application termination can destroy immortal objects. Has priority above
+     * weak flag, so if both weak and immortal are true, weak flag will be ignored.
+     * @return Flag of object immortality
+     */
     boolean immortal() default false;
 }
