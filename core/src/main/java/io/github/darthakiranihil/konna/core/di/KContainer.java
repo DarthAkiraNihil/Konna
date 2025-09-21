@@ -53,7 +53,7 @@ public final class KContainer extends KObject {
     }
 
     /**
-     * Adds a binding from a given interface to specified implementation of if.
+     * Adds a binding from a given interface to specified implementation of it.
      * @param fromInterface Interface to be bind
      * @param toImplementation Implementation to the interface
      * @return This container
@@ -66,6 +66,20 @@ public final class KContainer extends KObject {
         this.classMap.put(fromInterface, toImplementation);
         return this;
     }
+
+    /**
+     * Adds a binding from a given class to itself. Useful when class
+     * does not have any other implementations, or it is final.
+     * @param clazz Class to bind
+     * @return This container
+     */
+    public KContainer add(
+        final Class<?> clazz
+    ) {
+        this.classMap.put(clazz, clazz);
+        return this;
+    }
+
 
 
     /**
