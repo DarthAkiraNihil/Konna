@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
+import io.github.darthakiranihil.konna.core.except.KRuntimeException;
+import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
@@ -60,6 +62,8 @@ public final class KActivator {
     Map<Class<?>, KObjectPool<?>> POOLS = new HashMap<>();
     private static final
     Map<Class<?>, KWeakObjectPool<?>> WEAK_POOLS = new HashMap<>();
+
+    private static KContainer defaultContainer;
 
 
     private static final
@@ -110,6 +114,35 @@ public final class KActivator {
     }
 
     /**
+     * Sets a default container for {@link KActivator}. Default container will be used
+     * in dependency resolving, if another container is not specified.
+     * Can be called only one time, subsequent invocations will cause a runtime exception.
+     * @param container Default container
+     */
+    public static void setDefaultContainer(final KContainer container) {
+        if (KActivator.defaultContainer != null) {
+            throw new KRuntimeException(
+                "Default container for KActivator can be assigned only once"
+            ) {
+
+                @Override
+                public KThrowableSeverity getSeverity() {
+                    return KThrowableSeverity.WARNING;
+                }
+            };
+        }
+        KActivator.defaultContainer = container;
+    }
+
+    /**
+     * Returns a new container with default container as its parent.
+     * @return A new container, which parent is the default container
+     */
+    public static KContainer newContainer() {
+        return new KContainer(KActivator.defaultContainer);
+    }
+
+    /**
      * Creates a new object or returns it if it already instantiated (depends on created class).
      * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
      * @param clazz Class to instantiate
@@ -141,6 +174,25 @@ public final class KActivator {
         }
 
         return created;
+    }
+
+    /**
+     * Creates a new object or returns it if it already instantiated (depends on created class).
+     * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
+     * This method uses default container, that must be set before calling it
+     * @param clazz Class to instantiate
+     * @return Created object
+     * @param <T> Type of object to instantiate
+     *
+     * @see KContainer
+     * @see KObjectInstantiationType
+     * @see KObjectRegistry
+     */
+    public static <T> T create(final Class<? extends T> clazz) {
+        return KActivator.create(
+            clazz,
+            KActivator.defaultContainer
+        );
     }
 
     /**

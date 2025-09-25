@@ -19,6 +19,8 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 
 import java.io.*;
 import java.util.LinkedHashMap;
@@ -32,7 +34,8 @@ import java.util.Map;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KStandardJsonParser implements KJsonParser {
+@KSingleton(immortal = true)
+public class KStandardJsonParser extends KObject implements KJsonParser {
 
     private final KJsonTokenizer tokenizer;
 

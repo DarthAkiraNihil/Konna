@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -35,6 +36,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KSingleton(immortal = true)
 public class KStandardComponentLoader extends KObject implements KComponentLoader {
 
     private final ClassLoader classLoader;

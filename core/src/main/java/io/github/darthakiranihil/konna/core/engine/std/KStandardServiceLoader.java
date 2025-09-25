@@ -16,16 +16,16 @@
 
 package io.github.darthakiranihil.konna.core.engine.std;
 
+import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.engine.KComponentService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,27 +88,17 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             service
         );
 
-        Constructor<?> serviceConstructor;
-        try {
-             serviceConstructor = service.getConstructor();
-        } catch (NoSuchMethodException e) {
-            KLogger.fatal(e);
-            throw new KServiceLoadingException(e);
-        }
+        KContainer local = KActivator.newContainer();
+        local.add(service);
 
-        try {
-            Object instantiatedService = serviceConstructor.newInstance();
-            loadedServicesMap.put(
-                serviceName,
-                new KServiceEntry(
-                    instantiatedService,
-                    endpoints
-                )
-            );
-            KLogger.info("Loaded service %s [%s]", serviceName, service);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            KLogger.fatal(e);
-            throw new KServiceLoadingException(e);
-        }
+        Object instantiatedService = KActivator.create(service, local);
+        loadedServicesMap.put(
+            serviceName,
+            new KServiceEntry(
+                instantiatedService,
+                endpoints
+            )
+        );
+        KLogger.info("Loaded service %s [%s]", serviceName, service);
     }
 }

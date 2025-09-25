@@ -17,9 +17,11 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 
 import java.lang.reflect.InvocationTargetException;
@@ -41,30 +43,28 @@ public class KEngineHypervisor extends KObject {
 
     /**
      * Constructs hypervisor with provided config.
-     * @param jsonParser Json parser
      * @param config Config of the hypervisor
      */
-    public KEngineHypervisor(final KJsonParser jsonParser, final KEngineHypervisorConfig config) {
+    public KEngineHypervisor(final KEngineHypervisorConfig config) {
 
         super(KEngineHypervisor.class.getSimpleName());
 
         KLogger.info("Initializing engine hypervisor [config = %s]", config);
 
-        this.jsonParser = jsonParser;
+        this.jsonParser = KActivator.create(KJsonParser.class);
+        KContainer local = KActivator.newContainer();
+
+        local
+            .add(config.serviceLoader())
+            .add(config.componentLoader());
 
         try {
 
-            var componentLoaderConstructor = config
-                                                .componentLoader()
-                                                .getConstructor(KJsonParser.class);
-            this.componentLoader = componentLoaderConstructor.newInstance(this.jsonParser);
+            this.componentLoader = KActivator.create(config.componentLoader(), local);
 
             KLogger.info("Created component loader %s", config.componentLoader());
 
-            var serviceLoaderConstructor = config
-                .serviceLoader()
-                .getConstructor();
-            this.serviceLoader = serviceLoaderConstructor.newInstance();
+            this.serviceLoader = KActivator.create(config.serviceLoader(), local);
 
             KLogger.info("Created service loader %s", config.serviceLoader());
 
@@ -77,11 +77,7 @@ public class KEngineHypervisor extends KObject {
             KLogger.info("Loaded %d components", this.engineComponents.size());
 
         } catch (
-                NoSuchMethodException
-            |   InvocationTargetException
-            |   InstantiationException
-            |   IllegalAccessException
-            |   KComponentLoadingException e
+            KComponentLoadingException e
         ) {
             KLogger.error(e);
             throw new KHypervisorInitializationException(e);
