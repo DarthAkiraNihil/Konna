@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Executable;
 import java.net.URL;
 import java.util.*;
 

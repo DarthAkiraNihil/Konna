@@ -148,14 +148,20 @@ public final class KActivator {
      * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
      * @param clazz Class to instantiate
      * @param container Container (used for dependency resolution)
-     * @return Created object
      * @param <T> Type of object to instantiate
-     *
+     * @param nonResolvedArgs Arguments that are not resolved (passed explicitly)
+     *                        for constructing an object
+     * @return Created object
      * @see KContainer
      * @see KObjectInstantiationType
      * @see KObjectRegistry
+     * @see KNonResolved
      */
-    public static <T> T create(final Class<? extends T> clazz, final KContainer container, final Object... nonResolvedArgs) {
+    public static <T> T create(
+        final Class<? extends T> clazz,
+        final KContainer container,
+        final Object... nonResolvedArgs
+    ) {
 
         var klass = KActivator.getClassImplementation(clazz, container);
 
@@ -163,11 +169,35 @@ public final class KActivator {
         instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
         T created = switch (instantiationType) {
-            case SINGLETON, IMMORTAL -> KActivator.createSingleton(klass,  container, false, nonResolvedArgs);
-            case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true, nonResolvedArgs);
-            case POOLABLE -> KActivator.createPoolable(klass, container, false, nonResolvedArgs);
-            case WEAK_POOLABLE -> KActivator.createPoolable(klass, container, true, nonResolvedArgs);
-            case TRANSIENT, TEMPORAL -> KActivator.createNewObject(klass, container, nonResolvedArgs);
+            case SINGLETON, IMMORTAL -> KActivator.createSingleton(
+                klass,
+                container,
+                false,
+                nonResolvedArgs
+            );
+            case WEAK_SINGLETON -> KActivator.createSingleton(
+                klass,
+                container,
+                true,
+                nonResolvedArgs
+            );
+            case POOLABLE -> KActivator.createPoolable(
+                klass,
+                container,
+                false,
+                nonResolvedArgs
+            );
+            case WEAK_POOLABLE -> KActivator.createPoolable(
+                klass,
+                container,
+                true,
+                nonResolvedArgs
+            );
+            case TRANSIENT, TEMPORAL -> KActivator.createNewObject(
+                klass,
+                container,
+                nonResolvedArgs
+            );
         };
 
         if (instantiationType != KObjectInstantiationType.TEMPORAL && created instanceof KObject) {

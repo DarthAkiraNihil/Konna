@@ -68,11 +68,16 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
      * if pool is not extensible and behaviour of getting object from an
      * empty pool is not specified. If reference in unused objects queue is somehow
      * null, a new object will be created
-     * @param container Container (for resolving dependencies for onObtain method)
+     * @param container Container (for resolving dependencies for onObtain method
+     * @param nonResolvedArgs Arguments that are not resolved
+     *                        (passed explicitly) for onObtain method
      * @return A pooled object (unwrapped from weak reference)
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      */
-    public T obtain(final KContainer container, final Object... nonResolvedArgs) throws KEmptyObjectPoolException {
+    public T obtain(
+        final KContainer container,
+        final Object... nonResolvedArgs
+    ) throws KEmptyObjectPoolException {
 
         var ref = this.unusedObjects.peek();
         if (ref == null) {

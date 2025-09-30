@@ -97,7 +97,9 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
             KContainer local = KActivator.newContainer();
             local.add(component).add(KServiceLoader.class, serviceLoader.getClass());
 
-            var loadedComponent = KActivator.create(component, local, meta.servicesPackage(), parsedConfig);
+            var loadedComponent = KActivator.create(
+                component, local, meta.servicesPackage(), parsedConfig
+            );
 
             loadedComponentMap.put(
                 componentName,

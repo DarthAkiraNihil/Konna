@@ -121,10 +121,16 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * if pool is not extensible and behaviour of getting object from an
      * empty pool is not specified.
      * @param container Container (for resolving dependencies for onObtain method)
+     * @param nonResolvedArgs Arguments that are not resolved
+     *                        (passed explicitly) for onObtain method
      * @return A pooled object
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
+     * @see io.github.darthakiranihil.konna.core.di.KNonResolved
      */
-    public abstract T obtain(KContainer container, Object... nonResolvedArgs) throws KEmptyObjectPoolException;
+    public abstract T obtain(
+        KContainer container,
+        Object... nonResolvedArgs
+    ) throws KEmptyObjectPoolException;
 
     /**
      * Returns object back to the pool, making it available to be taken

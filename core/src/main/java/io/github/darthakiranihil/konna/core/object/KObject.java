@@ -47,7 +47,7 @@ public class KObject implements Serializable {
     /**
      * Object tags.
      */
-    protected List<KTag> tags;
+    protected final List<KTag> tags;
     /**
      * Parent object.
      */

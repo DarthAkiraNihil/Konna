@@ -24,7 +24,6 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
