@@ -21,8 +21,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 
-import java.util.Iterator;
-
 /**
  * Standard implementation of {@link KJsonStringifier}.
  *
@@ -54,8 +52,7 @@ public class KStandardJsonStringifier extends KObject implements KJsonStringifie
             case ARRAY -> {
                 builder.append("[");
                 String comma = "";
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
-                    var e = it.next();
+                for (KJsonValue e : value) {
                     builder.append(comma);
                     this.deepStringify(builder, e);
                     comma = ",";
@@ -95,9 +92,7 @@ public class KStandardJsonStringifier extends KObject implements KJsonStringifie
             case ARRAY -> {
                 builder.append(indentPrefix).append("[\n");
                 String comma = "";
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
-
-                    var e = it.next();
+                for (KJsonValue e : value) {
 
                     builder.append(comma);
                     this.deepStringify(builder, e, indent, level + 1);
@@ -142,10 +137,9 @@ public class KStandardJsonStringifier extends KObject implements KJsonStringifie
                 builder.append("[\n");
 
                 String comma = "";
-                for (var it = value.iterator(); it.hasNext();) {
+                for (KJsonValue jsonValue : value) {
                     builder.append(comma);
-                    KJsonValue entry = it.next();
-                    this.deepStringify(builder, entry, indent, level + 1);
+                    this.deepStringify(builder, jsonValue, indent, level + 1);
                     if (comma.isEmpty()) {
                         comma = ",\n";
                     }

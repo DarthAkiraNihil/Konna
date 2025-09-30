@@ -89,8 +89,7 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
             case ARRAY -> {
                 List<?> list = new ArrayList<>();
 
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
-                    var entry = it.next();
+                for (KJsonValue entry : value) {
                     list.add(this.deserialize(entry, clazz));
                 }
 
