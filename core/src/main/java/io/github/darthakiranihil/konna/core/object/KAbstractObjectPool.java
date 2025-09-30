@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -54,6 +55,10 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * Cached parameters of the object obtaining method.
      */
     protected final Class<?>[] onObtainParameterClasses;
+    /**
+     * Cached parameter annotations of the object obtaining method.
+     */
+    protected final Annotation[][] onObtainParameterAnnotations;
 
     /**
      * Initial pool size, measured in objects stored in the pool.
@@ -98,8 +103,10 @@ public abstract class KAbstractObjectPool<T> extends KObject {
 
         if (onObtain != null) {
             this.onObtainParameterClasses = onObtain.getParameterTypes();
+            this.onObtainParameterAnnotations = onObtain.getParameterAnnotations();
         } else {
             this.onObtainParameterClasses = null;
+            this.onObtainParameterAnnotations = null;
         }
 
         this.onObjectObtain = onObtain;

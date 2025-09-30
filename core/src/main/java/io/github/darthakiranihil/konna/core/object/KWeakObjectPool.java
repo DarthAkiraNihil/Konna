@@ -96,8 +96,15 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             Object[] parameters = new Object[this.onObtainParameterClasses.length];
             int nonResolvedArgsProcessed = 0;
             for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
-                var type = this.onObtainParameterClasses[i];
-                if (type.isAnnotationPresent(KNonResolved.class)) {
+                boolean isNonResolved = false;
+                for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
+                    if (this.onObtainParameterAnnotations[i][j] instanceof KNonResolved) {
+                        isNonResolved = true;
+                        break;
+                    }
+                }
+
+                if (isNonResolved) {
                     parameters[i] = nonResolvedArgs[nonResolvedArgsProcessed];
                     nonResolvedArgsProcessed++;
                 } else {
