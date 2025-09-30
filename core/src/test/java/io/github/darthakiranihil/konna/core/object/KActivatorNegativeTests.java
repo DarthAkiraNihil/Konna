@@ -44,20 +44,6 @@ public class KActivatorNegativeTests extends KStandardTestClass {
         this.container = local;
     }
 
-    private static void assertExists(KObject... objects) {
-        var registered = KObjectRegistry.listObjects();
-        for (var object: objects) {
-            Assertions.assertTrue(registered.stream().anyMatch(x -> x.object().id() == object.id()));
-        }
-    }
-
-    private static void assertNotExists(KObject... objects) {
-        var registered = KObjectRegistry.listObjects();
-        for (var object: objects) {
-            Assertions.assertTrue(registered.stream().allMatch(x -> x.object().id() != object.id()));
-        }
-    }
-
     @Test
     public void testDeleteNonInstantiatedSingletons() {
 

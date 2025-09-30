@@ -39,7 +39,8 @@ public class KActivatorPositiveTests extends KStandardTestClass {
             .add(TestWeakSingleton.class)
             .add(TestExplicitTransient.class)
             .add(TestInterfaceToResolve.class, TestResolvedImplementation.class)
-            .add(TestDependencyInterface.class, TestDependencyImplementation.class);
+            .add(TestDependencyInterface.class, TestDependencyImplementation.class)
+            .add(TestPoolableWithoutSpecialMethods.class);
 
         this.container = local;
     }
@@ -102,6 +103,10 @@ public class KActivatorPositiveTests extends KStandardTestClass {
         weakPoolable = KActivator.create(TestWeakPoolable.class, this.container, 1);
 
         Assertions.assertEquals(weakId, weakPoolable.id());
+
+        var specialPoolable = KActivator.create(TestPoolableWithoutSpecialMethods.class, this.container);
+        Assertions.assertEquals(5, specialPoolable.baba());
+        KActivator.delete(specialPoolable);
 
         KActivatorPositiveTests.assertExists(poolable, weakPoolable);
 

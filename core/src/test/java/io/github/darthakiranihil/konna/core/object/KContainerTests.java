@@ -16,5 +16,45 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-public class KContainerTests {
+import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
+import io.github.darthakiranihil.konna.core.object.impl.TestDependencyImplementation;
+import io.github.darthakiranihil.konna.core.object.impl.TestDependencyInterface;
+import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+public class KContainerTests extends KStandardTestClass {
+
+    @Test
+    public void testResolveSuccess() {
+        KContainer local = new KContainer();
+        local.add(TestDependencyInterface.class, TestDependencyImplementation.class);
+        Assertions.assertEquals(
+            TestDependencyImplementation.class,
+            local.resolve(TestDependencyInterface.class)
+        );
+    }
+
+    @Test
+    public void testResolveSuccessFromParent() {
+
+        KContainer local = new KContainer();
+        local.add(TestDependencyInterface.class, TestDependencyImplementation.class);
+        KContainer child = new KContainer(local);
+
+        Assertions.assertEquals(
+            TestDependencyImplementation.class,
+            child.resolve(TestDependencyInterface.class)
+        );
+
+    }
+
+    @Test
+    public void testResolveFailed() {
+        Assertions.assertThrowsExactly(
+            KDependencyResolveException.class,
+            () -> new KContainer().resolve(TestDependencyInterface.class)
+        );
+    }
 }

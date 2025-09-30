@@ -76,6 +76,11 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             throw new KEmptyObjectPoolException(this.clazz);
         }
 
+        if (this.onObjectObtain == null) {
+            this.unusedObjects.poll();
+            return obtained;
+        }
+
         try {
             Object[] parameters = new Object[this.onObtainParameterClasses.length];
             int nonResolvedArgsProcessed = 0;
@@ -114,7 +119,10 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
     public void release(final T object) {
 
         try {
-            this.onObjectRelease.invoke(object);
+            if (this.onObjectObtain != null) {
+                this.onObjectRelease.invoke(object);
+            }
+
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new KDeletionException(object, e.getMessage());
         }
