@@ -222,7 +222,11 @@ public final class KActivator {
             case WEAK_POOLABLE -> KActivator.deletePoolable(object, (Class<T>) klass, true);
         }
 
-        if (instantiationType != KObjectInstantiationType.TEMPORAL && object instanceof KObject) {
+        if (
+                instantiationType != KObjectInstantiationType.TEMPORAL
+            &&  instantiationType != KObjectInstantiationType.POOLABLE
+            &&  instantiationType != KObjectInstantiationType.WEAK_POOLABLE
+            &&  object instanceof KObject) {
             KObjectRegistry.remove(((KObject) object).id());
         }
     }
@@ -389,6 +393,8 @@ public final class KActivator {
             if (deleted != null) {
                 KActivator.WEAK_SINGLETONS.remove(clazz);
             }
+
+            return;
         }
 
         if (!KActivator.SINGLETONS.containsKey(clazz)) {
