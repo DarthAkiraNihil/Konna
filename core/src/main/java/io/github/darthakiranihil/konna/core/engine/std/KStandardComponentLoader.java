@@ -18,12 +18,14 @@ package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 
@@ -92,15 +94,14 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 parsedConfig = this.parser.parse(config);
             }
 
-            var constructor = component.getConstructor(
-                KServiceLoader.class,
-                String.class,
-                KJsonValue.class
-            );
+            KContainer local = KActivator.newContainer();
+            local.add(component).add(KServiceLoader.class, serviceLoader.getClass());
+
+            var loadedComponent = KActivator.create(component, local, meta.servicesPackage(), parsedConfig);
 
             loadedComponentMap.put(
                 componentName,
-                constructor.newInstance(serviceLoader, meta.servicesPackage(), parsedConfig)
+                loadedComponent
             );
             KLogger.info("Loaded component %s", componentName);
         } catch (Exception e) {

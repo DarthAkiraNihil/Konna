@@ -18,9 +18,11 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.*;
+import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -62,6 +64,11 @@ public class KStandardTestClass {
         KLogger.init(KLogLevel.DEBUG, new KSimpleLogFormatter());
         KLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
+
+        KContainer defaultContainer = new KContainer();
+        defaultContainer.add(KJsonParser.class, KStandardJsonParser.class);
+        defaultContainer.add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
+        KActivator.setDefaultContainer(defaultContainer);
 
     }
 

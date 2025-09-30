@@ -117,7 +117,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * @return A pooled object
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      */
-    public abstract T obtain(KContainer container) throws KEmptyObjectPoolException;
+    public abstract T obtain(KContainer container, Object... nonResolvedArgs) throws KEmptyObjectPoolException;
 
     /**
      * Returns object back to the pool, making it available to be taken

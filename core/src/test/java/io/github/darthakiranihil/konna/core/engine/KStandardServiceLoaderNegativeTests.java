@@ -52,17 +52,4 @@ public class KStandardServiceLoaderNegativeTests extends KStandardTestClass {
 
     }
 
-    @Test
-    public void testLoadServiceNoConstructor() {
-
-        KServiceLoader loader = new KStandardServiceLoader();
-        Map<String, KServiceEntry> loadedServices = new HashMap<>();
-
-        Assertions.assertThrowsExactly(
-            KServiceLoadingException.class,
-            () -> loader.load(ServiceWithoutZeroArgsConstructor.class, loadedServices)
-        );
-
-    }
-
 }

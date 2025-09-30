@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KNonResolved;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
@@ -43,8 +44,8 @@ public abstract class KComponent extends KObject {
 
     public KComponent(
         final KServiceLoader serviceLoader,
-        final String servicesPackage,
-        final KJsonValue config
+        @KNonResolved final String servicesPackage,
+        @KNonResolved final KJsonValue config
     ) throws KComponentLoadingException {
         super(KComponent.class.getSimpleName());
         String componentClass = this.getClass().toString();

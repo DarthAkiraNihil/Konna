@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KNonResolved;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
@@ -68,7 +69,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
      * @return A pooled object
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      */
-    public T obtain(final KContainer container) throws KEmptyObjectPoolException {
+    public T obtain(final KContainer container, final Object... nonResolvedArgs) throws KEmptyObjectPoolException {
 
         var obtained = this.unusedObjects.peek();
         if (obtained == null) {
@@ -77,8 +78,15 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
 
         try {
             Object[] parameters = new Object[this.onObtainParameterClasses.length];
+            int nonResolvedArgsProcessed = 0;
             for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
-                parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);
+                var type = this.onObtainParameterClasses[i];
+                if (type.isAnnotationPresent(KNonResolved.class)) {
+                    parameters[i] = nonResolvedArgs[nonResolvedArgsProcessed];
+                    nonResolvedArgsProcessed++;
+                } else {
+                    parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);
+                }
             }
             this.onObjectObtain.invoke(obtained, parameters);
         } catch (InvocationTargetException | IllegalAccessException e) {

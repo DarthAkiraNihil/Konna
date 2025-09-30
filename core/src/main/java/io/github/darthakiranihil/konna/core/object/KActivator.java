@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KNonResolved;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
@@ -154,7 +155,7 @@ public final class KActivator {
      * @see KObjectInstantiationType
      * @see KObjectRegistry
      */
-    public static <T> T create(final Class<? extends T> clazz, final KContainer container) {
+    public static <T> T create(final Class<? extends T> clazz, final KContainer container, final Object... nonResolvedArgs) {
 
         var klass = KActivator.getClassImplementation(clazz, container);
 
@@ -162,11 +163,11 @@ public final class KActivator {
         instantiationType = KActivator.getOrResolveInstantiationType(klass);
 
         T created = switch (instantiationType) {
-            case SINGLETON, IMMORTAL -> KActivator.createSingleton(klass,  container, false);
-            case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true);
-            case POOLABLE -> KActivator.createPoolable(klass, container, false);
-            case WEAK_POOLABLE -> KActivator.createPoolable(klass, container, true);
-            case TRANSIENT, TEMPORAL -> KActivator.createNewObject(klass, container);
+            case SINGLETON, IMMORTAL -> KActivator.createSingleton(klass,  container, false, nonResolvedArgs);
+            case WEAK_SINGLETON -> KActivator.createSingleton(klass, container, true, nonResolvedArgs);
+            case POOLABLE -> KActivator.createPoolable(klass, container, false, nonResolvedArgs);
+            case WEAK_POOLABLE -> KActivator.createPoolable(klass, container, true, nonResolvedArgs);
+            case TRANSIENT, TEMPORAL -> KActivator.createNewObject(klass, container, nonResolvedArgs);
         };
 
         if (instantiationType != KObjectInstantiationType.TEMPORAL && created instanceof KObject) {
@@ -288,15 +289,37 @@ public final class KActivator {
         return KObjectInstantiationType.TRANSIENT;
     }
 
-    private static <T> T createNewObject(final Class<T> clazz, final KContainer container) {
+    private static <T> T createNewObject(
+        final Class<T> clazz,
+        final KContainer container,
+        final Object... nonResolvedArgs
+    ) {
         //todo: iterative and autowired analog
 
         var constructor = clazz.getDeclaredConstructors()[0];
         constructor.setAccessible(true);
+
         var parameterTypes = constructor.getParameterTypes();
+        var parameterAnnotations = constructor.getParameterAnnotations();
+
         Object[] parameters = new Object[parameterTypes.length];
+        int nonResolvedArgsProcessed = 0;
+
         for (int i = 0; i < parameterTypes.length; i++) {
-            parameters[i] = KActivator.create(parameterTypes[i], container);
+            boolean isNonResolved = false;
+            for (int j = 0; j < parameterAnnotations[i].length; j++) {
+                if (parameterAnnotations[i][j] instanceof KNonResolved) {
+                    isNonResolved = true;
+                    break;
+                }
+            }
+
+            if (isNonResolved) {
+                parameters[i] = nonResolvedArgs[nonResolvedArgsProcessed];
+                nonResolvedArgsProcessed++;
+            } else {
+                parameters[i] = KActivator.create(parameterTypes[i], container);
+            }
         }
 
         try {
@@ -309,7 +332,8 @@ public final class KActivator {
     private static <T> T createSingleton(
         final Class<T> clazz,
         final KContainer container,
-        boolean weak
+        boolean weak,
+        final Object... nonResolvedArgs
     ) {
         if (weak) {
             if (KActivator.WEAK_SINGLETONS.containsKey(clazz)) {
@@ -320,7 +344,7 @@ public final class KActivator {
                 }
             }
 
-            var object = KActivator.createNewObject(clazz, container);
+            var object = KActivator.createNewObject(clazz, container, nonResolvedArgs);
             KActivator.WEAK_SINGLETONS.put(clazz, new WeakReference<>((KObject) object));
             return object;
         }
@@ -329,7 +353,7 @@ public final class KActivator {
             return (T) KActivator.SINGLETONS.get(clazz);
         }
 
-        var object = KActivator.createNewObject(clazz, container);
+        var object = KActivator.createNewObject(clazz, container, nonResolvedArgs);
         KActivator.SINGLETONS.put(clazz, (KObject) object);
         return object;
     }
@@ -337,14 +361,15 @@ public final class KActivator {
     private static <T> T createPoolable(
         final Class<T> clazz,
         final KContainer container,
-        boolean weak
+        boolean weak,
+        final Object... nonResolvedArgs
     ) {
         KAbstractObjectPool<?> pool = weak
             ? KActivator.WEAK_POOLS.get(clazz)
             : KActivator.POOLS.get(clazz);
 
         try {
-            return (T) pool.obtain(container);
+            return (T) pool.obtain(container, nonResolvedArgs);
         } catch (KEmptyObjectPoolException e) {
             throw new KInstantiationException(clazz, e);
         }

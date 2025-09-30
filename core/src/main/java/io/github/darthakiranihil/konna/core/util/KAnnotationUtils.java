@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.net.URL;
 import java.util.*;
 
@@ -99,6 +100,7 @@ public final class KAnnotationUtils {
     /**
      * Searches for classes with specific annotation in whole classpath.
      * @param annotation Annotation that class must have
+     * @param packages List of packages to look classes for
      * @return List of annotated classes
      * @throws ClassNotFoundException If it somehow fails to find a class in a package
      * @throws IOException If resources failed to read
@@ -133,7 +135,9 @@ public final class KAnnotationUtils {
                         continue;
                     }
 
-                    String classFilename = file.getName().substring(0, file.getName().length() - CLASS_EXT_LENGTH);
+                    String classFilename = file
+                        .getName()
+                        .substring(0, file.getName().length() - CLASS_EXT_LENGTH);
 
                     String className = packageName + "." + classFilename;
                     Class<?> clazz = Class.forName(className);

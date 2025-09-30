@@ -57,7 +57,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             return;
         }
 
-        KEngineHypervisor hypervisor = new KEngineHypervisor(jsonParser, loadedConfig);
+        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
 
         try {
             Field componentLoader = KEngineHypervisor.class.getDeclaredField("componentLoader");
