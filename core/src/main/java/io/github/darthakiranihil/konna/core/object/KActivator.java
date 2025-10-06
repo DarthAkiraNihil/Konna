@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolExcept
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
+import io.github.darthakiranihil.konna.core.util.KPackageUtils;
 
 import java.io.IOException;
 import java.lang.ref.SoftReference;
@@ -73,18 +74,10 @@ public final class KActivator extends KUninstantiable {
     static {
 
         List<Class<?>> poolableClasses;
-        List<String> poolableCandidates = Arrays.stream(Package.getPackages())
-            .map(Package::getName)
-            .filter(
-                (name) -> !(
-                        name.startsWith("java")
-                    ||  name.startsWith("jdk")
-                    ||  name.startsWith("sun")
-                )
-            )
-            .toList();
+        List<String> poolableCandidates = KPackageUtils.getAllPackages();
 
         try {
+
             poolableClasses = KAnnotationUtils.findAnnotatedClasses(
                 KPoolable.class,
                 poolableCandidates
