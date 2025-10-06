@@ -40,8 +40,13 @@ public final class KPackageUtils extends KUninstantiable {
     static {
         KPackageUtils.packageIndex = Arrays
             .stream(Package.getPackages())
-            .filter((p) -> p.isAnnotationPresent(KIndexedPackage.class))
+            .filter((p) -> {
+                System.out.println(p);
+                return p.isAnnotationPresent(KIndexedPackage.class);
+            })
             .toList();
+
+        System.out.println(KPackageUtils.packageIndex);
 
         KPackageUtils.indexedPackageNames =  KPackageUtils.packageIndex
             .stream()
@@ -55,7 +60,7 @@ public final class KPackageUtils extends KUninstantiable {
      * their name starts with java, jdk, sun or com.sun.
      * @return List of package names used in the application excluding java packages
      */
-    public static List<String> getAllPackageNames() {
+    public static List<String> getIndexedPackagesNames() {
         return Collections.unmodifiableList(KPackageUtils.indexedPackageNames);
     }
 
@@ -65,7 +70,7 @@ public final class KPackageUtils extends KUninstantiable {
      * their name starts with java, jdk, sun or com.sun.
      * @return List of packages used in the application excluding java packages
      */
-    public static List<Package> getAllPackages() {
+    public static List<Package> getPackageIndex() {
         return Collections.unmodifiableList(KPackageUtils.packageIndex);
     }
 

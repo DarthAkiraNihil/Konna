@@ -24,7 +24,6 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,15 +50,9 @@ public abstract class KComponent extends KObject {
         String componentClass = this.getClass().toString();
         KLogger.info("Creating component %s", componentClass);
 
-        List<Class<?>> serviceClasses;
-        try {
-            serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-                servicesPackage, KComponentService.class
-            );
-        } catch (ClassNotFoundException | IOException e) {
-            KLogger.fatal(e);
-            throw new KComponentLoadingException(e);
-        }
+        List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
+            servicesPackage, KComponentService.class
+        );
         KLogger.info("Found %d services of component %s", serviceClasses.size(), componentClass);
 
         Map<String, KServiceEntry> instantiatedServices = new HashMap<>();

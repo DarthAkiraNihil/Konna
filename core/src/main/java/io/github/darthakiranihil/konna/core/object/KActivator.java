@@ -27,9 +27,8 @@ import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolExcept
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
-import io.github.darthakiranihil.konna.core.util.KPackageUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
-import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -74,18 +73,8 @@ public final class KActivator extends KUninstantiable {
         ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
 
         List<Class<?>> poolableClasses;
-        List<String> poolableCandidates = KPackageUtils.getAllPackageNames();
 
-        try {
-
-            poolableClasses = KAnnotationUtils.findAnnotatedClasses(
-                poolableCandidates,
-                KPoolable.class
-            );
-
-        } catch (IOException | ClassNotFoundException e) {
-            throw new KInstantiationException(KActivator.class, e);
-        }
+        poolableClasses = KClassUtils.getAnnotatedClasses(KPoolable.class);
 
         for (var poolableClass: poolableClasses) {
             KPoolable poolableMeta = poolableClass.getAnnotation(KPoolable.class);

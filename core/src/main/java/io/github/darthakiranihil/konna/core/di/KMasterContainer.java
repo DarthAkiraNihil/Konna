@@ -16,10 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
-import io.github.darthakiranihil.konna.core.util.KPackageUtils;
-
-import java.io.IOException;
+import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
@@ -34,18 +32,12 @@ import java.util.*;
 не забываем проиндексировать, чтобы потом получать среду для класса максимально быстро
 
  */
-public final class KMasterContainer {
+public final class KMasterContainer extends KUninstantiable {
 
     private static final KContainer CONTAINER = new KContainer();
 
-    public static KContainer getMaster() {
-        List<String> packages = KPackageUtils.getAllPackageNames();
-        List<Class<?>> classes;
-        try {
-            classes = KAnnotationUtils.findAnnotatedClasses(packages, null);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    static {
+        List<Class<?>> classes = KClassUtils.getClassIndex();
 
         for (var clazz: classes) {
             if (
@@ -60,12 +52,14 @@ public final class KMasterContainer {
 
             KMasterContainer.CONTAINER.add(clazz);
         }
+    }
 
+    public static KContainer getMaster() {
         return KMasterContainer.CONTAINER;
     }
 
     private KMasterContainer() {
-
+        super();
     }
 
 
