@@ -30,7 +30,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KContainer extends KObject {
+public class KContainer extends KObject {
 
     private final Map<Class<?>, Class<?>> classMap;
     private final KContainer parent;

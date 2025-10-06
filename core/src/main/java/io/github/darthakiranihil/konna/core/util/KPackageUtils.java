@@ -29,7 +29,8 @@ import java.util.List;
  */
 public final class KPackageUtils extends KUninstantiable {
 
-    private static List<String> cachedPackages;
+    private static List<String> cachedPackageNames;
+    private static List<Package> cachedPackages;
 
     private KPackageUtils() {
         super();
@@ -41,9 +42,9 @@ public final class KPackageUtils extends KUninstantiable {
      * their name starts with java, jdk, sun or com.sun.
      * @return List of package names used in the application excluding java packages
      */
-    public static List<String> getAllPackages() {
-        if (KPackageUtils.cachedPackages == null) {
-            KPackageUtils.cachedPackages = Arrays.stream(Package.getPackages())
+    public static List<String> getAllPackageNames() {
+        if (KPackageUtils.cachedPackageNames == null) {
+            KPackageUtils.cachedPackageNames = Arrays.stream(Package.getPackages())
                 .map(Package::getName)
                 .filter(
                     (name) -> !(
@@ -52,6 +53,32 @@ public final class KPackageUtils extends KUninstantiable {
                         ||  name.startsWith("sun")
                         ||  name.startsWith("com.sun")
                     )
+                )
+                .toList();
+        }
+
+        return KPackageUtils.cachedPackageNames;
+    }
+
+    /**
+     * Returns list of packages that are used in the application.
+     * Does not return packages, that are likely system:
+     * their name starts with java, jdk, sun or com.sun.
+     * @return List of packages used in the application excluding java packages
+     */
+    public static List<Package> getAllPackages() {
+        if (KPackageUtils.cachedPackages == null) {
+            KPackageUtils.cachedPackages = Arrays.stream(Package.getPackages())
+                .filter(
+                    (p) -> {
+                        String name = p.getName();
+                        return !(
+                                name.startsWith("java")
+                            ||  name.startsWith("jdk")
+                            ||  name.startsWith("sun")
+                            ||  name.startsWith("com.sun")
+                        );
+                    }
                 )
                 .toList();
         }

@@ -40,6 +40,19 @@ public final class KAnnotationUtils extends KUninstantiable {
     }
 
     /**
+     * Returns classes of given package.
+     * @param packageName Package to search in
+     * @return List of package classes
+     * @throws ClassNotFoundException If it somehow fails to find a class in a package
+     * @throws IOException If resources failed to read
+     */
+    public static List<Class<?>> getPackageClasses(
+        final String packageName
+    ) throws ClassNotFoundException, IOException {
+        return KAnnotationUtils.findAnnotatedClasses(packageName, null);
+    }
+
+    /**
      * Searches for classes with specific annotation in given package.
      * @param packageName Package to search in
      * @param annotation Annotation that class must have
@@ -91,6 +104,11 @@ public final class KAnnotationUtils extends KUninstantiable {
 
                 String className = packageName + "." + classFilename;
                 Class<?> clazz = Class.forName(className);
+                if (annotation == null) {
+                    annotatedClasses.add(clazz);
+                    continue;
+                }
+
                 if (clazz.isAnnotationPresent(annotation)) {
                     annotatedClasses.add(clazz);
                 }
@@ -144,6 +162,11 @@ public final class KAnnotationUtils extends KUninstantiable {
 
                     String className = packageName + "." + classFilename;
                     Class<?> clazz = Class.forName(className);
+                    if (annotation == null) {
+                        annotatedClasses.add(clazz);
+                        continue;
+                    }
+
                     if (clazz.isAnnotationPresent(annotation)) {
                         annotatedClasses.add(clazz);
                     }
