@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KInjected;
 import io.github.darthakiranihil.konna.core.di.KNonResolved;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
@@ -31,8 +32,8 @@ import io.github.darthakiranihil.konna.core.util.KPackageUtils;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -316,14 +317,30 @@ public final class KActivator extends KUninstantiable {
         return KObjectInstantiationType.TRANSIENT;
     }
 
+    private static <T> Constructor<?> getConstructor(final Class<T> clazz) {
+        var constructors = clazz.getDeclaredConstructors();
+        Constructor<?> foundConstructor = null;
+        for (var constructor: constructors) {
+            if (constructor.isAnnotationPresent(KInjected.class)) {
+                foundConstructor = constructor;
+                break;
+            }
+        }
+
+        if (foundConstructor == null) {
+            foundConstructor = constructors[0];
+        }
+        foundConstructor.setAccessible(true);
+        return foundConstructor;
+    }
+
     private static <T> T createNewObject(
         final Class<T> clazz,
         final KContainer container,
         final Object... nonResolvedArgs
     ) {
-        //todo: iterative and autowired analog
 
-        var constructor = clazz.getDeclaredConstructors()[0];
+        var constructor = KActivator.getConstructor(clazz);
         constructor.setAccessible(true);
 
         var parameterTypes = constructor.getParameterTypes();
