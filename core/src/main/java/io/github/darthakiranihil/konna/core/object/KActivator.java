@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.classgraph.ClassGraph;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInjected;
 import io.github.darthakiranihil.konna.core.di.KMasterContainer;
@@ -70,14 +71,16 @@ public final class KActivator extends KUninstantiable {
 
     static {
 
+        ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
+
         List<Class<?>> poolableClasses;
         List<String> poolableCandidates = KPackageUtils.getAllPackageNames();
 
         try {
 
             poolableClasses = KAnnotationUtils.findAnnotatedClasses(
-                KPoolable.class,
-                poolableCandidates
+                poolableCandidates,
+                KPoolable.class
             );
 
         } catch (IOException | ClassNotFoundException e) {
@@ -109,7 +112,7 @@ public final class KActivator extends KUninstantiable {
      * @return A new container, which parent is the default container
      */
     public static KContainer newContainer() {
-        return new KContainer(KMasterContainer.getMaster());
+        return new KContainer(new KContainer());
     }
 
     /**

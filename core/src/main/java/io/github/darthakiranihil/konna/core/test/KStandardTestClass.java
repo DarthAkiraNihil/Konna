@@ -64,10 +64,7 @@ public class KStandardTestClass {
         KLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
 
-        KMasterContainer
-            .getMaster()
-            .add(KJsonParser.class, KStandardJsonParser.class)
-            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
+//
 
     }
 
@@ -75,5 +72,9 @@ public class KStandardTestClass {
      * Default constructor.
      */
     protected KStandardTestClass() {
+        KMasterContainer
+                    .getMaster()
+                    .add(KJsonParser.class, KStandardJsonParser.class)
+                    .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
     }
 }

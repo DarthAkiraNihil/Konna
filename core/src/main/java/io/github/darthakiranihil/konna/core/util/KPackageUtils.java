@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.util;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,11 +30,23 @@ import java.util.List;
  */
 public final class KPackageUtils extends KUninstantiable {
 
-    private static List<String> cachedPackageNames;
-    private static List<Package> cachedPackages;
+    private static List<String> indexedPackageNames;
+    private static List<Package> packageIndex;
 
     private KPackageUtils() {
         super();
+    }
+
+    static {
+        KPackageUtils.packageIndex = Arrays
+            .stream(Package.getPackages())
+            .filter((p) -> p.isAnnotationPresent(KIndexedPackage.class))
+            .toList();
+
+        KPackageUtils.indexedPackageNames =  KPackageUtils.packageIndex
+            .stream()
+            .map(Package::getName)
+            .toList();
     }
 
     /**
@@ -43,21 +56,7 @@ public final class KPackageUtils extends KUninstantiable {
      * @return List of package names used in the application excluding java packages
      */
     public static List<String> getAllPackageNames() {
-        if (KPackageUtils.cachedPackageNames == null) {
-            KPackageUtils.cachedPackageNames = Arrays.stream(Package.getPackages())
-                .map(Package::getName)
-                .filter(
-                    (name) -> !(
-                            name.startsWith("java")
-                        ||  name.startsWith("jdk")
-                        ||  name.startsWith("sun")
-                        ||  name.startsWith("com.sun")
-                    )
-                )
-                .toList();
-        }
-
-        return KPackageUtils.cachedPackageNames;
+        return Collections.unmodifiableList(KPackageUtils.indexedPackageNames);
     }
 
     /**
@@ -67,23 +66,7 @@ public final class KPackageUtils extends KUninstantiable {
      * @return List of packages used in the application excluding java packages
      */
     public static List<Package> getAllPackages() {
-        if (KPackageUtils.cachedPackages == null) {
-            KPackageUtils.cachedPackages = Arrays.stream(Package.getPackages())
-                .filter(
-                    (p) -> {
-                        String name = p.getName();
-                        return !(
-                                name.startsWith("java")
-                            ||  name.startsWith("jdk")
-                            ||  name.startsWith("sun")
-                            ||  name.startsWith("com.sun")
-                        );
-                    }
-                )
-                .toList();
-        }
-
-        return KPackageUtils.cachedPackages;
+        return Collections.unmodifiableList(KPackageUtils.packageIndex);
     }
 
 }

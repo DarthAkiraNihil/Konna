@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 import java.io.File;
@@ -64,6 +67,8 @@ public final class KAnnotationUtils extends KUninstantiable {
         final String packageName,
         final Class<? extends Annotation> annotation
     ) throws ClassNotFoundException, IOException {
+
+
 
         List<Class<?>> annotatedClasses = new ArrayList<>();
         String path = packageName.replace('.', '/');
@@ -127,55 +132,79 @@ public final class KAnnotationUtils extends KUninstantiable {
      * @throws IOException If resources failed to read
      */
     public static List<Class<?>> findAnnotatedClasses(
-        final Class<? extends Annotation> annotation,
-        final List<String> packages
+        final List<String> packages,
+        final Class<? extends Annotation> annotation
     ) throws ClassNotFoundException, IOException {
 
-        List<Class<?>> annotatedClasses = new ArrayList<>();
+        List<Class<?>> annotatedClasses = new LinkedList<>();
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        for (String packageName: packages) {
+        try (ScanResult scanResult =
+            new ClassGraph()
+                .enableClassInfo()
+                .enableAnnotationInfo()
+                .acceptPackages(packages.toArray(new String[0]))
+                .scan()
+        ) {
 
-            String path = packageName.replace('.', '/');
-            Enumeration<URL> resources = classLoader.getResources(path);
+            scanResult
+                .getAllClasses()
+                .stream()
+                .filter((x) -> annotation == null || x.hasAnnotation(annotation.getName()))
+                .toList()
+                .forEach((x) -> {
+                    System.out.println(x.getName());
+                    annotatedClasses.add(x.loadClass());
+                });
 
-            while (resources.hasMoreElements()) {
-                URL resource = resources.nextElement();
-                File directory = new File(resource.getFile());
-                if (!directory.exists()) {
-                    continue;
-                }
+            return annotatedClasses;
 
-                File[] files = directory.listFiles();
-                if (files == null) {
-                    continue;
-                }
-
-                for (File file : files) {
-                    if (!file.getName().endsWith(".class")) {
-                        continue;
-                    }
-
-                    String classFilename = file
-                        .getName()
-                        .substring(0, file.getName().length() - CLASS_EXT_LENGTH);
-
-                    String className = packageName + "." + classFilename;
-                    Class<?> clazz = Class.forName(className);
-                    if (annotation == null) {
-                        annotatedClasses.add(clazz);
-                        continue;
-                    }
-
-                    if (clazz.isAnnotationPresent(annotation)) {
-                        annotatedClasses.add(clazz);
-                    }
-
-                }
-
-            }
         }
-        return annotatedClasses;
+
+//        List<Class<?>> annotatedClasses = new ArrayList<>();
+//
+//        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//        for (String packageName: packages) {
+//
+//            String path = packageName.replace('.', '/');
+//            Enumeration<URL> resources = classLoader.getResources(path);
+//
+//            while (resources.hasMoreElements()) {
+//                URL resource = resources.nextElement();
+//                File directory = new File(resource.getFile());
+//                if (!directory.exists()) {
+//                    continue;
+//                }
+//
+//                File[] files = directory.listFiles();
+//                if (files == null) {
+//                    continue;
+//                }
+//
+//                for (File file : files) {
+//                    if (!file.getName().endsWith(".class")) {
+//                        continue;
+//                    }
+//
+//                    String classFilename = file
+//                        .getName()
+//                        .substring(0, file.getName().length() - CLASS_EXT_LENGTH);
+//
+//                    String className = packageName + "." + classFilename;
+//                    Class<?> clazz = Class.forName(className);
+//                    if (annotation == null) {
+//                        annotatedClasses.add(clazz);
+//                        continue;
+//                    }
+//
+//                    if (clazz.isAnnotationPresent(annotation)) {
+//                        annotatedClasses.add(clazz);
+//                    }
+//
+//                }
+//
+//            }
+//        }
+//        return annotatedClasses;
     }
 
 }

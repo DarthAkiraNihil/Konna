@@ -23,27 +23,37 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-public final class KMasterContainer extends KContainer {
+/*
+получаем список пакетов
+из них выбираем те, что определяют среду
+затем из них смотрим, не определяются ли подсреды
+собираем дерево сред
+для каждого дерева проходимся по всем классам в пакете и подпакетах, игнорируя подсреды,
+собираем примитивные зависимости
+после проходимся по дереву из корня и формируем для каждого узла контейнер
+не забываем проиндексировать, чтобы потом получать среду для класса максимально быстро
+
+ */
+public final class KMasterContainer {
 
     private static final KContainer CONTAINER = new KContainer();
 
-    static {
-
+    public static KContainer getMaster() {
         List<String> packages = KPackageUtils.getAllPackageNames();
         List<Class<?>> classes;
         try {
-            classes = KAnnotationUtils.findAnnotatedClasses(null, packages);
+            classes = KAnnotationUtils.findAnnotatedClasses(packages, null);
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         for (var clazz: classes) {
             if (
-                    clazz.isInterface()
-                ||  Modifier.isAbstract(clazz.getModifiers())
-                ||  clazz.isRecord()
-                ||  clazz.isAnnotation()
-                ||  clazz.isEnum()
+                clazz.isInterface()
+                    ||  Modifier.isAbstract(clazz.getModifiers())
+                    ||  clazz.isRecord()
+                    ||  clazz.isAnnotation()
+                    ||  clazz.isEnum()
             ) {
                 continue;
             }
@@ -51,10 +61,11 @@ public final class KMasterContainer extends KContainer {
             KMasterContainer.CONTAINER.add(clazz);
         }
 
+        return KMasterContainer.CONTAINER;
     }
 
-    public static KContainer getMaster() {
-        return KMasterContainer.CONTAINER;
+    private KMasterContainer() {
+
     }
 
 

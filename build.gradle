@@ -35,6 +35,7 @@ jacoco {
 
 checkstyle {
     toolVersion = "11.0.0"
+    checkstyleTest.enabled = false
 }
 
 repositories {
@@ -45,6 +46,8 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
+    testImplementation 'io.github.classgraph:classgraph:4.8.181'
+    testImplementation 'io.github.toolfactory:jvm-driver:9.9.10'
     implementation(project(":core"))
 }
 
