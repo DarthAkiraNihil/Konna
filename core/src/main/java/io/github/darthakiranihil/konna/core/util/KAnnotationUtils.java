@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -28,12 +30,14 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KAnnotationUtils {
+public final class KAnnotationUtils extends KUninstantiable {
 
     private static
     final int CLASS_EXT_LENGTH = 6;
 
-    private KAnnotationUtils() { }
+    private KAnnotationUtils() {
+        super();
+    }
 
     /**
      * Searches for classes with specific annotation in given package.

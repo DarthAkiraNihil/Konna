@@ -45,6 +45,10 @@ public class KInstantiationException extends KRuntimeException implements KThrow
         );
     }
 
+    public KInstantiationException(final String message) {
+        super(message);
+    }
+
     @Override
     public KThrowableSeverity getSeverity() {
         return KThrowableSeverity.FATAL;

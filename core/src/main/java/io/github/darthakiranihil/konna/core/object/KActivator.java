@@ -46,10 +46,10 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @SuppressWarnings("unchecked")
-public final class KActivator {
+public final class KActivator extends KUninstantiable {
 
     private KActivator() {
-
+        super();
     }
 
     private static final
