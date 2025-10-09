@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine.std;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
@@ -44,7 +45,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
     private final ClassLoader classLoader;
     private final KJsonParser parser;
 
-    public KStandardComponentLoader(final KJsonParser parser) {
+    public KStandardComponentLoader(@KInject final KJsonParser parser) {
         super(KStandardComponentLoader.class.getSimpleName());
         this.classLoader = Thread.currentThread().getContextClassLoader();
         this.parser = parser;

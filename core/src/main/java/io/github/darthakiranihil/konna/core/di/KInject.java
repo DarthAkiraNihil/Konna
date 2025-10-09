@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks that a method parameter value should be obtained
- * from nonResolvedArgs list instead of creating through
+ * Marks that a method parameter value should be
+ * injected automatically when an object is created with
  * {@link io.github.darthakiranihil.konna.core.object.KActivator}.
  *
  * @since 0.2.0
@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface KNonResolved {
+public @interface KInject {
 }

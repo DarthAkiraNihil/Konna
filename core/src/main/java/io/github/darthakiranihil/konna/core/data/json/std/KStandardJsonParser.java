@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 
@@ -43,7 +44,7 @@ public class KStandardJsonParser extends KObject implements KJsonParser {
      * Constructs parser with concrete tokenizer.
      * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser(final KJsonTokenizer tokenizer) {
+    public KStandardJsonParser(@KInject final KJsonTokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
 

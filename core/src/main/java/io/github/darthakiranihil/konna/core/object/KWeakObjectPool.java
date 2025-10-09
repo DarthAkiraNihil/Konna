@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KNonResolved;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
@@ -106,10 +106,10 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             Object[] parameters = new Object[this.onObtainParameterClasses.length];
             int nonResolvedArgsProcessed = 0;
             for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
-                boolean isNonResolved = false;
+                boolean isNonResolved = true;
                 for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
-                    if (this.onObtainParameterAnnotations[i][j] instanceof KNonResolved) {
-                        isNonResolved = true;
+                    if (this.onObtainParameterAnnotations[i][j] instanceof KInject) {
+                        isNonResolved = false;
                         break;
                     }
                 }

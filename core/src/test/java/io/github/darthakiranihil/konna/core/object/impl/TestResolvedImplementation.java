@@ -16,11 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
+
 public class TestResolvedImplementation implements TestInterfaceToResolve {
 
     private final TestDependencyInterface dep;
 
-    public TestResolvedImplementation(final TestDependencyInterface dep) {
+    public TestResolvedImplementation(@KInject final TestDependencyInterface dep) {
         this.dep = dep;
     }
 

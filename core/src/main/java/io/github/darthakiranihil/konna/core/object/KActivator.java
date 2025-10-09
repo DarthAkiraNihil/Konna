@@ -18,15 +18,14 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.classgraph.ClassGraph;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KInjected;
+import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.KMasterContainer;
-import io.github.darthakiranihil.konna.core.di.KNonResolved;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
 import java.lang.ref.SoftReference;
@@ -116,7 +115,7 @@ public final class KActivator extends KUninstantiable {
      * @see KContainer
      * @see KObjectInstantiationType
      * @see KObjectRegistry
-     * @see KNonResolved
+     * @see KInject
      */
     public static <T> T create(
         final Class<? extends T> clazz,
@@ -288,7 +287,7 @@ public final class KActivator extends KUninstantiable {
         var constructors = clazz.getDeclaredConstructors();
         Constructor<?> foundConstructor = null;
         for (var constructor: constructors) {
-            if (constructor.isAnnotationPresent(KInjected.class)) {
+            if (constructor.isAnnotationPresent(KInjectedConstructor.class)) {
                 foundConstructor = constructor;
                 break;
             }
@@ -317,10 +316,10 @@ public final class KActivator extends KUninstantiable {
         int nonResolvedArgsProcessed = 0;
 
         for (int i = 0; i < parameterTypes.length; i++) {
-            boolean isNonResolved = false;
+            boolean isNonResolved = true;
             for (int j = 0; j < parameterAnnotations[i].length; j++) {
-                if (parameterAnnotations[i][j] instanceof KNonResolved) {
-                    isNonResolved = true;
+                if (parameterAnnotations[i][j] instanceof KInject) {
+                    isNonResolved = false;
                     break;
                 }
             }

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.di.KNonResolved;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
@@ -27,7 +27,7 @@ public class TestWeakPoolable extends KObject {
     private int field;
 
     @KOnPoolableObjectObtain
-    private void create(@KNonResolved int fieldValue) {
+    private void create(int fieldValue) {
         this.field = fieldValue;
     }
 
