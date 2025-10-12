@@ -5,7 +5,7 @@
  * @author Darth Akira Nihil
  */
 @KIndexedPackage
-//@KPackageEnvironment(name = "core")
+@KPackageEnvironment(name = "core")
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.di.KPackageEnvironment;

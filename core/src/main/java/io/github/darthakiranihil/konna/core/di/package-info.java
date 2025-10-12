@@ -5,7 +5,7 @@
  * @author Darth Akira Nihil
  */
 @KIndexedPackage
-@KPackageEnvironment(name = "core_di")
+@KPackageEnvironment(name = "core")
 package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;

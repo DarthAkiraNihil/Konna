@@ -16,18 +16,15 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ScanResult;
+import io.github.darthakiranihil.konna.core.except.KUnknownException;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KPair;
 import io.github.darthakiranihil.konna.core.util.KTriplet;
-import io.github.darthakiranihil.konna.core.util.index.KClassIndex;
 import io.github.darthakiranihil.konna.core.util.index.KPackageIndex;
 
-import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /*
 получаем список пакетов
@@ -68,7 +65,8 @@ public final class KMasterContainer extends KUninstantiable {
 
 
 
-    private static final KContainer CONTAINER = new KContainer();
+    private static final Map<String, KContainer> ENV_2_CONTAINER = new HashMap<>();
+    private static final Map<String, String> PACKAGE_2_ENV = new HashMap<>();
 
     static {
         List<KTriplet<String, String, Boolean>>
@@ -82,26 +80,36 @@ public final class KMasterContainer extends KUninstantiable {
 
         Map<String, KPair<Set<String>, String>>
             groupedEnvironments = KMasterContainer.groupEnvironmentRecords(records);
-        List<KContainer> containers = KMasterContainer.buildContainers(groupedEnvironments);
-        List<Class<?>> classes = KClassIndex.getClassIndex();
+        Map<String, KContainer> containers = KMasterContainer.buildContainers(groupedEnvironments);
 
-        for (var clazz: classes) {
-            if (
-                clazz.isInterface()
-                    ||  Modifier.isAbstract(clazz.getModifiers())
-                    ||  clazz.isRecord()
-                    ||  clazz.isAnnotation()
-                    ||  clazz.isEnum()
-            ) {
-                continue;
-            }
-
-            KMasterContainer.CONTAINER.add(clazz);
-        }
+        KMasterContainer.ENV_2_CONTAINER.putAll(containers);
+        groupedEnvironments.forEach(
+            (k, v) -> v.first().forEach((p) -> KMasterContainer.PACKAGE_2_ENV.put(p, k))
+        );
     }
 
     public static KContainer getMaster() {
-        return KMasterContainer.CONTAINER;
+        var stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace.length == 0) {
+            return KMasterContainer.ENV_2_CONTAINER.get("");
+        }
+
+        try {
+            Class<?> callerClass = Class.forName(stackTrace[2].getClassName());
+            if (callerClass == KActivator.class) {
+                callerClass = Class.forName(stackTrace[3].getClassName());
+            }
+
+            return KMasterContainer.ENV_2_CONTAINER.get(
+                KMasterContainer.PACKAGE_2_ENV.get(
+                    callerClass
+                        .getPackage()
+                        .getName()
+                )
+            );
+        } catch (Throwable e) {
+            throw new KUnknownException(e);
+        }
     }
 
     private KMasterContainer() {
@@ -233,11 +241,12 @@ public final class KMasterContainer extends KUninstantiable {
         return groupResult;
     }
 
-    private static List<KContainer> buildContainers(
+    private static Map<String, KContainer> buildContainers(
         final Map<String, KPair<Set<String>, String>> environments
     ) {
-        KContainer root = new KContainer("root_container");
         Map<String, KContainer> containers = new HashMap<>(environments.size());
+        KContainer root = new KContainer("root_container");
+        containers.put("", root);
 
         environments
             .entrySet()
@@ -266,10 +275,7 @@ public final class KMasterContainer extends KUninstantiable {
                 containers.put(e.getKey(), container);
             });
 
-        List<KContainer> builtContainers = new ArrayList<>(environments.size() + 1);
-        builtContainers.add(root);
-        builtContainers.addAll(containers.values());
-        return builtContainers;
+        return containers;
     }
 
 }
