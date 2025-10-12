@@ -19,6 +19,8 @@ package io.github.darthakiranihil.konna.core.util;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.util.index.KPackageIndex;
+
 import java.lang.annotation.Annotation;
 import java.util.*;
 
@@ -44,7 +46,7 @@ public final class KAnnotationUtils extends KUninstantiable {
     ) {
 
         return KAnnotationUtils.findAnnotatedClasses(
-            KPackageUtils.getIndexedPackagesNames(),
+            KPackageIndex.getPackageIndex().stream().map(Package::getName).toList(),
             annotation
         );
 

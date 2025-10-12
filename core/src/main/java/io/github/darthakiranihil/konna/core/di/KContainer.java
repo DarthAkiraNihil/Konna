@@ -50,6 +50,28 @@ public class KContainer extends KObject {
     public KContainer(final KContainer parent) {
         this.classMap = new HashMap<>();
         this.parent = parent;
+        this.setParent(parent);
+    }
+
+    /**
+     * Constructs container with specified container object name.
+     * @param name Name of created container object
+     */
+    public KContainer(final String name) {
+        super(name);
+        this.classMap = new HashMap<>();
+        this.parent = null;
+    }
+
+    /**
+     * Constructs container with specified parent container and container object name.
+     * @param parent Parent container
+     * @param name Name of created container object
+     */
+    public KContainer(final KContainer parent, final String name) {
+        super(name, parent);
+        this.classMap = new HashMap<>();
+        this.parent = parent;
     }
 
     /**

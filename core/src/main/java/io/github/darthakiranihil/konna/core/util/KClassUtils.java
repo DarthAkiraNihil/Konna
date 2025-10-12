@@ -19,42 +19,19 @@ package io.github.darthakiranihil.konna.core.util;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.util.index.KClassIndex;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public final class KClassUtils extends KUninstantiable {
 
-    private static final List<Class<?>> CLASS_INDEX = new ArrayList<>();
+    private static final List<Class<?>> CLASS_INDEX = KClassIndex.getClassIndex();
 
     private KClassUtils() {
         super();
-    }
-
-    static {
-
-        try (ScanResult scanResult =
-            new ClassGraph()
-                .enableAllInfo()
-                .acceptPackages(KPackageUtils.getIndexedPackagesNames().toArray(new String[0]))
-                .scan()
-        ) {
-
-            scanResult
-                .getAllClasses()
-                .forEach((x) -> {
-                    System.out.println(x);
-                    KClassUtils.CLASS_INDEX.add(x.loadClass());
-                });
-
-        }
-
-    }
-
-    public static List<Class<?>> getClassIndex() {
-        return Collections.unmodifiableList(KClassUtils.CLASS_INDEX);
     }
 
     public static List<Class<?>> getAnnotatedClasses(final Class<? extends Annotation> annotation) {
@@ -63,6 +40,28 @@ public final class KClassUtils extends KUninstantiable {
             .stream()
             .filter((c) -> c.isAnnotationPresent(annotation))
             .toList();
+    }
+
+    public static List<Class<?>> getRealClassesInPackages(final Set<String> packages) {
+        try (ScanResult scanResult = new ClassGraph()
+            .enableAllInfo()
+            .acceptPackages(packages.toArray(new String[0]))
+            .scan()
+        ) {
+            List<Class<?>> classes = new ArrayList<>();
+            scanResult
+                .getAllClasses()
+                .stream()
+                .filter((c) -> !(
+                    c.isInterface()
+                        ||  c.isAbstract()
+                        ||  c.isAnnotation()
+                        ||  c.isRecord()
+                        ||  c.isEnum()
+                ))
+                .forEach((c) -> classes.add(c.loadClass()));
+            return classes;
+        }
     }
 
 }
