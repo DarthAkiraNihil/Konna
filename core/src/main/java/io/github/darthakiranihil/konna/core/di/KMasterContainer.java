@@ -39,6 +39,8 @@ import java.util.*;
  */
 public final class KMasterContainer extends KUninstantiable {
 
+    private static final int CLASS_BEFORE_ACTIVATOR = 3;
+
     private static final class PackageEnvRecord {
 
         private static int unnamedEnvironmentsCreated = 0;
@@ -97,16 +99,27 @@ public final class KMasterContainer extends KUninstantiable {
         try {
             Class<?> callerClass = Class.forName(stackTrace[2].getClassName());
             if (callerClass == KActivator.class) {
-                callerClass = Class.forName(stackTrace[3].getClassName());
+                callerClass = Class.forName(
+                    stackTrace[KMasterContainer.CLASS_BEFORE_ACTIVATOR].getClassName()
+                );
             }
 
-            return KMasterContainer.ENV_2_CONTAINER.get(
+            KContainer retrieved = KMasterContainer.ENV_2_CONTAINER.get(
                 KMasterContainer.PACKAGE_2_ENV.get(
                     callerClass
                         .getPackage()
                         .getName()
                 )
             );
+            if (retrieved == null) {
+                retrieved = KMasterContainer.ENV_2_CONTAINER.get("");
+            }
+
+            if (!callerClass.isAnnotationPresent(KMasterContainerModifier.class)) {
+                return new KImmutableContainer(retrieved);
+            }
+
+            return retrieved;
         } catch (Throwable e) {
             throw new KUnknownException(e);
         }

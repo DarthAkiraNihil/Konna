@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.test;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.*;
 import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
@@ -29,6 +30,7 @@ import io.github.darthakiranihil.konna.core.log.std.*;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+@KMasterContainerModifier
 public class KStandardTestClass {
 
     /**

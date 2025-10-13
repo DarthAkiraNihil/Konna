@@ -138,6 +138,14 @@ public class KObject implements Serializable {
         return this.id;
     }
 
+    /**
+     * Returns name of the object.
+     * @return Name of the object
+     */
+    public String name() {
+        return this.name;
+    }
+
 
     /**
      * Compares a KObject to another object.

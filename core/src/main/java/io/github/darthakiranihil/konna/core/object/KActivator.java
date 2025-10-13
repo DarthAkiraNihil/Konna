@@ -100,7 +100,7 @@ public final class KActivator extends KUninstantiable {
      * @return A new container, which parent is the default container
      */
     public static KContainer newContainer() {
-        return new KContainer(new KContainer());
+        return new KContainer(KMasterContainer.getMaster());
     }
 
     /**

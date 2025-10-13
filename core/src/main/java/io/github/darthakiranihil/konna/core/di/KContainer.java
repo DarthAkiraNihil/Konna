@@ -33,7 +33,10 @@ import java.util.Map;
 public class KContainer extends KObject {
 
     private final Map<Class<?>, Class<?>> classMap;
-    private final KContainer parent;
+    /**
+     * Reference to the parent container of this container.
+     */
+    protected final KContainer parent;
 
     /**
      * Zero-arg constructor. Constructs a container without parent one.
