@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
@@ -33,6 +35,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KMasterContainerModifier
 public class KEngineHypervisor extends KObject {
 
     private final KComponentLoader componentLoader;
@@ -51,19 +54,19 @@ public class KEngineHypervisor extends KObject {
         KLogger.info("Initializing engine hypervisor [config = %s]", config);
 
         this.jsonParser = KActivator.create(KJsonParser.class);
-        KContainer local = KActivator.newContainer();
+        KContainer master = KMasterContainer.getMaster();
 
-        local
+        master
             .add(config.serviceLoader())
             .add(config.componentLoader());
 
         try {
 
-            this.componentLoader = KActivator.create(config.componentLoader(), local);
+            this.componentLoader = KActivator.create(config.componentLoader());
 
             KLogger.info("Created component loader %s", config.componentLoader());
 
-            this.serviceLoader = KActivator.create(config.serviceLoader(), local);
+            this.serviceLoader = KActivator.create(config.serviceLoader());
 
             KLogger.info("Created service loader %s", config.serviceLoader());
 

@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KComponentService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
@@ -36,6 +38,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KMasterContainerModifier
 public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
     public KStandardServiceLoader() {
@@ -88,10 +91,10 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             service
         );
 
-        KContainer local = KActivator.newContainer();
-        local.add(service);
+        KContainer master = KMasterContainer.getMaster();
+        master.add(service);
 
-        Object instantiatedService = KActivator.create(service, local);
+        Object instantiatedService = KActivator.create(service);
         loadedServicesMap.put(
             serviceName,
             new KServiceEntry(

@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.impl.*;
@@ -26,23 +28,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KActivatorNegativeTests extends KStandardTestClass {
-
-    private final KContainer container;
-
-    public KActivatorNegativeTests() {
-        KContainer local = KActivator.newContainer();
-        local
-            .add(TestImmortal.class)
-            .add(TestPoolable.class)
-            .add(TestSingleton.class)
-            .add(TestTemporal.class)
-            .add(TestTransient.class)
-            .add(TestWeakPoolable.class)
-            .add(TestWeakSingleton.class)
-            .add(TestExplicitTransient.class);
-
-        this.container = local;
-    }
 
     @Test
     public void testDeleteNonInstantiatedSingletons() {
@@ -58,7 +43,7 @@ public class KActivatorNegativeTests extends KStandardTestClass {
     @Test
     public void testDeleteImmortal() {
 
-        var immortal = KActivator.create(TestImmortal.class, this.container);
+        var immortal = KActivator.create(TestImmortal.class);
         Assertions.assertThrowsExactly(KDeletionException.class, () -> KActivator.delete(immortal));
 
     }
@@ -66,24 +51,24 @@ public class KActivatorNegativeTests extends KStandardTestClass {
     @Test
     public void testEmptyPool() {
 
-        var p1 = KActivator.create(TestPoolable.class, this.container, 0);
-        var p2 = KActivator.create(TestPoolable.class, this.container, 0);
+        var p1 = KActivator.create(TestPoolable.class, 0);
+        var p2 = KActivator.create(TestPoolable.class, 0);
         Assertions.assertThrowsExactly(
             KInstantiationException.class,
             () -> KActivator.create(
-                TestPoolable.class, this.container, 0
+                TestPoolable.class, 0
             )
         );
 
         KActivator.delete(p1);
         KActivator.delete(p2);
 
-        var wp1 = KActivator.create(TestWeakPoolable.class, this.container, 0);
-        var wp2 = KActivator.create(TestWeakPoolable.class, this.container, 0);
+        var wp1 = KActivator.create(TestWeakPoolable.class, 0);
+        var wp2 = KActivator.create(TestWeakPoolable.class, 0);
         Assertions.assertThrowsExactly(
             KInstantiationException.class,
             () -> KActivator.create(
-                TestWeakPoolable.class, this.container, 0
+                TestWeakPoolable.class, 0
             )
         );
 

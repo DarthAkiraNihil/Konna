@@ -20,6 +20,8 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
@@ -40,6 +42,7 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @KSingleton(immortal = true)
+@KMasterContainerModifier
 public class KStandardComponentLoader extends KObject implements KComponentLoader {
 
     private final ClassLoader classLoader;
@@ -95,11 +98,13 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 parsedConfig = this.parser.parse(config);
             }
 
-            KContainer local = KActivator.newContainer();
-            local.add(component).add(KServiceLoader.class, serviceLoader.getClass());
+            KContainer master = KMasterContainer.getMaster();
+            master
+                .add(component)
+                .add(KServiceLoader.class, serviceLoader.getClass());
 
             var loadedComponent = KActivator.create(
-                component, local, meta.servicesPackage(), parsedConfig
+                component, meta.servicesPackage(), parsedConfig
             );
 
             loadedComponentMap.put(

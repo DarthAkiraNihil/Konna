@@ -109,8 +109,8 @@ public final class KActivator extends KUninstantiable {
      * @param clazz Class to instantiate
      * @param container Container (used for dependency resolution)
      * @param <T> Type of object to instantiate
-     * @param nonResolvedArgs Arguments that are not resolved (passed explicitly)
-     *                        for constructing an object
+     * @param nonInjectedArgs Arguments that are not injected (passed explicitly)
+     *                        when constructing an object
      * @return Created object
      * @see KContainer
      * @see KObjectInstantiationType
@@ -120,7 +120,7 @@ public final class KActivator extends KUninstantiable {
     public static <T> T create(
         final Class<? extends T> clazz,
         final KContainer container,
-        final Object... nonResolvedArgs
+        final Object... nonInjectedArgs
     ) {
 
         var klass = KActivator.getClassImplementation(clazz, container);
@@ -133,30 +133,30 @@ public final class KActivator extends KUninstantiable {
                 klass,
                 container,
                 false,
-                nonResolvedArgs
+                nonInjectedArgs
             );
             case WEAK_SINGLETON -> KActivator.createSingleton(
                 klass,
                 container,
                 true,
-                nonResolvedArgs
+                nonInjectedArgs
             );
             case POOLABLE -> KActivator.createPoolable(
                 klass,
                 container,
                 false,
-                nonResolvedArgs
+                nonInjectedArgs
             );
             case WEAK_POOLABLE -> KActivator.createPoolable(
                 klass,
                 container,
                 true,
-                nonResolvedArgs
+                nonInjectedArgs
             );
             case TRANSIENT, TEMPORAL -> KActivator.createNewObject(
                 klass,
                 container,
-                nonResolvedArgs
+                nonInjectedArgs
             );
         };
 
@@ -172,6 +172,8 @@ public final class KActivator extends KUninstantiable {
      * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
      * This method uses default container, that must be set before calling it
      * @param clazz Class to instantiate
+     * @param nonInjectedArgs Arguments that are not injected (passed explicitly)
+     *                        when constructing an object
      * @return Created object
      * @param <T> Type of object to instantiate
      *
@@ -179,10 +181,14 @@ public final class KActivator extends KUninstantiable {
      * @see KObjectInstantiationType
      * @see KObjectRegistry
      */
-    public static <T> T create(final Class<? extends T> clazz) {
+    public static <T> T create(
+        final Class<? extends T> clazz,
+        final Object... nonInjectedArgs
+    ) {
         return KActivator.create(
             clazz,
-            KMasterContainer.getMaster()
+            KMasterContainer.getMaster(),
+            nonInjectedArgs
         );
     }
 

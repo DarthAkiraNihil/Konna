@@ -69,14 +69,14 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
      * empty pool is not specified. If reference in unused objects queue is somehow
      * null, a new object will be created
      * @param container Container (for resolving dependencies for onObtain method
-     * @param nonResolvedArgs Arguments that are not resolved
-     *                        (passed explicitly) for onObtain method
+     * @param nonInjectedArgs Arguments that are not injected
+     *                        (passed explicitly) when onObtain method is invoked
      * @return A pooled object (unwrapped from weak reference)
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      */
     public T obtain(
         final KContainer container,
-        final Object... nonResolvedArgs
+        final Object... nonInjectedArgs
     ) throws KEmptyObjectPoolException {
 
         var ref = this.unusedObjects.peek();
@@ -115,7 +115,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
                 }
 
                 if (isNonResolved) {
-                    parameters[i] = nonResolvedArgs[nonResolvedArgsProcessed];
+                    parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
                     nonResolvedArgsProcessed++;
                 } else {
                     parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);

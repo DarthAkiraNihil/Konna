@@ -66,15 +66,15 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
      * if pool is not extensible and behaviour of getting object from an
      * empty pool is not specified.
      * @param container Container (for resolving dependencies for onObtain method)
-     * @param nonResolvedArgs Arguments that are not resolved
-     *                        (passed explicitly) for onObtain method
+     * @param nonInjectedArgs Arguments that are not injected
+     *                        (passed explicitly) when onObtain method is invoked
      * @return A pooled object
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      * @see KInject
      */
     public T obtain(
         final KContainer container,
-        final Object... nonResolvedArgs
+        final Object... nonInjectedArgs
     ) throws KEmptyObjectPoolException {
 
         var obtained = this.unusedObjects.peek();
@@ -101,7 +101,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
                 }
 
                 if (isNonResolved) {
-                    parameters[i] = nonResolvedArgs[nonResolvedArgsProcessed];
+                    parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
                     nonResolvedArgsProcessed++;
                 } else {
                     parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);
