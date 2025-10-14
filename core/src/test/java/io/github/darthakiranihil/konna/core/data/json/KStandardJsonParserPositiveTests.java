@@ -56,7 +56,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
     );
 
     public KStandardJsonParserPositiveTests() {
-        this.parser = KStandardTestClass.jsonParser;
+        this.parser = this.jsonParser;
     }
 
     private void simpleTest(String input, KJsonValueType expectedType, Object expectedValue) {

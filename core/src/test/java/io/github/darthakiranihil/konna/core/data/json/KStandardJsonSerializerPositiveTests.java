@@ -31,7 +31,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
     private final KJsonSerializer serializer;
 
     public KStandardJsonSerializerPositiveTests() {
-        this.serializer = KStandardTestClass.jsonSerializer;
+        this.serializer = this.jsonSerializer;
     }
 
     @Test

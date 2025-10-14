@@ -49,14 +49,14 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
         String data = "{\"field1\": 123, \"field3\": \"aboba\", \"field_4\": [1.0, 2.0], \"field5\": true}";
         KJsonValue jsonValue;
         try {
-            jsonValue = KStandardTestClass.jsonParser.parse(data);
+            jsonValue = this.jsonParser.parse(data);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;
         }
 
         Assertions.assertThrowsExactly(KJsonSerializationException.class, () -> {
-            KStandardTestClass.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.SerializerTestClass.class);
+            this.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.SerializerTestClass.class);
         });
 
     }
@@ -75,14 +75,14 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
         String data = "{\"field1\": [1, 2, 3]}";
         KJsonValue jsonValue;
         try {
-            jsonValue = KStandardTestClass.jsonParser.parse(data);
+            jsonValue = this.jsonParser.parse(data);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;
         }
 
         Assertions.assertThrowsExactly(KJsonSerializationException.class, () -> {
-            KStandardTestClass.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.ClassWithUnmarkedArray.class);
+            this.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.ClassWithUnmarkedArray.class);
         });
 
     }

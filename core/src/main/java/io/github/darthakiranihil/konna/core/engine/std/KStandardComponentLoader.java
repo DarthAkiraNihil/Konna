@@ -101,7 +101,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 .add(KServiceLoader.class, serviceLoader.getClass());
 
             var loadedComponent = ctx.activator().create(
-                component, meta.servicesPackage(), parsedConfig
+                component, ctx, meta.servicesPackage(), parsedConfig
             );
 
             loadedComponentMap.put(

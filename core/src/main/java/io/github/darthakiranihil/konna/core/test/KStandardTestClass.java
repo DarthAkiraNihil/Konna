@@ -18,11 +18,17 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.*;
-import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
+import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
+import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
+
+import java.util.List;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -36,47 +42,64 @@ public class KStandardTestClass {
     /**
      * Implementation of a json tokenizer.
      */
-    protected static KJsonTokenizer jsonTokenizer;
+    protected final KJsonTokenizer jsonTokenizer;
     /**
      * Implementation of a json parser.
      */
-    protected static KJsonParser jsonParser;
+    protected final KJsonParser jsonParser;
     /**
      * Implementation of a json serializer.
      */
-    protected static KJsonSerializer jsonSerializer;
+    protected final KJsonSerializer jsonSerializer;
     /**
      * Implementation of a json deserializer.
      */
-    protected static KJsonDeserializer jsonDeserializer;
+    protected final KJsonDeserializer jsonDeserializer;
     /**
      * Implementation of a json stringifier.
      */
-    protected static KJsonStringifier jsonStringifier;
-
-    static {
-
-        KStandardTestClass.jsonTokenizer = new KStandardJsonTokenizer();
-        KStandardTestClass.jsonParser = new KStandardJsonParser(KStandardTestClass.jsonTokenizer);
-        KStandardTestClass.jsonSerializer = new KStandardJsonSerializer();
-        KStandardTestClass.jsonDeserializer = new KStandardJsonDeserializer();
-        KStandardTestClass.jsonStringifier = new KStandardJsonStringifier();
-
-        KLogger.init(KLogLevel.DEBUG, new KSimpleLogFormatter());
-        KLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
-        KLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
-
-//
-
-    }
+    protected final KJsonStringifier jsonStringifier;
+    /**
+     * Engine context, required for running tests.
+     */
+    protected final KEngineContext context;
 
     /**
      * Default constructor.
      */
     protected KStandardTestClass() {
-        KContainerResolver
-                    .resolve()
-                    .add(KJsonParser.class, KStandardJsonParser.class)
-                    .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
+
+        this.jsonTokenizer = new KStandardJsonTokenizer();
+        this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
+        this.jsonSerializer = new KStandardJsonSerializer();
+        this.jsonDeserializer = new KStandardJsonDeserializer();
+        this.jsonStringifier = new KStandardJsonStringifier();
+
+        var index = new KStandardIndex();
+
+        var containerResolver = new KStandardContainerResolver(index);
+        containerResolver
+            .resolve()
+            .add(KJsonParser.class, KStandardJsonParser.class)
+            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
+
+        var objectRegistry = new KStandardObjectRegistry();
+        var logger = new KStandardLogger(
+            "std_logger",
+            KLogLevel.DEBUG,
+            new KSimpleLogFormatter(),
+            List.of(
+                new KTerminalLogHandler(new KColorfulTerminalLogFormatter()),
+                new KFileLogHandler("_log.log", new KTimestampLogFormatter())
+            )
+        );
+
+        this.context = new KManuallyProvidedEngineContext(
+            new KStandardActivator(containerResolver, objectRegistry, index),
+            containerResolver,
+            index,
+            logger,
+            objectRegistry
+        );
     }
 }

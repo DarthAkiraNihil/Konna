@@ -47,7 +47,7 @@ public class KStandardServiceLoaderNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrowsExactly(
             KServiceLoadingException.class,
-            () -> loader.load(TestService.class, loadedServices)
+            () -> loader.load(this.context, TestService.class, loadedServices)
         );
 
     }

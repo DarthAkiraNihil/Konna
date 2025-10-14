@@ -29,10 +29,11 @@ public class TestComponent extends KComponent {
 
     public TestComponent(
         @KInject KServiceLoader serviceLoader,
+        KEngineContext ctx,
         String servicesPackage,
         KJsonValue config
     ) throws KComponentLoadingException {
-        super(serviceLoader, servicesPackage, config);
+        super(serviceLoader, ctx, servicesPackage, config);
     }
 
     @Override

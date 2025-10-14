@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.util;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
-import io.github.darthakiranihil.konna.core.util.index.KClassIndex;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -28,15 +27,16 @@ import java.util.Set;
 
 public final class KClassUtils extends KUninstantiable {
 
-    private static final List<Class<?>> CLASS_INDEX = KClassIndex.getClassIndex();
-
     private KClassUtils() {
         super();
     }
 
-    public static List<Class<?>> getAnnotatedClasses(final Class<? extends Annotation> annotation) {
-        return KClassUtils
-            .CLASS_INDEX
+    public static List<Class<?>> getAnnotatedClasses(
+        final KIndex index,
+        final Class<? extends Annotation> annotation
+    ) {
+        return index
+            .getClassIndex()
             .stream()
             .filter((c) -> c.isAnnotationPresent(annotation))
             .toList();

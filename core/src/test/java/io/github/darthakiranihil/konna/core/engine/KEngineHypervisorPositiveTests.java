@@ -43,7 +43,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
         KJsonValue parsed;
         try {
-            parsed = KStandardTestClass.jsonParser.parse(config);
+            parsed = this.jsonParser.parse(config);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;
@@ -57,7 +57,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             return;
         }
 
-        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
+        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig, this.context);
 
         try {
             Field componentLoader = KEngineHypervisor.class.getDeclaredField("componentLoader");

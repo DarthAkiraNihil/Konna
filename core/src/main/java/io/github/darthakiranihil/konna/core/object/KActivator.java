@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 
 
 /**
@@ -32,15 +33,18 @@ public abstract class KActivator extends KObject {
 
     protected final KContainerResolver containerResolver;
     protected final KObjectRegistry objectRegistry;
+    protected final KIndex index;
 
     public KActivator(
         final KContainerResolver containerResolver,
-        final KObjectRegistry objectRegistry
+        final KObjectRegistry objectRegistry,
+        final KIndex index
     ) {
         super("activator");
 
         this.containerResolver = containerResolver;
         this.objectRegistry = objectRegistry;
+        this.index = index;
     }
     /**
      * Creates a new container and returns it. Container may be empty or not, it depends

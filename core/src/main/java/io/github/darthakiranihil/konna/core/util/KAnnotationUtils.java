@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.util;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
-import io.github.darthakiranihil.konna.core.util.index.KPackageIndex;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -37,16 +36,18 @@ public final class KAnnotationUtils extends KUninstantiable {
     }
 
     /**
-     * Searches for classes with specific annotation in the indexed package list.
+     * Searches for classes with specific annotation in the provided index.
+     * @param index Index to look for classes in
      * @param annotation Annotation that class must have
      * @return List of annotated classes
      */
     public static List<Class<?>> findAnnotatedClasses(
+        final KIndex index,
         final Class<? extends Annotation> annotation
     ) {
 
         return KAnnotationUtils.findAnnotatedClasses(
-            KPackageIndex.getPackageIndex().stream().map(Package::getName).toList(),
+            index.getPackageIndex().stream().map(Package::getName).toList(),
             annotation
         );
 
@@ -54,11 +55,13 @@ public final class KAnnotationUtils extends KUninstantiable {
 
     /**
      * Searches for classes with specific annotation in given package.
+     * @param index Index to look for classes in
      * @param packageName Package to search in
      * @param annotation Annotation that class must have
      * @return List of annotated classes
      */
     public static List<Class<?>> findAnnotatedClasses(
+        final KIndex index,
         final String packageName,
         final Class<? extends Annotation> annotation
     ) {

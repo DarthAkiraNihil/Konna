@@ -39,10 +39,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
 
     private final Queue<WeakReference<T>> unusedObjects;
+    private final KActivator activator;
 
-    public KWeakObjectPool(final Class<T> clazz, int initialSize) {
+    public KWeakObjectPool(
+        final Class<T> clazz,
+        int initialSize,
+        final KActivator activator,
+        final KObjectRegistry objectRegistry
+    ) {
         super(clazz, initialSize);
+
         this.unusedObjects = new ConcurrentLinkedQueue<>();
+        this.activator = activator;
+
         for (int i = 0; i < initialSize; i++) {
             T object;
             try {
@@ -57,7 +66,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             }
             this.unusedObjects.add(new WeakReference<>(object));
             if (object instanceof KObject) {
-                KObjectRegistry.push((KObject) object, KObjectInstantiationType.WEAK_POOLABLE);
+                objectRegistry.push((KObject) object, KObjectInstantiationType.WEAK_POOLABLE);
             }
         }
     }
@@ -117,7 +126,10 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
                     parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
                     nonResolvedArgsProcessed++;
                 } else {
-                    parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);
+                    parameters[i] = this.activator.create(
+                        this.onObtainParameterClasses[i],
+                        container
+                    );
                 }
             }
             this.onObjectObtain.invoke(obtained, parameters);

@@ -37,10 +37,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class KObjectPool<T> extends KAbstractObjectPool<T> {
 
     private final Queue<T> unusedObjects;
+    private final KActivator activator;
 
-    public KObjectPool(final Class<T> clazz, int initialSize) {
+    public KObjectPool(
+        final Class<T> clazz,
+        int initialSize,
+        final KActivator activator,
+        final KObjectRegistry objectRegistry
+    ) {
         super(clazz, initialSize);
+
         this.unusedObjects = new ConcurrentLinkedQueue<>();
+        this.activator = activator;
+
         for (int i = 0; i < initialSize; i++) {
             T object;
             try {
@@ -55,7 +64,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             }
             this.unusedObjects.add(object);
             if (object instanceof KObject) {
-                KObjectRegistry.push((KObject) object, KObjectInstantiationType.POOLABLE);
+                objectRegistry.push((KObject) object, KObjectInstantiationType.POOLABLE);
             }
         }
     }
@@ -103,7 +112,10 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
                     parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
                     nonResolvedArgsProcessed++;
                 } else {
-                    parameters[i] = KActivator.create(this.onObtainParameterClasses[i], container);
+                    parameters[i] = this.activator.create(
+                        this.onObtainParameterClasses[i],
+                        container
+                    );
                 }
             }
             this.onObjectObtain.invoke(obtained, parameters);

@@ -40,25 +40,39 @@ public abstract class KComponent extends KObject {
      * List of component services.
      */
     protected final Map<String, KServiceEntry> services;
+    /**
+     * Logger of component's engine context.
+     */
+    protected final KLogger logger;
 
     public KComponent(
         @KInject final KServiceLoader serviceLoader,
+        final KEngineContext ctx,
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
         super(KComponent.class.getSimpleName());
+        this.logger = ctx.logger();
+
         String componentClass = this.getClass().toString();
-        KLogger.info("Creating component %s", componentClass);
+        this.logger.info("Creating component %s", componentClass);
 
         List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-            servicesPackage, KComponentServiceMetaInfo.class
+            ctx.index(),
+            servicesPackage,
+            KComponentServiceMetaInfo.class
         );
-        KLogger.info("Found %d services of component %s", serviceClasses.size(), componentClass);
+        this.logger.info(
+            "Found %d services of component %s",
+            serviceClasses.size(),
+            componentClass
+        );
 
         Map<String, KServiceEntry> instantiatedServices = new HashMap<>();
         try {
             for (var serviceClass: serviceClasses) {
                 serviceLoader.load(
+                    ctx,
                     serviceClass,
                     instantiatedServices
                 );
@@ -66,19 +80,19 @@ public abstract class KComponent extends KObject {
         } catch (
             KServiceLoadingException e
         ) {
-            KLogger.fatal(e);
+            this.logger.fatal(e);
             throw new KComponentLoadingException(e);
         }
-        KLogger.info(
+        this.logger.info(
             "Loaded %d services of component %s",
             instantiatedServices.size(),
             componentClass
         );
 
         this.services = instantiatedServices;
-        KLogger.info("Applying config for %s", componentClass);
+        this.logger.info("Applying config for %s", componentClass);
         this.applyConfig(config);
-        KLogger.info("Created component %s", componentClass);
+        this.logger.info("Created component %s", componentClass);
     }
 
     protected abstract void applyConfig(KJsonValue config);

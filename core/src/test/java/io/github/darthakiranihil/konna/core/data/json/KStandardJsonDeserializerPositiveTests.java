@@ -69,7 +69,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         String data = "{\"field1\": 123, \"field3\": \"aboba\", \"field_4\": [1.0, 2.0]}";
         KJsonValue jsonValue;
         try {
-            jsonValue = KStandardTestClass.jsonParser.parse(data);
+            jsonValue = this.jsonParser.parse(data);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;
@@ -78,7 +78,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         SerializerTestClass deserialized;
 
         try {
-            deserialized = KStandardTestClass.jsonDeserializer.deserialize(jsonValue, SerializerTestClass.class);
+            deserialized = this.jsonDeserializer.deserialize(jsonValue, SerializerTestClass.class);
         } catch (KJsonSerializationException e) {
             Assertions.fail(e);
             return;

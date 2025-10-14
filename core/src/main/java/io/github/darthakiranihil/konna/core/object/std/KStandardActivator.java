@@ -28,6 +28,7 @@ import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolExcept
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -57,9 +58,10 @@ public final class KStandardActivator extends KActivator {
 
     public KStandardActivator(
         final KContainerResolver containerResolver,
-        final KObjectRegistry objectRegistry
+        final KObjectRegistry objectRegistry,
+        final KIndex index
     ) {
-        super(containerResolver, objectRegistry);
+        super(containerResolver, objectRegistry, index);
         ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
 
         this.singletons = new HashMap<>();
@@ -71,7 +73,10 @@ public final class KStandardActivator extends KActivator {
 
         List<Class<?>> poolableClasses;
 
-        poolableClasses = KClassUtils.getAnnotatedClasses(KPoolable.class);
+        poolableClasses = KClassUtils.getAnnotatedClasses(
+            this.index,
+            KPoolable.class
+        );
 
         for (var poolableClass: poolableClasses) {
             KPoolable poolableMeta = poolableClass.getAnnotation(KPoolable.class);
@@ -80,13 +85,17 @@ public final class KStandardActivator extends KActivator {
             if (poolableMeta.weak()) {
                 KWeakObjectPool<?> pool = new KWeakObjectPool<>(
                     (Class<? extends KObject>) poolableClass,
-                    initialSize
+                    initialSize,
+                    this,
+                    this.objectRegistry
                 );
                 this.weakPools.put(poolableClass, pool);
             } else {
                 KObjectPool<?> pool = new KObjectPool<>(
                     (Class<? extends KObject>) poolableClass,
-                    initialSize
+                    initialSize,
+                    this,
+                    this.objectRegistry
                 );
                 this.pools.put(poolableClass, pool);
             }

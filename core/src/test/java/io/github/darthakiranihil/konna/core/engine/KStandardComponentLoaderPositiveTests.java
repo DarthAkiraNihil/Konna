@@ -32,7 +32,7 @@ public class KStandardComponentLoaderPositiveTests extends KStandardTestClass {
     public void testLoadComponentSuccess() {
 
         KStandardComponentLoader loader = new KStandardComponentLoader(
-            KStandardTestClass.jsonParser
+            this.jsonParser
         );
         KStandardServiceLoader serviceLoader = new KStandardServiceLoader();
 
@@ -40,6 +40,7 @@ public class KStandardComponentLoaderPositiveTests extends KStandardTestClass {
 
         try {
             loader.load(
+                this.context,
                 TestComponent.class,
                 serviceLoader,
                 loadedComponents

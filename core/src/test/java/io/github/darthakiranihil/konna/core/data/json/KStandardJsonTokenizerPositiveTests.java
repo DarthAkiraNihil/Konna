@@ -106,7 +106,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
 
     private void singleTokenTest(String input, KJsonToken token) {
 
-        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        KJsonTokenizer tokenizer = this.jsonTokenizer;
         int sequenceToken = tokenizer.addSource(input);
 
         try {
@@ -120,7 +120,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
 
     private void singleTokenTest(String input, KJsonToken token, Object expectedValue) {
 
-        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        KJsonTokenizer tokenizer = this.jsonTokenizer;
 
         Reader reader = new StringReader(input);
         InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
@@ -147,7 +147,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
 
     private void multiTokenTest(String input, KJsonToken[] tokens) {
 
-        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        KJsonTokenizer tokenizer = this.jsonTokenizer;
         int sequenceToken = tokenizer.addSource(input);
 
         try {
@@ -163,7 +163,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
 
     private void multiTokenTest(String input, KJsonTokenPair[] tokens) {
 
-        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        KJsonTokenizer tokenizer = this.jsonTokenizer;
         int sequenceToken = tokenizer.addSource(input);
 
         try {
@@ -253,7 +253,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
         try {
             Assertions.assertEquals(
                 KJsonTokenPair.EOF,
-                KStandardTestClass.jsonTokenizer.getNextToken(0)
+                this.jsonTokenizer.getNextToken(0)
             );
         } catch (KJsonTokenException e) {
             Assertions.fail(e);

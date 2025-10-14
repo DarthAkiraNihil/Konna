@@ -31,9 +31,12 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
     private static class TestComponentNoMeta extends KComponent {
 
         public TestComponentNoMeta(
-            KServiceLoader serviceLoader, String servicesPackage, KJsonValue config
+            KServiceLoader serviceLoader,
+            KEngineContext ctx,
+            String servicesPackage,
+            KJsonValue config
         ) throws KComponentLoadingException {
-            super(serviceLoader, servicesPackage, config);
+            super(serviceLoader, ctx, servicesPackage, config);
         }
 
         @Override
@@ -46,7 +49,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
     public void testLoadComponentNoMetaInfo() {
 
         KStandardComponentLoader loader = new KStandardComponentLoader(
-            KStandardTestClass.jsonParser
+            this.jsonParser
         );
 
         Map<String, KComponent> loadedComponents = new HashMap<>();
@@ -54,6 +57,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(
             KComponentLoadingException.class,
             () -> loader.load(
+                this.context,
                 TestComponentNoMeta.class,
                 null,
                 loadedComponents
@@ -68,7 +72,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
     public void testLoadComponentAlreadyLoaded() {
 
         KStandardComponentLoader loader = new KStandardComponentLoader(
-            KStandardTestClass.jsonParser
+            this.jsonParser
         );
 
         Map<String, KComponent> loadedComponents = new HashMap<>();
@@ -77,6 +81,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(
             KComponentLoadingException.class,
             () -> loader.load(
+                this.context,
                 TestComponent.class,
                 null,
                 loadedComponents
