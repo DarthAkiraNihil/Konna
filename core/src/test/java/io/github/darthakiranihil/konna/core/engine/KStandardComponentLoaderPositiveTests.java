@@ -40,7 +40,7 @@ public class KStandardComponentLoaderPositiveTests extends KStandardTestClass {
 
         try {
             loader.load(
-                this.context,
+                KStandardTestClass.context,
                 TestComponent.class,
                 serviceLoader,
                 loadedComponents

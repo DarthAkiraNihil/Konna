@@ -22,7 +22,6 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -239,9 +238,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
             Assertions.assertEquals(KJsonValueType.ARRAY, testValue.getType());
 
             int i = 0;
-            for (Iterator<KJsonValue> it = testValue.iterator(); it.hasNext(); ) {
-                var entry = it.next();
-
+            for (KJsonValue entry : testValue) {
                 Assertions.assertEquals(KJsonValueType.STRING, entry.getType());
                 Assertions.assertEquals(testList.get(i), entry.getString());
                 i++;
@@ -350,8 +347,7 @@ public class KStandardJsonSerializerPositiveTests extends KStandardTestClass {
         int i = 0;
         List<Float> originalField4 = testObject.getField4();
 
-        for (Iterator<KJsonValue> it = field4.iterator(); it.hasNext(); ) {
-            var entry = it.next();
+        for (KJsonValue entry : field4) {
             Assertions.assertEquals(originalField4.get(i), entry.getFloat());
             i++;
         }

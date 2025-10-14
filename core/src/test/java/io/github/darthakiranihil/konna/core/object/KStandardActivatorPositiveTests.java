@@ -29,23 +29,23 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     private final KActivator activator;
     
     public KStandardActivatorPositiveTests() {
-        KContainer master = this.context.containerResolver().resolve();
+        KContainer master = KStandardTestClass.context.containerResolver().resolve();
         master
             .add(TestInterfaceToResolve.class, TestResolvedImplementation.class)
             .add(TestDependencyInterface.class, TestDependencyImplementation.class);
 
-        this.activator = this.context.activator();
+        this.activator = KStandardTestClass.context.activator();
     }
 
     private void assertExists(KObject... objects) {
-        var registered = this.context.objectRegistry().listObjects();
+        var registered = KStandardTestClass.context.objectRegistry().listObjects();
         for (var object: objects) {
             Assertions.assertTrue(registered.stream().anyMatch(x -> x.object().id() == object.id()));
         }
     }
 
     private void assertNotExists(KObject... objects) {
-        var registered = this.context.objectRegistry().listObjects();
+        var registered = KStandardTestClass.context.objectRegistry().listObjects();
         for (var object: objects) {
             Assertions.assertTrue(registered.stream().allMatch(x -> x.object().id() != object.id()));
         }

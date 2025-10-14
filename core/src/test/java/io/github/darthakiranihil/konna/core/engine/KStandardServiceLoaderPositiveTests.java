@@ -35,7 +35,7 @@ public class KStandardServiceLoaderPositiveTests extends KStandardTestClass {
         Map<String, KServiceEntry> loadedServices = new HashMap<>();
 
         try {
-            loader.load(this.context, TestService.class, loadedServices);
+            loader.load(KStandardTestClass.context, TestService.class, loadedServices);
             Assertions.assertTrue(loadedServices.containsKey("TestService"));
         } catch (KServiceLoadingException e) {
             Assertions.fail(e);

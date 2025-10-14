@@ -57,7 +57,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(
             KComponentLoadingException.class,
             () -> loader.load(
-                this.context,
+                KStandardTestClass.context,
                 TestComponentNoMeta.class,
                 null,
                 loadedComponents
@@ -81,7 +81,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(
             KComponentLoadingException.class,
             () -> loader.load(
-                this.context,
+                KStandardTestClass.context,
                 TestComponent.class,
                 null,
                 loadedComponents

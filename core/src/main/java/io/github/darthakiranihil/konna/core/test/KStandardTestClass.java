@@ -62,19 +62,9 @@ public class KStandardTestClass {
     /**
      * Engine context, required for running tests.
      */
-    protected final KEngineContext context;
+    protected static KEngineContext context;
 
-    /**
-     * Default constructor.
-     */
-    protected KStandardTestClass() {
-
-        this.jsonTokenizer = new KStandardJsonTokenizer();
-        this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
-        this.jsonSerializer = new KStandardJsonSerializer();
-        this.jsonDeserializer = new KStandardJsonDeserializer();
-        this.jsonStringifier = new KStandardJsonStringifier();
-
+    static {
         var index = new KStandardIndex();
 
         var containerResolver = new KStandardContainerResolver(index);
@@ -94,12 +84,25 @@ public class KStandardTestClass {
             )
         );
 
-        this.context = new KManuallyProvidedEngineContext(
+        KStandardTestClass.context = new KManuallyProvidedEngineContext(
             new KStandardActivator(containerResolver, objectRegistry, index),
             containerResolver,
             index,
             logger,
             objectRegistry
         );
+    }
+
+    /**
+     * Default constructor.
+     */
+    protected KStandardTestClass() {
+
+        this.jsonTokenizer = new KStandardJsonTokenizer();
+        this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
+        this.jsonSerializer = new KStandardJsonSerializer();
+        this.jsonDeserializer = new KStandardJsonDeserializer();
+        this.jsonStringifier = new KStandardJsonStringifier();
+
     }
 }

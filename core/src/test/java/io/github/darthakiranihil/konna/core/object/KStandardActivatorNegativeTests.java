@@ -29,7 +29,7 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
 
     protected KStandardActivatorNegativeTests() {
         super();
-        this.activator = this.context.activator();
+        this.activator = KStandardTestClass.context.activator();
     }
 
     @Test
