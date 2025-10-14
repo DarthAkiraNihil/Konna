@@ -1,7 +1,4 @@
-package io.github.darthakiranihil.konna.core.object.registry;
-
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KObjectInstantiationType;
+package io.github.darthakiranihil.konna.core.object;
 
 /**
  * Representation of a registry record of {@link KObjectRegistry}.

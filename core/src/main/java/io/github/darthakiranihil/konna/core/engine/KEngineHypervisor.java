@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
@@ -43,45 +43,62 @@ public class KEngineHypervisor extends KObject {
     private final Map<String, KComponent> engineComponents;
     private final KJsonParser jsonParser;
 
+    private final KActivator activator;
+    private final KContainerResolver containerResolver;
+    private final KLogger logger;
+
     /**
      * Constructs hypervisor with provided config.
-     * @param config Config of the hypervisor
+     * @param initializationConfig Initialization config of the hypervisor
+     * @param ctx Engine execution context
      */
-    public KEngineHypervisor(final KEngineHypervisorConfig config) {
+    public KEngineHypervisor(
+        final KEngineHypervisorConfig initializationConfig,
+        final KEngineContext ctx
+    ) {
 
         super(KEngineHypervisor.class.getSimpleName());
 
-        KLogger.info("Initializing engine hypervisor [config = %s]", config);
+        this.activator = ctx.activator();
+        this.containerResolver = ctx.containerResolver();
+        this.logger = ctx.logger();
 
-        this.jsonParser = KActivator.create(KJsonParser.class);
-        KContainer master = KMasterContainer.getMaster();
+        this.logger.info("Initializing engine hypervisor [config = %s]", initializationConfig);
+
+        this.jsonParser = this.activator.create(KJsonParser.class);
+        KContainer master = this.containerResolver.resolve();
 
         master
-            .add(config.serviceLoader())
-            .add(config.componentLoader());
+            .add(initializationConfig.serviceLoader())
+            .add(initializationConfig.componentLoader());
 
         try {
 
-            this.componentLoader = KActivator.create(config.componentLoader());
+            this.componentLoader = this.activator.create(initializationConfig.componentLoader());
 
-            KLogger.info("Created component loader %s", config.componentLoader());
+            this.logger.info("Created component loader %s", initializationConfig.componentLoader());
 
-            this.serviceLoader = KActivator.create(config.serviceLoader());
+            this.serviceLoader = this.activator.create(initializationConfig.serviceLoader());
 
-            KLogger.info("Created service loader %s", config.serviceLoader());
+            this.logger.info("Created service loader %s", initializationConfig.serviceLoader());
 
             this.engineComponents = new HashMap<>();
 
-            for (var component: config.components()) {
-                this.componentLoader.load(component, this.serviceLoader, this.engineComponents);
+            for (var component: initializationConfig.components()) {
+                this.componentLoader.load(
+                    ctx,
+                    component,
+                    this.serviceLoader,
+                    this.engineComponents
+                );
             }
 
-            KLogger.info("Loaded %d components", this.engineComponents.size());
+            this.logger.info("Loaded %d components", this.engineComponents.size());
 
         } catch (
             KComponentLoadingException e
         ) {
-            KLogger.error(e);
+            this.logger.error(e);
             throw new KHypervisorInitializationException(e);
         }
 

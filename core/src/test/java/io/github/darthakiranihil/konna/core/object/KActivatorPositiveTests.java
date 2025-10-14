@@ -17,10 +17,9 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.object.impl.*;
-import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ import org.junit.jupiter.api.Test;
 public class KActivatorPositiveTests extends KStandardTestClass {
     
     public KActivatorPositiveTests() {
-        KContainer master = KMasterContainer.getMaster();
+        KContainer master = KContainerResolver.resolve();
         master
             .add(TestInterfaceToResolve.class, TestResolvedImplementation.class)
             .add(TestDependencyInterface.class, TestDependencyImplementation.class);

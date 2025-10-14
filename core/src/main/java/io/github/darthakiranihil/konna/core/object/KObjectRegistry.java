@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object.registry;
+package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KObjectInstantiationType;
-
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 /**
- * Utility class that stores records about all objects, created with
+ * Interface for utility class that stores records about all objects, created with
  * {@link io.github.darthakiranihil.konna.core.object.KActivator} (excluding temporal). Should be
  * used in debugging, though it is possible to use it in other way.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KObjectRegistry extends KObject {
-
-    private KObjectRegistry() {
-
-    }
-
-    private static final Set<KObjectRegistryRecord> OBJECTS = new HashSet<>();
+public interface KObjectRegistry {
 
     /**
      * Pushes an object to the registry. If id of the pushed object already
@@ -45,27 +35,19 @@ public final class KObjectRegistry extends KObject {
      * @param obj Object to push
      * @param instantiationType Instantiation type of the object
      */
-    public static void push(final KObject obj, final KObjectInstantiationType instantiationType) {
-        KObjectRegistry.OBJECTS.add(new KObjectRegistryRecord(obj, instantiationType));
-    }
+    void push(KObject obj, KObjectInstantiationType instantiationType);
 
     /**
      * Removes object from the registry. If the object with given id
      * is not registered, nothing will happen.
      * @param objectId ID of removed object.
      */
-    public static void remove(final UUID objectId) {
-        KObjectRegistry.OBJECTS.removeIf(
-            (x) -> x.object().id() == objectId
-        );
-    }
+    void remove(UUID objectId);
 
     /**
      * Lists all objects that have been registered.
      * @return Set of all registered objects.
      */
-    public static Set<KObjectRegistryRecord> listObjects() {
-        return KObjectRegistry.OBJECTS;
-    }
+    Set<KObjectRegistryRecord> listObjects();
 
 }

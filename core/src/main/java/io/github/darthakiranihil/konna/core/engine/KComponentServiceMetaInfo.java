@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.impl;
+package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@KComponentServiceMetaInfo(
-    name = "TestService"
-)
-public class TestService {
-
-    @KServiceEndpoint(route = "testEndpoint")
-    public void testEndpoint() {
-
-    }
-
-    public void notEndpoint() {
-
-    }
-
+/**
+ * Marks that this class should be used as a component service.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface KComponentServiceMetaInfo {
+    /**
+     * Unique name of the service. It is used in message routing process as
+     * the second path coordinate.
+     * @return Name of the service.
+     */
+    String name();
 }

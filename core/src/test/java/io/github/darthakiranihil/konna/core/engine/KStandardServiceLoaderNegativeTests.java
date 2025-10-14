@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class KStandardServiceLoaderNegativeTests extends KStandardTestClass {
 
-    @KComponentService(name = "serv")
+    @KComponentServiceMetaInfo(name = "serv")
     private static class ServiceWithoutZeroArgsConstructor {
 
         public ServiceWithoutZeroArgsConstructor(KJsonValue _val) {

@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.util.index;
+package io.github.darthakiranihil.konna.core.util.std;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.PackageInfo;
 import io.github.classgraph.ScanResult;
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class KClassIndex extends KUninstantiable {
+public class KStandardIndex extends KObject implements KIndex {
 
-    private static final List<Class<?>> CLASS_INDEX = new ArrayList<>();
+    private final List<Class<?>> classIndex;
+    private final List<Package> packageIndex;
 
-    private KClassIndex() {
-        super();
-    }
+    public KStandardIndex() {
+        super("index");
 
-    static {
+        this.classIndex = new ArrayList<>();
+        this.packageIndex = new ArrayList<>();
 
         List<PackageInfo> explicitIndexed;
         try (
@@ -62,16 +64,47 @@ public final class KClassIndex extends KUninstantiable {
 
             scanResult
                 .getAllClasses()
-                .forEach((x) -> {
-                    System.out.println(x);
-                    KClassIndex.CLASS_INDEX.add(x.loadClass());
-                });
+                .forEach((x) -> this.classIndex.add(x.loadClass()));
 
         }
 
+        String[] explicitIndexedPackageNames = explicitIndexed
+            .stream()
+            .map(PackageInfo::getName)
+            .toList()
+            .toArray(new String[0]);
+
+        try (
+            ScanResult scanResult = new ClassGraph()
+                .enableAllInfo()
+                .acceptPackages(explicitIndexedPackageNames)
+                .scan()
+        ) {
+
+            List<String> foundPackages = scanResult
+                .getPackageInfo()
+                .stream()
+                .map(PackageInfo::getName)
+                .toList();
+
+            this.packageIndex.addAll(
+                this.classIndex
+                    .stream()
+                    .map(Class::getPackage)
+                    .distinct()
+                    .filter((x) -> foundPackages.contains(x.getName()))
+                    .toList()
+            );
+        }
     }
 
-    public static List<Class<?>> getClassIndex() {
-        return Collections.unmodifiableList(KClassIndex.CLASS_INDEX);
+    @Override
+    public List<Class<?>> getClassIndex() {
+        return Collections.unmodifiableList(this.classIndex);
+    }
+
+    @Override
+    public List<Package> getPackageIndex() {
+        return Collections.unmodifiableList(this.packageIndex);
     }
 }

@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
-import io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;

@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.object;
 /**
  * Enumeration that represents the way {@link KActivator} creating a new object
  * of given class. Normally, it is used only by {@link KActivator}
- * and {@link io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry}
+ * and {@link KObjectRegistry}
  * as it does not have any other purpose.
  *
  * @since 0.2.0

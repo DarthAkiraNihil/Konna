@@ -14,30 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.di;
+package io.github.darthakiranihil.konna.core.di.std;
 
+import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.except.KUnknownException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KPair;
 import io.github.darthakiranihil.konna.core.util.KTriplet;
-import io.github.darthakiranihil.konna.core.util.index.KPackageIndex;
 
 import java.util.*;
 
-/*
-получаем список пакетов
-из них выбираем те, что определяют среду
-затем из них смотрим, не определяются ли подсреды
-собираем дерево сред
-для каждого дерева проходимся по всем классам в пакете и подпакетах, игнорируя подсреды,
-собираем примитивные зависимости
-после проходимся по дереву из корня и формируем для каждого узла контейнер
-не забываем проиндексировать, чтобы потом получать среду для класса максимально быстро
-
- */
-public final class KMasterContainer extends KUninstantiable {
+public final class KStandardContainerResolver extends KContainerResolver {
 
     private static final int CLASS_BEFORE_ACTIVATOR = 3;
 
@@ -65,54 +54,58 @@ public final class KMasterContainer extends KUninstantiable {
         }
     }
 
+    private final Map<String, KContainer> env2container;
+    private final Map<String, String> package2env;
 
+    public KStandardContainerResolver(final KIndex index) {
+        super(index);
 
-    private static final Map<String, KContainer> ENV_2_CONTAINER = new HashMap<>();
-    private static final Map<String, String> PACKAGE_2_ENV = new HashMap<>();
+        this.env2container = new HashMap<>();
+        this.package2env = new HashMap<>();
 
-    static {
         List<KTriplet<String, String, Boolean>>
-            indexedPackages = KMasterContainer.collectIndexedPackages();
+            indexedPackages = this.collectIndexedPackages();
 
         List<PackageEnvRecord>
-            records = KMasterContainer.createEnvRecords(indexedPackages);
+            records = this.createEnvRecords(indexedPackages);
 
-        KMasterContainer.processEnvironmentDefiningPackages(records);
-        KMasterContainer.processEmptyEnvironments(records);
+        this.processEnvironmentDefiningPackages(records);
+        this.processEmptyEnvironments(records);
 
         Map<String, KPair<Set<String>, String>>
-            groupedEnvironments = KMasterContainer.groupEnvironmentRecords(records);
-        Map<String, KContainer> containers = KMasterContainer.buildContainers(groupedEnvironments);
+            groupedEnvironments = this.groupEnvironmentRecords(records);
+        Map<String, KContainer> containers = this.buildContainers(groupedEnvironments);
 
-        KMasterContainer.ENV_2_CONTAINER.putAll(containers);
+        this.env2container.putAll(containers);
         groupedEnvironments.forEach(
-            (k, v) -> v.first().forEach((p) -> KMasterContainer.PACKAGE_2_ENV.put(p, k))
+            (k, v) -> v.first().forEach((p) -> this.package2env.put(p, k))
         );
     }
 
-    public static KContainer getMaster() {
+    @Override
+    public KContainer resolve() {
         var stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace.length == 0) {
-            return KMasterContainer.ENV_2_CONTAINER.get("");
+            return this.env2container.get("");
         }
 
         try {
             Class<?> callerClass = Class.forName(stackTrace[2].getClassName());
             if (callerClass == KActivator.class) {
                 callerClass = Class.forName(
-                    stackTrace[KMasterContainer.CLASS_BEFORE_ACTIVATOR].getClassName()
+                    stackTrace[KStandardContainerResolver.CLASS_BEFORE_ACTIVATOR].getClassName()
                 );
             }
 
-            KContainer retrieved = KMasterContainer.ENV_2_CONTAINER.get(
-                KMasterContainer.PACKAGE_2_ENV.get(
+            KContainer retrieved = this.env2container.get(
+                this.package2env.get(
                     callerClass
                         .getPackage()
                         .getName()
                 )
             );
             if (retrieved == null) {
-                retrieved = KMasterContainer.ENV_2_CONTAINER.get("");
+                retrieved = this.env2container.get("");
             }
 
             if (!callerClass.isAnnotationPresent(KMasterContainerModifier.class)) {
@@ -125,12 +118,9 @@ public final class KMasterContainer extends KUninstantiable {
         }
     }
 
-    private KMasterContainer() {
-        super();
-    }
-
-    private static List<KTriplet<String, String, Boolean>> collectIndexedPackages() {
-        return KPackageIndex
+    private List<KTriplet<String, String, Boolean>> collectIndexedPackages() {
+        return this
+            .index
             .getPackageIndex()
             .stream()
             .map((x) -> {
@@ -144,7 +134,7 @@ public final class KMasterContainer extends KUninstantiable {
             .toList();
     }
 
-    private static List<PackageEnvRecord> createEnvRecords(
+    private List<PackageEnvRecord> createEnvRecords(
         final List<KTriplet<String, String, Boolean>> indexedPackages
     ) {
         List<PackageEnvRecord> records = new ArrayList<>(indexedPackages.size());
@@ -160,7 +150,7 @@ public final class KMasterContainer extends KUninstantiable {
         return records;
     }
 
-    private static void processEnvironmentDefiningPackages(
+    private void processEnvironmentDefiningPackages(
         final List<PackageEnvRecord> records
     ) {
         var environmentDefiningPackages = records
@@ -189,7 +179,7 @@ public final class KMasterContainer extends KUninstantiable {
         }
     }
 
-    private static void processEmptyEnvironments(
+    private void processEmptyEnvironments(
         final List<PackageEnvRecord> records
     ) {
         var minimumUnnamedEnvPackageLength = records
@@ -207,7 +197,10 @@ public final class KMasterContainer extends KUninstantiable {
                 .toList();
 
             for (PackageEnvRecord emptyPackage: emptyPackages) {
-                emptyPackage.name = String.format("env@%d", PackageEnvRecord.unnamedEnvironmentsCreated++);
+                emptyPackage.name = String.format(
+                    "env@%d",
+                    PackageEnvRecord.unnamedEnvironmentsCreated++
+                );
                 emptyPackage.isDefiningEnvironment = true;
                 records.forEach((r) -> {
                     if (
@@ -234,7 +227,7 @@ public final class KMasterContainer extends KUninstantiable {
         }
     }
 
-    private static Map<String, KPair<Set<String>, String>> groupEnvironmentRecords(
+    private Map<String, KPair<Set<String>, String>> groupEnvironmentRecords(
         final List<PackageEnvRecord> records
     ) {
         Map<String, KPair<Set<String>, String>> groupResult = new HashMap<>();
@@ -254,7 +247,7 @@ public final class KMasterContainer extends KUninstantiable {
         return groupResult;
     }
 
-    private static Map<String, KContainer> buildContainers(
+    private Map<String, KContainer> buildContainers(
         final Map<String, KPair<Set<String>, String>> environments
     ) {
         Map<String, KContainer> containers = new HashMap<>(environments.size());

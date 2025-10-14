@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 public @interface KTransient {
     /**
      * Flag that indicated if object should be temporal, so it is not stored in
-     * {@link io.github.darthakiranihil.konna.core.object.registry.KObjectRegistry}.
+     * {@link KObjectRegistry}.
      * @return Flag of object temporality
      */
     boolean temporal() default false;

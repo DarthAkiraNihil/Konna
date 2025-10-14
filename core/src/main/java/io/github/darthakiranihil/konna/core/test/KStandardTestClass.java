@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.*;
-import io.github.darthakiranihil.konna.core.di.KMasterContainer;
+import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
@@ -74,8 +74,8 @@ public class KStandardTestClass {
      * Default constructor.
      */
     protected KStandardTestClass() {
-        KMasterContainer
-                    .getMaster()
+        KContainerResolver
+                    .resolve()
                     .add(KJsonParser.class, KStandardJsonParser.class)
                     .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
     }

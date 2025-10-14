@@ -20,15 +20,10 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KMasterContainer;
 import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
-import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 
@@ -56,14 +51,16 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
 
     @Override
     public void load(
+        final KEngineContext ctx,
         final Class<? extends KComponent> component,
         final KServiceLoader serviceLoader,
         final Map<String, KComponent> loadedComponentMap
     ) throws KComponentLoadingException {
+        KLogger logger = ctx.logger();
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
-                KLogger.fatal("Cannot load component %s: meta info not provided", component);
+                logger.fatal("Cannot load component %s: meta info not provided", component);
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: meta info not provided",
@@ -75,10 +72,10 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
             KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
             String componentName = meta.name();
 
-            KLogger.info("Loading component %s", componentName);
+            logger.info("Loading component %s", componentName);
             
             if (loadedComponentMap.containsKey(componentName)) {
-                KLogger.fatal(
+                logger.fatal(
                     "Cannot load component %s: there is a component with the same name: %s",
                     component,
                     componentName
@@ -98,12 +95,12 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 parsedConfig = this.parser.parse(config);
             }
 
-            KContainer master = KMasterContainer.getMaster();
+            KContainer master = ctx.containerResolver().resolve();
             master
                 .add(component)
                 .add(KServiceLoader.class, serviceLoader.getClass());
 
-            var loadedComponent = KActivator.create(
+            var loadedComponent = ctx.activator().create(
                 component, meta.servicesPackage(), parsedConfig
             );
 
@@ -111,9 +108,9 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 componentName,
                 loadedComponent
             );
-            KLogger.info("Loaded component %s", componentName);
+            logger.info("Loaded component %s", componentName);
         } catch (Exception e) {
-            KLogger.fatal(e);
+            logger.fatal(e);
             throw new KComponentLoadingException(e);
         }
     }

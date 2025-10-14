@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine;
+package io.github.darthakiranihil.konna.core.di;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 
-/**
- * Marks that this class should be used as a component service.
- *
- * @since 0.2.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface KComponentService {
+public abstract class KContainerResolver extends KObject {
+
+    protected KIndex index;
+
+    public KContainerResolver(final KIndex index) {
+        super("container_resolver");
+        this.index = index;
+    }
+
     /**
-     * Unique name of the service. It is used in message routing process as
-     * the second path coordinate.
-     * @return Name of the service.
+     * Returns the container according to the caller class. Container resolution
+     * depends on implementation.
+     * @return Container the for caller class
      */
-    String name();
+    public abstract KContainer resolve();
+
 }

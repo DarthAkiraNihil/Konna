@@ -51,7 +51,7 @@ public abstract class KComponent extends KObject {
         KLogger.info("Creating component %s", componentClass);
 
         List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-            servicesPackage, KComponentService.class
+            servicesPackage, KComponentServiceMetaInfo.class
         );
         KLogger.info("Found %d services of component %s", serviceClasses.size(), componentClass);
 

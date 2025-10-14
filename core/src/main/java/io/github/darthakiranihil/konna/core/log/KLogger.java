@@ -16,91 +16,40 @@
 
 package io.github.darthakiranihil.konna.core.log;
 
-import io.github.darthakiranihil.konna.core.log.except.KLoggingException;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Standard Logger class.
+ * Base for logger class.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KLogger {
+public abstract class KLogger extends KObject {
 
-    private KLogger() {
+    protected final KLogLevel logLevel;
+    protected final KLogFormatter defaultLogFormatter;
+    protected final List<KLogHandler> logHandlers;
 
-    }
-
-    private static boolean isInitialized;
-    private static final Object LOG_LOCK = new Object();
-
-    private static KLogLevel logLevel;
-    private static KLogFormatter defaultLogFormatter;
-    private static List<KLogHandler> logHandlers;
-
-    /**
-     * Initialize the logger. Can be called only once, after that subsequent calls
-     * will produce {@link KLoggingException}
-     *
-     * @param minLogLevel Minimal log level messages of that should be handled
-     * @param defaultFormatter Default log formatter used, when {@link KLogHandler}
-     *                         does not provide formatter inside its implementation
-     */
-    public static void init(final KLogLevel minLogLevel, final KLogFormatter defaultFormatter) {
-
-        if (KLogger.isInitialized) {
-            throw new KLoggingException("Cannot initialize logger: already initialized");
-        }
-
-        KLogger.logLevel = minLogLevel;
-        KLogger.defaultLogFormatter = defaultFormatter;
-        KLogger.logHandlers = new ArrayList<>();
-
-        KLogger.isInitialized = true;
-
+    public KLogger(
+        final String name,
+        final KLogLevel logLevel,
+        final KLogFormatter defaultLogFormatter,
+        final List<KLogHandler> logHandlers
+    ) {
+        super(name);
+        this.logLevel = logLevel;
+        this.defaultLogFormatter = defaultLogFormatter;
+        this.logHandlers = logHandlers;
     }
 
     /**
      * Adds a new log handler to process.
      * @param handler New log handler.
      */
-    public static void addLogHandler(final KLogHandler handler) {
-        KLogger.logHandlers.add(handler);
-    }
-
-    private static void log(final KLogLevel level, final String message, final Object... args) {
-
-        if (!KLogger.isInitialized) {
-            throw new KLoggingException("Cannot log message: logger is not initialized");
-        }
-
-        if (level.ordinal() > KLogger.logLevel.ordinal()) {
-            return;
-        }
-
-        for (var handler: KLogger.logHandlers) {
-            synchronized (KLogger.LOG_LOCK) {
-                if (handler.hasFormatter()) {
-                    handler.handleLog(level, message, args);
-                } else {
-                    handler.handleLog(
-                        level, KLogger.defaultLogFormatter.format(level, message, args)
-                    );
-                }
-            }
-        }
-
-    }
-
-    private static String prepareThrowable(final Throwable throwable) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        throwable.printStackTrace(pw);
-        return sw.toString();
+    public void addLogHandler(final KLogHandler handler) {
+        this.logHandlers.add(handler);
     }
 
     /**
@@ -108,77 +57,59 @@ public final class KLogger {
      * @param message Message template
      * @param args Format args
      */
-    public static void fatal(final String message, final Object... args) {
-        KLogger.log(KLogLevel.FATAL, message, args);
-    }
+    public abstract void fatal(String message, Object... args);
 
     /**
      * Logs a throwable with {@link KLogLevel}.FATAL level.
      * @param throwable Throwable to log
      */
-    public static void fatal(final Throwable throwable) {
-        KLogger.log(KLogLevel.FATAL, KLogger.prepareThrowable(throwable));
-    }
+    public abstract void fatal(Throwable throwable);
 
     /**
      * Logs a message with {@link KLogLevel}.ERROR level.
      * @param message Message template
      * @param args Format args
      */
-    public static void error(final String message, final Object... args) {
-        KLogger.log(KLogLevel.ERROR, message, args);
-    }
+    public abstract void error(String message, Object... args);
 
     /**
      * Logs a throwable with {@link KLogLevel}.ERROR level.
      * @param throwable Throwable to log
      */
-    public static void error(final Throwable throwable) {
-        KLogger.log(KLogLevel.ERROR, KLogger.prepareThrowable(throwable));
-    }
+    public abstract void error(Throwable throwable);
 
     /**
      * Logs a message with {@link KLogLevel}.WARNING level.
      * @param message Message template
      * @param args Format args
      */
-    public static void warning(final String message, final Object... args) {
-        KLogger.log(KLogLevel.WARNING, message, args);
-    }
+    public abstract void warning(String message, Object... args);
 
     /**
      * Logs a throwable with {@link KLogLevel}.WARNING level.
      * @param throwable Throwable to log
      */
-    public static void warning(final Throwable throwable) {
-        KLogger.log(KLogLevel.WARNING, KLogger.prepareThrowable(throwable));
-    }
+    public abstract void warning(Throwable throwable);
 
     /**
      * Logs a message with {@link KLogLevel}.INFO level.
      * @param message Message template
      * @param args Format args
      */
-    public static void info(final String message, final Object... args) {
-        KLogger.log(KLogLevel.INFO, message, args);
-    }
+    public abstract void info(String message, Object... args);
 
     /**
      * Logs a message with {@link KLogLevel}.DEBUG level.
      * @param message Message template
      * @param args Format args
      */
-    public static void debug(final String message, final Object... args) {
-        KLogger.log(KLogLevel.DEBUG, message, args);
-    }
+    public abstract void debug(String message, Object... args);
 
     /**
      * Logs a message with {@link KLogLevel}.TRACE level.
      * @param message Message template
      * @param args Format args
      */
-    public static void trace(final String message, final Object... args) {
-        KLogger.log(KLogLevel.TRACE, message, args);
-    }
+    public abstract void trace(String message, Object... args);
 
 }

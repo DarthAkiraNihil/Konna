@@ -17,15 +17,10 @@
 package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KMasterContainer;
 import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
-import io.github.darthakiranihil.konna.core.engine.KComponentService;
-import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
-import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 
 import java.lang.reflect.Method;
@@ -47,15 +42,17 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
     @Override
     public void load(
+        final KEngineContext ctx,
         final Class<?> service,
         final Map<String, KServiceEntry> loadedServicesMap
     ) throws KServiceLoadingException {
 
-        String serviceName = service.getAnnotation(KComponentService.class).name();
-        KLogger.info("Loading service %s [%s]", serviceName, service);
+        String serviceName = service.getAnnotation(KComponentServiceMetaInfo.class).name();
+        KLogger logger = ctx.logger();
+        logger.info("Loading service %s [%s]", serviceName, service);
 
         if (loadedServicesMap.containsKey(serviceName)) {
-            KLogger.fatal(
+            logger.fatal(
             "Cannot load service %s: there is a service with the same name"
                 +   "within the component: %s",
                 service,
@@ -84,17 +81,17 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
                 method
             );
         }
-        KLogger.info(
+        logger.info(
             "Found %d service endpoints in %s [%s]",
             endpoints.size(),
             serviceName,
             service
         );
 
-        KContainer master = KMasterContainer.getMaster();
+        KContainer master = ctx.containerResolver().resolve();
         master.add(service);
 
-        Object instantiatedService = KActivator.create(service);
+        Object instantiatedService = ctx.activator().create(service);
         loadedServicesMap.put(
             serviceName,
             new KServiceEntry(
@@ -102,6 +99,6 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
                 endpoints
             )
         );
-        KLogger.info("Loaded service %s [%s]", serviceName, service);
+        logger.info("Loaded service %s [%s]", serviceName, service);
     }
 }
