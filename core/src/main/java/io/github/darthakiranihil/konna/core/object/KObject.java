@@ -17,10 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Base class for all Konna objects: components, services etc.
@@ -47,7 +44,7 @@ public class KObject implements Serializable {
     /**
      * Object tags.
      */
-    protected final List<KTag> tags;
+    protected final Set<KTag> tags;
     /**
      * Parent object.
      */
@@ -60,7 +57,7 @@ public class KObject implements Serializable {
     public KObject() {
         this.id = UUID.randomUUID();
         this.name = String.format(DEFAULT_OBJECT_NAME, KObject.createdObjects);
-        this.tags = new ArrayList<>();
+        this.tags = new HashSet<>();
         this.parent = null;
 
         KObject.createdObjects++;
@@ -73,7 +70,7 @@ public class KObject implements Serializable {
     public KObject(final String name) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.tags = new ArrayList<>();
+        this.tags = new HashSet<>();
         this.parent = null;
 
         KObject.createdObjects++;
@@ -87,7 +84,7 @@ public class KObject implements Serializable {
     public KObject(final String name, final KObject parent) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.tags = new ArrayList<>();
+        this.tags = new HashSet<>();
         this.parent = parent;
 
         KObject.createdObjects++;
@@ -99,7 +96,7 @@ public class KObject implements Serializable {
      * @param tags List of object tags
      * @param parent Parent object
      */
-    public KObject(final String name, final List<KTag> tags, final KObject parent) {
+    public KObject(final String name, final Set<KTag> tags, final KObject parent) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.tags = tags;
@@ -113,7 +110,7 @@ public class KObject implements Serializable {
      * @param name Name of the object
      * @param tags List of object tags
      */
-    public KObject(final String name, final List<KTag> tags) {
+    public KObject(final String name, final Set<KTag> tags) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.tags = tags;
@@ -144,6 +141,18 @@ public class KObject implements Serializable {
      */
     public String name() {
         return this.name;
+    }
+
+    public void addTag(final KTag tag) {
+        this.tags.add(tag);
+    }
+
+    public void addTags(final KTag... addedTags) {
+        this.tags.addAll(List.of(addedTags));
+    }
+
+    public void removeTag(final KTag tag) {
+        this.tags.remove(tag);
     }
 
 

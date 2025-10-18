@@ -24,11 +24,15 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -37,7 +41,7 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 @KMasterContainerModifier
-public class KStandardTestClass {
+public class KStandardTestClass extends KObject {
 
     /**
      * Implementation of a json tokenizer.
@@ -97,7 +101,7 @@ public class KStandardTestClass {
      * Default constructor.
      */
     protected KStandardTestClass() {
-
+        super("std_test_class", new HashSet<>(List.of(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)));
         this.jsonTokenizer = new KStandardJsonTokenizer();
         this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
         this.jsonSerializer = new KStandardJsonSerializer();

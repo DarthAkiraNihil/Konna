@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.di.std;
 import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.except.KUnknownException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KPair;
@@ -59,6 +60,7 @@ public final class KStandardContainerResolver extends KContainerResolver {
 
     public KStandardContainerResolver(final KIndex index) {
         super(index);
+        this.addTag(KTag.DefaultTags.STD);
 
         this.env2container = new HashMap<>();
         this.package2env = new HashMap<>();

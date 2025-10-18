@@ -19,6 +19,10 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 /**
  * Interface for the most important utility class in Konna which purpose is to create new objects.
@@ -40,7 +44,7 @@ public abstract class KActivator extends KObject {
         final KObjectRegistry objectRegistry,
         final KIndex index
     ) {
-        super("activator");
+        super("activator", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
 
         this.containerResolver = containerResolver;
         this.objectRegistry = objectRegistry;

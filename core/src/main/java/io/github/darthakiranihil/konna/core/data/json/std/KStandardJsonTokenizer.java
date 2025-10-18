@@ -21,10 +21,10 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Standard implementation of {@link KJsonTokenizer}.
@@ -81,6 +81,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
      * Default constructor.
      */
     public KStandardJsonTokenizer() {
+        super("std_json_tokenizer", new HashSet<>(List.of(KTag.DefaultTags.STD)));
         states = new HashMap<>();
     }
 

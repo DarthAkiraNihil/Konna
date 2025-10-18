@@ -18,10 +18,7 @@ package io.github.darthakiranihil.konna.core.object.std;
 
 import io.github.darthakiranihil.konna.core.object.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Utility class that stores records about all objects, created with
@@ -37,7 +34,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
     private final Set<KObjectRegistryRecord> objects;
 
     public KStandardObjectRegistry() {
-        super("object_registry");
+        super("object_registry", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
         this.objects = new HashSet<>();
     }
 

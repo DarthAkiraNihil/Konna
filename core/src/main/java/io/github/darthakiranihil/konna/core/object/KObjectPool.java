@@ -46,6 +46,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
         final KObjectRegistry objectRegistry
     ) {
         super(clazz, initialSize);
+        this.addTags(KTag.DefaultTags.POOL, KTag.DefaultTags.STD);
 
         this.unusedObjects = new ConcurrentLinkedQueue<>();
         this.activator = activator;

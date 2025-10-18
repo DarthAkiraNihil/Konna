@@ -18,11 +18,22 @@ package io.github.darthakiranihil.konna.core.object;
 
 /**
  * Convenience wrapper for immutable string tag (typically used for {@link KObject}.
- * @param tagName Name of the tag
+ * @param name Name of the tag
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public record KTag(String tagName) {
-
+public record KTag(String name) {
+    public static class DefaultTags {
+        public static final KTag STD = new KTag("std");
+        public static final KTag SYSTEM = new KTag("system");
+        public static final KTag TEST = new KTag("test");
+        public static final KTag IMMORTAL = new KTag("immortal");
+        public static final KTag SINGLETON = new KTag("singleton");
+        public static final KTag POOLABLE = new KTag("poolable");
+        public static final KTag TRANSIENT = new KTag("transient");
+        public static final KTag WEAK = new KTag("weak");
+        public static final KTag POOL = new KTag("pool");
+        public static final KTag WEAK_POOL = new KTag("weak_pool");
+    }
 }

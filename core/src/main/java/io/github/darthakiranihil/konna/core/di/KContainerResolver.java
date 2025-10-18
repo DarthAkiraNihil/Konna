@@ -17,14 +17,17 @@
 package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
+
+import java.util.*;
 
 public abstract class KContainerResolver extends KObject {
 
     protected KIndex index;
 
     public KContainerResolver(final KIndex index) {
-        super("container_resolver");
+        super("container_resolver", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
         this.index = index;
     }
 

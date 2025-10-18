@@ -20,6 +20,10 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonStringifier;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Standard implementation of {@link KJsonStringifier}.
@@ -29,6 +33,10 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
  */
 @KSingleton(immortal = true)
 public class KStandardJsonStringifier extends KObject implements KJsonStringifier {
+
+    public KStandardJsonStringifier() {
+        super("std_json_stringifier", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+    }
 
     @Override
     public String stringify(final KJsonValue value) {

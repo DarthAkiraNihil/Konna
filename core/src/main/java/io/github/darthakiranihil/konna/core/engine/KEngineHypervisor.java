@@ -25,9 +25,9 @@ import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializat
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Konna Engine Hypervisor - the primal class for the engine that controls the whole system.
@@ -57,7 +57,7 @@ public class KEngineHypervisor extends KObject {
         final KEngineContext ctx
     ) {
 
-        super(KEngineHypervisor.class.getSimpleName());
+        super(KEngineHypervisor.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
 
         this.activator = ctx.activator();
         this.containerResolver = ctx.containerResolver();

@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -42,6 +43,7 @@ public final class KStandardLogger extends KLogger {
         final List<KLogHandler> logHandlers
     ) {
         super(name, logLevel, defaultLogFormatter, logHandlers);
+        this.addTag(KTag.DefaultTags.STD);
     }
 
     @Override

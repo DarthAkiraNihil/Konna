@@ -17,8 +17,11 @@
 package io.github.darthakiranihil.konna.core.log;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Base for logger class.
@@ -38,7 +41,7 @@ public abstract class KLogger extends KObject {
         final KLogFormatter defaultLogFormatter,
         final List<KLogHandler> logHandlers
     ) {
-        super(name);
+        super(name, new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
         this.logLevel = logLevel;
         this.defaultLogFormatter = defaultLogFormatter;
         this.logHandlers = logHandlers;

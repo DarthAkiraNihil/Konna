@@ -62,6 +62,7 @@ public final class KStandardActivator extends KActivator {
         final KIndex index
     ) {
         super(containerResolver, objectRegistry, index);
+        this.addTag(KTag.DefaultTags.STD);
         ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
 
         this.singletons = new HashMap<>();
@@ -171,6 +172,7 @@ public final class KStandardActivator extends KActivator {
 
         if (instantiationType != KObjectInstantiationType.TEMPORAL && created instanceof KObject) {
             this.objectRegistry.push((KObject) created, instantiationType);
+            this.addTagsToCreatedObject((KObject) created, instantiationType);
         }
 
         return created;
@@ -399,6 +401,19 @@ public final class KStandardActivator extends KActivator {
             return (T) pool.obtain(container, nonResolvedArgs);
         } catch (KEmptyObjectPoolException e) {
             throw new KInstantiationException(clazz, e);
+        }
+    }
+
+    private void addTagsToCreatedObject(
+        final KObject object,
+        final KObjectInstantiationType instantiationType) {
+        switch (instantiationType) {
+            case IMMORTAL -> object.addTag(KTag.DefaultTags.IMMORTAL);
+            case SINGLETON -> object.addTag(KTag.DefaultTags.SINGLETON);
+            case WEAK_SINGLETON -> object.addTags(KTag.DefaultTags.SINGLETON, KTag.DefaultTags.WEAK);
+            case POOLABLE -> object.addTag(KTag.DefaultTags.POOLABLE);
+            case WEAK_POOLABLE -> object.addTags(KTag.DefaultTags.POOLABLE, KTag.DefaultTags.WEAK);
+            case TRANSIENT -> object.addTag(KTag.DefaultTags.TRANSIENT);
         }
     }
 

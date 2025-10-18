@@ -20,12 +20,11 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.PackageInfo;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class KStandardIndex extends KObject implements KIndex {
 
@@ -33,7 +32,7 @@ public class KStandardIndex extends KObject implements KIndex {
     private final List<Package> packageIndex;
 
     public KStandardIndex() {
-        super("index");
+        super("index", new HashSet<>(List.of(KTag.DefaultTags.STD, KTag.DefaultTags.SYSTEM)));
 
         this.classIndex = new ArrayList<>();
         this.packageIndex = new ArrayList<>();

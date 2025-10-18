@@ -22,10 +22,10 @@ import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Standard implementation of {@link KServiceLoader}.
@@ -37,7 +37,7 @@ import java.util.Map;
 public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
     public KStandardServiceLoader() {
-        super(KStandardServiceLoader.class.getSimpleName());
+        super(KStandardServiceLoader.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
     }
 
     @Override

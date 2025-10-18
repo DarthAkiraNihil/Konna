@@ -26,8 +26,11 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,7 +47,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
     private final KJsonParser parser;
 
     public KStandardComponentLoader(@KInject final KJsonParser parser) {
-        super(KStandardComponentLoader.class.getSimpleName());
+        super(KStandardComponentLoader.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
         this.classLoader = Thread.currentThread().getContextClassLoader();
         this.parser = parser;
     }
