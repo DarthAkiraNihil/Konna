@@ -410,9 +410,15 @@ public final class KStandardActivator extends KActivator {
         switch (instantiationType) {
             case IMMORTAL -> object.addTag(KTag.DefaultTags.IMMORTAL);
             case SINGLETON -> object.addTag(KTag.DefaultTags.SINGLETON);
-            case WEAK_SINGLETON -> object.addTags(KTag.DefaultTags.SINGLETON, KTag.DefaultTags.WEAK);
+            case WEAK_SINGLETON -> object.addTags(
+                KTag.DefaultTags.SINGLETON,
+                KTag.DefaultTags.WEAK
+            );
             case POOLABLE -> object.addTag(KTag.DefaultTags.POOLABLE);
-            case WEAK_POOLABLE -> object.addTags(KTag.DefaultTags.POOLABLE, KTag.DefaultTags.WEAK);
+            case WEAK_POOLABLE -> object.addTags(
+                KTag.DefaultTags.POOLABLE,
+                KTag.DefaultTags.WEAK
+            );
             case TRANSIENT -> object.addTag(KTag.DefaultTags.TRANSIENT);
         }
     }

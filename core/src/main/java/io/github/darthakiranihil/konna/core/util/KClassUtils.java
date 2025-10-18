@@ -25,12 +25,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class that provides different useful class utils.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public final class KClassUtils extends KUninstantiable {
 
     private KClassUtils() {
         super();
     }
 
+    /**
+     * Returns a list of annotated classes from the class index.
+     * @param index Index
+     * @param annotation Annotation to look for
+     * @return List of classes with specified annotation
+     */
     public static List<Class<?>> getAnnotatedClasses(
         final KIndex index,
         final Class<? extends Annotation> annotation
@@ -42,6 +54,12 @@ public final class KClassUtils extends KUninstantiable {
             .toList();
     }
 
+    /**
+     * Returns a list of real classes in specific packages. A real class is not abstract,
+     * an interface, an annotation, a record or an enum.
+     * @param packages Packages where to look for.
+     * @return List of real classes.
+     */
     public static List<Class<?>> getRealClassesInPackages(final Set<String> packages) {
         try (ScanResult scanResult = new ClassGraph()
             .enableAllInfo()

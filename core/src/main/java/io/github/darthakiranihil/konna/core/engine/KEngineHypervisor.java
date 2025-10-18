@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
-import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
@@ -35,7 +35,7 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KMasterContainerModifier
+@KEnvironmentContainerModifier
 public class KEngineHypervisor extends KObject {
 
     private final KComponentLoader componentLoader;
@@ -57,7 +57,10 @@ public class KEngineHypervisor extends KObject {
         final KEngineContext ctx
     ) {
 
-        super(KEngineHypervisor.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
+        super(
+            KEngineHypervisor.class.getSimpleName(),
+            new HashSet<>(List.of(KTag.DefaultTags.SYSTEM))
+        );
 
         this.activator = ctx.activator();
         this.containerResolver = ctx.containerResolver();

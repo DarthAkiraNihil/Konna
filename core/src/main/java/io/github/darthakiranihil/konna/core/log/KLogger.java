@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Base for logger class.
@@ -31,8 +30,17 @@ import java.util.Set;
  */
 public abstract class KLogger extends KObject {
 
+    /**
+     * Minimum level of logged messages.
+     */
     protected final KLogLevel logLevel;
+    /**
+     * Default log formatter. It is used when a log handler does not provide its own.
+     */
     protected final KLogFormatter defaultLogFormatter;
+    /**
+     * List of all registered log handlers.
+     */
     protected final List<KLogHandler> logHandlers;
 
     public KLogger(

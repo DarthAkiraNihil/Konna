@@ -18,8 +18,20 @@ package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
 
+/**
+ * Represents an immutable container - it can be used only for dependency resolution
+ * and its class mapping cannot be modified.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KImmutableContainer extends KContainer {
 
+    /**
+     * Creates an immutable container from another container (it should be mutable, since
+     * creating an immutable container from another immutable does not make sense).
+     * @param wrapped Container to make it immutable
+     */
     public KImmutableContainer(final KContainer wrapped) {
         super(wrapped, String.format("locked_%s", wrapped.name()));
     }

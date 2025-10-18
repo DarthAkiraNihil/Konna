@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KMasterContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
@@ -33,11 +33,19 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KMasterContainerModifier
+@KEnvironmentContainerModifier
 public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
     public KStandardServiceLoader() {
-        super(KStandardServiceLoader.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
+        super(
+            KStandardServiceLoader.class.getSimpleName(),
+            new HashSet<>(
+                List.of(
+                    KTag.DefaultTags.SYSTEM,
+                    KTag.DefaultTags.STD
+                )
+            )
+        );
     }
 
     @Override

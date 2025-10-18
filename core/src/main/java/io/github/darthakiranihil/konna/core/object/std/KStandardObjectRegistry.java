@@ -34,7 +34,15 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
     private final Set<KObjectRegistryRecord> objects;
 
     public KStandardObjectRegistry() {
-        super("object_registry", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
+        super(
+            "object_registry",
+            new HashSet<>(
+                List.of(
+                    KTag.DefaultTags.SYSTEM,
+                    KTag.DefaultTags.STD
+                )
+            )
+        );
         this.objects = new HashSet<>();
     }
 

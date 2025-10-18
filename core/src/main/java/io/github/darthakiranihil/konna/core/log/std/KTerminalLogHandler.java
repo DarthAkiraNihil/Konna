@@ -24,7 +24,6 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Implementation of {@link KLogHandler} that writes log
@@ -42,7 +41,11 @@ public class KTerminalLogHandler extends KObject implements KLogHandler {
      * @param logFormatter Log formatter
      */
     public KTerminalLogHandler(final KLogFormatter logFormatter) {
-        super(KTerminalLogHandler.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super(
+            KTerminalLogHandler.class.getSimpleName(),
+            new HashSet<>(List.of(KTag.DefaultTags.STD)
+            )
+        );
         this.logFormatter = logFormatter;
     }
 

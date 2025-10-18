@@ -143,14 +143,27 @@ public class KObject implements Serializable {
         return this.name;
     }
 
+    /**
+     * Adds a tag to the object.
+     * @param tag Added tag
+     */
     public void addTag(final KTag tag) {
         this.tags.add(tag);
     }
 
+    /**
+     * Adds tags to the object. It is recommended to call addTag if only one tag is
+     * being added.
+     * @param addedTags List of added tags.
+     */
     public void addTags(final KTag... addedTags) {
         this.tags.addAll(List.of(addedTags));
     }
 
+    /**
+     * Removes a tag from the object.
+     * @param tag Tag to remove
+     */
     public void removeTag(final KTag tag) {
         this.tags.remove(tag);
     }

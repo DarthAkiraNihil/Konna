@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Implementation of {@link KLogHandler} that writes log

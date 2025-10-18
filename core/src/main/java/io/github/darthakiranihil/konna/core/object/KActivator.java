@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -35,8 +34,18 @@ import java.util.Set;
  */
 public abstract class KActivator extends KObject {
 
+    /**
+     * Container resolver, used when no container is specified when
+     * an object is created.
+     */
     protected final KContainerResolver containerResolver;
+    /**
+     * Registry of created objects.
+     */
     protected final KObjectRegistry objectRegistry;
+    /**
+     * System index.
+     */
     protected final KIndex index;
 
     public KActivator(

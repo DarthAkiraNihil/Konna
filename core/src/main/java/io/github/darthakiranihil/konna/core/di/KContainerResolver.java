@@ -22,8 +22,21 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
 
 import java.util.*;
 
+/**
+ * A base class for a container resolver - an essential class, that is designed
+ * to return a {@link KContainer} depending on the environment of the caller class.
+ *
+ * @since 0.2.0
+ * @author Dartk Akira Nihil
+ *
+ * @see KPackageEnvironment
+ * @see KEnvironmentContainerModifier
+ */
 public abstract class KContainerResolver extends KObject {
 
+    /**
+     * System index.
+     */
     protected KIndex index;
 
     public KContainerResolver(final KIndex index) {

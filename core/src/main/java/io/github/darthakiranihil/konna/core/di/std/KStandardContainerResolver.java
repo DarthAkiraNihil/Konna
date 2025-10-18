@@ -27,6 +27,12 @@ import io.github.darthakiranihil.konna.core.util.KTriplet;
 
 import java.util.*;
 
+/**
+ * Standard implementation of {@link KContainerResolver}.
+ * It actively uses {@link KPackageEnvironment} data to define package environments, that are
+ * resolved depending on the caller class. It requires a built package and class index to
+ * create a package-to-environment mapping.
+ */
 public final class KStandardContainerResolver extends KContainerResolver {
 
     private static final int CLASS_BEFORE_ACTIVATOR = 3;
@@ -58,6 +64,15 @@ public final class KStandardContainerResolver extends KContainerResolver {
     private final Map<String, KContainer> env2container;
     private final Map<String, String> package2env;
 
+    /**
+     * Standard constructor.
+     * On initialization, the resolver collects all indexed packages and creates corresponding
+     * internal environment records for them. After that it processes packages that define
+     * an environment, then it continues with processing empty environments, the resolver
+     * define a new environment for each subpackage of the top-level packages. Then it
+     * groups all records by environment name and builds container according to group result.
+     * @param index Built system index (must contain complete package and class list)
+     */
     public KStandardContainerResolver(final KIndex index) {
         super(index);
         this.addTag(KTag.DefaultTags.STD);
@@ -84,6 +99,17 @@ public final class KStandardContainerResolver extends KContainerResolver {
         );
     }
 
+    /**
+     * Returns the container according to the caller class. Container resolution
+     * is connected with the package environment of the package of the caller class.
+     * If caller class cannot be got, the root container is returned. If the caller
+     * class is an instance of {@link KActivator}, the container will be resolved for
+     * the caller class of the activator.
+     * If the caller class does not have {@link KEnvironmentContainerModifier},
+     * an {@link KImmutableContainer} will be returned instead of regular {@link KContainer}.
+     *
+     * @return Container the for caller class
+     */
     @Override
     public KContainer resolve() {
         var stackTrace = Thread.currentThread().getStackTrace();
@@ -110,7 +136,7 @@ public final class KStandardContainerResolver extends KContainerResolver {
                 retrieved = this.env2container.get("");
             }
 
-            if (!callerClass.isAnnotationPresent(KMasterContainerModifier.class)) {
+            if (!callerClass.isAnnotationPresent(KEnvironmentContainerModifier.class)) {
                 return new KImmutableContainer(retrieved);
             }
 

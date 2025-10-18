@@ -18,7 +18,23 @@ package io.github.darthakiranihil.konna.core.util;
 
 import java.util.List;
 
+/**
+ * Interface for a utility class which purpose is to index
+ * almost everything system related.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public interface KIndex {
+    /**
+     * Returns system class index.
+     * @return List of indexed classes
+     */
     List<Class<?>> getClassIndex();
+
+    /**
+     * Returns system package index.
+     * @return List of indexed packages.
+     */
     List<Package> getPackageIndex();
 }

@@ -23,7 +23,6 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Implementation of {@link KLogFormatter} that just formats the message with
@@ -35,7 +34,11 @@ import java.util.Set;
 public class KSimpleLogFormatter extends KObject implements KLogFormatter {
 
     public KSimpleLogFormatter() {
-        super(KSimpleLogFormatter.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super(
+            KSimpleLogFormatter.class.getSimpleName(),
+            new HashSet<>(List.of(KTag.DefaultTags.STD)
+            )
+        );
     }
 
     @Override

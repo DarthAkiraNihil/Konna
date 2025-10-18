@@ -26,6 +26,13 @@ import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 
 import java.util.*;
 
+/**
+ * Standard implementation of {@link KIndex}. It indexes only packages and classes from
+ * them that provide {@link KIndexedPackage} annotation.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KStandardIndex extends KObject implements KIndex {
 
     private final List<Class<?>> classIndex;
