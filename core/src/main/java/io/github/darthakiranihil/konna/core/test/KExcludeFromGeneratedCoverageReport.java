@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object.impl;
+package io.github.darthakiranihil.konna.core.test;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
-@KSingleton
-public class TestSingleton extends KObject {
-
-    public int wawa() {
-        return 10;
-    }
-
+@Target({ElementType.METHOD, ElementType.TYPE})
+public @interface KExcludeFromGeneratedCoverageReport {
 }

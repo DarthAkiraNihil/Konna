@@ -16,14 +16,26 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
+import io.github.darthakiranihil.konna.core.object.KPoolable;
 
-@KSingleton
-public class TestSingleton extends KObject {
+@KPoolable(initialPoolSize = 2, weak = true)
+public class TestWeakPoolableWithInjectedParameters {
+    private TestSingleton field;
 
-    public int wawa() {
-        return 10;
+    @KOnPoolableObjectObtain
+    private void create(@KInject TestSingleton field) {
+        this.field = field;
     }
 
+    @KOnPoolableObjectRelease
+    private void delete() {
+        this.field = null;
+    }
+
+    public TestSingleton field() {
+        return this.field;
+    }
 }

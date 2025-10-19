@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.except.KUnknownException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KPair;
@@ -232,6 +233,7 @@ public final class KStandardContainerResolver extends KContainerResolver {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private void processEmptyEnvironments(
         final List<PackageEnvRecord> records
     ) {

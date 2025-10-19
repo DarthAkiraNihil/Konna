@@ -102,6 +102,16 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
 
         this.assertExists(poolable, weakPoolable);
 
+        var poolableWithInjections = this.activator.create(TestPoolableWithInjectedParameters.class);
+        Assertions.assertEquals(TestSingleton.class, poolableWithInjections.field().getClass());
+        Assertions.assertEquals(10, poolableWithInjections.field().wawa());
+        this.activator.delete(poolableWithInjections);
+
+        var weakPoolableWithInjections = this.activator.create(TestWeakPoolableWithInjectedParameters.class);
+        Assertions.assertEquals(TestSingleton.class, weakPoolableWithInjections.field().getClass());
+        Assertions.assertEquals(10, weakPoolableWithInjections.field().wawa());
+        this.activator.delete(weakPoolableWithInjections);
+
     }
 
     @Test

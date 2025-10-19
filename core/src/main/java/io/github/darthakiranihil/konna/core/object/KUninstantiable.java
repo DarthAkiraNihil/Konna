@@ -27,9 +27,9 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KUninstantiable {
+public abstract class KUninstantiable {
 
-    public KUninstantiable() {
+    protected KUninstantiable() {
         throw new KInstantiationException(
             String.format("Cannot instantiate a uninstantiable class %s", this.getClass())
         );
