@@ -16,12 +16,24 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 
-public abstract class KTunnel extends KObject {
+/**
+ * Represents, literally, a message translator, that transforms
+ * one message to another.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
+@KSingleton
+public interface KTunnel {
 
-    private KTunnel next;
-
-    public abstract KMessage processMessage(KMessage message);
+    /**
+     * Processes a message and returns its processed copy (actually this behaviour
+     * depends on implementation).
+     * @param message Message to process
+     * @return Processed message
+     */
+    KMessage processMessage(KMessage message);
 
 }

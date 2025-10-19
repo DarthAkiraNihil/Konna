@@ -35,12 +35,12 @@ public class KStandardMessenger extends KMessenger {
     }
 
     @Override
-    public void sendRegular(final String shortMessageId, final KUniversalMap body) {
+    public void sendRegular(final String internalMessageId, final KUniversalMap body) {
         KThreadUtils.runAsync(() -> this
             .messageSystem
             .deliverMessage(
                 KMessage.regular(
-                    this.makeFullMessageId(shortMessageId),
+                    this.makeFullMessageId(internalMessageId),
                     body
                 )
             ));
@@ -131,6 +131,6 @@ public class KStandardMessenger extends KMessenger {
     }
 
     private String makeFullMessageId(final String shortMessageId) {
-        return String.format("%s.%s", this.messageIdSpecifier, shortMessageId);
+        return String.format("%s.%s", this.messageIdPrefix, shortMessageId);
     }
 }

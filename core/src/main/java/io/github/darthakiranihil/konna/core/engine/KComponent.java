@@ -97,7 +97,19 @@ public abstract class KComponent extends KObject {
         this.logger.info("Created component %s", componentClass);
     }
 
+    /**
+     * Accepts given message, routes it to given endpoint of internal service, which will process it
+     * in other way. It happens asynchronously.
+     * @param endpoint Destination endpoint of the message.
+     * @param message Message to accept.
+     */
     public abstract void acceptMessage(String endpoint, KMessage message);
+    /**
+     * Accepts given message, routes it to given endpoint of internal service, which will process it
+     * in other way. It happens synchronously, that is useful for testing.
+     * @param endpoint Destination endpoint of the message.
+     * @param message Message to accept.
+     */
     public abstract void acceptMessageSync(String endpoint, KMessage message);
 
     protected abstract void applyConfig(KJsonValue config);
