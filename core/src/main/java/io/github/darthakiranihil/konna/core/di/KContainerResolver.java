@@ -40,6 +40,10 @@ public abstract class KContainerResolver extends KObject {
      */
     protected KIndex index;
 
+    /**
+     * Base constructor.
+     * @param index Built system index (must contain complete package and class list)
+     */
     public KContainerResolver(final KIndex index) {
         super("container_resolver", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
         this.index = index;
