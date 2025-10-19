@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class KSimpleEvent extends KObject {
      */
     public void invoke() {
         for (KSimpleEventAction listener: this.listeners) {
-            CompletableFuture.runAsync(listener::accept);
+            KThreadUtils.runAsync(listener::accept);
         }
     }
 

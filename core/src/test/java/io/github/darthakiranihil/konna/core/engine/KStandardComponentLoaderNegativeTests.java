@@ -32,11 +32,12 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
 
         public TestComponentNoMeta(
             KServiceLoader serviceLoader,
+            String name,
             KEngineContext ctx,
             String servicesPackage,
             KJsonValue config
         ) throws KComponentLoadingException {
-            super(serviceLoader, ctx, servicesPackage, config);
+            super(serviceLoader, name, ctx, servicesPackage, config);
         }
 
         @Override

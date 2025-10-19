@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
@@ -47,11 +48,12 @@ public abstract class KComponent extends KObject {
 
     public KComponent(
         @KInject final KServiceLoader serviceLoader,
+        final String name,
         final KEngineContext ctx,
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
-        super(KComponent.class.getSimpleName(), KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.logger = ctx.logger();
 
         String componentClass = this.getClass().toString();
@@ -94,6 +96,9 @@ public abstract class KComponent extends KObject {
         this.applyConfig(config);
         this.logger.info("Created component %s", componentClass);
     }
+
+    public abstract void acceptMessage(String endpoint, KMessage message);
+    public abstract void acceptMessageSync(String endpoint, KMessage message);
 
     protected abstract void applyConfig(KJsonValue config);
 }

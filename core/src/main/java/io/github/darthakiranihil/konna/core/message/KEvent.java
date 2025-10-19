@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class KEvent<T> extends KObject {
      */
     public void invoke(final T arg) {
         for (KEventAction<T> listener: this.listeners) {
-            CompletableFuture.runAsync(() -> listener.accept(arg));
+            KThreadUtils.runAsync(() -> listener.accept(arg));
         }
     }
 
