@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
+import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,16 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
 
         @Override
         protected void applyConfig(KJsonValue config) {
+
+        }
+
+        @Override
+        public void acceptMessage(String endpoint, KMessage message) {
+
+        }
+
+        @Override
+        public void acceptMessageSync(String endpoint, KMessage message) {
 
         }
     }

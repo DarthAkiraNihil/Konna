@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.message.KMessage;
 
 @KComponentMetaInfo(
     name = "TestComponent",
@@ -39,6 +40,16 @@ public class TestComponent extends KComponent {
 
     @Override
     protected void applyConfig(KJsonValue config) {
+
+    }
+
+    @Override
+    public void acceptMessage(String endpoint, KMessage message) {
+
+    }
+
+    @Override
+    public void acceptMessageSync(String endpoint, KMessage message) {
 
     }
 }
