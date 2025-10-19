@@ -33,6 +33,9 @@ import java.util.*;
  * It actively uses {@link KPackageEnvironment} data to define package environments, that are
  * resolved depending on the caller class. It requires a built package and class index to
  * create a package-to-environment mapping.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
  */
 public final class KStandardContainerResolver extends KContainerResolver {
 

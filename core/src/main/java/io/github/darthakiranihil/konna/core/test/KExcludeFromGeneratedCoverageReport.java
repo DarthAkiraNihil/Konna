@@ -19,6 +19,13 @@ package io.github.darthakiranihil.konna.core.test;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
+/**
+ * Used to signalize that a method or class should be excluded from coverage report
+ * (actually applies only for JaCoCo).
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface KExcludeFromGeneratedCoverageReport {
 }
