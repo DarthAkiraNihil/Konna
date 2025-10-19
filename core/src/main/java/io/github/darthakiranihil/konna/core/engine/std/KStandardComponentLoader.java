@@ -18,14 +18,19 @@ package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,26 +39,39 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KStandardComponentLoader implements KComponentLoader {
+@KSingleton(immortal = true)
+@KEnvironmentContainerModifier
+public class KStandardComponentLoader extends KObject implements KComponentLoader {
 
     private final ClassLoader classLoader;
     private final KJsonParser parser;
 
-    public KStandardComponentLoader(final KJsonParser parser) {
+    public KStandardComponentLoader(@KInject final KJsonParser parser) {
+        super(
+            KStandardComponentLoader.class.getSimpleName(),
+            new HashSet<>(
+                List.of(
+                    KTag.DefaultTags.SYSTEM,
+                    KTag.DefaultTags.STD
+                )
+            )
+        );
         this.classLoader = Thread.currentThread().getContextClassLoader();
         this.parser = parser;
     }
 
     @Override
     public void load(
+        final KEngineContext ctx,
         final Class<? extends KComponent> component,
         final KServiceLoader serviceLoader,
         final Map<String, KComponent> loadedComponentMap
     ) throws KComponentLoadingException {
+        KLogger logger = ctx.logger();
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
-                KLogger.fatal("Cannot load component %s: meta info not provided", component);
+                logger.fatal("Cannot load component %s: meta info not provided", component);
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: meta info not provided",
@@ -65,10 +83,10 @@ public class KStandardComponentLoader implements KComponentLoader {
             KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
             String componentName = meta.name();
 
-            KLogger.info("Loading component %s", componentName);
+            logger.info("Loading component %s", componentName);
             
             if (loadedComponentMap.containsKey(componentName)) {
-                KLogger.fatal(
+                logger.fatal(
                     "Cannot load component %s: there is a component with the same name: %s",
                     component,
                     componentName
@@ -88,19 +106,22 @@ public class KStandardComponentLoader implements KComponentLoader {
                 parsedConfig = this.parser.parse(config);
             }
 
-            var constructor = component.getConstructor(
-                KServiceLoader.class,
-                String.class,
-                KJsonValue.class
+            KContainer master = ctx.containerResolver().resolve();
+            master
+                .add(component)
+                .add(KServiceLoader.class, serviceLoader.getClass());
+
+            var loadedComponent = ctx.activator().create(
+                component, ctx, meta.servicesPackage(), parsedConfig
             );
 
             loadedComponentMap.put(
                 componentName,
-                constructor.newInstance(serviceLoader, meta.servicesPackage(), parsedConfig)
+                loadedComponent
             );
-            KLogger.info("Loaded component %s", componentName);
+            logger.info("Loaded component %s", componentName);
         } catch (Exception e) {
-            KLogger.fatal(e);
+            logger.fatal(e);
             throw new KComponentLoadingException(e);
         }
     }

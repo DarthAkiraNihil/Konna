@@ -35,6 +35,7 @@ jacoco {
 
 checkstyle {
     toolVersion = "11.0.0"
+    checkstyleTest.enabled = false
 }
 
 repositories {

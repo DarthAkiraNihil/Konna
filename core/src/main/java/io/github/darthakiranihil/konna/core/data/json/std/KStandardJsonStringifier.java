@@ -18,7 +18,12 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonStringifier;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import java.util.Iterator;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Standard implementation of {@link KJsonStringifier}.
@@ -26,7 +31,12 @@ import java.util.Iterator;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KStandardJsonStringifier implements KJsonStringifier {
+@KSingleton(immortal = true)
+public class KStandardJsonStringifier extends KObject implements KJsonStringifier {
+
+    public KStandardJsonStringifier() {
+        super("std_json_stringifier", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+    }
 
     @Override
     public String stringify(final KJsonValue value) {
@@ -50,8 +60,7 @@ public class KStandardJsonStringifier implements KJsonStringifier {
             case ARRAY -> {
                 builder.append("[");
                 String comma = "";
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
-                    var e = it.next();
+                for (KJsonValue e : value) {
                     builder.append(comma);
                     this.deepStringify(builder, e);
                     comma = ",";
@@ -91,9 +100,7 @@ public class KStandardJsonStringifier implements KJsonStringifier {
             case ARRAY -> {
                 builder.append(indentPrefix).append("[\n");
                 String comma = "";
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
-
-                    var e = it.next();
+                for (KJsonValue e : value) {
 
                     builder.append(comma);
                     this.deepStringify(builder, e, indent, level + 1);
@@ -138,10 +145,9 @@ public class KStandardJsonStringifier implements KJsonStringifier {
                 builder.append("[\n");
 
                 String comma = "";
-                for (var it = value.iterator(); it.hasNext();) {
+                for (KJsonValue jsonValue : value) {
                     builder.append(comma);
-                    KJsonValue entry = it.next();
-                    this.deepStringify(builder, entry, indent, level + 1);
+                    this.deepStringify(builder, jsonValue, indent, level + 1);
                     if (comma.isEmpty()) {
                         comma = ",\n";
                     }

@@ -36,7 +36,7 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
         KJsonValue parsed;
         try {
-            parsed = KStandardTestClass.jsonParser.parse(config);
+            parsed = this.jsonParser.parse(config);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;
@@ -61,7 +61,7 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
         KJsonValue parsed;
         try {
-            parsed = KStandardTestClass.jsonParser.parse(config);
+            parsed = this.jsonParser.parse(config);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;
@@ -86,7 +86,7 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
         KJsonValue parsed;
         try {
-            parsed = KStandardTestClass.jsonParser.parse(config);
+            parsed = this.jsonParser.parse(config);
         } catch (KJsonParseException e) {
             Assertions.fail(e);
             return;

@@ -16,14 +16,16 @@ public interface KServiceLoader {
 
     /**
      * Loads given component service class in puts it in loadedServicesMap.
+     * @param ctx Engine execution context
      * @param service Service class to load
      * @param loadedServicesMap Map of loaded services. Used to prevent loading two services
      *                          within one component with the same name,
-     *                          provided by {@link KComponentService} annotation
+     *                          provided by {@link KComponentServiceMetaInfo} annotation
      * @throws KServiceLoadingException when service failed to be loaded
      *                                  (see cause for details)
      */
     void load(
+        KEngineContext ctx,
         Class<?> service,
         Map<String, KServiceEntry> loadedServicesMap
     ) throws KServiceLoadingException;

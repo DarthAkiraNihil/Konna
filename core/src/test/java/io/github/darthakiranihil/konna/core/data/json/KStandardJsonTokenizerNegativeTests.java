@@ -45,7 +45,7 @@ public class KStandardJsonTokenizerNegativeTests extends KStandardTestClass {
 
     private void testForInvalidInput(String input, int expectedLine, int expectedColumn) {
 
-        KJsonTokenizer tokenizer = KStandardJsonTokenizerPositiveTests.jsonTokenizer;
+        KJsonTokenizer tokenizer = this.jsonTokenizer;
         int sequenceToken = tokenizer.addSource(input);
 
         Exception thrown = Assertions.assertThrowsExactly(KJsonTokenException.class, () -> tokenizer.getNextToken(sequenceToken));

@@ -18,9 +18,20 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.*;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
+import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -28,46 +39,81 @@ import io.github.darthakiranihil.konna.core.log.std.*;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KStandardTestClass {
+@KEnvironmentContainerModifier
+public class KStandardTestClass extends KObject {
 
     /**
      * Implementation of a json tokenizer.
      */
-    protected static KJsonTokenizer jsonTokenizer;
+    protected final KJsonTokenizer jsonTokenizer;
     /**
      * Implementation of a json parser.
      */
-    protected static KJsonParser jsonParser;
+    protected final KJsonParser jsonParser;
     /**
      * Implementation of a json serializer.
      */
-    protected static KJsonSerializer jsonSerializer;
+    protected final KJsonSerializer jsonSerializer;
     /**
      * Implementation of a json deserializer.
      */
-    protected static KJsonDeserializer jsonDeserializer;
+    protected final KJsonDeserializer jsonDeserializer;
     /**
      * Implementation of a json stringifier.
      */
-    protected static KJsonStringifier jsonStringifier;
+    protected final KJsonStringifier jsonStringifier;
+    /**
+     * Engine context, required for running tests.
+     */
+    protected static KEngineContext context;
 
     static {
+        var index = new KStandardIndex();
 
-        KStandardTestClass.jsonTokenizer = new KStandardJsonTokenizer();
-        KStandardTestClass.jsonParser = new KStandardJsonParser(KStandardTestClass.jsonTokenizer);
-        KStandardTestClass.jsonSerializer = new KStandardJsonSerializer();
-        KStandardTestClass.jsonDeserializer = new KStandardJsonDeserializer();
-        KStandardTestClass.jsonStringifier = new KStandardJsonStringifier();
+        var containerResolver = new KStandardContainerResolver(index);
+        containerResolver
+            .resolve()
+            .add(KJsonParser.class, KStandardJsonParser.class)
+            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
 
-        KLogger.init(KLogLevel.DEBUG, new KSimpleLogFormatter());
-        KLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
-        KLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
+        var objectRegistry = new KStandardObjectRegistry();
+        var logger = new KStandardLogger(
+            "std_logger",
+            KLogLevel.DEBUG,
+            new KSimpleLogFormatter(),
+            List.of(
+                new KTerminalLogHandler(new KColorfulTerminalLogFormatter()),
+                new KFileLogHandler("_log.log", new KTimestampLogFormatter())
+            )
+        );
 
+        KStandardTestClass.context = new KManuallyProvidedEngineContext(
+            new KStandardActivator(containerResolver, objectRegistry, index),
+            containerResolver,
+            index,
+            logger,
+            objectRegistry
+        );
     }
 
     /**
      * Default constructor.
      */
     protected KStandardTestClass() {
+        super(
+            "std_test_class",
+            new HashSet<>(
+                List.of(
+                    KTag.DefaultTags.TEST,
+                    KTag.DefaultTags.STD
+                )
+            )
+        );
+        this.jsonTokenizer = new KStandardJsonTokenizer();
+        this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
+        this.jsonSerializer = new KStandardJsonSerializer();
+        this.jsonDeserializer = new KStandardJsonDeserializer();
+        this.jsonStringifier = new KStandardJsonStringifier();
+
     }
 }

@@ -18,6 +18,9 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
 import java.lang.reflect.Field;
@@ -30,7 +33,8 @@ import java.util.*;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KStandardJsonDeserializer implements KJsonDeserializer {
+@KSingleton(immortal = true)
+public class KStandardJsonDeserializer extends KObject implements KJsonDeserializer {
 
     private static Unsafe theUnsafe;
 
@@ -42,6 +46,10 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public KStandardJsonDeserializer() {
+        super("std_json_deserializer", new HashSet<>(List.of(KTag.DefaultTags.STD)));
     }
 
     /**
@@ -84,8 +92,7 @@ public class KStandardJsonDeserializer implements KJsonDeserializer {
             case ARRAY -> {
                 List<?> list = new ArrayList<>();
 
-                for (Iterator<KJsonValue> it = value.iterator(); it.hasNext();) {
-                    var entry = it.next();
+                for (KJsonValue entry : value) {
                     list.add(this.deserialize(entry, clazz));
                 }
 

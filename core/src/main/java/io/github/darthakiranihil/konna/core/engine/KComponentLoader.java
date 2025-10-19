@@ -31,6 +31,7 @@ public interface KComponentLoader {
 
     /**
      * Loads engine component with given class and puts it in loadedComponentMap.
+     * @param ctx Engine execution context
      * @param component Class of component to load
      * @param serviceLoader Instance of component services loader
      * @param loadedComponentMap Map of loaded components. Used to prevent loading two components
@@ -40,6 +41,7 @@ public interface KComponentLoader {
  *                                        (see cause for details)
      */
     void load(
+        KEngineContext ctx,
         Class<? extends KComponent> component,
         KServiceLoader serviceLoader,
         Map<String, KComponent> loadedComponentMap

@@ -16,13 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
-import java.io.File;
-import java.io.IOException;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
+import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+
 import java.lang.annotation.Annotation;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class that provides different useful annotation utils.
@@ -30,63 +29,83 @@ import java.util.List;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KAnnotationUtils {
+public final class KAnnotationUtils extends KUninstantiable {
 
-    private static
-    final int CLASS_EXT_LENGTH = 6;
+    private KAnnotationUtils() {
+        super();
+    }
 
-    private KAnnotationUtils() { }
+    /**
+     * Searches for classes with specific annotation in the provided index.
+     * @param index Index to look for classes in
+     * @param annotation Annotation that class must have
+     * @return List of annotated classes
+     */
+    public static List<Class<?>> findAnnotatedClasses(
+        final KIndex index,
+        final Class<? extends Annotation> annotation
+    ) {
+
+        return KAnnotationUtils.findAnnotatedClasses(
+            index.getPackageIndex().stream().map(Package::getName).toList(),
+            annotation
+        );
+
+    }
 
     /**
      * Searches for classes with specific annotation in given package.
+     * @param index Index to look for classes in
      * @param packageName Package to search in
      * @param annotation Annotation that class must have
      * @return List of annotated classes
-     * @throws ClassNotFoundException If it somehow fails to find a class in a package
-     * @throws IOException If resources failed to read
      */
     public static List<Class<?>> findAnnotatedClasses(
+        final KIndex index,
         final String packageName,
         final Class<? extends Annotation> annotation
-    ) throws ClassNotFoundException, IOException {
+    ) {
 
-        List<Class<?>> annotatedClasses = new ArrayList<>();
-        String path = packageName.replace('.', '/');
+        return KAnnotationUtils.findAnnotatedClasses(
+            List.of(packageName),
+            annotation
+        );
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> resources = classLoader.getResources(path);
+    }
 
-        while (resources.hasMoreElements()) {
-            URL resource = resources.nextElement();
-            File directory = new File(resource.getFile());
-            if (!directory.exists()) {
-                continue;
-            }
+    /**
+     * Searches for classes with specific annotation in specified package list.
+     * @param annotation Annotation that class must have
+     * @param packages List of packages to look classes for
+     * @return List of annotated classes
+     */
+    public static List<Class<?>> findAnnotatedClasses(
+        final List<String> packages,
+        final Class<? extends Annotation> annotation
+    ) {
 
-            File[] files = directory.listFiles();
-            if (files == null) {
-                continue;
-            }
+        List<Class<?>> annotatedClasses = new LinkedList<>();
 
-            for (File file : files) {
-                if (!file.getName().endsWith(".class")) {
-                    continue;
-                }
+        try (ScanResult scanResult =
+            new ClassGraph()
+                .enableClassInfo()
+                .enableAnnotationInfo()
+                .acceptPackages(packages.toArray(new String[0]))
+                .scan()
+        ) {
 
-                String classFilename = file.getName().substring(
-                    0, file.getName().length() - CLASS_EXT_LENGTH
+            scanResult
+                .getAllClasses()
+                .stream()
+                .filter((x) -> x.hasAnnotation(annotation.getName()))
+                .toList()
+                .forEach((x) -> annotatedClasses.add(x.loadClass())
                 );
 
-                String className = packageName + "." + classFilename;
-                Class<?> clazz = Class.forName(className);
-                if (clazz.isAnnotationPresent(annotation)) {
-                    annotatedClasses.add(clazz);
-                }
-
-            }
+            return annotatedClasses;
 
         }
-        return annotatedClasses;
+
     }
 
 }

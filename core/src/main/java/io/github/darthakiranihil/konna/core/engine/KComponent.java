@@ -17,15 +17,15 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Base class for Konna engine component.
@@ -33,36 +33,45 @@ import java.util.Map;
  * @since 0.2.0
  * @author DarthAkiraNihil
  */
-public abstract class KComponent {
+public abstract class KComponent extends KObject {
 
     /**
      * List of component services.
      */
     protected final Map<String, KServiceEntry> services;
+    /**
+     * Logger of component's engine context.
+     */
+    protected final KLogger logger;
 
     public KComponent(
-        final KServiceLoader serviceLoader,
+        @KInject final KServiceLoader serviceLoader,
+        final KEngineContext ctx,
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
-        String componentClass = this.getClass().toString();
-        KLogger.info("Creating component %s", componentClass);
+        super(KComponent.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
+        this.logger = ctx.logger();
 
-        List<Class<?>> serviceClasses;
-        try {
-            serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-                servicesPackage, KComponentService.class
-            );
-        } catch (ClassNotFoundException | IOException e) {
-            KLogger.fatal(e);
-            throw new KComponentLoadingException(e);
-        }
-        KLogger.info("Found %d services of component %s", serviceClasses.size(), componentClass);
+        String componentClass = this.getClass().toString();
+        this.logger.info("Creating component %s", componentClass);
+
+        List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
+            ctx.index(),
+            servicesPackage,
+            KComponentServiceMetaInfo.class
+        );
+        this.logger.info(
+            "Found %d services of component %s",
+            serviceClasses.size(),
+            componentClass
+        );
 
         Map<String, KServiceEntry> instantiatedServices = new HashMap<>();
         try {
             for (var serviceClass: serviceClasses) {
                 serviceLoader.load(
+                    ctx,
                     serviceClass,
                     instantiatedServices
                 );
@@ -70,19 +79,19 @@ public abstract class KComponent {
         } catch (
             KServiceLoadingException e
         ) {
-            KLogger.fatal(e);
+            this.logger.fatal(e);
             throw new KComponentLoadingException(e);
         }
-        KLogger.info(
+        this.logger.info(
             "Loaded %d services of component %s",
             instantiatedServices.size(),
             componentClass
         );
 
         this.services = instantiatedServices;
-        KLogger.info("Applying config for %s", componentClass);
+        this.logger.info("Applying config for %s", componentClass);
         this.applyConfig(config);
-        KLogger.info("Created component %s", componentClass);
+        this.logger.info("Created component %s", componentClass);
     }
 
     protected abstract void applyConfig(KJsonValue config);

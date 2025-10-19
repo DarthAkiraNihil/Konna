@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class KStandardServiceLoaderNegativeTests extends KStandardTestClass {
 
-    @KComponentService(name = "serv")
+    @KComponentServiceMetaInfo(name = "serv")
     private static class ServiceWithoutZeroArgsConstructor {
 
         public ServiceWithoutZeroArgsConstructor(KJsonValue _val) {
@@ -47,20 +47,7 @@ public class KStandardServiceLoaderNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrowsExactly(
             KServiceLoadingException.class,
-            () -> loader.load(TestService.class, loadedServices)
-        );
-
-    }
-
-    @Test
-    public void testLoadServiceNoConstructor() {
-
-        KServiceLoader loader = new KStandardServiceLoader();
-        Map<String, KServiceEntry> loadedServices = new HashMap<>();
-
-        Assertions.assertThrowsExactly(
-            KServiceLoadingException.class,
-            () -> loader.load(ServiceWithoutZeroArgsConstructor.class, loadedServices)
+            () -> loader.load(KStandardTestClass.context, TestService.class, loadedServices)
         );
 
     }

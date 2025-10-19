@@ -16,18 +16,16 @@
 
 package io.github.darthakiranihil.konna.core.engine.std;
 
-import io.github.darthakiranihil.konna.core.engine.KComponentService;
-import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
-import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Standard implementation of {@link KServiceLoader}.
@@ -35,19 +33,34 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KStandardServiceLoader implements KServiceLoader {
+@KEnvironmentContainerModifier
+public class KStandardServiceLoader extends KObject implements KServiceLoader {
+
+    public KStandardServiceLoader() {
+        super(
+            KStandardServiceLoader.class.getSimpleName(),
+            new HashSet<>(
+                List.of(
+                    KTag.DefaultTags.SYSTEM,
+                    KTag.DefaultTags.STD
+                )
+            )
+        );
+    }
 
     @Override
     public void load(
+        final KEngineContext ctx,
         final Class<?> service,
         final Map<String, KServiceEntry> loadedServicesMap
     ) throws KServiceLoadingException {
 
-        String serviceName = service.getAnnotation(KComponentService.class).name();
-        KLogger.info("Loading service %s [%s]", serviceName, service);
+        String serviceName = service.getAnnotation(KComponentServiceMetaInfo.class).name();
+        KLogger logger = ctx.logger();
+        logger.info("Loading service %s [%s]", serviceName, service);
 
         if (loadedServicesMap.containsKey(serviceName)) {
-            KLogger.fatal(
+            logger.fatal(
             "Cannot load service %s: there is a service with the same name"
                 +   "within the component: %s",
                 service,
@@ -76,34 +89,24 @@ public class KStandardServiceLoader implements KServiceLoader {
                 method
             );
         }
-        KLogger.info(
+        logger.info(
             "Found %d service endpoints in %s [%s]",
             endpoints.size(),
             serviceName,
             service
         );
 
-        Constructor<?> serviceConstructor;
-        try {
-             serviceConstructor = service.getConstructor();
-        } catch (NoSuchMethodException e) {
-            KLogger.fatal(e);
-            throw new KServiceLoadingException(e);
-        }
+        KContainer master = ctx.containerResolver().resolve();
+        master.add(service);
 
-        try {
-            Object instantiatedService = serviceConstructor.newInstance();
-            loadedServicesMap.put(
-                serviceName,
-                new KServiceEntry(
-                    instantiatedService,
-                    endpoints
-                )
-            );
-            KLogger.info("Loaded service %s [%s]", serviceName, service);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            KLogger.fatal(e);
-            throw new KServiceLoadingException(e);
-        }
+        Object instantiatedService = ctx.activator().create(service);
+        loadedServicesMap.put(
+            serviceName,
+            new KServiceEntry(
+                instantiatedService,
+                endpoints
+            )
+        );
+        logger.info("Loaded service %s [%s]", serviceName, service);
     }
 }

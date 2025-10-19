@@ -33,7 +33,7 @@ public class KStandardJsonStringifierPositiveTests extends KStandardTestClass {
 
     public KStandardJsonStringifierPositiveTests() {
 
-        this.stringifier = KStandardTestClass.jsonStringifier;
+        this.stringifier = this.jsonStringifier;
 
     }
 

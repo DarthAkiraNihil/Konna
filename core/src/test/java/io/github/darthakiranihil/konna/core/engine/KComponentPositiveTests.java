@@ -36,6 +36,7 @@ public class KComponentPositiveTests extends KStandardTestClass {
         try {
             new TestComponent(
                 serviceLoader,
+                KStandardTestClass.context,
                 "io.github.darthakiranihil.konna.core.engine.impl",
                 KJsonValue.fromMap(new HashMap<>())
             );

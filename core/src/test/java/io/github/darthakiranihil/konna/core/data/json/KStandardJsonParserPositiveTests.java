@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 import java.util.List;
 
 import static java.util.List.of;
@@ -56,7 +55,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
     );
 
     public KStandardJsonParserPositiveTests() {
-        this.parser = KStandardTestClass.jsonParser;
+        this.parser = this.jsonParser;
     }
 
     private void simpleTest(String input, KJsonValueType expectedType, Object expectedValue) {
@@ -97,8 +96,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(KJsonValueType.ARRAY, parsed.getType());
             int i = 0;
-            for (var it = parsed.iterator(); it.hasNext();) {
-                it.next();
+            for (KJsonValue value : parsed) {
                 i++;
             }
 
@@ -165,9 +163,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
             Assertions.assertEquals(KJsonValueType.ARRAY, result.getType());
 
             int i = 0;
-            for (Iterator<KJsonValue> it = result.iterator(); it.hasNext();) {
-                KJsonValue entry = it.next();
-
+            for (KJsonValue entry : result) {
                 var match = KStandardJsonParserPositiveTests.arrayMatchList.get(i);
                 Assertions.assertEquals(match.first(), entry.getType());
                 Assertions.assertEquals(match.second(), entry.getRawObject());
@@ -191,9 +187,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(KJsonValueType.ARRAY, result.getType());
 
-            for (Iterator<KJsonValue> it = result.iterator(); it.hasNext();) {
-                KJsonValue entry = it.next();
-
+            for (KJsonValue entry : result) {
                 Assertions.assertEquals(KJsonValueType.OBJECT, entry.getType());
             }
         } catch (KJsonParseException e) {
@@ -213,9 +207,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(KJsonValueType.ARRAY, result.getType());
 
-            for (Iterator<KJsonValue> it = result.iterator(); it.hasNext();) {
-                KJsonValue entry = it.next();
-
+            for (KJsonValue entry : result) {
                 Assertions.assertEquals(KJsonValueType.ARRAY, entry.getType());
             }
         } catch (KJsonParseException e) {

@@ -26,7 +26,7 @@ public class KStandardJsonParserNegativeTests extends KStandardTestClass {
     private final KJsonParser parser;
 
     public KStandardJsonParserNegativeTests() {
-        this.parser = KStandardTestClass.jsonParser;
+        this.parser = this.jsonParser;
     }
 
     private void test(String input, KJsonToken expectedUnexpectedToken) {

@@ -17,13 +17,18 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KContainerResolver;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Konna Engine Hypervisor - the primal class for the engine that controls the whole system.
@@ -31,56 +36,97 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KEngineHypervisor {
+@KEnvironmentContainerModifier
+public class KEngineHypervisor extends KObject {
 
     private final KComponentLoader componentLoader;
     private final KServiceLoader serviceLoader;
     private final Map<String, KComponent> engineComponents;
     private final KJsonParser jsonParser;
 
+    private final KActivator activator;
+    private final KContainerResolver containerResolver;
+    private final KLogger logger;
+    private final KIndex index;
+
     /**
      * Constructs hypervisor with provided config.
-     * @param jsonParser Json parser
-     * @param config Config of the hypervisor
+     * @param initializationConfig Initialization config of the hypervisor
+     * @param ctx Engine execution context
      */
-    public KEngineHypervisor(final KJsonParser jsonParser, final KEngineHypervisorConfig config) {
+    public KEngineHypervisor(
+        final KEngineHypervisorConfig initializationConfig,
+        final KEngineContext ctx
+    ) {
 
-        KLogger.info("Initializing engine hypervisor [config = %s]", config);
+        super(
+            KEngineHypervisor.class.getSimpleName(),
+            new HashSet<>(List.of(KTag.DefaultTags.SYSTEM))
+        );
 
-        this.jsonParser = jsonParser;
+        this.activator = ctx.activator();
+        this.containerResolver = ctx.containerResolver();
+        this.logger = ctx.logger();
+        this.index = ctx.index();
+
+        this.logger.info("Initializing engine hypervisor [config = %s]", initializationConfig);
+        this.logger.info(
+            "%s: Indexed %d classes in %d packages",
+            this.index.getClass().getSimpleName(),
+            this.index.getClassIndex().size(),
+            this.index.getPackageIndex().size()
+        );
+        var envs = this.containerResolver.getEnvironments();
+        this.logger.info(
+            "%s: created %d environments: %s",
+            this.containerResolver.getClass().getSimpleName(),
+            envs.size(),
+            envs
+        );
+        this.logger.info(
+            "Got activator: %s", this.activator.getClass().getSimpleName()
+        );
+        this.logger.info(
+            "Got object registry: %s", ctx.objectRegistry().getClass().getSimpleName()
+        );
+        this.logger.info(
+            "Got logger: %s", this.logger.getClass().getSimpleName()
+        );
+
+        this.jsonParser = this.activator.create(KJsonParser.class);
+        KContainer master = this.containerResolver.resolve();
+
+        master
+            .add(initializationConfig.serviceLoader())
+            .add(initializationConfig.componentLoader());
 
         try {
 
-            var componentLoaderConstructor = config
-                                                .componentLoader()
-                                                .getConstructor(KJsonParser.class);
-            this.componentLoader = componentLoaderConstructor.newInstance(this.jsonParser);
+            this.componentLoader = this.activator.create(initializationConfig.componentLoader());
 
-            KLogger.info("Created component loader %s", config.componentLoader());
+            this.logger.info("Created component loader %s", initializationConfig.componentLoader());
 
-            var serviceLoaderConstructor = config
-                .serviceLoader()
-                .getConstructor();
-            this.serviceLoader = serviceLoaderConstructor.newInstance();
+            this.serviceLoader = this.activator.create(initializationConfig.serviceLoader());
 
-            KLogger.info("Created service loader %s", config.serviceLoader());
+            this.logger.info("Created service loader %s", initializationConfig.serviceLoader());
 
             this.engineComponents = new HashMap<>();
 
-            for (var component: config.components()) {
-                this.componentLoader.load(component, this.serviceLoader, this.engineComponents);
+            for (var component: initializationConfig.components()) {
+                this.componentLoader.load(
+                    ctx,
+                    component,
+                    this.serviceLoader,
+                    this.engineComponents
+                );
             }
 
-            KLogger.info("Loaded %d components", this.engineComponents.size());
+            this.logger.info("Loaded %d components", this.engineComponents.size());
 
         } catch (
-                NoSuchMethodException
-            |   InvocationTargetException
-            |   InstantiationException
-            |   IllegalAccessException
-            |   KComponentLoadingException e
+            KComponentLoadingException e
         ) {
-            KLogger.error(e);
+            this.logger.error(e);
             throw new KHypervisorInitializationException(e);
         }
 

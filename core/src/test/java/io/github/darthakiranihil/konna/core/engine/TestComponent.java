@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 
 @KComponentMetaInfo(
@@ -27,9 +28,12 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 public class TestComponent extends KComponent {
 
     public TestComponent(
-        KServiceLoader serviceLoader, String servicesPackage, KJsonValue config
+        @KInject KServiceLoader serviceLoader,
+        KEngineContext ctx,
+        String servicesPackage,
+        KJsonValue config
     ) throws KComponentLoadingException {
-        super(serviceLoader, servicesPackage, config);
+        super(serviceLoader, ctx, servicesPackage, config);
     }
 
     @Override

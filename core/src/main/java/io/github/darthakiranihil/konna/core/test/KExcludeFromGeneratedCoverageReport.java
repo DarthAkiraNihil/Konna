@@ -14,26 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine;
+package io.github.darthakiranihil.konna.core.test;
 
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks that this class should be used as a component service.
+ * Used to signalize that a method or class should be excluded from coverage report
+ * (actually applies only for JaCoCo).
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface KComponentService {
-    /**
-     * Unique name of the service. It is used in message routing process as
-     * the second path coordinate.
-     * @return Name of the service.
-     */
-    String name();
+@Target({ElementType.METHOD, ElementType.TYPE})
+public @interface KExcludeFromGeneratedCoverageReport {
 }

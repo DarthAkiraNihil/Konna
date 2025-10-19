@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.github.classgraph:classgraph:4.8.181'
+    implementation 'io.github.toolfactory:jvm-driver:9.9.10'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
