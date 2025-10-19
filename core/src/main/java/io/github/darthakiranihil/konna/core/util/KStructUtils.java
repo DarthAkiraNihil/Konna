@@ -31,6 +31,10 @@ import java.util.Set;
  */
 public final class KStructUtils extends KUninstantiable {
 
+    private KStructUtils() {
+        super();
+    }
+
     /**
      * Puts given tag array into a set and returns it.
      * @param tags List of tags

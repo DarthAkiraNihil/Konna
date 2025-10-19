@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.io.*;
 import java.util.*;
@@ -43,7 +44,7 @@ public class KStandardJsonParser extends KObject implements KJsonParser {
      * @param tokenizer Any Json tokenizer
      */
     public KStandardJsonParser(@KInject final KJsonTokenizer tokenizer) {
-        super("std_json_parser", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super("std_json_parser", KStructUtils.setOfTags(KTag.DefaultTags.STD));
         this.tokenizer = tokenizer;
     }
 

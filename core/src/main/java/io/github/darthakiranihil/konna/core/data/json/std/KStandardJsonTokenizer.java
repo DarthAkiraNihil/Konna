@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonTokenPair;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.io.*;
 import java.util.*;
@@ -81,7 +82,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
      * Default constructor.
      */
     public KStandardJsonTokenizer() {
-        super("std_json_tokenizer", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super("std_json_tokenizer", KStructUtils.setOfTags(KTag.DefaultTags.STD));
         states = new HashMap<>();
     }
 

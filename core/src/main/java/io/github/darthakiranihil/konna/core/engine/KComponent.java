@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.util.*;
 
@@ -50,7 +51,7 @@ public abstract class KComponent extends KObject {
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
-        super(KComponent.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
+        super(KComponent.class.getSimpleName(), KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.logger = ctx.logger();
 
         String componentClass = this.getClass().toString();

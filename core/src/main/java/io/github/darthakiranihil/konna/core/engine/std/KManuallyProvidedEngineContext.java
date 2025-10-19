@@ -24,9 +24,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-
-import java.util.HashSet;
-import java.util.List;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 /**
  * Implementation of {@link KEngineContext} that requires ready instances of all
@@ -58,7 +56,7 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         final KLogger logger,
         final KObjectRegistry objectRegistry
     ) {
-        super("context", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
+        super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
         this.containerResolver = containerResolver;
         this.index = index;

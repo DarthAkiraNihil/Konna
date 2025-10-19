@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -36,7 +37,7 @@ import java.util.*;
 public class KStandardJsonSerializer extends KObject implements KJsonSerializer {
 
     public KStandardJsonSerializer() {
-        super("std_json_serializer", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super("std_json_serializer", KStructUtils.setOfTags(KTag.DefaultTags.STD));
     }
 
     private <T> List<Field> getFields(final T t) {

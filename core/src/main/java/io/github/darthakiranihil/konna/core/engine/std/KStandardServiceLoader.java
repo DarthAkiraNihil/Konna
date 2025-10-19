@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingExcepti
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -39,11 +40,9 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
     public KStandardServiceLoader() {
         super(
             KStandardServiceLoader.class.getSimpleName(),
-            new HashSet<>(
-                List.of(
-                    KTag.DefaultTags.SYSTEM,
-                    KTag.DefaultTags.STD
-                )
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
             )
         );
     }

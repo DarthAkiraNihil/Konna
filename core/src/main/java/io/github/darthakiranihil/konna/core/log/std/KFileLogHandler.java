@@ -21,12 +21,11 @@ import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Implementation of {@link KLogHandler} that writes log
@@ -46,7 +45,7 @@ public class KFileLogHandler extends KObject implements KLogHandler, AutoCloseab
      * @param logFormatter Log formatter
      */
     public KFileLogHandler(final String filename, final KLogFormatter logFormatter) {
-        super(KFileLogHandler.class.getSimpleName(), new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super(KFileLogHandler.class.getSimpleName(), KStructUtils.setOfTags(KTag.DefaultTags.STD));
 
         this.logFormatter = logFormatter;
 

@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KPair;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.util.*;
 
@@ -45,7 +46,7 @@ public abstract class KContainerResolver extends KObject {
      * @param index Built system index (must contain complete package and class list)
      */
     public KContainerResolver(final KIndex index) {
-        super("container_resolver", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
+        super("container_resolver", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.index = index;
     }
 

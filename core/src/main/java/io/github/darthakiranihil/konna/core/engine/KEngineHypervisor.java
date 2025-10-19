@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.util.*;
 
@@ -61,7 +62,7 @@ public class KEngineHypervisor extends KObject {
 
         super(
             KEngineHypervisor.class.getSimpleName(),
-            new HashSet<>(List.of(KTag.DefaultTags.SYSTEM))
+            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
         );
 
         this.activator = ctx.activator();

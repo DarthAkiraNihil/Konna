@@ -21,9 +21,7 @@ import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-
-import java.util.HashSet;
-import java.util.List;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 /**
  * Implementation of {@link KLogHandler} that writes log
@@ -43,8 +41,7 @@ public class KTerminalLogHandler extends KObject implements KLogHandler {
     public KTerminalLogHandler(final KLogFormatter logFormatter) {
         super(
             KTerminalLogHandler.class.getSimpleName(),
-            new HashSet<>(List.of(KTag.DefaultTags.STD)
-            )
+            KStructUtils.setOfTags(KTag.DefaultTags.STD)
         );
         this.logFormatter = logFormatter;
     }

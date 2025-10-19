@@ -28,9 +28,9 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -102,12 +102,7 @@ public class KStandardTestClass extends KObject {
     protected KStandardTestClass() {
         super(
             "std_test_class",
-            new HashSet<>(
-                List.of(
-                    KTag.DefaultTags.TEST,
-                    KTag.DefaultTags.STD
-                )
-            )
+            KStructUtils.setOfTags(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)
         );
         this.jsonTokenizer = new KStandardJsonTokenizer();
         this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
