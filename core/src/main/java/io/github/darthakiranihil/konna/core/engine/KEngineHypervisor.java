@@ -29,6 +29,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -52,12 +53,10 @@ public class KEngineHypervisor extends KObject {
 
     /**
      * Constructs hypervisor with provided config.
-     * @param initializationConfig Initialization config of the hypervisor
-     * @param ctx Engine execution context
+     * @param config Initialization config of the hypervisor
      */
     public KEngineHypervisor(
-        final KEngineHypervisorConfig initializationConfig,
-        final KEngineContext ctx
+        final KEngineHypervisorConfig config
     ) {
 
         super(
@@ -65,12 +64,25 @@ public class KEngineHypervisor extends KObject {
             KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
         );
 
+        KEngineContextLoader contextLoader;
+        try {
+            contextLoader = config.contextLoader().getDeclaredConstructor().newInstance();
+        } catch (
+                NoSuchMethodException
+            |   InstantiationException
+            |   IllegalAccessException
+            |   InvocationTargetException e) {
+            throw new KHypervisorInitializationException(e);
+        }
+
+        var ctx = contextLoader.load();
+
         this.activator = ctx.activator();
         this.containerResolver = ctx.containerResolver();
         this.logger = ctx.logger();
         this.index = ctx.index();
 
-        this.logger.info("Initializing engine hypervisor [config = %s]", initializationConfig);
+        this.logger.info("Initializing engine hypervisor [config = %s]", config);
         this.logger.info(
             "%s: Indexed %d classes in %d packages",
             this.index.getClass().getSimpleName(),
@@ -98,22 +110,22 @@ public class KEngineHypervisor extends KObject {
         KContainer master = this.containerResolver.resolve();
 
         master
-            .add(initializationConfig.serviceLoader())
-            .add(initializationConfig.componentLoader());
+            .add(config.serviceLoader())
+            .add(config.componentLoader());
 
         try {
 
-            this.componentLoader = this.activator.create(initializationConfig.componentLoader());
+            this.componentLoader = this.activator.create(config.componentLoader());
 
-            this.logger.info("Created component loader %s", initializationConfig.componentLoader());
+            this.logger.info("Created component loader %s", config.componentLoader());
 
-            this.serviceLoader = this.activator.create(initializationConfig.serviceLoader());
+            this.serviceLoader = this.activator.create(config.serviceLoader());
 
-            this.logger.info("Created service loader %s", initializationConfig.serviceLoader());
+            this.logger.info("Created service loader %s", config.serviceLoader());
 
             this.engineComponents = new HashMap<>();
 
-            for (var component: initializationConfig.components()) {
+            for (var component: config.components()) {
                 this.componentLoader.load(
                     ctx,
                     component,

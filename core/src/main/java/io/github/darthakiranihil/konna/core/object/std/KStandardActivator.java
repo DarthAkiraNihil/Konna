@@ -29,6 +29,7 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KIndex;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -46,7 +47,10 @@ import java.util.Map;
  */
 @SuppressWarnings("unchecked")
 @KSingleton(immortal = true)
-public final class KStandardActivator extends KActivator {
+public final class KStandardActivator extends KObject implements KActivator {
+
+    private final KContainerResolver containerResolver;
+    private final KObjectRegistry objectRegistry;
 
     private final Map<Class<?>, KObject> singletons;
     private final Map<Class<?>, WeakReference<KObject>> weakSingletons;
@@ -69,9 +73,17 @@ public final class KStandardActivator extends KActivator {
         final KObjectRegistry objectRegistry,
         final KIndex index
     ) {
-        super(containerResolver, objectRegistry, index);
-        this.addTag(KTag.DefaultTags.STD);
+        super(
+            "std_activator",
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
+            )
+        );
+
         ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
+        this.containerResolver = containerResolver;
+        this.objectRegistry = objectRegistry;
 
         this.singletons = new HashMap<>();
         this.weakSingletons = new HashMap<>();
@@ -83,7 +95,7 @@ public final class KStandardActivator extends KActivator {
         List<Class<?>> poolableClasses;
 
         poolableClasses = KClassUtils.getAnnotatedClasses(
-            this.index,
+            index,
             KPoolable.class
         );
 

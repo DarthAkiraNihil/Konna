@@ -16,9 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerResolver;
-import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 /**
  * Interface for the most important utility class in Konna which purpose is to create new objects.
@@ -29,45 +26,14 @@ import io.github.darthakiranihil.konna.core.util.KStructUtils;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public abstract class KActivator extends KObject {
+public interface KActivator {
 
-    /**
-     * Container resolver, used when no container is specified when
-     * an object is created.
-     */
-    protected final KContainerResolver containerResolver;
-    /**
-     * Registry of created objects.
-     */
-    protected final KObjectRegistry objectRegistry;
-    /**
-     * System index.
-     */
-    protected final KIndex index;
-
-    /**
-     * Base constructor.
-     * @param containerResolver Container resolver
-     * @param objectRegistry Object registry
-     * @param index System index
-     */
-    public KActivator(
-        final KContainerResolver containerResolver,
-        final KObjectRegistry objectRegistry,
-        final KIndex index
-    ) {
-        super("activator", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
-
-        this.containerResolver = containerResolver;
-        this.objectRegistry = objectRegistry;
-        this.index = index;
-    }
     /**
      * Creates a new container and returns it. Container may be empty or not, it depends
      * on the implementation.
      * @return A new container
      */
-    public abstract KContainer newContainer();
+    KContainer newContainer();
 
     /**
      * Creates a new object or returns it if it already instantiated (depends on created class).
@@ -80,7 +46,7 @@ public abstract class KActivator extends KObject {
      * @see KContainer
      * @see KObjectInstantiationType
      */
-    public abstract <T> T create(
+    <T> T create(
         Class<? extends T> clazz,
         KContainer container,
         Object... nonInjectedArgs
@@ -98,7 +64,7 @@ public abstract class KActivator extends KObject {
      * @see KContainer
      * @see KObjectInstantiationType
      */
-    public abstract <T> T create(
+    <T> T create(
         Class<? extends T> clazz,
         Object... nonInjectedArgs
     );
@@ -113,5 +79,5 @@ public abstract class KActivator extends KObject {
      * @param object Object to delete
      * @param <T> Type of object to delete
      */
-    public abstract <T> void delete(T object);
+    <T> void delete(T object);
 }

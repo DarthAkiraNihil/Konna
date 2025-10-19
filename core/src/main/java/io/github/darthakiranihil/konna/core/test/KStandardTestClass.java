@@ -67,6 +67,14 @@ public class KStandardTestClass extends KObject {
      */
     protected static KEngineContext context;
 
+    /**
+     * Returns engine context for testing environment.
+     * @return Engine context for testing environment
+     */
+    public static KEngineContext getContext() {
+        return KStandardTestClass.context;
+    }
+
     static {
         var index = new KStandardIndex();
 

@@ -24,6 +24,7 @@ import java.util.List;
 
 /**
  * Record class of initial Konna hypervisor configuration.
+ * @param contextLoader Class of engine context loader
  * @param componentLoader Class of engine component loader
  * @param serviceLoader Class of component services loader
  * @param components List of engine components classes to load
@@ -32,11 +33,13 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public record KEngineHypervisorConfig(
+    Class<? extends KEngineContextLoader> contextLoader,
     Class<? extends KComponentLoader> componentLoader,
     Class<? extends KServiceLoader> serviceLoader,
     List<Class<? extends KComponent>> components
 ) {
 
+    private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";
     private static final String COMPONENT_LOADER_KEY = "component_loader";
     private static final String SERVICE_LOADER_KEY = "service_loader";
     private static final String COMPONENTS_KEY = "components";
@@ -59,8 +62,13 @@ public record KEngineHypervisorConfig(
     @SuppressWarnings("unchecked")
     private static KEngineHypervisorConfig getConfig(final KJsonValue json) throws Exception {
 
+        String contextLoaderClassName = json.getProperty(ENGINE_CONTEXT_LOADER_KEY).getString();
         String componentLoaderClassName = json.getProperty(COMPONENT_LOADER_KEY).getString();
         String serviceLoaderClassName = json.getProperty(SERVICE_LOADER_KEY).getString();
+
+        Class<?> rawContextLoaderClass = Class.forName(contextLoaderClassName);
+        Class<? extends KEngineContextLoader>
+            contextLoaderClass = (Class<? extends KEngineContextLoader>) rawContextLoaderClass;
 
         Class<?> rawComponentLoaderClass = Class.forName(componentLoaderClassName);
         Class<? extends KComponentLoader>
@@ -83,6 +91,7 @@ public record KEngineHypervisorConfig(
         });
 
         return new KEngineHypervisorConfig(
+            contextLoaderClass,
             compoentLoaderClass,
             serviceLoaderClass,
             components
