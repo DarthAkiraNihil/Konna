@@ -36,6 +36,13 @@ public final class KStandardLogger extends KLogger {
 
     private static final Object LOG_LOCK = new Object();
 
+    /**
+     * Standard constructor.
+     * @param name Name of the logger object
+     * @param logLevel Minimum level of message to be logged
+     * @param defaultLogFormatter Default log formatter
+     * @param logHandlers List of pre-registered log handlers
+     */
     public KStandardLogger(
         final String name,
         final KLogLevel logLevel,

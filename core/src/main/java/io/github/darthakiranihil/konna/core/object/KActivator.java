@@ -48,6 +48,12 @@ public abstract class KActivator extends KObject {
      */
     protected final KIndex index;
 
+    /**
+     * Base constructor.
+     * @param containerResolver Container resolver
+     * @param objectRegistry Object registry
+     * @param index System index
+     */
     public KActivator(
         final KContainerResolver containerResolver,
         final KObjectRegistry objectRegistry,

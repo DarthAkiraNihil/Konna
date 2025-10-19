@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.di;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
+import io.github.darthakiranihil.konna.core.util.KPair;
 
 import java.util.*;
 
@@ -50,5 +51,11 @@ public abstract class KContainerResolver extends KObject {
      * @return Container the for caller class
      */
     public abstract KContainer resolve();
+
+    /**
+     * Returns list of environment data, containing name of an environment and list of its packages.
+     * @return Data of created environments.
+     */
+    public abstract List<KPair<String, List<String>>> getEnvironments();
 
 }

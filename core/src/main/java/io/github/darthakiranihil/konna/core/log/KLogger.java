@@ -43,6 +43,13 @@ public abstract class KLogger extends KObject {
      */
     protected final List<KLogHandler> logHandlers;
 
+    /**
+     * Base constructor.
+     * @param name Name of the logger object
+     * @param logLevel Minimum level of message to be logged
+     * @param defaultLogFormatter Default log formatter
+     * @param logHandlers List of pre-registered log handlers
+     */
     public KLogger(
         final String name,
         final KLogLevel logLevel,

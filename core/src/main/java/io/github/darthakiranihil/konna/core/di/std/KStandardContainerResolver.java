@@ -146,6 +146,31 @@ public final class KStandardContainerResolver extends KContainerResolver {
         }
     }
 
+    @Override
+    public List<KPair<String, List<String>>> getEnvironments() {
+        return this
+            .env2container
+            .keySet()
+            .stream()
+            .map(
+                container -> new KPair<>(
+                    container,
+                    this
+                        .package2env
+                        .entrySet()
+                        .stream()
+                        .filter(
+                            (p) -> p
+                                .getValue()
+                                .equals(container)
+                        )
+                        .map(Map.Entry::getKey)
+                        .toList()
+                )
+            )
+            .toList();
+    }
+
     private List<KTriplet<String, String, Boolean>> collectIndexedPackages() {
         return this
             .index

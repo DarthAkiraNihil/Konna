@@ -16,6 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.except;
 
+/**
+ * Exception thrown when something tries to perform an operation with some class,
+ * but this operation could not be performed since it is forbidden, not implemented, etc.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KUnsupportedOperationException extends KRuntimeException {
 
     public KUnsupportedOperationException(final String message) {

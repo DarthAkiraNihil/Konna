@@ -56,6 +56,14 @@ public final class KStandardActivator extends KActivator {
     private final Map<Class<?>, KObjectInstantiationType> objectInstantiationTypes;
     private final Map<Class<?>, SoftReference<Class<?>>> cachedDependencies;
 
+    /**
+     * Standard constructor.
+     * On initialization, it looks for all poolable classes and creates corresponding
+     * object pools for them, other types of instantiation are ignored at this moment.
+     * @param containerResolver Container resolver
+     * @param objectRegistry Object registry
+     * @param index System index
+     */
     public KStandardActivator(
         final KContainerResolver containerResolver,
         final KObjectRegistry objectRegistry,

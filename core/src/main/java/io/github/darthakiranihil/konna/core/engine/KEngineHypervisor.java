@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KIndex;
 
 import java.util.*;
 
@@ -46,6 +47,7 @@ public class KEngineHypervisor extends KObject {
     private final KActivator activator;
     private final KContainerResolver containerResolver;
     private final KLogger logger;
+    private final KIndex index;
 
     /**
      * Constructs hypervisor with provided config.
@@ -65,8 +67,31 @@ public class KEngineHypervisor extends KObject {
         this.activator = ctx.activator();
         this.containerResolver = ctx.containerResolver();
         this.logger = ctx.logger();
+        this.index = ctx.index();
 
         this.logger.info("Initializing engine hypervisor [config = %s]", initializationConfig);
+        this.logger.info(
+            "%s: Indexed %d classes in %d packages",
+            this.index.getClass().getSimpleName(),
+            this.index.getClassIndex().size(),
+            this.index.getPackageIndex().size()
+        );
+        var envs = this.containerResolver.getEnvironments();
+        this.logger.info(
+            "%s: created %d environments: %s",
+            this.containerResolver.getClass().getSimpleName(),
+            envs.size(),
+            envs
+        );
+        this.logger.info(
+            "Got activator: %s", this.activator.getClass().getSimpleName()
+        );
+        this.logger.info(
+            "Got object registry: %s", ctx.objectRegistry().getClass().getSimpleName()
+        );
+        this.logger.info(
+            "Got logger: %s", this.logger.getClass().getSimpleName()
+        );
 
         this.jsonParser = this.activator.create(KJsonParser.class);
         KContainer master = this.containerResolver.resolve();

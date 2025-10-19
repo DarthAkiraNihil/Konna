@@ -28,6 +28,13 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Implementation of {@link KEngineContext} that requires ready instances of all
+ * context class in order to construct the context.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public final class KManuallyProvidedEngineContext extends KObject implements KEngineContext {
 
     private final KActivator activator;
@@ -36,6 +43,14 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     private final KLogger logger;
     private final KObjectRegistry objectRegistry;
 
+    /**
+     * Standard constructor.
+     * @param activator Activator of the context
+     * @param containerResolver Container resolver of the context
+     * @param index Index of the context
+     * @param logger Logger of the context
+     * @param objectRegistry Object registry of the context
+     */
     public KManuallyProvidedEngineContext(
         final KActivator activator,
         final KContainerResolver containerResolver,

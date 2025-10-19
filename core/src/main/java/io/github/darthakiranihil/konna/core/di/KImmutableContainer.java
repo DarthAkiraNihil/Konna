@@ -36,6 +36,14 @@ public class KImmutableContainer extends KContainer {
         super(wrapped, String.format("locked_%s", wrapped.name()));
     }
 
+    /**
+     * Throws {@link KUnsupportedOperationException} since the container's class
+     * mapping of an immutable container cannot be changed.
+     * @param fromInterface Interface to be bind
+     * @param toImplementation Implementation to the interface
+     * @return Nothing
+     * @param <IN> Type of the interface
+     */
     @Override
     public <IN> KContainer add(
         final Class<IN> fromInterface,
@@ -46,6 +54,12 @@ public class KImmutableContainer extends KContainer {
         );
     }
 
+    /**
+     * Throws {@link KUnsupportedOperationException} since the container's class
+     * mapping of an immutable container cannot be changed.
+     * @param clazz Class to bind
+     * @return Nothing
+     */
     @Override
     public KContainer add(final Class<?> clazz) {
         throw new KUnsupportedOperationException(
