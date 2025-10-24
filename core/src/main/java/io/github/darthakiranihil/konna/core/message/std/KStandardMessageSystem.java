@@ -58,7 +58,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     /**
      * Standard constructor.
      * @param activator Activator that will be used to create tunnel instances.
-     * @param components Array of engine components that are able to communicate with messages
+     // * @param components Array of engine components that are able to communicate with messages
      */
     public KStandardMessageSystem(
         @KInject final KActivator activator
@@ -122,12 +122,12 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
 
     }
 
-    @SafeVarargs
+    // @SafeVarargs
     @Override
-    public final KMessageSystem addMessageRoute(
+    public KMessageSystem addMessageRoute(
         final String messageId,
         final String destinationEndpoint,
-        final Class<? extends KTunnel>... tunnels
+        final Class<? extends KTunnel>[] tunnels
     ) {
 
         KComponent destinationComponent = this.resolveComponent(destinationEndpoint);

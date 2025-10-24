@@ -37,11 +37,10 @@ public interface KMessageSystem {
      *                created route.
      * @return This message system (for method chaining)
      */
-    @SuppressWarnings("unchecked")
     KMessageSystem addMessageRoute(
         String messageId,
         String destinationEndpoint,
-        Class<? extends KTunnel>... tunnels
+        Class<? extends KTunnel>[] tunnels
     );
 
     void registerComponent(KComponent component);
