@@ -21,4 +21,5 @@ public @interface KServiceEndpoint {
      * @return Route of the endpoint.
      */
     String route();
+    Class<? extends KMessageToEndpointConverter> converter() default KMessageToEndpointConverter.NoConverter.class;
 }

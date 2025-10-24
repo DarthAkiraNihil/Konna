@@ -19,13 +19,17 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.*;
 
@@ -45,6 +49,7 @@ public abstract class KComponent extends KObject {
      * Logger of component's engine context.
      */
     protected final KLogger logger;
+    protected final KMessenger messenger;
 
     public KComponent(
         @KInject final KServiceLoader serviceLoader,
@@ -53,11 +58,80 @@ public abstract class KComponent extends KObject {
         final String servicesPackage,
         final KJsonValue config
     ) throws KComponentLoadingException {
+
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.logger = ctx.logger();
 
         String componentClass = this.getClass().toString();
         this.logger.info("Creating component %s", componentClass);
+
+        this.services = this.loadServices(ctx, servicesPackage, serviceLoader);
+        this.logger.info(
+            "Loaded %d services of component %s",
+            this.services.size(),
+            componentClass
+        );
+
+        this.messenger = this.loadMessenger(ctx, name);
+        this.logger.info(
+            "Created messenger %s for the component %s",
+            this.messenger,
+            componentClass
+        );
+
+        this.logger.info("Applying config for %s", componentClass);
+        this.applyConfig(config);
+
+
+        this.logger.info("Created component %s", componentClass);
+    }
+
+    /**
+     * Accepts given message, routes it to given endpoint of internal service, which will process it
+     * in other way. It happens asynchronously.
+     * @param message Message to accept.
+     */
+    public void acceptMessage(final KMessage message) {
+
+        KThreadUtils.runAsync(() -> this.acceptMessageSync(message));
+
+    }
+    /**
+     * Accepts given message, routes it to given endpoint of internal service, which will process it
+     * in other way. It happens synchronously, that is useful for testing.
+     * @param message Message to accept.
+     */
+    public void acceptMessageSync(final KMessage message) {
+        var messageId = message.messageId();
+        var splitId = messageId.split("\\.");
+        String service = splitId[0];
+        String route = splitId[1];
+
+        if (!this.services.containsKey(service)) {
+            return;
+        }
+
+        var serviceEntry = this.services.get(service);
+        if (!serviceEntry.hasEndpoint(route)) {
+            return;
+        }
+
+        try {
+            serviceEntry.callEndpoint(route, message);
+        } catch (KEndpointRoutingException e) {
+            this.logger.warning(
+                "%s, Unexpected error occurred when accepting message: %s",
+                this.getClass().getCanonicalName(),
+                e
+            );
+        }
+    }
+
+    protected Map<String, KServiceEntry> loadServices(
+        final KEngineContext ctx,
+        final String servicesPackage,
+        final KServiceLoader serviceLoader
+    ) throws KComponentLoadingException {
 
         List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
             ctx.index(),
@@ -67,7 +141,7 @@ public abstract class KComponent extends KObject {
         this.logger.info(
             "Found %d services of component %s",
             serviceClasses.size(),
-            componentClass
+            this.getClass().getCanonicalName()
         );
 
         Map<String, KServiceEntry> instantiatedServices = new HashMap<>();
@@ -85,32 +159,18 @@ public abstract class KComponent extends KObject {
             this.logger.fatal(e);
             throw new KComponentLoadingException(e);
         }
-        this.logger.info(
-            "Loaded %d services of component %s",
-            instantiatedServices.size(),
-            componentClass
-        );
+        return instantiatedServices;
 
-        this.services = instantiatedServices;
-        this.logger.info("Applying config for %s", componentClass);
-        this.applyConfig(config);
-        this.logger.info("Created component %s", componentClass);
     }
 
-    /**
-     * Accepts given message, routes it to given endpoint of internal service, which will process it
-     * in other way. It happens asynchronously.
-     * @param endpoint Destination endpoint of the message.
-     * @param message Message to accept.
-     */
-    public abstract void acceptMessage(String endpoint, KMessage message);
-    /**
-     * Accepts given message, routes it to given endpoint of internal service, which will process it
-     * in other way. It happens synchronously, that is useful for testing.
-     * @param endpoint Destination endpoint of the message.
-     * @param message Message to accept.
-     */
-    public abstract void acceptMessageSync(String endpoint, KMessage message);
+    protected KMessenger loadMessenger(
+        final KEngineContext ctx,
+        final String name
+    ) {
+        return ctx
+            .activator()
+            .create(KMessenger.class, name);
+    }
 
     protected abstract void applyConfig(KJsonValue config);
 }

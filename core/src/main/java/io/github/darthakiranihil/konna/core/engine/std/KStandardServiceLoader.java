@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingExcepti
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KPair;
 import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.lang.reflect.Method;
@@ -76,16 +77,17 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
         }
 
         Method[] methods = service.getDeclaredMethods();
-        Map<String, Method> endpoints = new HashMap<>();
+        Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints = new HashMap<>();
         for (var method: methods) {
             if (!method.isAnnotationPresent(KServiceEndpoint.class)) {
                 continue;
             }
 
             KServiceEndpoint endpointMeta = method.getAnnotation(KServiceEndpoint.class);
+            KMessageToEndpointConverter converter = ctx.activator().create(endpointMeta.converter());
             endpoints.put(
                 endpointMeta.route(),
-                method
+                new KPair<>(converter, method)
             );
         }
         logger.info(
@@ -103,7 +105,8 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             serviceName,
             new KServiceEntry(
                 instantiatedService,
-                endpoints
+                endpoints,
+                ctx.activator()
             )
         );
         logger.info("Loaded service %s [%s]", serviceName, service);

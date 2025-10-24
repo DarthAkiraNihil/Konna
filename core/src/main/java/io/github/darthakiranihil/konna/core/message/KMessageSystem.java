@@ -1,5 +1,7 @@
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+
 /**
  * Interface for the essential part of Konna message system. It provides
  * methods for delivering Konna messages with feature of its translation
@@ -41,5 +43,7 @@ public interface KMessageSystem {
         String destinationEndpoint,
         Class<? extends KTunnel>... tunnels
     );
+
+    void registerComponent(KComponent component);
 
 }

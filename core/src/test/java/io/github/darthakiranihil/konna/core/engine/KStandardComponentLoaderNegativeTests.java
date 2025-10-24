@@ -45,16 +45,6 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
         protected void applyConfig(KJsonValue config) {
 
         }
-
-        @Override
-        public void acceptMessage(String endpoint, KMessage message) {
-
-        }
-
-        @Override
-        public void acceptMessageSync(String endpoint, KMessage message) {
-
-        }
     }
 
     @Test

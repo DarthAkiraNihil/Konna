@@ -61,17 +61,22 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
      * @param components Array of engine components that are able to communicate with messages
      */
     public KStandardMessageSystem(
-        @KInject final KActivator activator,
-        final KComponent[] components
+        @KInject final KActivator activator
+        // final KComponent[] components
     ) {
         this.activator = activator;
 
         this.components = new HashMap<>();
-        for (KComponent component: components) {
-            this.components.put(component.name(), component);
-        }
+//        for (KComponent component: components) {
+//            this.components.put(component.name(), component);
+//        }
 
         this.routes = new HashMap<>();
+    }
+
+    @Override
+    public void registerComponent(final KComponent component) {
+        this.components.put(component.name(), component);
     }
 
     @Override
@@ -89,7 +94,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.component.acceptMessage(v.shortEndpointName, finalMessage);
+                v.component.acceptMessage(finalMessage);
             });
         }
 
@@ -112,7 +117,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.component.acceptMessageSync(v.shortEndpointName, message);
+                v.component.acceptMessageSync(message);
             });
 
     }

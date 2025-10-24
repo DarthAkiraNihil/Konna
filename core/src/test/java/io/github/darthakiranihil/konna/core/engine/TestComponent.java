@@ -43,13 +43,4 @@ public class TestComponent extends KComponent {
 
     }
 
-    @Override
-    public void acceptMessage(String endpoint, KMessage message) {
-
-    }
-
-    @Override
-    public void acceptMessageSync(String endpoint, KMessage message) {
-
-    }
 }

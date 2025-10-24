@@ -121,6 +121,9 @@ public final class KStandardActivator extends KObject implements KActivator {
                 this.pools.put(poolableClass, pool);
             }
         }
+
+        this.singletons.put(KActivator.class, this);
+        this.singletons.put(KStandardActivator.class, this);
     }
 
     /**
