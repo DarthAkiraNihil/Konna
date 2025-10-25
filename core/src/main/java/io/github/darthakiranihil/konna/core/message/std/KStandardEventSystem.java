@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
@@ -32,6 +33,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KSingleton(immortal = true)
 public class KStandardEventSystem extends KObject implements KEventSystem {
 
     private final Map<String, KEvent<?>> events;

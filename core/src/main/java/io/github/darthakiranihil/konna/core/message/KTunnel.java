@@ -34,6 +34,8 @@ public interface KTunnel {
      * @param message Message to process
      * @return Processed message
      */
-    KMessage processMessage(KMessage message);
+    default KMessage processMessage(final KMessage message) {
+        return message;
+    }
 
 }

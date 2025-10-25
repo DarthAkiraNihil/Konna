@@ -41,6 +41,6 @@ public interface KEngineContext {
      * @return Object registry of current context
      */
     KObjectRegistry objectRegistry();
-//    KMessageSystem messageSystem();
+    KMessageSystem messageSystem();
 }
 

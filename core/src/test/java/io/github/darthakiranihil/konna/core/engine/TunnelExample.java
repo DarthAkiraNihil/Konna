@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.impl;
+package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.message.KTunnel;
 
-@KComponentServiceMetaInfo(
-    name = "TestService"
-)
-public class TestService {
+public class TunnelExample implements KTunnel {
 
-    private int testVar = -1;
+    @Override
+    public KMessage processMessage(KMessage message) {
 
-    @KServiceEndpoint(route = "testEndpoint")
-    public void testEndpoint() {
-        this.testVar = 1;
-    }
-
-    public void notEndpoint() {
+        var body = message.body();
+        body.put("test", 2);
+        return message;
 
     }
 
-    public int getTestVar() {
-        return this.testVar;
-    }
+
 
 }

@@ -2,6 +2,8 @@ package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 
+import java.util.List;
+
 /**
  * Interface for the essential part of Konna message system. It provides
  * methods for delivering Konna messages with feature of its translation
@@ -40,7 +42,21 @@ public interface KMessageSystem {
     KMessageSystem addMessageRoute(
         String messageId,
         String destinationEndpoint,
-        Class<? extends KTunnel>[] tunnels
+        List<Class<? extends KTunnel>> tunnels
+    );
+
+    /**
+     * Adds a new route for given message id to specified destination endpoint.
+     * If route with specified message id and destination endpoint already
+     * exists in the system, it will be overridden.
+     * @param messageId Full message id (component name + internal message id)
+     * @param destinationEndpoint Full path to destination endpoint
+     *                            (component name + internal endpoint name)
+     * @return This message system (for method chaining)
+     */
+    KMessageSystem addMessageRoute(
+        String messageId,
+        String destinationEndpoint
     );
 
     void registerComponent(KComponent component);

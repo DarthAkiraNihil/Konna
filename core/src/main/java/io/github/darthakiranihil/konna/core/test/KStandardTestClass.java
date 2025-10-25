@@ -102,13 +102,16 @@ public class KStandardTestClass extends KObject {
                 new KFileLogHandler("_log.log", new KTimestampLogFormatter())
             )
         );
+        var activator = new KStandardActivator(containerResolver, objectRegistry, index);
+        var messageSystem = new KStandardMessageSystem(activator);
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
             new KStandardActivator(containerResolver, objectRegistry, index),
             containerResolver,
             index,
             logger,
-            objectRegistry
+            objectRegistry,
+            messageSystem
         );
     }
 

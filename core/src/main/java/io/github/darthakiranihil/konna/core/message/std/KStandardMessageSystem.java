@@ -23,9 +23,11 @@ import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +36,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KSingleton(immortal = true)
 public class KStandardMessageSystem extends KObject implements KMessageSystem {
 
     private record RouteConnectionData(
@@ -62,15 +65,10 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
      */
     public KStandardMessageSystem(
         @KInject final KActivator activator
-        // final KComponent[] components
     ) {
         this.activator = activator;
 
         this.components = new HashMap<>();
-//        for (KComponent component: components) {
-//            this.components.put(component.name(), component);
-//        }
-
         this.routes = new HashMap<>();
     }
 
@@ -94,7 +92,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.component.acceptMessage(finalMessage);
+                v.component.acceptMessage(v.shortEndpointName, finalMessage);
             });
         }
 
@@ -108,6 +106,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         }
 
         var route = this.routes.get(message.messageId());
+
         route
             .connections
             .values()
@@ -117,7 +116,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.component.acceptMessageSync(message);
+                v.component.acceptMessageSync(v.shortEndpointName, message);
             });
 
     }
@@ -127,11 +126,31 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     public KMessageSystem addMessageRoute(
         final String messageId,
         final String destinationEndpoint,
-        final Class<? extends KTunnel>[] tunnels
+        final List<Class<? extends KTunnel>> tunnels
     ) {
+        this.internalAddMessageRoute(messageId, destinationEndpoint, tunnels);
+        return this;
+    }
 
+    @Override
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final String destinationEndpoint
+    ) {
+        this.internalAddMessageRoute(messageId, destinationEndpoint, List.of());
+        return this;
+    }
+
+    private void internalAddMessageRoute(
+        final String messageId,
+        final String destinationEndpoint,
+        final List<Class<? extends KTunnel>> tunnels
+    ) {
         KComponent destinationComponent = this.resolveComponent(destinationEndpoint);
-        String shortEndpointName = destinationEndpoint.split("\\.")[1];
+        if (destinationComponent == null) {
+            return;
+        }
+        String shortEndpointName = destinationEndpoint.subSequence(destinationEndpoint.indexOf('.') + 1, destinationEndpoint.length()).toString();// split("\\.")[1];
 
         if (this.routes.containsKey(messageId)) {
             var route = this.routes.get(messageId);
@@ -143,7 +162,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
                     shortEndpointName
                 )
             );
-            return this;
+            return;
         }
 
         var route = new RouteData();
@@ -156,7 +175,6 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
             )
         );
         this.routes.put(messageId, route);
-        return this;
     }
 
     private KComponent resolveComponent(final String destinationEndpoint) {
@@ -168,11 +186,10 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         return this.components.get(component);
     }
 
-    @SafeVarargs
-    private KTunnel[] makeTunnels(final Class<? extends KTunnel>... tunnels) {
-        KTunnel[] instantiatedTunnels =  new KTunnel[tunnels.length];
-        for (int i = 0; i < tunnels.length; i++) {
-            instantiatedTunnels[i] = this.activator.create(tunnels[i]);
+    private KTunnel[] makeTunnels(final List<Class<? extends KTunnel>>  tunnels) {
+        KTunnel[] instantiatedTunnels =  new KTunnel[tunnels.size()];
+        for (int i = 0; i < tunnels.size(); i++) {
+            instantiatedTunnels[i] = this.activator.create(tunnels.get(i));
         }
         return instantiatedTunnels;
     }

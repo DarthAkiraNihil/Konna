@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.impl;
+package io.github.darthakiranihil.konna.core.engine.another_impl;
 
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.engine.MessageToEndpointConverterExample;
 
 @KComponentServiceMetaInfo(
-    name = "TestService"
+    name = "TestAnotherService"
 )
-public class TestService {
+public class TestAnotherService {
 
     private int testVar = -1;
 
-    @KServiceEndpoint(route = "testEndpoint")
-    public void testEndpoint() {
-        this.testVar = 1;
+    @KServiceEndpoint(
+        route = "testEndpoint",
+        converter = MessageToEndpointConverterExample.class
+    )
+    public void testEndpoint(int testVar) {
+        this.testVar = testVar;
     }
 
     public void notEndpoint() {

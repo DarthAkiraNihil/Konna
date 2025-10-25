@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine.std;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
@@ -40,6 +41,7 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     private final KIndex index;
     private final KLogger logger;
     private final KObjectRegistry objectRegistry;
+    private final KMessageSystem messageSystem;
 
     /**
      * Standard constructor.
@@ -48,20 +50,23 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
      * @param index Index of the context
      * @param logger Logger of the context
      * @param objectRegistry Object registry of the context
+     * @param messageSystem Message system of the context
      */
     public KManuallyProvidedEngineContext(
         final KActivator activator,
         final KContainerResolver containerResolver,
         final KIndex index,
         final KLogger logger,
-        final KObjectRegistry objectRegistry
-    ) {
+        final KObjectRegistry objectRegistry,
+        final KMessageSystem messageSystem
+        ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
         this.containerResolver = containerResolver;
         this.index = index;
         this.logger = logger;
         this.objectRegistry = objectRegistry;
+        this.messageSystem = messageSystem;
     }
 
     @Override
@@ -89,4 +94,8 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         return this.objectRegistry;
     }
 
+    @Override
+    public KMessageSystem messageSystem() {
+        return this.messageSystem;
+    }
 }

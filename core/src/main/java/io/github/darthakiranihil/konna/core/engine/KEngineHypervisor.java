@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -50,6 +51,7 @@ public class KEngineHypervisor extends KObject {
     private final KContainerResolver containerResolver;
     private final KLogger logger;
     private final KIndex index;
+    private final KMessageSystem messageSystem;
 
     /**
      * Constructs hypervisor with provided config.
@@ -81,6 +83,7 @@ public class KEngineHypervisor extends KObject {
         this.containerResolver = ctx.containerResolver();
         this.logger = ctx.logger();
         this.index = ctx.index();
+        this.messageSystem = ctx.messageSystem();
 
         this.logger.info("Initializing engine hypervisor [config = %s]", config);
         this.logger.info(
@@ -104,6 +107,9 @@ public class KEngineHypervisor extends KObject {
         );
         this.logger.info(
             "Got logger: %s", this.logger.getClass().getSimpleName()
+        );
+        this.logger.info(
+            "Got message system: %s", this.messageSystem.getClass().getSimpleName()
         );
 
         this.jsonParser = this.activator.create(KJsonParser.class);

@@ -91,9 +91,9 @@ public abstract class KComponent extends KObject {
      * in other way. It happens asynchronously.
      * @param message Message to accept.
      */
-    public void acceptMessage(final KMessage message) {
+    public void acceptMessage(final String endpoint, final KMessage message) {
 
-        KThreadUtils.runAsync(() -> this.acceptMessageSync(message));
+        KThreadUtils.runAsync(() -> this.acceptMessageSync(endpoint, message));
 
     }
     /**
@@ -101,9 +101,8 @@ public abstract class KComponent extends KObject {
      * in other way. It happens synchronously, that is useful for testing.
      * @param message Message to accept.
      */
-    public void acceptMessageSync(final KMessage message) {
-        var messageId = message.messageId();
-        var splitId = messageId.split("\\.");
+    public void acceptMessageSync(final String endpoint, final KMessage message) {
+        var splitId = endpoint.split("\\.");
         String service = splitId[0];
         String route = splitId[1];
 

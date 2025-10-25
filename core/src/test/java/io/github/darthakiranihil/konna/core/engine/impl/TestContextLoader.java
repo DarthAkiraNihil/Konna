@@ -18,12 +18,26 @@ package io.github.darthakiranihil.konna.core.engine.impl;
 
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
+import io.github.darthakiranihil.konna.core.engine.TunnelExample;
+import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+
+import java.util.List;
 
 public class TestContextLoader implements KEngineContextLoader {
 
     @Override
     public KEngineContext load() {
+        var ctx = KStandardTestClass.getContext();
+
+//        ctx.messageSystem()
+//            .addMessageRoute("TestAnotherComponent.aboba", "TestComponent.TestService.testEndpoint")
+//            .addMessageRoute(
+//                "TestComponent.biba",
+//                "TestAnotherComponent.TestAnotherService.testEndpoint",
+//                List.of(TunnelExample.class)
+//            );
+
         return KStandardTestClass.getContext();
     }
 }
