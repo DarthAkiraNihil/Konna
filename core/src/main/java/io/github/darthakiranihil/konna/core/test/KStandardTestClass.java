@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
@@ -91,7 +92,8 @@ public class KStandardTestClass extends KObject {
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
             .add(KActivator.class, KStandardActivator.class)
             .add(KMessageSystem.class, KStandardMessageSystem.class)
-            .add(KMessenger.class, KStandardMessenger.class);
+            .add(KMessenger.class, KStandardMessenger.class)
+            .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
         var logger = new KStandardLogger(
@@ -108,7 +110,7 @@ public class KStandardTestClass extends KObject {
         var eventSystem = new KStandardEventSystem();
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
-            new KStandardActivator(containerResolver, objectRegistry, index),
+            activator,
             containerResolver,
             index,
             logger,
@@ -116,6 +118,7 @@ public class KStandardTestClass extends KObject {
             eventSystem,
             messageSystem
         );
+        activator.addContextObjects(KStandardTestClass.context);
     }
 
     /**

@@ -107,7 +107,8 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             new KServiceEntry(
                 instantiatedService,
                 endpoints,
-                ctx.activator()
+                ctx.activator(),
+                ctx.logger()
             )
         );
         logger.info("Loaded service %s [%s]", serviceName, service);

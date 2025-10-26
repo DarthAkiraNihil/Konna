@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KPair;
@@ -32,20 +33,23 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KServiceEntry {
+public final class KServiceEntry {
 
     private final Object service;
     private final KActivator activator;
+    private final KLogger logger;
     private final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints;
 
     public KServiceEntry(
         final Object service,
         final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints,
-        final KActivator activator
+        final KActivator activator,
+        final KLogger logger
         ) {
         this.service = service;
         this.endpoints = endpoints;
         this.activator = activator;
+        this.logger = logger;
     }
 
     /**
@@ -99,6 +103,11 @@ public class KServiceEntry {
 
         try {
             endpoint.invoke(this.service, parameters);
+            this.logger.debug(
+                "Successfully called endpoint %s of service %s",
+                route,
+                this.service
+            );
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new KEndpointRoutingException(e);
         }

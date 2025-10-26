@@ -28,7 +28,7 @@ public abstract class KMessenger extends KObject {
 
     /**
      * Base constructor.
-     * @param messageSystem Reference to the message system.
+     * @param messageSystem Parent message system that messenger sends messages to
      * @param messageIdPrefix Prefix to be attached to internal message id on sending
      */
     public KMessenger(

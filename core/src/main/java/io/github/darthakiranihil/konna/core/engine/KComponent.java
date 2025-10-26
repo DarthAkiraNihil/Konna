@@ -131,9 +131,15 @@ public abstract class KComponent extends KObject {
 
         try {
             serviceEntry.callEndpoint(route, message);
+            this.logger.debug(
+                "Successfully accepted message %s. Destination: %s.%s",
+                message,
+                this.name,
+                route
+            );
         } catch (KEndpointRoutingException e) {
             this.logger.warning(
-                "%s, Unexpected error occurred when accepting message: %s",
+                "%s: Unexpected error occurred when accepting message: %s",
                 this.getClass().getCanonicalName(),
                 e
             );

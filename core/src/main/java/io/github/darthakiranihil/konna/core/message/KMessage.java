@@ -104,4 +104,8 @@ public final class KMessage {
         return this.type;
     }
 
+    @Override
+    public String toString() {
+        return "KMessage[" + id + "](" + messageId + ", " + type + ')';
+    }
 }

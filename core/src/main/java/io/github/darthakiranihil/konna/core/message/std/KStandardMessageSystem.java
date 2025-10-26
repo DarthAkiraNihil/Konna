@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.message.std;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KTunnel;
@@ -61,7 +62,6 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     /**
      * Standard constructor.
      * @param activator Activator that will be used to create tunnel instances.
-     // * @param components Array of engine components that are able to communicate with messages
      */
     public KStandardMessageSystem(
         @KInject final KActivator activator

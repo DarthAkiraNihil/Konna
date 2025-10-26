@@ -22,6 +22,10 @@ import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
@@ -121,9 +125,6 @@ public final class KStandardActivator extends KObject implements KActivator {
                 this.pools.put(poolableClass, pool);
             }
         }
-
-        this.singletons.put(KActivator.class, this);
-        this.singletons.put(KStandardActivator.class, this);
     }
 
     /**
@@ -261,6 +262,69 @@ public final class KStandardActivator extends KObject implements KActivator {
                 &&  object instanceof KObject) {
             this.objectRegistry.remove(((KObject) object).id());
         }
+    }
+
+    /**
+     * Utility method that exists only in this implementation of {@link KActivator}.
+     * Adds engine context objects to the activator and also pushes them to the
+     * object registry inside activator. It is important that all context object implementations
+     * must extend {@link KObject} in order adding to be performed successfully
+     * @param ctx Engine context objects of which is to be added
+     */
+    public void addContextObjects(final KEngineContext ctx) {
+        this.addContextObject(
+            (KObject) ctx.activator(),
+            KActivator.class,
+            ctx.activator().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.containerResolver(),
+            KContainerResolver.class,
+            ctx.containerResolver().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.index(),
+            KIndex.class,
+            ctx.index().getClass()
+        );
+        this.addContextObject(
+            ctx.logger(),
+            KLogger.class,
+            ctx.logger().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.objectRegistry(),
+            KObjectRegistry.class,
+            ctx.objectRegistry().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.eventSystem(),
+            KEventSystem.class,
+            ctx.eventSystem().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.messageSystem(),
+            KMessageSystem.class,
+            ctx.messageSystem().getClass()
+        );
+    }
+
+    private void addContextObject(
+        final KObject contextObject,
+        final Class<?> interfaceClass,
+        final Class<?> implementationClass
+    ) {
+
+        if (implementationClass.isAnnotationPresent(KSingleton.class)) {
+            KSingleton meta = implementationClass.getAnnotation(KSingleton.class);
+            if (meta.weak()) {
+                this.weakSingletons.put(interfaceClass, new WeakReference<>(contextObject));
+            } else {
+                this.singletons.put(interfaceClass, contextObject);
+            }
+        }
+
+        this.objectRegistry.push(contextObject, this.getInstantiationType(implementationClass));
     }
 
     private <T> Class<T> getClassImplementation(

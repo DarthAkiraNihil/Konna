@@ -24,8 +24,19 @@ import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
+/**
+ * Standard implementation of {@link KMessenger}.
+ *
+ * @since 0.2.0
+ * @author Darth Akria Nihil
+ */
 public class KStandardMessenger extends KMessenger {
 
+    /**
+     * Standard constructor.
+     * @param messageSystem Parent message system that messenger sends messages to
+     * @param messageIdSpecifier Prefix to be attached to internal message id on sending
+     */
     public KStandardMessenger(
         @KInject final KMessageSystem messageSystem,
         final String messageIdSpecifier
