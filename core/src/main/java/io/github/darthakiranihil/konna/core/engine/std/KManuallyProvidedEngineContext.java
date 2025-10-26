@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine.std;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -41,6 +42,7 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     private final KIndex index;
     private final KLogger logger;
     private final KObjectRegistry objectRegistry;
+    private final KEventSystem eventSystem;
     private final KMessageSystem messageSystem;
 
     /**
@@ -50,6 +52,7 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
      * @param index Index of the context
      * @param logger Logger of the context
      * @param objectRegistry Object registry of the context
+     * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
      */
     public KManuallyProvidedEngineContext(
@@ -58,6 +61,7 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         final KIndex index,
         final KLogger logger,
         final KObjectRegistry objectRegistry,
+        final KEventSystem eventSystem,
         final KMessageSystem messageSystem
         ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
@@ -66,6 +70,7 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         this.index = index;
         this.logger = logger;
         this.objectRegistry = objectRegistry;
+        this.eventSystem = eventSystem;
         this.messageSystem = messageSystem;
     }
 
@@ -92,6 +97,11 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     @Override
     public KObjectRegistry objectRegistry() {
         return this.objectRegistry;
+    }
+
+    @Override
+    public KEventSystem eventSystem() {
+        return this.eventSystem;
     }
 
     @Override

@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 
 import java.util.LinkedList;
@@ -29,6 +30,7 @@ import java.util.List;
  * @param componentLoader Class of engine component loader
  * @param serviceLoader Class of component services loader
  * @param messageRoutesConfigurers List of engine message routes configurers
+ * @param eventRegisterers List of engine event registerers
  * @param components List of engine components classes to load
  *
  * @since 0.2.0
@@ -39,6 +41,7 @@ public record KEngineHypervisorConfig(
     Class<? extends KComponentLoader> componentLoader,
     Class<? extends KServiceLoader> serviceLoader,
     List<Class<? extends KMessageRoutesConfigurer>> messageRoutesConfigurers,
+    List<Class<? extends KEventRegisterer>> eventRegisterers,
     List<Class<? extends KComponent>> components
 ) {
 
@@ -47,6 +50,7 @@ public record KEngineHypervisorConfig(
     private static final String SERVICE_LOADER_KEY = "service_loader";
     private static final String COMPONENTS_KEY = "components";
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
+    private static final String EVENT_REGISTERERS_KEY = "event_registerers";
 
     /**
      * Constructs config from json.
@@ -108,11 +112,26 @@ public record KEngineHypervisorConfig(
             }
         });
 
+        List<Class<? extends KEventRegisterer>>
+            eventRegisterers = new LinkedList<>();
+        json.getProperty(EVENT_REGISTERERS_KEY).forEach((registerer) -> {
+            try {
+                eventRegisterers.add(
+                    (Class<? extends KEventRegisterer>) Class.forName(
+                        registerer.getString()
+                    )
+                );
+            } catch (ClassNotFoundException e) {
+                throw new KHypervisorInitializationException(e);
+            }
+        });
+
         return new KEngineHypervisorConfig(
             contextLoaderClass,
             compoentLoaderClass,
             serviceLoaderClass,
             messageRoutesConfigurers,
+            eventRegisterers,
             components
         );
 

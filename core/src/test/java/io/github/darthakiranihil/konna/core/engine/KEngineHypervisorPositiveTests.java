@@ -39,6 +39,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
             "\"route_configurers\": []," +
+            "\"event_registerers\": []," +
             "\"components\": [" +
             "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";

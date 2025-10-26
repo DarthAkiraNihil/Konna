@@ -23,6 +23,8 @@ import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -52,6 +54,7 @@ public class KEngineHypervisor extends KObject {
     private final KContainerResolver containerResolver;
     private final KLogger logger;
     private final KIndex index;
+    private final KEventSystem eventSystem;
     private final KMessageSystem messageSystem;
 
     /**
@@ -85,6 +88,7 @@ public class KEngineHypervisor extends KObject {
         this.logger = ctx.logger();
         this.index = ctx.index();
         this.messageSystem = ctx.messageSystem();
+        this.eventSystem = ctx.eventSystem();
 
         this.logger.info("Initializing engine hypervisor [config = %s]", config);
         this.logger.info(
@@ -108,6 +112,9 @@ public class KEngineHypervisor extends KObject {
         );
         this.logger.info(
             "Got logger: %s", this.logger.getClass().getSimpleName()
+        );
+        this.logger.info(
+            "Got event system: %s", this.eventSystem.getClass().getSimpleName()
         );
         this.logger.info(
             "Got message system: %s", this.messageSystem.getClass().getSimpleName()
@@ -167,6 +174,16 @@ public class KEngineHypervisor extends KObject {
         this.logger.info(
             "%d message route configurers have been executed",
             config.messageRoutesConfigurers().size()
+        );
+
+        for (var eventRegisterer: config.eventRegisterers()) {
+            KEventRegisterer registerer = this.activator.create(eventRegisterer);
+            registerer.registerEvents(this.eventSystem);
+        }
+
+        this.logger.info(
+            "%d event registerers have been executed",
+            config.eventRegisterers().size()
         );
 
     }

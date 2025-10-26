@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.std.*;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -104,6 +105,7 @@ public class KStandardTestClass extends KObject {
         );
         var activator = new KStandardActivator(containerResolver, objectRegistry, index);
         var messageSystem = new KStandardMessageSystem(activator);
+        var eventSystem = new KStandardEventSystem();
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
             new KStandardActivator(containerResolver, objectRegistry, index),
@@ -111,6 +113,7 @@ public class KStandardTestClass extends KObject {
             index,
             logger,
             objectRegistry,
+            eventSystem,
             messageSystem
         );
     }
