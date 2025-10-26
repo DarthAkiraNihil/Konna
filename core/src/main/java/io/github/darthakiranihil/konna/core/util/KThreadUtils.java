@@ -20,12 +20,22 @@ import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Provides different useful utils, connected with threads and concurrency.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public final class KThreadUtils extends KUninstantiable {
 
     private KThreadUtils() {
         super();
     }
 
+    /**
+     * Runs a task asynchronously. Uses {@link CompletableFuture} for it.
+     * @param task Task to run asynchronously
+     */
     public static void runAsync(final Runnable task) {
         CompletableFuture.runAsync(task);
     }

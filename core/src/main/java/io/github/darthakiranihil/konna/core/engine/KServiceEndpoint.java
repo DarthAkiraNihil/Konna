@@ -21,5 +21,13 @@ public @interface KServiceEndpoint {
      * @return Route of the endpoint.
      */
     String route();
-    Class<? extends KMessageToEndpointConverter> converter() default KMessageToEndpointConverter.NoConverter.class;
+
+    /**
+     * Class that is used to convert a message to array of objects
+     * representing called endpoint args. If not specified, a message
+     * will be converted to an empty array.
+     * @return Class of message to endpoint args converter
+     */
+    Class<? extends KMessageToEndpointConverter>
+        converter() default KMessageToEndpointConverter.NoConverter.class;
 }

@@ -150,7 +150,10 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         if (destinationComponent == null) {
             return;
         }
-        String shortEndpointName = destinationEndpoint.subSequence(destinationEndpoint.indexOf('.') + 1, destinationEndpoint.length()).toString();// split("\\.")[1];
+        String shortEndpointName =
+            destinationEndpoint
+                .subSequence(destinationEndpoint.indexOf('.') + 1, destinationEndpoint.length())
+                .toString();
 
         if (this.routes.containsKey(messageId)) {
             var route = this.routes.get(messageId);

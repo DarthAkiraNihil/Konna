@@ -23,7 +23,6 @@ import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Representation of an event - a simple message that should be delivered

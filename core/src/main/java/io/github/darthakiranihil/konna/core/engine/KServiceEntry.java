@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KPair;
 
 import java.lang.reflect.InvocationTargetException;
@@ -105,6 +104,12 @@ public class KServiceEntry {
         }
     }
 
+    /**
+     * Used to get information about endpoint existence in current service.
+     * Literally an additional guard method before real endpoint calling.
+     * @param route Route of the endpoint
+     * @return {@code true} if specified endpoint is presented, else {@code false}
+     */
     public boolean hasEndpoint(
         final String route
     ) {

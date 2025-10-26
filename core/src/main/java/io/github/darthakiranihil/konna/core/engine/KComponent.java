@@ -23,7 +23,6 @@ import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingExcept
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -49,8 +48,21 @@ public abstract class KComponent extends KObject {
      * Logger of component's engine context.
      */
     protected final KLogger logger;
+    /**
+     * Messenger, assigned to current component.
+     */
     protected final KMessenger messenger;
 
+    /**
+     * Base constructor, that performs all essential tasks to create a component:
+     * loading services, creating assigned messenger and so on.
+     * @param serviceLoader Engine service loader. It is injected
+     * @param name Name of the component
+     * @param ctx Current engine context
+     * @param servicesPackage Name of component's services package
+     * @param config Component configuration
+     * @throws KComponentLoadingException If any exception is thrown on component instantiation
+     */
     public KComponent(
         @KInject final KServiceLoader serviceLoader,
         final String name,
@@ -89,6 +101,7 @@ public abstract class KComponent extends KObject {
     /**
      * Accepts given message, routes it to given endpoint of internal service, which will process it
      * in other way. It happens asynchronously.
+     * @param endpoint Endpoint where the message is sent to
      * @param message Message to accept.
      */
     public void acceptMessage(final String endpoint, final KMessage message) {
@@ -99,6 +112,7 @@ public abstract class KComponent extends KObject {
     /**
      * Accepts given message, routes it to given endpoint of internal service, which will process it
      * in other way. It happens synchronously, that is useful for testing.
+     * @param endpoint Endpoint where the message is sent to
      * @param message Message to accept.
      */
     public void acceptMessageSync(final String endpoint, final KMessage message) {
@@ -126,6 +140,17 @@ public abstract class KComponent extends KObject {
         }
     }
 
+    /**
+     * Loads services for the engine component. By default, it instantiates all
+     * classes that are defined in the servicesPackage, provided by {@link KComponentMetaInfo}.
+     * @param ctx Current engine context
+     * @param servicesPackage Name of component's services package
+     * @param serviceLoader Engine service loader
+     * @return Mapping "Service name -> Service entry" that contain information
+     *         about service instance and its endpoints.
+     * @throws KComponentLoadingException If a service failed to load
+ *                                        (so a component cannot be loaded either)
+     */
     protected Map<String, KServiceEntry> loadServices(
         final KEngineContext ctx,
         final String servicesPackage,
@@ -162,6 +187,12 @@ public abstract class KComponent extends KObject {
 
     }
 
+    /**
+     * Loads messenger for current component.
+     * @param ctx Current engine context
+     * @param name Name of the component
+     * @return Loaded messenger that is assigned to the current component
+     */
     protected KMessenger loadMessenger(
         final KEngineContext ctx,
         final String name

@@ -59,6 +59,11 @@ public interface KMessageSystem {
         String destinationEndpoint
     );
 
+    /**
+     * Registers component in the system, so it is now allowed to
+     * be a message destination.
+     * @param component Component to register
+     */
     void registerComponent(KComponent component);
 
 }
