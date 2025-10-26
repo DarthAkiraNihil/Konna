@@ -101,8 +101,9 @@ public class KStandardTestClass extends KObject {
             KLogLevel.DEBUG,
             new KSimpleLogFormatter(),
             List.of(
-                new KTerminalLogHandler(new KColorfulTerminalLogFormatter()),
-                new KFileLogHandler("_log.log", new KTimestampLogFormatter())
+                new KTerminalLogHandler(new KLogcatLikeLogFormatter(false)),
+                new KFileLogHandler("_log.log", new KTimestampLogFormatter()),
+                new KFileLogHandler("__log.log", new KLogcatLikeLogFormatter(true))
             )
         );
         var activator = new KStandardActivator(containerResolver, objectRegistry, index);

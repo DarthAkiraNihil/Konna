@@ -23,9 +23,6 @@ import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.log.KLogger;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
@@ -274,57 +271,49 @@ public final class KStandardActivator extends KObject implements KActivator {
     public void addContextObjects(final KEngineContext ctx) {
         this.addContextObject(
             (KObject) ctx.activator(),
-            KActivator.class,
             ctx.activator().getClass()
         );
         this.addContextObject(
             (KObject) ctx.containerResolver(),
-            KContainerResolver.class,
             ctx.containerResolver().getClass()
         );
         this.addContextObject(
             (KObject) ctx.index(),
-            KIndex.class,
             ctx.index().getClass()
         );
         this.addContextObject(
             ctx.logger(),
-            KLogger.class,
             ctx.logger().getClass()
         );
         this.addContextObject(
             (KObject) ctx.objectRegistry(),
-            KObjectRegistry.class,
             ctx.objectRegistry().getClass()
         );
         this.addContextObject(
             (KObject) ctx.eventSystem(),
-            KEventSystem.class,
             ctx.eventSystem().getClass()
         );
         this.addContextObject(
             (KObject) ctx.messageSystem(),
-            KMessageSystem.class,
             ctx.messageSystem().getClass()
         );
     }
 
     private void addContextObject(
         final KObject contextObject,
-        final Class<?> interfaceClass,
-        final Class<?> implementationClass
+        final Class<?> clazz
     ) {
 
-        if (implementationClass.isAnnotationPresent(KSingleton.class)) {
-            KSingleton meta = implementationClass.getAnnotation(KSingleton.class);
+        if (clazz.isAnnotationPresent(KSingleton.class)) {
+            KSingleton meta = clazz.getAnnotation(KSingleton.class);
             if (meta.weak()) {
-                this.weakSingletons.put(interfaceClass, new WeakReference<>(contextObject));
+                this.weakSingletons.put(clazz, new WeakReference<>(contextObject));
             } else {
-                this.singletons.put(interfaceClass, contextObject);
+                this.singletons.put(clazz, contextObject);
             }
         }
 
-        this.objectRegistry.push(contextObject, this.getInstantiationType(implementationClass));
+        this.objectRegistry.push(contextObject, this.getInstantiationType(clazz));
     }
 
     private <T> Class<T> getClassImplementation(
