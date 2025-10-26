@@ -27,10 +27,9 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,11 +48,9 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
     public KStandardComponentLoader(@KInject final KJsonParser parser) {
         super(
             KStandardComponentLoader.class.getSimpleName(),
-            new HashSet<>(
-                List.of(
-                    KTag.DefaultTags.SYSTEM,
-                    KTag.DefaultTags.STD
-                )
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
             )
         );
         this.classLoader = Thread.currentThread().getContextClassLoader();
@@ -112,7 +109,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 .add(KServiceLoader.class, serviceLoader.getClass());
 
             var loadedComponent = ctx.activator().create(
-                component, ctx, meta.servicesPackage(), parsedConfig
+                component, meta.name(), ctx, meta.servicesPackage(), parsedConfig
             );
 
             loadedComponentMap.put(

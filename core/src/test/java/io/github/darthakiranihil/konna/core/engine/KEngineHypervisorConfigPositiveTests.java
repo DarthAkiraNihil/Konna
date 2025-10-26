@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
@@ -31,8 +32,11 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
     public void testFromJsonSuccess() {
 
         String config = "{" +
+            "\"context_loader\": \"io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader\"" +
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
+            "\"route_configurers\": []," +
+            "\"event_registerers\": []," +
             "\"components\": [" +
                 "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";
@@ -51,6 +55,9 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
             Assertions.assertEquals(TestComponent.class, loadedConfig.components().getFirst());
             Assertions.assertEquals(KStandardComponentLoader.class, loadedConfig.componentLoader());
             Assertions.assertEquals(KStandardServiceLoader.class, loadedConfig.serviceLoader());
+            Assertions.assertEquals(TestContextLoader.class, loadedConfig.contextLoader());
+            Assertions.assertEquals(0, loadedConfig.eventRegisterers().size());
+            Assertions.assertEquals(0, loadedConfig.messageRoutesConfigurers().size());
 
         } catch (KHypervisorInitializationException e) {
             Assertions.fail(e);

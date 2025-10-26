@@ -16,9 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KPair;
 
 import java.util.*;
@@ -33,33 +30,19 @@ import java.util.*;
  * @see KPackageEnvironment
  * @see KEnvironmentContainerModifier
  */
-public abstract class KContainerResolver extends KObject {
-
-    /**
-     * System index.
-     */
-    protected KIndex index;
-
-    /**
-     * Base constructor.
-     * @param index Built system index (must contain complete package and class list)
-     */
-    public KContainerResolver(final KIndex index) {
-        super("container_resolver", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM)));
-        this.index = index;
-    }
+public interface KContainerResolver {
 
     /**
      * Returns the container according to the caller class. Container resolution
      * depends on implementation.
      * @return Container the for caller class
      */
-    public abstract KContainer resolve();
+    KContainer resolve();
 
     /**
      * Returns list of environment data, containing name of an environment and list of its packages.
      * @return Data of created environments.
      */
-    public abstract List<KPair<String, List<String>>> getEnvironments();
+    List<KPair<String, List<String>>> getEnvironments();
 
 }

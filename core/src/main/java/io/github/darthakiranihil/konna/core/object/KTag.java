@@ -82,5 +82,11 @@ public record KTag(String name) {
          * @see KWeakObjectPool
          */
         public static final KTag WEAK_POOL = new KTag("weak_pool");
+        /**
+         * Marks that the object is an event.
+         * @see io.github.darthakiranihil.konna.core.message.KEvent
+         * @see io.github.darthakiranihil.konna.core.message.KSimpleEvent
+         */
+        public static final KTag EVENT = new KTag("event");
     }
 }

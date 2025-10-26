@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
 import java.lang.reflect.Field;
@@ -49,7 +50,7 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
     }
 
     public KStandardJsonDeserializer() {
-        super("std_json_deserializer", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super("std_json_deserializer", KStructUtils.setOfTags(KTag.DefaultTags.STD));
     }
 
     /**

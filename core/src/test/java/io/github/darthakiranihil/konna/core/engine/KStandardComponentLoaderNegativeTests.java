@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
+import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,11 +33,12 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
 
         public TestComponentNoMeta(
             KServiceLoader serviceLoader,
+            String name,
             KEngineContext ctx,
             String servicesPackage,
             KJsonValue config
         ) throws KComponentLoadingException {
-            super(serviceLoader, ctx, servicesPackage, config);
+            super(serviceLoader, name, ctx, servicesPackage, config);
         }
 
         @Override

@@ -21,9 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-
-import java.util.HashSet;
-import java.util.List;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 /**
  * Standard implementation of {@link KJsonStringifier}.
@@ -35,7 +33,7 @@ import java.util.List;
 public class KStandardJsonStringifier extends KObject implements KJsonStringifier {
 
     public KStandardJsonStringifier() {
-        super("std_json_stringifier", new HashSet<>(List.of(KTag.DefaultTags.STD)));
+        super("std_json_stringifier", KStructUtils.setOfTags(KTag.DefaultTags.STD));
     }
 
     @Override

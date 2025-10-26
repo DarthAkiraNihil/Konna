@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class KStandardIndex extends KObject implements KIndex {
     private final List<Package> packageIndex;
 
     public KStandardIndex() {
-        super("index", new HashSet<>(List.of(KTag.DefaultTags.STD, KTag.DefaultTags.SYSTEM)));
+        super("index", KStructUtils.setOfTags(KTag.DefaultTags.STD, KTag.DefaultTags.SYSTEM));
 
         this.classIndex = new ArrayList<>();
         this.packageIndex = new ArrayList<>();

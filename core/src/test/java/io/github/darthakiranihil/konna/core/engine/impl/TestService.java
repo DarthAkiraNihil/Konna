@@ -24,13 +24,19 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 )
 public class TestService {
 
+    private int testVar = -1;
+
     @KServiceEndpoint(route = "testEndpoint")
     public void testEndpoint() {
-
+        this.testVar = 1;
     }
 
     public void notEndpoint() {
 
+    }
+
+    public int getTestVar() {
+        return this.testVar;
     }
 
 }

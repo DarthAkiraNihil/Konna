@@ -30,12 +30,16 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KEndpointRoutingException extends KException implements KThrowable {
 
+    public KEndpointRoutingException(final Throwable cause) {
+        super(cause);
+    }
+
     public KEndpointRoutingException(final String message) {
         super(message);
     }
 
     @Override
     public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.ERROR;
+        return KThrowableSeverity.WARNING;
     }
 }

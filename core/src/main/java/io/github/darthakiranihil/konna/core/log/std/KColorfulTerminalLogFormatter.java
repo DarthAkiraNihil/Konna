@@ -20,10 +20,9 @@ import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Implementation of {@link KLogFormatter} that formats given message
@@ -37,8 +36,7 @@ public class KColorfulTerminalLogFormatter extends KObject implements KLogFormat
     public KColorfulTerminalLogFormatter() {
         super(
             KColorfulTerminalLogFormatter.class.getSimpleName(),
-            new HashSet<>(List.of(KTag.DefaultTags.STD)
-            )
+            KStructUtils.setOfTags(KTag.DefaultTags.STD)
         );
     }
 

@@ -35,8 +35,11 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
     public void testInstantiateHypervisorSuccess() {
 
         String config = "{" +
+            "\"context_loader\": \"io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader\"" +
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
+            "\"route_configurers\": []," +
+            "\"event_registerers\": []," +
             "\"components\": [" +
             "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";
@@ -57,7 +60,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             return;
         }
 
-        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig, KStandardTestClass.context);
+        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
 
         try {
             Field componentLoader = KEngineHypervisor.class.getDeclaredField("componentLoader");

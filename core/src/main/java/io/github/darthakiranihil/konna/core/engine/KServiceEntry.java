@@ -16,7 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.util.KPair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,27 +33,36 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KServiceEntry {
+public final class KServiceEntry {
 
     private final Object service;
-    private final Map<String, Method> endpoints;
+    private final KActivator activator;
+    private final KLogger logger;
+    private final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints;
 
-    public KServiceEntry(final Object service, final Map<String, Method> endpoints) {
+    public KServiceEntry(
+        final Object service,
+        final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints,
+        final KActivator activator,
+        final KLogger logger
+        ) {
         this.service = service;
         this.endpoints = endpoints;
+        this.activator = activator;
+        this.logger = logger;
     }
 
     /**
      * Calls a service endpoint.
      * @param route Route of called endpoint
-     * @param args Endpoint method arguments
+     * @param message Message to accept
      * @throws KEndpointRoutingException If component with given route does not exist
      *                                   in the service
      */
     public void callEndpoint(
         final String route,
-        final Object... args
-    ) throws KEndpointRoutingException {
+        final KMessage message
+        ) throws KEndpointRoutingException {
         if (!this.endpoints.containsKey(route)) {
             throw new KEndpointRoutingException(
                 String.format(
@@ -58,10 +72,58 @@ public class KServiceEntry {
             );
         }
 
+        var endpointEntry = this.endpoints.get(route);
+        var converter = endpointEntry.first();
+        var endpoint = endpointEntry.second();
+
+        var providedArgs = converter.convert(message);
+
+        var parameterTypes = endpoint.getParameterTypes();
+        var parameterAnnotations = endpoint.getParameterAnnotations();
+
+        Object[] parameters = new Object[parameterTypes.length];
+        int nonInjectedArgsProcessed = 0;
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            boolean isNonInjected = true;
+            for (int j = 0; j < parameterAnnotations[i].length; j++) {
+                if (parameterAnnotations[i][j] instanceof KInject) {
+                    isNonInjected = false;
+                    break;
+                }
+            }
+
+            if (isNonInjected) {
+                parameters[i] = providedArgs[nonInjectedArgsProcessed];
+                nonInjectedArgsProcessed++;
+            } else {
+                parameters[i] = this.activator.create(parameterTypes[i]);
+            }
+        }
+
         try {
-            this.endpoints.get(route).invoke(this.service, args);
+            endpoint.invoke(this.service, parameters);
+            this.logger.debug(
+                "Successfully called endpoint %s of service %s",
+                route,
+                this.service
+            );
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new KEndpointRoutingException(e);
         }
     }
+
+    /**
+     * Used to get information about endpoint existence in current service.
+     * Literally an additional guard method before real endpoint calling.
+     * @param route Route of the endpoint
+     * @return {@code true} if specified endpoint is presented, else {@code false}
+     */
+    public boolean hasEndpoint(
+        final String route
+    ) {
+        return this.endpoints.containsKey(route);
+    }
+
+
 }

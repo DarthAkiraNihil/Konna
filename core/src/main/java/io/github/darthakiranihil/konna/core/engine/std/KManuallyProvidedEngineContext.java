@@ -19,14 +19,14 @@ package io.github.darthakiranihil.konna.core.engine.std;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-
-import java.util.HashSet;
-import java.util.List;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 /**
  * Implementation of {@link KEngineContext} that requires ready instances of all
@@ -42,6 +42,8 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     private final KIndex index;
     private final KLogger logger;
     private final KObjectRegistry objectRegistry;
+    private final KEventSystem eventSystem;
+    private final KMessageSystem messageSystem;
 
     /**
      * Standard constructor.
@@ -50,20 +52,26 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
      * @param index Index of the context
      * @param logger Logger of the context
      * @param objectRegistry Object registry of the context
+     * @param eventSystem Event system of the context
+     * @param messageSystem Message system of the context
      */
     public KManuallyProvidedEngineContext(
         final KActivator activator,
         final KContainerResolver containerResolver,
         final KIndex index,
         final KLogger logger,
-        final KObjectRegistry objectRegistry
-    ) {
-        super("context", new HashSet<>(List.of(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)));
+        final KObjectRegistry objectRegistry,
+        final KEventSystem eventSystem,
+        final KMessageSystem messageSystem
+        ) {
+        super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
         this.containerResolver = containerResolver;
         this.index = index;
         this.logger = logger;
         this.objectRegistry = objectRegistry;
+        this.eventSystem = eventSystem;
+        this.messageSystem = messageSystem;
     }
 
     @Override
@@ -91,4 +99,13 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         return this.objectRegistry;
     }
 
+    @Override
+    public KEventSystem eventSystem() {
+        return this.eventSystem;
+    }
+
+    @Override
+    public KMessageSystem messageSystem() {
+        return this.messageSystem;
+    }
 }

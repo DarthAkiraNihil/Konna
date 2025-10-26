@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
@@ -29,6 +30,7 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KIndex;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -46,7 +48,10 @@ import java.util.Map;
  */
 @SuppressWarnings("unchecked")
 @KSingleton(immortal = true)
-public final class KStandardActivator extends KActivator {
+public final class KStandardActivator extends KObject implements KActivator {
+
+    private final KContainerResolver containerResolver;
+    private final KObjectRegistry objectRegistry;
 
     private final Map<Class<?>, KObject> singletons;
     private final Map<Class<?>, WeakReference<KObject>> weakSingletons;
@@ -69,9 +74,17 @@ public final class KStandardActivator extends KActivator {
         final KObjectRegistry objectRegistry,
         final KIndex index
     ) {
-        super(containerResolver, objectRegistry, index);
-        this.addTag(KTag.DefaultTags.STD);
+        super(
+            "std_activator",
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
+            )
+        );
+
         ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
+        this.containerResolver = containerResolver;
+        this.objectRegistry = objectRegistry;
 
         this.singletons = new HashMap<>();
         this.weakSingletons = new HashMap<>();
@@ -83,7 +96,7 @@ public final class KStandardActivator extends KActivator {
         List<Class<?>> poolableClasses;
 
         poolableClasses = KClassUtils.getAnnotatedClasses(
-            this.index,
+            index,
             KPoolable.class
         );
 
@@ -246,6 +259,61 @@ public final class KStandardActivator extends KActivator {
                 &&  object instanceof KObject) {
             this.objectRegistry.remove(((KObject) object).id());
         }
+    }
+
+    /**
+     * Utility method that exists only in this implementation of {@link KActivator}.
+     * Adds engine context objects to the activator and also pushes them to the
+     * object registry inside activator. It is important that all context object implementations
+     * must extend {@link KObject} in order adding to be performed successfully
+     * @param ctx Engine context objects of which is to be added
+     */
+    public void addContextObjects(final KEngineContext ctx) {
+        this.addContextObject(
+            (KObject) ctx.activator(),
+            ctx.activator().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.containerResolver(),
+            ctx.containerResolver().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.index(),
+            ctx.index().getClass()
+        );
+        this.addContextObject(
+            ctx.logger(),
+            ctx.logger().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.objectRegistry(),
+            ctx.objectRegistry().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.eventSystem(),
+            ctx.eventSystem().getClass()
+        );
+        this.addContextObject(
+            (KObject) ctx.messageSystem(),
+            ctx.messageSystem().getClass()
+        );
+    }
+
+    private void addContextObject(
+        final KObject contextObject,
+        final Class<?> clazz
+    ) {
+
+        if (clazz.isAnnotationPresent(KSingleton.class)) {
+            KSingleton meta = clazz.getAnnotation(KSingleton.class);
+            if (meta.weak()) {
+                this.weakSingletons.put(clazz, new WeakReference<>(contextObject));
+            } else {
+                this.singletons.put(clazz, contextObject);
+            }
+        }
+
+        this.objectRegistry.push(contextObject, this.getInstantiationType(clazz));
     }
 
     private <T> Class<T> getClassImplementation(

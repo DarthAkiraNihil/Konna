@@ -19,12 +19,10 @@ package io.github.darthakiranihil.konna.core.di.std;
 import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.except.KUnknownException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
-import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.core.util.KPair;
-import io.github.darthakiranihil.konna.core.util.KTriplet;
+import io.github.darthakiranihil.konna.core.util.*;
 
 import java.util.*;
 
@@ -37,7 +35,7 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KStandardContainerResolver extends KContainerResolver {
+public final class KStandardContainerResolver extends KObject implements KContainerResolver {
 
     private static final int CLASS_BEFORE_ACTIVATOR = 3;
 
@@ -65,6 +63,7 @@ public final class KStandardContainerResolver extends KContainerResolver {
         }
     }
 
+    private final KIndex index;
     private final Map<String, KContainer> env2container;
     private final Map<String, String> package2env;
 
@@ -78,7 +77,8 @@ public final class KStandardContainerResolver extends KContainerResolver {
      * @param index Built system index (must contain complete package and class list)
      */
     public KStandardContainerResolver(final KIndex index) {
-        super(index);
+        super("container_resolver", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        this.index = index;
         this.addTag(KTag.DefaultTags.STD);
 
         this.env2container = new HashMap<>();

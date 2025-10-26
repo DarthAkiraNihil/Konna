@@ -23,6 +23,8 @@ import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingExcepti
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.util.KPair;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -39,11 +41,9 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
     public KStandardServiceLoader() {
         super(
             KStandardServiceLoader.class.getSimpleName(),
-            new HashSet<>(
-                List.of(
-                    KTag.DefaultTags.SYSTEM,
-                    KTag.DefaultTags.STD
-                )
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
             )
         );
     }
@@ -77,16 +77,18 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
         }
 
         Method[] methods = service.getDeclaredMethods();
-        Map<String, Method> endpoints = new HashMap<>();
+        Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints = new HashMap<>();
         for (var method: methods) {
             if (!method.isAnnotationPresent(KServiceEndpoint.class)) {
                 continue;
             }
 
             KServiceEndpoint endpointMeta = method.getAnnotation(KServiceEndpoint.class);
+            KMessageToEndpointConverter
+                converter = ctx.activator().create(endpointMeta.converter());
             endpoints.put(
                 endpointMeta.route(),
-                method
+                new KPair<>(converter, method)
             );
         }
         logger.info(
@@ -104,7 +106,9 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             serviceName,
             new KServiceEntry(
                 instantiatedService,
-                endpoints
+                endpoints,
+                ctx.activator(),
+                ctx.logger()
             )
         );
         logger.info("Loaded service %s [%s]", serviceName, service);

@@ -23,14 +23,21 @@ import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.message.std.KStandardMessageSystem;
+import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -67,6 +74,14 @@ public class KStandardTestClass extends KObject {
      */
     protected static KEngineContext context;
 
+    /**
+     * Returns engine context for testing environment.
+     * @return Engine context for testing environment
+     */
+    public static KEngineContext getContext() {
+        return KStandardTestClass.context;
+    }
+
     static {
         var index = new KStandardIndex();
 
@@ -74,7 +89,11 @@ public class KStandardTestClass extends KObject {
         containerResolver
             .resolve()
             .add(KJsonParser.class, KStandardJsonParser.class)
-            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class);
+            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
+            .add(KActivator.class, KStandardActivator.class)
+            .add(KMessageSystem.class, KStandardMessageSystem.class)
+            .add(KMessenger.class, KStandardMessenger.class)
+            .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
         var logger = new KStandardLogger(
@@ -82,18 +101,25 @@ public class KStandardTestClass extends KObject {
             KLogLevel.DEBUG,
             new KSimpleLogFormatter(),
             List.of(
-                new KTerminalLogHandler(new KColorfulTerminalLogFormatter()),
-                new KFileLogHandler("_log.log", new KTimestampLogFormatter())
+                new KTerminalLogHandler(new KLogcatLikeLogFormatter(false)),
+                new KFileLogHandler("_log.log", new KTimestampLogFormatter()),
+                new KFileLogHandler("__log.log", new KLogcatLikeLogFormatter(true))
             )
         );
+        var activator = new KStandardActivator(containerResolver, objectRegistry, index);
+        var messageSystem = new KStandardMessageSystem(activator);
+        var eventSystem = new KStandardEventSystem();
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
-            new KStandardActivator(containerResolver, objectRegistry, index),
+            activator,
             containerResolver,
             index,
             logger,
-            objectRegistry
+            objectRegistry,
+            eventSystem,
+            messageSystem
         );
+        activator.addContextObjects(KStandardTestClass.context);
     }
 
     /**
@@ -102,12 +128,7 @@ public class KStandardTestClass extends KObject {
     protected KStandardTestClass() {
         super(
             "std_test_class",
-            new HashSet<>(
-                List.of(
-                    KTag.DefaultTags.TEST,
-                    KTag.DefaultTags.STD
-                )
-            )
+            KStructUtils.setOfTags(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)
         );
         this.jsonTokenizer = new KStandardJsonTokenizer();
         this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
