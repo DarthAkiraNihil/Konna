@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -148,6 +149,25 @@ public class KEngineHypervisor extends KObject {
             this.logger.error(e);
             throw new KHypervisorInitializationException(e);
         }
+
+        this.engineComponents.forEach((_k, v) -> {
+            this.messageSystem.registerComponent(v);
+        });
+        this.logger.info(
+            "Registered %d components in the message system",
+            this.engineComponents.size()
+        );
+
+
+        for (var routeConfigurer: config.messageRoutesConfigurers()) {
+            KMessageRoutesConfigurer configurer = this.activator.create(routeConfigurer);
+            configurer.setupRoutes(this.messageSystem);
+        }
+
+        this.logger.info(
+            "%d message route configurers have been executed",
+            config.messageRoutesConfigurers().size()
+        );
 
     }
 

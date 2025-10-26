@@ -18,8 +18,9 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ import java.util.List;
  * @param contextLoader Class of engine context loader
  * @param componentLoader Class of engine component loader
  * @param serviceLoader Class of component services loader
+ * @param messageRoutesConfigurers List of engine message routes configurers
  * @param components List of engine components classes to load
  *
  * @since 0.2.0
@@ -36,6 +38,7 @@ public record KEngineHypervisorConfig(
     Class<? extends KEngineContextLoader> contextLoader,
     Class<? extends KComponentLoader> componentLoader,
     Class<? extends KServiceLoader> serviceLoader,
+    List<Class<? extends KMessageRoutesConfigurer>> messageRoutesConfigurers,
     List<Class<? extends KComponent>> components
 ) {
 
@@ -43,6 +46,7 @@ public record KEngineHypervisorConfig(
     private static final String COMPONENT_LOADER_KEY = "component_loader";
     private static final String SERVICE_LOADER_KEY = "service_loader";
     private static final String COMPONENTS_KEY = "components";
+    private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
 
     /**
      * Constructs config from json.
@@ -78,7 +82,7 @@ public record KEngineHypervisorConfig(
         Class<? extends KServiceLoader>
             serviceLoaderClass = (Class<? extends KServiceLoader>) rawServiceLoaderClass;
 
-        List<Class<? extends KComponent>> components = new ArrayList<>();
+        List<Class<? extends KComponent>> components = new LinkedList<>();
         json.getProperty(COMPONENTS_KEY).forEach((component) -> {
             try {
                 components.add(
@@ -90,10 +94,25 @@ public record KEngineHypervisorConfig(
 
         });
 
+        List<Class<? extends KMessageRoutesConfigurer>>
+            messageRoutesConfigurers = new LinkedList<>();
+        json.getProperty(MESSAGE_ROUTE_CONFIGURERS_KEY).forEach((configurer) -> {
+            try {
+                messageRoutesConfigurers.add(
+                    (Class<? extends KMessageRoutesConfigurer>) Class.forName(
+                        configurer.getString()
+                    )
+                );
+            } catch (ClassNotFoundException e) {
+                throw new KHypervisorInitializationException(e);
+            }
+        });
+
         return new KEngineHypervisorConfig(
             contextLoaderClass,
             compoentLoaderClass,
             serviceLoaderClass,
+            messageRoutesConfigurers,
             components
         );
 
