@@ -30,8 +30,8 @@ The foundation that is essential for the whole engine
   - [ ] Add geometrical primitives classes
   - [ ] Add methods for window wrapper to draw renderable objects
 - [ ] Implement methods for inter-component messaging
-    - [ ] Add Event system
-    - [ ] Add base for tunnels - message translators to help components understand each other
+    - [x] Add Event system
+    - [x] Add base for tunnels - message translators to help components understand each other
     - [ ] Add translating Java AWT events to Konna events 
 - [ ] Add app class - Konna
   - [ ] Add feature to select classes of engine components to be used in engine
