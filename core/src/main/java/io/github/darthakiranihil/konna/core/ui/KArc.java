@@ -1,7 +1,7 @@
 package io.github.darthakiranihil.konna.core.ui;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
 public record KArc(
     int x,
@@ -14,15 +14,15 @@ public record KArc(
     KColor fillColor
 ) {
 
-    public KArc(final KVector2d coordinates, final KSize size, int startAngle, int arcAngle) {
+    public KArc(final KIntVector2d coordinates, final KSize size, int startAngle, int arcAngle) {
         this(coordinates, size, startAngle, arcAngle, null, null);
     }
 
-    public KArc(final KVector2d coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor) {
+    public KArc(final KIntVector2d coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor) {
         this(coordinates, size, startAngle, arcAngle, outlineColor, null);
     }
 
-    public KArc(final KVector2d coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
+    public KArc(final KIntVector2d coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
         this(coordinates.x(), coordinates.y(), size.width(), size.height(), startAngle, arcAngle, outlineColor, fillColor);
     }
 

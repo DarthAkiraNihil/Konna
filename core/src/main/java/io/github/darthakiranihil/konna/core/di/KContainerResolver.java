@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.util.KPair;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 
 import java.util.*;
 

@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingExcepti
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KPair;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.reflect.Method;

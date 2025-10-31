@@ -9,6 +9,10 @@ public record KColor(
     int alpha
 ) {
 
+    public static final KColor TRANSPARENT = new KColor(255, 255, 255, 255);
+    public static final KColor WHITE = new KColor(0, 0, 0, 0);
+    public static final KColor BLACK = new KColor(255, 255, 255, 255);
+
     private static final int ALPHA_SHIFT = 24;
     private static final int RED_SHIFT = 16;
     private static final int GREEN_SHIFT = 8;

@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.ui;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
 public record KRectangle3d(
     int x,
@@ -29,15 +29,15 @@ public record KRectangle3d(
     KColor fillColor
 ) {
 
-    public KRectangle3d(final KVector2d coordinates, final KSize size, boolean raised) {
+    public KRectangle3d(final KIntVector2d coordinates, final KSize size, boolean raised) {
         this(coordinates, size, raised, null, null);
     }
 
-    public KRectangle3d(final KVector2d coordinates, final KSize size, boolean raised, final KColor outlineColor) {
+    public KRectangle3d(final KIntVector2d coordinates, final KSize size, boolean raised, final KColor outlineColor) {
         this(coordinates, size, raised, outlineColor, null);
     }
 
-    public KRectangle3d(final KVector2d coordinates, final KSize size, boolean raised, final KColor outlineColor, final KColor fillColor) {
+    public KRectangle3d(final KIntVector2d coordinates, final KSize size, boolean raised, final KColor outlineColor, final KColor fillColor) {
         this(coordinates.x(), coordinates.y(), size.width(), size.height(), raised, outlineColor, fillColor);
     }
 
@@ -61,15 +61,15 @@ public record KRectangle3d(
         return new KRectangle3d(x, y, side, side, raised, outlineColor, fillColor);
     }
 
-    public static KRectangle3d square(final KVector2d coordinates, int side, boolean raised) {
+    public static KRectangle3d square(final KIntVector2d coordinates, int side, boolean raised) {
         return new KRectangle3d(coordinates, KSize.squared(side), raised);
     }
 
-    public static KRectangle3d square(final KVector2d coordinates, int side, boolean raised, final KColor outlineColor) {
+    public static KRectangle3d square(final KIntVector2d coordinates, int side, boolean raised, final KColor outlineColor) {
         return new KRectangle3d(coordinates, KSize.squared(side), raised, outlineColor);
     }
 
-    public static KRectangle3d square(final KVector2d coordinates, int side, boolean raised, final KColor outlineColor, final KColor fillColor) {
+    public static KRectangle3d square(final KIntVector2d coordinates, int side, boolean raised, final KColor outlineColor, final KColor fillColor) {
         return new KRectangle3d(coordinates, KSize.squared(side), raised, outlineColor, fillColor);
     }
 

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.ui;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -37,18 +37,18 @@ public record KPolygon(
         this(xPoints, yPoints, edgesCount, outlineColor, null);
     }
 
-    public KPolygon(final KVector2d[] points) {
+    public KPolygon(final KIntVector2d[] points) {
         this(points, null, null);
     }
 
-    public KPolygon(final KVector2d[] points, final KColor outlineColor) {
+    public KPolygon(final KIntVector2d[] points, final KColor outlineColor) {
         this(points, outlineColor, null);
     }
 
-    public KPolygon(final KVector2d[] points, final KColor outlineColor, final KColor fillColor) {
+    public KPolygon(final KIntVector2d[] points, final KColor outlineColor, final KColor fillColor) {
         this(
-            Arrays.stream(points).mapToInt(KVector2d::x).toArray(),
-            Arrays.stream(points).mapToInt(KVector2d::y).toArray(),
+            Arrays.stream(points).mapToInt(KIntVector2d::x).toArray(),
+            Arrays.stream(points).mapToInt(KIntVector2d::y).toArray(),
             points.length,
             outlineColor,
             fillColor

@@ -1,8 +1,6 @@
 package io.github.darthakiranihil.konna.core.struct;
 
-import java.awt.*;
-
-public record KVector2d(
+public record KIntVector2d(
     int x,
     int y
 ) {

@@ -17,17 +17,18 @@
 package io.github.darthakiranihil.konna.core.ui;
 
 import io.github.darthakiranihil.konna.core.engine.except.KIOException;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.util.KCopyable;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 
 public record KImage(
-    BufferedImage ref
+    BufferedImage raw
 ) implements KCopyable<KImage> {
 
     public static KImage fromFile(final String filename) throws KIOException {
@@ -38,13 +39,24 @@ public record KImage(
         }
     }
 
+    public KImage slice(final KIntVector2d from, final KSize size) {
+        return new KImage(
+            this.raw.getSubimage(
+                from.x(),
+                from.y(),
+                size.width(),
+                size.height()
+            )
+        );
+    }
+
     @Override
     public KImage copy() {
-        WritableRaster data = ((WritableRaster) this.ref.getData())
+        WritableRaster data = ((WritableRaster) this.raw.getData())
             .createWritableTranslatedChild(0, 0);
 
-        var colorModel = this.ref.getColorModel();
-        var isAlphaPremultiplied = this.ref.isAlphaPremultiplied();
+        var colorModel = this.raw.getColorModel();
+        var isAlphaPremultiplied = this.raw.isAlphaPremultiplied();
 
         BufferedImage cloned = new BufferedImage(colorModel, data, isAlphaPremultiplied, null);
         return new KImage(cloned);

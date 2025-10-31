@@ -1,6 +1,6 @@
 package io.github.darthakiranihil.konna.core.ui;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
 import java.util.Arrays;
 
@@ -15,14 +15,14 @@ public record KPolyline(
         this(xPoints, yPoints, edgesCount, null);
     }
 
-    public KPolyline(final KVector2d[] points) {
+    public KPolyline(final KIntVector2d[] points) {
         this(points, null);
     }
 
-    public KPolyline(final KVector2d[] points, final KColor color) {
+    public KPolyline(final KIntVector2d[] points, final KColor color) {
         this(
-            Arrays.stream(points).mapToInt(KVector2d::x).toArray(),
-            Arrays.stream(points).mapToInt(KVector2d::y).toArray(),
+            Arrays.stream(points).mapToInt(KIntVector2d::x).toArray(),
+            Arrays.stream(points).mapToInt(KIntVector2d::y).toArray(),
             points.length,
             color
         );

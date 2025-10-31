@@ -1,7 +1,7 @@
 package io.github.darthakiranihil.konna.core.ui;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
 public record KOval(
     int x,
@@ -12,15 +12,15 @@ public record KOval(
     KColor fillColor
 ) {
 
-    public KOval(final KVector2d coordinates, final KSize size) {
+    public KOval(final KIntVector2d coordinates, final KSize size) {
         this(coordinates, size, null, null);
     }
 
-    public KOval(final KVector2d coordinates, final KSize size, final KColor outlineColor) {
+    public KOval(final KIntVector2d coordinates, final KSize size, final KColor outlineColor) {
         this(coordinates, size, outlineColor, null);
     }
 
-    public KOval(final KVector2d coordinates, final KSize size, final KColor outlineColor, final KColor fillColor) {
+    public KOval(final KIntVector2d coordinates, final KSize size, final KColor outlineColor, final KColor fillColor) {
         this(coordinates.x(), coordinates.y(), size.width(), size.height(), outlineColor, fillColor);
     }
 

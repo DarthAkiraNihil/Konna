@@ -20,8 +20,8 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.core.util.KPair;
-import io.github.darthakiranihil.konna.core.util.KTriplet;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

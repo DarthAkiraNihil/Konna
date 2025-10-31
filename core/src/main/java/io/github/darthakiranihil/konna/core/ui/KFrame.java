@@ -17,7 +17,9 @@
 package io.github.darthakiranihil.konna.core.ui;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,6 +27,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+@KExcludeFromGeneratedCoverageReport
+@KSingleton(immortal = true)
 public class KFrame extends Frame implements KeyListener, WindowListener {
 
     private final KCanvas canvas;

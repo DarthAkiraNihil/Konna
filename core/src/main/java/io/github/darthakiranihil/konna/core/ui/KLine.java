@@ -1,6 +1,6 @@
 package io.github.darthakiranihil.konna.core.ui;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
 public record KLine(
     int x1,
@@ -14,20 +14,20 @@ public record KLine(
         this(x1, x2, y1, y2, null);
     }
 
-    public KLine(final KVector2d start, final KVector2d end) {
+    public KLine(final KIntVector2d start, final KIntVector2d end) {
         this(start, end, null);
     }
 
-    public KLine(final KVector2d start, final KVector2d end, final KColor color) {
+    public KLine(final KIntVector2d start, final KIntVector2d end, final KColor color) {
         this(start.x(), end.x(), start.y(), end.y(), color);
     }
 
-    public KVector2d start() {
-        return new KVector2d(this.x1, this.y1);
+    public KIntVector2d start() {
+        return new KIntVector2d(this.x1, this.y1);
     }
 
-    public KVector2d end() {
-        return new KVector2d(this.x2, this.y2);
+    public KIntVector2d end() {
+        return new KIntVector2d(this.x2, this.y2);
     }
 
 }
