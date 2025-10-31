@@ -88,5 +88,7 @@ public record KTag(String name) {
          * @see io.github.darthakiranihil.konna.core.message.KSimpleEvent
          */
         public static final KTag EVENT = new KTag("event");
+        public static final KTag GRAPHICS = new KTag("graphics");
+        public static final KTag ASSET = new KTag("asset");
     }
 }

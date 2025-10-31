@@ -16,23 +16,38 @@
 
 package io.github.darthakiranihil.konna.core.graphics.text;
 
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.graphics.KImage;
 import io.github.darthakiranihil.konna.core.graphics.KShader;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
-public abstract class KTiledFont {
+public abstract class KTiledFont extends KObject {
 
     private final String name;
     protected final KSize charSize;
     protected final KImage face;
 
     public KTiledFont(final String name, final KSize charSize, final KImage face, final KShader[] shaders) {
+        super(
+            String.format("tiled_font_%s", name), KStructUtils.setOfTags(
+                KTag.DefaultTags.GRAPHICS,
+                KTag.DefaultTags.ASSET
+            )
+        );
         this.name = name;
         this.charSize = charSize;
         this.face = face.applyShaders(shaders);
     }
 
     public KTiledFont(final String name, final KSize charSize, final KImage face) {
+        super(
+            String.format("tiled_font_%s", name), KStructUtils.setOfTags(
+                KTag.DefaultTags.GRAPHICS,
+                KTag.DefaultTags.ASSET
+            )
+        );
         this.name = name;
         this.charSize = charSize;
         this.face = face;
