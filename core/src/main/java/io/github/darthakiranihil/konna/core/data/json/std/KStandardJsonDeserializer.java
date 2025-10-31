@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
 import java.lang.reflect.Field;

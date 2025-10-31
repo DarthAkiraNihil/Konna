@@ -31,11 +31,11 @@ public record KRectangle(
 ) {
 
     public KRectangle(final KVector2d coordinates, final KSize size) {
-        this(coordinates.x(), coordinates.y(), size.width(), size.height());
+        this(coordinates, size, null, null);
     }
 
     public KRectangle(final KVector2d coordinates, final KSize size, final KColor outlineColor) {
-        this(coordinates.x(), coordinates.y(), size.width(), size.height(), outlineColor);
+        this(coordinates, size, outlineColor, null);
     }
 
     public KRectangle(final KVector2d coordinates, final KSize size, final KColor outlineColor, final KColor fillColor) {
@@ -62,15 +62,15 @@ public record KRectangle(
         return new KRectangle(x, y, side, side, outlineColor, fillColor);
     }
 
-    public static KRectangle square(KVector2d coordinates, int side) {
+    public static KRectangle square(final KVector2d coordinates, int side) {
         return new KRectangle(coordinates, KSize.squared(side));
     }
 
-    public static KRectangle square(KVector2d coordinates, int side, final KColor outlineColor) {
+    public static KRectangle square(final KVector2d coordinates, int side, final KColor outlineColor) {
         return new KRectangle(coordinates, KSize.squared(side), outlineColor);
     }
 
-    public static KRectangle square(KVector2d coordinates, int side, final KColor outlineColor, final KColor fillColor) {
+    public static KRectangle square(final KVector2d coordinates, int side, final KColor outlineColor, final KColor fillColor) {
         return new KRectangle(coordinates, KSize.squared(side), outlineColor, fillColor);
     }
 

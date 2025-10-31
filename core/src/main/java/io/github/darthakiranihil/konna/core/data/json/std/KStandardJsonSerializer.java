@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
