@@ -5,4 +5,6 @@ public record KIntVector2d(
     int y
 ) {
 
+    public static final KIntVector2d ZERO = new KIntVector2d(0, 0);
+
 }

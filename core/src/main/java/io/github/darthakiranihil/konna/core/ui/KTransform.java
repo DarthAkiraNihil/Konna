@@ -3,8 +3,19 @@ package io.github.darthakiranihil.konna.core.ui;
 import io.github.darthakiranihil.konna.core.struct.KDoubleVector2d;
 
 public record KTransform(
-    KDoubleVector2d translate,
+    KDoubleVector2d translation,
     double rotation,
-    boolean isRotationPivoted
+    boolean isRotationPivoted,
+    KDoubleVector2d rotationPivot,
+    KDoubleVector2d scaling
 ) {
+
+    public KTransform(
+        final KDoubleVector2d translation,
+        double rotation,
+        final KDoubleVector2d scaling
+    ) {
+        this(translation, rotation, false, null, scaling);
+    }
+
 }
