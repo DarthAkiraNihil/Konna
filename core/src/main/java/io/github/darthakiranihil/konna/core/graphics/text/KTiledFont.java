@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.ui.text;
+package io.github.darthakiranihil.konna.core.graphics.text;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.ui.KImage;
-import io.github.darthakiranihil.konna.core.ui.KShader;
+import io.github.darthakiranihil.konna.core.graphics.KImage;
+import io.github.darthakiranihil.konna.core.graphics.KShader;
 
 public abstract class KTiledFont {
 

@@ -1,4 +1,4 @@
-package io.github.darthakiranihil.konna.core.ui.text;
+package io.github.darthakiranihil.konna.core.graphics.text;
 
 public record KTiledText(
     int x,

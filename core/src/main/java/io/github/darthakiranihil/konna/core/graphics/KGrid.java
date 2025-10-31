@@ -1,4 +1,4 @@
-package io.github.darthakiranihil.konna.core.ui;
+package io.github.darthakiranihil.konna.core.graphics;
 
 public record KGrid(
     int width,

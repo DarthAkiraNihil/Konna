@@ -1,8 +1,7 @@
-package io.github.darthakiranihil.konna.core.ui.text;
+package io.github.darthakiranihil.konna.core.graphics.text;
 
-import io.github.darthakiranihil.konna.core.ui.KColor;
+import io.github.darthakiranihil.konna.core.graphics.KColor;
 
-import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
