@@ -22,16 +22,14 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 @KExcludeFromGeneratedCoverageReport
 @KSingleton(immortal = true)
-public class KFrame extends Frame implements KeyListener, WindowListener {
+public class KFrame extends Frame implements KeyListener, WindowListener, ComponentListener {
 
     private final KCanvas canvas;
+    private Graphics2D graphics;
 
     public KFrame(@KInject final KCanvas canvas, final String title, final KSize size) {
 
@@ -42,6 +40,11 @@ public class KFrame extends Frame implements KeyListener, WindowListener {
         this.setSize(size.width(), size.height());
         this.add(this.canvas);
 
+    }
+
+    @Override
+    public void update(Graphics g) {
+        this.paint(g);
     }
 
     @Override
@@ -92,5 +95,50 @@ public class KFrame extends Frame implements KeyListener, WindowListener {
     @Override
     public void windowDeactivated(final WindowEvent e) {
 
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        System.out.println("W RESIZE");
+        System.out.println(e);
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+
+    }
+
+    public void drawRectangle(final KRectangle rect) {
+        if (this.graphics == null) {
+            System.out.println("GRAPHICS ARE NULL GETTING NEW");
+            this.graphics = (Graphics2D) this.getGraphics();
+        }
+
+        final Color originalColor = this.graphics.getColor();
+
+        if (rect.fillColor() != null) {
+            this.graphics.setColor(rect.fillColor().raw());
+            this.graphics.fillRect(rect.x(), rect.y(), rect.width(), rect.height());
+        }
+
+        if (rect.outlineColor() != null) {
+            this.graphics.setColor(rect.outlineColor().raw());
+        } else {
+            this.graphics.setColor(originalColor);
+        }
+
+        this.graphics.drawRect(rect.x(), rect.y(), rect.width(), rect.height());
+        this.graphics.setColor(originalColor);
+        System.out.println("I've drawn a rectangle");
     }
 }

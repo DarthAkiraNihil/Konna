@@ -19,6 +19,8 @@ package io.github.darthakiranihil.konna.core.graphics;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
+import java.awt.*;
+
 public record KRectangle(
     int x,
     int y,
@@ -26,7 +28,7 @@ public record KRectangle(
     int height,
     KColor outlineColor,
     KColor fillColor
-) {
+) implements KRenderable {
 
     public KRectangle(final KIntVector2d coordinates, final KSize size) {
         this(coordinates, size, null, null);
@@ -71,5 +73,30 @@ public record KRectangle(
     public static KRectangle square(final KIntVector2d coordinates, int side, final KColor outlineColor, final KColor fillColor) {
         return new KRectangle(coordinates, KSize.squared(side), outlineColor, fillColor);
     }
+
+    @Override
+    public void render(K2dRenderEngine res) {
+        res.render(this);
+//        final Color originalColor = graphics.getColor();
+//
+//        if (this.fillColor() != null) {
+//            graphics.setColor(this.fillColor().raw());
+//            graphics.fillRect(this.x(), this.y(), this.width(), this.height());
+//        }
+//
+//        if (this.outlineColor() != null) {
+//            graphics.setColor(this.outlineColor().raw());
+//        } else {
+//            graphics.setColor(originalColor);
+//        }
+//
+//        graphics.drawRect(this.x(), this.y(), this.width(), this.height());
+//        graphics.setColor(originalColor);
+    }
+
+    public Shape raw() {
+        return new Rectangle(this.x, this.y, this.width, this.height);
+    }
+
 
 }
