@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.graphics;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;

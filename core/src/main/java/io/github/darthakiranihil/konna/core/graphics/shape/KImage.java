@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.graphics;
+package io.github.darthakiranihil.konna.core.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.engine.except.KIOException;
+import io.github.darthakiranihil.konna.core.graphics.KShader;
 import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.util.KCopyable;

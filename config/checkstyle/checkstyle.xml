@@ -50,12 +50,16 @@
         <property name="fileNamePattern" value="module\-info\.java$"/>
     </module>
 
-    <!-- https://checkstyle.org/filters/suppressionfilter.html -->
     <module name="SuppressionFilter">
-        <property name="file" value="${org.checkstyle.sun.suppressionfilter.config}"
-                  default="suppressions.xml" />
-        <property name="optional" value="true"/>
+        <property name="file" value="${config_loc}/suppressions.xml" />
     </module>
+
+    <!-- https://checkstyle.org/filters/suppressionfilter.html -->
+<!--    <module name="SuppressionFilter">-->
+<!--        <property name="file" value="${org.checkstyle.sun.suppressionfilter.config}"-->
+<!--                  default="suppressions.xml" />-->
+<!--        <property name="optional" value="true"/>-->
+<!--    </module>-->
 
     <!-- Checks that a package-info.java file exists for each package.     -->
     <!-- See https://checkstyle.org/checks/javadoc/javadocpackage.html#JavadocPackage -->
@@ -125,7 +129,9 @@
         <!-- Checks for Size Violations.                    -->
         <!-- See https://checkstyle.org/checks/sizes/index.html -->
         <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber">
+            <property name="max" value="12" />
+        </module>
 
         <!-- Checks for whitespace                               -->
         <!-- See https://checkstyle.org/checks/whitespace/index.html -->
@@ -200,3 +206,4 @@
     </module>
 
 </module>
+

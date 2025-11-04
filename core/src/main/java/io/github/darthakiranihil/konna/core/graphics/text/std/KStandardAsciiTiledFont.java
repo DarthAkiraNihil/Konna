@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.graphics.text.std;
 
 import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.graphics.KImage;
+import io.github.darthakiranihil.konna.core.graphics.shape.KImage;
 import io.github.darthakiranihil.konna.core.graphics.KShader;
 import io.github.darthakiranihil.konna.core.graphics.text.KTiledFont;
 

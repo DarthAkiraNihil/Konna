@@ -1,4 +1,4 @@
-package io.github.darthakiranihil.konna.core.graphics;
+package io.github.darthakiranihil.konna.core.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KDoubleVector2d;
 

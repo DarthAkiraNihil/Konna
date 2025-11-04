@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.graphics;
+package io.github.darthakiranihil.konna.core.graphics.shape;
 
+import io.github.darthakiranihil.konna.core.graphics.render.KRenderEngine2d;
+import io.github.darthakiranihil.konna.core.graphics.KRenderable;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
 
@@ -75,7 +77,7 @@ public record KRectangle(
     }
 
     @Override
-    public void render(K2dRenderEngine res) {
+    public void render(KRenderEngine2d res) {
         res.render(this);
 //        final Color originalColor = graphics.getColor();
 //
