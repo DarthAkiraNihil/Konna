@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core.graphics;
 
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderEngine2d;
 import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
-import io.github.darthakiranihil.konna.core.graphics.shape.KTransform;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.graphics.shape;
 
-import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 public record KCircle(
     int x,
@@ -34,15 +34,15 @@ public record KCircle(
         this(x, y, r, outlineColor, null);
     }
 
-    public KCircle(final KIntVector2d coordinates, int r) {
+    public KCircle(final KVector2i coordinates, int r) {
         this(coordinates, r, null, null);
     }
 
-    public KCircle(final KIntVector2d coordinates, int r, final KColor outlineColor) {
+    public KCircle(final KVector2i coordinates, int r, final KColor outlineColor) {
         this(coordinates, r, outlineColor, null);
     }
 
-    public KCircle(final KIntVector2d coordinates, int r, final KColor outlineColor, final KColor fillColor) {
+    public KCircle(final KVector2i coordinates, int r, final KColor outlineColor, final KColor fillColor) {
         this(coordinates.x(), coordinates.y(), r, outlineColor, fillColor);
     }
 

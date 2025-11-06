@@ -1,7 +1,7 @@
 package io.github.darthakiranihil.konna.core.graphics.render;
 
 import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
-import io.github.darthakiranihil.konna.core.graphics.shape.KTransform;
+import io.github.darthakiranihil.konna.core.graphics.KTransform;
 
 public interface KRenderEngine2d {
     void render(KRectangle rect);

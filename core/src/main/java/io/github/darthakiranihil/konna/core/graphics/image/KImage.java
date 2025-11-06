@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.graphics.shape;
+package io.github.darthakiranihil.konna.core.graphics.image;
 
 import io.github.darthakiranihil.konna.core.engine.except.KIOException;
 import io.github.darthakiranihil.konna.core.graphics.KShader;
-import io.github.darthakiranihil.konna.core.struct.KIntVector2d;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.util.KCopyable;
 
@@ -40,7 +40,7 @@ public record KImage(
         }
     }
 
-    public KImage slice(final KIntVector2d from, final KSize size) {
+    public KImage slice(final KVector2i from, final KSize size) {
         return new KImage(
             this.raw.getSubimage(
                 from.x(),

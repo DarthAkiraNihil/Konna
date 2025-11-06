@@ -1,6 +1,6 @@
 package io.github.darthakiranihil.konna.core.graphics;
 
-import io.github.darthakiranihil.konna.core.graphics.shape.KImage;
+import io.github.darthakiranihil.konna.core.graphics.image.KImage;
 
 public interface KShader {
 
