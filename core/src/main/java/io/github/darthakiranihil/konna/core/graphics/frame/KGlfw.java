@@ -1,4 +1,4 @@
-package io.github.darthakiranihil.konna.core.graphics.window;
+package io.github.darthakiranihil.konna.core.graphics.frame;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;

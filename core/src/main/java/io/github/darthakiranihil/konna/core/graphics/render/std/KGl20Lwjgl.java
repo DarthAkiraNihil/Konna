@@ -19,12 +19,17 @@ package io.github.darthakiranihil.konna.core.graphics.render.std;
 import io.github.darthakiranihil.konna.core.graphics.render.KGl20;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import org.lwjgl.PointerBuffer;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
 
 import java.nio.*;
 
 public class KGl20Lwjgl extends KObject implements KGl20 {
 
+    @Override
+    public void createCapabilities() {
+        GL.createCapabilities();
+    }
 
     @Override
     public void glEnable(int target) {

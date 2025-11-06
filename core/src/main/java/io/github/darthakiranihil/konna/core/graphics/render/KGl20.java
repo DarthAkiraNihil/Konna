@@ -5,7 +5,7 @@ import org.lwjgl.PointerBuffer;
 import java.nio.*;
 
 
-public interface KGl20 {
+public interface KGl20 extends KGl {
 
     // GL 1.0 Constants
     int

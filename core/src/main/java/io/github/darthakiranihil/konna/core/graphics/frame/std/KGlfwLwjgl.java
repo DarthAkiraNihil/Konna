@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.graphics.window.std;
+package io.github.darthakiranihil.konna.core.graphics.frame.std;
 
-import io.github.darthakiranihil.konna.core.graphics.window.KGlfw;
+import io.github.darthakiranihil.konna.core.graphics.frame.KGlfw;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
