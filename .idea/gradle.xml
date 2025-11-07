@@ -9,9 +9,22 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/backend" />
+            <option value="$PROJECT_DIR$/backend/backend-lwjgl" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/libfrontend" />
+            <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
           </set>
         </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend/backend-glfw-lwjgl" />
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/libfrontend/gl20" />
       </GradleProjectSettings>
     </option>
   </component>

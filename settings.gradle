@@ -7,3 +7,10 @@ pluginManagement {
 
 rootProject.name = 'Konna'
 include 'core'
+
+include 'libfrontend:libfrontend-glfw'
+findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
+
+include 'backend:backend-lwjgl'
+findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
+
