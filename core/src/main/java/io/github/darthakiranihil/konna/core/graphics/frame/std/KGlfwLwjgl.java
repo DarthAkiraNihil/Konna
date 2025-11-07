@@ -16,7 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.graphics.frame.std;
 
-import io.github.darthakiranihil.konna.core.graphics.frame.KGlfw;
+import io.github.darthakiranihil.konna.core.graphics.frontend.glfw.KGlfw;
+import io.github.darthakiranihil.konna.core.graphics.frontend.glfw.KGlfwErrorCallback;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
@@ -64,7 +65,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public GLFWErrorCallback glfwSetErrorCallback(GLFWErrorCallbackI cbfun) {
+    public KGlfwErrorCallback glfwSetErrorCallback(KGlfwErrorCallback cbfun) {
         return GLFW.glfwSetErrorCallback(cbfun);
     }
 

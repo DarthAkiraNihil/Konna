@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.graphics.frame.std;
+package io.github.darthakiranihil.konna.core.graphics.frontend.glfw;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.graphics.except.KInvalidGraphicsStateException;
 import io.github.darthakiranihil.konna.core.graphics.frame.KFrame;
-import io.github.darthakiranihil.konna.core.graphics.frame.KGlfw;
 import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;

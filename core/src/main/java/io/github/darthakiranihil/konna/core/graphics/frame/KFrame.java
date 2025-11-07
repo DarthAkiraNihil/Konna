@@ -16,17 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.graphics.frame;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.graphics.KCanvas;
-import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
 import io.github.darthakiranihil.konna.core.input.KKeyListener;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
-
-import java.awt.*;
-import java.awt.event.*;
 
 @KExcludeFromGeneratedCoverageReport
 public interface KFrame {

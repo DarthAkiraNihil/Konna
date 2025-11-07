@@ -1,12 +1,12 @@
-package io.github.darthakiranihil.konna.core.graphics.frame;
+package io.github.darthakiranihil.konna.core.graphics.frontend.glfw;
 
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.glfw.*;
+//import org.lwjgl.glfw.*;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
 
 public interface KGlfw {
 
@@ -455,14 +455,14 @@ public interface KGlfw {
     boolean glfwInit();
     void glfwTerminate();
     void glfwInitHint(int hint, int value);
-    void glfwInitAllocator(GLFWAllocator allocator);
+    void glfwInitAllocator(KGlfwAllocator allocator);
     void glfwGetVersion(IntBuffer major, IntBuffer minor, IntBuffer rev);
     String glfwGetVersionString();
-    int glfwGetError(PointerBuffer description);
-    GLFWErrorCallback glfwSetErrorCallback(GLFWErrorCallbackI cbfun);
+    int glfwGetError(LongBuffer description);
+    KGlfwErrorCallback glfwSetErrorCallback(KGlfwErrorCallback cbfun);
     int glfwGetPlatform();
     boolean glfwPlatformSupported(int platform);
-    PointerBuffer glfwGetMonitors();
+    LongBuffer glfwGetMonitors();
     long glfwGetPrimaryMonitor();
     void glfwGetMonitorPos(long monitor, IntBuffer xpos, IntBuffer ypos);
     void glfwGetMonitorWorkarea(
@@ -477,12 +477,12 @@ public interface KGlfw {
     String glfwGetMonitorName(long monitor);
     void glfwSetMonitorUserPointer(long monitor, long pointer);
     long glfwGetMonitorUserPointer(long monitor);
-    GLFWMonitorCallback glfwSetMonitorCallback(GLFWMonitorCallbackI cbfun);
-    GLFWVidMode.Buffer glfwGetVideoModes(long monitor);
-    GLFWVidMode glfwGetVideoMode(long monitor);
+    KGlfwMonitorCallback glfwSetMonitorCallback(KGlfwMonitorCallback cbfun);
+    KGlfwVidMode[] glfwGetVideoModes(long monitor);
+    KGlfwVidMode glfwGetVideoMode(long monitor);
     void glfwSetGamma(long monitor, float gamma);
-    GLFWGammaRamp glfwGetGammaRamp(long monitor);
-    void glfwSetGammaRamp(long monitor, GLFWGammaRamp ramp);
+    KGlfwGammaRamp glfwGetGammaRamp(long monitor);
+    void glfwSetGammaRamp(long monitor, KGlfwGammaRamp ramp);
     void glfwDefaultWindowHints();
     void glfwWindowHint(int hint, int value);
     void glfwWindowHintString(int hint, ByteBuffer value);
@@ -495,7 +495,7 @@ public interface KGlfw {
     String glfwGetWindowTitle(long window);
     void glfwSetWindowTitle(long window, ByteBuffer title);
     void glfwSetWindowTitle(long window, CharSequence title);
-    void glfwSetWindowIcon(long window, GLFWImage.Buffer images);
+    void glfwSetWindowIcon(long window, KGlfwImage[] images);
     void glfwGetWindowPos(long window, IntBuffer xpos, IntBuffer ypos);
     void glfwSetWindowPos(long window, int xpos, int ypos);
     void glfwGetWindowSize(long window, IntBuffer width, IntBuffer height);
@@ -540,29 +540,29 @@ public interface KGlfw {
     void glfwSetWindowAttrib(long window, int attrib, int value);
     void glfwSetWindowUserPointer(long window, long pointer);
     long glfwGetWindowUserPointer(long window);
-    GLFWWindowPosCallback glfwSetWindowPosCallback(long window, GLFWWindowPosCallbackI cbfun);
-    GLFWWindowSizeCallback glfwSetWindowSizeCallback(long window, GLFWWindowSizeCallbackI cbfun);
-    GLFWWindowCloseCallback glfwSetWindowCloseCallback(long window, GLFWWindowCloseCallbackI cbfun);
-    GLFWWindowRefreshCallback glfwSetWindowRefreshCallback(
+    KGlfwWindowPosCallback glfwSetWindowPosCallback(long window, KGlfwWindowPosCallback cbfun);
+    KGlfwWindowSizeCallback glfwSetWindowSizeCallback(long window, KGlfwWindowSizeCallback cbfun);
+    KGlfwWindowCloseCallback glfwSetWindowCloseCallback(long window, KGlfwWindowCloseCallback cbfun);
+    KGlfwWindowRefreshCallback glfwSetWindowRefreshCallback(
         long window,
-        GLFWWindowRefreshCallbackI cbfun
+        KGlfwWindowRefreshCallback cbfun
     );
-    GLFWWindowFocusCallback glfwSetWindowFocusCallback(long window, GLFWWindowFocusCallbackI cbfun);
-    GLFWWindowIconifyCallback glfwSetWindowIconifyCallback(
+    KGlfwWindowFocusCallback glfwSetWindowFocusCallback(long window, KGlfwWindowFocusCallback cbfun);
+    KGlfwWindowIconifyCallback glfwSetWindowIconifyCallback(
         long window,
-        GLFWWindowIconifyCallbackI cbfun
+        KGlfwWindowIconifyCallback cbfun
     );
-    GLFWWindowMaximizeCallback glfwSetWindowMaximizeCallback(
+    KGlfwWindowMaximizeCallback glfwSetWindowMaximizeCallback(
         long window,
-        GLFWWindowMaximizeCallbackI cbfun
+        KGlfwWindowMaximizeCallback cbfun
     );
-    GLFWFramebufferSizeCallback glfwSetFramebufferSizeCallback(
+    KGlfwFramebufferSizeCallback glfwSetFramebufferSizeCallback(
         long window,
-        GLFWFramebufferSizeCallbackI cbfun
+        KGlfwFramebufferSizeCallback cbfun
     );
-    GLFWWindowContentScaleCallback glfwSetWindowContentScaleCallback(
+    KGlfwWindowContentScaleCallback glfwSetWindowContentScaleCallback(
         long window,
-        GLFWWindowContentScaleCallbackI cbfun
+        KGlfwWindowContentScaleCallback cbfun
     );
     void glfwPollEvents();
     void glfwWaitEvents();
@@ -577,7 +577,7 @@ public interface KGlfw {
     int glfwGetMouseButton(long window, int button);
     void glfwGetCursorPos(long window, DoubleBuffer xpos, DoubleBuffer ypos);
     void glfwSetCursorPos(long window, double xpos, double ypos);
-    long glfwCreateCursor(GLFWImage image, int xhot, int yhot);
+    long glfwCreateCursor(KGlfwImage image, int xhot, int yhot);
     long glfwCreateStandardCursor(int shape);
     void glfwDestroyCursor(long cursor);
     void glfwSetCursor(long window, long cursor);
@@ -591,20 +591,20 @@ public interface KGlfw {
     void glfwSetPreeditCursorRectangle(long window, int x, int y, int w, int h);
     void glfwResetPreeditText(long window);
     IntBuffer glfwGetPreeditCandidate(long window, int index);
-    GLFWKeyCallback glfwSetKeyCallback(long window, GLFWKeyCallbackI cbfun);
-    GLFWCharCallback glfwSetCharCallback(long window, GLFWCharCallbackI cbfun);
-    GLFWCharModsCallback glfwSetCharModsCallback(long window, GLFWCharModsCallbackI cbfun);
-    GLFWPreeditCallback glfwSetPreeditCallback(long window, GLFWPreeditCallbackI cbfun);
-    GLFWIMEStatusCallback glfwSetIMEStatusCallback(long window, GLFWIMEStatusCallbackI cbfun);
-    GLFWPreeditCandidateCallback glfwSetPreeditCandidateCallback(
+    KGlfwKeyCallback glfwSetKeyCallback(long window, KGlfwKeyCallback cbfun);
+    KGlfwCharCallback glfwSetCharCallback(long window, KGlfwCharCallback cbfun);
+    KGlfwCharModsCallback glfwSetCharModsCallback(long window, KGlfwCharModsCallback cbfun);
+    KGlfwPreeditCallback glfwSetPreeditCallback(long window, KGlfwPreeditCallback cbfun);
+    KGlfwWimeStatusCallback glfwSetIMEStatusCallback(long window, KGlfwWimeStatusCallback cbfun);
+    KGlfwPreeditCandidateCallback glfwSetPreeditCandidateCallback(
         long window,
-        GLFWPreeditCandidateCallbackI cbfun
+        KGlfwPreeditCandidateCallback cbfun
     );
-    GLFWMouseButtonCallback glfwSetMouseButtonCallback(long window, GLFWMouseButtonCallbackI cbfun);
-    GLFWCursorPosCallback glfwSetCursorPosCallback(long window, GLFWCursorPosCallbackI cbfun);
-    GLFWCursorEnterCallback glfwSetCursorEnterCallback(long window, GLFWCursorEnterCallbackI cbfun);
-    GLFWScrollCallback glfwSetScrollCallback(long window, GLFWScrollCallbackI cbfun);
-    GLFWDropCallback glfwSetDropCallback(long window, GLFWDropCallbackI cbfun);
+    KGlfwMouseButtonCallback glfwSetMouseButtonCallback(long window, KGlfwMouseButtonCallback cbfun);
+    KGlfwCursorPosCallback glfwSetCursorPosCallback(long window, KGlfwCursorPosCallback cbfun);
+    KGlfwCursorEnterCallback glfwSetCursorEnterCallback(long window, KGlfwCursorEnterCallback cbfun);
+    KGlfwScrollCallback glfwSetScrollCallback(long window, KGlfwScrollCallback cbfun);
+    KGlfwDropCallback glfwSetDropCallback(long window, KGlfwDropCallback cbfun);
     boolean glfwJoystickPresent(int jid);
     FloatBuffer glfwGetJoystickAxes(int jid);
     ByteBuffer glfwGetJoystickButtons(int jid);
@@ -614,7 +614,7 @@ public interface KGlfw {
     void glfwSetJoystickUserPointer(int jid, long pointer);
     long glfwGetJoystickUserPointer(int jid);
     boolean glfwJoystickIsGamepad(int jid);
-    GLFWJoystickCallback glfwSetJoystickCallback(GLFWJoystickCallbackI cbfun);
+    KGlfwJoystickCallback glfwSetJoystickCallback(KGlfwJoystickCallback cbfun);
     boolean glfwUpdateGamepadMappings(ByteBuffer string);
     String glfwGetGamepadName(int jid);
     boolean glfwGetGamepadState(int jid, GLFWGamepadState state);

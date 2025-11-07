@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.graphics.render.std;
 
 import io.github.darthakiranihil.konna.core.graphics.render.KGl20;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
@@ -765,8 +766,16 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
     }
 
     @Override
-    public void glGetPointerv(int pname, final PointerBuffer params) {
-        GL20.glGetPointerv(pname, params);
+    public void glGetPointerv(int pname, final LongBuffer params) {
+        PointerBuffer buf = BufferUtils.createPointerBuffer(params.capacity());
+        buf.put(params);
+
+        GL20.glGetPointerv(pname, buf);
+
+        LongBuffer result = LongBuffer.allocate(params.capacity());
+        for (int i = 0; i < params.capacity(); i++) {
+            result.put(buf.get(i));
+        }
     }
 
     @Override
@@ -4447,9 +4456,19 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
         int mode,
         final IntBuffer count,
         int type,
-        final PointerBuffer indices
+        final LongBuffer indices
     ) {
-        GL20.glMultiDrawElements(mode, count, type, indices);
+
+        PointerBuffer indicesBuf = BufferUtils.createPointerBuffer(indices.capacity());
+        indicesBuf.put(indices);
+
+        GL20.glMultiDrawElements(mode, count, type, indicesBuf);
+
+        LongBuffer resultIndices = LongBuffer.allocate(indices.capacity());
+        for (int i = 0; i < indices.capacity(); i++) {
+            resultIndices.put(indicesBuf.get(i));
+        }
+
     }
 
     @Override
@@ -4687,9 +4706,19 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
         int mode,
         final int[] count,
         int type,
-        final PointerBuffer indices
+        final LongBuffer indices
     ) {
-        GL20.glMultiDrawElements(mode, count, type, indices);
+
+        PointerBuffer indicesBuf = BufferUtils.createPointerBuffer(indices.capacity());
+        indicesBuf.put(indices);
+
+        GL20.glMultiDrawElements(mode, count, type, indicesBuf);
+
+        LongBuffer resultIndices = LongBuffer.allocate(indices.capacity());
+        for (int i = 0; i < indices.capacity(); i++) {
+            resultIndices.put(indicesBuf.get(i));
+        }
+
     }
 
     @Override
@@ -4933,8 +4962,18 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
     }
 
     @Override
-    public void glGetBufferPointerv(int target, int pname, final PointerBuffer params) {
-        GL20.glGetBufferPointerv(target, pname, params);
+    public void glGetBufferPointerv(int target, int pname, final LongBuffer params) {
+
+        PointerBuffer paramsBuf = BufferUtils.createPointerBuffer(params.capacity());
+        paramsBuf.put(params);
+
+        GL20.glGetBufferPointerv(target, pname, paramsBuf);
+
+        LongBuffer resultParams = LongBuffer.allocate(params.capacity());
+        for (int i = 0; i < params.capacity(); i++) {
+            resultParams.put(paramsBuf.get(i));
+        }
+
     }
 
     @Override
@@ -5173,8 +5212,18 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
     }
 
     @Override
-    public void glShaderSource(int shader, final PointerBuffer strings, final IntBuffer length) {
-        GL20.glShaderSource(shader, strings, length);
+    public void glShaderSource(int shader, final LongBuffer strings, final IntBuffer length) {
+
+        PointerBuffer stringBuf = BufferUtils.createPointerBuffer(strings.capacity());
+        stringBuf.put(strings);
+
+        GL20.glShaderSource(shader, stringBuf, length);
+
+        LongBuffer resultStrings = LongBuffer.allocate(strings.capacity());
+        for (int i = 0; i < strings.capacity(); i++) {
+            resultStrings.put(stringBuf.get(i));
+        }
+
     }
 
     @Override
@@ -5759,8 +5808,18 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
     }
 
     @Override
-    public void glGetVertexAttribPointerv(int index, int pname, final PointerBuffer pointer) {
-        GL20.glGetVertexAttribPointerv(index, pname, pointer);
+    public void glGetVertexAttribPointerv(int index, int pname, final LongBuffer pointer) {
+
+        PointerBuffer pointerBuf = BufferUtils.createPointerBuffer(pointer.capacity());
+        pointerBuf.put(pointer);
+
+        GL20.glGetVertexAttribPointerv(index, pname, pointerBuf);
+
+        LongBuffer resultPointer = LongBuffer.allocate(pointer.capacity());
+        for (int i = 0; i < pointer.capacity(); i++) {
+            resultPointer.put(pointerBuf.get(i));
+        }
+
     }
 
     @Override
@@ -5799,8 +5858,16 @@ public class KGl20Lwjgl extends KObject implements KGl20 {
     }
 
     @Override
-    public void glShaderSource(int shader, final PointerBuffer strings, int[] length) {
-        GL20.glShaderSource(shader, strings, length);
+    public void glShaderSource(int shader, final LongBuffer strings, int[] length) {
+        PointerBuffer stringBuf = BufferUtils.createPointerBuffer(strings.capacity());
+        stringBuf.put(strings);
+
+        GL20.glShaderSource(shader, stringBuf, length);
+
+        LongBuffer resultStrings = LongBuffer.allocate(strings.capacity());
+        for (int i = 0; i < strings.capacity(); i++) {
+            resultStrings.put(stringBuf.get(i));
+        }
     }
 
     @Override

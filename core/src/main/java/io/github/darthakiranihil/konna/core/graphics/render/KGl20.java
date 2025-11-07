@@ -1,7 +1,5 @@
 package io.github.darthakiranihil.konna.core.graphics.render;
 
-import org.lwjgl.PointerBuffer;
-
 import java.nio.*;
 
 
@@ -1249,7 +1247,7 @@ public interface KGl20 extends KGl {
     void glGetPixelMapusv(int map, long data);
     void glGetPixelMapuiv(int map, IntBuffer data);
     void glGetPixelMapuiv(int map, long data);
-    void glGetPointerv(int pname, PointerBuffer params);
+    void glGetPointerv(int pname, LongBuffer params);
     long glGetPointer(int pname);
     void glGetPolygonStipple(ByteBuffer pattern);
     void glGetPolygonStipple(long pattern);
@@ -2148,7 +2146,7 @@ public interface KGl20 extends KGl {
     void glFogCoordPointer(int type, int stride, ShortBuffer pointer);
     void glFogCoordPointer(int type, int stride, FloatBuffer pointer);
     void glMultiDrawArrays(int mode, IntBuffer first, IntBuffer count);
-    void glMultiDrawElements(int mode, IntBuffer count, int type, PointerBuffer indices);
+    void glMultiDrawElements(int mode, IntBuffer count, int type, LongBuffer indices);
     void glPointParameterf(int pname, float param);
     void glPointParameteri(int pname, int param);
     void glPointParameterfv(int pname, FloatBuffer params);
@@ -2194,7 +2192,7 @@ public interface KGl20 extends KGl {
     void glFogCoordfv(float[] coord);
     void glFogCoorddv(double[] coord);
     void glMultiDrawArrays(int mode, int[] first, int[] count);
-    void glMultiDrawElements(int mode, int[] count, int type, PointerBuffer indices);
+    void glMultiDrawElements(int mode, int[] count, int type, LongBuffer indices);
     void glPointParameterfv(int pname, float[] params);
     void glPointParameteriv(int pname, int[] params);
     void glSecondaryColor3sv(short[] v);
@@ -2245,7 +2243,7 @@ public interface KGl20 extends KGl {
     boolean glUnmapBuffer(int target);
     void glGetBufferParameteriv(int target, int pname, IntBuffer params);
     int glGetBufferParameteri(int target, int pname);
-    void glGetBufferPointerv(int target, int pname, PointerBuffer params);
+    void glGetBufferPointerv(int target, int pname, LongBuffer params);
     long glGetBufferPointer(int target, int pname);
     void glGenQueries(IntBuffer ids);
     int glGenQueries();
@@ -2296,7 +2294,7 @@ public interface KGl20 extends KGl {
     boolean glIsShader(int shader);
     void glAttachShader(int program, int shader);
     void glDetachShader(int program, int shader);
-    void glShaderSource(int shader, PointerBuffer strings, IntBuffer length);
+    void glShaderSource(int shader, LongBuffer strings, IntBuffer length);
     void glShaderSource(int shader, CharSequence... strings);
     void glShaderSource(int shader, CharSequence string);
     void glCompileShader(int shader);
@@ -2399,7 +2397,7 @@ public interface KGl20 extends KGl {
     int glGetVertexAttribi(int index, int pname);
     void glGetVertexAttribfv(int index, int pname, FloatBuffer params);
     void glGetVertexAttribdv(int index, int pname, DoubleBuffer params);
-    void glGetVertexAttribPointerv(int index, int pname, PointerBuffer pointer);
+    void glGetVertexAttribPointerv(int index, int pname, LongBuffer pointer);
     long glGetVertexAttribPointer(int index, int pname);
     void glDrawBuffers(IntBuffer bufs);
     void glDrawBuffers(int buf);
@@ -2407,7 +2405,7 @@ public interface KGl20 extends KGl {
     void glStencilOpSeparate(int face, int sfail, int dpfail, int dppass);
     void glStencilFuncSeparate(int face, int func, int ref, int mask);
     void glStencilMaskSeparate(int face, int mask);
-    void glShaderSource(int shader, PointerBuffer strings, int [] length);
+    void glShaderSource(int shader, LongBuffer strings, int [] length);
     void glUniform1fv(int location, float[] value);
     void glUniform2fv(int location, float[] value);
     void glUniform3fv(int location, float[] value);

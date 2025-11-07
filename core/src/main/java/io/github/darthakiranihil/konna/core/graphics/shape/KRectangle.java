@@ -16,21 +16,32 @@
 
 package io.github.darthakiranihil.konna.core.graphics.shape;
 
-import io.github.darthakiranihil.konna.core.graphics.render.KRenderEngine2d;
-import io.github.darthakiranihil.konna.core.graphics.KRenderable;
+import io.github.darthakiranihil.konna.core.graphics.KTransform;
+import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-import java.awt.*;
+public class KRectangle implements KShape {
 
-public record KRectangle(
-    int x,
-    int y,
-    int width,
-    int height,
-    KColor outlineColor,
-    KColor fillColor
-) implements KRenderable {
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int height;
+
+    private KColor outlineColor;
+    private KColor fillColor;
+    private final KTransform transform;
+
+    public KRectangle(int x, int y, int width, int height, final KColor outlineColor, final KColor fillColor) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.outlineColor = outlineColor;
+        this.fillColor = fillColor;
+        this.transform = new KTransform();
+    }
 
     public KRectangle(final KVector2i coordinates, final KSize size) {
         this(coordinates, size, null, null);
@@ -77,28 +88,58 @@ public record KRectangle(
     }
 
     @Override
-    public void render(KRenderEngine2d res) {
-        res.render(this);
-//        final Color originalColor = graphics.getColor();
-//
-//        if (this.fillColor() != null) {
-//            graphics.setColor(this.fillColor().raw());
-//            graphics.fillRect(this.x(), this.y(), this.width(), this.height());
-//        }
-//
-//        if (this.outlineColor() != null) {
-//            graphics.setColor(this.outlineColor().raw());
-//        } else {
-//            graphics.setColor(originalColor);
-//        }
-//
-//        graphics.drawRect(this.x(), this.y(), this.width(), this.height());
-//        graphics.setColor(originalColor);
+    public int x() {
+        return this.x;
     }
 
-    public Shape raw() {
-        return new Rectangle(this.x, this.y, this.width, this.height);
+    @Override
+    public int y() {
+        return this.y;
     }
 
+    public int width() {
+        return this.width;
+    }
 
+    public int height() {
+        return this.height;
+    }
+
+    public KColor getOutlineColor() {
+        return this.outlineColor;
+    }
+
+    public KColor getFillColor() {
+        return this.fillColor;
+    }
+
+    @Override
+    public void render(final KRenderFrontend rf) {
+        rf.render(this);
+    }
+
+    @Override
+    public KTransform getTransform() {
+        return this.transform;
+    }
+
+    @Override
+    public void rotate(double theta) {
+        this.transform.rotate(theta);
+    }
+
+    @Override
+    public void rotate(double theta, KVector2i pivot) {
+        this.transform.rotate(theta, pivot);
+    }
+
+    @Override
+    public void scale(KVector2d factor) {
+        this.transform.scale(factor);
+    }
+
+    @Override
+    public void translate(KVector2i value) {
+        this.transform.translate(value);
+    }
 }
