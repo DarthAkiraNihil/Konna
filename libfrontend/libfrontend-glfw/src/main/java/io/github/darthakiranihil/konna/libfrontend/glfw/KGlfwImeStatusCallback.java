@@ -17,12 +17,10 @@
 package io.github.darthakiranihil.konna.libfrontend.glfw;
 
 @FunctionalInterface
-public interface KGlfwWindowContentScaleCallback {
+public interface KGlfwImeStatusCallback {
 
     void invoke(
-        long window,
-        float xscale,
-        float yscale
+        long window
     );
 
 }

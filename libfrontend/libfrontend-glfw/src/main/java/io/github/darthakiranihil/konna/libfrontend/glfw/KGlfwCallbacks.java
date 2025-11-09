@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package main.java.io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.libfrontend.glfw;
 
-@FunctionalInterface
-public interface KGlfwWimeStatusCallback {
+public interface KGlfwCallbacks {
 
-    void invoke(
-        long window
-    );
+    void glfwFreeCallbacks(long window);
+    void freeCallback(KGlfwErrorCallback callback);
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package main.java.io.github.darthakiranihil.konna.backend.lwjgl;
+package io.github.darthakiranihil.konna.backend.lwjgl;
 
 import io.github.darthakiranihil.konna.core.graphics.render.KGl20;
 import io.github.darthakiranihil.konna.core.object.KObject;

@@ -90,5 +90,6 @@ public record KTag(String name) {
         public static final KTag EVENT = new KTag("event");
         public static final KTag GRAPHICS = new KTag("graphics");
         public static final KTag ASSET = new KTag("asset");
+        public static final KTag WRAPPER = new KTag("wrapper");
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package main.java.io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.libfrontend.glfw;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.graphics.except.KInvalidGraphicsStateException;
@@ -22,25 +22,28 @@ import io.github.darthakiranihil.konna.core.graphics.frame.KFrame;
 import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
-
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
-import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class KGlfwFrame extends KObject implements KFrame {
 
     private final KGlfw glfw;
+    private final KGlfwCallbacks glfwCallbacks;
+    private final IntBuffer pWidth;
+    private final IntBuffer pHeight;
+
     private long handle;
     private KSize currentSize;
 
+
     public KGlfwFrame(
         @KInject final KGlfw glfw,
+        @KInject final KGlfwCallbacks glfwCallbacks,
         final String title,
         final KSize size
     ) {
         this.glfw = glfw;
+        this.glfwCallbacks = glfwCallbacks;
 
         if (!this.glfw.glfwInit()) {
             throw new KInvalidGraphicsStateException(
@@ -64,6 +67,10 @@ public class KGlfwFrame extends KObject implements KFrame {
 
         glfw.glfwMakeContextCurrent(this.handle);
         glfw.glfwSwapInterval(1);
+
+        this.pHeight = IntBuffer.allocate(1);
+        this.pWidth = IntBuffer.allocate(1);
+        this.updateSize();
 
     }
 
@@ -95,11 +102,11 @@ public class KGlfwFrame extends KObject implements KFrame {
 
     @Override
     public void terminate() {
-        Callbacks.glfwFreeCallbacks(this.handle);
+        this.glfwCallbacks.glfwFreeCallbacks(this.handle);
 
         this.glfw.glfwDestroyWindow(this.handle);
         this.glfw.glfwTerminate();
-        this.glfw.glfwSetErrorCallback(null).free();
+        this.glfwCallbacks.freeCallback(this.glfw.glfwSetErrorCallback(null));
     }
 
     @Override
@@ -113,13 +120,9 @@ public class KGlfwFrame extends KObject implements KFrame {
     }
 
     private void updateSize() {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1);
-            IntBuffer pHeight = stack.mallocInt(1);
+        this.glfw.glfwGetWindowSize(this.handle, this.pWidth, this.pHeight);
+        this.currentSize = new KSize(pWidth.get(0), pHeight.get(0));
 
-            this.glfw.glfwGetWindowSize(this.handle, pWidth, pHeight);
-            this.currentSize = new KSize(pWidth.get(0), pHeight.get(0));
-        }
     }
 
     @Override

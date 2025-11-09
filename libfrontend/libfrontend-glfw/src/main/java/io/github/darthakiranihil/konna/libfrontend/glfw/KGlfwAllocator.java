@@ -1,4 +1,4 @@
-package main.java.io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.libfrontend.glfw;
 
 public interface KGlfwAllocator {
 

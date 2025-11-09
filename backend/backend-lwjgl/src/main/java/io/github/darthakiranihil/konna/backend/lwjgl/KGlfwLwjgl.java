@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package main.java.io.github.darthakiranihil.konna.backend.lwjgl;
+package io.github.darthakiranihil.konna.backend.lwjgl;
 
-import io.github.darthakiranihil.konna.core.graphics.frontend.glfw.KGlfw;
-import io.github.darthakiranihil.konna.core.graphics.frontend.glfw.KGlfwErrorCallback;
+import io.github.darthakiranihil.konna.libfrontend.glfw.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.*;
 
-import java.nio.ByteBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.*;
 
 public final class KGlfwLwjgl extends KObject implements KGlfw {
 
@@ -60,7 +56,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public int glfwGetError(PointerBuffer description) {
+    public int glfwGetError(LongBuffer description) {
         return GLFW.glfwGetError(description);
     }
 
@@ -80,7 +76,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public PointerBuffer glfwGetMonitors() {
+    public LongBuffer glfwGetMonitors() {
         return GLFW.glfwGetMonitors();
     }
 

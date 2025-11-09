@@ -1,4 +1,4 @@
-package main.java.io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.libfrontend.glfw;
 
 //import org.lwjgl.glfw.*;
 
@@ -595,7 +595,7 @@ public interface KGlfw {
     KGlfwCharCallback glfwSetCharCallback(long window, KGlfwCharCallback cbfun);
     KGlfwCharModsCallback glfwSetCharModsCallback(long window, KGlfwCharModsCallback cbfun);
     KGlfwPreeditCallback glfwSetPreeditCallback(long window, KGlfwPreeditCallback cbfun);
-    KGlfwWimeStatusCallback glfwSetIMEStatusCallback(long window, KGlfwWimeStatusCallback cbfun);
+    KGlfwImeStatusCallback glfwSetImeStatusCallback(long window, KGlfwImeStatusCallback cbfun);
     KGlfwPreeditCandidateCallback glfwSetPreeditCandidateCallback(
         long window,
         KGlfwPreeditCandidateCallback cbfun

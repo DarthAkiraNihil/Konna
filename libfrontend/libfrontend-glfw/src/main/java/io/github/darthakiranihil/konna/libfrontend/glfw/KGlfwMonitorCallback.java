@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package main.java.io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.libfrontend.glfw;
 
 @FunctionalInterface
 public interface KGlfwMonitorCallback {
