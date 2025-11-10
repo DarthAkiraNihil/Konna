@@ -19,6 +19,6 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
 @FunctionalInterface
 public interface KGlfwReallocateFunction {
 
-    void invoke(long block, long size, long user);
+    long invoke(long block, long size, long user);
 
 }

@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.backend.lwjgl;
 
-import io.github.darthakiranihil.konna.core.graphics.render.KGl20;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.libfrontend.gl20.KGl20;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.GL;
@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL20;
 
 import java.nio.*;
 
-public class KGl20Lwjgl extends KObject implements KGl20 {
+public final class KGl20Lwjgl extends KObject implements KGl20 {
 
     @Override
     public void createCapabilities() {

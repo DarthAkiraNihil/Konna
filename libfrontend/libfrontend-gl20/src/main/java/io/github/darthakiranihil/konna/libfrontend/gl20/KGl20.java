@@ -1,10 +1,11 @@
-package io.github.darthakiranihil.konna.core.graphics.render;
+package io.github.darthakiranihil.konna.libfrontend.gl20;
 
 import java.nio.*;
 
 
-public interface KGl20 extends KGl {
+public interface KGl20 {
 
+    void createCapabilities();
     // GL 1.0 Constants
     int
         GL_ACCUM  = 0x100,

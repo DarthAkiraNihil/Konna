@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2025-present the original author or authors.
  *
@@ -14,26 +15,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.graphics.render.std;
+package io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper;
 
-import io.github.darthakiranihil.konna.core.graphics.render.KGl20;
-import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
-import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KWrapper;
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwWindowPosCallback;
+import org.lwjgl.glfw.GLFWWindowPosCallbackI;
 
-public class KGl20RenderFrontend extends KObject implements KRenderFrontend {
+public final class KGlfwWindowPosCallbackLwjglUnwrapper extends KWrapper<GLFWWindowPosCallbackI, KGlfwWindowPosCallback> {
 
-    private final KGl20 gl;
-
-    public KGl20RenderFrontend(KGl20 gl) {
-        this.gl = gl;
+    public KGlfwWindowPosCallbackLwjglUnwrapper(
+        GLFWWindowPosCallbackI original
+    ) {
+        super(original);
     }
 
     @Override
-    public void render(KRectangle rectangle) {
-
-
-
-
+    protected KGlfwWindowPosCallback wrap(GLFWWindowPosCallbackI original) {
+        return original::invoke;
     }
 }

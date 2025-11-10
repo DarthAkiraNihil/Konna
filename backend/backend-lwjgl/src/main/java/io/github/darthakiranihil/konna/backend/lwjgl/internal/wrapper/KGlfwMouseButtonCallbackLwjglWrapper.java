@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2025-present the original author or authors.
  *
@@ -14,32 +15,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
+package io.github.darthakiranihil.konna.backend.lwjgl.internal.wrapper;
 
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.object.KWrapper;
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwMouseButtonCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
-public abstract class KWrapper<O, W> extends KObject {
+public final class KGlfwMouseButtonCallbackLwjglWrapper extends KWrapper<KGlfwMouseButtonCallback, GLFWMouseButtonCallbackI> {
 
-    private final W wrapped;
-
-    public KWrapper(
-        final O original
+    public KGlfwMouseButtonCallbackLwjglWrapper(
+        KGlfwMouseButtonCallback original
     ) {
-        super(
-            "wrapped_object",
-            KStructUtils.setOfTags(KTag.DefaultTags.WRAPPER)
-        );
-        if (original == null) {
-            this.wrapped = null;
-        } else {
-            this.wrapped = this.wrap(original);
-        }
+        super(original);
     }
 
-    protected abstract W wrap(final O original);
-
-    public W wrapped() {
-        return this.wrapped;
+    @Override
+    protected GLFWMouseButtonCallbackI wrap(KGlfwMouseButtonCallback original) {
+        return original::invoke;
     }
-
 }

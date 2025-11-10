@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper;
 
-public interface KGlfwCallbacks {
+import io.github.darthakiranihil.konna.core.object.KWrapper;
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwErrorCallback;
+import org.lwjgl.glfw.GLFWErrorCallbackI;
 
-    void glfwFreeCallbacks(long window);
-    void freeLastCallback(long window);
+public final class KGlfwErrorCallbackLwjglUnwrapper extends KWrapper<GLFWErrorCallbackI, KGlfwErrorCallback> {
 
+    public KGlfwErrorCallbackLwjglUnwrapper(
+        GLFWErrorCallbackI original
+    ) {
+        super(original);
+    }
+
+    @Override
+    protected KGlfwErrorCallback wrap(GLFWErrorCallbackI original) {
+        return original::invoke;
+    }
 }

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2025-present the original author or authors.
  *
@@ -14,32 +15,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
+package io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper;
 
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.object.KWrapper;
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwWindowCloseCallback;
+import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
 
-public abstract class KWrapper<O, W> extends KObject {
+public final class KGlfwWindowCloseCallbackLwjglUnwrapper extends KWrapper<GLFWWindowCloseCallbackI, KGlfwWindowCloseCallback> {
 
-    private final W wrapped;
-
-    public KWrapper(
-        final O original
+    public KGlfwWindowCloseCallbackLwjglUnwrapper(
+        GLFWWindowCloseCallbackI original
     ) {
-        super(
-            "wrapped_object",
-            KStructUtils.setOfTags(KTag.DefaultTags.WRAPPER)
-        );
-        if (original == null) {
-            this.wrapped = null;
-        } else {
-            this.wrapped = this.wrap(original);
-        }
+        super(original);
     }
 
-    protected abstract W wrap(final O original);
-
-    public W wrapped() {
-        return this.wrapped;
+    @Override
+    protected KGlfwWindowCloseCallback wrap(GLFWWindowCloseCallbackI original) {
+        return original::invoke;
     }
-
 }

@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.libfrontend.gl20;
 
-public interface KGlfwCallbacks {
+import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
-    void glfwFreeCallbacks(long window);
-    void freeLastCallback(long window);
+public class KGl20RenderFrontend extends KObject implements KRenderFrontend {
 
+    private final KGl20 gl;
+
+    public KGl20RenderFrontend(KGl20 gl) {
+        this.gl = gl;
+    }
+
+    @Override
+    public void render(KRectangle rectangle) {
+
+    }
 }

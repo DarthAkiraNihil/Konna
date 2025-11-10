@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2025-present the original author or authors.
  *
@@ -14,11 +15,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper;
 
-public interface KGlfwCallbacks {
+import io.github.darthakiranihil.konna.core.object.KWrapper;
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwMonitorCallback;
+import org.lwjgl.glfw.GLFWMonitorCallbackI;
 
-    void glfwFreeCallbacks(long window);
-    void freeLastCallback(long window);
+public final class KGlfwMonitorCallbackLwjglUnwrapper extends KWrapper<GLFWMonitorCallbackI, KGlfwMonitorCallback> {
 
+    public KGlfwMonitorCallbackLwjglUnwrapper(
+        GLFWMonitorCallbackI original
+    ) {
+        super(original);
+    }
+
+    @Override
+    protected KGlfwMonitorCallback wrap(GLFWMonitorCallbackI original) {
+        return original::invoke;
+    }
 }

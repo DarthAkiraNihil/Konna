@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/backend/backend-lwjgl" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/libfrontend" />
+            <option value="$PROJECT_DIR$/libfrontend/libfrontend-gl20" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
           </set>
         </option>

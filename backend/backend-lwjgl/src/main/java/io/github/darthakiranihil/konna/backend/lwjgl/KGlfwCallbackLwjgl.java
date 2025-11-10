@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.glfw;
+package io.github.darthakiranihil.konna.backend.lwjgl;
 
-public interface KGlfwCallbacks {
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
+import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFW;
 
-    void glfwFreeCallbacks(long window);
-    void freeLastCallback(long window);
+public final class KGlfwCallbackLwjgl implements KGlfwCallbacks {
+
+    @Override
+    public void glfwFreeCallbacks(long window) {
+        Callbacks.glfwFreeCallbacks(window);
+    }
+
+    @Override
+    public void freeLastCallback(long window) {
+        var callback =GLFW.glfwSetCharCallback(window, null);
+        if (callback != null) {
+            callback.free();
+        }
+    }
 
 }

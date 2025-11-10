@@ -106,7 +106,7 @@ public class KGlfwFrame extends KObject implements KFrame {
 
         this.glfw.glfwDestroyWindow(this.handle);
         this.glfw.glfwTerminate();
-        this.glfwCallbacks.freeCallback(this.glfw.glfwSetErrorCallback(null));
+        this.glfwCallbacks.freeLastCallback(this.handle);
     }
 
     @Override

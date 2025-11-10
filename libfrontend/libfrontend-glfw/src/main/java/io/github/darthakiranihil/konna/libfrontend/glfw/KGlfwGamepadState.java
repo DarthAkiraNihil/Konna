@@ -16,5 +16,15 @@
 
 package io.github.darthakiranihil.konna.libfrontend.glfw;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
 public interface KGlfwGamepadState {
+
+    ByteBuffer getButtons();
+    void setButtons(ByteBuffer buttons);
+
+    FloatBuffer getAxes();
+    void setAxes(FloatBuffer axes);
+
 }

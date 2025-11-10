@@ -14,3 +14,6 @@ findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
 include 'backend:backend-lwjgl'
 findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
 
+
+include 'libfrontend:libfrontend-gl20'
+findProject(':libfrontend:libfrontend-gl20')?.name = 'libfrontend-gl20'
