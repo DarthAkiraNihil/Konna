@@ -16,9 +16,7 @@
 
 package io.github.darthakiranihil.konna.backend.lwjgl;
 
-import io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper.*;
-import io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper.KGlfwGammaRampLwjglUnwrapper;
-import io.github.darthakiranihil.konna.backend.lwjgl.internal.wrapper.*;
+
 import io.github.darthakiranihil.konna.libfrontend.glfw.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import org.lwjgl.BufferUtils;
@@ -47,11 +45,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
 
     @Override
     public void glfwInitAllocator(KGlfwAllocator allocator) {
-        var wrappedAllocator = new KGlfwAllocatorLwjglWrapper(allocator);
-
-        GLFW.glfwInitAllocator(
-            wrappedAllocator.wrapped()
-        );
+        GLFW.glfwInitAllocator(KGlfwLwjglWrapper.wrap(allocator));
     }
 
     @Override
@@ -74,9 +68,8 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     @Override
     public KGlfwErrorCallback glfwSetErrorCallback(KGlfwErrorCallback cbfun) {
 
-        var wrappedCallback = new KGlfwErrorCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetErrorCallback(wrappedCallback.wrapped());
-        return new KGlfwErrorCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetErrorCallback(KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
 
     }
 
@@ -149,9 +142,8 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     @Override
     public KGlfwMonitorCallback glfwSetMonitorCallback(KGlfwMonitorCallback cbfun) {
 
-        var wrappedCallback = new KGlfwMonitorCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetMonitorCallback(wrappedCallback.wrapped());
-        return new KGlfwMonitorCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetMonitorCallback(KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
 
     }
 
@@ -165,7 +157,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
 
         KGlfwVidMode[] unwrapped = new KGlfwVidMode[result.capacity()];
         for (int i = 0; i < result.capacity(); i++) {
-            unwrapped[i] = new KGlfwVidModeLwjglUnwrapper(result.get(i)).wrapped();
+            unwrapped[i] = KGlfwLwjglUnwrapper.wrap(result.get(i));
         }
         return unwrapped;
     }
@@ -173,9 +165,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     @Override
     public KGlfwVidMode glfwGetVideoMode(long monitor) {
 
-        return new KGlfwVidModeLwjglUnwrapper(
-            GLFW.glfwGetVideoMode(monitor)
-        ).wrapped();
+        return KGlfwLwjglUnwrapper.wrap(GLFW.glfwGetVideoMode(monitor));
 
     }
 
@@ -188,15 +178,13 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     public KGlfwGammaRamp glfwGetGammaRamp(long monitor) {
 
         var ramp = GLFW.glfwGetGammaRamp(monitor);
-        var wrapper = new KGlfwGammaRampLwjglUnwrapper(ramp);
-        return wrapper.wrapped();
+        return KGlfwLwjglUnwrapper.wrap(ramp);
 
     }
 
     @Override
     public void glfwSetGammaRamp(long monitor, KGlfwGammaRamp ramp) {
-        var wrapper = new KGlfwGammaRampLwjglWrapper(ramp);
-        GLFW.glfwSetGammaRamp(monitor, wrapper.wrapped());
+        GLFW.glfwSetGammaRamp(monitor, KGlfwLwjglWrapper.wrap(ramp));
     }
 
     @Override
@@ -263,8 +251,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     public void glfwSetWindowIcon(long window, KGlfwImage[] images) {
         GLFWImage.Buffer buffer = GLFWImage.create(images.length);
         for (int i = 0; i < images.length; i++) {
-            var wrapper = new KGlfwImageLwjglWrapper(images[i]);
-            buffer.put(i, wrapper.wrapped());
+            buffer.put(i, KGlfwLwjglWrapper.wrap(images[i]));
         }
         GLFW.glfwSetWindowIcon(window, buffer);
     }
@@ -400,65 +387,56 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
 
     @Override
     public KGlfwWindowPosCallback glfwSetWindowPosCallback(long window, KGlfwWindowPosCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowPosCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowPosCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowPosCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowPosCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowSizeCallback glfwSetWindowSizeCallback(long window, KGlfwWindowSizeCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowSizeCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowSizeCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowSizeCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowSizeCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowCloseCallback glfwSetWindowCloseCallback(long window, KGlfwWindowCloseCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowCloseCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowCloseCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowCloseCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowCloseCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowRefreshCallback glfwSetWindowRefreshCallback(long window, KGlfwWindowRefreshCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowRefreshCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowRefreshCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowRefreshCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowRefreshCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowFocusCallback glfwSetWindowFocusCallback(long window, KGlfwWindowFocusCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowFocusCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowFocusCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowFocusCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowFocusCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowIconifyCallback glfwSetWindowIconifyCallback(long window, KGlfwWindowIconifyCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowIconifyCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowIconifyCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowIconifyCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowIconifyCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowMaximizeCallback glfwSetWindowMaximizeCallback(long window, KGlfwWindowMaximizeCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowMaximizeCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowMaximizeCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowMaximizeCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowMaximizeCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwFramebufferSizeCallback glfwSetFramebufferSizeCallback(long window, KGlfwFramebufferSizeCallback cbfun) {
-        var wrappedCallback = new KGlfwFramebufferSizeCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetFramebufferSizeCallback(window, wrappedCallback.wrapped());
-        return new KGlfwFramebufferSizeCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetFramebufferSizeCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwWindowContentScaleCallback glfwSetWindowContentScaleCallback(long window, KGlfwWindowContentScaleCallback cbfun) {
-        var wrappedCallback = new KGlfwWindowContentScaleCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetWindowContentScaleCallback(window, wrappedCallback.wrapped());
-        return new KGlfwWindowContentScaleCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetWindowContentScaleCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
@@ -528,8 +506,7 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
 
     @Override
     public long glfwCreateCursor(KGlfwImage image, int xhot, int yhot) {
-        var wrapper = new KGlfwImageLwjglWrapper(image);
-        return GLFW.glfwCreateCursor(wrapper.wrapped(), xhot, yhot);
+        return GLFW.glfwCreateCursor(KGlfwLwjglWrapper.wrap(image), xhot, yhot);
     }
 
     @Override
@@ -569,79 +546,68 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
 
     @Override
     public KGlfwKeyCallback glfwSetKeyCallback(long window, KGlfwKeyCallback cbfun) {
-        var wrappedCallback = new KGlfwKeyCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetKeyCallback(window, wrappedCallback.wrapped());
-        return new KGlfwKeyCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetKeyCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwCharCallback glfwSetCharCallback(long window, KGlfwCharCallback cbfun) {
-        var wrappedCallback = new KGlfwCharCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetCharCallback(window, wrappedCallback.wrapped());
-        return new KGlfwCharCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetCharCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwCharModsCallback glfwSetCharModsCallback(long window, KGlfwCharModsCallback cbfun) {
-        var wrappedCallback = new KGlfwCharModsCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetCharModsCallback(window, wrappedCallback.wrapped());
-        return new KGlfwCharModsCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetCharModsCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwPreeditCallback glfwSetPreeditCallback(long window, KGlfwPreeditCallback cbfun) {
-        var wrappedCallback = new KGlfwPreeditCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetPreeditCallback(window, wrappedCallback.wrapped());
-        return new KGlfwPreeditCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetPreeditCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwImeStatusCallback glfwSetImeStatusCallback(long window, KGlfwImeStatusCallback cbfun) {
-        var wrappedCallback = new KGlfwImeStatusCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetIMEStatusCallback(window, wrappedCallback.wrapped());
-        return new KGlfwImeStatusCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetIMEStatusCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwPreeditCandidateCallback glfwSetPreeditCandidateCallback(long window, KGlfwPreeditCandidateCallback cbfun) {
-        var wrappedCallback = new KGlfwPreeditCandidateCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetPreeditCandidateCallback(window, wrappedCallback.wrapped());
-        return new KGlfwPreeditCandidateCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetPreeditCandidateCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwMouseButtonCallback glfwSetMouseButtonCallback(long window, KGlfwMouseButtonCallback cbfun) {
-        var wrappedCallback = new KGlfwMouseButtonCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetMouseButtonCallback(window, wrappedCallback.wrapped());
-        return new KGlfwMouseButtonCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetMouseButtonCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwCursorPosCallback glfwSetCursorPosCallback(long window, KGlfwCursorPosCallback cbfun) {
-        var wrappedCallback = new KGlfwCursorPosCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetCursorPosCallback(window, wrappedCallback.wrapped());
-        return new KGlfwCursorPosCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetCursorPosCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwCursorEnterCallback glfwSetCursorEnterCallback(long window, KGlfwCursorEnterCallback cbfun) {
-        var wrappedCallback = new KGlfwCursorEnterCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetCursorEnterCallback(window, wrappedCallback.wrapped());
-        return new KGlfwCursorEnterCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetCursorEnterCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwScrollCallback glfwSetScrollCallback(long window, KGlfwScrollCallback cbfun) {
-        var wrappedCallback = new KGlfwScrollCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetScrollCallback(window, wrappedCallback.wrapped());
-        return new KGlfwScrollCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetScrollCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
     public KGlfwDropCallback glfwSetDropCallback(long window, KGlfwDropCallback cbfun) {
-        var wrappedCallback = new KGlfwDropCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetDropCallback(window, wrappedCallback.wrapped());
-        return new KGlfwDropCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetDropCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
@@ -691,9 +657,8 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
 
     @Override
     public KGlfwJoystickCallback glfwSetJoystickCallback(KGlfwJoystickCallback cbfun) {
-        var wrappedCallback = new KGlfwJoystickCallbackLwjglWrapper(cbfun);
-        var result = GLFW.glfwSetJoystickCallback(wrappedCallback.wrapped());
-        return new KGlfwJoystickCallbackLwjglUnwrapper(result).wrapped();
+        var result = GLFW.glfwSetJoystickCallback(KGlfwLwjglWrapper.wrap(cbfun));
+        return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2025-present the original author or authors.
  *
@@ -15,22 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.backend.lwjgl.internal.unwrapper;
+package io.github.darthakiranihil.konna.backend.lwjgl;
 
-import io.github.darthakiranihil.konna.core.object.KWrapper;
-import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwWindowPosCallback;
-import org.lwjgl.glfw.GLFWWindowPosCallbackI;
+import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
+import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFW;
 
-public final class KGlfwWindowPosCallbackLwjglUnwrapper extends KWrapper<GLFWWindowPosCallbackI, KGlfwWindowPosCallback> {
+public final class KGlfwCallbacksLwjgl implements KGlfwCallbacks {
 
-    public KGlfwWindowPosCallbackLwjglUnwrapper(
-        GLFWWindowPosCallbackI original
-    ) {
-        super(original);
+    @Override
+    public void glfwFreeCallbacks(long window) {
+        Callbacks.glfwFreeCallbacks(window);
     }
 
     @Override
-    protected KGlfwWindowPosCallback wrap(GLFWWindowPosCallbackI original) {
-        return original::invoke;
+    public void freeLastCallback(long window) {
+        var callback =GLFW.glfwSetCharCallback(window, null);
+        if (callback != null) {
+            callback.free();
+        }
     }
+
 }
