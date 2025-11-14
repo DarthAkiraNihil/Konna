@@ -16,31 +16,28 @@
 
 package io.github.darthakiranihil.konna.core.graphics.shape;
 
-import io.github.darthakiranihil.konna.core.graphics.KTransform;
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public class KRectangle implements KShape {
+public class KRectangle extends KPolygon {
 
-    private final int x;
-    private final int y;
     private final int width;
     private final int height;
 
-    private KColor outlineColor;
-    private KColor fillColor;
-    private final KTransform transform;
-
     public KRectangle(int x, int y, int width, int height, final KColor outlineColor, final KColor fillColor) {
-        this.x = x;
-        this.y = y;
+        super(
+            new KVector2i[] {
+                new KVector2i(x, y),
+                new KVector2i(x + width, y),
+                new KVector2i(x + width, y + height),
+                new KVector2i(x, y + height),
+            },
+            outlineColor,
+            fillColor
+        );
         this.width = width;
         this.height = height;
-        this.outlineColor = outlineColor;
-        this.fillColor = fillColor;
-        this.transform = new KTransform();
     }
 
     public KRectangle(final KVector2i coordinates, final KSize size) {
@@ -87,16 +84,6 @@ public class KRectangle implements KShape {
         return new KRectangle(coordinates, KSize.squared(side), outlineColor, fillColor);
     }
 
-    @Override
-    public int x() {
-        return this.x;
-    }
-
-    @Override
-    public int y() {
-        return this.y;
-    }
-
     public int width() {
         return this.width;
     }
@@ -105,41 +92,9 @@ public class KRectangle implements KShape {
         return this.height;
     }
 
-    public KColor getOutlineColor() {
-        return this.outlineColor;
-    }
-
-    public KColor getFillColor() {
-        return this.fillColor;
-    }
-
     @Override
     public void render(final KRenderFrontend rf) {
         rf.render(this);
     }
 
-    @Override
-    public KTransform getTransform() {
-        return this.transform;
-    }
-
-    @Override
-    public void rotate(double theta) {
-        this.transform.rotate(theta);
-    }
-
-    @Override
-    public void rotate(double theta, KVector2i pivot) {
-        this.transform.rotate(theta, pivot);
-    }
-
-    @Override
-    public void scale(KVector2d factor) {
-        this.transform.scale(factor);
-    }
-
-    @Override
-    public void translate(KVector2i value) {
-        this.transform.translate(value);
-    }
 }

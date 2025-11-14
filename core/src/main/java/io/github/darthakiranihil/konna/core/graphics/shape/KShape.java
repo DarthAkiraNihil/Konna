@@ -7,7 +7,6 @@ import io.github.darthakiranihil.konna.core.graphics.KTransformable;
 
 public interface KShape extends
     KRenderable,
-    KTransformable,
-    KPositioned {
+    KTransformable {
     KTransform getTransform();
 }

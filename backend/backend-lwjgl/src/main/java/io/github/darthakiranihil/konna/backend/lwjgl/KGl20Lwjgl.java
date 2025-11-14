@@ -22,10 +22,15 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GLUtil;
 
 import java.nio.*;
 
 public final class KGl20Lwjgl extends KObject implements KGl20 {
+
+    public void fuck() {
+        GLUtil.setupDebugMessageCallback();
+    }
 
     @Override
     public void createCapabilities() {

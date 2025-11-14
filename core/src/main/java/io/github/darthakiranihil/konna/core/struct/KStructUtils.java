@@ -44,4 +44,13 @@ public final class KStructUtils extends KUninstantiable {
         return new HashSet<>(List.of(tags));
     }
 
+    public static KVector2i[] furlArraysToVectors(final int[] x, final int[] y) {
+        int count = x.length == y.length ? x.length : Math.min(x.length, y.length);
+        KVector2i[] furled = new KVector2i[count];
+        for (int i = 0; i < count; i++) {
+            furled[i] = new KVector2i(x[i], y[i]);
+        }
+        return furled;
+    }
+
 }

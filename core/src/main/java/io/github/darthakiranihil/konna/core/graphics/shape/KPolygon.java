@@ -16,25 +16,42 @@
 
 package io.github.darthakiranihil.konna.core.graphics.shape;
 
+import io.github.darthakiranihil.konna.core.graphics.KTransform;
+import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.awt.*;
-import java.util.Arrays;
 
-public record KPolygon(
-    int[] xPoints,
-    int[] yPoints,
-    int edgesCount,
-    KColor outlineColor,
-    KColor fillColor
-) {
+public class KPolygon implements KShape {
 
-    public KPolygon(final int[] xPoints, final int[] yPoints, int edgesCount) {
-        this(xPoints, yPoints, edgesCount, null, null);
+    private final KVector2i[] points;
+    private KColor outlineColor;
+    private KColor fillColor;
+    private final KTransform transform;
+
+    public KPolygon(
+        KVector2i[] points,
+        KColor outlineColor,
+        KColor fillColor
+    ) {
+        this.points = points;
+        this.outlineColor = outlineColor;
+        this.fillColor = fillColor;
+        this.transform = new KTransform();
     }
 
-    public KPolygon(final int[] xPoints, final int[] yPoints, int edgesCount, final KColor outlineColor) {
-        this(xPoints, yPoints, edgesCount, outlineColor, null);
+    public KPolygon(final int[] xPoints, final int[] yPoints) {
+        this(xPoints, yPoints, null, null);
+    }
+
+    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor) {
+        this(xPoints, yPoints, outlineColor, null);
+    }
+
+    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor, final KColor fillColor) {
+        this(KStructUtils.furlArraysToVectors(xPoints, yPoints), outlineColor, fillColor);
     }
 
     public KPolygon(final KVector2i[] points) {
@@ -43,20 +60,50 @@ public record KPolygon(
 
     public KPolygon(final KVector2i[] points, final KColor outlineColor) {
         this(points, outlineColor, null);
+    };
+
+    public KVector2i[] points() {
+        return this.points;
     }
 
-    public KPolygon(final KVector2i[] points, final KColor outlineColor, final KColor fillColor) {
-        this(
-            Arrays.stream(points).mapToInt(KVector2i::x).toArray(),
-            Arrays.stream(points).mapToInt(KVector2i::y).toArray(),
-            points.length,
-            outlineColor,
-            fillColor
-        );
+    public KColor getOutlineColor() {
+        return this.outlineColor;
     }
 
-    public Polygon raw() {
-        return new Polygon(this.xPoints, this.yPoints, this.edgesCount);
+    public KColor getFillColor() {
+        return this.fillColor;
     }
+
+    @Override
+    public void render(KRenderFrontend rf) {
+        rf.render(this);
+    }
+
+    @Override
+    public KTransform getTransform() {
+        return this.transform;
+    }
+
+    @Override
+    public void rotate(double theta) {
+        this.transform.rotate(theta);
+    }
+
+    @Override
+    public void rotate(double theta, KVector2i pivot) {
+        this.transform.rotate(theta, pivot);
+    }
+
+    @Override
+    public void scale(KVector2d factor) {
+        this.transform.scale(factor);
+    }
+
+    @Override
+    public void translate(KVector2i value) {
+        this.transform.translate(value);
+    }
+
+
 
 }

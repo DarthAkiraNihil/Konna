@@ -17,19 +17,119 @@
 package io.github.darthakiranihil.konna.libfrontend.gl20;
 
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.core.graphics.shape.KColor;
+import io.github.darthakiranihil.konna.core.graphics.shape.KPolygon;
 import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public class KGl20RenderFrontend extends KObject implements KRenderFrontend {
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
+public final class KGl20RenderFrontend extends KObject implements KRenderFrontend {
 
     private final KGl20 gl;
+    private KSize viewportSize;
 
     public KGl20RenderFrontend(KGl20 gl) {
         this.gl = gl;
     }
 
+    private KVector2f plainToGl(KVector2i v) {
+        float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
+        float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
+
+        return new KVector2f(x, y);
+    }
+
+    @Override
+    public void setViewportSize(KSize size) {
+        this.viewportSize = size;
+    }
+
     @Override
     public void render(KRectangle rectangle) {
+
+        this.render((KPolygon) rectangle);
+
+//        this.gl.glBegin(KGl20.GL_TRIANGLE_STRIP);
+//
+//        KRectangle.Vertices vertices = rectangle.vertices();
+//
+//        KVector2f topLeft = this.plainToGl(vertices.topLeft());
+//        KVector2f topRight = this.plainToGl(vertices.topRight());
+//        KVector2f bottomLeft = this.plainToGl(vertices.bottomLeft());
+//        KVector2f bottomRight = this.plainToGl(vertices.bottomRight());
+//
+//        KColor fillColor = rectangle.getFillColor();
+//        if (fillColor != null) {
+//            this.gl.glColor4fv(fillColor.normalized());
+//        }
+//
+//        FloatBuffer vBuffer = FloatBuffer.allocate()
+//        this.gl.glVertex2d(topLeft.x(), topLeft.y());
+//        this.gl.glVertex2d(topRight.x(), topRight.y());
+//        this.gl.glVertex2d(bottomLeft.x(), bottomLeft.y());
+//        this.gl.glVertex2d(bottomRight.x(), bottomRight.y());
+//
+//        this.gl.glEnd();
+
+
+    }
+
+    @Override
+    public void render(KPolygon polygon) {
+
+        //this.gl.glBegin(KGl20.GL_TRIANGLES);
+
+        KVector2i[] points = polygon.points();
+        FloatBuffer pointBuffer = ByteBuffer.allocateDirect(points.length * 2 * Float.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        IntBuffer indicesBuffer = ByteBuffer.allocateDirect(points.length * Integer.SIZE).order(ByteOrder.nativeOrder()).asIntBuffer();
+
+        for (int i = 0; i < points.length * 2; i += 2) {
+            KVector2f glPoint = this.plainToGl(points[i / 2]);
+            pointBuffer.put(glPoint.x());
+            pointBuffer.put(glPoint.y());
+            indicesBuffer.put(i / 2);
+        }
+        int vbo = this.gl.glGenBuffers();
+        int ibo = this.gl.glGenBuffers();
+        //float[] vertices = {-0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f};
+        //int[] indices = {0, 1, 2};
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, vbo);
+//        FloatBuffer bp = ByteBuffer.allocateDirect(vertices.length * Float.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//        for (int i = 0; i < vertices.length; i++) {
+//            bp.put(vertices[i]);
+//        }
+        pointBuffer.flip();
+        // var p = bp.asFloatBuffer();
+        this.gl.glBufferData(KGl20.GL_ARRAY_BUFFER, pointBuffer, KGl20.GL_STATIC_DRAW);
+        this.gl.glEnableClientState(KGl20.GL_VERTEX_ARRAY);
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, ibo);
+//        IntBuffer bpi = ByteBuffer.allocateDirect(indices.length * Integer.SIZE).order(ByteOrder.nativeOrder()).asIntBuffer();
+//        for (int i = 0; i < indices.length; i++) {
+//            bpi.put(indices[i]);
+//        }
+        indicesBuffer.flip();
+        // IntBuffer pi = bpi.asIntBuffer();
+        this.gl.glBufferData(KGl20.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl20.GL_STATIC_DRAW);
+        this.gl.glVertexPointer(2, KGl20.GL_FLOAT, 0, 0L);
+
+        if (polygon.getFillColor() != null) {
+            this.gl.glColor4fv(polygon.getFillColor().normalized());
+        }
+        this.gl.glDrawElements(KGl20.GL_TRIANGLES, 3, KGl20.GL_UNSIGNED_INT, 0L);
+
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, 0);
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.gl.glDeleteBuffers(vbo);
+        this.gl.glDeleteBuffers(ibo);
+
+
 
     }
 }
