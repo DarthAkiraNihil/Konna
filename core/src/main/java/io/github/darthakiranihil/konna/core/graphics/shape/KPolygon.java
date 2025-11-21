@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.awt.*;
 
-public class KPolygon implements KShape {
+public class KPolygon extends KAbstractShape {
 
     private final KVector2i[] points;
     private KColor outlineColor;
