@@ -43,11 +43,11 @@ public class KPolygon implements KShape {
     }
 
     public KPolygon(final int[] xPoints, final int[] yPoints) {
-        this(xPoints, yPoints, null, null);
+        this(xPoints, yPoints, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor) {
-        this(xPoints, yPoints, outlineColor, null);
+        this(xPoints, yPoints, outlineColor, KColor.TRANSPARENT);
     }
 
     public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor, final KColor fillColor) {
@@ -55,11 +55,11 @@ public class KPolygon implements KShape {
     }
 
     public KPolygon(final KVector2i[] points) {
-        this(points, null, null);
+        this(points, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public KPolygon(final KVector2i[] points, final KColor outlineColor) {
-        this(points, outlineColor, null);
+        this(points, outlineColor, KColor.TRANSPARENT);
     };
 
     public KVector2i[] points() {
