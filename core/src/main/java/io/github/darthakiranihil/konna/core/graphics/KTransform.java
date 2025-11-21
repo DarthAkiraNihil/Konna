@@ -53,6 +53,18 @@ public class KTransform implements KTransformable {
         this.cached = false;
     }
 
+    public double getRotation() {
+        return this.rotation;
+    }
+
+    public KVector2i getTranslation() {
+        return translation;
+    }
+
+    public KVector2d getScaling() {
+        return scaling;
+    }
+
     public float[][] matrix() {
 
         if (cached) {

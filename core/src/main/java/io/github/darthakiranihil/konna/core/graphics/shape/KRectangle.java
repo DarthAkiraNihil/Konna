@@ -41,11 +41,11 @@ public class KRectangle extends KPolygon {
     }
 
     public KRectangle(final KVector2i coordinates, final KSize size) {
-        this(coordinates, size, null, null);
+        this(coordinates, size, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public KRectangle(final KVector2i coordinates, final KSize size, final KColor outlineColor) {
-        this(coordinates, size, outlineColor, null);
+        this(coordinates, size, outlineColor, KColor.TRANSPARENT);
     }
 
     public KRectangle(final KVector2i coordinates, final KSize size, final KColor outlineColor, final KColor fillColor) {
@@ -53,19 +53,19 @@ public class KRectangle extends KPolygon {
     }
 
     public KRectangle(int x, int y, int width, int height) {
-        this(x, y, width, height, null, null);
+        this(x, y, width, height, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public KRectangle(int x, int y, int width, int height, final KColor outlineColor) {
-        this(x, y, width, height, outlineColor, null);
+        this(x, y, width, height, outlineColor, KColor.TRANSPARENT);
     }
 
     public static KRectangle square(int x, int y, int side) {
-        return new KRectangle(x, y, side, side, null, null);
+        return new KRectangle(x, y, side, side, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public static KRectangle square(int x, int y, int side, final KColor outlineColor) {
-        return new KRectangle(x, y, side, side, outlineColor, null);
+        return new KRectangle(x, y, side, side, outlineColor, KColor.TRANSPARENT);
     }
 
     public static KRectangle square(int x, int y, int side, final KColor outlineColor, final KColor fillColor) {

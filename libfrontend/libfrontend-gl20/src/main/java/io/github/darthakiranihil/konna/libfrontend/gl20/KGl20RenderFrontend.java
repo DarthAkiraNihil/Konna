@@ -16,15 +16,13 @@
 
 package io.github.darthakiranihil.konna.libfrontend.gl20;
 
+import io.github.darthakiranihil.konna.core.graphics.KTransform;
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.graphics.shape.KColor;
 import io.github.darthakiranihil.konna.core.graphics.shape.KPolygon;
 import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.*;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -54,32 +52,7 @@ public final class KGl20RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(KRectangle rectangle) {
-
         this.render((KPolygon) rectangle);
-
-//        this.gl.glBegin(KGl20.GL_TRIANGLE_STRIP);
-//
-//        KRectangle.Vertices vertices = rectangle.vertices();
-//
-//        KVector2f topLeft = this.plainToGl(vertices.topLeft());
-//        KVector2f topRight = this.plainToGl(vertices.topRight());
-//        KVector2f bottomLeft = this.plainToGl(vertices.bottomLeft());
-//        KVector2f bottomRight = this.plainToGl(vertices.bottomRight());
-//
-//        KColor fillColor = rectangle.getFillColor();
-//        if (fillColor != null) {
-//            this.gl.glColor4fv(fillColor.normalized());
-//        }
-//
-//        FloatBuffer vBuffer = FloatBuffer.allocate()
-//        this.gl.glVertex2d(topLeft.x(), topLeft.y());
-//        this.gl.glVertex2d(topRight.x(), topRight.y());
-//        this.gl.glVertex2d(bottomLeft.x(), bottomLeft.y());
-//        this.gl.glVertex2d(bottomRight.x(), bottomRight.y());
-//
-//        this.gl.glEnd();
-
-
     }
 
     @Override
@@ -111,11 +84,23 @@ public final class KGl20RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl20.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl20.GL_FLOAT, 0, 0L);
 
+        // transform applying TODO: move to shader
+        KTransform transform = polygon.getTransform();
+        double rotation = transform.getRotation();
+        KVector2i translation = transform.getTranslation();
+        KVector2d scaling = transform.getScaling();
+        KVector2f glTranslation = this.plainToGl(translation);
+
+        this.gl.glLoadIdentity();
+        this.gl.glRotated(rotation, 0.0, 0.0, 1.0); // TODO: fix pivot working
+        this.gl.glScaled(scaling.x(), scaling.y(), 1.0);
+        this.gl.glTranslatef(glTranslation.x(), glTranslation.y(), 0.0f);
+
         this.gl.glColor4fv(polygon.getFillColor().normalized());
-        this.gl.glDrawElements(KGl20.GL_TRIANGLES, 3, KGl20.GL_UNSIGNED_INT, 0L);
+        this.gl.glDrawElements(KGl20.GL_TRIANGLE_FAN, points.length, KGl20.GL_UNSIGNED_INT, 0L);
 
         this.gl.glColor4fv(polygon.getOutlineColor().normalized());
-        this.gl.glDrawElements(KGl20.GL_LINE_LOOP, 3, KGl20.GL_UNSIGNED_INT, 0L);
+        this.gl.glDrawElements(KGl20.GL_LINE_LOOP, points.length, KGl20.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl20.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, 0);
