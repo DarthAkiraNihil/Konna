@@ -16,34 +16,29 @@
 
 package io.github.darthakiranihil.konna.core.graphics.shape;
 
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public record KCircle(
-    int x,
-    int y,
-    int r,
-    KColor outlineColor,
-    KColor fillColor
-) {
+public class KCircle extends KOval {
 
     public KCircle(int x, int y, int r) {
-        this(x, y, r, null, null);
+        super(x, y, 2 * r, 2 * r);
     }
 
     public KCircle(int x, int y, int r, final KColor outlineColor) {
-        this(x, y, r, outlineColor, null);
+        super(x, y, 2 * r, 2 * r, outlineColor);
     }
 
     public KCircle(final KVector2i coordinates, int r) {
-        this(coordinates, r, null, null);
+        super(coordinates, KSize.squared(r));
     }
 
     public KCircle(final KVector2i coordinates, int r, final KColor outlineColor) {
-        this(coordinates, r, outlineColor, null);
+        super(coordinates, KSize.squared(r), outlineColor);
     }
 
     public KCircle(final KVector2i coordinates, int r, final KColor outlineColor, final KColor fillColor) {
-        this(coordinates.x(), coordinates.y(), r, outlineColor, fillColor);
+        super(coordinates, KSize.squared(r), outlineColor, fillColor);
     }
 
 }

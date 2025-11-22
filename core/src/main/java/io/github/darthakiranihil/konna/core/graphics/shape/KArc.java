@@ -1,37 +1,73 @@
 package io.github.darthakiranihil.konna.core.graphics.shape;
 
+import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public record KArc(
-    int x,
-    int y,
-    int width,
-    int height,
-    int startAngle,
-    int arcAngle,
-    KColor outlineColor,
-    KColor fillColor
-) {
+public class KArc extends KAbstractShape {
+
+    private final KVector2i center;
+    private final KSize size;
+    private final int startAngle;
+    private final int arcAngle;
+    private KColor outlineColor;
+    private KColor fillColor;
+
+    public KArc(final KVector2i center, final KSize size, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
+        this.center = center;
+        this.size = size;
+        this.startAngle = startAngle;
+        this.arcAngle = arcAngle;
+        this.outlineColor = outlineColor;
+        this.fillColor = fillColor;
+    }
 
     public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle) {
-        this(coordinates, size, startAngle, arcAngle, null, null);
+        this(coordinates, size, startAngle, arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor) {
-        this(coordinates, size, startAngle, arcAngle, outlineColor, null);
-    }
-
-    public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
-        this(coordinates.x(), coordinates.y(), size.width(), size.height(), startAngle, arcAngle, outlineColor, fillColor);
+        this(coordinates, size, startAngle, arcAngle, outlineColor, KColor.TRANSPARENT);
     }
 
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        this(x, y, width, height, startAngle, arcAngle, null, null);
+        this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle, final KColor outlineColor) {
-        this(x, y, width, height, startAngle, arcAngle, outlineColor, null);
+        this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, outlineColor, KColor.TRANSPARENT);
     }
 
+    public KArc(int x, int y, int width, int height, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
+        this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, outlineColor, fillColor);
+    }
+
+    @Override
+    public void render(KRenderFrontend rf) {
+        rf.render(this);
+    }
+
+    public KVector2i center() {
+        return this.center;
+    }
+
+    public KSize size() {
+        return this.size;
+    }
+
+    public int startAngle() {
+        return this.startAngle;
+    }
+
+    public int arcAngle() {
+        return this.arcAngle;
+    }
+
+    public KColor getOutlineColor() {
+        return outlineColor;
+    }
+
+    public KColor getFillColor() {
+        return fillColor;
+    }
 }

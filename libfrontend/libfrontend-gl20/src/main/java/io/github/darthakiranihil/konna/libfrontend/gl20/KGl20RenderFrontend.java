@@ -30,6 +30,8 @@ import java.nio.IntBuffer;
 
 public final class KGl20RenderFrontend extends KObject implements KRenderFrontend {
 
+    private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
+
     private final KGl20 gl;
     private KSize viewportSize;
 
@@ -178,6 +180,107 @@ public final class KGl20RenderFrontend extends KObject implements KRenderFronten
         this.gl.glDeleteBuffers(ibo);
     }
 
+    @Override
+    public void render(KOval oval) {
+        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(CIRCLE_DISCRETIZATION_POINTS * 2);
+        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(CIRCLE_DISCRETIZATION_POINTS);
+
+        KSize size = oval.size();
+        KVector2f center = this.plainToGl(oval.center());
+        for (int i = 0; i < CIRCLE_DISCRETIZATION_POINTS; i++) {
+            float x = ((float) size.width() / this.viewportSize.width()) * (float) Math.cos(i * 2 * Math.PI / CIRCLE_DISCRETIZATION_POINTS) + center.x();
+            float y = ((float) size.height() / this.viewportSize.height()) * (float) Math.sin(i * 2 * Math.PI / CIRCLE_DISCRETIZATION_POINTS) + center.y();
+            pointBuffer.put(x);
+            pointBuffer.put(y);
+            indicesBuffer.put(i);
+        }
+
+        pointBuffer.flip();
+        indicesBuffer.flip();
+
+        int vbo = this.gl.glGenBuffers();
+        int ibo = this.gl.glGenBuffers();
+
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, vbo);
+        this.gl.glBufferData(KGl20.GL_ARRAY_BUFFER, pointBuffer, KGl20.GL_STATIC_DRAW);
+
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, ibo);
+        this.gl.glBufferData(KGl20.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl20.GL_STATIC_DRAW);
+
+        this.gl.glEnableClientState(KGl20.GL_VERTEX_ARRAY);
+        this.gl.glVertexPointer(2, KGl20.GL_FLOAT, 0, 0L);
+
+        // transform applying TODO: move to shader
+        this.applyTransform(oval);
+
+        this.gl.glColor4fv(oval.getFillColor().normalized());
+        this.gl.glDrawElements(KGl20.GL_TRIANGLE_FAN, CIRCLE_DISCRETIZATION_POINTS, KGl20.GL_UNSIGNED_INT, 0L);
+
+        this.gl.glColor4fv(oval.getOutlineColor().normalized());
+        this.gl.glDrawElements(KGl20.GL_LINE_LOOP, CIRCLE_DISCRETIZATION_POINTS, KGl20.GL_UNSIGNED_INT, 0L);
+
+        this.gl.glDisableClientState(KGl20.GL_VERTEX_ARRAY);
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, 0);
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.gl.glDeleteBuffers(vbo);
+        this.gl.glDeleteBuffers(ibo);
+    }
+
+    @Override
+    public void render(KCircle circle) {
+        this.render((KOval) circle);
+    }
+
+    @Override
+    public void render(KArc arc) {
+        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(CIRCLE_DISCRETIZATION_POINTS * 2);
+        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(CIRCLE_DISCRETIZATION_POINTS);
+
+        KSize size = arc.size();
+        KVector2f center = this.plainToGl(arc.center());
+        int startAngle = arc.startAngle();
+        int arcAngle = arc.arcAngle();
+
+
+        for (int i = startAngle; i < startAngle + arcAngle; i++) {
+            float x = ((float) size.width() / this.viewportSize.width()) * (float) Math.cos(i * Math.PI / 180) + center.x();
+            float y = ((float) size.height() / this.viewportSize.height()) * (float) Math.sin(i * Math.PI / 180) + center.y();
+            pointBuffer.put(x);
+            pointBuffer.put(y);
+            indicesBuffer.put(i);
+        }
+
+        pointBuffer.flip();
+        indicesBuffer.flip();
+
+        int vbo = this.gl.glGenBuffers();
+        int ibo = this.gl.glGenBuffers();
+
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, vbo);
+        this.gl.glBufferData(KGl20.GL_ARRAY_BUFFER, pointBuffer, KGl20.GL_STATIC_DRAW);
+
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, ibo);
+        this.gl.glBufferData(KGl20.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl20.GL_STATIC_DRAW);
+
+        this.gl.glEnableClientState(KGl20.GL_VERTEX_ARRAY);
+        this.gl.glVertexPointer(2, KGl20.GL_FLOAT, 0, 0L);
+
+        // transform applying TODO: move to shader`
+        this.applyTransform(arc);
+
+        this.gl.glColor4fv(arc.getFillColor().normalized());
+        this.gl.glDrawElements(KGl20.GL_TRIANGLE_FAN, CIRCLE_DISCRETIZATION_POINTS, KGl20.GL_UNSIGNED_INT, 0L);
+
+        this.gl.glColor4fv(arc.getOutlineColor().normalized());
+        this.gl.glDrawElements(KGl20.GL_LINE_STRIP, CIRCLE_DISCRETIZATION_POINTS, KGl20.GL_UNSIGNED_INT, 0L);
+
+        this.gl.glDisableClientState(KGl20.GL_VERTEX_ARRAY);
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, 0);
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.gl.glDeleteBuffers(vbo);
+        this.gl.glDeleteBuffers(ibo);
+    }
+
     private KVector2f plainToGl(KVector2i v) {
         float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
         float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
@@ -200,4 +303,5 @@ public final class KGl20RenderFrontend extends KObject implements KRenderFronten
         this.gl.glTranslatef(glTranslationX, glTranslationY, 0.0f);
 
     }
+
 }

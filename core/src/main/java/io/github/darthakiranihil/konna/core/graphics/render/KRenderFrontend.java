@@ -1,9 +1,6 @@
 package io.github.darthakiranihil.konna.core.graphics.render;
 
-import io.github.darthakiranihil.konna.core.graphics.shape.KLine;
-import io.github.darthakiranihil.konna.core.graphics.shape.KPolygon;
-import io.github.darthakiranihil.konna.core.graphics.shape.KPolyline;
-import io.github.darthakiranihil.konna.core.graphics.shape.KRectangle;
+import io.github.darthakiranihil.konna.core.graphics.shape.*;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 
 public interface KRenderFrontend {
@@ -14,5 +11,8 @@ public interface KRenderFrontend {
     void render(KPolyline polyline);
     void render(KPolygon polygon);
     void render(KRectangle rectangle);
+    void render(KOval oval);
+    void render(KCircle circle);
+    void render(KArc arc);
 
 }
