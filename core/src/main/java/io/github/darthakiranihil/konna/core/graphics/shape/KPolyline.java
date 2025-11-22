@@ -5,6 +5,7 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class KPolyline extends KAbstractShape {
 
@@ -39,5 +40,19 @@ public class KPolyline extends KAbstractShape {
 
     public KColor getColor() {
         return color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        KPolyline kPolyline = (KPolyline) o;
+        return Objects.deepEquals(this.points, kPolyline.points) && Objects.equals(this.color, kPolyline.color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(this.points), this.color);
     }
 }

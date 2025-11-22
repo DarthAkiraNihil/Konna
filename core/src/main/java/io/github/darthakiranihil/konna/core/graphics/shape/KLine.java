@@ -3,6 +3,8 @@ package io.github.darthakiranihil.konna.core.graphics.shape;
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+import java.util.Objects;
+
 public class KLine extends KAbstractShape {
 
     private final KVector2i start;
@@ -44,6 +46,20 @@ public class KLine extends KAbstractShape {
         return this.end;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        KLine kLine = (KLine) o;
+        return
+                Objects.equals(this.start, kLine.start)
+            &&  Objects.equals(this.end, kLine.end)
+            &&  Objects.equals(this.color, kLine.color);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.start, this.end, this.color);
+    }
 }

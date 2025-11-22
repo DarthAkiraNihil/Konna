@@ -4,6 +4,8 @@ import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+import java.util.Objects;
+
 public class KArc extends KAbstractShape {
 
     private final KVector2i center;
@@ -69,5 +71,32 @@ public class KArc extends KAbstractShape {
 
     public KColor getFillColor() {
         return fillColor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        KArc kArc = (KArc) o;
+        return
+                this.startAngle == kArc.startAngle
+            &&  this.arcAngle == kArc.arcAngle
+            &&  Objects.equals(this.center, kArc.center)
+            &&  Objects.equals(this.size, kArc.size)
+            &&  Objects.equals(this.outlineColor, kArc.outlineColor)
+            &&  Objects.equals(this.fillColor, kArc.fillColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            this.center,
+            this.size,
+            this.startAngle,
+            this.arcAngle,
+            this.outlineColor,
+            this.fillColor
+        );
     }
 }

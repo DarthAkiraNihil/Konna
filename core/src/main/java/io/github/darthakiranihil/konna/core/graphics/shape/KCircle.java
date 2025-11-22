@@ -41,4 +41,6 @@ public class KCircle extends KOval {
         super(coordinates, KSize.squared(r), outlineColor, fillColor);
     }
 
+
+
 }

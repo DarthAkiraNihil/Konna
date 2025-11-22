@@ -23,13 +23,14 @@ import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class KPolygon extends KAbstractShape {
 
     private final KVector2i[] points;
     private KColor outlineColor;
     private KColor fillColor;
-    private final KTransform transform;
 
     public KPolygon(
         KVector2i[] points,
@@ -39,7 +40,6 @@ public class KPolygon extends KAbstractShape {
         this.points = points;
         this.outlineColor = outlineColor;
         this.fillColor = fillColor;
-        this.transform = new KTransform();
     }
 
     public KPolygon(final int[] xPoints, final int[] yPoints) {
@@ -80,30 +80,19 @@ public class KPolygon extends KAbstractShape {
     }
 
     @Override
-    public KTransform getTransform() {
-        return this.transform;
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        KPolygon kPolygon = (KPolygon) o;
+        return
+                Objects.deepEquals(this.points, kPolygon.points)
+            &&  Objects.equals(this.outlineColor, kPolygon.outlineColor)
+            &&  Objects.equals(this.fillColor, kPolygon.fillColor);
     }
 
     @Override
-    public void rotate(double theta) {
-        this.transform.rotate(theta);
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(this.points), this.outlineColor, this.fillColor);
     }
-
-    @Override
-    public void rotate(double theta, KVector2i pivot) {
-        this.transform.rotate(theta, pivot);
-    }
-
-    @Override
-    public void scale(KVector2d factor) {
-        this.transform.scale(factor);
-    }
-
-    @Override
-    public void translate(KVector2i value) {
-        this.transform.translate(value);
-    }
-
-
-
 }

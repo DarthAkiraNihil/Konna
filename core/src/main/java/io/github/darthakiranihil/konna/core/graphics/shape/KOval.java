@@ -4,6 +4,8 @@ import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+import java.util.Objects;
+
 public class KOval extends KAbstractShape {
 
     private final KVector2i center;
@@ -57,5 +59,23 @@ public class KOval extends KAbstractShape {
     @Override
     public void render(KRenderFrontend rf) {
         rf.render(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        KOval kOval = (KOval) o;
+        return
+                Objects.equals(this.center, kOval.center)
+            &&  Objects.equals(this.size, kOval.size)
+            &&  Objects.equals(this.outlineColor, kOval.outlineColor)
+            &&  Objects.equals(this.fillColor, kOval.fillColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.center, this.size, this.outlineColor, this.fillColor);
     }
 }
