@@ -7,7 +7,12 @@ public interface KTransformable {
 
     void rotate(double theta);
     void rotate(double theta, KVector2i pivot);
+
     void scale(KVector2d factor);
+
+    KVector2d getScaling();
+    void setScaling(KVector2d scale);
+
     void translate(KVector2i value);
 
 }

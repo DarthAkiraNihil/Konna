@@ -58,11 +58,17 @@ public class KTransform implements KTransformable {
     }
 
     public KVector2i getTranslation() {
-        return translation;
+        return this.translation;
     }
 
+    @Override
     public KVector2d getScaling() {
-        return scaling;
+        return this.scaling;
+    }
+
+    @Override
+    public void setScaling(KVector2d scale) {
+        this.scaling = scale;
     }
 
     public float[][] matrix() {

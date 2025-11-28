@@ -53,4 +53,13 @@ public abstract class KAbstractShape implements KShape {
         this.transform.translate(value);
     }
 
+    @Override
+    public KVector2d getScaling() {
+        return this.transform.getScaling();
+    }
+
+    @Override
+    public void setScaling(KVector2d scale) {
+        this.transform.setScaling(scale);
+    }
 }
