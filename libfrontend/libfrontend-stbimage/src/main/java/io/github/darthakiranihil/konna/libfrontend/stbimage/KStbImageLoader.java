@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-public class KStbImageLoader extends KObject implements KImageLoader {
+public final class KStbImageLoader extends KObject implements KImageLoader {
 
     private final KStbImage stbImage;
 

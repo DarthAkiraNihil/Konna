@@ -66,6 +66,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         this.gl.glAttachShader(program, fragment.id());
         this.gl.glAttachShader(program, vertex.id());
         this.gl.glLinkProgram(program);
+        System.out.println(this.gl.glGetProgramInfoLog(program));
         return new KGl33ShaderProgram(program, this.gl);
     }
 

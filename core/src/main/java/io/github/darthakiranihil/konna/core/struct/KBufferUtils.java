@@ -31,20 +31,20 @@ public final class KBufferUtils extends KUninstantiable {
 
     public static ByteBuffer createByteBuffer(int capacity) {
         return ByteBuffer
-            .allocateDirect(capacity * Byte.SIZE)
+            .allocateDirect(capacity * Byte.BYTES)
             .order(ByteOrder.nativeOrder());
     }
 
     public static IntBuffer createIntBuffer(int capacity) {
         return ByteBuffer
-            .allocateDirect(capacity * Integer.SIZE)
+            .allocateDirect(capacity * Integer.BYTES)
             .order(ByteOrder.nativeOrder())
             .asIntBuffer();
     }
 
     public static FloatBuffer createFloatBuffer(int capacity) {
         return ByteBuffer
-            .allocateDirect(capacity * Float.SIZE)
+            .allocateDirect(capacity * Float.BYTES)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer();
     }

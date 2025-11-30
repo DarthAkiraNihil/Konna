@@ -286,86 +286,89 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     @Override
     public void render(KTexture texture) {
 
+
+
+
+        int tex = this.gl.glGenTextures();
+        this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
+        this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
+
         KImage attachedImage = texture.getAttachedImage();
-        this.gl.glEnable(KGl20.GL_TEXTURE_2D);
-        int textureId = this.gl.glGenTextures();
-        this.gl.glActiveTexture(KGl20.GL_TEXTURE0);
-        this.gl.glBindTexture(KGl20.GL_TEXTURE_2D, textureId);
-        this.gl.glTexParameteri(KGl20.GL_TEXTURE_2D, KGl20.GL_TEXTURE_MIN_FILTER, KGl20.GL_LINEAR);
-        this.gl.glTexParameteri(KGl20.GL_TEXTURE_2D, KGl20.GL_TEXTURE_MAG_FILTER, KGl20.GL_LINEAR);
         this.gl.glTexImage2D(
-            KGl20.GL_TEXTURE_2D,
+            KGl33.GL_TEXTURE_2D,
             0,
-            KGl20.GL_RGBA,
+            KGl33.GL_RGBA,
             attachedImage.width(),
             attachedImage.height(),
             0,
-            KGl20.GL_RGBA,
+            KGl33.GL_RGBA,
             KGl20.GL_UNSIGNED_BYTE,
             attachedImage.rawData()
         );
+        this.gl.glGenerateMipmap(KGl33.GL_TEXTURE_2D);
+        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_S, KGl33.GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_T, KGl33.GL_REPEAT);
+        // set texture filtering parameters
+        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MIN_FILTER, KGl33.GL_LINEAR_MIPMAP_LINEAR);
+        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MAG_FILTER, KGl33.GL_LINEAR);
 
-        int totalComponentsCount = 0;
-        for (KVertexAttribute a : KVertexAttribute.DEFAULT_ATTRIBUTES) {
-            totalComponentsCount += a.length();
-        }
 
-        FloatBuffer db = KBufferUtils.createFloatBuffer(4 * totalComponentsCount);
-        float[] normalizedColor = texture.color().normalized();
-
-        KVector2i[] vertices = texture.xy();
+        KVector2i[] verts = texture.xy();
         KVector2f[] uvs = texture.uv();
+        FloatBuffer vertices = KBufferUtils.createFloatBuffer(32); // TODO: remove hardcode
+        IntBuffer indices = KBufferUtils.createIntBuffer(6);
+        indices.put(0).put(1).put(3).put(1).put(2).put(3);
 
-        for (int i = 0; i < vertices.length; i++) {
-            KVector2f glPoint = this.plainToGl(vertices[i]);
-            db
+        for (int i = 0; i < verts.length; i++) {
+            KVector2f glPoint = this.plainToGl(verts[i]);
+
+            vertices
                 .put(glPoint.x())
                 .put(glPoint.y())
-//                .put(normalizedColor[0])
-//                .put(normalizedColor[1])
-//                .put(normalizedColor[2])
-//                .put(normalizedColor[3])
+                .put(texture.color().normalized())
                 .put(uvs[i].x())
                 .put(uvs[i].y());
+
         }
-        db.flip();
-
-        int offset = 0;
-        //4 bytes per float
-        int stride = totalComponentsCount * 4;
-        db.position(offset);
-        this.gl.glEnableVertexAttribArray(0);
-        this.gl.glVertexAttribPointer(0, 2, KGl20.GL_FLOAT, true, stride, db);
-        offset += 2;
-        db.position(offset);
-        this.gl.glEnableVertexAttribArray(1);
-        this.gl.glVertexAttribPointer(1, 2, KGl20.GL_FLOAT, true, stride, db);
+        vertices.flip();
+        indices.flip();
+        int vao = this.gl.glGenVertexArrays();
         int vbo = this.gl.glGenBuffers();
+        int ebo = this.gl.glGenBuffers();
+
+        this.gl.glBindVertexArray(vao);
+
         this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, vbo);
-        this.gl.glBufferData(KGl20.GL_ARRAY_BUFFER, db, KGl20.GL_STATIC_DRAW);
+        this.gl.glBufferData(KGl20.GL_ARRAY_BUFFER, vertices, KGl20.GL_STATIC_DRAW);
 
-        int texLoc = this.gl.glGetUniformLocation(texture.getShader().id(), "textureSampler");
-        this.gl.glUniform1i(texLoc, 0);
+        this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, ebo);
+        this.gl.glBufferData(KGl20.GL_ELEMENT_ARRAY_BUFFER, indices, KGl20.GL_STATIC_DRAW);
 
-//        for (int i = 0; i < KVertexAttribute.DEFAULT_ATTRIBUTES.size(); i++) {
-//            KVertexAttribute a = KVertexAttribute.DEFAULT_ATTRIBUTES.get(i);
-//            db.position(offset);
-//            this.gl.glEnableVertexAttribArray(a.location());
-//            this.gl.glVertexAttribPointer(a.location(), a.length(), KGl20.GL_FLOAT, true, stride, db);
-//            offset += a.length();
-//        }
+        int stride = Float.BYTES * 8;
 
-        this.gl.glDrawArrays(KGl20.GL_TRIANGLE_FAN, 0, 4);
-        int e = this.gl.glGetError();
-        this.gl.glBindTexture(KGl20.GL_TEXTURE_2D, 0);
-//        for (int i = 0; i < KVertexAttribute.DEFAULT_ATTRIBUTES.size(); i++) {
-//            KVertexAttribute a = KVertexAttribute.DEFAULT_ATTRIBUTES.get(i);
-//            this.gl.glDisableVertexAttribArray(a.location());
-//        }
+        this.gl.glVertexAttribPointer(0, 2, KGl33.GL_FLOAT, false, stride, 0);
+        this.gl.glEnableVertexAttribArray(0);
+
+        this.gl.glVertexAttribPointer(1, 4, KGl33.GL_FLOAT, false, stride, 2 * Float.BYTES);
+        this.gl.glEnableVertexAttribArray(1);
+
+        this.gl.glVertexAttribPointer(2, 2, KGl33.GL_FLOAT, false, stride, 6 * Float.BYTES);
+        this.gl.glEnableVertexAttribArray(2);
+        //vertices.flip();
+        this.gl.glUniform1i(
+            this.gl.glGetUniformLocation(texture.getShader().id(), "ourTexture"), 0
+        );
+        this.gl.glBindVertexArray(vao);
+        this.gl.glDrawElements(KGl33.GL_TRIANGLES, 6, KGl33.GL_UNSIGNED_INT, 0L);
+
         this.gl.glDisableVertexAttribArray(0);
         this.gl.glDisableVertexAttribArray(1);
-        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, 0);
+        this.gl.glDisableVertexAttribArray(2);
+
         this.gl.glDeleteBuffers(vbo);
+        this.gl.glDeleteBuffers(ebo);
+        this.gl.glDeleteVertexArrays(vao);
+        this.gl.glDeleteTextures(tex);
     }
 
     @Override
