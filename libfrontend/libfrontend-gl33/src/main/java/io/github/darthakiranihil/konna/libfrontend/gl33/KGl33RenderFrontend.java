@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.gl20;
+package io.github.darthakiranihil.konna.libfrontend.gl33;
 
 import io.github.darthakiranihil.konna.core.graphics.KTransform;
-import io.github.darthakiranihil.konna.core.graphics.KTransformable;
+import io.github.darthakiranihil.konna.core.graphics.KVertexAttribute;
+import io.github.darthakiranihil.konna.core.graphics.image.KImage;
+import io.github.darthakiranihil.konna.core.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.core.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.core.graphics.shape.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.libfrontend.gl20.KGl20;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-public final class KGl20RenderFrontend extends KObject implements KRenderFrontend {
+public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
     private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
 
-    private final KGl20 gl;
+    private final KGl33 gl;
     private KSize viewportSize;
 
-    public KGl20RenderFrontend(KGl20 gl) {
+    public KGl33RenderFrontend(KGl33 gl) {
         this.gl = gl;
     }
 
@@ -279,6 +281,101 @@ public final class KGl20RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl20.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.gl.glDeleteBuffers(vbo);
         this.gl.glDeleteBuffers(ibo);
+    }
+
+    @Override
+    public void render(KTexture texture) {
+
+        KImage attachedImage = texture.getAttachedImage();
+        this.gl.glEnable(KGl20.GL_TEXTURE_2D);
+        int textureId = this.gl.glGenTextures();
+        this.gl.glActiveTexture(KGl20.GL_TEXTURE0);
+        this.gl.glBindTexture(KGl20.GL_TEXTURE_2D, textureId);
+        this.gl.glTexParameteri(KGl20.GL_TEXTURE_2D, KGl20.GL_TEXTURE_MIN_FILTER, KGl20.GL_LINEAR);
+        this.gl.glTexParameteri(KGl20.GL_TEXTURE_2D, KGl20.GL_TEXTURE_MAG_FILTER, KGl20.GL_LINEAR);
+        this.gl.glTexImage2D(
+            KGl20.GL_TEXTURE_2D,
+            0,
+            KGl20.GL_RGBA,
+            attachedImage.width(),
+            attachedImage.height(),
+            0,
+            KGl20.GL_RGBA,
+            KGl20.GL_UNSIGNED_BYTE,
+            attachedImage.rawData()
+        );
+
+        int totalComponentsCount = 0;
+        for (KVertexAttribute a : KVertexAttribute.DEFAULT_ATTRIBUTES) {
+            totalComponentsCount += a.length();
+        }
+
+        FloatBuffer db = KBufferUtils.createFloatBuffer(4 * totalComponentsCount);
+        float[] normalizedColor = texture.color().normalized();
+
+        KVector2i[] vertices = texture.xy();
+        KVector2f[] uvs = texture.uv();
+
+        for (int i = 0; i < vertices.length; i++) {
+            KVector2f glPoint = this.plainToGl(vertices[i]);
+            db
+                .put(glPoint.x())
+                .put(glPoint.y())
+//                .put(normalizedColor[0])
+//                .put(normalizedColor[1])
+//                .put(normalizedColor[2])
+//                .put(normalizedColor[3])
+                .put(uvs[i].x())
+                .put(uvs[i].y());
+        }
+        db.flip();
+
+        int offset = 0;
+        //4 bytes per float
+        int stride = totalComponentsCount * 4;
+        db.position(offset);
+        this.gl.glEnableVertexAttribArray(0);
+        this.gl.glVertexAttribPointer(0, 2, KGl20.GL_FLOAT, true, stride, db);
+        offset += 2;
+        db.position(offset);
+        this.gl.glEnableVertexAttribArray(1);
+        this.gl.glVertexAttribPointer(1, 2, KGl20.GL_FLOAT, true, stride, db);
+        int vbo = this.gl.glGenBuffers();
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, vbo);
+        this.gl.glBufferData(KGl20.GL_ARRAY_BUFFER, db, KGl20.GL_STATIC_DRAW);
+
+        int texLoc = this.gl.glGetUniformLocation(texture.getShader().id(), "textureSampler");
+        this.gl.glUniform1i(texLoc, 0);
+
+//        for (int i = 0; i < KVertexAttribute.DEFAULT_ATTRIBUTES.size(); i++) {
+//            KVertexAttribute a = KVertexAttribute.DEFAULT_ATTRIBUTES.get(i);
+//            db.position(offset);
+//            this.gl.glEnableVertexAttribArray(a.location());
+//            this.gl.glVertexAttribPointer(a.location(), a.length(), KGl20.GL_FLOAT, true, stride, db);
+//            offset += a.length();
+//        }
+
+        this.gl.glDrawArrays(KGl20.GL_TRIANGLE_FAN, 0, 4);
+        int e = this.gl.glGetError();
+        this.gl.glBindTexture(KGl20.GL_TEXTURE_2D, 0);
+//        for (int i = 0; i < KVertexAttribute.DEFAULT_ATTRIBUTES.size(); i++) {
+//            KVertexAttribute a = KVertexAttribute.DEFAULT_ATTRIBUTES.get(i);
+//            this.gl.glDisableVertexAttribArray(a.location());
+//        }
+        this.gl.glDisableVertexAttribArray(0);
+        this.gl.glDisableVertexAttribArray(1);
+        this.gl.glBindBuffer(KGl20.GL_ARRAY_BUFFER, 0);
+        this.gl.glDeleteBuffers(vbo);
+    }
+
+    @Override
+    public void setActiveShader(KShaderProgram shader) {
+        this.gl.glUseProgram(shader.id());
+    }
+
+    @Override
+    public void disableActiveShader() {
+        this.gl.glUseProgram(0);
     }
 
     private KVector2f plainToGl(KVector2i v) {

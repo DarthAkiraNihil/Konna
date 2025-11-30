@@ -23,14 +23,12 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.stb.STBIIOCallbacks;
+import org.lwjgl.stb.STBImage;
 
 import java.nio.*;
 
-public final class KGl20Lwjgl extends KObject implements KGl20 {
-
-    public void fuck() {
-        GLUtil.setupDebugMessageCallback();
-    }
+public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwjgl {
 
     @Override
     public void createCapabilities() {
@@ -777,6 +775,8 @@ public final class KGl20Lwjgl extends KObject implements KGl20 {
 
         GL20.glGetPointerv(pname, buf);
 
+
+        // TODO: maybe it is not needed, also this does not make sense
         LongBuffer result = LongBuffer.allocate(params.capacity());
         for (int i = 0; i < params.capacity(); i++) {
             result.put(buf.get(i));

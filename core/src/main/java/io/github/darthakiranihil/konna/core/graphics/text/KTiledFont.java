@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.graphics.image.KImage;
-import io.github.darthakiranihil.konna.core.graphics.KShader;
+import io.github.darthakiranihil.konna.core.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 public abstract class KTiledFont extends KObject {

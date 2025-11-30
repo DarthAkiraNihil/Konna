@@ -14,7 +14,9 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/libfrontend" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-gl20" />
+            <option value="$PROJECT_DIR$/libfrontend/libfrontend-gl33" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
+            <option value="$PROJECT_DIR$/libfrontend/libfrontend-stbimage" />
           </set>
         </option>
       </GradleProjectSettings>

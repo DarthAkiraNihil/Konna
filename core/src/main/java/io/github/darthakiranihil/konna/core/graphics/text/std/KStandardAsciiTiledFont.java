@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.graphics.text.std;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.graphics.image.KImage;
-import io.github.darthakiranihil.konna.core.graphics.KShader;
+import io.github.darthakiranihil.konna.core.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.core.graphics.text.KTiledFont;
 
 import java.util.HashMap;

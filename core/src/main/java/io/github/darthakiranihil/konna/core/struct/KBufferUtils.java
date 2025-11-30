@@ -29,6 +29,12 @@ public final class KBufferUtils extends KUninstantiable {
         super();
     }
 
+    public static ByteBuffer createByteBuffer(int capacity) {
+        return ByteBuffer
+            .allocateDirect(capacity * Byte.SIZE)
+            .order(ByteOrder.nativeOrder());
+    }
+
     public static IntBuffer createIntBuffer(int capacity) {
         return ByteBuffer
             .allocateDirect(capacity * Integer.SIZE)
@@ -41,6 +47,12 @@ public final class KBufferUtils extends KUninstantiable {
             .allocateDirect(capacity * Float.SIZE)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer();
+    }
+
+    public static ByteBuffer wrapByteArrayToBuffer(final byte[] array) {
+        ByteBuffer wrapper = ByteBuffer.allocateDirect(array.length);
+        wrapper.put(array);
+        return wrapper;
     }
 
 }
