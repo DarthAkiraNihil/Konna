@@ -22,12 +22,16 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GLUtil;
-import org.lwjgl.stb.STBIIOCallbacks;
-import org.lwjgl.stb.STBImage;
 
 import java.nio.*;
 
+/**
+ * OpenGL 2.0 library frontend implementation,
+ * using corresponding bindings from {@link GL20}.
+ *
+ * @author Darth Akira Nihil
+ * @version 0.1.0
+ */
 public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwjgl {
 
     @Override
@@ -775,12 +779,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
 
         GL20.glGetPointerv(pname, buf);
 
-
-        // TODO: maybe it is not needed, also this does not make sense
-        LongBuffer result = LongBuffer.allocate(params.capacity());
         for (int i = 0; i < params.capacity(); i++) {
-            result.put(buf.get(i));
+            params.put(i, buf.get(i));
         }
+        buf.free();
+
     }
 
     @Override
@@ -2095,7 +2098,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final ByteBuffer pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -2110,7 +2123,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         long pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -2125,7 +2148,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final ShortBuffer pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -2140,7 +2173,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final IntBuffer pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -2155,7 +2198,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final FloatBuffer pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -2170,7 +2223,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final DoubleBuffer pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3315,7 +3378,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final short[] pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3330,7 +3403,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final int[] pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3345,7 +3428,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final float[] pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3360,7 +3453,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final double[] pixels
     ) {
-        GL20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        GL20.glTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3558,7 +3661,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final ByteBuffer pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3574,7 +3688,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         long pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3590,7 +3715,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final ShortBuffer pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3606,7 +3742,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final IntBuffer pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3622,7 +3769,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final FloatBuffer pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3638,7 +3796,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final DoubleBuffer pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3655,7 +3824,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final ByteBuffer pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3672,7 +3853,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         long pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3689,7 +3882,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final ShortBuffer pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3706,7 +3911,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final IntBuffer pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3723,7 +3940,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final FloatBuffer pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3740,7 +3969,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final DoubleBuffer pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3807,9 +4048,20 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int border,
         int format,
         int type,
-        short[] pixels
+        final short[] pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3823,9 +4075,20 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int border,
         int format,
         int type,
-        int[] pixels
+        final int[] pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3839,9 +4102,20 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int border,
         int format,
         int type,
-        float[] pixels
+        final float[] pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3855,9 +4129,20 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int border,
         int format,
         int type,
-        double[] pixels
+        final double[] pixels
     ) {
-        GL20.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        GL20.glTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3874,7 +4159,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final short[] pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3891,7 +4188,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final int[] pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3908,7 +4217,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final float[] pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3925,7 +4246,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int type,
         final double[] pixels
     ) {
-        GL20.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        GL20.glTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            type,
+            pixels
+        );
     }
 
     @Override
@@ -3940,7 +4273,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int imageSize,
         long data
     ) {
-        GL20.glCompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, data);
+        GL20.glCompressedTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            imageSize,
+            data
+        );
     }
 
     @Override
@@ -3954,7 +4297,16 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int border,
         final ByteBuffer data
     ) {
-        GL20.glCompressedTexImage3D(target, level, internalformat, width, height, depth, border, data);
+        GL20.glCompressedTexImage3D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            depth,
+            border,
+            data
+        );
     }
 
     @Override
@@ -3968,7 +4320,16 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int imageSize,
         long data
     ) {
-        GL20.glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
+        GL20.glCompressedTexImage2D(
+            target,
+            level,
+            internalformat,
+            width,
+            height,
+            border,
+            imageSize,
+            data
+        );
     }
 
     @Override
@@ -4023,7 +4384,19 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int imageSize,
         long data
     ) {
-        GL20.glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
+        GL20.glCompressedTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            imageSize,
+            data
+        );
     }
 
     @Override
@@ -4039,7 +4412,18 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int format,
         final ByteBuffer data
     ) {
-        GL20.glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, data);
+        GL20.glCompressedTexSubImage3D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            zoffset,
+            width,
+            height,
+            depth,
+            format,
+            data
+        );
     }
 
     @Override
@@ -4054,7 +4438,17 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int imageSize,
         long data
     ) {
-        GL20.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+        GL20.glCompressedTexSubImage2D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            width,
+            height,
+            format,
+            imageSize,
+            data
+        );
     }
 
     @Override
@@ -4068,7 +4462,16 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
         int format,
         final ByteBuffer data
     ) {
-        GL20.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, data);
+        GL20.glCompressedTexSubImage2D(
+            target,
+            level,
+            xoffset,
+            yoffset,
+            width,
+            height,
+            format,
+            data
+        );
     }
 
     @Override
@@ -4469,10 +4872,10 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
 
         GL20.glMultiDrawElements(mode, count, type, indicesBuf);
 
-        LongBuffer resultIndices = LongBuffer.allocate(indices.capacity());
         for (int i = 0; i < indices.capacity(); i++) {
-            resultIndices.put(indicesBuf.get(i));
+            indices.put(i, indicesBuf.get(i));
         }
+        indicesBuf.free();
 
     }
 
@@ -4719,10 +5122,10 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
 
         GL20.glMultiDrawElements(mode, count, type, indicesBuf);
 
-        LongBuffer resultIndices = LongBuffer.allocate(indices.capacity());
         for (int i = 0; i < indices.capacity(); i++) {
-            resultIndices.put(indicesBuf.get(i));
+            indices.put(i, indicesBuf.get(i));
         }
+        indicesBuf.free();
 
     }
 
@@ -4857,7 +5260,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glBufferData(int target, LongBuffer data, int usage) {
+    public void glBufferData(int target, final LongBuffer data, int usage) {
         GL20.glBufferData(target, data, usage);
     }
 
@@ -4887,7 +5290,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glBufferSubData(int target, long offset, LongBuffer data) {
+    public void glBufferSubData(int target, long offset, final LongBuffer data) {
         GL20.glBufferSubData(target, offset, data);
     }
 
@@ -4917,7 +5320,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetBufferSubData(int target, long offset, LongBuffer data) {
+    public void glGetBufferSubData(int target, long offset, final LongBuffer data) {
         GL20.glGetBufferSubData(target, offset, data);
     }
 
@@ -4974,10 +5377,10 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
 
         GL20.glGetBufferPointerv(target, pname, paramsBuf);
 
-        LongBuffer resultParams = LongBuffer.allocate(params.capacity());
         for (int i = 0; i < params.capacity(); i++) {
-            resultParams.put(paramsBuf.get(i));
+            params.put(i, paramsBuf.get(i));
         }
+        paramsBuf.free();
 
     }
 
@@ -5082,7 +5485,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glBufferData(int target, long[] data, int usage) {
+    public void glBufferData(int target, final long[] data, int usage) {
         GL20.glBufferData(target, data, usage);
     }
 
@@ -5107,7 +5510,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glBufferSubData(int target, long offset, long[] data) {
+    public void glBufferSubData(int target, long offset, final long[] data) {
         GL20.glBufferSubData(target, offset, data);
     }
 
@@ -5132,7 +5535,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetBufferSubData(int target, long offset, long[] data) {
+    public void glGetBufferSubData(int target, long offset, final long[] data) {
         GL20.glGetBufferSubData(target, offset, data);
     }
 
@@ -5224,20 +5627,20 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
 
         GL20.glShaderSource(shader, stringBuf, length);
 
-        LongBuffer resultStrings = LongBuffer.allocate(strings.capacity());
         for (int i = 0; i < strings.capacity(); i++) {
-            resultStrings.put(stringBuf.get(i));
+            strings.put(i, stringBuf.get(i));
         }
+        stringBuf.free();
 
     }
 
     @Override
-    public void glShaderSource(int shader, CharSequence... strings) {
+    public void glShaderSource(int shader, final CharSequence... strings) {
         GL20.glShaderSource(shader, strings);
     }
 
     @Override
-    public void glShaderSource(int shader, CharSequence string) {
+    public void glShaderSource(int shader, final CharSequence string) {
         GL20.glShaderSource(shader, string);
     }
 
@@ -5417,7 +5820,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public int glGetUniformLocation(int program, CharSequence name) {
+    public int glGetUniformLocation(int program, final CharSequence name) {
         return GL20.glGetUniformLocation(program, name);
     }
 
@@ -5745,7 +6148,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glBindAttribLocation(int program, int index, CharSequence name) {
+    public void glBindAttribLocation(int program, int index, final CharSequence name) {
         GL20.glBindAttribLocation(program, index, name);
     }
 
@@ -5788,7 +6191,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public int glGetAttribLocation(int program, CharSequence name) {
+    public int glGetAttribLocation(int program, final CharSequence name) {
         return GL20.glGetAttribLocation(program, name);
     }
 
@@ -5820,10 +6223,10 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
 
         GL20.glGetVertexAttribPointerv(index, pname, pointerBuf);
 
-        LongBuffer resultPointer = LongBuffer.allocate(pointer.capacity());
         for (int i = 0; i < pointer.capacity(); i++) {
-            resultPointer.put(pointerBuf.get(i));
+            pointer.put(i, pointerBuf.get(i));
         }
+        pointerBuf.free();
 
     }
 
@@ -5863,16 +6266,16 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glShaderSource(int shader, final LongBuffer strings, int[] length) {
+    public void glShaderSource(int shader, final LongBuffer strings, final int[] length) {
         PointerBuffer stringBuf = BufferUtils.createPointerBuffer(strings.capacity());
         stringBuf.put(strings);
 
         GL20.glShaderSource(shader, stringBuf, length);
 
-        LongBuffer resultStrings = LongBuffer.allocate(strings.capacity());
         for (int i = 0; i < strings.capacity(); i++) {
-            resultStrings.put(stringBuf.get(i));
+            strings.put(i, stringBuf.get(i));
         }
+        stringBuf.free();
     }
 
     @Override
@@ -5978,7 +6381,7 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetShaderSource(int shader, int[] length, final ByteBuffer source) {
+    public void glGetShaderSource(int shader, final int[] length, final ByteBuffer source) {
         GL20.glGetShaderSource(shader, length, source);
     }
 

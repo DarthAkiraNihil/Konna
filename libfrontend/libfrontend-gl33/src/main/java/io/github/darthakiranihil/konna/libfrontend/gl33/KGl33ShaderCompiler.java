@@ -22,12 +22,22 @@ import io.github.darthakiranihil.konna.core.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.core.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.core.graphics.shader.KShaderType;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.libfrontend.gl20.KGl20;
 
+/**
+ * Implementation of {@link KShaderCompiler} that requires OpenGL 3.3 in
+ * order to compile sharers and link shader programs.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public final class KGl33ShaderCompiler extends KObject implements KShaderCompiler {
 
     private final KGl33 gl;
 
+    /**
+     * Constructs shader compiler with provided OpenGL 3.3 frontend.
+     * @param gl OpenGL 3.3 frontend
+     */
     public KGl33ShaderCompiler(final KGl33 gl) {
         this.gl = gl;
     }
@@ -35,43 +45,50 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
     // TODO: link state check
     @Override
     public KShader compileShader(final String source, final KShaderType type) {
-        int shaderId = this.gl.glCreateShader(type == KShaderType.FRAGMENT ? KGl20.GL_FRAGMENT_SHADER : KGl20.GL_VERTEX_SHADER) ;
+        int shaderId = this.gl.glCreateShader(
+            type == KShaderType.FRAGMENT
+                ? KGl33.GL_FRAGMENT_SHADER
+                : KGl33.GL_VERTEX_SHADER
+        );
         this.gl.glShaderSource(shaderId, source);
         this.gl.glCompileShader(shaderId);
         return new KShader(shaderId, type);
     }
 
     @Override
-    public KShader compileFragmentShader(String source) {
+    public KShader compileFragmentShader(final String source) {
         return this.compileShader(source, KShaderType.FRAGMENT);
     }
 
     @Override
-    public KShader compileVertexShader(String source) {
+    public KShader compileVertexShader(final String source) {
         return this.compileShader(source, KShaderType.VERTEX);
     }
 
     // TODO: LINK CHECK
     @Override
-    public KShaderProgram createShaderProgram(KShader fragment, KShader vertex) {
+    public KShaderProgram createShaderProgram(final KShader fragment, final KShader vertex) {
         if (fragment.type() != KShaderType.FRAGMENT) {
-            throw new KShaderCompilationException("Cannot pass non-fragment shader as program's fragment shader");
+            throw new KShaderCompilationException(
+                "Cannot pass non-fragment shader as program's fragment shader"
+            );
         }
 
         if (vertex.type() != KShaderType.VERTEX) {
-            throw new KShaderCompilationException("Cannot pass non-vertex shader as program's vertex shader");
+            throw new KShaderCompilationException(
+                "Cannot pass non-vertex shader as program's vertex shader"
+            );
         }
 
         int program = this.gl.glCreateProgram();
         this.gl.glAttachShader(program, fragment.id());
         this.gl.glAttachShader(program, vertex.id());
         this.gl.glLinkProgram(program);
-        System.out.println(this.gl.glGetProgramInfoLog(program));
         return new KGl33ShaderProgram(program, this.gl);
     }
 
     @Override
-    public KShaderProgram createShaderProgram(KShader shader) {
+    public KShaderProgram createShaderProgram(final KShader shader) {
         int program = this.gl.glCreateProgram();
         this.gl.glAttachShader(program, shader.id());
         this.gl.glLinkProgram(program);

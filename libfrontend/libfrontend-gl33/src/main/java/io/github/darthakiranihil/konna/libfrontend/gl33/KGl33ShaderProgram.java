@@ -17,14 +17,27 @@
 package io.github.darthakiranihil.konna.libfrontend.gl33;
 
 import io.github.darthakiranihil.konna.core.graphics.shader.KShaderProgram;
-import io.github.darthakiranihil.konna.libfrontend.gl20.KGl20;
 
+/**
+ * Implementation of {@link KShaderProgram} that requires OpenGL 3.3
+ * to be created.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public final class KGl33ShaderProgram implements KShaderProgram {
 
     private final int id;
     private final KGl33 gl;
 
-    public KGl33ShaderProgram(int id, KGl33 gl) {
+    /**
+     * Constructs a shader program with provided id and
+     * OpenGL 3.3 library frontend to be used to set shader attributes,
+     * uniforms etc.
+     * @param id Shader id
+     * @param gl OpenGL 3.3 frontend
+     */
+    public KGl33ShaderProgram(int id, final KGl33 gl) {
         this.id = id;
         this.gl = gl;
     }
@@ -35,12 +48,13 @@ public final class KGl33ShaderProgram implements KShaderProgram {
     }
 
     @Override
-    public int getAttribute(String name) {
+    public int getAttribute(final String name) {
         return this.gl.glGetAttribLocation(this.id, name);
     }
 
     @Override
-    public int getUniform(String name) {
+    public int getUniform(final String name) {
         return this.gl.glGetUniformLocation(this.id, name);
     }
+
 }

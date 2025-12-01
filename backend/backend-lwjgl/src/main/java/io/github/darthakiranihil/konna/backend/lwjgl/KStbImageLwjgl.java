@@ -25,9 +25,16 @@ import org.lwjgl.stb.STBImage;
 
 import java.nio.*;
 
-public final class KStbImageLwjgl implements KStbImage {
+/**
+ * STBImage library frontend implementation,
+ * using corresponding bindings from {@link STBImage}.
+ *
+ * @author Darth Akira Nihil
+ * @version 0.1.0
+ */
+public class KStbImageLwjgl implements KStbImage {
 
-    private static STBIIOCallbacks wrap(KStbIoCallbacks callbacks) {
+    private static STBIIOCallbacks wrap(final KStbIoCallbacks callbacks) {
         STBIIOCallbacks internal = STBIIOCallbacks.create();
         internal.set(
             (user, data, size) -> callbacks.read().invoke(user, data, size),
@@ -38,70 +45,190 @@ public final class KStbImageLwjgl implements KStbImage {
     }
 
     @Override
-    public ByteBuffer stbi_load(ByteBuffer filename, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load(
+        final ByteBuffer filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_load(
+            filename,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
+    }
+
+    @Override
+    public ByteBuffer stbi_load(
+        final CharSequence filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ByteBuffer stbi_load(CharSequence filename, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
-        return STBImage.stbi_load(filename, x, y, channels_in_file, desired_channels);
-    }
-
-    @Override
-    public ByteBuffer stbi_load_from_memory(ByteBuffer buffer, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load_from_memory(
+        final ByteBuffer buffer,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_from_memory(buffer, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ByteBuffer stbi_load_from_callbacks(KStbIoCallbacks clbk, long user, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
-        return STBImage.stbi_load_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, channels_in_file, desired_channels);
+    public ByteBuffer stbi_load_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_load_from_callbacks(
+            KStbImageLwjgl.wrap(clbk),
+            user,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
     }
 
     @Override
-    public ByteBuffer stbi_load_gif_from_memory(ByteBuffer buffer, LongBuffer delays, IntBuffer x, IntBuffer y, IntBuffer z, IntBuffer channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load_gif_from_memory(
+        final ByteBuffer buffer,
+        final LongBuffer delays,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer z,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         PointerBuffer delaysBuffer = BufferUtils.createPointerBuffer(delays.capacity());
         delaysBuffer.put(delays);
-        return STBImage.stbi_load_gif_from_memory(buffer, delaysBuffer, x, y, z, channels_in_file, desired_channels);
+        ByteBuffer result = STBImage.stbi_load_gif_from_memory(
+            buffer,
+            delaysBuffer,
+            x,
+            y,
+            z,
+            channels_in_file,
+            desired_channels
+        );
+        delaysBuffer.free();
+        return result;
     }
 
     @Override
-    public ShortBuffer stbi_load_16(ByteBuffer filename, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public ShortBuffer stbi_load_16(
+        final ByteBuffer filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_16(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ShortBuffer stbi_load_16(CharSequence filename, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public ShortBuffer stbi_load_16(
+        final CharSequence filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_16(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ShortBuffer stbi_load_16_from_memory(ByteBuffer buffer, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public ShortBuffer stbi_load_16_from_memory(
+        final ByteBuffer buffer,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_16_from_memory(buffer, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ShortBuffer stbi_load_16_from_callbacks(KStbIoCallbacks clbk, long user, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
-        return STBImage.stbi_load_16_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, channels_in_file, desired_channels);
+    public ShortBuffer stbi_load_16_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_load_16_from_callbacks(
+            KStbImageLwjgl.wrap(clbk),
+            user,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
     }
 
     @Override
-    public FloatBuffer stbi_loadf(ByteBuffer filename, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public FloatBuffer stbi_loadf(
+        final ByteBuffer filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_loadf(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public FloatBuffer stbi_loadf(CharSequence filename, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public FloatBuffer stbi_loadf(
+        final CharSequence filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_loadf(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public FloatBuffer stbi_loadf_from_memory(ByteBuffer buffer, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
+    public FloatBuffer stbi_loadf_from_memory(
+        final ByteBuffer buffer,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_loadf_from_memory(buffer, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public FloatBuffer stbi_loadf_from_callbacks(KStbIoCallbacks clbk, long user, IntBuffer x, IntBuffer y, IntBuffer channels_in_file, int desired_channels) {
-        return STBImage.stbi_loadf_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, channels_in_file, desired_channels);
+    public FloatBuffer stbi_loadf_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_loadf_from_callbacks(
+            KStbImageLwjgl.wrap(clbk),
+            user,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
     }
 
     @Override
@@ -125,22 +252,22 @@ public final class KStbImageLwjgl implements KStbImage {
     }
 
     @Override
-    public boolean stbi_is_hdr(ByteBuffer filename) {
+    public boolean stbi_is_hdr(final ByteBuffer filename) {
         return STBImage.stbi_is_hdr(filename);
     }
 
     @Override
-    public boolean stbi_is_hdr(CharSequence filename) {
+    public boolean stbi_is_hdr(final CharSequence filename) {
         return STBImage.stbi_is_hdr(filename);
     }
 
     @Override
-    public boolean stbi_is_hdr_from_memory(ByteBuffer buffer) {
+    public boolean stbi_is_hdr_from_memory(final ByteBuffer buffer) {
         return STBImage.stbi_is_hdr_from_memory(buffer);
     }
 
     @Override
-    public boolean stbi_is_hdr_from_callbacks(KStbIoCallbacks clbk, long user) {
+    public boolean stbi_is_hdr_from_callbacks(final KStbIoCallbacks clbk, long user) {
         return STBImage.stbi_is_hdr_from_callbacks(KStbImageLwjgl.wrap(clbk), user);
     }
 
@@ -150,52 +277,73 @@ public final class KStbImageLwjgl implements KStbImage {
     }
 
     @Override
-    public void stbi_image_free(ShortBuffer retval_from_stbi_load) {
+    public void stbi_image_free(final ShortBuffer retval_from_stbi_load) {
         STBImage.stbi_image_free(retval_from_stbi_load);
     }
 
     @Override
-    public void stbi_image_free(FloatBuffer retval_from_stbi_load) {
+    public void stbi_image_free(final FloatBuffer retval_from_stbi_load) {
         STBImage.stbi_image_free(retval_from_stbi_load);
     }
 
     @Override
-    public boolean stbi_info(ByteBuffer filename, IntBuffer x, IntBuffer y, IntBuffer comp) {
+    public boolean stbi_info(
+        final ByteBuffer filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer comp
+    ) {
         return STBImage.stbi_info(filename, x, y, comp);
     }
 
     @Override
-    public boolean stbi_info(CharSequence filename, IntBuffer x, IntBuffer y, IntBuffer comp) {
+    public boolean stbi_info(
+        final CharSequence filename,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer comp
+    ) {
         return STBImage.stbi_info(filename, x, y, comp);
     }
 
     @Override
-    public boolean stbi_info_from_memory(ByteBuffer buffer, IntBuffer x, IntBuffer y, IntBuffer comp) {
+    public boolean stbi_info_from_memory(
+        final ByteBuffer buffer,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer comp
+    ) {
         return STBImage.stbi_info_from_memory(buffer, x, y, comp);
     }
 
     @Override
-    public boolean stbi_info_from_callbacks(KStbIoCallbacks clbk, long user, IntBuffer x, IntBuffer y, IntBuffer comp) {
+    public boolean stbi_info_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final IntBuffer x,
+        final IntBuffer y,
+        final IntBuffer comp
+    ) {
         return STBImage.stbi_info_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, comp);
     }
 
     @Override
-    public boolean stbi_is_16_bit(ByteBuffer filename) {
+    public boolean stbi_is_16_bit(final ByteBuffer filename) {
         return STBImage.stbi_is_16_bit(filename);
     }
 
     @Override
-    public boolean stbi_is_16_bit(CharSequence filename) {
+    public boolean stbi_is_16_bit(final CharSequence filename) {
         return STBImage.stbi_is_16_bit(filename);
     }
 
     @Override
-    public boolean stbi_is_16_bit_from_memory(ByteBuffer buffer) {
+    public boolean stbi_is_16_bit_from_memory(final ByteBuffer buffer) {
         return STBImage.stbi_is_16_bit_from_memory(buffer);
     }
 
     @Override
-    public boolean stbi_is_16_bit_from_callbacks(KStbIoCallbacks clbk, long user) {
+    public boolean stbi_is_16_bit_from_callbacks(final KStbIoCallbacks clbk, long user) {
         return STBImage.stbi_is_16_bit_from_callbacks(KStbImageLwjgl.wrap(clbk), user);
     }
 
@@ -225,122 +373,281 @@ public final class KStbImageLwjgl implements KStbImage {
     }
 
     @Override
-    public ByteBuffer stbi_zlib_decode_malloc_guesssize(ByteBuffer buffer, int initial_size) {
+    public ByteBuffer stbi_zlib_decode_malloc_guesssize(
+        final ByteBuffer buffer,
+        int initial_size
+    ) {
         return STBImage.stbi_zlib_decode_malloc_guesssize(buffer, initial_size);
     }
 
     @Override
-    public ByteBuffer stbi_zlib_decode_malloc_guesssize_headerflag(ByteBuffer buffer, int initial_size, boolean parse_header) {
-        return STBImage.stbi_zlib_decode_malloc_guesssize_headerflag(buffer, initial_size, parse_header);
+    public ByteBuffer stbi_zlib_decode_malloc_guesssize_headerflag(
+        final ByteBuffer buffer,
+        int initial_size,
+        boolean parse_header
+    ) {
+        return STBImage.stbi_zlib_decode_malloc_guesssize_headerflag(
+            buffer,
+            initial_size,
+            parse_header
+        );
     }
 
     @Override
-    public ByteBuffer stbi_zlib_decode_malloc(ByteBuffer buffer) {
+    public ByteBuffer stbi_zlib_decode_malloc(final ByteBuffer buffer) {
         return STBImage.stbi_zlib_decode_malloc(buffer);
     }
 
     @Override
-    public int stbi_zlib_decode_buffer(ByteBuffer obuffer, ByteBuffer ibuffer) {
+    public int stbi_zlib_decode_buffer(final ByteBuffer obuffer, final ByteBuffer ibuffer) {
         return STBImage.stbi_zlib_decode_buffer(obuffer, ibuffer);
     }
 
     @Override
-    public ByteBuffer stbi_zlib_decode_noheader_malloc(ByteBuffer buffer) {
+    public ByteBuffer stbi_zlib_decode_noheader_malloc(final ByteBuffer buffer) {
         return STBImage.stbi_zlib_decode_noheader_malloc(buffer);
     }
 
     @Override
-    public int stbi_zlib_decode_noheader_buffer(ByteBuffer obuffer, ByteBuffer ibuffer) {
+    public int stbi_zlib_decode_noheader_buffer(
+        final ByteBuffer obuffer,
+        final ByteBuffer ibuffer
+    ) {
         return STBImage.stbi_zlib_decode_noheader_buffer(obuffer, ibuffer);
     }
 
     @Override
-    public ByteBuffer stbi_load(ByteBuffer filename, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load(
+        final ByteBuffer filename,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ByteBuffer stbi_load(CharSequence filename, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load(
+        final CharSequence filename,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ByteBuffer stbi_load_from_memory(ByteBuffer buffer, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load_from_memory(
+        final ByteBuffer buffer,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_from_memory(buffer, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ByteBuffer stbi_load_from_callbacks(KStbIoCallbacks clbk, long user, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
-        return STBImage.stbi_load_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, channels_in_file, desired_channels);
+    public ByteBuffer stbi_load_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_load_from_callbacks(
+            KStbImageLwjgl.wrap(clbk),
+            user,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
     }
 
     @Override
-    public ByteBuffer stbi_load_gif_from_memory(ByteBuffer buffer, LongBuffer delays, int[] x, int[] y, int[] z, int[] channels_in_file, int desired_channels) {
+    public ByteBuffer stbi_load_gif_from_memory(
+        final ByteBuffer buffer,
+        final LongBuffer delays,
+        final int[] x,
+        final int[] y,
+        final int[] z,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         PointerBuffer delaysBuffer = BufferUtils.createPointerBuffer(delays.capacity());
         delaysBuffer.put(delays);
-        return STBImage.stbi_load_gif_from_memory(buffer, delaysBuffer, x, y, z, channels_in_file, desired_channels);
+        ByteBuffer result = STBImage.stbi_load_gif_from_memory(
+            buffer,
+            delaysBuffer,
+            x,
+            y,
+            z,
+            channels_in_file,
+            desired_channels
+        );
+        delaysBuffer.free();
+        return result;
     }
 
     @Override
-    public ShortBuffer stbi_load_16(ByteBuffer filename, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
+    public ShortBuffer stbi_load_16(
+        final ByteBuffer filename,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_load_16(filename,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
+    }
+
+    @Override
+    public ShortBuffer stbi_load_16(
+        final CharSequence filename,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_16(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ShortBuffer stbi_load_16(CharSequence filename, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
-        return STBImage.stbi_load_16(filename, x, y, channels_in_file, desired_channels);
-    }
-
-    @Override
-    public ShortBuffer stbi_load_16_from_memory(ByteBuffer buffer, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
+    public ShortBuffer stbi_load_16_from_memory(
+        final ByteBuffer buffer,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_load_16_from_memory(buffer, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public ShortBuffer stbi_load_16_from_callbacks(KStbIoCallbacks clbk, long user, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
-        return STBImage.stbi_load_16_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, channels_in_file, desired_channels);
+    public ShortBuffer stbi_load_16_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_load_16_from_callbacks(
+            KStbImageLwjgl.wrap(clbk),
+            user,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
     }
 
     @Override
-    public FloatBuffer stbi_loadf(ByteBuffer filename, int[] x, int[] y, int[] channels_in_file, int desired_channels ) {
+    public FloatBuffer stbi_loadf(
+        final ByteBuffer filename,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_loadf(
+            filename,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
+    }
+
+    @Override
+    public FloatBuffer stbi_loadf(
+        final CharSequence filename,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_loadf(filename, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public FloatBuffer stbi_loadf(CharSequence filename, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
-        return STBImage.stbi_loadf(filename, x, y, channels_in_file, desired_channels);
-    }
-
-    @Override
-    public FloatBuffer stbi_loadf_from_memory(ByteBuffer buffer, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
+    public FloatBuffer stbi_loadf_from_memory(
+        final ByteBuffer buffer,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
         return STBImage.stbi_loadf_from_memory(buffer, x, y, channels_in_file, desired_channels);
     }
 
     @Override
-    public FloatBuffer stbi_loadf_from_callbacks(KStbIoCallbacks clbk, long user, int[] x, int[] y, int[] channels_in_file, int desired_channels) {
-        return STBImage.stbi_loadf_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, channels_in_file, desired_channels);
+    public FloatBuffer stbi_loadf_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final int[] x,
+        final int[] y,
+        final int[] channels_in_file,
+        int desired_channels
+    ) {
+        return STBImage.stbi_loadf_from_callbacks(
+            KStbImageLwjgl.wrap(clbk),
+            user,
+            x,
+            y,
+            channels_in_file,
+            desired_channels
+        );
     }
 
     @Override
-    public boolean stbi_info(ByteBuffer filename, int[] x, int[] y, int[] comp) {
+    public boolean stbi_info(
+        final ByteBuffer filename,
+        final int[] x,
+        final int[] y,
+        final int[] comp
+    ) {
         return STBImage.stbi_info(filename, x, y, comp);
     }
 
     @Override
-    public boolean stbi_info(CharSequence filename, int[] x, int[] y, int[] comp) {
+    public boolean stbi_info(
+        final CharSequence filename,
+        final int[] x,
+        final int[] y,
+        final int[] comp
+    ) {
         return STBImage.stbi_info(filename, x, y, comp);
     }
 
     @Override
-    public boolean stbi_info_from_memory(ByteBuffer buffer, int[] x, int[] y, int[] comp) {
+    public boolean stbi_info_from_memory(
+        final ByteBuffer buffer,
+        final int[] x,
+        final int[] y,
+        final int[] comp
+    ) {
         return STBImage.stbi_info_from_memory(buffer, x, y, comp);
     }
 
     @Override
-    public boolean stbi_info_from_callbacks(KStbIoCallbacks clbk, long user, int[] x, int[] y, int[] comp) {
+    public boolean stbi_info_from_callbacks(
+        final KStbIoCallbacks clbk,
+        long user,
+        final int[] x,
+        final int[] y,
+        final int[] comp
+    ) {
         return STBImage.stbi_info_from_callbacks(KStbImageLwjgl.wrap(clbk), user, x, y, comp);
     }
-
 
 
 }

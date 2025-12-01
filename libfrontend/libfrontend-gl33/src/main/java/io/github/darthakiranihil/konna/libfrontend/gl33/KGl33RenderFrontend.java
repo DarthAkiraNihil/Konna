@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.libfrontend.gl33;
 
 import io.github.darthakiranihil.konna.core.graphics.KTransform;
-import io.github.darthakiranihil.konna.core.graphics.KVertexAttribute;
 import io.github.darthakiranihil.konna.core.graphics.image.KImage;
 import io.github.darthakiranihil.konna.core.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.core.graphics.render.KRenderFrontend;
@@ -30,6 +29,14 @@ import io.github.darthakiranihil.konna.libfrontend.gl20.KGl20;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+//TODO: optimize
+/**
+ * Implementation of {@link KRenderFrontend} that uses OpenGL3.3
+ * to render objects.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
     private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
@@ -37,6 +44,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     private final KGl33 gl;
     private KSize viewportSize;
 
+    /**
+     * Constructs render frontend with provided OpenGL 3.3
+     * library frontend.
+     * @param gl OpenGL 3.3 frontend
+     */
     public KGl33RenderFrontend(KGl33 gl) {
         this.gl = gl;
     }

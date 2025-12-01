@@ -24,6 +24,13 @@ import org.lwjgl.opengl.GLUtil;
 
 import java.nio.*;
 
+/**
+ * OpenGL 3.3 library frontend implementation,
+ * using corresponding bindings from {@link GL33}.
+ *
+ * @author Darth Akira Nihil
+ * @version 0.1.0
+ */
 public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
 
     public void debug() {
@@ -31,62 +38,62 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glUniformMatrix2x3fv(int location, boolean transpose, FloatBuffer value) {
+    public void glUniformMatrix2x3fv(int location, boolean transpose, final FloatBuffer value) {
         GL33.glUniformMatrix2x3fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix3x2fv(int location, boolean transpose, FloatBuffer value) {
+    public void glUniformMatrix3x2fv(int location, boolean transpose, final FloatBuffer value) {
         GL33.glUniformMatrix3x2fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix2x4fv(int location, boolean transpose, FloatBuffer value) {
+    public void glUniformMatrix2x4fv(int location, boolean transpose, final FloatBuffer value) {
         GL33.glUniformMatrix2x4fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix4x2fv(int location, boolean transpose, FloatBuffer value) {
+    public void glUniformMatrix4x2fv(int location, boolean transpose, final FloatBuffer value) {
         GL33.glUniformMatrix4x2fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix3x4fv(int location, boolean transpose, FloatBuffer value) {
+    public void glUniformMatrix3x4fv(int location, boolean transpose, final FloatBuffer value) {
         GL33.glUniformMatrix3x4fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix4x3fv(int location, boolean transpose, FloatBuffer value) {
+    public void glUniformMatrix4x3fv(int location, boolean transpose, final FloatBuffer value) {
         GL33.glUniformMatrix4x3fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix2x3fv(int location, boolean transpose, float[] value) {
+    public void glUniformMatrix2x3fv(int location, boolean transpose, final float[] value) {
         GL33.glUniformMatrix2x3fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix3x2fv(int location, boolean transpose, float[] value) {
+    public void glUniformMatrix3x2fv(int location, boolean transpose, final float[] value) {
         GL33.glUniformMatrix3x2fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix2x4fv(int location, boolean transpose, float[] value) {
+    public void glUniformMatrix2x4fv(int location, boolean transpose, final float[] value) {
         GL33.glUniformMatrix2x4fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix4x2fv(int location, boolean transpose, float[] value) {
+    public void glUniformMatrix4x2fv(int location, boolean transpose, final float[] value) {
         GL33.glUniformMatrix4x2fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix3x4fv(int location, boolean transpose, float[] value) {
+    public void glUniformMatrix3x4fv(int location, boolean transpose, final float[] value) {
         GL33.glUniformMatrix3x4fv(location, transpose, value);
     }
 
     @Override
-    public void glUniformMatrix4x3fv(int location, boolean transpose, float[] value) {
+    public void glUniformMatrix4x3fv(int location, boolean transpose, final float[] value) {
         GL33.glUniformMatrix4x3fv(location, transpose, value);
     }
 
@@ -96,17 +103,17 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value) {
+    public void glClearBufferiv(int buffer, int drawbuffer, final IntBuffer value) {
         GL33.glClearBufferiv(buffer, drawbuffer, value);
     }
 
     @Override
-    public void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value) {
+    public void glClearBufferuiv(int buffer, int drawbuffer, final IntBuffer value) {
         GL33.glClearBufferuiv(buffer, drawbuffer, value);
     }
 
     @Override
-    public void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value) {
+    public void glClearBufferfv(int buffer, int drawbuffer, final FloatBuffer value) {
         GL33.glClearBufferfv(buffer, drawbuffer, value);
     }
 
@@ -156,62 +163,62 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glVertexAttribI1iv(int index, IntBuffer v) {
+    public void glVertexAttribI1iv(int index, final IntBuffer v) {
         GL33.glVertexAttribI1iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI2iv(int index, IntBuffer v) {
+    public void glVertexAttribI2iv(int index, final IntBuffer v) {
         GL33.glVertexAttribI2iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI3iv(int index, IntBuffer v) {
+    public void glVertexAttribI3iv(int index, final IntBuffer v) {
         GL33.glVertexAttribI3iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4iv(int index, IntBuffer v) {
+    public void glVertexAttribI4iv(int index, final IntBuffer v) {
         GL33.glVertexAttribI4iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI1uiv(int index, IntBuffer v) {
+    public void glVertexAttribI1uiv(int index, final IntBuffer v) {
         GL33.glVertexAttribI1uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI2uiv(int index, IntBuffer v) {
+    public void glVertexAttribI2uiv(int index, final IntBuffer v) {
         GL33.glVertexAttribI2uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI3uiv(int index, IntBuffer v) {
+    public void glVertexAttribI3uiv(int index, final IntBuffer v) {
         GL33.glVertexAttribI3uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4uiv(int index, IntBuffer v) {
+    public void glVertexAttribI4uiv(int index, final IntBuffer v) {
         GL33.glVertexAttribI4uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4bv(int index, ByteBuffer v) {
+    public void glVertexAttribI4bv(int index, final ByteBuffer v) {
         GL33.glVertexAttribI4bv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4sv(int index, ShortBuffer v) {
+    public void glVertexAttribI4sv(int index, final ShortBuffer v) {
         GL33.glVertexAttribI4sv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4ubv(int index, ByteBuffer v) {
+    public void glVertexAttribI4ubv(int index, final ByteBuffer v) {
         GL33.glVertexAttribI4ubv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4usv(int index, ShortBuffer v) {
+    public void glVertexAttribI4usv(int index, final ShortBuffer v) {
         GL33.glVertexAttribI4usv(index, v);
     }
 
@@ -221,7 +228,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int size,
         int type,
         int stride,
-        ByteBuffer pointer
+        final ByteBuffer pointer
     ) {
         GL33.glVertexAttribIPointer(index, size, type, stride, pointer);
     }
@@ -237,7 +244,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int size,
         int type,
         int stride,
-        ShortBuffer pointer
+        final ShortBuffer pointer
     ) {
         GL33.glVertexAttribIPointer(index, size, type, stride, pointer);
     }
@@ -248,13 +255,13 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int size,
         int type,
         int stride,
-        IntBuffer pointer
+        final IntBuffer pointer
     ) {
         GL33.glVertexAttribIPointer(index, size, type, stride, pointer);
     }
 
     @Override
-    public void glGetVertexAttribIiv(int index, int pname, IntBuffer params) {
+    public void glGetVertexAttribIiv(int index, int pname, final IntBuffer params) {
         GL33.glGetVertexAttribIiv(index, pname, params);
     }
 
@@ -264,7 +271,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetVertexAttribIuiv(int index, int pname, IntBuffer params) {
+    public void glGetVertexAttribIuiv(int index, int pname, final IntBuffer params) {
         GL33.glGetVertexAttribIuiv(index, pname, params);
     }
 
@@ -294,27 +301,27 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glUniform1uiv(int location, IntBuffer value) {
+    public void glUniform1uiv(int location, final IntBuffer value) {
         GL33.glUniform1uiv(location, value);
     }
 
     @Override
-    public void glUniform2uiv(int location, IntBuffer value) {
+    public void glUniform2uiv(int location, final IntBuffer value) {
         GL33.glUniform2uiv(location, value);
     }
 
     @Override
-    public void glUniform3uiv(int location, IntBuffer value) {
+    public void glUniform3uiv(int location, final IntBuffer value) {
         GL33.glUniform3uiv(location, value);
     }
 
     @Override
-    public void glUniform4uiv(int location, IntBuffer value) {
+    public void glUniform4uiv(int location, final IntBuffer value) {
         GL33.glUniform4uiv(location, value);
     }
 
     @Override
-    public void glGetUniformuiv(int program, int location, IntBuffer params) {
+    public void glGetUniformuiv(int program, int location, final IntBuffer params) {
         GL33.glGetUniformuiv(program, location, params);
     }
 
@@ -324,22 +331,22 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glBindFragDataLocation(int program, int colorNumber, ByteBuffer name) {
+    public void glBindFragDataLocation(int program, int colorNumber, final ByteBuffer name) {
         GL33.glBindFragDataLocation(program, colorNumber, name);
     }
 
     @Override
-    public void glBindFragDataLocation(int program, int colorNumber, CharSequence name) {
+    public void glBindFragDataLocation(int program, int colorNumber, final CharSequence name) {
         GL33.glBindFragDataLocation(program, colorNumber, name);
     }
 
     @Override
-    public int glGetFragDataLocation(int program, ByteBuffer name) {
+    public int glGetFragDataLocation(int program, final ByteBuffer name) {
         return GL33.glGetFragDataLocation(program, name);
     }
 
     @Override
-    public int glGetFragDataLocation(int program, CharSequence name) {
+    public int glGetFragDataLocation(int program, final CharSequence name) {
         return GL33.glGetFragDataLocation(program, name);
     }
 
@@ -364,7 +371,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         long offset,
         long length,
         int access,
-        ByteBuffer old_buffer
+        final ByteBuffer old_buffer
     ) {
         return GL33.glMapBufferRange(target, offset, length, access, old_buffer);
     }
@@ -390,7 +397,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glDeleteRenderbuffers(IntBuffer renderbuffers) {
+    public void glDeleteRenderbuffers(final IntBuffer renderbuffers) {
         GL33.glDeleteRenderbuffers(renderbuffers);
     }
 
@@ -400,7 +407,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGenRenderbuffers(IntBuffer renderbuffers) {
+    public void glGenRenderbuffers(final IntBuffer renderbuffers) {
         GL33.glGenRenderbuffers(renderbuffers);
     }
 
@@ -426,7 +433,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params) {
+    public void glGetRenderbufferParameteriv(int target, int pname, final IntBuffer params) {
         GL33.glGetRenderbufferParameteriv(target, pname, params);
     }
 
@@ -446,7 +453,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glDeleteFramebuffers(IntBuffer framebuffers) {
+    public void glDeleteFramebuffers(final IntBuffer framebuffers) {
         GL33.glDeleteFramebuffers(framebuffers);
     }
 
@@ -456,7 +463,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGenFramebuffers(IntBuffer framebuffers) {
+    public void glGenFramebuffers(final IntBuffer framebuffers) {
         GL33.glGenFramebuffers(framebuffers);
     }
 
@@ -530,7 +537,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int target,
         int attachment,
         int pname,
-        IntBuffer params
+        final IntBuffer params
     ) {
         GL33.glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
     }
@@ -553,7 +560,18 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int mask,
         int filter
     ) {
-        GL33.glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+        GL33.glBlitFramebuffer(
+            srcX0,
+            srcY0,
+            srcX1,
+            srcY1,
+            dstX0,
+            dstY0,
+            dstX1,
+            dstY1,
+            mask,
+            filter
+        );
     }
 
     @Override
@@ -562,7 +580,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glTexParameterIiv(int target, int pname, IntBuffer params) {
+    public void glTexParameterIiv(int target, int pname, final IntBuffer params) {
         GL33.glTexParameterIiv(target, pname, params);
     }
 
@@ -572,7 +590,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glTexParameterIuiv(int target, int pname, IntBuffer params) {
+    public void glTexParameterIuiv(int target, int pname, final IntBuffer params) {
         GL33.glTexParameterIuiv(target, pname, params);
     }
 
@@ -582,7 +600,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetTexParameterIiv(int target, int pname, IntBuffer params) {
+    public void glGetTexParameterIiv(int target, int pname, final IntBuffer params) {
         GL33.glGetTexParameterIiv(target, pname, params);
     }
 
@@ -592,7 +610,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetTexParameterIuiv(int target, int pname, IntBuffer params) {
+    public void glGetTexParameterIuiv(int target, int pname, final IntBuffer params) {
         GL33.glGetTexParameterIuiv(target, pname, params);
     }
 
@@ -607,7 +625,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetBooleani_v(int target, int index, ByteBuffer data) {
+    public void glGetBooleani_v(int target, int index, final ByteBuffer data) {
         GL33.glGetBooleani_v(target, index, data);
     }
 
@@ -617,7 +635,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetIntegeri_v(int target, int index, IntBuffer data) {
+    public void glGetIntegeri_v(int target, int index, final IntBuffer data) {
         GL33.glGetIntegeri_v(target, index, data);
     }
 
@@ -662,7 +680,11 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glTransformFeedbackVaryings(int program, LongBuffer varyings, int bufferMode) {
+    public void glTransformFeedbackVaryings(
+        int program,
+        final LongBuffer varyings,
+        int bufferMode
+    ) {
         PointerBuffer buf = BufferUtils.createPointerBuffer(varyings.capacity());
         buf.put(varyings);
 
@@ -675,12 +697,20 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glTransformFeedbackVaryings(int program, CharSequence[] varyings, int bufferMode) {
+    public void glTransformFeedbackVaryings(
+        int program,
+        final CharSequence[] varyings,
+        int bufferMode
+    ) {
         GL33.glTransformFeedbackVaryings(program, varyings, bufferMode);
     }
 
     @Override
-    public void glTransformFeedbackVaryings(int program, CharSequence varying, int bufferMode) {
+    public void glTransformFeedbackVaryings(
+        int program,
+        final CharSequence varying,
+        int bufferMode
+    ) {
         GL33.glTransformFeedbackVaryings(program, varying, bufferMode);
     }
 
@@ -688,10 +718,10 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glGetTransformFeedbackVarying(
         int program,
         int index,
-        IntBuffer length,
-        IntBuffer size,
-        IntBuffer type,
-        ByteBuffer name
+        final IntBuffer length,
+        final IntBuffer size,
+        final IntBuffer type,
+        final ByteBuffer name
     ) {
         GL33.glGetTransformFeedbackVarying(program, index, length, size, type, name);
     }
@@ -701,8 +731,8 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int program,
         int index,
         int bufSize,
-        IntBuffer size,
-        IntBuffer type
+        final IntBuffer size,
+        final IntBuffer type
     ) {
         return GL33.glGetTransformFeedbackVarying(program, index, bufSize, size, type);
     }
@@ -711,8 +741,8 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public String glGetTransformFeedbackVarying(
         int program,
         int index,
-        IntBuffer size,
-        IntBuffer type
+        final IntBuffer size,
+        final IntBuffer type
     ) {
         return GL33.glGetTransformFeedbackVarying(program, index, size, type);
     }
@@ -723,7 +753,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glDeleteVertexArrays(IntBuffer arrays) {
+    public void glDeleteVertexArrays(final IntBuffer arrays) {
         GL33.glDeleteVertexArrays(arrays);
     }
 
@@ -733,7 +763,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGenVertexArrays(IntBuffer arrays) {
+    public void glGenVertexArrays(final IntBuffer arrays) {
         GL33.glGenVertexArrays(arrays);
     }
 
@@ -748,127 +778,127 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glClearBufferiv(int buffer, int drawbuffer, int[] value) {
+    public void glClearBufferiv(int buffer, int drawbuffer, final int[] value) {
         GL33.glClearBufferiv(buffer, drawbuffer, value);
     }
 
     @Override
-    public void glClearBufferuiv(int buffer, int drawbuffer, int[] value) {
+    public void glClearBufferuiv(int buffer, int drawbuffer, final int[] value) {
         GL33.glClearBufferuiv(buffer, drawbuffer, value);
     }
 
     @Override
-    public void glClearBufferfv(int buffer, int drawbuffer, float[] value) {
+    public void glClearBufferfv(int buffer, int drawbuffer, final float[] value) {
         GL33.glClearBufferfv(buffer, drawbuffer, value);
     }
 
     @Override
-    public void glVertexAttribI1iv(int index, int[] v) {
+    public void glVertexAttribI1iv(int index, final int[] v) {
         GL33.glVertexAttribI1iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI2iv(int index, int[] v) {
+    public void glVertexAttribI2iv(int index, final int[] v) {
         GL33.glVertexAttribI2iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI3iv(int index, int[] v) {
+    public void glVertexAttribI3iv(int index, final int[] v) {
         GL33.glVertexAttribI3iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4iv(int index, int[] v) {
+    public void glVertexAttribI4iv(int index, final int[] v) {
         GL33.glVertexAttribI4iv(index, v);
     }
 
     @Override
-    public void glVertexAttribI1uiv(int index, int[] v) {
+    public void glVertexAttribI1uiv(int index, final int[] v) {
         GL33.glVertexAttribI1uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI2uiv(int index, int[] v) {
+    public void glVertexAttribI2uiv(int index, final int[] v) {
         GL33.glVertexAttribI2uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI3uiv(int index, int[] v) {
+    public void glVertexAttribI3uiv(int index, final int[] v) {
         GL33.glVertexAttribI3uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4uiv(int index, int[] v) {
+    public void glVertexAttribI4uiv(int index, final int[] v) {
         GL33.glVertexAttribI4uiv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4sv(int index, short[] v) {
+    public void glVertexAttribI4sv(int index, final short[] v) {
         GL33.glVertexAttribI4sv(index, v);
     }
 
     @Override
-    public void glVertexAttribI4usv(int index, short[] v) {
+    public void glVertexAttribI4usv(int index, final short[] v) {
         GL33.glVertexAttribI4usv(index, v);
     }
 
     @Override
-    public void glGetVertexAttribIiv(int index, int pname, int[] params) {
+    public void glGetVertexAttribIiv(int index, int pname, final int[] params) {
         GL33.glGetVertexAttribIiv(index, pname, params);
     }
 
     @Override
-    public void glGetVertexAttribIuiv(int index, int pname, int[] params) {
+    public void glGetVertexAttribIuiv(int index, int pname, final int[] params) {
         GL33.glGetVertexAttribIuiv(index, pname, params);
     }
 
     @Override
-    public void glUniform1uiv(int location, int[] value) {
+    public void glUniform1uiv(int location, final int[] value) {
         GL33.glUniform1uiv(location, value);
     }
 
     @Override
-    public void glUniform2uiv(int location, int[] value) {
+    public void glUniform2uiv(int location, final int[] value) {
         GL33.glUniform2uiv(location, value);
     }
 
     @Override
-    public void glUniform3uiv(int location, int[] value) {
+    public void glUniform3uiv(int location, final int[] value) {
         GL33.glUniform3uiv(location, value);
     }
 
     @Override
-    public void glUniform4uiv(int location, int[] value) {
+    public void glUniform4uiv(int location, final int[] value) {
         GL33.glUniform4uiv(location, value);
     }
 
     @Override
-    public void glGetUniformuiv(int program, int location, int[] params) {
+    public void glGetUniformuiv(int program, int location, final int[] params) {
         GL33.glGetUniformuiv(program, location, params);
     }
 
     @Override
-    public void glDeleteRenderbuffers(int[] renderbuffers) {
+    public void glDeleteRenderbuffers(final int[] renderbuffers) {
         GL33.glDeleteRenderbuffers(renderbuffers);
     }
 
     @Override
-    public void glGenRenderbuffers(int[] renderbuffers) {
+    public void glGenRenderbuffers(final int[] renderbuffers) {
         GL33.glGenRenderbuffers(renderbuffers);
     }
 
     @Override
-    public void glGetRenderbufferParameteriv(int target, int pname, int[] params) {
+    public void glGetRenderbufferParameteriv(int target, int pname, final int[] params) {
         GL33.glGetRenderbufferParameteriv(target, pname, params);
     }
 
     @Override
-    public void glDeleteFramebuffers(int[] framebuffers) {
+    public void glDeleteFramebuffers(final int[] framebuffers) {
         GL33.glDeleteFramebuffers(framebuffers);
     }
 
     @Override
-    public void glGenFramebuffers(int[] framebuffers) {
+    public void glGenFramebuffers(final int[] framebuffers) {
         GL33.glGenFramebuffers(framebuffers);
     }
 
@@ -877,33 +907,33 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int target,
         int attachment,
         int pname,
-        int[] params
+        final int[] params
     ) {
         GL33.glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
     }
 
     @Override
-    public void glTexParameterIiv(int target, int pname, int[] params) {
+    public void glTexParameterIiv(int target, int pname, final int[] params) {
         GL33.glTexParameterIiv(target, pname, params);
     }
 
     @Override
-    public void glTexParameterIuiv(int target, int pname, int[] params) {
+    public void glTexParameterIuiv(int target, int pname, final int[] params) {
         GL33.glTexParameterIuiv(target, pname, params);
     }
 
     @Override
-    public void glGetTexParameterIiv(int target, int pname, int[] params) {
+    public void glGetTexParameterIiv(int target, int pname, final int[] params) {
         GL33.glGetTexParameterIiv(target, pname, params);
     }
 
     @Override
-    public void glGetTexParameterIuiv(int target, int pname, int[] params) {
+    public void glGetTexParameterIuiv(int target, int pname, final int[] params) {
         GL33.glGetTexParameterIuiv(target, pname, params);
     }
 
     @Override
-    public void glGetIntegeri_v(int target, int index, int[] data) {
+    public void glGetIntegeri_v(int target, int index, final int[] data) {
         GL33.glGetIntegeri_v(target, index, data);
     }
 
@@ -911,21 +941,21 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glGetTransformFeedbackVarying(
         int program,
         int index,
-        int[] length,
-        int[] size,
-        int[] type,
-        ByteBuffer name
+        final int[] length,
+        final int[] size,
+        final int[] type,
+        final ByteBuffer name
     ) {
         GL33.glGetTransformFeedbackVarying(program, index, length, size, type, name);
     }
 
     @Override
-    public void glDeleteVertexArrays(int[] arrays) {
+    public void glDeleteVertexArrays(final int[] arrays) {
         GL33.glDeleteVertexArrays(arrays);
     }
 
     @Override
-    public void glGenVertexArrays(int[] arrays) {
+    public void glGenVertexArrays(final int[] arrays) {
         GL33.glGenVertexArrays(arrays);
     }
 
@@ -946,22 +976,27 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glDrawElementsInstanced(int mode, int type, ByteBuffer indices, int primcount) {
+    public void glDrawElementsInstanced(
+        int mode,
+        int type,
+        final ByteBuffer indices,
+        int primcount
+    ) {
         GL33.glDrawElementsInstanced(mode, type, indices, primcount);
     }
 
     @Override
-    public void glDrawElementsInstanced(int mode, ByteBuffer indices, int primcount) {
+    public void glDrawElementsInstanced(int mode, final ByteBuffer indices, int primcount) {
         GL33.glDrawElementsInstanced(mode, indices, primcount);
     }
 
     @Override
-    public void glDrawElementsInstanced(int mode, ShortBuffer indices, int primcount) {
+    public void glDrawElementsInstanced(int mode, final ShortBuffer indices, int primcount) {
         GL33.glDrawElementsInstanced(mode, indices, primcount);
     }
 
     @Override
-    public void glDrawElementsInstanced(int mode, IntBuffer indices, int primcount) {
+    public void glDrawElementsInstanced(int mode, final IntBuffer indices, int primcount) {
         GL33.glDrawElementsInstanced(mode, indices, primcount);
     }
 
@@ -989,8 +1024,8 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     @Override
     public void glGetUniformIndices(
         int program,
-        LongBuffer uniformNames,
-        IntBuffer uniformIndices
+        final LongBuffer uniformNames,
+        final IntBuffer uniformIndices
     ) {
 
         PointerBuffer buf = BufferUtils.createPointerBuffer(uniformNames.capacity());
@@ -1002,29 +1037,30 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         for (int i = 0; i < uniformNames.capacity(); i++) {
             result.put(buf.get(i));
         }
+        buf.free();
 
     }
 
     @Override
     public void glGetUniformIndices(
         int program,
-        CharSequence[] uniformNames,
-        IntBuffer uniformIndices
+        final CharSequence[] uniformNames,
+        final IntBuffer uniformIndices
     ) {
         GL33.glGetUniformIndices(program, uniformNames, uniformIndices);
     }
 
     @Override
-    public int glGetUniformIndices(int program, CharSequence uniformName) {
+    public int glGetUniformIndices(int program, final CharSequence uniformName) {
         return GL33.glGetUniformIndices(program, uniformName);
     }
 
     @Override
     public void glGetActiveUniformsiv(
         int program,
-        IntBuffer uniformIndices,
+        final IntBuffer uniformIndices,
         int pname,
-        IntBuffer params
+        final IntBuffer params
     ) {
         GL33.glGetActiveUniformsiv(program, uniformIndices, pname, params);
     }
@@ -1038,8 +1074,8 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glGetActiveUniformName(
         int program,
         int uniformIndex,
-        IntBuffer length,
-        ByteBuffer uniformName
+        final IntBuffer length,
+        final ByteBuffer uniformName
     ) {
         GL33.glGetActiveUniformName(program, uniformIndex, length, uniformName);
     }
@@ -1055,12 +1091,12 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public int glGetUniformBlockIndex(int program, ByteBuffer uniformBlockName) {
+    public int glGetUniformBlockIndex(int program, final ByteBuffer uniformBlockName) {
         return GL33.glGetUniformBlockIndex(program, uniformBlockName);
     }
 
     @Override
-    public int glGetUniformBlockIndex(int program, CharSequence uniformBlockName) {
+    public int glGetUniformBlockIndex(int program, final CharSequence uniformBlockName) {
         return GL33.glGetUniformBlockIndex(program, uniformBlockName);
     }
 
@@ -1069,7 +1105,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int program,
         int uniformBlockIndex,
         int pname,
-        IntBuffer params
+        final IntBuffer params
     ) {
         GL33.glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
     }
@@ -1083,8 +1119,8 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glGetActiveUniformBlockName(
         int program,
         int uniformBlockIndex,
-        IntBuffer length,
-        ByteBuffer uniformBlockName
+        final IntBuffer length,
+        final ByteBuffer uniformBlockName
     ) {
         GL33.glGetActiveUniformBlockName(program, uniformBlockIndex, length, uniformBlockName);
     }
@@ -1105,7 +1141,11 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetUniformIndices(int program, LongBuffer uniformNames, int[] uniformIndices) {
+    public void glGetUniformIndices(
+        int program,
+        final LongBuffer uniformNames,
+        final int[] uniformIndices
+    ) {
         PointerBuffer buf = BufferUtils.createPointerBuffer(uniformNames.capacity());
         buf.put(uniformNames);
 
@@ -1115,10 +1155,16 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         for (int i = 0; i < uniformNames.capacity(); i++) {
             result.put(buf.get(i));
         }
+        buf.free();
     }
 
     @Override
-    public void glGetActiveUniformsiv(int program, int[] uniformIndices, int pname, int[] params) {
+    public void glGetActiveUniformsiv(
+        int program,
+        final int[] uniformIndices,
+        int pname,
+        final int[] params
+    ) {
         GL33.glGetActiveUniformsiv(program, uniformIndices, pname, params);
     }
 
@@ -1126,8 +1172,8 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glGetActiveUniformName(
         int program,
         int uniformIndex,
-        int[] length,
-        ByteBuffer uniformName
+        final int[] length,
+        final ByteBuffer uniformName
     ) {
         GL33.glGetActiveUniformName(program, uniformIndex, length, uniformName);
     }
@@ -1137,7 +1183,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int program,
         int uniformBlockIndex,
         int pname,
-        int[] params
+        final int[] params
     ) {
         GL33.glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
     }
@@ -1146,14 +1192,14 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glGetActiveUniformBlockName(
         int program,
         int uniformBlockIndex,
-        int[] length,
-        ByteBuffer uniformBlockName
+        final int[] length,
+        final ByteBuffer uniformBlockName
     ) {
         GL33.glGetActiveUniformBlockName(program, uniformBlockIndex, length, uniformBlockName);
     }
 
     @Override
-    public void glGetBufferParameteri64v(int target, int pname, LongBuffer params) {
+    public void glGetBufferParameteri64v(int target, int pname, final LongBuffer params) {
         GL33.glGetBufferParameteri64v(target, pname, params);
     }
 
@@ -1174,22 +1220,27 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glDrawElementsBaseVertex(int mode, int type, ByteBuffer indices, int basevertex) {
+    public void glDrawElementsBaseVertex(
+        int mode,
+        int type,
+        final ByteBuffer indices,
+        int basevertex
+    ) {
         GL33.glDrawElementsBaseVertex(mode, type, indices, basevertex);
     }
 
     @Override
-    public void glDrawElementsBaseVertex(int mode, ByteBuffer indices, int basevertex) {
+    public void glDrawElementsBaseVertex(int mode, final ByteBuffer indices, int basevertex) {
         GL33.glDrawElementsBaseVertex(mode, indices, basevertex);
     }
 
     @Override
-    public void glDrawElementsBaseVertex(int mode, ShortBuffer indices, int basevertex) {
+    public void glDrawElementsBaseVertex(int mode, final ShortBuffer indices, int basevertex) {
         GL33.glDrawElementsBaseVertex(mode, indices, basevertex);
     }
 
     @Override
-    public void glDrawElementsBaseVertex(int mode, IntBuffer indices, int basevertex) {
+    public void glDrawElementsBaseVertex(int mode, final IntBuffer indices, int basevertex) {
         GL33.glDrawElementsBaseVertex(mode, indices, basevertex);
     }
 
@@ -1212,7 +1263,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int start,
         int end,
         int type,
-        ByteBuffer indices,
+        final ByteBuffer indices,
         int basevertex
     ) {
         GL33.glDrawRangeElementsBaseVertex(mode, start, end, type, indices, basevertex);
@@ -1223,7 +1274,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int mode,
         int start,
         int end,
-        ByteBuffer indices,
+        final ByteBuffer indices,
         int basevertex
     ) {
         GL33.glDrawRangeElementsBaseVertex(mode, start, end, indices, basevertex);
@@ -1234,7 +1285,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int mode,
         int start,
         int end,
-        ShortBuffer indices,
+        final ShortBuffer indices,
         int basevertex
     ) {
         GL33.glDrawRangeElementsBaseVertex(mode, start, end, indices, basevertex);
@@ -1245,7 +1296,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int mode,
         int start,
         int end,
-        IntBuffer indices,
+        final IntBuffer indices,
         int basevertex
     ) {
         GL33.glDrawRangeElementsBaseVertex(mode, start, end, indices, basevertex);
@@ -1267,7 +1318,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     public void glDrawElementsInstancedBaseVertex(
         int mode,
         int type,
-        ByteBuffer indices,
+        final ByteBuffer indices,
         int primcount,
         int basevertex
     ) {
@@ -1277,7 +1328,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     @Override
     public void glDrawElementsInstancedBaseVertex(
         int mode,
-        ByteBuffer indices,
+        final ByteBuffer indices,
         int primcount,
         int basevertex
     ) {
@@ -1287,7 +1338,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     @Override
     public void glDrawElementsInstancedBaseVertex(
         int mode,
-        ShortBuffer indices,
+        final ShortBuffer indices,
         int primcount,
         int basevertex
     ) {
@@ -1297,7 +1348,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     @Override
     public void glDrawElementsInstancedBaseVertex(
         int mode,
-        IntBuffer indices,
+        final IntBuffer indices,
         int primcount,
         int basevertex
     ) {
@@ -1307,10 +1358,10 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     @Override
     public void glMultiDrawElementsBaseVertex(
         int mode,
-        IntBuffer count,
+        final IntBuffer count,
         int type,
-        LongBuffer indices,
-        IntBuffer basevertex
+        final LongBuffer indices,
+        final IntBuffer basevertex
     ) {
         PointerBuffer buf = BufferUtils.createPointerBuffer(indices.capacity());
         buf.put(indices);
@@ -1321,6 +1372,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         for (int i = 0; i < indices.capacity(); i++) {
             result.put(buf.get(i));
         }
+        buf.free();
     }
 
     @Override
@@ -1337,7 +1389,14 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int height,
         boolean fixedsamplelocations
     ) {
-        GL33.glTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
+        GL33.glTexImage2DMultisample(
+            target,
+            samples,
+            internalformat,
+            width,
+            height,
+            fixedsamplelocations
+        );
     }
 
     @Override
@@ -1350,11 +1409,19 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int depth,
         boolean fixedsamplelocations
     ) {
-        GL33.glTexImage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
+        GL33.glTexImage3DMultisample(
+            target,
+            samples,
+            internalformat,
+            width,
+            height,
+            depth,
+            fixedsamplelocations
+        );
     }
 
     @Override
-    public void glGetMultisamplefv(int pname, int index, FloatBuffer val) {
+    public void glGetMultisamplefv(int pname, int index, final FloatBuffer val) {
         GL33.glGetMultisamplefv(pname, index, val);
     }
 
@@ -1399,7 +1466,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetInteger64v(int pname, LongBuffer params) {
+    public void glGetInteger64v(int pname, final LongBuffer params) {
         GL33.glGetInteger64v(pname, params);
     }
 
@@ -1409,7 +1476,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetInteger64i_v(int pname, int index, LongBuffer params) {
+    public void glGetInteger64i_v(int pname, int index, final LongBuffer params) {
         GL33.glGetInteger64i_v(pname, index, params);
     }
 
@@ -1419,27 +1486,27 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetSynciv(long sync, int pname, IntBuffer length, IntBuffer values) {
+    public void glGetSynciv(long sync, int pname, final IntBuffer length, final IntBuffer values) {
         GL33.glGetSynciv(sync, pname, length, values);
     }
 
     @Override
-    public int glGetSynci(long sync, int pname, IntBuffer length) {
+    public int glGetSynci(long sync, int pname, final IntBuffer length) {
         return GL33.glGetSynci(sync, pname, length);
     }
 
     @Override
-    public void glGetBufferParameteri64v(int target, int pname, long[] params) {
+    public void glGetBufferParameteri64v(int target, int pname, final long[] params) {
         GL33.glGetBufferParameteri64v(target, pname, params);
     }
 
     @Override
     public void glMultiDrawElementsBaseVertex(
         int mode,
-        int[] count,
+        final int[] count,
         int type,
-        LongBuffer indices,
-        int[] basevertex
+        final LongBuffer indices,
+        final int[] basevertex
     ) {
         PointerBuffer buf = BufferUtils.createPointerBuffer(indices.capacity());
         buf.put(indices);
@@ -1450,25 +1517,26 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         for (int i = 0; i < indices.capacity(); i++) {
             result.put(buf.get(i));
         }
+        buf.free();
     }
 
     @Override
-    public void glGetMultisamplefv(int pname, int index, float[] val) {
+    public void glGetMultisamplefv(int pname, int index, final float[] val) {
         GL33.glGetMultisamplefv(pname, index, val);
     }
 
     @Override
-    public void glGetInteger64v(int pname, long[] params) {
+    public void glGetInteger64v(int pname, final long[] params) {
         GL33.glGetInteger64v(pname, params);
     }
 
     @Override
-    public void glGetInteger64i_v(int pname, int index, long[] params) {
+    public void glGetInteger64i_v(int pname, int index, final long[] params) {
         GL33.glGetInteger64i_v(pname, index, params);
     }
 
     @Override
-    public void glGetSynciv(long sync, int pname, int[] length, int[] values) {
+    public void glGetSynciv(long sync, int pname, final int[] length, final int[] values) {
         GL33.glGetSynciv(sync, pname, length, values);
     }
 
@@ -1477,7 +1545,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int program,
         int colorNumber,
         int index,
-        ByteBuffer name
+        final ByteBuffer name
     ) {
         GL33.glBindFragDataLocationIndexed(program, colorNumber, index, name);
     }
@@ -1487,23 +1555,23 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
         int program,
         int colorNumber,
         int index,
-        CharSequence name
+        final CharSequence name
     ) {
         GL33.glBindFragDataLocationIndexed(program, colorNumber, index, name);
     }
 
     @Override
-    public int glGetFragDataIndex(int program, ByteBuffer name) {
+    public int glGetFragDataIndex(int program, final ByteBuffer name) {
         return GL33.glGetFragDataIndex(program, name);
     }
 
     @Override
-    public int glGetFragDataIndex(int program, CharSequence name) {
+    public int glGetFragDataIndex(int program, final CharSequence name) {
         return GL33.glGetFragDataIndex(program, name);
     }
 
     @Override
-    public void glGenSamplers(IntBuffer samplers) {
+    public void glGenSamplers(final IntBuffer samplers) {
         GL33.glGenSamplers(samplers);
     }
 
@@ -1513,7 +1581,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glDeleteSamplers(IntBuffer samplers) {
+    public void glDeleteSamplers(final IntBuffer samplers) {
         GL33.glDeleteSamplers(samplers);
     }
 
@@ -1543,27 +1611,27 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glSamplerParameteriv(int sampler, int pname, IntBuffer params) {
+    public void glSamplerParameteriv(int sampler, int pname, final IntBuffer params) {
         GL33.glSamplerParameteriv(sampler, pname, params);
     }
 
     @Override
-    public void glSamplerParameterfv(int sampler, int pname, FloatBuffer params) {
+    public void glSamplerParameterfv(int sampler, int pname, final FloatBuffer params) {
         GL33.glSamplerParameterfv(sampler, pname, params);
     }
 
     @Override
-    public void glSamplerParameterIiv(int sampler, int pname, IntBuffer params) {
+    public void glSamplerParameterIiv(int sampler, int pname, final IntBuffer params) {
         GL33.glSamplerParameterIiv(sampler, pname, params);
     }
 
     @Override
-    public void glSamplerParameterIuiv(int sampler, int pname, IntBuffer params) {
+    public void glSamplerParameterIuiv(int sampler, int pname, final IntBuffer params) {
         GL33.glSamplerParameterIuiv(sampler, pname, params);
     }
 
     @Override
-    public void glGetSamplerParameteriv(int sampler, int pname, IntBuffer params) {
+    public void glGetSamplerParameteriv(int sampler, int pname, final IntBuffer params) {
         GL33.glGetSamplerParameteriv(sampler, pname, params);
     }
 
@@ -1573,7 +1641,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetSamplerParameterfv(int sampler, int pname, FloatBuffer params) {
+    public void glGetSamplerParameterfv(int sampler, int pname, final FloatBuffer params) {
         GL33.glGetSamplerParameterfv(sampler, pname, params);
     }
 
@@ -1583,7 +1651,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetSamplerParameterIiv(int sampler, int pname, IntBuffer params) {
+    public void glGetSamplerParameterIiv(int sampler, int pname, final IntBuffer params) {
         GL33.glGetSamplerParameterIiv(sampler, pname, params);
     }
 
@@ -1593,7 +1661,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetSamplerParameterIuiv(int sampler, int pname, IntBuffer params) {
+    public void glGetSamplerParameterIuiv(int sampler, int pname, final IntBuffer params) {
         GL33.glGetSamplerParameterIuiv(sampler, pname, params);
     }
 
@@ -1608,7 +1676,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetQueryObjecti64v(int id, int pname, LongBuffer params) {
+    public void glGetQueryObjecti64v(int id, int pname, final LongBuffer params) {
         GL33.glGetQueryObjecti64v(id, pname, params);
     }
 
@@ -1623,7 +1691,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetQueryObjectui64v(int id, int pname, LongBuffer params) {
+    public void glGetQueryObjectui64v(int id, int pname, final LongBuffer params) {
         GL33.glGetQueryObjectui64v(id, pname, params);
     }
 
@@ -1658,17 +1726,17 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glVertexP2uiv(int type, IntBuffer value) {
+    public void glVertexP2uiv(int type, final IntBuffer value) {
         GL33.glVertexP2uiv(type, value);
     }
 
     @Override
-    public void glVertexP3uiv(int type, IntBuffer value) {
+    public void glVertexP3uiv(int type, final IntBuffer value) {
         GL33.glVertexP3uiv(type, value);
     }
 
     @Override
-    public void glVertexP4uiv(int type, IntBuffer value) {
+    public void glVertexP4uiv(int type, final IntBuffer value) {
         GL33.glVertexP4uiv(type, value);
     }
 
@@ -1693,17 +1761,17 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glTexCoordP1uiv(int type, IntBuffer coords) {
+    public void glTexCoordP1uiv(int type, final IntBuffer coords) {
         GL33.glTexCoordP1uiv(type, coords);
     }
 
     @Override
-    public void glTexCoordP2uiv(int type, IntBuffer coords) {
+    public void glTexCoordP2uiv(int type, final IntBuffer coords) {
         GL33.glTexCoordP2uiv(type, coords);
     }
 
     @Override
-    public void glTexCoordP4uiv(int type, IntBuffer coords) {
+    public void glTexCoordP4uiv(int type, final IntBuffer coords) {
         GL33.glTexCoordP4uiv(type, coords);
     }
 
@@ -1728,22 +1796,22 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glMultiTexCoordP1uiv(int texture, int type, IntBuffer coords) {
+    public void glMultiTexCoordP1uiv(int texture, int type, final IntBuffer coords) {
         GL33.glMultiTexCoordP1uiv(texture, type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP2uiv(int texture, int type, IntBuffer coords) {
+    public void glMultiTexCoordP2uiv(int texture, int type, final IntBuffer coords) {
         GL33.glMultiTexCoordP2uiv(texture, type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP3uiv(int texture, int type, IntBuffer coords) {
+    public void glMultiTexCoordP3uiv(int texture, int type, final IntBuffer coords) {
         GL33.glMultiTexCoordP3uiv(texture, type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP4uiv(int texture, int type, IntBuffer coords) {
+    public void glMultiTexCoordP4uiv(int texture, int type, final IntBuffer coords) {
         GL33.glMultiTexCoordP4uiv(texture, type, coords);
     }
 
@@ -1753,7 +1821,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glNormalP3uiv(int type, IntBuffer coords) {
+    public void glNormalP3uiv(int type, final IntBuffer coords) {
         GL33.glNormalP3uiv(type, coords);
     }
 
@@ -1768,12 +1836,12 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glColorP3uiv(int type, IntBuffer color) {
+    public void glColorP3uiv(int type, final IntBuffer color) {
         GL33.glColorP3uiv(type, color);
     }
 
     @Override
-    public void glColorP4uiv(int type, IntBuffer color) {
+    public void glColorP4uiv(int type, final IntBuffer color) {
         GL33.glColorP4uiv(type, color);
     }
 
@@ -1783,7 +1851,7 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glSecondaryColorP3uiv(int type, IntBuffer color) {
+    public void glSecondaryColorP3uiv(int type, final IntBuffer color) {
         GL33.glSecondaryColorP3uiv(type, color);
     }
 
@@ -1808,177 +1876,197 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glVertexAttribP1uiv(int index, int type, boolean normalized, IntBuffer value) {
+    public void glVertexAttribP1uiv(
+        int index,
+        int type,
+        boolean normalized,
+        final IntBuffer value
+    ) {
         GL33.glVertexAttribP1uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glVertexAttribP2uiv(int index, int type, boolean normalized, IntBuffer value) {
+    public void glVertexAttribP2uiv(
+        int index,
+        int type,
+        boolean normalized,
+        final IntBuffer value
+    ) {
         GL33.glVertexAttribP2uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glVertexAttribP3uiv(int index, int type, boolean normalized, IntBuffer value) {
+    public void glVertexAttribP3uiv(
+        int index,
+        int type,
+        boolean normalized,
+        final IntBuffer value
+    ) {
         GL33.glVertexAttribP3uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glVertexAttribP4uiv(int index, int type, boolean normalized, IntBuffer value) {
+    public void glVertexAttribP4uiv(
+        int index,
+        int type,
+        boolean normalized,
+        final IntBuffer value
+    ) {
         GL33.glVertexAttribP4uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glGenSamplers(int[] samplers) {
+    public void glGenSamplers(final int[] samplers) {
         GL33.glGenSamplers(samplers);
     }
 
     @Override
-    public void glDeleteSamplers(int[] samplers) {
+    public void glDeleteSamplers(final int[] samplers) {
         GL33.glDeleteSamplers(samplers);
     }
 
     @Override
-    public void glSamplerParameteriv(int sampler, int pname, int[] params) {
+    public void glSamplerParameteriv(int sampler, int pname, final int[] params) {
         GL33.glSamplerParameteriv(sampler, pname, params);
     }
 
     @Override
-    public void glSamplerParameterfv(int sampler, int pname, float[] params) {
+    public void glSamplerParameterfv(int sampler, int pname, final float[] params) {
         GL33.glSamplerParameterfv(sampler, pname, params);
     }
 
     @Override
-    public void glSamplerParameterIiv(int sampler, int pname, int[] params) {
+    public void glSamplerParameterIiv(int sampler, int pname, final int[] params) {
         GL33.glSamplerParameterIiv(sampler, pname, params);
     }
 
     @Override
-    public void glSamplerParameterIuiv(int sampler, int pname, int[] params) {
+    public void glSamplerParameterIuiv(int sampler, int pname, final int[] params) {
         GL33.glSamplerParameterIuiv(sampler, pname, params);
     }
 
     @Override
-    public void glGetSamplerParameteriv(int sampler, int pname, int[] params) {
+    public void glGetSamplerParameteriv(int sampler, int pname, final int[] params) {
         GL33.glGetSamplerParameteriv(sampler, pname, params);
     }
 
     @Override
-    public void glGetSamplerParameterfv(int sampler, int pname, float[] params) {
+    public void glGetSamplerParameterfv(int sampler, int pname, final float[] params) {
         GL33.glGetSamplerParameterfv(sampler, pname, params);
     }
 
     @Override
-    public void glGetSamplerParameterIiv(int sampler, int pname, int[] params) {
+    public void glGetSamplerParameterIiv(int sampler, int pname, final int[] params) {
         GL33.glGetSamplerParameterIiv(sampler, pname, params);
     }
 
     @Override
-    public void glGetSamplerParameterIuiv(int sampler, int pname, int[] params) {
+    public void glGetSamplerParameterIuiv(int sampler, int pname, final int[] params) {
         GL33.glGetSamplerParameterIuiv(sampler, pname, params);
     }
 
     @Override
-    public void glGetQueryObjecti64v(int id, int pname, long[] params) {
+    public void glGetQueryObjecti64v(int id, int pname, final long[] params) {
         GL33.glGetQueryObjecti64v(id, pname, params);
     }
 
     @Override
-    public void glGetQueryObjectui64v(int id, int pname, long[] params) {
+    public void glGetQueryObjectui64v(int id, int pname, final long[] params) {
         GL33.glGetQueryObjectui64v(id, pname, params);
     }
 
     @Override
-    public void glVertexP2uiv(int type, int[] value) {
+    public void glVertexP2uiv(int type, final int[] value) {
         GL33.glVertexP2uiv(type, value);
     }
 
     @Override
-    public void glVertexP3uiv(int type, int[] value) {
+    public void glVertexP3uiv(int type, final int[] value) {
         GL33.glVertexP3uiv(type, value);
     }
 
     @Override
-    public void glVertexP4uiv(int type, int[] value) {
+    public void glVertexP4uiv(int type, final int[] value) {
         GL33.glVertexP4uiv(type, value);
     }
 
     @Override
-    public void glTexCoordP1uiv(int type, int[] coords) {
+    public void glTexCoordP1uiv(int type, final int[] coords) {
         GL33.glTexCoordP1uiv(type, coords);
     }
 
     @Override
-    public void glTexCoordP2uiv(int type, int[] coords) {
+    public void glTexCoordP2uiv(int type, final int[] coords) {
         GL33.glTexCoordP2uiv(type, coords);
     }
 
     @Override
-    public void glTexCoordP3uiv(int type, int[] coords) {
+    public void glTexCoordP3uiv(int type, final int[] coords) {
         GL33.glTexCoordP3uiv(type, coords);
     }
 
     @Override
-    public void glTexCoordP4uiv(int type, int[] coords) {
+    public void glTexCoordP4uiv(int type, final int[] coords) {
         GL33.glTexCoordP4uiv(type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP1uiv(int texture, int type, int[] coords) {
+    public void glMultiTexCoordP1uiv(int texture, int type, final int[] coords) {
         GL33.glMultiTexCoordP1uiv(texture, type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP2uiv(int texture, int type, int[] coords) {
+    public void glMultiTexCoordP2uiv(int texture, int type, final int[] coords) {
         GL33.glMultiTexCoordP2uiv(texture, type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP3uiv(int texture, int type, int[] coords) {
+    public void glMultiTexCoordP3uiv(int texture, int type, final int[] coords) {
         GL33.glMultiTexCoordP3uiv(texture, type, coords);
     }
 
     @Override
-    public void glMultiTexCoordP4uiv(int texture, int type, int[] coords) {
+    public void glMultiTexCoordP4uiv(int texture, int type, final int[] coords) {
         GL33.glMultiTexCoordP4uiv(texture, type, coords);
     }
 
     @Override
-    public void glNormalP3uiv(int type, int[] coords) {
+    public void glNormalP3uiv(int type, final int[] coords) {
         GL33.glNormalP3uiv(type, coords);
     }
 
     @Override
-    public void glColorP3uiv(int type, int[] color) {
+    public void glColorP3uiv(int type, final int[] color) {
         GL33.glColorP3uiv(type, color);
     }
 
     @Override
-    public void glColorP4uiv(int type, int[] color) {
+    public void glColorP4uiv(int type, final int[] color) {
         GL33.glColorP4uiv(type, color);
     }
 
     @Override
-    public void glSecondaryColorP3uiv(int type, int[] color) {
+    public void glSecondaryColorP3uiv(int type, final int[] color) {
         GL33.glSecondaryColorP3uiv(type, color);
     }
 
     @Override
-    public void glVertexAttribP1uiv(int index, int type, boolean normalized, int[] value) {
+    public void glVertexAttribP1uiv(int index, int type, boolean normalized, final int[] value) {
         GL33.glVertexAttribP1uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glVertexAttribP2uiv(int index, int type, boolean normalized, int[] value) {
+    public void glVertexAttribP2uiv(int index, int type, boolean normalized, final int[] value) {
         GL33.glVertexAttribP2uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glVertexAttribP3uiv(int index, int type, boolean normalized, int[] value) {
+    public void glVertexAttribP3uiv(int index, int type, boolean normalized, final int[] value) {
         GL33.glVertexAttribP3uiv(index, type, normalized, value);
     }
 
     @Override
-    public void glVertexAttribP4uiv(int index, int type, boolean normalized, int[] value) {
+    public void glVertexAttribP4uiv(int index, int type, boolean normalized, final int[] value) {
         GL33.glVertexAttribP4uiv(index, type, normalized, value);
     }
 

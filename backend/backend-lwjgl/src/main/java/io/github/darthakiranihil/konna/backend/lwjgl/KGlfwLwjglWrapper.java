@@ -22,7 +22,7 @@ import org.lwjgl.glfw.*;
 
 final class KGlfwLwjglWrapper extends KUninstantiable {
 
-    public static GLFWAllocator wrap(KGlfwAllocator original) {
+    public static GLFWAllocator wrap(final KGlfwAllocator original) {
         var internal = GLFWAllocator.create();
         internal.set(
             (size, user) -> original.allocate().invoke(size, user),
@@ -39,129 +39,131 @@ final class KGlfwLwjglWrapper extends KUninstantiable {
     }
 
 
-    public static GLFWFramebufferSizeCallbackI wrap(KGlfwFramebufferSizeCallback original) {
+    public static GLFWFramebufferSizeCallbackI wrap(final KGlfwFramebufferSizeCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWMouseButtonCallbackI wrap(KGlfwMouseButtonCallback original) {
+    public static GLFWMouseButtonCallbackI wrap(final KGlfwMouseButtonCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowIconifyCallbackI wrap(KGlfwWindowIconifyCallback original) {
+    public static GLFWWindowIconifyCallbackI wrap(final KGlfwWindowIconifyCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWCharCallbackI wrap(KGlfwCharCallback original) {
+    public static GLFWCharCallbackI wrap(final KGlfwCharCallback original) {
         return original::invoke;
     }
 
-    public static GLFWGammaRamp wrap(KGlfwGammaRamp original) {
+    public static GLFWGammaRamp wrap(final KGlfwGammaRamp original) {
         GLFWGammaRamp internal = GLFWGammaRamp.create();
         internal.set(original.red(), original.green(), original.blue(), original.size());
         return internal;
     }
 
 
-    public static GLFWPreeditCallbackI wrap(KGlfwPreeditCallback original) {
+    public static GLFWPreeditCallbackI wrap(final KGlfwPreeditCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowMaximizeCallbackI wrap(KGlfwWindowMaximizeCallback original) {
+    public static GLFWWindowMaximizeCallbackI wrap(final KGlfwWindowMaximizeCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWCharModsCallbackI wrap(KGlfwCharModsCallback original) {
+    public static GLFWCharModsCallbackI wrap(final KGlfwCharModsCallback original) {
         return original::invoke;
     }
 
-    public static GLFWImage wrap(KGlfwImage original) {
+    public static GLFWImage wrap(final KGlfwImage original) {
         var internal = GLFWImage.create();
         internal.set(original.width(), original.height(), original.pixels());
         return internal;
     }
 
 
-    public static GLFWPreeditCandidateCallbackI wrap(KGlfwPreeditCandidateCallback original) {
+    public static GLFWPreeditCandidateCallbackI wrap(final KGlfwPreeditCandidateCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowPosCallbackI wrap(KGlfwWindowPosCallback original) {
+    public static GLFWWindowPosCallbackI wrap(final KGlfwWindowPosCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWCursorEnterCallbackI wrap(KGlfwCursorEnterCallback original) {
+    public static GLFWCursorEnterCallbackI wrap(final KGlfwCursorEnterCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWIMEStatusCallbackI wrap(KGlfwImeStatusCallback original) {
+    public static GLFWIMEStatusCallbackI wrap(final KGlfwImeStatusCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWScrollCallbackI wrap(KGlfwScrollCallback original) {
+    public static GLFWScrollCallbackI wrap(final KGlfwScrollCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowRefreshCallbackI wrap(KGlfwWindowRefreshCallback original) {
+    public static GLFWWindowRefreshCallbackI wrap(final KGlfwWindowRefreshCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWCursorPosCallbackI wrap(KGlfwCursorPosCallback original) {
+    public static GLFWCursorPosCallbackI wrap(final KGlfwCursorPosCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWJoystickCallbackI wrap(KGlfwJoystickCallback original) {
+    public static GLFWJoystickCallbackI wrap(final KGlfwJoystickCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowCloseCallbackI wrap(KGlfwWindowCloseCallback original) {
+    public static GLFWWindowCloseCallbackI wrap(final KGlfwWindowCloseCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowSizeCallbackI wrap(KGlfwWindowSizeCallback original) {
+    public static GLFWWindowSizeCallbackI wrap(final KGlfwWindowSizeCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWDropCallbackI wrap(KGlfwDropCallback original) {
+    public static GLFWDropCallbackI wrap(final KGlfwDropCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWKeyCallbackI wrap(KGlfwKeyCallback original) {
+    public static GLFWKeyCallbackI wrap(final KGlfwKeyCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowContentScaleCallbackI wrap(KGlfwWindowContentScaleCallback original) {
+    public static GLFWWindowContentScaleCallbackI wrap(
+        final KGlfwWindowContentScaleCallback original
+    ) {
         return original::invoke;
     }
 
 
-    public static GLFWErrorCallbackI wrap(KGlfwErrorCallback original) {
+    public static GLFWErrorCallbackI wrap(final KGlfwErrorCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWMonitorCallbackI wrap(KGlfwMonitorCallback original) {
+    public static GLFWMonitorCallbackI wrap(final KGlfwMonitorCallback original) {
         return original::invoke;
     }
 
 
-    public static GLFWWindowFocusCallbackI wrap(KGlfwWindowFocusCallback original) {
+    public static GLFWWindowFocusCallbackI wrap(final KGlfwWindowFocusCallback original) {
         return original::invoke;
     }
 }

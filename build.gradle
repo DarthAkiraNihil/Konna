@@ -25,6 +25,7 @@ subprojects {
     archivesBaseName = "Konna.${it.name}"
     checkstyle {
         toolVersion = "11.0.0"
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
     }
 }
 
@@ -60,6 +61,11 @@ distributions {
 def exportedProjects = [
     ":",
     ":core",
+    ":libfrontend-glfw",
+    ":libfrontend-gl20",
+    ":libfrontend-gl33",
+    ":libfrontend-stbimage",
+    ":backend-lwjgl",
 ]
 
 tasks.withType(Javadoc).configureEach {
@@ -89,6 +95,29 @@ tasks.register('jacocoRootReport', JacocoReport) {
         html.required = true
         xml.required = true
     }
+}
+
+tasks.register('aggregateCheckstyleReport', Checkstyle) {
+    description = 'Generates an aggregated Checkstyle report for all subprojects.'
+    group = 'Verification'
+
+    // Collect all Checkstyle reports from subprojects
+    source = files(subprojects.collect { it.checkstyleMain.source })
+    classpath = files(subprojects.collect { it.checkstyleMain.classpath })
+
+    // Configure the aggregated report output
+    reports {
+        xml.required = true
+        xml.outputLocation = file("${layout.buildDirectory}/reports/checkstyle/aggregate.xml")
+        html.required = true
+        html.outputLocation = file("${layout.buildDirectory}/reports/checkstyle/aggregate.html")
+    }
+
+    // Set the Checkstyle configuration for the aggregated report
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml') // Use the same config as subprojects
+
+    // Ensure subproject checkstyle tasks run before aggregation
+    dependsOn subprojects.checkstyleMain
 }
 
 test {

@@ -29,7 +29,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwJoystickCallback wrap(GLFWJoystickCallbackI original) {
+    public static KGlfwJoystickCallback wrap(final GLFWJoystickCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -37,7 +37,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowContentScaleCallback wrap(GLFWWindowContentScaleCallbackI original) {
+    public static KGlfwWindowContentScaleCallback wrap(
+        final GLFWWindowContentScaleCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -45,22 +47,14 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwCharModsCallback wrap(GLFWCharModsCallbackI original) {
+    public static KGlfwCharModsCallback wrap(final GLFWCharModsCallbackI original) {
         if (original == null) {
             return null;
         }
         return original::invoke;
     }
 
-    public static KGlfwCharCallback wrap(GLFWCharCallbackI original) {
-        if (original == null) {
-            return null;
-        }
-        return original::invoke;
-    }
-
-
-    public static KGlfwKeyCallback wrap(GLFWKeyCallbackI original) {
+    public static KGlfwCharCallback wrap(final GLFWCharCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -68,7 +62,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowFocusCallback wrap(GLFWWindowFocusCallbackI original) {
+    public static KGlfwKeyCallback wrap(final GLFWKeyCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -76,7 +70,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwCursorEnterCallback wrap(GLFWCursorEnterCallbackI original) {
+    public static KGlfwWindowFocusCallback wrap(final GLFWWindowFocusCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -84,7 +78,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwMonitorCallback wrap(GLFWMonitorCallbackI original) {
+    public static KGlfwCursorEnterCallback wrap(final GLFWCursorEnterCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -92,7 +86,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowIconifyCallback wrap(GLFWWindowIconifyCallbackI original) {
+    public static KGlfwMonitorCallback wrap(final GLFWMonitorCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -100,7 +94,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwCursorPosCallback wrap(GLFWCursorPosCallbackI original) {
+    public static KGlfwWindowIconifyCallback wrap(final GLFWWindowIconifyCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -108,7 +102,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwMouseButtonCallback wrap(GLFWMouseButtonCallbackI original) {
+    public static KGlfwCursorPosCallback wrap(final GLFWCursorPosCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -116,7 +110,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowMaximizeCallback wrap(GLFWWindowMaximizeCallbackI original) {
+    public static KGlfwMouseButtonCallback wrap(final GLFWMouseButtonCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -124,7 +118,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwDropCallback wrap(GLFWDropCallbackI original) {
+    public static KGlfwWindowMaximizeCallback wrap(final GLFWWindowMaximizeCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -132,7 +126,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwPreeditCallback wrap(GLFWPreeditCallbackI original) {
+    public static KGlfwDropCallback wrap(final GLFWDropCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -140,7 +134,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowPosCallback wrap(GLFWWindowPosCallbackI original) {
+    public static KGlfwPreeditCallback wrap(final GLFWPreeditCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -148,7 +142,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwErrorCallback wrap(GLFWErrorCallbackI original) {
+    public static KGlfwWindowPosCallback wrap(final GLFWWindowPosCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -156,7 +150,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwPreeditCandidateCallback wrap(GLFWPreeditCandidateCallbackI original) {
+    public static KGlfwErrorCallback wrap(final GLFWErrorCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -164,7 +158,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowRefreshCallback wrap(GLFWWindowRefreshCallbackI original) {
+    public static KGlfwPreeditCandidateCallback wrap(final GLFWPreeditCandidateCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -172,7 +166,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwFramebufferSizeCallback wrap(GLFWFramebufferSizeCallbackI original) {
+    public static KGlfwWindowRefreshCallback wrap(final GLFWWindowRefreshCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -180,7 +174,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwScrollCallback wrap(GLFWScrollCallbackI original) {
+    public static KGlfwFramebufferSizeCallback wrap(final GLFWFramebufferSizeCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -188,7 +182,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowSizeCallback wrap(GLFWWindowSizeCallbackI original) {
+    public static KGlfwScrollCallback wrap(final GLFWScrollCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -196,7 +190,15 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwGammaRamp wrap(GLFWGammaRamp original) {
+    public static KGlfwWindowSizeCallback wrap(final GLFWWindowSizeCallbackI original) {
+        if (original == null) {
+            return null;
+        }
+        return original::invoke;
+    }
+
+
+    public static KGlfwGammaRamp wrap(final GLFWGammaRamp original) {
         return new KGlfwGammaRamp() {
             @Override
             public ShortBuffer red() {
@@ -221,7 +223,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwVidMode wrap(GLFWVidMode original) {
+    public static KGlfwVidMode wrap(final GLFWVidMode original) {
         return new KGlfwVidMode() {
             @Override
             public int width() {
@@ -256,7 +258,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwImeStatusCallback wrap(GLFWIMEStatusCallbackI original) {
+    public static KGlfwImeStatusCallback wrap(final GLFWIMEStatusCallbackI original) {
         if (original == null) {
             return null;
         }
@@ -264,7 +266,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static KGlfwWindowCloseCallback wrap(GLFWWindowCloseCallbackI original) {
+    public static KGlfwWindowCloseCallback wrap(final GLFWWindowCloseCallbackI original) {
         if (original == null) {
             return null;
         }
