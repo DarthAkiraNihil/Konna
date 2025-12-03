@@ -25,10 +25,6 @@ The foundation that is essential for the whole engine
       - [x] Add clerks - util classes (aka "real services") for services
       - [x] Add necessary annotations that helps hypervisor to configure endpoint routing automatically
 - [ ] Add json schema validators (?)
-- [ ] Add wrapper class for Java AWT Window
-  - [ ] Add abstraction for renderable object that holds primitive information such as color, image etc.
-  - [ ] Add geometrical primitives classes
-  - [ ] Add methods for window wrapper to draw renderable objects
 - [ ] Implement methods for inter-component messaging
     - [x] Add Event system
     - [x] Add base for tunnels - message translators to help components understand each other
@@ -55,7 +51,9 @@ The foundation that is essential for the whole engine
   - [x] Add automatic dependency injection in the Activator
 - [ ] Make everything concurrent and make the system work in different threads
 
-### v. 0.3.0 - The beginning of Entity
+### v. 0.3.0 - Graphics
+
+### v. 0.4.0 - The beginning of Entity
 
 - [ ] Implement entity component that contains methods to work with different entities, including the Player itself
     - [ ] Add base class for all entities
@@ -65,14 +63,14 @@ The foundation that is essential for the whole engine
     - [ ] Add support for entity behaviours - it will be just like script system
     - [ ] Add entity model - entity class with list of properties to concrete class with concrete fields (?)
 
-### v. 0.4.0 - The beginning of Level
+### v. 0.5.0 - The beginning of Level
 
-### v. 0.5.0 - Monsters and Combat
+### v. 0.6.0 - Monsters and Combat
 
-### v. 0.6.0 - Item system
+### v. 0.7.0 - Item system
 
-### v. 0.7.0 - Kreaktive - the GUI component
+### v. 0.8.0 - Kreaktive - the GUI component
 
-### v. 0.8.0 - Saving
+### v. 0.9.0 - Saving
 
-### v. 0.9.0 - To be continued...
+### v. 1.0.0 - To be continued...
