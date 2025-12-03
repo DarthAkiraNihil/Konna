@@ -25,16 +25,27 @@ import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+/**
+ * Implementation of {@link KImageLoader} that uses STBImage
+ * to load and process image resources.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public final class KStbImageLoader extends KObject implements KImageLoader {
 
     private final KStbImage stbImage;
 
-    public KStbImageLoader(KStbImage stbImage) {
+    /**
+     * Constructs image loader with provided STBImage frontend
+     * @param stbImage STBImage frontend
+     */
+    public KStbImageLoader(final KStbImage stbImage) {
         this.stbImage = stbImage;
     }
 
     @Override
-    public KImage load(String filename) {
+    public KImage load(final String filename) {
         IntBuffer width = KBufferUtils.createIntBuffer(1);
         IntBuffer height = KBufferUtils.createIntBuffer(1);
         IntBuffer channels = KBufferUtils.createIntBuffer(1);

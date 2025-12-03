@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.libfrontend.stbimage;
 
+/**
+ * Interface representing EOF callback of STBImage.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KStbEofCallback {
 

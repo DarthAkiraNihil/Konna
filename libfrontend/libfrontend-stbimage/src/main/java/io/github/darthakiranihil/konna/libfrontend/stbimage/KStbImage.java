@@ -18,6 +18,12 @@ package io.github.darthakiranihil.konna.libfrontend.stbimage;
 
 import java.nio.*;
 
+/**
+ * Library frontend of STBImage.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbImage {
 
     int STBI_default = 0;

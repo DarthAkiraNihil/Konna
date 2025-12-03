@@ -16,10 +16,28 @@
 
 package io.github.darthakiranihil.konna.libfrontend.stbimage;
 
+/**
+ * Wrapper interface of STBImage IO callbacks (readonly).
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbIoCallbacks {
 
+    /**
+     * Returns read callback.
+     * @return STB read callback
+     */
     KStbReadCallback read();
+    /**
+     * Returns skip callback.
+     * @return STB skip callback
+     */
     KStbSkipCallback skip();
+    /**
+     * Returns EOF callback.
+     * @return STB EOF callback
+     */
     KStbEofCallback eof();
 
 }
