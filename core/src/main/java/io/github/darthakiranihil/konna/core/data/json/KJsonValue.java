@@ -23,14 +23,17 @@ import java.util.function.Consumer;
 
 /**
  * Representation of a Json value for different purposes.
+ * It can contain a single value, array or an object with key-value pairs.
+ * In the last case the json value provides read-write access through getting
+ * and setting properties. Else the value is read-only
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
 public class KJsonValue implements Iterable<KJsonValue> {
 
-    private KJsonValueType type;
-    private Object containedValue;
+    private final KJsonValueType type;
+    private final Object containedValue;
 
     /**
      * Default constructor. Requires specification of concrete value type, and it may be a bit
@@ -43,6 +46,17 @@ public class KJsonValue implements Iterable<KJsonValue> {
         if (value == null && type != KJsonValueType.STRING) {
             this.type = KJsonValueType.NULL;
         } else {
+            KJsonValueType checked = KJsonValueType.fromObject(value);
+            if (type != checked) {
+                throw new KJsonValueException(
+                    String.format(
+                        "Type mismatch: attempted to create %s but got %s (%s)",
+                        type,
+                        checked,
+                        value
+                    )
+                );
+            }
             this.type = type;
         }
         this.containedValue = value;
@@ -291,6 +305,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * Overwrites value if the property specified with key already existed in the object.
      * @param key The key of the property
      * @param value Value to be set
+     * @since 0.2.0
      */
     @SuppressWarnings("unchecked")
     public void setProperty(final String key, final KJsonValue value) {
