@@ -84,13 +84,14 @@ public record KJsonPropertyValidationInfo(
                 );
             }
 
+            List<KJsonValidator> copied = new LinkedList<>(this.validators);
             var built = new KJsonPropertyValidationInfo(
                 this.name,
                 this.required,
                 this.nullable,
                 this.expectedType,
                 this.defaultValue,
-                this.validators
+                copied
             );
             this.setDefaults();
             return built;

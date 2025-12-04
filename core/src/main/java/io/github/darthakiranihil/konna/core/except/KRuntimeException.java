@@ -40,4 +40,13 @@ public abstract class KRuntimeException extends RuntimeException implements KThr
     public KRuntimeException(final Throwable cause) {
         super(cause);
     }
+
+    /**
+     * Constructs exception with provided message and cause.
+     * @param message Exception message
+     * @param cause The throwable that caused the exception
+     */
+    public KRuntimeException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

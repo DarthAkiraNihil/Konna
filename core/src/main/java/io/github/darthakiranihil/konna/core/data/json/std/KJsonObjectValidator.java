@@ -40,9 +40,9 @@ public class KJsonObjectValidator implements KJsonValidator {
             String propertyName = property.name();
             if (!value.hasProperty(propertyName)) {
                 if (property.required()) {
-                    throw new KJsonValidationError(
-                        String.format("JSON object property named %s is required", propertyName
-                        )
+                    throw KJsonValidationError.generalError(
+                        propertyName,
+                        "the property is required"
                     );
                 } else {
                     value.setProperty(
@@ -57,16 +57,18 @@ public class KJsonObjectValidator implements KJsonValidator {
 
             KJsonValue propertyValue = value.getProperty(propertyName);
             if (propertyValue.isNull() && !property.nullable()) {
-                throw new KJsonValidationError(
-                    String.format(
-                        "JSON object property named %s is not nullable",
-                        propertyName
-                    )
+                throw KJsonValidationError.generalError(
+                    propertyName,
+                    "the property is not nullable but null got"
                 );
             }
 
             for (KJsonValidator validator: property.validators()) {
-                validator.validate(propertyValue);
+                try {
+                    validator.validate(propertyValue);
+                } catch (KJsonValidationError e) {
+                    throw KJsonValidationError.wrappedError(propertyName, e);
+                }
             }
         }
     }

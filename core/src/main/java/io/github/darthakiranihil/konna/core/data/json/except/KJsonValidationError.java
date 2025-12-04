@@ -16,9 +16,36 @@ public class KJsonValidationError extends KRuntimeException {
         );
     }
 
+    public static KJsonValidationError generalError(final String property, final String message) {
+        return new KJsonValidationError(
+            String.format(
+                "%s: %s",
+                property,
+                message
+            )
+        );
+    }
+
+    public static KJsonValidationError wrappedError(final String property, final KJsonValidationError cause) {
+        return new KJsonValidationError(
+            String.format(
+                "%s: %s",
+                property,
+                cause.getMessage()
+            ),
+            cause
+        );
+    }
+
+    public KJsonValidationError(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
     public KJsonValidationError(final String message) {
         super(message);
     }
+
+
 
     @Override
     public KThrowableSeverity getSeverity() {

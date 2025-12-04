@@ -38,15 +38,22 @@ public class KJsonArrayValidator implements KJsonValidator {
             throw KJsonValidationError.incorrectType(KJsonValueType.ARRAY, value.getType());
         }
 
-
+        int i = 0;
         for (KJsonValue element: value) {
             if (element.getType() != this.expectedElementType) {
                 throw KJsonValidationError.incorrectType(this.expectedElementType, element.getType());
             }
 
+
             for (KJsonValidator validator: this.validators) {
-                validator.validate(element);
+                try {
+                    validator.validate(element);
+                } catch (KJsonValidationError e) {
+                    throw KJsonValidationError.wrappedError(Integer.toString(i), e);
+                }
+
             }
+            i++;
         }
 
     }
