@@ -114,16 +114,17 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
 
                     var deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
 
-                    for (var entry: value.entrySet()) {
-
-                        if (clazz.isRecord()) {
+                    if (clazz.isRecord()) {
+                        for (var entry: value.entrySet()) {
                             deserialized = this.setRecordField(
                                 clazz,
                                 entry.getKey(),
                                 entry.getValue(),
                                 deserialized
                             );
-                        } else {
+                        }
+                    } else {
+                        for (var entry: value.entrySet()) {
                             this.setObjectField(
                                 clazz,
                                 entry.getKey(),
@@ -131,7 +132,6 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                                 deserialized
                             );
                         }
-
                     }
 
                     return (T) deserialized;
@@ -212,31 +212,31 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         Field field = this.getField(clazz, key);
         field.setAccessible(true);
 
-        if (value.getType() == KJsonValueType.ARRAY) {
-            if (!field.isAnnotationPresent(KJsonArray.class)) {
-                throw new KJsonSerializationException(
-                    String.format(
-                        "Could not deserialize field %s, as it is an list-like"
-                            +   "and the KJsonArray annotation is not provided",
-                        field.getName()
-                    )
-                );
-            }
-
-            KJsonArray meta = field.getAnnotation(KJsonArray.class);
-            field.set(
-                deserialized,
-                this.deserialize(value, meta.elementType())
-            );
-        } else {
+        if (value.getType() != KJsonValueType.ARRAY) {
             field.set(
                 deserialized,
                 this.deserialize(value, field.getType())
             );
+            return;
         }
+
+        if (!field.isAnnotationPresent(KJsonArray.class)) {
+            throw new KJsonSerializationException(
+                String.format(
+                    "Could not deserialize field %s, as it is an list-like"
+                        +   "and the KJsonArray annotation is not provided",
+                    field.getName()
+                )
+            );
+        }
+
+        KJsonArray meta = field.getAnnotation(KJsonArray.class);
+        field.set(
+            deserialized,
+            this.deserialize(value, meta.elementType())
+        );
     }
 
-    @SuppressWarnings("unchecked")
     private Object setRecordField(
         final Class<?> clazz,
         final String key,
@@ -247,26 +247,28 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         var params = new Object[components.length];
         for (int i = 0; i < components.length; i++) {
             var component = components[i];
-            if (this.pointsToSameComponent(component, key)) {
-                if (value.getType() == KJsonValueType.ARRAY) {
-                    if (!component.isAnnotationPresent(KJsonArray.class)) {
-                        throw new KJsonSerializationException(
-                            String.format(
-                                "Could not deserialize field %s, as it is an list-like"
-                                    +   "and the KJsonArray annotation is not provided",
-                                component.getName()
-                            )
-                        );
-                    }
-
-                    KJsonArray meta = component.getAnnotation(KJsonArray.class);
-                    params[i] = this.deserialize(value, meta.elementType());
-                } else {
-                    params[i] = this.deserialize(value, component.getType());
-                }
-            } else {
+            if (!this.pointsToSameComponent(component, key)) {
                 params[i] = component.getAccessor().invoke(deserialized);
+                continue;
             }
+
+            if (value.getType() != KJsonValueType.ARRAY) {
+                params[i] = this.deserialize(value, component.getType());
+                continue;
+            }
+
+            if (!component.isAnnotationPresent(KJsonArray.class)) {
+                throw new KJsonSerializationException(
+                    String.format(
+                        "Could not deserialize field %s, as it is an list-like"
+                            +   "and the KJsonArray annotation is not provided",
+                        component.getName()
+                    )
+                );
+            }
+
+            KJsonArray meta = component.getAnnotation(KJsonArray.class);
+            params[i] = this.deserialize(value, meta.elementType());
         }
         return clazz.getConstructors()[0].newInstance(params);
 
