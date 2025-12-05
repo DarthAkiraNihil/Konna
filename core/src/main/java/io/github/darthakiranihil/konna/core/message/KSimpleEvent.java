@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.LinkedList;

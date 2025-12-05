@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;

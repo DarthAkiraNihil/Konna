@@ -50,15 +50,15 @@ public record KEngineHypervisorConfig(
     Class<? extends KServiceLoader> serviceLoader,
 
     @KJsonSerialized @KJsonCustomName(name = MESSAGE_ROUTE_CONFIGURERS_KEY)
-    @KJsonArray(elementType = KMessageRoutesConfigurer.class)
+    @KJsonArray(elementType = Class.class)
     List<Class<? extends KMessageRoutesConfigurer>> messageRoutesConfigurers,
 
     @KJsonSerialized @KJsonCustomName(name = EVENT_REGISTERERS_KEY)
-    @KJsonArray(elementType = KEventRegisterer.class)
+    @KJsonArray(elementType = Class.class)
     List<Class<? extends KEventRegisterer>> eventRegisterers,
 
     @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
-    @KJsonArray(elementType = KComponent.class)
+    @KJsonArray(elementType = Class.class)
     List<Class<? extends KComponent>> components
 ) {
 

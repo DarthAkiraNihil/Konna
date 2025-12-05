@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingExcept
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.util.KPair;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
