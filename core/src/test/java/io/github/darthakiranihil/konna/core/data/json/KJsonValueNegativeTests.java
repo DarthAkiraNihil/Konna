@@ -21,6 +21,8 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+
 public class KJsonValueNegativeTests extends KStandardTestClass {
 
     @Test
@@ -47,6 +49,17 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         KJsonValue nonStringChar = KJsonValue.fromNumber(1);
         KJsonValue nullChar = KJsonValue.fromString(null);
         KJsonValue longChar = KJsonValue.fromString("12");
+
+        try {
+            Field nullCharContainedField = KJsonValue.class.getDeclaredField("containedValue");
+            Field nullCharType = KJsonValue.class.getDeclaredField("type");
+            nullCharContainedField.setAccessible(true);
+            nullCharType.setAccessible(true);
+            nullCharContainedField.set(nullChar, null);
+            nullCharType.set(nullChar, KJsonValueType.STRING);
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
 
         Exception thrownNonString = Assertions.assertThrowsExactly(KJsonValueException.class, nonStringChar::getChar);
         Exception thrownNull = Assertions.assertThrowsExactly(KJsonValueException.class, nullChar::getChar);

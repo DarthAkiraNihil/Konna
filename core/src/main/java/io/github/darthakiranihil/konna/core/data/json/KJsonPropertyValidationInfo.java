@@ -31,7 +31,7 @@ public record KJsonPropertyValidationInfo(
         private void setDefaults() {
             this.required = true;
             this.nullable = false;
-            this.expectedType = KJsonValueType.OBJECT;
+            this.expectedType = null;
             this.defaultValue = null;
             this.validators.clear();
         }
@@ -75,6 +75,12 @@ public record KJsonPropertyValidationInfo(
             if (this.name == null || this.name.isEmpty()) {
                 throw new KJsonValidationError(
                     "Property name cannot be null or empty"
+                );
+            }
+
+            if (this.expectedType == null) {
+                throw new KJsonValidationError(
+                    "Property type cannot be null"
                 );
             }
 

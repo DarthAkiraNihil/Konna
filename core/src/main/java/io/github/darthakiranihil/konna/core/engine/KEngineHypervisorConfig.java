@@ -16,7 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
@@ -51,6 +57,77 @@ public record KEngineHypervisorConfig(
     private static final String COMPONENTS_KEY = "components";
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
+
+    private static final class Schema implements KJsonValidator {
+
+        private final KJsonValidator schema;
+
+        Schema() {
+            var propInfoBuilder = new KJsonPropertyValidationInfo.Builder();
+
+            this.schema = new KJsonObjectValidator(
+                propInfoBuilder
+                    .withName(ENGINE_CONTEXT_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(COMPONENT_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(SERVICE_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(MESSAGE_ROUTE_CONFIGURERS_KEY)
+                    .withExpectedType(KJsonValueType.ARRAY)
+                    .withValidator(
+                        new KJsonArrayValidator(
+                            KJsonValueType.STRING,
+                            KJsonValueIsClassValidator.INSTANCE
+                        )
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(EVENT_REGISTERERS_KEY)
+                    .withExpectedType(KJsonValueType.ARRAY)
+                    .withValidator(
+                        new KJsonArrayValidator(
+                            KJsonValueType.STRING,
+                            KJsonValueIsClassValidator.INSTANCE
+                        )
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(COMPONENTS_KEY)
+                    .withExpectedType(KJsonValueType.ARRAY)
+                    .withValidator(
+                        new KJsonArrayValidator(
+                            KJsonValueType.STRING,
+                            KJsonValueIsClassValidator.INSTANCE
+                        )
+                    )
+                    .build()
+
+            );
+        }
+
+        @Override
+        public void validate(final KJsonValue value) {
+            this.schema.validate(value);
+        }
+    }
+
+    public static final KJsonValidator SCHEMA = new Schema();
 
     /**
      * Constructs config from json.

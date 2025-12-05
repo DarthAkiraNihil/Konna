@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +32,14 @@ public class KJsonValuePositiveTests extends KStandardTestClass {
 
         KJsonValue realNull = new KJsonValue(KJsonValueType.STRING, null);
         KJsonValue nullByType = new KJsonValue(KJsonValueType.NULL, 1);
+
+        try {
+            Field realNullType = KJsonValue.class.getDeclaredField("type");
+            realNullType.setAccessible(true);
+            realNullType.set(realNull, KJsonValueType.STRING);
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
 
         Assertions.assertTrue(realNull.isNull());
         Assertions.assertTrue(nullByType.isNull());

@@ -38,12 +38,17 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Default constructor. Requires specification of concrete value type, and it may be a bit
      * difficult to specify it in all cases when you need this,
-     * from* methods should be used instead
+     * from* methods should be used instead.
+     * Type checking is performed when an object is being created, so it is required for
+     * object to represent the passed type. If types does not match then {@link KJsonValueException}
+     * will be thrown, however, if passed value is null
+     * or passed type is {@link KJsonValueType#NULL} then type check is not performed and type
+     * will be set to {@link KJsonValueType#NULL} in any case.
      * @param type Type of json value
      * @param value The value itself
      */
     public KJsonValue(final KJsonValueType type, final Object value) {
-        if (value == null && type != KJsonValueType.STRING) {
+        if (value == null || type == KJsonValueType.NULL) {
             this.type = KJsonValueType.NULL;
         } else {
             KJsonValueType checked = KJsonValueType.fromObject(value);
