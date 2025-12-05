@@ -63,6 +63,13 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
 
     }
 
+    public record TestRecord(
+        @KJsonIgnored int aboba,
+        String biba
+    ) {
+
+    }
+
     @Test
     public void testDeserializeObject() {
 
@@ -114,6 +121,32 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         } catch (KJsonSerializationException e) {
             Assertions.fail(e);
         }
+
+    }
+
+    @Test
+    public void testDeserializeRecordUncovered() {
+
+        String data = "{\"aboba\": 123, \"biba\": \"aboba\"}";
+        KJsonValue jsonValue;
+        try {
+            jsonValue = this.jsonParser.parse(data);
+        } catch (KJsonParseException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        TestRecord deserialized;
+
+        try {
+            deserialized = this.jsonDeserializer.deserialize(jsonValue, TestRecord.class);
+        } catch (KJsonSerializationException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        Assertions.assertEquals(0, deserialized.aboba());
+        Assertions.assertEquals("aboba", deserialized.biba());
 
     }
 }

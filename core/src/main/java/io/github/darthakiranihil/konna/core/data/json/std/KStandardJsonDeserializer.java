@@ -100,7 +100,7 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                 return (T) val;
             }
             case ARRAY -> {
-                List<?> list = new ArrayList<>();
+                List<?> list = new LinkedList<>();
 
                 for (KJsonValue entry : value) {
                     list.add(this.deserialize(entry, clazz));
@@ -138,8 +138,8 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                 } catch (
                         InstantiationException
                     |   IllegalAccessException
-                    | InvocationTargetException
-                    | NoSuchMethodException
+                    |   InvocationTargetException
+                    |   NoSuchMethodException
                     |   NoSuchFieldException e
                 ) {
                     throw new KJsonSerializationException(e);

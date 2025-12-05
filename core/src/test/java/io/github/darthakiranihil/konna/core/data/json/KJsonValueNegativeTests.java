@@ -78,6 +78,7 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonObject.getProperty("123"));
         Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonObject.hasProperty("123"));
+        Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonObject.setProperty("123", KJsonValue.fromNumber(1)));
         Assertions.assertThrowsExactly(KJsonValueException.class, nonObject::entrySet);
 
     }
@@ -108,4 +109,15 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(KJsonValueException.class, nonArray::spliterator);
 
     }
+
+    @Test
+    public void testTypeMismatch() {
+
+        Assertions.assertThrowsExactly(KJsonValueException.class, () -> new KJsonValue(
+            KJsonValueType.NUMBER_INT,
+            "123"
+        ));
+
+    }
+
 }
