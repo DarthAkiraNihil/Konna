@@ -57,7 +57,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
                 KEngineHypervisorConfig.class
             );
 
-            Assertions.assertEquals(TestComponent.class, loadedConfig.components().getFirst());
+            Assertions.assertEquals(TestComponent.class, loadedConfig.components()[0]);
             Assertions.assertEquals(KStandardComponentLoader.class, loadedConfig.componentLoader());
             Assertions.assertEquals(KStandardServiceLoader.class, loadedConfig.serviceLoader());
             Assertions.assertEquals(TestContextLoader.class, loadedConfig.contextLoader());

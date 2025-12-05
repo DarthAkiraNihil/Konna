@@ -59,7 +59,7 @@ public record KEngineHypervisorConfig(
 
     @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
     @KJsonArray(elementType = Class.class)
-    List<Class<? extends KComponent>> components
+    Class<? extends KComponent>[] components
 ) {
 
     private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";

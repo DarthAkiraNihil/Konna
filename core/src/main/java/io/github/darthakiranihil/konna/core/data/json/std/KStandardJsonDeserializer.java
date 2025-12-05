@@ -231,10 +231,19 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         }
 
         KJsonArray meta = field.getAnnotation(KJsonArray.class);
-        field.set(
-            deserialized,
-            this.deserialize(value, meta.elementType())
-        );
+        var deserializedSubvalue = (List<?>) this.deserialize(value, meta.elementType());
+        if (field.getType().isArray()) {
+            var array = Array.newInstance(meta.elementType(), deserializedSubvalue.size());
+            for (int j = 0; j < deserializedSubvalue.size(); j++) {
+                Array.set(array, j, deserializedSubvalue.get(j));
+            }
+            field.set(deserialized, array);
+        } else {
+            field.set(
+                deserialized,
+                deserializedSubvalue
+            );
+        }
     }
 
     private Object setRecordField(
@@ -268,7 +277,16 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
             }
 
             KJsonArray meta = component.getAnnotation(KJsonArray.class);
-            params[i] = this.deserialize(value, meta.elementType());
+            var deserializedSubvalue = (List<?>) this.deserialize(value, meta.elementType());
+            if (component.getType().isArray()) {
+                var array = Array.newInstance(meta.elementType(), deserializedSubvalue.size());
+                for (int j = 0; j < deserializedSubvalue.size(); j++) {
+                    Array.set(array, j, deserializedSubvalue.get(j));
+                }
+                params[i] = array;
+            } else {
+                params[i] = deserializedSubvalue;
+            }
         }
         return clazz.getConstructors()[0].newInstance(params);
 
