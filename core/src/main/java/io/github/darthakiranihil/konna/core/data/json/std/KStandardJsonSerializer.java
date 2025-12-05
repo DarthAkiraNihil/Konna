@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -71,6 +72,7 @@ public class KStandardJsonSerializer extends KObject implements KJsonSerializer 
         final T object,
         final Class<? extends T> clazz
     ) throws KJsonSerializationException {
+
         if (clazz == Integer.class || clazz == int.class) {
             return KJsonValue.fromNumber((int) object);
         }
@@ -105,6 +107,20 @@ public class KStandardJsonSerializer extends KObject implements KJsonSerializer 
 
         if (clazz == String.class) {
             return KJsonValue.fromString((String) object);
+        }
+
+        if (clazz.isArray()) {
+            List<KJsonValue> list = new LinkedList<>();
+            int length = Array.getLength(object);
+            for (int i = 0; i < length; i++) {
+                list.add(
+                    this.serialize(
+                        Array.get(object, i),
+                        clazz.getComponentType()
+                    )
+                );
+            }
+            return KJsonValue.fromList(list);
         }
 
         if (List.class.isAssignableFrom(clazz)) {
