@@ -44,6 +44,7 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
             Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafeField.setAccessible(true);
             KStandardJsonDeserializer.theUnsafe = (Unsafe) theUnsafeField.get(null);
+
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -132,8 +133,6 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                                 this.deserialize(entry.getValue(), field.getType())
                             );
                         }
-
-
 
                     }
 

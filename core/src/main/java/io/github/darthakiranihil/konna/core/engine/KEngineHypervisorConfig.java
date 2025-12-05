@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
@@ -43,11 +40,25 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public record KEngineHypervisorConfig(
+    @KJsonSerialized @KJsonCustomName(name = ENGINE_CONTEXT_LOADER_KEY)
     Class<? extends KEngineContextLoader> contextLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = COMPONENT_LOADER_KEY)
     Class<? extends KComponentLoader> componentLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = SERVICE_LOADER_KEY)
     Class<? extends KServiceLoader> serviceLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = MESSAGE_ROUTE_CONFIGURERS_KEY)
+    @KJsonArray(elementType = KMessageRoutesConfigurer.class)
     List<Class<? extends KMessageRoutesConfigurer>> messageRoutesConfigurers,
+
+    @KJsonSerialized @KJsonCustomName(name = EVENT_REGISTERERS_KEY)
+    @KJsonArray(elementType = KEventRegisterer.class)
     List<Class<? extends KEventRegisterer>> eventRegisterers,
+
+    @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
+    @KJsonArray(elementType = KComponent.class)
     List<Class<? extends KComponent>> components
 ) {
 
