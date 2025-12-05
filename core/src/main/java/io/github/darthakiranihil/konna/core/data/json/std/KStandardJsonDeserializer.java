@@ -92,7 +92,7 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                 if (Class.class.isAssignableFrom(clazz)) {
                     try {
                         return (T) Class.forName(val);
-                    } catch (ClassNotFoundException e) {
+                    } catch (ClassNotFoundException | NoClassDefFoundError e) {
                         throw new KJsonSerializationException(e);
                     }
                 }

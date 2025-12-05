@@ -66,7 +66,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
     @Test
     public void testDeserializeObject() {
 
-        String data = "{\"field1\": 123, \"field3\": \"aboba\", \"field_4\": [1.0, 2.0], \"field5\": true}";
+        String data = "{\"field1\": 123, \"field3\": \"aboba\", \"field_4\": [1.0, 2.0]}";
         KJsonValue jsonValue;
         try {
             jsonValue = this.jsonParser.parse(data);

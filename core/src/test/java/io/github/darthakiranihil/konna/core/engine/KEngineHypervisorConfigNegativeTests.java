@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -42,9 +43,10 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
             return;
         }
 
+
         Assertions.assertThrowsExactly(
-            KHypervisorInitializationException.class,
-            () -> KEngineHypervisorConfig.fromJson(parsed)
+            KJsonSerializationException.class,
+            () -> this.jsonDeserializer.deserialize(parsed, KEngineHypervisorConfig.class)
         );
 
     }
@@ -68,8 +70,8 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
         }
 
         Assertions.assertThrowsExactly(
-            KHypervisorInitializationException.class,
-            () -> KEngineHypervisorConfig.fromJson(parsed)
+            KJsonSerializationException.class,
+            () -> this.jsonDeserializer.deserialize(parsed, KEngineHypervisorConfig.class)
         );
 
     }
@@ -93,8 +95,8 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
         }
 
         Assertions.assertThrowsExactly(
-            KHypervisorInitializationException.class,
-            () -> KEngineHypervisorConfig.fromJson(parsed)
+            KJsonSerializationException.class,
+            () -> this.jsonDeserializer.deserialize(parsed, KEngineHypervisorConfig.class)
         );
     }
 }
