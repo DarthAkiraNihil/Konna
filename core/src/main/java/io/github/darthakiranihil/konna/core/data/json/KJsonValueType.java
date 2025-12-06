@@ -60,6 +60,15 @@ public enum KJsonValueType {
 
     public static KJsonValueType fromObject(final Object o) {
 
+        if (o == null) {
+            return NULL;
+        }
+
+        Class<?> clazz = o.getClass();
+        if (clazz.isArray()) {
+            return ARRAY;
+        }
+
         return switch (o) {
             case Boolean __ -> BOOLEAN;
             case Integer __ -> NUMBER_INT;
@@ -72,7 +81,6 @@ public enum KJsonValueType {
             case String __ -> STRING;
             case List<?> __ -> ARRAY;
             case Map<?, ?> __ -> OBJECT;
-            case null -> NULL;
             default ->
                 throw new KJsonValueException(String.format("Cannot resolve json value type for %s", o.getClass()));
         };
