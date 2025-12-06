@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -48,11 +47,6 @@ public interface KEngineContext {
      * @return Index of current context
      */
     KIndex index();
-    /**
-     * Returns logger of current context.
-     * @return Logger of current context
-     */
-    KLogger logger();
     /**
      * Returns object registry of current context.
      * @return Object registry of current context

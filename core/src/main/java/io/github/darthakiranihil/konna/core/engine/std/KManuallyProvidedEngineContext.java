@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -40,7 +39,6 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     private final KActivator activator;
     private final KContainerResolver containerResolver;
     private final KIndex index;
-    private final KLogger logger;
     private final KObjectRegistry objectRegistry;
     private final KEventSystem eventSystem;
     private final KMessageSystem messageSystem;
@@ -50,7 +48,6 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
      * @param activator Activator of the context
      * @param containerResolver Container resolver of the context
      * @param index Index of the context
-     * @param logger Logger of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
@@ -59,7 +56,6 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         final KActivator activator,
         final KContainerResolver containerResolver,
         final KIndex index,
-        final KLogger logger,
         final KObjectRegistry objectRegistry,
         final KEventSystem eventSystem,
         final KMessageSystem messageSystem
@@ -68,7 +64,6 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         this.activator = activator;
         this.containerResolver = containerResolver;
         this.index = index;
-        this.logger = logger;
         this.objectRegistry = objectRegistry;
         this.eventSystem = eventSystem;
         this.messageSystem = messageSystem;
@@ -87,11 +82,6 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     @Override
     public KIndex index() {
         return this.index;
-    }
-
-    @Override
-    public KLogger logger() {
-        return this.logger;
     }
 
     @Override

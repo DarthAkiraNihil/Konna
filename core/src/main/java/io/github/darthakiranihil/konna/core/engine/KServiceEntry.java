@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.struct.KPair;
@@ -37,19 +37,16 @@ public final class KServiceEntry {
 
     private final Object service;
     private final KActivator activator;
-    private final KLogger logger;
     private final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints;
 
     public KServiceEntry(
         final Object service,
         final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints,
-        final KActivator activator,
-        final KLogger logger
-        ) {
+        final KActivator activator
+    ) {
         this.service = service;
         this.endpoints = endpoints;
         this.activator = activator;
-        this.logger = logger;
     }
 
     /**
@@ -103,7 +100,7 @@ public final class KServiceEntry {
 
         try {
             endpoint.invoke(this.service, parameters);
-            this.logger.debug(
+            KSystemLogger.debug(
                 "Successfully called endpoint %s of service %s",
                 route,
                 this.service
