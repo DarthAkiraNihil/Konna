@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.message.std;
 
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
@@ -55,11 +56,13 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
     @Override
     public <T> void registerEvent(final KEvent<T> event) {
         this.events.put(event.name(), event);
+        KSystemLogger.debug("Registered event name=%s", event.name());
     }
 
     @Override
     public void registerEvent(final KSimpleEvent event) {
         this.simpleEvents.put(event.name(), event);
+        KSystemLogger.debug("Registered simple event name=%s", event.name());
     }
 
     @SuppressWarnings("unchecked")

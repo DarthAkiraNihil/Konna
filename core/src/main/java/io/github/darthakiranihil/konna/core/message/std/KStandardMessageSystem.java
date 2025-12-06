@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.message.std;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KTunnel;
@@ -74,12 +75,25 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     @Override
     public void registerComponent(final KComponent component) {
         this.components.put(component.name(), component);
+        KSystemLogger.debug(
+            "Component %s has been registered in message system",
+            component.name()
+        );
     }
 
     @Override
     public void deliverMessage(final KMessage message) {
 
+        KSystemLogger.info(
+            "Delivering message %s",
+            message
+        );
+
         if (!this.routes.containsKey(message.messageId())) {
+            KSystemLogger.warning(
+                "Dropped message %s, as no route configured for it",
+                message
+            );
             return;
         }
 
@@ -100,7 +114,16 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     @Override
     public void deliverMessageSync(final KMessage message) {
 
+        KSystemLogger.info(
+            "Delivering synchronous message %s",
+            message
+        );
+
         if (!this.routes.containsKey(message.messageId())) {
+            KSystemLogger.warning(
+                "Dropped synchronous message %s, as no route configured for it",
+                message
+            );
             return;
         }
 
@@ -128,6 +151,12 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         final List<Class<? extends KTunnel>> tunnels
     ) {
         this.internalAddMessageRoute(messageId, destinationEndpoint, tunnels);
+        KSystemLogger.debug(
+            "Added message route for messageId=%s to destinationEndpoint=%s with %d tunnels",
+            messageId,
+            destinationEndpoint,
+            tunnels.size()
+        );
         return this;
     }
 
@@ -137,6 +166,11 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         final String destinationEndpoint
     ) {
         this.internalAddMessageRoute(messageId, destinationEndpoint, List.of());
+        KSystemLogger.debug(
+            "Added message route for messageId=%s to destinationEndpoint=%s",
+            messageId,
+            destinationEndpoint
+        );
         return this;
     }
 
