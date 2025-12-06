@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -64,11 +64,10 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
         final KServiceLoader serviceLoader,
         final Map<String, KComponent> loadedComponentMap
     ) throws KComponentLoadingException {
-        KLogger logger = ctx.logger();
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
-                logger.fatal("Cannot load component %s: meta info not provided", component);
+                KSystemLogger.fatal("Cannot load component %s: meta info not provided", component);
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: meta info not provided",
@@ -80,10 +79,10 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
             KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
             String componentName = meta.name();
 
-            logger.info("Loading component %s", componentName);
+            KSystemLogger.info("Loading component %s", componentName);
             
             if (loadedComponentMap.containsKey(componentName)) {
-                logger.fatal(
+                KSystemLogger.fatal(
                     "Cannot load component %s: there is a component with the same name: %s",
                     component,
                     componentName
@@ -116,9 +115,9 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 componentName,
                 loadedComponent
             );
-            logger.info("Loaded component %s", componentName);
+            KSystemLogger.info("Loaded component %s", componentName);
         } catch (Exception e) {
-            logger.fatal(e);
+            KSystemLogger.fatal(e);
             throw new KComponentLoadingException(e);
         }
     }

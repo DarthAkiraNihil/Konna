@@ -282,10 +282,6 @@ public final class KStandardActivator extends KObject implements KActivator {
             ctx.index().getClass()
         );
         this.addContextObject(
-            ctx.logger(),
-            ctx.logger().getClass()
-        );
-        this.addContextObject(
             (KObject) ctx.objectRegistry(),
             ctx.objectRegistry().getClass()
         );
