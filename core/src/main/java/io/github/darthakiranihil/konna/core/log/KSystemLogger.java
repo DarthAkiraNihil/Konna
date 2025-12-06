@@ -50,6 +50,10 @@ public final class KSystemLogger extends KUninstantiable {
 
     private static boolean enabled = true;
 
+    private KSystemLogger() {
+        super();
+    }
+
     /**
      * Enabled the system logger.
      */
