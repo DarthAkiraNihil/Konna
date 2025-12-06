@@ -32,6 +32,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         @KJsonSerialized final private String field3;
         @KJsonCustomName(name = "field_4") @KJsonArray(elementType = Float.class) public List<Float> field4;
         private final boolean field5;
+        @KJsonSerialized @KJsonArray(elementType = int.class) private int[] field6;
 
         public SerializerTestClass(int field1, float field2, String field3, List<Float> field4, boolean field5) {
             this.field1 = field1;
@@ -60,13 +61,22 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         public boolean getField5() {
             return this.field5;
         }
+        public int[] getField6() { return this.field6; }
+
+    }
+
+    public record TestRecord(
+        @KJsonIgnored int aboba,
+        String biba,
+        @KJsonArray(elementType = int.class) int[] boba
+    ) {
 
     }
 
     @Test
     public void testDeserializeObject() {
 
-        String data = "{\"field1\": 123, \"field3\": \"aboba\", \"field_4\": [1.0, 2.0]}";
+        String data = "{\"field1\": 123, \"field3\": \"aboba\", \"field_4\": [1.0, 2.0], \"field6\": [1, 2, 3]}";
         KJsonValue jsonValue;
         try {
             jsonValue = this.jsonParser.parse(data);
@@ -91,6 +101,8 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         List<Float> check = List.of(1.0f, 2.0f);
         Assertions.assertEquals(check, deserialized.getField4());
         Assertions.assertFalse(deserialized.getField5());
+        int[] checkArray = new int[] {1, 2, 3};
+        Assertions.assertArrayEquals(checkArray, deserialized.getField6());
 
     }
 
@@ -115,5 +127,32 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
             Assertions.fail(e);
         }
 
+    }
+
+    @Test
+    public void testDeserializeRecordUncovered() {
+
+        String data = "{\"aboba\": 123, \"biba\": \"aboba\", \"boba\": [1, 2, 3]}";
+        KJsonValue jsonValue;
+        try {
+            jsonValue = this.jsonParser.parse(data);
+        } catch (KJsonParseException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        TestRecord deserialized;
+
+        try {
+            deserialized = this.jsonDeserializer.deserialize(jsonValue, TestRecord.class);
+        } catch (KJsonSerializationException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        Assertions.assertEquals(0, deserialized.aboba());
+        Assertions.assertEquals("aboba", deserialized.biba());
+        int[] checkArray = new int[] {1, 2, 3};
+        Assertions.assertArrayEquals(checkArray, deserialized.boba());
     }
 }

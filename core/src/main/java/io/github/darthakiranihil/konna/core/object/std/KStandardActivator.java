@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;

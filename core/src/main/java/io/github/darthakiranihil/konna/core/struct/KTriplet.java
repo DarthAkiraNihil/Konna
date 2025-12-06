@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.util;
+package io.github.darthakiranihil.konna.core.struct;
 
 /**
  * Represents an immutable group of three values of different types like a tuple.

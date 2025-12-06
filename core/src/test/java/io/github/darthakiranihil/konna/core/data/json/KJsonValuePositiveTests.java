@@ -20,8 +20,11 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class KJsonValuePositiveTests extends KStandardTestClass {
@@ -31,6 +34,14 @@ public class KJsonValuePositiveTests extends KStandardTestClass {
 
         KJsonValue realNull = new KJsonValue(KJsonValueType.STRING, null);
         KJsonValue nullByType = new KJsonValue(KJsonValueType.NULL, 1);
+
+        try {
+            Field realNullType = KJsonValue.class.getDeclaredField("type");
+            realNullType.setAccessible(true);
+            realNullType.set(realNull, KJsonValueType.STRING);
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
 
         Assertions.assertTrue(realNull.isNull());
         Assertions.assertTrue(nullByType.isNull());
@@ -74,8 +85,8 @@ public class KJsonValuePositiveTests extends KStandardTestClass {
         KJsonValue d = KJsonValue.fromNumber(1.0f);
 
         Assertions.assertNotEquals(a, b);
-        Assertions.assertNotEquals(a, null);
-        Assertions.assertNotEquals(a, 2);
+        Assertions.assertNotEquals(null, a);
+        Assertions.assertNotEquals(2, a);
         Assertions.assertNotEquals(c, d);
         Assertions.assertEquals(b, c);
         Assertions.assertEquals(b, b);
@@ -95,4 +106,79 @@ public class KJsonValuePositiveTests extends KStandardTestClass {
 
     }
 
+    @Test
+    public void testSetProperty() {
+        KJsonValue val = KJsonValue.fromMap(new HashMap<>());
+        try {
+            val.setProperty("lol", KJsonValue.fromNumber(0));
+            Assertions.assertTrue(val.hasProperty("lol"));
+            Assertions.assertEquals(0, val.getProperty("lol").getInt());
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+    }
+
+    @Test
+    public void testJsonValueTypeFromObject() {
+
+        boolean boolPrimitive = false;
+        Boolean boolBoxed = true;
+
+        int intPrimitive = 0;
+        Integer intBoxed = 1;
+
+        byte bytePrimitive = 0;
+        Byte byteBoxed = 1;
+
+        short shortPrimitive = 0;
+        Short shortBoxed = 1;
+
+        long longPrimitive = 0;
+        Long longBoxed = 1L;
+
+        float floatPrimitive = 0.0f;
+        Float floatBoxed = 1.0f;
+
+        double doublePrimitive = 0.0;
+        Double doubleBoxed =  1.0;
+
+        char charPrimitive = '0';
+        Character charBoxed = '0';
+
+        String string = "1234";
+
+        int[] array = new int[] {1, 2, 3};
+
+        List<Integer> list = List.of(1, 2, 3);
+
+        Map<String, String> map = new HashMap<>();
+
+        Assertions.assertEquals(KJsonValueType.BOOLEAN, KJsonValueType.fromObject(boolPrimitive));
+        Assertions.assertEquals(KJsonValueType.BOOLEAN, KJsonValueType.fromObject(boolBoxed));
+
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(bytePrimitive));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(byteBoxed));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(shortPrimitive));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(shortBoxed));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(intPrimitive));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(intBoxed));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(longPrimitive));
+        Assertions.assertEquals(KJsonValueType.NUMBER_INT, KJsonValueType.fromObject(longBoxed));
+
+        Assertions.assertEquals(KJsonValueType.NUMBER_FLOAT, KJsonValueType.fromObject(floatPrimitive));
+        Assertions.assertEquals(KJsonValueType.NUMBER_FLOAT, KJsonValueType.fromObject(floatBoxed));
+        Assertions.assertEquals(KJsonValueType.NUMBER_FLOAT, KJsonValueType.fromObject(doublePrimitive));
+        Assertions.assertEquals(KJsonValueType.NUMBER_FLOAT, KJsonValueType.fromObject(doubleBoxed));
+
+        Assertions.assertEquals(KJsonValueType.STRING, KJsonValueType.fromObject(charPrimitive));
+        Assertions.assertEquals(KJsonValueType.STRING, KJsonValueType.fromObject(charBoxed));
+        Assertions.assertEquals(KJsonValueType.STRING, KJsonValueType.fromObject(string));
+
+        Assertions.assertEquals(KJsonValueType.ARRAY, KJsonValueType.fromObject(array));
+        Assertions.assertEquals(KJsonValueType.ARRAY, KJsonValueType.fromObject(list));
+        Assertions.assertEquals(KJsonValueType.OBJECT, KJsonValueType.fromObject(map));
+        Assertions.assertEquals(KJsonValueType.NULL, KJsonValueType.fromObject(null));
+
+
+    }
 }

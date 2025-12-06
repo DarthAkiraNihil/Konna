@@ -23,6 +23,9 @@ import java.util.function.Consumer;
 
 /**
  * Representation of a Json value for different purposes.
+ * It can contain a single value, array or an object with key-value pairs.
+ * In the last case the json value provides read-write access through getting
+ * and setting properties. Else the value is read-only
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -30,22 +33,38 @@ import java.util.function.Consumer;
 public class KJsonValue implements Iterable<KJsonValue> {
 
     private final KJsonValueType type;
-    private final Object value;
+    private final Object containedValue;
 
     /**
      * Default constructor. Requires specification of concrete value type, and it may be a bit
      * difficult to specify it in all cases when you need this,
-     * from* methods should be used instead
+     * from* methods should be used instead.
+     * Type checking is performed when an object is being created, so it is required for
+     * object to represent the passed type. If types does not match then {@link KJsonValueException}
+     * will be thrown, however, if passed value is null
+     * or passed type is {@link KJsonValueType#NULL} then type check is not performed and type
+     * will be set to {@link KJsonValueType#NULL} in any case.
      * @param type Type of json value
      * @param value The value itself
      */
     public KJsonValue(final KJsonValueType type, final Object value) {
-        if (value == null && type != KJsonValueType.STRING) {
+        if (value == null || type == KJsonValueType.NULL) {
             this.type = KJsonValueType.NULL;
         } else {
+            KJsonValueType checked = KJsonValueType.fromObject(value);
+            if (type != checked) {
+                throw new KJsonValueException(
+                    String.format(
+                        "Type mismatch: attempted to create %s but got %s (%s)",
+                        type,
+                        checked,
+                        value
+                    )
+                );
+            }
             this.type = type;
         }
-        this.value = value;
+        this.containedValue = value;
     }
 
     /**
@@ -160,7 +179,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * @return If the value is null
      */
     public boolean isNull() {
-        return this.value == null || this.type == KJsonValueType.NULL;
+        return this.containedValue == null || this.type == KJsonValueType.NULL;
     }
 
     /**
@@ -180,7 +199,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        return ((Iterable<KJsonValue>) this.value).iterator();
+        return ((Iterable<KJsonValue>) this.containedValue).iterator();
     }
 
     /**
@@ -200,7 +219,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        ((Iterable<KJsonValue>) this.value).forEach(action);
+        ((Iterable<KJsonValue>) this.containedValue).forEach(action);
     }
 
     /**
@@ -221,7 +240,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        return ((Iterable<KJsonValue>) this.value).spliterator();
+        return ((Iterable<KJsonValue>) this.containedValue).spliterator();
     }
 
     /**
@@ -240,7 +259,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        return ((Map<String, KJsonValue>) this.value).entrySet();
+        return ((Map<String, KJsonValue>) this.containedValue).entrySet();
     }
 
     /**
@@ -261,7 +280,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        return ((Map<String, KJsonValue>) this.value).get(key);
+        return ((Map<String, KJsonValue>) this.containedValue).get(key);
     }
 
     /**
@@ -282,7 +301,30 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        return ((Map<String, KJsonValue>) this.value).containsKey(key);
+        return ((Map<String, KJsonValue>) this.containedValue).containsKey(key);
+    }
+
+    /**
+     * Sets a json value with specified key as a property of the json object.
+     * If the json value is not an object, {@link KJsonValueException} will be thrown.
+     * Overwrites value if the property specified with key already existed in the object.
+     * @param key The key of the property
+     * @param value Value to be set
+     * @since 0.2.0
+     */
+    @SuppressWarnings("unchecked")
+    public void setProperty(final String key, final KJsonValue value) {
+        if (this.type != KJsonValueType.OBJECT) {
+            throw new KJsonValueException(
+                String.format(
+                    "Cannot set property to the json value:"
+                        +   "it's not an object. The actual type is: %s",
+                    this.type
+                )
+            );
+        }
+
+        ((Map<String, KJsonValue>) this.containedValue).put(key, value);
     }
 
     private void checkTypeMatch(final KJsonValueType requested) {
@@ -299,7 +341,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public boolean getBoolean() {
         this.checkTypeMatch(KJsonValueType.BOOLEAN);
 
-        return (boolean) this.value;
+        return (boolean) this.containedValue;
     }
 
     /**
@@ -310,7 +352,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public int getInt() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
-        return (int) this.value;
+        return (int) this.containedValue;
     }
 
     /**
@@ -321,7 +363,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public long getLong() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
-        return (long) this.value;
+        return (long) this.containedValue;
     }
 
     /**
@@ -332,7 +374,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public byte getByte() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
-        return (byte) this.value;
+        return (byte) this.containedValue;
     }
 
     /**
@@ -343,7 +385,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public short getShort() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
 
-        return (short) this.value;
+        return (short) this.containedValue;
     }
 
     /**
@@ -354,7 +396,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public float getFloat() {
         this.checkTypeMatch(KJsonValueType.NUMBER_FLOAT);
 
-        return (float) this.value;
+        return (float) this.containedValue;
     }
 
     /**
@@ -365,7 +407,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public double getDouble() {
         this.checkTypeMatch(KJsonValueType.NUMBER_FLOAT);
 
-        return (double) this.value;
+        return (double) this.containedValue;
     }
 
     /**
@@ -392,7 +434,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             );
         }
 
-        String string = (String) this.value;
+        String string = (String) this.containedValue;
         if (string.length() > 1) {
             throw new KJsonValueException(
                     "Cannot get char value from the json value: "
@@ -415,7 +457,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
             return null;
         }
 
-        return (String) this.value;
+        return (String) this.containedValue;
     }
 
     /**
@@ -425,7 +467,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * @return Raw json value represented by {@link java.lang.Object}
      */
     public Object getRawObject() {
-        return this.value;
+        return this.containedValue;
     }
 
     @Override
@@ -437,17 +479,17 @@ public class KJsonValue implements Iterable<KJsonValue> {
             return false;
         }
         KJsonValue that = (KJsonValue) o;
-        return this.type == that.type && Objects.equals(this.value, that.value);
+        return this.type == that.type && Objects.equals(this.containedValue, that.containedValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.type, this.value);
+        return Objects.hash(this.type, this.containedValue);
     }
 
     @Override
     public String toString() {
-        return String.format("KJsonValue[%s]{%s}", this.type, this.value.getClass());
+        return String.format("KJsonValue[%s]{%s}", this.type, this.containedValue.getClass());
     }
 
 }

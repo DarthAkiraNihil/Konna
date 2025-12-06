@@ -27,7 +27,7 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.io.InputStream;
 import java.util.Map;

@@ -16,12 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -37,12 +38,26 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public record KEngineHypervisorConfig(
+    @KJsonSerialized @KJsonCustomName(name = ENGINE_CONTEXT_LOADER_KEY)
     Class<? extends KEngineContextLoader> contextLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = COMPONENT_LOADER_KEY)
     Class<? extends KComponentLoader> componentLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = SERVICE_LOADER_KEY)
     Class<? extends KServiceLoader> serviceLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = MESSAGE_ROUTE_CONFIGURERS_KEY)
+    @KJsonArray(elementType = Class.class)
     List<Class<? extends KMessageRoutesConfigurer>> messageRoutesConfigurers,
+
+    @KJsonSerialized @KJsonCustomName(name = EVENT_REGISTERERS_KEY)
+    @KJsonArray(elementType = Class.class)
     List<Class<? extends KEventRegisterer>> eventRegisterers,
-    List<Class<? extends KComponent>> components
+
+    @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
+    @KJsonArray(elementType = Class.class)
+    Class<? extends KComponent>[] components
 ) {
 
     private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";
@@ -52,90 +67,79 @@ public record KEngineHypervisorConfig(
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
 
-    /**
-     * Constructs config from json.
-     * @param json Json value containing configuration
-     * @return Constructed hypervisor configuration
-     */
-    public static KEngineHypervisorConfig fromJson(final KJsonValue json) {
+    private static final class Schema implements KJsonValidator {
 
-        try {
-            return KEngineHypervisorConfig.getConfig(json);
-        } catch (Throwable e) {
-            throw new KHypervisorInitializationException(e);
+        private final KJsonValidator schema;
+
+        Schema() {
+            var propInfoBuilder = new KJsonPropertyValidationInfo.Builder();
+
+            this.schema = new KJsonObjectValidator(
+                propInfoBuilder
+                    .withName(ENGINE_CONTEXT_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(COMPONENT_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(SERVICE_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(MESSAGE_ROUTE_CONFIGURERS_KEY)
+                    .withExpectedType(KJsonValueType.ARRAY)
+                    .withValidator(
+                        new KJsonArrayValidator(
+                            KJsonValueType.STRING,
+                            KJsonValueIsClassValidator.INSTANCE
+                        )
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(EVENT_REGISTERERS_KEY)
+                    .withExpectedType(KJsonValueType.ARRAY)
+                    .withValidator(
+                        new KJsonArrayValidator(
+                            KJsonValueType.STRING,
+                            KJsonValueIsClassValidator.INSTANCE
+                        )
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(COMPONENTS_KEY)
+                    .withExpectedType(KJsonValueType.ARRAY)
+                    .withValidator(
+                        new KJsonArrayValidator(
+                            KJsonValueType.STRING,
+                            KJsonValueIsClassValidator.INSTANCE
+                        )
+                    )
+                    .build()
+
+            );
         }
 
+        @Override
+        public void validate(final KJsonValue value) {
+            this.schema.validate(value);
+        }
     }
 
-    @SuppressWarnings("unchecked")
-    private static KEngineHypervisorConfig getConfig(final KJsonValue json) throws Exception {
-
-        String contextLoaderClassName = json.getProperty(ENGINE_CONTEXT_LOADER_KEY).getString();
-        String componentLoaderClassName = json.getProperty(COMPONENT_LOADER_KEY).getString();
-        String serviceLoaderClassName = json.getProperty(SERVICE_LOADER_KEY).getString();
-
-        Class<?> rawContextLoaderClass = Class.forName(contextLoaderClassName);
-        Class<? extends KEngineContextLoader>
-            contextLoaderClass = (Class<? extends KEngineContextLoader>) rawContextLoaderClass;
-
-        Class<?> rawComponentLoaderClass = Class.forName(componentLoaderClassName);
-        Class<? extends KComponentLoader>
-            compoentLoaderClass = (Class<? extends KComponentLoader>) rawComponentLoaderClass;
-
-        Class<?> rawServiceLoaderClass = Class.forName(serviceLoaderClassName);
-        Class<? extends KServiceLoader>
-            serviceLoaderClass = (Class<? extends KServiceLoader>) rawServiceLoaderClass;
-
-        List<Class<? extends KComponent>> components = new LinkedList<>();
-        json.getProperty(COMPONENTS_KEY).forEach((component) -> {
-            try {
-                components.add(
-                    (Class<? extends KComponent>) Class.forName(component.getString())
-                );
-            } catch (ClassNotFoundException e) {
-                throw new KHypervisorInitializationException(e);
-            }
-
-        });
-
-        List<Class<? extends KMessageRoutesConfigurer>>
-            messageRoutesConfigurers = new LinkedList<>();
-        json.getProperty(MESSAGE_ROUTE_CONFIGURERS_KEY).forEach((configurer) -> {
-            try {
-                messageRoutesConfigurers.add(
-                    (Class<? extends KMessageRoutesConfigurer>) Class.forName(
-                        configurer.getString()
-                    )
-                );
-            } catch (ClassNotFoundException e) {
-                throw new KHypervisorInitializationException(e);
-            }
-        });
-
-        List<Class<? extends KEventRegisterer>>
-            eventRegisterers = new LinkedList<>();
-        json.getProperty(EVENT_REGISTERERS_KEY).forEach((registerer) -> {
-            try {
-                eventRegisterers.add(
-                    (Class<? extends KEventRegisterer>) Class.forName(
-                        registerer.getString()
-                    )
-                );
-            } catch (ClassNotFoundException e) {
-                throw new KHypervisorInitializationException(e);
-            }
-        });
-
-        return new KEngineHypervisorConfig(
-            contextLoaderClass,
-            compoentLoaderClass,
-            serviceLoaderClass,
-            messageRoutesConfigurers,
-            eventRegisterers,
-            components
-        );
-
-    }
-
+    /**
+     * JSON schema of config, that should be used
+     * for validation of loaded json file.
+     */
+    public static final KJsonValidator SCHEMA = new Schema();
 
 }
