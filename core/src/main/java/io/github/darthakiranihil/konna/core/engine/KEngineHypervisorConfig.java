@@ -20,11 +20,9 @@ import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
-import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -138,6 +136,10 @@ public record KEngineHypervisorConfig(
         }
     }
 
+    /**
+     * JSON schema of config, that should be used
+     * for validation of loaded json file.
+     */
     public static final KJsonValidator SCHEMA = new Schema();
 
 }

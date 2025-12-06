@@ -22,14 +22,36 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 
+/**
+ * Standard implementation of {@link KJsonValidator} that is used
+ * to validate if json value is an object and its properties are valid.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonObjectValidator implements KJsonValidator {
 
     private final KJsonPropertyValidationInfo[] propertyInfo;
 
+    /**
+     * Standard constructor.
+     * @param propertyInfo Object properties' validation info
+     *
+     * @see KJsonPropertyValidationInfo
+     */
     public KJsonObjectValidator(final KJsonPropertyValidationInfo... propertyInfo) {
         this.propertyInfo = propertyInfo;
     }
 
+    /**
+     * Validates a json value - validates object's property according
+     * to its {@link KJsonPropertyValidationInfo} and runs property's
+     * value through validators set on {@link KJsonArrayValidator} instantiation.
+     * Also checks if the passed value is {@link KJsonValueType#OBJECT}
+     * and throws {@link KJsonValidationError} if it is not.
+     * @param value Json value to validate
+     * @see KJsonPropertyValidationInfo
+     */
     @Override
     public void validate(final KJsonValue value) {
         if (value.getType() != KJsonValueType.OBJECT) {

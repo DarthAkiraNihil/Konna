@@ -21,10 +21,26 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 
+/**
+ * Json validator that checks that value represents any existing Java class.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonValueIsClassValidator implements KJsonValidator {
 
+    /**
+     * Convenience static instance of the validator.
+     */
     public static final KJsonValidator INSTANCE = new KJsonValueIsClassValidator();
 
+    /**
+     * Checks if passed value is string and its value is a name of any
+     * existing Java class (inside application). Throws {@link KJsonValidationError}
+     * if one of two conditions are not met.
+     *
+     * @param value Json value to validate
+     */
     @Override
     public void validate(final KJsonValue value) {
 

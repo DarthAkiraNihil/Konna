@@ -184,7 +184,10 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         throw new NoSuchFieldException(name);
     }
 
-    private boolean pointsToSameComponent(final RecordComponent recordComponent, final String name) {
+    private boolean pointsToSameComponent(
+        final RecordComponent recordComponent,
+        final String name
+    ) {
 
         if (recordComponent.isAnnotationPresent(KJsonIgnored.class)) {
             return false;
@@ -251,7 +254,12 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         final String key,
         final KJsonValue value,
         final Object deserialized
-    ) throws IllegalAccessException, NoSuchMethodException, KJsonSerializationException, InvocationTargetException, InstantiationException {
+    ) throws
+        IllegalAccessException,
+        NoSuchMethodException,
+        KJsonSerializationException,
+        InvocationTargetException,
+        InstantiationException {
         var components = clazz.getRecordComponents();
         var params = new Object[components.length];
         for (int i = 0; i < components.length; i++) {

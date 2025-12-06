@@ -58,6 +58,15 @@ public enum KJsonValueType {
      */
     NULL;
 
+    /**
+     * Returns json value type according to passed object.
+     * Throws {@link KJsonValueException} if it does not represent
+     * a primitive type, map, list, array nor null.
+     * @param o Object to get type of
+     * @return Corresponding json value type
+     *
+     * @since 0.2.0
+     */
     public static KJsonValueType fromObject(final Object o) {
 
         if (o == null) {
@@ -82,7 +91,12 @@ public enum KJsonValueType {
             case List<?> __ -> ARRAY;
             case Map<?, ?> __ -> OBJECT;
             default ->
-                throw new KJsonValueException(String.format("Cannot resolve json value type for %s", o.getClass()));
+                throw new KJsonValueException(
+                    String.format(
+                        "Cannot resolve json value type for %s",
+                        o.getClass()
+                    )
+                );
         };
 
     }

@@ -21,16 +21,39 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 
+/**
+ * Standard implementation of {@link KJsonValidator} that is used
+ * to validate if json value is an array and its elements are valid.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonArrayValidator implements KJsonValidator {
 
     private final KJsonValueType expectedElementType;
     private final KJsonValidator[] validators;
 
-    public KJsonArrayValidator(final KJsonValueType expectedElementType, final KJsonValidator... validators) {
+    /**
+     * Standard constructor.
+     *
+     * @param expectedElementType Expected type of array elements
+     * @param validators Validators for array elements
+     */
+    public KJsonArrayValidator(
+        final KJsonValueType expectedElementType,
+        final KJsonValidator... validators
+    ) {
         this.expectedElementType = expectedElementType;
         this.validators = validators;
     }
 
+    /**
+     * Validates a json value - validates element type and runs it through
+     * validators set on {@link KJsonArrayValidator} instantiation.
+     * Also checks if the passed value is {@link KJsonValueType#ARRAY}
+     * and throws {@link KJsonValidationError} if it is not.
+     * @param value Json value to validate.
+     */
     @Override
     public void validate(final KJsonValue value) {
 
@@ -41,7 +64,10 @@ public class KJsonArrayValidator implements KJsonValidator {
         int i = 0;
         for (KJsonValue element: value) {
             if (element.getType() != this.expectedElementType) {
-                throw KJsonValidationError.incorrectType(this.expectedElementType, element.getType());
+                throw KJsonValidationError.incorrectType(
+                    this.expectedElementType,
+                    element.getType()
+                );
             }
 
 
