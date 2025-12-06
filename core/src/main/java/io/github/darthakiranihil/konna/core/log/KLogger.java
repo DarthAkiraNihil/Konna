@@ -33,7 +33,7 @@ public abstract class KLogger extends KObject {
     /**
      * Minimum level of logged messages.
      */
-    protected final KLogLevel logLevel;
+    protected KLogLevel logLevel;
     /**
      * Default log formatter. It is used when a log handler does not provide its own.
      */
@@ -68,6 +68,14 @@ public abstract class KLogger extends KObject {
      */
     public void addLogHandler(final KLogHandler handler) {
         this.logHandlers.add(handler);
+    }
+
+    /**
+     * Sets a minimum log level of message to be logged.
+     * @param newLogLevel New minimum log level
+     */
+    public void setLogLevel(final KLogLevel newLogLevel) {
+        this.logLevel = newLogLevel;
     }
 
     /**
