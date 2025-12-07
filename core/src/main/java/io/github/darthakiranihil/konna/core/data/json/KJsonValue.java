@@ -460,6 +460,17 @@ public class KJsonValue implements Iterable<KJsonValue> {
         return (String) this.containedValue;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<KJsonValue> getList() {
+        this.checkTypeMatch(KJsonValueType.ARRAY);
+
+        if (this.isNull()) {
+            return null;
+        }
+
+        return (List<KJsonValue>) this.containedValue;
+    }
+
     /**
      * Returns raw json value without casting to any type.
      * It is useful for different test purposes,

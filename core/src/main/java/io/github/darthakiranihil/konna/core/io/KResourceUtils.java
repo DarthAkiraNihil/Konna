@@ -16,20 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import java.util.List;
+import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
-public interface KAssetDefinition {
+public final class KResourceUtils extends KUninstantiable {
 
-    int getInt(String property);
-    float getFloat(String property);
-    boolean getBoolean(String property);
-    String getString(String property);
-    KAssetDefinition getSubdefinition(String property);
+    private KResourceUtils() {
+        super();
+    }
 
-    int[] getIntArray(String property);
-    float[] getFloatArray(String property);
-    boolean[] getBooleanArray(String property);
-    String[] getStringArray(String property);
-    KAssetDefinition[] getSubdefinitionArray(String property);
+    public static String getFilename(String path) {
+        String[] tokens = path.split("[\\\\|/]");
+        return tokens[tokens.length - 1];
+    }
 
 }

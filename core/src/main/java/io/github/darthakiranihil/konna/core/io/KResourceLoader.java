@@ -2,7 +2,8 @@ package io.github.darthakiranihil.konna.core.io;
 
 public interface KResourceLoader {
 
-    KResource load(String path);
-    KResource load(String path, KProtocol protocol);
+    void addProtocol(KProtocol protocol);
+    KResource loadResource(String path);
+    KResource loadResource(String path, KProtocol protocol);
 
 }

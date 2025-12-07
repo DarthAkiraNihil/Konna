@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.io;
+package io.github.darthakiranihil.konna.core.io.except;
 
-import java.util.List;
+import io.github.darthakiranihil.konna.core.except.KRuntimeException;
+import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
-public interface KAssetDefinition {
+public class KAssetDefinitionError extends KRuntimeException {
+    public KAssetDefinitionError(String message) {
+        super(message);
+    }
 
-    int getInt(String property);
-    float getFloat(String property);
-    boolean getBoolean(String property);
-    String getString(String property);
-    KAssetDefinition getSubdefinition(String property);
-
-    int[] getIntArray(String property);
-    float[] getFloatArray(String property);
-    boolean[] getBooleanArray(String property);
-    String[] getStringArray(String property);
-    KAssetDefinition[] getSubdefinitionArray(String property);
-
+    @Override
+    public KThrowableSeverity getSeverity() {
+        return KThrowableSeverity.ERROR;
+    }
 }

@@ -1,0 +1,59 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.darthakiranihil.konna.core.io.std;
+
+import io.github.darthakiranihil.konna.core.io.KProtocol;
+import io.github.darthakiranihil.konna.core.io.KResource;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
+import io.github.darthakiranihil.konna.core.io.KResourceUtils;
+
+import java.util.List;
+
+public class KStandardResourceLoader implements KResourceLoader {
+
+    private final List<KProtocol> protocols;
+
+    public KStandardResourceLoader(List<KProtocol> protocols) {
+        this.protocols = protocols;
+    }
+
+    @Override
+    public void addProtocol(KProtocol protocol) {
+        this.protocols.add(protocol);
+    }
+
+    @Override
+    public KResource loadResource(String path) {
+        for (KProtocol protocol: protocols) {
+            KResource resolved = protocol.resolve(path);
+            if (resolved != null) {
+                return resolved;
+            }
+        }
+
+        return new KResource.Empty(path, KResourceUtils.getFilename(path));
+    }
+
+    @Override
+    public KResource loadResource(String path, KProtocol protocol) {
+        KResource resolved = protocol.resolve(path);
+        if (resolved == null) {
+            return new KResource.Empty(path, KResourceUtils.getFilename(path));
+        }
+        return resolved;
+    }
+}
