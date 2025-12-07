@@ -1,6 +1,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import java.io.Closeable;
+import java.io.InputStream;
 import java.nio.channels.ReadableByteChannel;
 
 public interface KResource extends Closeable {
@@ -44,6 +45,21 @@ public interface KResource extends Closeable {
         }
 
         @Override
+        public InputStream stream() {
+            return null;
+        }
+
+        @Override
+        public String string() {
+            return "";
+        }
+
+        @Override
+        public byte[] bytes() {
+            return new byte[0];
+        }
+
+        @Override
         public void close() {
 
         }
@@ -54,5 +70,8 @@ public interface KResource extends Closeable {
     boolean exists();
     boolean isOpen();
     ReadableByteChannel channel();
+    InputStream stream();
+    String string();
+    byte[] bytes();
 
 }

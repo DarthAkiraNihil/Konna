@@ -17,26 +17,39 @@
 package io.github.darthakiranihil.konna.core.io.std.resource;
 
 import io.github.darthakiranihil.konna.core.io.KResource;
+import io.github.darthakiranihil.konna.core.io.except.KResourceException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 public class KClasspathResource implements KResource {
 
     private final String path;
     private final String name;
+
     private final ReadableByteChannel chan;
+    private final InputStream stream;
+
+    private String cachedStringContent;
+    private byte[] cachedByteContent;
 
     public KClasspathResource(final String path, final String name, final InputStream stream) {
         this.path = path;
         this.name = name;
+        this.stream = stream;
         if (stream != null) {
             this.chan = Channels.newChannel(stream);
         } else {
             this.chan = null;
         }
+
+        this.cachedStringContent = null;
+        this.cachedByteContent = null;
     }
 
     @Override
@@ -65,7 +78,46 @@ public class KClasspathResource implements KResource {
     }
 
     @Override
+    public InputStream stream() {
+        return this.stream;
+    }
+
+    @Override
+    public String string() {
+        if (this.cachedStringContent != null) {
+            return this.cachedStringContent;
+        }
+        BufferedReader br = new BufferedReader(Channels.newReader(this.chan, StandardCharsets.UTF_8));
+        this.cachedStringContent = br
+            .lines()
+            .onClose(() -> {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    throw new KResourceException(e);
+                }
+            })
+            .collect(Collectors.joining());
+        return this.cachedStringContent;
+    }
+
+    @Override
+    public byte[] bytes() {
+        if (this.cachedByteContent != null) {
+            return this.cachedByteContent;
+        }
+
+        try {
+            this.cachedByteContent = this.stream.readAllBytes();
+            return this.cachedByteContent;
+        } catch (IOException e) {
+            throw new KResourceException(e);
+        }
+    }
+
+    @Override
     public void close() throws IOException {
         this.chan.close();
+        this.stream.close();
     }
 }
