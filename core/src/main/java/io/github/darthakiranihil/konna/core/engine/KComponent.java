@@ -21,13 +21,13 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.*;
@@ -44,10 +44,6 @@ public abstract class KComponent extends KObject {
      * List of component services.
      */
     protected final Map<String, KServiceEntry> services;
-    /**
-     * Logger of component's engine context.
-     */
-    protected final KLogger logger;
     /**
      * Messenger, assigned to current component.
      */
@@ -72,30 +68,29 @@ public abstract class KComponent extends KObject {
     ) throws KComponentLoadingException {
 
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
-        this.logger = ctx.logger();
 
         String componentClass = this.getClass().toString();
-        this.logger.info("Creating component %s", componentClass);
+        KSystemLogger.info("Creating component %s", componentClass);
 
         this.services = this.loadServices(ctx, servicesPackage, serviceLoader);
-        this.logger.info(
+        KSystemLogger.info(
             "Loaded %d services of component %s",
             this.services.size(),
             componentClass
         );
 
         this.messenger = this.loadMessenger(ctx, name);
-        this.logger.info(
+        KSystemLogger.info(
             "Created messenger %s for the component %s",
             this.messenger,
             componentClass
         );
 
-        this.logger.info("Applying config for %s", componentClass);
+        KSystemLogger.info("Applying config for %s", componentClass);
         this.applyConfig(config);
 
 
-        this.logger.info("Created component %s", componentClass);
+        KSystemLogger.info("Created component %s", componentClass);
     }
 
     /**
@@ -131,14 +126,14 @@ public abstract class KComponent extends KObject {
 
         try {
             serviceEntry.callEndpoint(route, message);
-            this.logger.debug(
+            KSystemLogger.debug(
                 "Successfully accepted message %s. Destination: %s.%s",
                 message,
                 this.name,
                 route
             );
         } catch (KEndpointRoutingException e) {
-            this.logger.warning(
+            KSystemLogger.warning(
                 "%s: Unexpected error occurred when accepting message: %s",
                 this.getClass().getCanonicalName(),
                 e
@@ -168,7 +163,7 @@ public abstract class KComponent extends KObject {
             servicesPackage,
             KComponentServiceMetaInfo.class
         );
-        this.logger.info(
+        KSystemLogger.info(
             "Found %d services of component %s",
             serviceClasses.size(),
             this.getClass().getCanonicalName()
@@ -186,7 +181,7 @@ public abstract class KComponent extends KObject {
         } catch (
             KServiceLoadingException e
         ) {
-            this.logger.fatal(e);
+            KSystemLogger.fatal(e);
             throw new KComponentLoadingException(e);
         }
         return instantiatedServices;

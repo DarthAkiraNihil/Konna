@@ -22,8 +22,8 @@ import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
@@ -35,10 +35,8 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
-
-import java.util.List;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -96,25 +94,15 @@ public class KStandardTestClass extends KObject {
             .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var logger = new KStandardLogger(
-            "std_logger",
-            KLogLevel.DEBUG,
-            new KSimpleLogFormatter(),
-            List.of(
-                new KTerminalLogHandler(new KLogcatLikeLogFormatter(false)),
-                new KFileLogHandler("_log.log", new KTimestampLogFormatter()),
-                new KFileLogHandler("__log.log", new KLogcatLikeLogFormatter(true))
-            )
-        );
         var activator = new KStandardActivator(containerResolver, objectRegistry, index);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
+        KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
             activator,
             containerResolver,
             index,
-            logger,
             objectRegistry,
             eventSystem,
             messageSystem

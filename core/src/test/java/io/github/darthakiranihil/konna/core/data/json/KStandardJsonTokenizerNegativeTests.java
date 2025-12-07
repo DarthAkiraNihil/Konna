@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.core.util.KTriplet;
+import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

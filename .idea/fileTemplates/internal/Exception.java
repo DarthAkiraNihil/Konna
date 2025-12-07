@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.util;
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};
 
-/**
- * Represents an immutable group of three values of different types like a tuple.
- * @param first The first element of the triplet
- * @param second The second element of the triplet
- * @param third The third element of the triplet
- * @param <F> Type of the first element
- * @param <S> Type of the second element
- * @param <T> Type of the third element
- *
- * @since 0.1.0
- * @author Darth Akira Nihil
- */
-public record KTriplet<F, S, T>(F first, S second, T third) {
-
+#end
+#parse("File Header.java")
+public class ${NAME} extends RuntimeException {
+  public ${NAME}(String message) {
+    super(message);
+  }
 }

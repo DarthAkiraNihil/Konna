@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object.std;
 
 import io.github.darthakiranihil.konna.core.object.*;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.util.*;
 

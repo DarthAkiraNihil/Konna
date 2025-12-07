@@ -21,6 +21,11 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class KJsonValueNegativeTests extends KStandardTestClass {
 
     @Test
@@ -48,6 +53,17 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         KJsonValue nullChar = KJsonValue.fromString(null);
         KJsonValue longChar = KJsonValue.fromString("12");
 
+        try {
+            Field nullCharContainedField = KJsonValue.class.getDeclaredField("containedValue");
+            Field nullCharType = KJsonValue.class.getDeclaredField("type");
+            nullCharContainedField.setAccessible(true);
+            nullCharType.setAccessible(true);
+            nullCharContainedField.set(nullChar, null);
+            nullCharType.set(nullChar, KJsonValueType.STRING);
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+
         Exception thrownNonString = Assertions.assertThrowsExactly(KJsonValueException.class, nonStringChar::getChar);
         Exception thrownNull = Assertions.assertThrowsExactly(KJsonValueException.class, nullChar::getChar);
         Exception thrownLong = Assertions.assertThrowsExactly(KJsonValueException.class, longChar::getChar);
@@ -65,6 +81,7 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonObject.getProperty("123"));
         Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonObject.hasProperty("123"));
+        Assertions.assertThrowsExactly(KJsonValueException.class, () -> nonObject.setProperty("123", KJsonValue.fromNumber(1)));
         Assertions.assertThrowsExactly(KJsonValueException.class, nonObject::entrySet);
 
     }
@@ -95,4 +112,25 @@ public class KJsonValueNegativeTests extends KStandardTestClass {
         Assertions.assertThrowsExactly(KJsonValueException.class, nonArray::spliterator);
 
     }
+
+    @Test
+    public void testTypeMismatch() {
+
+        Assertions.assertThrowsExactly(KJsonValueException.class, () -> new KJsonValue(
+            KJsonValueType.NUMBER_INT,
+            "123"
+        ));
+
+    }
+
+    @Test
+    public void testJsonValueTypeFromObjectOfUnknownType() {
+
+        Assertions.assertThrows(
+            KJsonValueException.class,
+            () -> KJsonValueType.fromObject(this)
+        );
+
+    }
+
 }

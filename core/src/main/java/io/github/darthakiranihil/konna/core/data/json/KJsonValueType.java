@@ -16,6 +16,11 @@
 
 package io.github.darthakiranihil.konna.core.data.json;
 
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * Enumeration for representing the type of json value.
  *
@@ -51,6 +56,49 @@ public enum KJsonValueType {
     /**
      * The value is null.
      */
-    NULL
+    NULL;
+
+    /**
+     * Returns json value type according to passed object.
+     * Throws {@link KJsonValueException} if it does not represent
+     * a primitive type, map, list, array nor null.
+     * @param o Object to get type of
+     * @return Corresponding json value type
+     *
+     * @since 0.2.0
+     */
+    public static KJsonValueType fromObject(final Object o) {
+
+        if (o == null) {
+            return NULL;
+        }
+
+        Class<?> clazz = o.getClass();
+        if (clazz.isArray()) {
+            return ARRAY;
+        }
+
+        return switch (o) {
+            case Boolean __ -> BOOLEAN;
+            case Integer __ -> NUMBER_INT;
+            case Byte __ -> NUMBER_INT;
+            case Short __ -> NUMBER_INT;
+            case Long __ -> NUMBER_INT;
+            case Float __ -> NUMBER_FLOAT;
+            case Double __ -> NUMBER_FLOAT;
+            case Character __ -> STRING;
+            case String __ -> STRING;
+            case List<?> __ -> ARRAY;
+            case Map<?, ?> __ -> OBJECT;
+            default ->
+                throw new KJsonValueException(
+                    String.format(
+                        "Cannot resolve json value type for %s",
+                        o.getClass()
+                    )
+                );
+        };
+
+    }
 
 }

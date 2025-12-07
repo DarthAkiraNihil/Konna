@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.util;
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};
 
-/**
- * Represents an immutable pair of values of different types like a tuple.
- * @param first The first element of the pair
- * @param second The second element of the pair
- * @param <F> Type of the first pair
- * @param <S> Type of the second pair
- *
- * @since 0.1.0
- * @author Darth Akira Nihil
- */
-public record KPair<F, S>(F first, S second) {
-
+#end
+#parse("File Header.java")
+public enum ${NAME} {
 }

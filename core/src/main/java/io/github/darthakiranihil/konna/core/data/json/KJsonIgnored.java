@@ -29,6 +29,6 @@ import java.lang.annotation.Target;
  * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.RECORD_COMPONENT})
 public @interface KJsonIgnored {
 }

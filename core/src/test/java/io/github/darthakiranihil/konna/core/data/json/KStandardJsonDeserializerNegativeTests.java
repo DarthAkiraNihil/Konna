@@ -69,6 +69,12 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
         }
     }
 
+    public record RecordWithUnmarkedArray(
+        List<String> biba
+    ) {
+
+    }
+
     @Test
     public void testDeserializeObjectDeserializeNonAnnotatedArray() {
 
@@ -85,6 +91,22 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
             this.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.ClassWithUnmarkedArray.class);
         });
 
+    }
+
+    @Test
+    public void testDeserializeRecordWithNonAnnotatedArray() {
+        String data = "{\"biba\": [\"1\", \"2\", \"3\"]}";
+        KJsonValue jsonValue;
+        try {
+            jsonValue = this.jsonParser.parse(data);
+        } catch (KJsonParseException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        Assertions.assertThrowsExactly(KJsonSerializationException.class, () -> {
+            this.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.RecordWithUnmarkedArray.class);
+        });
     }
 
 }

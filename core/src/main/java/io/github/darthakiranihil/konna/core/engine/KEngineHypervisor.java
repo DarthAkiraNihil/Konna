@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
@@ -31,7 +31,7 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -52,7 +52,6 @@ public class KEngineHypervisor extends KObject {
 
     private final KActivator activator;
     private final KContainerResolver containerResolver;
-    private final KLogger logger;
     private final KIndex index;
     private final KEventSystem eventSystem;
     private final KMessageSystem messageSystem;
@@ -85,38 +84,34 @@ public class KEngineHypervisor extends KObject {
 
         this.activator = ctx.activator();
         this.containerResolver = ctx.containerResolver();
-        this.logger = ctx.logger();
         this.index = ctx.index();
         this.messageSystem = ctx.messageSystem();
         this.eventSystem = ctx.eventSystem();
 
-        this.logger.info("Initializing engine hypervisor [config = %s]", config);
-        this.logger.info(
+        KSystemLogger.info("Initializing engine hypervisor [config = %s]", config);
+        KSystemLogger.info(
             "%s: Indexed %d classes in %d packages",
             this.index.getClass().getSimpleName(),
             this.index.getClassIndex().size(),
             this.index.getPackageIndex().size()
         );
         var envs = this.containerResolver.getEnvironments();
-        this.logger.info(
+        KSystemLogger.info(
             "%s: created %d environments: %s",
             this.containerResolver.getClass().getSimpleName(),
             envs.size(),
             envs
         );
-        this.logger.info(
+        KSystemLogger.info(
             "Got activator: %s", this.activator.getClass().getSimpleName()
         );
-        this.logger.info(
+        KSystemLogger.info(
             "Got object registry: %s", ctx.objectRegistry().getClass().getSimpleName()
         );
-        this.logger.info(
-            "Got logger: %s", this.logger.getClass().getSimpleName()
-        );
-        this.logger.info(
+        KSystemLogger.info(
             "Got event system: %s", this.eventSystem.getClass().getSimpleName()
         );
-        this.logger.info(
+        KSystemLogger.info(
             "Got message system: %s", this.messageSystem.getClass().getSimpleName()
         );
 
@@ -131,11 +126,11 @@ public class KEngineHypervisor extends KObject {
 
             this.componentLoader = this.activator.create(config.componentLoader());
 
-            this.logger.info("Created component loader %s", config.componentLoader());
+            KSystemLogger.info("Created component loader %s", config.componentLoader());
 
             this.serviceLoader = this.activator.create(config.serviceLoader());
 
-            this.logger.info("Created service loader %s", config.serviceLoader());
+            KSystemLogger.info("Created service loader %s", config.serviceLoader());
 
             this.engineComponents = new HashMap<>();
 
@@ -148,19 +143,19 @@ public class KEngineHypervisor extends KObject {
                 );
             }
 
-            this.logger.info("Loaded %d components", this.engineComponents.size());
+            KSystemLogger.info("Loaded %d components", this.engineComponents.size());
 
         } catch (
             KComponentLoadingException e
         ) {
-            this.logger.error(e);
+            KSystemLogger.error(e);
             throw new KHypervisorInitializationException(e);
         }
 
         this.engineComponents.forEach((_k, v) -> {
             this.messageSystem.registerComponent(v);
         });
-        this.logger.info(
+        KSystemLogger.info(
             "Registered %d components in the message system",
             this.engineComponents.size()
         );
@@ -171,7 +166,7 @@ public class KEngineHypervisor extends KObject {
             configurer.setupRoutes(this.messageSystem);
         }
 
-        this.logger.info(
+        KSystemLogger.info(
             "%d message route configurers have been executed",
             config.messageRoutesConfigurers().size()
         );
@@ -181,7 +176,7 @@ public class KEngineHypervisor extends KObject {
             registerer.registerEvents(this.eventSystem);
         }
 
-        this.logger.info(
+        KSystemLogger.info(
             "%d event registerers have been executed",
             config.eventRegisterers().size()
         );

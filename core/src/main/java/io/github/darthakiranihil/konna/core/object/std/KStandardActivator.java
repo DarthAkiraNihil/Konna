@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -280,10 +280,6 @@ public final class KStandardActivator extends KObject implements KActivator {
         this.addContextObject(
             (KObject) ctx.index(),
             ctx.index().getClass()
-        );
-        this.addContextObject(
-            ctx.logger(),
-            ctx.logger().getClass()
         );
         this.addContextObject(
             (KObject) ctx.objectRegistry(),

@@ -20,11 +20,11 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.util.KPair;
-import io.github.darthakiranihil.konna.core.util.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -56,11 +56,10 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
     ) throws KServiceLoadingException {
 
         String serviceName = service.getAnnotation(KComponentServiceMetaInfo.class).name();
-        KLogger logger = ctx.logger();
-        logger.info("Loading service %s [%s]", serviceName, service);
+        KSystemLogger.info("Loading service %s [%s]", serviceName, service);
 
         if (loadedServicesMap.containsKey(serviceName)) {
-            logger.fatal(
+            KSystemLogger.fatal(
             "Cannot load service %s: there is a service with the same name"
                 +   "within the component: %s",
                 service,
@@ -91,7 +90,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
                 new KPair<>(converter, method)
             );
         }
-        logger.info(
+        KSystemLogger.info(
             "Found %d service endpoints in %s [%s]",
             endpoints.size(),
             serviceName,
@@ -107,10 +106,9 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             new KServiceEntry(
                 instantiatedService,
                 endpoints,
-                ctx.activator(),
-                ctx.logger()
+                ctx.activator()
             )
         );
-        logger.info("Loaded service %s [%s]", serviceName, service);
+        KSystemLogger.info("Loaded service %s [%s]", serviceName, service);
     }
 }

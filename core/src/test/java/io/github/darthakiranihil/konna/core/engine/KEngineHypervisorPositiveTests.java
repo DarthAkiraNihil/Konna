@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
@@ -54,8 +55,11 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
         KEngineHypervisorConfig loadedConfig;
         try {
-            loadedConfig = KEngineHypervisorConfig.fromJson(parsed);
-        } catch (KHypervisorInitializationException e) {
+            loadedConfig = this.jsonDeserializer.deserialize(
+                parsed,
+                KEngineHypervisorConfig.class
+            );
+        } catch (KJsonSerializationException e) {
             Assertions.fail(e);
             return;
         }
