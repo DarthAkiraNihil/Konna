@@ -6,9 +6,9 @@ public record KAsset (
     String assetId,
     KAssetType type,
     String typeAlias,
-    KAssetDefinition definition,
-    KResource raw
-) implements KRawDataContainer<KResource>{
+    KAssetDefinition definition
+    // KResource raw
+) /*implements KRawDataContainer<KResource>*/ {
 
 }
 

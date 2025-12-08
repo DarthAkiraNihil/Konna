@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
+import java.util.Map;
+
 /**
  * Interface providing methods to deserialize json values into objects.
  * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
@@ -44,5 +46,6 @@ public interface KJsonDeserializer {
      * with structure that differs from json value
      */
     <T> T deserialize(KJsonValue value, Class<?> clazz) throws KJsonSerializationException;
+    <V> Map<String, V> deserialize(KJsonValue value, Class<?> clazz, Class<?> valueClass) throws KJsonSerializationException;
 
 }

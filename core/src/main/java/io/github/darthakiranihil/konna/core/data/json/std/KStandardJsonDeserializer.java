@@ -112,8 +112,21 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
 
                 try {
 
-                    var deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
+                    if (Map.class.isAssignableFrom(clazz)) {
 
+                        if (!clazz.isAnnotationPresent(KJsonMap.class)) {
+                            throw new KJsonSerializationException(
+                                    "Could not deserialize object, as it is a map-like"
+                                +   "and the KJsonMap annotation is not provided"
+                            );
+                        }
+
+                        KJsonMap meta = clazz.getAnnotation(KJsonMap.class);
+                        return (T) this.deserialize(value, clazz, meta.valueType());
+
+                    }
+
+                    var deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
                     if (clazz.isRecord()) {
                         for (var entry: value.entrySet()) {
                             deserialized = this.setRecordField(
@@ -148,6 +161,35 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         }
 
         return null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <V> Map<String, V> deserialize(
+        KJsonValue value,
+        Class<?> clazz,
+        Class<?> valueClass
+    ) throws KJsonSerializationException {
+
+        try {
+            Map<String, ?> deserialized = (Map<String, ?>) KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
+
+            for (var entry: value.entrySet()) {
+
+                deserialized.put(
+                    entry.getKey(),
+                    this.deserialize(
+                        entry.getValue(),
+                        valueClass
+                    )
+                );
+
+            }
+
+            return (Map<String, V>) deserialized;
+        } catch (Throwable e) {
+            throw new KJsonSerializationException(e);
+        }
     }
 
     private Field getField(final Class<?> clazz, final String name) throws NoSuchFieldException {
