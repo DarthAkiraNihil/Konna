@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.io.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResource;
@@ -79,17 +80,21 @@ public class KJsonAssetLoader implements KAssetLoader {
             Map<String, KJsonValue> loadedDefinitionsOfType = new HashMap<>();
 
             AssetTypeData data = entry.getValue();
+            KJsonValidator baseValidator = this.buildBaseValidator(data.aliases);
 
             for (String path: data.paths) {
 
                 try (KResource resource = this.resourceLoader.loadResource(path)) {
 
-                    KJsonValue parsed = this.jsonParser.parse(resource.stream()); // todo validation
+                    KJsonValue parsed = this.jsonParser.parse(resource.stream());
 
                     for (var dataEntry: parsed.entrySet()) {
+                        KJsonValue rawAssetDefinition = dataEntry.getValue();
+                        baseValidator.validate(rawAssetDefinition);
+
                         loadedDefinitionsOfType.put(
                             dataEntry.getKey(),
-                            dataEntry.getValue()
+                            rawAssetDefinition
                         );
                     }
 
@@ -120,5 +125,21 @@ public class KJsonAssetLoader implements KAssetLoader {
 
         this.typeAliasesSchemas.put(typeAlias, schema);
 
+    }
+
+    private KJsonValidator buildBaseValidator(
+        final String[] aliases
+    ) {
+        var infos = new KJsonPropertyValidationInfo[aliases.length];
+        var builder = new KJsonPropertyValidationInfo.Builder();
+
+        for (int i = 0; i < aliases.length; i++) {
+            infos[i] = builder
+                .withName(aliases[i])
+                .withExpectedType(KJsonValueType.OBJECT)
+                .build();
+        }
+
+        return new KJsonObjectValidator(infos);
     }
 }
