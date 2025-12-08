@@ -18,11 +18,10 @@ package io.github.darthakiranihil.konna.core.io.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
-import io.github.darthakiranihil.konna.core.io.KAsset;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KResource;
-import io.github.darthakiranihil.konna.core.io.KResourceLoader;
+import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,10 +40,15 @@ public class KJsonAssetLoader implements KAssetLoader {
     }
 
     private final Map<String, KJsonValidator> typeAliasesSchemas;
+    private final Map<String, KJsonValidator> fullAssetDefinitionsValidators;
+
     private final KResourceLoader resourceLoader;
     private final KJsonParser jsonParser;
 
+    private final Map<String, KJsonAssetLoader.AssetTypeData> assetTypeData;
+    private final Map<String, KAssetType> builtAssetTypes;
     private final Map<String, String> reverseAssetTypeMap;
+
     private final Map<String, Map<String, KJsonValue>> loadedRawAssetDefinitions;
 
     public KJsonAssetLoader(
@@ -57,45 +61,33 @@ public class KJsonAssetLoader implements KAssetLoader {
         this.jsonParser = jsonParser;
 
         this.typeAliasesSchemas = new HashMap<>();
+        this.fullAssetDefinitionsValidators = new HashMap<>();
+
         this.loadedRawAssetDefinitions = new HashMap<>();
+
+        this.assetTypeData = new HashMap<>();
+        this.builtAssetTypes = new HashMap<>();
         this.reverseAssetTypeMap = new HashMap<>();
 
         for (var entry: assetTypesData.entrySet()) {
 
-
-            Map<String, KJsonValue> loadedDefinitionsOfType = new HashMap<>();
-
             AssetTypeData data = entry.getValue();
-            KJsonValidator baseValidator = this.buildBaseValidator(data.aliases);
             for (String alias: data.aliases) {
                 this.reverseAssetTypeMap.put(alias, entry.getKey());
             }
 
-            for (String path: data.paths) {
-
-                try (KResource resource = this.resourceLoader.loadResource(path)) {
-
-                    KJsonValue parsed = this.jsonParser.parse(resource.stream());
-
-                    for (var dataEntry: parsed.entrySet()) {
-                        KJsonValue rawAssetDefinition = dataEntry.getValue();
-                        baseValidator.validate(rawAssetDefinition);
-
-                        loadedDefinitionsOfType.put(
-                            dataEntry.getKey(),
-                            rawAssetDefinition
-                        );
-                    }
-
-                } catch (IOException | KJsonParseException e) { //TODO
-                    throw new RuntimeException(e);
-                }
-
-            }
-
+            String internalType = entry.getKey();
             this.loadedRawAssetDefinitions.put(
-                entry.getKey(),
-                loadedDefinitionsOfType
+                internalType,
+                this.loadRawDefinitionsOfType(
+                    internalType,
+                    entry.getValue()
+                )
+            );
+
+            this.builtAssetTypes.put(
+                internalType,
+                new KAssetType(internalType)
             );
 
         }
@@ -126,6 +118,75 @@ public class KJsonAssetLoader implements KAssetLoader {
 
     }
 
+    @Override
+    public void addNewAsset(String assetId, String internalType, KJsonValue rawDefinition) {
+
+        var data = this.assetTypeData.get(internalType);
+        if (data == null) {
+            throw new KAssetLoadingException(
+                String.format(
+                    "Cannot add asset %s - internal type %s is not registered in the asset loader",
+                    assetId,
+                    internalType
+                )
+            );
+        }
+
+        if (!this.fullAssetDefinitionsValidators.containsKey(internalType)) {
+            this.fullAssetDefinitionsValidators.put(
+                internalType,
+                this.buildFullValidator(data.aliases)
+            );
+        }
+
+        KJsonValidator validator = this.fullAssetDefinitionsValidators.get(internalType);
+        try {
+            validator.validate(rawDefinition);
+        } catch (KJsonValidationError e) {
+            throw new KAssetLoadingException(e);
+        }
+
+        Map<String, KJsonValue> assetsOfType = this.loadedRawAssetDefinitions.get(internalType);
+        assetsOfType.put(assetId, rawDefinition);
+
+    }
+
+    private Map<String, KJsonValue> loadRawDefinitionsOfType(
+        final String type,
+        final AssetTypeData data
+    ) {
+        Map<String, KJsonValue> loadedDefinitionsOfType = new HashMap<>();
+
+        KJsonValidator baseValidator = this.buildBaseValidator(data.aliases);
+        for (String alias: data.aliases) {
+            this.reverseAssetTypeMap.put(alias, type);
+        }
+
+        for (String path: data.paths) {
+
+            try (KResource resource = this.resourceLoader.loadResource(path)) {
+
+                KJsonValue parsed = this.jsonParser.parse(resource.stream());
+
+                for (var dataEntry: parsed.entrySet()) {
+                    KJsonValue rawAssetDefinition = dataEntry.getValue();
+                    baseValidator.validate(rawAssetDefinition);
+
+                    loadedDefinitionsOfType.put(
+                        dataEntry.getKey(),
+                        rawAssetDefinition
+                    );
+                }
+
+            } catch (IOException | KJsonParseException e) { //TODO
+                throw new RuntimeException(e);
+            }
+
+        }
+
+        return loadedDefinitionsOfType;
+    }
+
     private KJsonValidator buildBaseValidator(
         final String[] aliases
     ) {
@@ -141,4 +202,25 @@ public class KJsonAssetLoader implements KAssetLoader {
 
         return new KJsonObjectValidator(infos);
     }
+
+    private KJsonValidator buildFullValidator(
+        final String[] aliases
+    ) {
+
+        var infos = new KJsonPropertyValidationInfo[aliases.length];
+        var builder = new KJsonPropertyValidationInfo.Builder();
+
+        for (int i = 0; i < aliases.length; i++) {
+            infos[i] = builder
+                .withName(aliases[i])
+                .withExpectedType(KJsonValueType.OBJECT)
+                .withValidator(this.typeAliasesSchemas.get(aliases[i]))
+                .build();
+        }
+
+        return new KJsonObjectValidator(infos);
+
+    }
+
+
 }
