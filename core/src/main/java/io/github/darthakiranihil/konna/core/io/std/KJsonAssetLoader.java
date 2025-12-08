@@ -97,7 +97,31 @@ public class KJsonAssetLoader implements KAssetLoader {
     @Override
     public KAsset loadAsset(String assetId, String typeAlias) {
 
-        return null;
+        String internalType = this.reverseAssetTypeMap.get(typeAlias);
+        if (internalType == null) {
+            throw new KAssetLoadingException(
+                String.format(
+                    "Cannot load asset %s - type alias %s not known",
+                    assetId,
+                    typeAlias
+                )
+            );
+        }
+
+        KAssetType builtType = this.builtAssetTypes.get(internalType);
+        KJsonValue raw = this
+            .loadedRawAssetDefinitions
+            .get(internalType)
+            .get(assetId)
+            .getProperty(typeAlias);
+        KJsonValidator validator = this.typeAliasesSchemas.get(typeAlias);
+
+        return new KAsset(
+            assetId,
+            builtType,
+            typeAlias,
+            new KJsonAssetDefinition(raw, validator)
+        );
 
     }
 
