@@ -40,47 +40,36 @@ public class KJsonAssetLoader implements KAssetLoader {
 
     }
 
-    public record Config(
-        @KJsonCustomName(name = ASSET_DEFINITIONS_PATHS_KEY)
-        @KJsonArray(elementType = String.class)
-        String[] assetDefinitionsPaths,
-
-        @KJsonCustomName(name = ASSET_TYPES_DEFINITIONS_KEY)
-        Map<String, String[]> assetTypesDefinitions
-    ) {
-
-        private static final String ASSET_DEFINITIONS_PATHS_KEY = "asset_definitions_paths";
-        private static final String ASSET_TYPES_DEFINITIONS_KEY = "asset_types";
-
-    }
-
     private final Map<String, KJsonValidator> typeAliasesSchemas;
-    private final Map<String, String[]> assetTypesDefinitions;
     private final KResourceLoader resourceLoader;
     private final KJsonParser jsonParser;
 
+    private final Map<String, String> reverseAssetTypeMap;
     private final Map<String, Map<String, KJsonValue>> loadedRawAssetDefinitions;
 
     public KJsonAssetLoader(
         final KResourceLoader resourceLoader,
         final Map<String, AssetTypeData> assetTypesData,
-        final Config config,
         final KJsonParser jsonParser
     ) {
 
         this.resourceLoader = resourceLoader;
         this.jsonParser = jsonParser;
-        this.assetTypesDefinitions = config.assetTypesDefinitions;
 
         this.typeAliasesSchemas = new HashMap<>();
         this.loadedRawAssetDefinitions = new HashMap<>();
+        this.reverseAssetTypeMap = new HashMap<>();
 
         for (var entry: assetTypesData.entrySet()) {
+
 
             Map<String, KJsonValue> loadedDefinitionsOfType = new HashMap<>();
 
             AssetTypeData data = entry.getValue();
             KJsonValidator baseValidator = this.buildBaseValidator(data.aliases);
+            for (String alias: data.aliases) {
+                this.reverseAssetTypeMap.put(alias, entry.getKey());
+            }
 
             for (String path: data.paths) {
 
@@ -124,6 +113,16 @@ public class KJsonAssetLoader implements KAssetLoader {
     public void addAssetTypeAlias(String typeAlias, KJsonValidator schema) {
 
         this.typeAliasesSchemas.put(typeAlias, schema);
+        String internalType = this.reverseAssetTypeMap.get(typeAlias);
+        if (internalType == null) {
+            return;
+        }
+
+        var loadedAssets = this.loadedRawAssetDefinitions.get(internalType);
+        for (var rawAssetDefinitionEntry: loadedAssets.entrySet()) {
+            KJsonValue rawAssetDefinition = rawAssetDefinitionEntry.getValue();
+            schema.validate(rawAssetDefinition.getProperty(typeAlias));
+        }
 
     }
 
