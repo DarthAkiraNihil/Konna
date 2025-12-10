@@ -25,7 +25,7 @@ import java.io.InputStream;
 
 /**
  * Implementation of {@link KProtocol} that searches for resources
- * inside application's classpath.
+ * inside application's classpath (the path must start with classpath:).
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

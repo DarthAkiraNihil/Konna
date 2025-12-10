@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * @since 0.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.RECORD_COMPONENT, ElementType.LOCAL_VARIABLE})
+@Target({ElementType.FIELD, ElementType.RECORD_COMPONENT})
 public @interface KJsonArray {
     /**
      * Returns the type of list elements.
