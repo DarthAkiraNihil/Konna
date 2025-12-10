@@ -51,8 +51,12 @@ public final class KClasspathProtocol implements KProtocol {
         }
 
         String realPath = path.substring(PREFIX.length());
-        String name = KResourceUtils.getFilename(path);
+        String name = KResourceUtils.getFilename(realPath);
         InputStream is = this.classLoader.getResourceAsStream(realPath);
+
+        if (is == null) {
+            return null;
+        }
 
         return new KClasspathResource(
             realPath,

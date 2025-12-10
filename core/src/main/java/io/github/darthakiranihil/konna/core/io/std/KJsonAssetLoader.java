@@ -84,7 +84,7 @@ public class KJsonAssetLoader implements KAssetLoader {
 
         this.loadedRawAssetDefinitions = new HashMap<>();
 
-        this.assetTypeData = new HashMap<>();
+        this.assetTypeData = assetTypesData;
         this.builtAssetTypes = new HashMap<>();
         this.reverseAssetTypeMap = new HashMap<>();
 
@@ -156,7 +156,11 @@ public class KJsonAssetLoader implements KAssetLoader {
         var loadedAssets = this.loadedRawAssetDefinitions.get(internalType);
         for (var rawAssetDefinitionEntry: loadedAssets.entrySet()) {
             KJsonValue rawAssetDefinition = rawAssetDefinitionEntry.getValue();
-            schema.validate(rawAssetDefinition.getProperty(typeAlias));
+            try {
+                schema.validate(rawAssetDefinition.getProperty(typeAlias));
+            } catch (KJsonValidationError e) {
+                throw new KAssetLoadingException(e);
+            }
         }
 
     }

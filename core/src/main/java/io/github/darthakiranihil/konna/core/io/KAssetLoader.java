@@ -34,9 +34,9 @@ public interface KAssetLoader {
     /**
      * Add a new asset so that could be loaded by other components at request.
      * @param assetId Global asset id
-     * @param typeAlias Type alias
+     * @param internalType Type alias
      * @param rawDefinition Full asset definition
      */
-    void addNewAsset(String assetId, String typeAlias, KJsonValue rawDefinition);
+    void addNewAsset(String assetId, String internalType, KJsonValue rawDefinition);
 
 }

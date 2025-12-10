@@ -36,7 +36,7 @@ public final class KResourceUtils extends KUninstantiable {
      * @return Filename path from the path
      */
     public static String getFilename(final String path) {
-        String[] tokens = path.split("[\\\\|/]");
+        String[] tokens = path.split("[\\\\|/:]");
         return tokens[tokens.length - 1];
     }
 
