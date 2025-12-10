@@ -17,11 +17,13 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -30,6 +32,7 @@ import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
@@ -55,6 +58,7 @@ public class KEngineHypervisor extends KObject {
     private final KIndex index;
     private final KEventSystem eventSystem;
     private final KMessageSystem messageSystem;
+    private final KAssetLoader assetLoader;
 
     /**
      * Constructs hypervisor with provided config.
@@ -87,6 +91,7 @@ public class KEngineHypervisor extends KObject {
         this.index = ctx.index();
         this.messageSystem = ctx.messageSystem();
         this.eventSystem = ctx.eventSystem();
+        this.assetLoader = ctx.assetLoader();
 
         KSystemLogger.info("Initializing engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -113,6 +118,9 @@ public class KEngineHypervisor extends KObject {
         );
         KSystemLogger.info(
             "Got message system: %s", this.messageSystem.getClass().getSimpleName()
+        );
+        KSystemLogger.info(
+            "Got asset loader: %s", ctx.assetLoader().getClass().getSimpleName()
         );
 
         this.jsonParser = this.activator.create(KJsonParser.class);
@@ -154,7 +162,19 @@ public class KEngineHypervisor extends KObject {
 
         this.engineComponents.forEach((_k, v) -> {
             this.messageSystem.registerComponent(v);
+
+            List<KPair<String, KJsonValidator>> assetSchemas = v.getAssetSchemas();
+            for (var assetSchema: assetSchemas) {
+
+                this.assetLoader.addAssetTypeAlias(
+                    assetSchema.first(),
+                    assetSchema.second()
+                );
+
+            }
+
         });
+
         KSystemLogger.info(
             "Registered %d components in the message system",
             this.engineComponents.size()
@@ -180,6 +200,15 @@ public class KEngineHypervisor extends KObject {
             "%d event registerers have been executed",
             config.eventRegisterers().size()
         );
+
+        this.engineComponents.forEach((_k, c) -> {
+            c.postInit();
+        });
+
+        KSystemLogger.info(
+            "Component's post-init is completed"
+        );
+
 
     }
 

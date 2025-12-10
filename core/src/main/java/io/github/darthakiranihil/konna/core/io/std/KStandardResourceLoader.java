@@ -23,21 +23,31 @@ import io.github.darthakiranihil.konna.core.io.KResourceUtils;
 
 import java.util.List;
 
+/**
+ * Standard implementation of {@link KResourceLoader}.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KStandardResourceLoader implements KResourceLoader {
 
     private final List<KProtocol> protocols;
 
-    public KStandardResourceLoader(List<KProtocol> protocols) {
+    /**
+     * Standard constructor.
+     * @param protocols List of initial protocols
+     */
+    public KStandardResourceLoader(final List<KProtocol> protocols) {
         this.protocols = protocols;
     }
 
     @Override
-    public void addProtocol(KProtocol protocol) {
+    public void addProtocol(final KProtocol protocol) {
         this.protocols.add(protocol);
     }
 
     @Override
-    public KResource loadResource(String path) {
+    public KResource loadResource(final String path) {
         for (KProtocol protocol: protocols) {
             KResource resolved = protocol.resolve(path);
             if (resolved != null) {
@@ -49,7 +59,7 @@ public class KStandardResourceLoader implements KResourceLoader {
     }
 
     @Override
-    public KResource loadResource(String path, KProtocol protocol) {
+    public KResource loadResource(final String path, final KProtocol protocol) {
         KResource resolved = protocol.resolve(path);
         if (resolved == null) {
             return new KResource.Empty(path, KResourceUtils.getFilename(path));

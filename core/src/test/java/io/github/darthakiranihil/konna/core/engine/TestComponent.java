@@ -16,10 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+
+import java.util.List;
 
 @KComponentMetaInfo(
     name = "TestComponent",
@@ -43,4 +47,8 @@ public class TestComponent extends KComponent {
 
     }
 
+    @Override
+    public List<KPair<String, KJsonValidator>> getAssetSchemas() {
+        return List.of();
+    }
 }

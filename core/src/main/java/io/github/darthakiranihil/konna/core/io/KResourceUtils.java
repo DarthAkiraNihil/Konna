@@ -18,13 +18,24 @@ package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
+/**
+ * Class that provides different useful resource utils.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public final class KResourceUtils extends KUninstantiable {
 
     private KResourceUtils() {
         super();
     }
 
-    public static String getFilename(String path) {
+    /**
+     * Returns filename from path of the file.
+     * @param path Path to the file.
+     * @return Filename path from the path
+     */
+    public static String getFilename(final String path) {
         String[] tokens = path.split("[\\\\|/]");
         return tokens[tokens.length - 1];
     }

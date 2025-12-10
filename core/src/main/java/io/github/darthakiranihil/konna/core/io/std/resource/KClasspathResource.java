@@ -27,6 +27,12 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link KResource} that represents a classpath resource.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KClasspathResource implements KResource {
 
     private final String path;
@@ -38,6 +44,13 @@ public class KClasspathResource implements KResource {
     private String cachedStringContent;
     private byte[] cachedByteContent;
 
+    /**
+     * Standard constructor.
+     * @param path Path to the resource
+     * @param name Name of the resource
+     * @param stream Input stream of the resource that is likely to be
+     *               provided by {@link ClassLoader#getResourceAsStream(String)}
+     */
     public KClasspathResource(final String path, final String name, final InputStream stream) {
         this.path = path;
         this.name = name;
@@ -87,7 +100,9 @@ public class KClasspathResource implements KResource {
         if (this.cachedStringContent != null) {
             return this.cachedStringContent;
         }
-        BufferedReader br = new BufferedReader(Channels.newReader(this.chan, StandardCharsets.UTF_8));
+        BufferedReader br = new BufferedReader(
+            Channels.newReader(this.chan, StandardCharsets.UTF_8)
+        );
         this.cachedStringContent = br
             .lines()
             .onClose(() -> {

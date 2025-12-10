@@ -24,10 +24,21 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
 import java.util.List;
 
+/**
+ * Implementation of {@link KAssetDefinition} for definitions stored in json format.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonAssetDefinition implements KAssetDefinition {
 
     private final KJsonValue value;
 
+    /**
+     * Standard constructor, that validates wrapped json value according to passed schema.
+     * @param value Json value, containing asset definition
+     * @param schema Json value schema
+     */
     public KJsonAssetDefinition(final KJsonValue value, final KJsonValidator schema) {
         if (value.getType() != KJsonValueType.OBJECT) {
             throw new KAssetDefinitionError(
@@ -50,32 +61,32 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public int getInt(String property) {
+    public int getInt(final String property) {
         return value.getProperty(property).getInt();
     }
 
     @Override
-    public float getFloat(String property) {
+    public float getFloat(final String property) {
         return value.getProperty(property).getFloat();
     }
 
     @Override
-    public boolean getBoolean(String property) {
+    public boolean getBoolean(final String property) {
         return value.getProperty(property).getBoolean();
     }
 
     @Override
-    public String getString(String property) {
+    public String getString(final String property) {
         return value.getProperty(property).getString();
     }
 
     @Override
-    public KAssetDefinition getSubdefinition(String property) {
+    public KAssetDefinition getSubdefinition(final String property) {
         return new KJsonAssetDefinition(value.getProperty(property));
     }
 
     @Override
-    public int[] getIntArray(String property) {
+    public int[] getIntArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
         int[] array = new int[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -86,7 +97,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public float[] getFloatArray(String property) {
+    public float[] getFloatArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
         float[] array = new float[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -97,7 +108,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public boolean[] getBooleanArray(String property) {
+    public boolean[] getBooleanArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
         boolean[] array = new boolean[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -108,7 +119,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public String[] getStringArray(String property) {
+    public String[] getStringArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
         String[] array = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -119,7 +130,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public KAssetDefinition[] getSubdefinitionArray(String property) {
+    public KAssetDefinition[] getSubdefinitionArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
         KAssetDefinition[] array = new KAssetDefinition[list.size()];
         for (int i = 0; i < list.size(); i++) {

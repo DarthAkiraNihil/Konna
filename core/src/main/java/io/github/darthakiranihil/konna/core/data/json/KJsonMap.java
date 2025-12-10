@@ -21,10 +21,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Indicates the type of map-like field elements (the generic type).
+ * It is required as Java uses type erasure on generics, so it is impossible
+ * to get list generic parameter at runtime.
+ * Other fields are not affected by this annotation,
+ * at least in the standard implementation of deserializer
+ *
+ * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
+ * @author Darth Akira Nihil
+ * @since 0.2.0
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.RECORD_COMPONENT, ElementType.TYPE})
 public @interface KJsonMap {
 
+    /**
+     * Returns the type of map values.
+     * @return The actual type
+     */
     Class<?> valueType();
 
 }

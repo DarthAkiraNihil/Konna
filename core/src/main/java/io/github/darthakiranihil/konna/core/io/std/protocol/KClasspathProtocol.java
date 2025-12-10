@@ -23,18 +23,29 @@ import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
 
 import java.io.InputStream;
 
+/**
+ * Implementation of {@link KProtocol} that searches for resources
+ * inside application's classpath.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public final class KClasspathProtocol implements KProtocol {
 
     private static final String PREFIX = "classpath:";
 
     private final ClassLoader classLoader;
 
+    /**
+     * Standard constructor.
+     * @param classLoader Classloader to load resources from
+     */
     public KClasspathProtocol(final ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 
     @Override
-    public KResource resolve(String path) {
+    public KResource resolve(final String path) {
         if (!path.startsWith(PREFIX)) {
             return null;
         }

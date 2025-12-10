@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -62,5 +64,15 @@ public interface KEngineContext {
      * @return Message system of current context
      */
     KMessageSystem messageSystem();
+    /**
+     * Returns resource loader of current context.
+     * @return Resource loader of current context
+     */
+    KResourceLoader resourceLoader();
+    /**
+     * Returns asset loader of current context.
+     * @return Asset loader of current context
+     */
+    KAssetLoader assetLoader();
 }
 

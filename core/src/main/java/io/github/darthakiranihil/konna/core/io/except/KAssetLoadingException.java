@@ -19,13 +19,19 @@ package io.github.darthakiranihil.konna.core.io.except;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown when an asset failed to load.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KAssetLoadingException extends KRuntimeException {
 
-    public KAssetLoadingException(String message) {
+    public KAssetLoadingException(final String message) {
         super(message);
     }
 
-    public KAssetLoadingException(Throwable cause) {
+    public KAssetLoadingException(final Throwable cause) {
         super(cause);
     }
 

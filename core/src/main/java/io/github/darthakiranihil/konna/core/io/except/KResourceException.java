@@ -19,9 +19,15 @@ package io.github.darthakiranihil.konna.core.io.except;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown on different resource or IO errors.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KResourceException extends KRuntimeException {
 
-    public KResourceException(Throwable cause) {
+    public KResourceException(final Throwable cause) {
         super(cause);
     }
 

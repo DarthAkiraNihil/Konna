@@ -19,8 +19,15 @@ package io.github.darthakiranihil.konna.core.io.except;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
 
+/**
+ * Exception thrown when an asset definition contained errors so
+ * it cannot be loaded.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KAssetDefinitionError extends KRuntimeException {
-    public KAssetDefinitionError(String message) {
+    public KAssetDefinitionError(final String message) {
         super(message);
     }
 

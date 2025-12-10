@@ -143,7 +143,19 @@ public abstract class KComponent extends KObject {
         }
     }
 
-    public abstract KPair<String, KJsonValidator>[] getAssetSchemas();
+    /**
+     * Returns asset schemas of that types that are internal for its component.
+     * @return List of pairs "internal asset type"-"type's json schema"
+     */
+    public abstract List<KPair<String, KJsonValidator>> getAssetSchemas();
+
+    /**
+     * Runs post-init operations for this component. By default, the method does nothing
+     * so it should be overridden.
+     */
+    public void postInit() {
+
+    }
 
     /**
      * Loads services for the engine component. By default, it instantiates all

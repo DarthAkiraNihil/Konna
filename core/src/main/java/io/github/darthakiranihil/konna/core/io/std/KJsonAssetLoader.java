@@ -27,8 +27,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of {@link KAssetLoader} that uses json files to read asset definitions from.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonAssetLoader implements KAssetLoader {
 
+    /**
+     * Representation of internal (defined inside application) asset type data.
+     * @param aliases Type aliases (usually types of assets, required by components)
+     * @param paths Paths to asset definition files for this type
+     */
     public record AssetTypeData(
         @KJsonArray(elementType = String.class)
         String[] aliases,
@@ -51,6 +62,14 @@ public class KJsonAssetLoader implements KAssetLoader {
 
     private final Map<String, Map<String, KJsonValue>> loadedRawAssetDefinitions;
 
+    /**
+     * Standard constructor. Loads all passed asset definitions and validates them in
+     * base way (all asset definitions should be a json object with top-level keys of type aliases,
+     * connected with internal type).
+     * @param resourceLoader Resource loader to use to load definition files
+     * @param assetTypesData Asset types data
+     * @param jsonParser Json parser to parse definitions
+     */
     public KJsonAssetLoader(
         final KResourceLoader resourceLoader,
         final Map<String, AssetTypeData> assetTypesData,
@@ -95,7 +114,7 @@ public class KJsonAssetLoader implements KAssetLoader {
     }
 
     @Override
-    public KAsset loadAsset(String assetId, String typeAlias) {
+    public KAsset loadAsset(final String assetId, final String typeAlias) {
 
         String internalType = this.reverseAssetTypeMap.get(typeAlias);
         if (internalType == null) {
@@ -126,7 +145,7 @@ public class KJsonAssetLoader implements KAssetLoader {
     }
 
     @Override
-    public void addAssetTypeAlias(String typeAlias, KJsonValidator schema) {
+    public void addAssetTypeAlias(final String typeAlias, final KJsonValidator schema) {
 
         this.typeAliasesSchemas.put(typeAlias, schema);
         String internalType = this.reverseAssetTypeMap.get(typeAlias);
@@ -143,7 +162,11 @@ public class KJsonAssetLoader implements KAssetLoader {
     }
 
     @Override
-    public void addNewAsset(String assetId, String internalType, KJsonValue rawDefinition) {
+    public void addNewAsset(
+        final String assetId,
+        final String internalType,
+        final KJsonValue rawDefinition
+    ) {
 
         var data = this.assetTypeData.get(internalType);
         if (data == null) {

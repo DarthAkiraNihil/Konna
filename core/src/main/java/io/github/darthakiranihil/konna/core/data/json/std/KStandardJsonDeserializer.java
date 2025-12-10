@@ -166,13 +166,14 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
     @Override
     @SuppressWarnings("unchecked")
     public <V> Map<String, V> deserialize(
-        KJsonValue value,
-        Class<?> clazz,
-        Class<?> valueClass
+        final KJsonValue value,
+        final Class<?> clazz,
+        final Class<?> valueClass
     ) throws KJsonSerializationException {
 
         try {
-            Map<String, ?> deserialized = (Map<String, ?>) KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
+            Map<String, ?> deserialized = (Map<String, ?>)
+                KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
 
             for (var entry: value.entrySet()) {
 
