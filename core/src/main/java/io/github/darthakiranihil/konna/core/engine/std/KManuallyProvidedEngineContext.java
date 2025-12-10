@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -42,6 +44,8 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     private final KObjectRegistry objectRegistry;
     private final KEventSystem eventSystem;
     private final KMessageSystem messageSystem;
+    private final KResourceLoader resourceLoader;
+    private final KAssetLoader assetLoader;
 
     /**
      * Standard constructor.
@@ -51,6 +55,8 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
+     * @param resourceLoader Resource loader of the context
+     * @param assetLoader Asset loader of the context
      */
     public KManuallyProvidedEngineContext(
         final KActivator activator,
@@ -58,7 +64,9 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         final KIndex index,
         final KObjectRegistry objectRegistry,
         final KEventSystem eventSystem,
-        final KMessageSystem messageSystem
+        final KMessageSystem messageSystem,
+        final KResourceLoader resourceLoader,
+        final KAssetLoader assetLoader
         ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
@@ -67,6 +75,8 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
         this.objectRegistry = objectRegistry;
         this.eventSystem = eventSystem;
         this.messageSystem = messageSystem;
+        this.resourceLoader = resourceLoader;
+        this.assetLoader = assetLoader;
     }
 
     @Override
@@ -97,5 +107,15 @@ public final class KManuallyProvidedEngineContext extends KObject implements KEn
     @Override
     public KMessageSystem messageSystem() {
         return this.messageSystem;
+    }
+
+    @Override
+    public KResourceLoader resourceLoader() {
+        return this.resourceLoader;
+    }
+
+    @Override
+    public KAssetLoader assetLoader() {
+        return this.assetLoader;
     }
 }

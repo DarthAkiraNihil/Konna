@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 
+import java.util.Map;
+
 /**
  * Interface providing methods to deserialize json values into objects.
  * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
@@ -40,9 +42,30 @@ public interface KJsonDeserializer {
      * @return Deserialized object
      * @param <T> Generic type of deserialized object
      * @throws KJsonSerializationException If it fails to deserialize,
-     * mostly because of attempting to deserialize object
-     * with structure that differs from json value
+     *         mostly because of attempting to deserialize object
+     *         with structure that differs from json value
      */
     <T> T deserialize(KJsonValue value, Class<?> clazz) throws KJsonSerializationException;
+
+    /**
+     * Deserializes a json value into a map of string keys and values of passed classes.
+     * This method is a bit auxiliary and looks like a crutch, however,
+     * using {@link KJsonDeserializer#deserialize(KJsonValue, Class)} is not
+     * correct since it is impossible to pass generic args into map class.
+     * Still suitable for deserializing into pure dictionary
+     * @param value Json value to deserialize
+     * @param clazz Class of destination object (implementation of map)
+     * @param valueClass Class of map's value
+     * @return Deserialized map
+     * @param <V> Generic type of deserialized map value
+     * @throws KJsonSerializationException If it fails to deserialize,
+     *         mostly because of attempting to deserialize object
+     *         with structure that differs from json value
+     * @since 0.2.0
+     */
+    <V> Map<String, V> deserialize(
+        KJsonValue value,
+        Class<?> clazz, Class<?> valueClass
+    ) throws KJsonSerializationException;
 
 }

@@ -336,7 +336,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a boolean.
      * @return Boolean representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#BOOLEAN}
      */
     public boolean getBoolean() {
         this.checkTypeMatch(KJsonValueType.BOOLEAN);
@@ -347,7 +347,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as an int.
      * @return Int representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#NUMBER_INT}
      */
     public int getInt() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
@@ -358,7 +358,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a long.
      * @return Long representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#NUMBER_INT}
      */
     public long getLong() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
@@ -369,7 +369,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a byte.
      * @return Byte representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#NUMBER_INT}
      */
     public byte getByte() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
@@ -380,7 +380,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a short.
      * @return Short representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#NUMBER_INT}
      */
     public short getShort() {
         this.checkTypeMatch(KJsonValueType.NUMBER_INT);
@@ -391,7 +391,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a float.
      * @return Float representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#NUMBER_FLOAT}
      */
     public float getFloat() {
         this.checkTypeMatch(KJsonValueType.NUMBER_FLOAT);
@@ -402,7 +402,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a double.
      * @return Double representation of a value.
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#NUMBER_FLOAT}
      */
     public double getDouble() {
         this.checkTypeMatch(KJsonValueType.NUMBER_FLOAT);
@@ -415,18 +415,11 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * Throws {@link KJsonValueException} if the string representation of char
      * has more than one symbol in length
      * @return Char representation of a value
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#STRING},
+     *                          or it is null or length of represented string is greater than 1
      */
     public char getChar() {
-        if (this.type != KJsonValueType.STRING) {
-            throw new KJsonValueException(
-                String.format(
-                        "Cannot get char from the json value: it's not a string. "
-                    +   "The actual type is: %s",
-                    this.type
-                )
-            );
-        }
+        this.checkTypeMatch(KJsonValueType.STRING);
 
         if (this.isNull()) {
             throw new KJsonValueException(
@@ -448,7 +441,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
     /**
      * Returns json value as a string.
      * @return String representation of a value or null if the contained value is null
-     * @see KJsonValueException
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#STRING}
      */
     public String getString() {
         this.checkTypeMatch(KJsonValueType.STRING);
@@ -458,6 +451,22 @@ public class KJsonValue implements Iterable<KJsonValue> {
         }
 
         return (String) this.containedValue;
+    }
+
+    /**
+     * Returns json value as a list of json values.
+     * @return List representation of a value or null if the contained value is null
+     * @see KJsonValueException If json value type is not {@link KJsonValueType#ARRAY}
+     */
+    @SuppressWarnings("unchecked")
+    public List<KJsonValue> getList() {
+        this.checkTypeMatch(KJsonValueType.ARRAY);
+
+        if (this.isNull()) {
+            return null;
+        }
+
+        return (List<KJsonValue>) this.containedValue;
     }
 
     /**

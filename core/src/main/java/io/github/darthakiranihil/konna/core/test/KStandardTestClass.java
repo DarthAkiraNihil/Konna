@@ -22,6 +22,9 @@ import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
+import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
+import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
+import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
@@ -37,6 +40,9 @@ import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -97,6 +103,18 @@ public class KStandardTestClass extends KObject {
         var activator = new KStandardActivator(containerResolver, objectRegistry, index);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
+        var resourceLoader = new KStandardResourceLoader(
+            List.of(
+                new KClasspathProtocol(
+                    ClassLoader.getSystemClassLoader()
+                )
+            )
+        );
+        var assetLoader = new KJsonAssetLoader(
+            resourceLoader,
+            Map.of(),
+            new KStandardJsonParser(new KStandardJsonTokenizer())
+        );
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
@@ -105,7 +123,9 @@ public class KStandardTestClass extends KObject {
             index,
             objectRegistry,
             eventSystem,
-            messageSystem
+            messageSystem,
+            resourceLoader,
+            assetLoader
         );
         activator.addContextObjects(KStandardTestClass.context);
     }

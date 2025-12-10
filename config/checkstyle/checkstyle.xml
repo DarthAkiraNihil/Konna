@@ -125,7 +125,9 @@
         <!-- Checks for Size Violations.                    -->
         <!-- See https://checkstyle.org/checks/sizes/index.html -->
         <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber">
+            <property name="max" value="12"/>
+        </module>
 
         <!-- Checks for whitespace                               -->
         <!-- See https://checkstyle.org/checks/whitespace/index.html -->

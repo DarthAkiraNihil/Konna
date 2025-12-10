@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
@@ -26,6 +27,7 @@ import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
@@ -139,6 +141,20 @@ public abstract class KComponent extends KObject {
                 e
             );
         }
+    }
+
+    /**
+     * Returns asset schemas of that types that are internal for its component.
+     * @return List of pairs "internal asset type"-"type's json schema"
+     */
+    public abstract List<KPair<String, KJsonValidator>> getAssetSchemas();
+
+    /**
+     * Runs post-init operations for this component. By default, the method does nothing
+     * so it should be overridden.
+     */
+    public void postInit() {
+
     }
 
     /**
