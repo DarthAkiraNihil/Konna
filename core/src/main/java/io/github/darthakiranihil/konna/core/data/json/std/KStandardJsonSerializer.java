@@ -71,7 +71,7 @@ public class KStandardJsonSerializer extends KObject implements KJsonSerializer 
     public <T> KJsonValue serialize(
         final T object,
         final Class<? extends T> clazz
-    ) throws KJsonSerializationException {
+    ) {
 
         if (clazz == Integer.class || clazz == int.class) {
             return KJsonValue.fromNumber((int) object);

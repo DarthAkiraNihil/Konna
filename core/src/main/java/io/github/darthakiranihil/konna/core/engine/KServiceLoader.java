@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
-
 import java.util.Map;
 
 /**
@@ -37,8 +35,8 @@ public interface KServiceLoader {
      * @param loadedServicesMap Map of loaded services. Used to prevent loading two services
      *                          within one component with the same name,
      *                          provided by {@link KComponentServiceMetaInfo} annotation
-     * @throws KServiceLoadingException when service failed to be loaded
-     *                                  (see cause for details)
+     * @throws io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException
+     *         when service failed to be loaded (see cause for details)
      */
     void load(
         KEngineContext ctx,

@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.data.json;
 
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
-
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -39,9 +37,10 @@ public interface KJsonTokenizer {
      * @param sequenceToken Sequence token, returned by {@link #addSource(InputStream)} method,
      *                      that describes tokenizing sequence
      * @return The next json token
-     * @throws KJsonTokenException If it fails to read the token
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
+     *         If it fails to read the token
      */
-    KJsonTokenPair getNextToken(int sequenceToken) throws KJsonTokenException;
+    KJsonTokenPair getNextToken(int sequenceToken);
 
     /**
      * Adds an input stream as new json source to tokenize.

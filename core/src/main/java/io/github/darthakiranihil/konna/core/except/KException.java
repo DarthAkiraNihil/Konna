@@ -49,5 +49,9 @@ public abstract class KException extends RuntimeException {
         super(message, cause);
     }
 
+    /**
+     * Getter for a severity level of a throwable.
+     * @return The severity level of the throwable
+     */
     public abstract KExceptionSeverity getSeverity();
 }

@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.data.json;
 
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
-
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -33,7 +31,8 @@ public interface KJsonParser {
      * Parses json string and constructs a json value if given string is a valid json.
      * @param string String source of a json
      * @return Parsed json value
-     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
+     *         If json is invalid (incorrect token or syntax)
      */
     KJsonValue parse(String string);
     /**
@@ -41,7 +40,8 @@ public interface KJsonParser {
      * value if given stream contains a valid json.
      * @param stream Stream source of a json
      * @return Parsed json value
-     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
+     *         If json is invalid (incorrect token or syntax)
      */
     KJsonValue parse(InputStream stream);
     /**
@@ -49,7 +49,8 @@ public interface KJsonParser {
      * value if given reader contains a valid json.
      * @param reader Reader source of a json
      * @return Parsed json value
-     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
+     *         If json is invalid (incorrect token or syntax)
      */
     KJsonValue parse(Reader reader);
     /**
@@ -57,7 +58,8 @@ public interface KJsonParser {
      * if given array contains a valid json.
      * @param chars Array source of a json
      * @return Parsed json value
-     * @throws KJsonParseException If json is invalid (incorrect token or syntax)
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
+     *         If json is invalid (incorrect token or syntax)
      */
     KJsonValue parse(char[] chars);
 

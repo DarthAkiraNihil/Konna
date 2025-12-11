@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.data.json;
 
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
@@ -42,7 +41,8 @@ public interface KJsonDeserializer {
      * @param clazz Class of destination object
      * @return Deserialized object
      * @param <T> Generic type of deserialized object
-     * @throws KJsonSerializationException If it fails to deserialize,
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException
+     *         If it fails to deserialize,
      *         mostly because of attempting to deserialize object
      *         with structure that differs from json value
      */
@@ -62,7 +62,8 @@ public interface KJsonDeserializer {
      * @param valueClass Class of map's value
      * @return Deserialized map
      * @param <V> Generic type of deserialized map value
-     * @throws KJsonSerializationException If it fails to deserialize,
+     * @throws io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException
+     *         If it fails to deserialize,
      *         mostly because of attempting to deserialize object
      *         with structure that differs from json value
      * @since 0.2.0

@@ -87,7 +87,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
     }
 
     @Override
-    public KJsonTokenPair getNextToken(int sequenceToken) throws KJsonTokenException {
+    public KJsonTokenPair getNextToken(int sequenceToken) {
         if (!states.containsKey(sequenceToken)) {
             return KJsonTokenPair.EOF;
         }
@@ -151,7 +151,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
     }
 
 
-    private KJsonTokenPair scan(final State state) throws KJsonTokenException {
+    private KJsonTokenPair scan(final State state) {
 
         int readData;
         if (state.rolledBack) {
@@ -188,7 +188,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
     private KJsonTokenPair processLiter(
         final State state,
         char current
-    ) throws KJsonTokenException {
+    ) {
         
         switch (current) {
             // single char tokens
@@ -321,7 +321,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
         }
     }
 
-    private KJsonTokenPair parseNumber(final State state, char current) throws KJsonTokenException {
+    private KJsonTokenPair parseNumber(final State state, char current) {
 
         int currentColumn = state.column;
         StringBuilder numberCandidate = new StringBuilder(String.valueOf(current));
@@ -386,7 +386,7 @@ public class KStandardJsonTokenizer extends KObject implements KJsonTokenizer {
         char next,
         final StringBuilder numberCandidate,
         int currentColumn
-    ) throws KJsonTokenException {
+    ) {
         int data = this.next(state, numberCandidate, next);
 
         if (data == -1) {

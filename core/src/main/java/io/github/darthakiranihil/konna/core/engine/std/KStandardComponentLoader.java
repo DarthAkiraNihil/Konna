@@ -63,7 +63,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
         final Class<? extends KComponent> component,
         final KServiceLoader serviceLoader,
         final Map<String, KComponent> loadedComponentMap
-    ) throws KComponentLoadingException {
+    ) {
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {

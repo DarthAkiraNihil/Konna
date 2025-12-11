@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
-
 import java.util.Map;
 
 /**
@@ -37,14 +35,14 @@ public interface KComponentLoader {
      * @param loadedComponentMap Map of loaded components. Used to prevent loading two components
      *                           with the same name, provided by {@link KComponentMetaInfo}
      *                           annotation
-     * @throws KComponentLoadingException when component failed to be loaded
- *                                        (see cause for details)
+     * @throws io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException
+     *         when component failed to be loaded (see cause for details)
      */
     void load(
         KEngineContext ctx,
         Class<? extends KComponent> component,
         KServiceLoader serviceLoader,
         Map<String, KComponent> loadedComponentMap
-    ) throws KComponentLoadingException;
+    );
 
 }

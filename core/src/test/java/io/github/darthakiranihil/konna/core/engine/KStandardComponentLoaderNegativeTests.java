@@ -41,7 +41,7 @@ public class KStandardComponentLoaderNegativeTests extends KStandardTestClass {
             KEngineContext ctx,
             String servicesPackage,
             KJsonValue config
-        ) throws KComponentLoadingException {
+        ) {
             super(serviceLoader, name, ctx, servicesPackage, config);
         }
 
