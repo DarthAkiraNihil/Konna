@@ -24,7 +24,7 @@ package io.github.darthakiranihil.konna.core.except;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KUnknownException extends KRuntimeException {
+public class KUnknownException extends KException {
 
     public KUnknownException(final String message) {
         super(message);
@@ -35,7 +35,7 @@ public class KUnknownException extends KRuntimeException {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

@@ -17,9 +17,8 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception that is caused by incorrect way of handling a Json value.
@@ -35,7 +34,7 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KJsonValueException extends KRuntimeException implements KThrowable {
+public class KJsonValueException extends KException {
 
     private static final String
         TYPE_MISMATCH_MESSAGE_TEMPLATE =
@@ -58,7 +57,7 @@ public class KJsonValueException extends KRuntimeException implements KThrowable
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

@@ -17,13 +17,12 @@
 package io.github.darthakiranihil.konna.core.except;
 
 /**
- * Class for checked Konna exceptions.
- * @see KThrowable
+ * Class for all Konna exceptions. They are unchecked Java exceptions.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public abstract class KException extends Exception implements KThrowable {
+public abstract class KException extends RuntimeException {
 
     /**
      * Constructs exception with a provided message.
@@ -40,4 +39,19 @@ public abstract class KException extends Exception implements KThrowable {
     public KException(final Throwable cause) {
         super(cause);
     }
+
+    /**
+     * Constructs exception with provided message and cause.
+     * @param message Exception message
+     * @param cause The throwable that caused the exception
+     */
+    public KException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+    /**
+     * Getter for a severity level of a throwable.
+     * @return The severity level of the throwable
+     */
+    public abstract KExceptionSeverity getSeverity();
 }

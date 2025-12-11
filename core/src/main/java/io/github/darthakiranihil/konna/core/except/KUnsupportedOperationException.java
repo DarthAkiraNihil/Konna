@@ -23,14 +23,14 @@ package io.github.darthakiranihil.konna.core.except;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KUnsupportedOperationException extends KRuntimeException {
+public class KUnsupportedOperationException extends KException {
 
     public KUnsupportedOperationException(final String message) {
         super(message);
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.ERROR;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.ERROR;
     }
 }

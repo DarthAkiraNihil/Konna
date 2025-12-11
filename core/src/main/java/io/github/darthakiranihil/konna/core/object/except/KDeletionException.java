@@ -16,9 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KActivator}
@@ -28,7 +27,7 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KDeletionException extends KRuntimeException implements KThrowable {
+public class KDeletionException extends KException {
 
     /**
      * Constructs exception with provided object that failed to delete
@@ -43,7 +42,7 @@ public class KDeletionException extends KRuntimeException implements KThrowable 
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.WARNING;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.WARNING;
     }
 }

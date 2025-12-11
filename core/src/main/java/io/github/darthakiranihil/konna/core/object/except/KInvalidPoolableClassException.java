@@ -16,9 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when there is an attempt of creating an
@@ -31,14 +30,14 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KInvalidPoolableClassException extends KRuntimeException implements KThrowable {
+public class KInvalidPoolableClassException extends KException {
 
     public KInvalidPoolableClassException(final String message) {
         super(message);
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
 import org.jspecify.annotations.Nullable;
 
@@ -125,13 +124,14 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * @param nonResolvedArgs Arguments that are not resolved
      *                        (passed explicitly) for onObtain method
      * @return A pooled object
-     * @throws KEmptyObjectPoolException If there is no unused objects in the pool
+     * @throws io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException
+     *         If there is no unused objects in the pool
      * @see io.github.darthakiranihil.konna.core.di.KInject
      */
     public abstract T obtain(
         KContainer container,
         Object... nonResolvedArgs
-    ) throws KEmptyObjectPoolException;
+    );
 
     /**
      * Returns object back to the pool, making it available to be taken

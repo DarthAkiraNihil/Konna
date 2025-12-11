@@ -66,7 +66,7 @@ public abstract class KComponent extends KObject {
         final KEngineContext ctx,
         final String servicesPackage,
         final KJsonValue config
-    ) throws KComponentLoadingException {
+    ) {
 
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
 
@@ -160,7 +160,7 @@ public abstract class KComponent extends KObject {
         final KEngineContext ctx,
         final String servicesPackage,
         final KServiceLoader serviceLoader
-    ) throws KComponentLoadingException {
+    ) {
 
         List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
             ctx.index(),

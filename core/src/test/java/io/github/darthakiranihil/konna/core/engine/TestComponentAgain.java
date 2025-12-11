@@ -38,7 +38,7 @@ public class TestComponentAgain extends KComponent {
         KEngineContext ctx,
         String servicesPackage,
         KJsonValue config
-    ) throws KComponentLoadingException {
+    ) {
         super(serviceLoader, name, ctx, servicesPackage, config);
     }
 

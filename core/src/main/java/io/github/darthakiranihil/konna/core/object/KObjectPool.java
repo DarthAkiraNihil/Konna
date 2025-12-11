@@ -84,7 +84,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
     public T obtain(
         final KContainer container,
         final Object... nonInjectedArgs
-    ) throws KEmptyObjectPoolException {
+    ) {
 
 
         if (this.unusedObjects.peek() == null) {

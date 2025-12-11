@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.io.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when an asset definition contained errors so
@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KAssetDefinitionError extends KRuntimeException {
+public class KAssetDefinitionError extends KException {
 
     /**
      * Convenience constructor-like method for definition errors
@@ -48,7 +48,7 @@ public class KAssetDefinitionError extends KRuntimeException {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.ERROR;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.ERROR;
     }
 }

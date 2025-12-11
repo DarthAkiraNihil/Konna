@@ -86,7 +86,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
     public T obtain(
         final KContainer container,
         final Object... nonInjectedArgs
-    ) throws KEmptyObjectPoolException {
+    ) {
 
         var ref = this.unusedObjects.peek();
         if (ref == null) {

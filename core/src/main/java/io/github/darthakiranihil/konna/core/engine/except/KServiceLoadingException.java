@@ -17,8 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when a component service fails to load.
@@ -26,7 +25,7 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KServiceLoadingException extends KException implements KThrowable {
+public class KServiceLoadingException extends KException {
 
     public KServiceLoadingException(final String message) {
         super(message);
@@ -37,7 +36,7 @@ public class KServiceLoadingException extends KException implements KThrowable {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

@@ -53,7 +53,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
         final KEngineContext ctx,
         final Class<?> service,
         final Map<String, KServiceEntry> loadedServicesMap
-    ) throws KServiceLoadingException {
+    ) {
 
         String serviceName = service.getAnnotation(KComponentServiceMetaInfo.class).name();
         KSystemLogger.info("Loading service %s [%s]", serviceName, service);

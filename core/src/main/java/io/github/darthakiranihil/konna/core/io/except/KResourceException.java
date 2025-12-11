@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.io.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown on different resource or IO errors.
@@ -25,14 +25,14 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KResourceException extends KRuntimeException {
+public class KResourceException extends KException {
 
     public KResourceException(final Throwable cause) {
         super(cause);
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.log.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when the {@link io.github.darthakiranihil.konna.core.log.KLogger}
@@ -26,14 +26,14 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KLoggingException extends KRuntimeException {
+public class KLoggingException extends KException {
 
     public KLoggingException(final String message) {
         super(message);
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.WARNING;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.WARNING;
     }
 }
