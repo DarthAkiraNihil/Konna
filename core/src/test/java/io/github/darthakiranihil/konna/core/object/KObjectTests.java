@@ -16,11 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
 import io.github.darthakiranihil.konna.core.object.impl.TestPartialPoolable;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

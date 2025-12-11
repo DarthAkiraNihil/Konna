@@ -17,7 +17,9 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class MessageToEndpointConverterExample implements KMessageToEndpointConverter {
 
     @Override

@@ -1,5 +1,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Representation of a protocol - the way with which
  * a resource should be loaded by its path.
@@ -14,6 +16,6 @@ public interface KProtocol {
      * @param path Path to the resource
      * @return Loaded resource object or null if the resource is not found
      */
-    KResource resolve(String path);
+    @Nullable KResource resolve(String path);
 
 }

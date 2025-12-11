@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.io.std.resource;
 
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.except.KResourceException;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@NullUnmarked
 public class KClasspathResource implements KResource {
 
     private final String path;
@@ -51,7 +54,11 @@ public class KClasspathResource implements KResource {
      * @param stream Input stream of the resource that is likely to be
      *               provided by {@link ClassLoader#getResourceAsStream(String)}
      */
-    public KClasspathResource(final String path, final String name, final InputStream stream) {
+    public KClasspathResource(
+        final String path,
+        final String name,
+        @Nullable final InputStream stream
+    ) {
         this.path = path;
         this.name = name;
         this.stream = stream;
@@ -86,12 +93,12 @@ public class KClasspathResource implements KResource {
     }
 
     @Override
-    public ReadableByteChannel channel() {
+    public @Nullable ReadableByteChannel channel() {
         return this.chan;
     }
 
     @Override
-    public InputStream stream() {
+    public @Nullable InputStream stream() {
         return this.stream;
     }
 
@@ -100,6 +107,7 @@ public class KClasspathResource implements KResource {
         if (this.cachedStringContent != null) {
             return this.cachedStringContent;
         }
+
         BufferedReader br = new BufferedReader(
             Channels.newReader(this.chan, StandardCharsets.UTF_8)
         );

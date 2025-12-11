@@ -21,8 +21,10 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Implementation of {@link KAssetDefinition} for definitions stored in json format.
@@ -76,8 +78,14 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public String getString(final String property) {
-        return value.getProperty(property).getString();
+    public @Nullable String getString(final String property) {
+        var propertyValue = value.getProperty(property);
+
+        if (propertyValue == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
+
+        return propertyValue.getString();
     }
 
     @Override
@@ -87,7 +95,11 @@ public class KJsonAssetDefinition implements KAssetDefinition {
 
     @Override
     public int[] getIntArray(final String property) {
-        List<KJsonValue> list = this.value.getProperty(property).getList();
+        KJsonValue propertyValue = this.value.getProperty(property);
+        if (propertyValue == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
+        List<KJsonValue> list = propertyValue.getList();
         int[] array = new int[list.size()];
         for (int i = 0; i < list.size(); i++) {
             array[i] = list.get(i).getInt();
@@ -119,11 +131,11 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public String[] getStringArray(final String property) {
+    public String @Nullable[] getStringArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
         String[] array = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            array[i] = list.get(i).getString();
+            array[i] = Objects.requireNonNull(list.get(i).getString());
         }
 
         return array;

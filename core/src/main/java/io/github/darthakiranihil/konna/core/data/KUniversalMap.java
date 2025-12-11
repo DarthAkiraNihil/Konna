@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.data;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.*;
 
 /**
@@ -63,7 +65,7 @@ public class KUniversalMap extends HashMap<String, Object> {
      * @return Map's value with passed key cast to required type
      * @param <T> The type to cast the value
      */
-    public <T> T getSafe(final String key, final Class<T> clazz) {
+    public <T> @Nullable T getSafe(final String key, final Class<T> clazz) {
         Object raw = this.get(key);
         if (clazz != raw.getClass()) {
             return null;

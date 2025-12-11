@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -39,12 +40,12 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * Reference to the method of pooled class that is called
      * when an object is obtained from the pool.
      */
-    protected final Method onObjectObtain;
+    protected final @Nullable Method onObjectObtain;
     /**
      * Reference to the method of pooled class that is called
      * when an object is returned to the pool (released).
      */
-    protected final Method onObjectRelease;
+    protected final @Nullable Method onObjectRelease;
 
     /**
      * Class of poolable object.
@@ -54,11 +55,11 @@ public abstract class KAbstractObjectPool<T> extends KObject {
     /**
      * Cached parameters of the object obtaining method.
      */
-    protected final Class<?>[] onObtainParameterClasses;
+    protected final Class<?> @Nullable[] onObtainParameterClasses;
     /**
      * Cached parameter annotations of the object obtaining method.
      */
-    protected final Annotation[][] onObtainParameterAnnotations;
+    protected final Annotation @Nullable[][] onObtainParameterAnnotations;
 
     /**
      * Initial pool size, measured in objects stored in the pool.

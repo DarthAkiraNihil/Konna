@@ -99,6 +99,14 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
 
             KJsonValue parsedConfig;
             try (InputStream config = this.classLoader.getResourceAsStream(meta.configFilename())) {
+                if (config == null) {
+                    throw new KComponentLoadingException(
+                        String.format(
+                            "Component config file %s not found",
+                            meta.configFilename()
+                        )
+                    );
+                }
                 parsedConfig = this.parser.parse(config);
             }
 

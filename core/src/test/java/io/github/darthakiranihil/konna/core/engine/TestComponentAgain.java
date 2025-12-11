@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ import java.util.List;
     configFilename = "test_config.json",
     servicesPackage = "io.github.darthakiranihil.konna.core.engine.impl"
 )
+@NullMarked
 public class TestComponentAgain extends KComponent {
     public TestComponentAgain(
         @KInject KServiceLoader serviceLoader,

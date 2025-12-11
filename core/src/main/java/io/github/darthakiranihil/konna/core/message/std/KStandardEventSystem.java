@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,7 +92,7 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> KEvent<T> getEvent(final String eventName) {
+    public <T> @Nullable KEvent<T> getEvent(final String eventName) {
         if (this.events.containsKey(eventName)) {
             return (KEvent<T>) this.events.get(eventName);
         }
@@ -100,7 +101,7 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
     }
 
     @Override
-    public KSimpleEvent getSimpleEvent(final String eventName) {
+    public @Nullable KSimpleEvent getSimpleEvent(final String eventName) {
         if (this.simpleEvents.containsKey(eventName)) {
             return this.simpleEvents.get(eventName);
         }

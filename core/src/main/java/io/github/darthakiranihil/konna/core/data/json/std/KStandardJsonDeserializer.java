@@ -22,6 +22,8 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullUnmarked;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
 
 import java.lang.reflect.*;
@@ -33,10 +35,11 @@ import java.util.*;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+@NullUnmarked
 @KSingleton(immortal = true)
 public class KStandardJsonDeserializer extends KObject implements KJsonDeserializer {
 
-    private static Unsafe theUnsafe;
+    private static Unsafe theUnsafe = null;
 
     static {
         try {
@@ -68,8 +71,8 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(
-        final KJsonValue value,
-        final Class<?> clazz
+        @NonNull final KJsonValue value,
+        @NonNull final Class<?> clazz
     ) throws KJsonSerializationException {
 
         KJsonValueType valueType = value.getType();
@@ -166,9 +169,9 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
     @Override
     @SuppressWarnings("unchecked")
     public <V> Map<String, V> deserialize(
-        final KJsonValue value,
-        final Class<?> clazz,
-        final Class<?> valueClass
+        @NonNull final KJsonValue value,
+        @NonNull final Class<?> clazz,
+        @NonNull final Class<?> valueClass
     ) throws KJsonSerializationException {
 
         try {
@@ -278,7 +281,12 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
 
         KJsonArray meta = field.getAnnotation(KJsonArray.class);
         var deserializedSubvalue = (List<?>) this.deserialize(value, meta.elementType());
-        if (field.getType().isArray()) {
+        if (deserializedSubvalue == null) {
+            field.set(
+                deserialized,
+                null
+            );
+        } else if (field.getType().isArray()) {
             var array = Array.newInstance(meta.elementType(), deserializedSubvalue.size());
             for (int j = 0; j < deserializedSubvalue.size(); j++) {
                 Array.set(array, j, deserializedSubvalue.get(j));
@@ -329,7 +337,9 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
 
             KJsonArray meta = component.getAnnotation(KJsonArray.class);
             var deserializedSubvalue = (List<?>) this.deserialize(value, meta.elementType());
-            if (component.getType().isArray()) {
+            if (deserializedSubvalue == null) {
+                params[i] = null;
+            } else if (component.getType().isArray()) {
                 var array = Array.newInstance(meta.elementType(), deserializedSubvalue.size());
                 for (int j = 0; j < deserializedSubvalue.size(); j++) {
                     Array.set(array, j, deserializedSubvalue.get(j));

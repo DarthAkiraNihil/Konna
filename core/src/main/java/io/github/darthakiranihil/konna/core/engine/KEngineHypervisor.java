@@ -201,9 +201,7 @@ public class KEngineHypervisor extends KObject {
             config.eventRegisterers().size()
         );
 
-        this.engineComponents.forEach((_k, c) -> {
-            c.postInit();
-        });
+        this.engineComponents.forEach((_k, c) -> c.postInit());
 
         KSystemLogger.info(
             "Component's post-init is completed"

@@ -77,7 +77,8 @@ public class KStandardTestClass extends KObject {
     /**
      * Engine context, required for running tests.
      */
-    protected static KEngineContext context;
+    @SuppressWarnings("DataFlowIssue")
+    protected static KEngineContext context = null;
 
     /**
      * Returns engine context for testing environment.
@@ -117,6 +118,8 @@ public class KStandardTestClass extends KObject {
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
+        KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
+        KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
             activator,

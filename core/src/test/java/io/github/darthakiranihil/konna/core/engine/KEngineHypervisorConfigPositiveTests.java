@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
-import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
@@ -57,6 +56,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
                 KEngineHypervisorConfig.class
             );
 
+            Assertions.assertNotNull(loadedConfig);
             Assertions.assertEquals(TestComponent.class, loadedConfig.components()[0]);
             Assertions.assertEquals(KStandardComponentLoader.class, loadedConfig.componentLoader());
             Assertions.assertEquals(KStandardServiceLoader.class, loadedConfig.serviceLoader());

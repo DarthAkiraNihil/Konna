@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
 
     private final Queue<KMessage> messageQueue;
     private volatile boolean polling;
-    private Thread watcher;
+    private @Nullable Thread watcher;
 
     /**
      * Standard constructor.
@@ -213,7 +214,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         this.routes.put(messageId, route);
     }
 
-    private KComponent resolveComponent(final String destinationEndpoint) {
+    private @Nullable KComponent resolveComponent(final String destinationEndpoint) {
         var component = destinationEndpoint.split("\\.")[0];
         if (!this.components.containsKey(component)) {
             return null;

@@ -18,7 +18,9 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KTunnel;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class TunnelExample implements KTunnel {
 
     @Override

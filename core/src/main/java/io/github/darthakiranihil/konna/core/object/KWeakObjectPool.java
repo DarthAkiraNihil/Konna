@@ -106,7 +106,12 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             }
         }
 
-        if (this.onObjectObtain == null) {
+        // no onObtain - no parameter classes and annotations
+        if (
+                this.onObjectObtain == null
+            ||  this.onObtainParameterClasses == null
+            ||  this.onObtainParameterAnnotations == null
+        ) {
             this.unusedObjects.poll();
             return obtained;
         }
@@ -151,7 +156,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
     public void release(final T object) {
 
         try {
-            if (this.onObjectObtain != null) {
+            if (this.onObjectRelease != null) {
                 this.onObjectRelease.invoke(object);
             }
         } catch (InvocationTargetException | IllegalAccessException e) {

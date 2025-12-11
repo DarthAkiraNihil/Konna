@@ -86,12 +86,18 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
         final Object... nonInjectedArgs
     ) throws KEmptyObjectPoolException {
 
-        var obtained = this.unusedObjects.peek();
-        if (obtained == null) {
+
+        if (this.unusedObjects.peek() == null) {
             throw new KEmptyObjectPoolException(this.clazz);
         }
+        var obtained = this.unusedObjects.peek();
 
-        if (this.onObjectObtain == null) {
+        // no onObtain - no parameter classes and annotations
+        if (
+                this.onObjectObtain == null
+            ||  this.onObtainParameterClasses == null
+            ||  this.onObtainParameterAnnotations == null
+        ) {
             this.unusedObjects.poll();
             return obtained;
         }
@@ -137,7 +143,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
     public void release(final T object) {
 
         try {
-            if (this.onObjectObtain != null) {
+            if (this.onObjectRelease != null) {
                 this.onObjectRelease.invoke(object);
             }
 
