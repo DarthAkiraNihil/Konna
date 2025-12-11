@@ -46,7 +46,10 @@ public interface KJsonDeserializer {
      *         mostly because of attempting to deserialize object
      *         with structure that differs from json value
      */
-    <T> @Nullable T deserialize(KJsonValue value, Class<?> clazz) throws KJsonSerializationException;
+    <T> @Nullable T deserialize(
+        KJsonValue value,
+        Class<?> clazz
+    ) throws KJsonSerializationException;
 
     /**
      * Deserializes a json value into a map of string keys and values of passed classes.

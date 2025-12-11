@@ -133,7 +133,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     @Override
     public String @Nullable[] getStringArray(final String property) {
         List<KJsonValue> list = this.value.getProperty(property).getList();
-        String [] array = new String[list.size()];
+        String[] array = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             array[i] = Objects.requireNonNull(list.get(i).getString());
         }

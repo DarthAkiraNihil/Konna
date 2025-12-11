@@ -54,7 +54,11 @@ public class KClasspathResource implements KResource {
      * @param stream Input stream of the resource that is likely to be
      *               provided by {@link ClassLoader#getResourceAsStream(String)}
      */
-    public KClasspathResource(final String path, final String name, @Nullable final InputStream stream) {
+    public KClasspathResource(
+        final String path,
+        final String name,
+        @Nullable final InputStream stream
+    ) {
         this.path = path;
         this.name = name;
         this.stream = stream;

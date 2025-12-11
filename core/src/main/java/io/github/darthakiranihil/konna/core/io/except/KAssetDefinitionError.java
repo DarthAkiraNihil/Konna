@@ -28,6 +28,12 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  */
 public class KAssetDefinitionError extends KRuntimeException {
 
+    /**
+     * Convenience constructor-like method for definition errors
+     * caused by property missing.
+     * @param property Property missing in asset definition
+     * @return Constructed exception object
+     */
     public static KAssetDefinitionError propertyNotFound(final String property) {
         return new KAssetDefinitionError(
             String.format(
