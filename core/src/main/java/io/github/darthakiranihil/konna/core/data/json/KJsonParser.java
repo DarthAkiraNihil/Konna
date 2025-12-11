@@ -35,7 +35,7 @@ public interface KJsonParser {
      * @return Parsed json value
      * @throws KJsonParseException If json is invalid (incorrect token or syntax)
      */
-    KJsonValue parse(String string) throws KJsonParseException;
+    KJsonValue parse(String string);
     /**
      * Parses json from an input stream and constructs a json
      * value if given stream contains a valid json.
@@ -43,7 +43,7 @@ public interface KJsonParser {
      * @return Parsed json value
      * @throws KJsonParseException If json is invalid (incorrect token or syntax)
      */
-    KJsonValue parse(InputStream stream) throws KJsonParseException;
+    KJsonValue parse(InputStream stream);
     /**
      * Parses json from a reader and constructs a json
      * value if given reader contains a valid json.
@@ -51,7 +51,7 @@ public interface KJsonParser {
      * @return Parsed json value
      * @throws KJsonParseException If json is invalid (incorrect token or syntax)
      */
-    KJsonValue parse(Reader reader) throws KJsonParseException;
+    KJsonValue parse(Reader reader);
     /**
      * Parses json from a char array and constructs a json value
      * if given array contains a valid json.
@@ -59,6 +59,6 @@ public interface KJsonParser {
      * @return Parsed json value
      * @throws KJsonParseException If json is invalid (incorrect token or syntax)
      */
-    KJsonValue parse(char[] chars) throws KJsonParseException;
+    KJsonValue parse(char[] chars);
 
 }

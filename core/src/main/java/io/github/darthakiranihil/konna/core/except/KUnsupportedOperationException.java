@@ -23,7 +23,7 @@ package io.github.darthakiranihil.konna.core.except;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KUnsupportedOperationException extends KRuntimeException {
+public class KUnsupportedOperationException extends KException {
 
     public KUnsupportedOperationException(final String message) {
         super(message);

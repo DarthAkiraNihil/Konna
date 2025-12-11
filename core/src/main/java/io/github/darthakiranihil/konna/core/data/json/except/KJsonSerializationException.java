@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
@@ -27,7 +26,7 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public class KJsonSerializationException extends KException implements KThrowable {
+public class KJsonSerializationException extends KException {
 
     public KJsonSerializationException(final Throwable cause) {
         super(cause);

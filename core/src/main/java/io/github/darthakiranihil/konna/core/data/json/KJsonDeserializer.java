@@ -49,7 +49,7 @@ public interface KJsonDeserializer {
     <T> @Nullable T deserialize(
         KJsonValue value,
         Class<?> clazz
-    ) throws KJsonSerializationException;
+    );
 
     /**
      * Deserializes a json value into a map of string keys and values of passed classes.
@@ -70,6 +70,6 @@ public interface KJsonDeserializer {
     <V> Map<String, V> deserialize(
         KJsonValue value,
         Class<?> clazz, Class<?> valueClass
-    ) throws KJsonSerializationException;
+    );
 
 }

@@ -16,8 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
@@ -31,7 +30,7 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KInvalidPoolableClassException extends KRuntimeException implements KThrowable {
+public class KInvalidPoolableClassException extends KException {
 
     public KInvalidPoolableClassException(final String message) {
         super(message);

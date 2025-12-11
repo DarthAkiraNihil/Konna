@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.log.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KLoggingException extends KRuntimeException {
+public class KLoggingException extends KException {
 
     public KLoggingException(final String message) {
         super(message);

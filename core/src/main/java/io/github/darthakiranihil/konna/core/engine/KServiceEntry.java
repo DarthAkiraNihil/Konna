@@ -59,7 +59,7 @@ public final class KServiceEntry {
     public void callEndpoint(
         final String route,
         final KMessage message
-        ) throws KEndpointRoutingException {
+        ) {
         if (!this.endpoints.containsKey(route)) {
             throw new KEndpointRoutingException(
                 String.format(

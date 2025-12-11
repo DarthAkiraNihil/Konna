@@ -44,6 +44,6 @@ public interface KServiceLoader {
         KEngineContext ctx,
         Class<?> service,
         Map<String, KServiceEntry> loadedServicesMap
-    ) throws KServiceLoadingException;
+    );
 
 }

@@ -16,8 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.di.except;
 
-import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
@@ -27,7 +26,7 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KDependencyResolveException extends KRuntimeException implements KThrowable {
+public class KDependencyResolveException extends KException {
 
     public KDependencyResolveException(final Class<?> clazz) {
         super(

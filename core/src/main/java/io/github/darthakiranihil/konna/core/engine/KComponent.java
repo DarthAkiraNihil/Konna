@@ -66,7 +66,7 @@ public abstract class KComponent extends KObject {
         final KEngineContext ctx,
         final String servicesPackage,
         final KJsonValue config
-    ) throws KComponentLoadingException {
+    ) {
 
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
 

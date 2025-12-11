@@ -131,7 +131,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
     public abstract T obtain(
         KContainer container,
         Object... nonResolvedArgs
-    ) throws KEmptyObjectPoolException;
+    );
 
     /**
      * Returns object back to the pool, making it available to be taken

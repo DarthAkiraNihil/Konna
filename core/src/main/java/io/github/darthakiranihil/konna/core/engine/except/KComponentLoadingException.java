@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.engine.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KThrowable;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
@@ -26,7 +25,7 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KComponentLoadingException extends KException implements KThrowable {
+public class KComponentLoadingException extends KException {
 
     public KComponentLoadingException(final Throwable cause) {
         super(cause);
