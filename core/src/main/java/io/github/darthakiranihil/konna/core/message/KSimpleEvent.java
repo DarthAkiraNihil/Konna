@@ -34,6 +34,7 @@ import java.util.List;
  */
 public class KSimpleEvent extends KObject {
     private final List<KSimpleEventAction> listeners;
+    private KEventQueue eventQueue;
 
     /**
      * Initializes event with empty listener list.
@@ -70,9 +71,12 @@ public class KSimpleEvent extends KObject {
      * in a separated thread.
      */
     public void invoke() {
-        for (KSimpleEventAction listener: this.listeners) {
-            KThreadUtils.runAsync(listener::accept);
+        if (this.eventQueue != null) {
+            this.eventQueue.queueEvent(this);
+            return;
         }
+
+        KThreadUtils.runAsync(this::invokeSync);
     }
 
     /**
@@ -88,5 +92,9 @@ public class KSimpleEvent extends KObject {
         for (KSimpleEventAction listener: this.listeners) {
             listener.accept();
         }
+    }
+
+    public void setEventQueue(final KEventQueue eventQueue) {
+        this.eventQueue = eventQueue;
     }
 }

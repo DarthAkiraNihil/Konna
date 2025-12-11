@@ -35,6 +35,7 @@ import java.util.List;
 public class KEvent<T> extends KObject {
 
     private final List<KEventAction<T>> listeners;
+    private KEventQueue eventQueue;
 
     /**
      * Initializes event with empty listener list.
@@ -72,9 +73,14 @@ public class KEvent<T> extends KObject {
      * @param arg Argument of the event
      */
     public void invoke(final T arg) {
-        for (KEventAction<T> listener: this.listeners) {
-            KThreadUtils.runAsync(() -> listener.accept(arg));
+        if (this.eventQueue != null) {
+            this.eventQueue.queueEvent(this, arg);
+            return;
         }
+
+        KThreadUtils.runAsync(() -> {
+            this.invokeSync(arg);
+        });
     }
 
     /**
@@ -91,6 +97,10 @@ public class KEvent<T> extends KObject {
         for (KEventAction<T> listener: this.listeners) {
             listener.accept(arg);
         }
+    }
+
+    public void setEventQueue(final KEventQueue eventQueue) {
+        this.eventQueue = eventQueue;
     }
 
 }
