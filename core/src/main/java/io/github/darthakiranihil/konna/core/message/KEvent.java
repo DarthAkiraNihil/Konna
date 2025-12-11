@@ -67,9 +67,11 @@ public class KEvent<T> extends KObject {
     }
 
     /**
-     * Invokes the event, calling all methods that have been subscribed to the event.
-     * Each subscriber will be invoked asynchronously, so each listener will be called
-     * in a separated thread.
+     * Invokes the event, calling all methods that have been subscribed to the event
+     * asynchronously i.e. in a separated thread, but it is applied only if no event queue
+     * is assigned to this event.
+     * If the event is connected to an event queue, it will be passed to it and invoked
+     * when it reaches the end of the queue.
      * @param arg Argument of the event
      */
     public void invoke(final T arg) {

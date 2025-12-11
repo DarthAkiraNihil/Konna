@@ -16,8 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.message.std;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventQueue;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -29,7 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Standard implementation of {@link KEventSystem}.
+ * Standard implementation of {@link KEventSystem} with automatic event registration
+ * in an event queue.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -39,8 +42,15 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
 
     private final Map<String, KEvent<?>> events;
     private final Map<String, KSimpleEvent> simpleEvents;
+    private final KEventQueue eventQueue;
 
-    public KStandardEventSystem() {
+    /**
+     * Standard constructor.
+     * @param eventQueue Event queue to register events in
+     */
+    public KStandardEventSystem(
+        @KInject KEventQueue eventQueue
+    ) {
         super(
             "std_event_system",
             KStructUtils.setOfTags(
@@ -49,19 +59,33 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
             )
         );
 
+        this.eventQueue = eventQueue;
         this.events = new HashMap<>();
         this.simpleEvents = new HashMap<>();
     }
 
+    /**
+     * Registers a new event in the system and connects it with
+     * contained event queue.
+     * @param event Event to register.
+     * @param <T> Type of the event argument
+     */
     @Override
     public <T> void registerEvent(final KEvent<T> event) {
         this.events.put(event.name(), event);
+        event.setEventQueue(this.eventQueue);
         KSystemLogger.debug("Registered event name=%s", event.name());
     }
 
+    /**
+     * Registers a new simple event in the system and connects it
+     * with contained event queue.
+     * @param event Event to register.
+     */
     @Override
     public void registerEvent(final KSimpleEvent event) {
         this.simpleEvents.put(event.name(), event);
+        event.setEventQueue(this.eventQueue);
         KSystemLogger.debug("Registered simple event name=%s", event.name());
     }
 
