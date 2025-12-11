@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -84,12 +85,18 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
             this.serviceObjectField.setAccessible(true);
             this.componentServicesField.setAccessible(true);
+            this.messageSystem.startPolling();
 
         } catch (KComponentLoadingException | NoSuchFieldException e) {
             Assertions.fail(e);
             throw new RuntimeException(e);
         }
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        this.messageSystem.stopPolling();
     }
 
     @Test

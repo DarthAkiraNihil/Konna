@@ -16,8 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +31,7 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
     private final KEvent<Integer> testEvent1;
     private final KSimpleEvent testEvent2;
+    private final KEventQueue eventQueue;
 
     private int changeableField;
 
@@ -36,7 +39,10 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
     private final KSimpleEventAction action2 = this::handleEvent2;
 
     public KStandardEventSystemPositiveTests() {
-        this.eventSystem = new KStandardEventSystem();
+
+        this.eventQueue = new KStandardEventQueue();
+        this.eventSystem = new KStandardEventSystem(this.eventQueue);
+        this.eventQueue.startPolling();
 
         this.testEvent1 = new KEvent<>("testEvent1");
         this.testEvent2 = new KSimpleEvent("testEvent2");
@@ -47,6 +53,11 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
         this.testEvent1.subscribe(this.action1);
         this.testEvent2.subscribe(this.action2);
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        this.eventQueue.stopPolling();
     }
 
     private void handleEvent1(int arg) {

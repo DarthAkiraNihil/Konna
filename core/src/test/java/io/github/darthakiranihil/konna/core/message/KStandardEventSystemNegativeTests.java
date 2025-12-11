@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +27,7 @@ public class KStandardEventSystemNegativeTests extends KStandardTestClass {
     private final KEventSystem eventSystem;
 
     public KStandardEventSystemNegativeTests() {
-        this.eventSystem = new KStandardEventSystem();
+        this.eventSystem = new KStandardEventSystem(new KStandardEventQueue());
     }
 
     @Test

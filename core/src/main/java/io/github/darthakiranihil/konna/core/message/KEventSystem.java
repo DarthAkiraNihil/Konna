@@ -32,6 +32,7 @@ public interface KEventSystem {
      * @param <T> Type of the event argument
      */
     <T> void registerEvent(KEvent<T> event);
+
     /**
      * Registers a new simple event in the system.
      * @param event Event to register.

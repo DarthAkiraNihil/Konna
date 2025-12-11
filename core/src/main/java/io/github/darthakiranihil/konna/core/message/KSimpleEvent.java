@@ -34,6 +34,7 @@ import java.util.List;
  */
 public class KSimpleEvent extends KObject {
     private final List<KSimpleEventAction> listeners;
+    private KEventQueue eventQueue;
 
     /**
      * Initializes event with empty listener list.
@@ -65,14 +66,19 @@ public class KSimpleEvent extends KObject {
     }
 
     /**
-     * Invokes the event, calling all methods that have been subscribed to the event.
-     * Each subscriber will be invoked asynchronously, so each listener will be called
-     * in a separated thread.
+     * Invokes the event, calling all methods that have been subscribed to the event
+     * asynchronously i.e. in a separated thread, but it is applied only if no event queue
+     * is assigned to this event.
+     * If the event is connected to an event queue, it will be passed to it and invoked
+     * when it reaches the end of the queue.
      */
     public void invoke() {
-        for (KSimpleEventAction listener: this.listeners) {
-            KThreadUtils.runAsync(listener::accept);
+        if (this.eventQueue != null) {
+            this.eventQueue.queueEvent(this);
+            return;
         }
+
+        KThreadUtils.runAsync(this::invokeSync);
     }
 
     /**
@@ -88,5 +94,14 @@ public class KSimpleEvent extends KObject {
         for (KSimpleEventAction listener: this.listeners) {
             listener.accept();
         }
+    }
+
+    /**
+     * Sets an event queue for this event so on invoking asynchronously
+     * it will put its call to it instead of creating a task by itself.
+     * @param eventQueue Assigned event queue
+     */
+    public void setEventQueue(final KEventQueue eventQueue) {
+        this.eventQueue = eventQueue;
     }
 }
