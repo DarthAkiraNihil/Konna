@@ -94,6 +94,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
             return;
         }
 
+        Assertions.assertNotNull(deserialized);
         Assertions.assertEquals(123, deserialized.getField1());
         Assertions.assertEquals(0.0f, deserialized.getField2());
         Assertions.assertEquals("aboba", deserialized.getField3());
@@ -122,6 +123,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
 
         try {
             Boolean value = jsonDeserializer.deserialize(new KJsonValue(KJsonValueType.BOOLEAN, true), Boolean.class);
+            Assertions.assertNotNull(value);
             Assertions.assertTrue(value);
         } catch (KJsonSerializationException e) {
             Assertions.fail(e);
@@ -150,6 +152,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
             return;
         }
 
+        Assertions.assertNotNull(deserialized);
         Assertions.assertEquals(0, deserialized.aboba());
         Assertions.assertEquals("aboba", deserialized.biba());
         int[] checkArray = new int[] {1, 2, 3};

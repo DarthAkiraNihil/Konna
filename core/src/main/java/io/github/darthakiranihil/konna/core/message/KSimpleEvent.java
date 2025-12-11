@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class KSimpleEvent extends KObject {
     private final List<KSimpleEventAction> listeners;
-    private KEventQueue eventQueue;
+    private @Nullable KEventQueue eventQueue;
 
     /**
      * Initializes event with empty listener list.

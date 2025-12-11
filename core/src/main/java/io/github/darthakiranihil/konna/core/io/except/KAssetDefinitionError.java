@@ -27,6 +27,16 @@ import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
  * @author Darth Akira Nihil
  */
 public class KAssetDefinitionError extends KRuntimeException {
+
+    public static KAssetDefinitionError propertyNotFound(final String property) {
+        return new KAssetDefinitionError(
+            String.format(
+                "Property with name %s is not found in asset definition",
+                property
+            )
+        );
+    }
+
     public KAssetDefinitionError(final String message) {
         super(message);
     }

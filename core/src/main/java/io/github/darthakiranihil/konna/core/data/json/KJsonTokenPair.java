@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.data.json;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Record for storing json token information.
  * @param token Token descriptor
@@ -25,7 +27,7 @@ package io.github.darthakiranihil.konna.core.data.json;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public record KJsonTokenPair(KJsonToken token, Object value) {
+public record KJsonTokenPair(KJsonToken token, @Nullable Object value) {
 
     /**
      * Constant for open brace token.

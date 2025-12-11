@@ -1,5 +1,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.Closeable;
 import java.io.InputStream;
 import java.nio.channels.ReadableByteChannel;
@@ -106,12 +108,12 @@ public interface KResource extends Closeable {
      * Returns resource's content as a readable byte channel.
      * @return Readable byte channel of resource's content
      */
-    ReadableByteChannel channel();
+    @Nullable ReadableByteChannel channel();
     /**
      * Returns resource's content as an input stream.
      * @return Input stream of resource's content
      */
-    InputStream stream();
+    @Nullable InputStream stream();
     /**
      * Returns resource's content as a string.
      * @return Resource's content as a string

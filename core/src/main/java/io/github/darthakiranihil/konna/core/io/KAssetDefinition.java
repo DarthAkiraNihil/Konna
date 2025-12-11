@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Interface for a universal container of asset data, that does not depend
  * on its format, however, it is supposed to be used for definitions
@@ -49,7 +51,7 @@ public interface KAssetDefinition {
      * @param property Property name
      * @return String value of passed property
      */
-    String getString(String property);
+    @Nullable String getString(String property);
     /**
      * Returns subdefinition (nested definition) of asset definition.
      * @param property Property name
@@ -80,7 +82,7 @@ public interface KAssetDefinition {
      * @param property Property name
      * @return String array of passed property
      */
-    String[] getStringArray(String property);
+    String @Nullable[] getStringArray(String property);
     /**
      * Returns subdefinition (nested definition) array property of asset definition.
      * @param property Property name

@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -30,6 +32,7 @@ import java.util.function.Consumer;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+@NullUnmarked
 public class KJsonValue implements Iterable<KJsonValue> {
 
     private final KJsonValueType type;
@@ -443,7 +446,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * @return String representation of a value or null if the contained value is null
      * @see KJsonValueException If json value type is not {@link KJsonValueType#STRING}
      */
-    public String getString() {
+    public @Nullable String getString() {
         this.checkTypeMatch(KJsonValueType.STRING);
 
         if (this.isNull()) {
@@ -462,10 +465,6 @@ public class KJsonValue implements Iterable<KJsonValue> {
     public List<KJsonValue> getList() {
         this.checkTypeMatch(KJsonValueType.ARRAY);
 
-        if (this.isNull()) {
-            return null;
-        }
-
         return (List<KJsonValue>) this.containedValue;
     }
 
@@ -475,7 +474,7 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * however it is not limited, though you need to cast it to required time yourself
      * @return Raw json value represented by {@link java.lang.Object}
      */
-    public Object getRawObject() {
+    public @Nullable Object getRawObject() {
         return this.containedValue;
     }
 

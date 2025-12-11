@@ -19,12 +19,14 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
+@NullMarked
 public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
     private final KEventSystem eventSystem;

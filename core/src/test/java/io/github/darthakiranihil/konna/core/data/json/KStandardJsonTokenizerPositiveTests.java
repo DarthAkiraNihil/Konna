@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+@NullMarked
 public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
 
     private final static List<KPair<String, KJsonToken>> singleTokenTestData = Arrays.asList(
@@ -70,6 +72,7 @@ public class KStandardJsonTokenizerPositiveTests extends KStandardTestClass {
         new KTriplet<>("-123.356a", KJsonToken.NUMBER_FLOAT, -123.356f)
     );
 
+    @SuppressWarnings("NullableProblems")
     private final static List<KPair<String, KJsonToken[]>> multiTokenTestData = Arrays.asList(
         new KPair<>(
             "[123, {\"aboba\": true}]",

@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ public enum KJsonValueType {
      *
      * @since 0.2.0
      */
-    public static KJsonValueType fromObject(final Object o) {
+    public static KJsonValueType fromObject(@Nullable final Object o) {
 
         if (o == null) {
             return NULL;

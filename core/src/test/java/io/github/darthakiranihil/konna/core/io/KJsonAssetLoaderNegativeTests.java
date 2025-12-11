@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NullMarked
 public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
 
     private static final class Alias1Schema implements KJsonValidator {
@@ -180,18 +182,18 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
         try {
             assetLoader.addAssetTypeAlias("alias_1", new KJsonAssetLoaderNegativeTests.Alias1Schema());
 
-            KJsonValue addedDef = this.jsonParser.parse(
-                "{\n"
-                    + "        \"alias_1\": {\n"
-                    + "            \"int1_property\": 1,\n"
-                    + "            \"float1_property\": 1.0,\n"
-                    + "            \"boolean1_property\": false,\n"
-                    + "            \"string1_property\": \"1234\",\n"
-                    + "            \"subdef1_property\": {\n"
-                    + "                \"prop_1\": \"string\"\n"
-                    + "            },\n"
-                    + "        }\n"
-                    + "    }"
+            KJsonValue addedDef = this.jsonParser.parse("""
+                {
+                        "alias_1": {
+                            "int1_property": 1,
+                            "float1_property": 1.0,
+                            "boolean1_property": false,
+                            "string1_property": "1234",
+                            "subdef1_property": {
+                                "prop_1": "string"
+                            },
+                        }
+                    }"""
             );
 
             Assertions.assertThrows(
@@ -225,18 +227,18 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
         try {
             assetLoader.addAssetTypeAlias("alias_1", new KJsonAssetLoaderNegativeTests.Alias1Schema());
 
-            KJsonValue addedDef = this.jsonParser.parse(
-                "{\n"
-                    + "        \"alias_1\": {\n"
-                    + "            \"int1_property\": 1,\n"
-                    + "            \"float1_property\": 1.0,\n"
-                    + "            \"boolean1_property\": false,\n"
-                    + "            \"string1_property\": \"1234\",\n"
-                    + "            \"subdef1_property\": {\n"
-                    + "                \"prop_1\": \"string\"\n"
-                    + "            },\n"
-                    + "        }\n"
-                    + "    }"
+            KJsonValue addedDef = this.jsonParser.parse("""
+                {
+                        "alias_1": {
+                            "int1_property": 1,
+                            "float1_property": 1.0,
+                            "boolean1_property": false,
+                            "string1_property": "1234",
+                            "subdef1_property": {
+                                "prop_1": "string"
+                            },
+                        }
+                    }"""
             );
 
             Assertions.assertThrows(

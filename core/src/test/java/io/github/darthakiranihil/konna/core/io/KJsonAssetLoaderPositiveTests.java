@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NullMarked
 public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
 
     private static final class Alias1Schema implements KJsonValidator {
@@ -144,6 +146,7 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
             float[] floatArray = def.getFloatArray("float_array_property");
             boolean[] booleanArray = def.getBooleanArray("boolean_array_property");
             String[] stringArray = def.getStringArray("string_array_property");
+            Assertions.assertNotNull(stringArray);
 
             for (int i = 0; i < 3; i++) {
                 Assertions.assertEquals(intArrayCheck[i], intArray[i]);
@@ -209,44 +212,46 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
         try {
             assetLoader.addAssetTypeAlias("alias_1", new Alias1Schema());
 
-            KJsonValue addedDef = this.jsonParser.parse(
-                "{\n"
-                    + "        \"alias_1\": {\n"
-                    + "            \"int_property\": 1,\n"
-                    + "            \"float_property\": 1.0,\n"
-                    + "            \"boolean_property\": false,\n"
-                    + "            \"string_property\": \"1234\",\n"
-                    + "            \"subdef_property\": {\n"
-                    + "                \"prop_1\": \"string\"\n"
-                    + "            },\n"
-                    + "            \"int_array_property\": [\n"
-                    + "                1,\n"
-                    + "                2,\n"
-                    + "                3\n"
-                    + "            ],\n"
-                    + "            \"float_array_property\": [\n"
-                    + "                1.0,\n"
-                    + "                2.0,\n"
-                    + "                3.0\n"
-                    + "            ],\n"
-                    + "            \"boolean_array_property\": [\n"
-                    + "                true,\n" + "                true,\n"
-                    + "                true\n" + "            ],\n"
-                    + "            \"string_array_property\": [\n"
-                    + "                \"1234\",\n"
-                    + "                \"1235\",\n"
-                    + "                \"9999\"\n"
-                    + "            ],\n"
-                    + "            \"subdef_array_property\": [\n"
-                    + "                {\n"
-                    + "                    \"prop_1\": \"string\"\n"
-                    + "                },\n"
-                    + "                {\n"
-                    + "                    \"prop_1\": \"string\"\n"
-                    + "                }\n"
-                    + "            ]\n"
-                    + "        }\n"
-                    + "    }"
+            KJsonValue addedDef = this.jsonParser.parse("""
+                {
+                        "alias_1": {
+                            "int_property": 1,
+                            "float_property": 1.0,
+                            "boolean_property": false,
+                            "string_property": "1234",
+                            "subdef_property": {
+                                "prop_1": "string"
+                            },
+                            "int_array_property": [
+                                1,
+                                2,
+                                3
+                            ],
+                            "float_array_property": [
+                                1.0,
+                                2.0,
+                                3.0
+                            ],
+                            "boolean_array_property": [
+                                true,
+                                true,
+                                true
+                            ],
+                            "string_array_property": [
+                                "1234",
+                                "1235",
+                                "9999"
+                            ],
+                            "subdef_array_property": [
+                                {
+                                    "prop_1": "string"
+                                },
+                                {
+                                    "prop_1": "string"
+                                }
+                            ]
+                        }
+                    }"""
             );
 
             assetLoader.addNewAsset("type_1.asset_2", "type_1", addedDef);

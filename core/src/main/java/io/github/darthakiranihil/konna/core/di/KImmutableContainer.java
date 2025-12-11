@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationExceptio
  */
 public class KImmutableContainer extends KContainer {
 
+    private final KContainer wrapped;
     /**
      * Creates an immutable container from another container (it should be mutable, since
      * creating an immutable container from another immutable does not make sense).
@@ -34,6 +35,7 @@ public class KImmutableContainer extends KContainer {
      */
     public KImmutableContainer(final KContainer wrapped) {
         super(wrapped, String.format("locked_%s", wrapped.name()));
+        this.wrapped = wrapped;
     }
 
     /**
@@ -69,6 +71,6 @@ public class KImmutableContainer extends KContainer {
 
     @Override
     public <T> Class<T> resolve(final Class<T> clazz) {
-        return this.parent.resolve(clazz);
+        return this.wrapped.resolve(clazz);
     }
 }

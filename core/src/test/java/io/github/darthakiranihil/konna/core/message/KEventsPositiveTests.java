@@ -17,11 +17,13 @@
 package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
+@NullMarked
 public class KEventsPositiveTests extends KStandardTestClass {
 
     private final KEvent<Integer> event;

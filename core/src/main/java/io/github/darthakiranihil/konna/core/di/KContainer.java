@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class KContainer extends KObject {
     /**
      * Reference to the parent container of this container.
      */
-    protected final KContainer parent;
+    private final @Nullable KContainer parent;
 
     /**
      * Zero-arg constructor. Constructs a container without parent one.

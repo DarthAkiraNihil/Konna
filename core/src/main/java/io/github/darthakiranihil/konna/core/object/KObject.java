@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -48,7 +50,7 @@ public class KObject implements Serializable {
     /**
      * Parent object.
      */
-    protected KObject parent;
+    @Nullable protected KObject parent;
 
     /**
      * Zero-args KObject constructor.
@@ -206,7 +208,7 @@ public class KObject implements Serializable {
         return String.format(
             "%s[%s][%s]",
             this.getClass().getSimpleName(),
-            this.id == null ? "unknown" : this.id.toString(),
+            this.id,
             this.name
         );
     }

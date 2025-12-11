@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
+import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,8 +47,8 @@ public record KJsonPropertyValidationInfo(
     String name,
     boolean required,
     boolean nullable,
-    KJsonValueType expectedType,
-    Object defaultValue,
+    @Nullable KJsonValueType expectedType,
+    @Nullable Object defaultValue,
     List<KJsonValidator> validators
 ) {
 
@@ -62,8 +63,8 @@ public record KJsonPropertyValidationInfo(
         private String name;
         private boolean required;
         private boolean nullable;
-        private KJsonValueType expectedType;
-        private Object defaultValue;
+        private @Nullable KJsonValueType expectedType;
+        private @Nullable Object defaultValue;
         private final List<KJsonValidator> validators;
 
         public Builder() {
@@ -72,6 +73,7 @@ public record KJsonPropertyValidationInfo(
         }
 
         private void setDefaults() {
+            this.name = "";
             this.required = true;
             this.nullable = false;
             this.expectedType = null;
@@ -163,7 +165,7 @@ public record KJsonPropertyValidationInfo(
          */
         public KJsonPropertyValidationInfo build() {
 
-            if (this.name == null || this.name.isEmpty()) {
+            if (this.name.isEmpty()) {
                 throw new KJsonValidationError(
                     "Property name cannot be null or empty"
                 );

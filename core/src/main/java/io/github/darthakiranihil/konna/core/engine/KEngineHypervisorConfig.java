@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -67,6 +68,7 @@ public record KEngineHypervisorConfig(
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
 
+    @NullMarked
     private static final class Schema implements KJsonValidator {
 
         private final KJsonValidator schema;

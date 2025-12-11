@@ -19,12 +19,14 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+@NullMarked
 public class KStandardJsonTokenizerNegativeTests extends KStandardTestClass {
 
     private static final List<KTriplet<String, Integer, Integer>> invalidInputTestData = Arrays.asList(

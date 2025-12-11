@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -41,7 +42,7 @@ public class KStandardEventQueue extends KObject implements KEventQueue {
     private static final String WATCHER_THREAD_NAME = "event_watcher";
     private final Queue<Runnable> eventQueue;
 
-    private Thread watcher;
+    private @Nullable Thread watcher;
     private volatile boolean polling;
 
     public KStandardEventQueue() {

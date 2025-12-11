@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.io.KProtocol;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceUtils;
 import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
+import org.jspecify.annotations.Nullable;
 
 import java.io.InputStream;
 
@@ -45,7 +46,7 @@ public final class KClasspathProtocol implements KProtocol {
     }
 
     @Override
-    public KResource resolve(final String path) {
+    public @Nullable KResource resolve(final String path) {
         if (!path.startsWith(PREFIX)) {
             return null;
         }

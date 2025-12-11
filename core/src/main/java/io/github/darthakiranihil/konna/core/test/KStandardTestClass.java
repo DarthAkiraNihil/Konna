@@ -77,7 +77,8 @@ public class KStandardTestClass extends KObject {
     /**
      * Engine context, required for running tests.
      */
-    protected static KEngineContext context;
+    @SuppressWarnings("DataFlowIssue")
+    protected static KEngineContext context = null;
 
     /**
      * Returns engine context for testing environment.

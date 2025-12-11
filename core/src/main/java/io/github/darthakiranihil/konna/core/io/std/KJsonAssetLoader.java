@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -217,7 +218,16 @@ public class KJsonAssetLoader implements KAssetLoader {
 
             try (KResource resource = this.resourceLoader.loadResource(path)) {
 
-                KJsonValue parsed = this.jsonParser.parse(resource.stream());
+                InputStream stream = resource.stream();
+                if (stream == null) {
+                    throw new KAssetLoadingException(
+                        String.format(
+                            "Asset definitions file on %s is not found",
+                            path
+                        )
+                    );
+                }
+                KJsonValue parsed = this.jsonParser.parse(stream);
 
                 for (var dataEntry: parsed.entrySet()) {
                     KJsonValue rawAssetDefinition = dataEntry.getValue();

@@ -20,17 +20,18 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInf
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetDefinition;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
 
+    @NullMarked
     private static final class Schema implements KJsonValidator {
 
         private final KJsonValidator validator;
@@ -68,10 +69,10 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
     public void testGetSubdefinitionOfNonObject() {
 
         try {
-            KJsonValue addedDef = this.jsonParser.parse(
-                "{\n"
-                    + "            \"int_property\": 1\n"
-                    + "}"
+            KJsonValue addedDef = this.jsonParser.parse("""
+                {
+                            "int_property": 1
+                }"""
             );
 
             Assertions.assertThrows(
