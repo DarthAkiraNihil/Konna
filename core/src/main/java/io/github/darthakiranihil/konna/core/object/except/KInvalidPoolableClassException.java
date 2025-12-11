@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.object.except;
 
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when there is an attempt of creating an
@@ -38,7 +38,7 @@ public class KInvalidPoolableClassException extends KRuntimeException implements
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

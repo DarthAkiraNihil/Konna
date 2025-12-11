@@ -30,7 +30,7 @@ public class KUnsupportedOperationException extends KRuntimeException {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.ERROR;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.ERROR;
     }
 }

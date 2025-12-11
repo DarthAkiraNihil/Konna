@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.log.except;
 
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when the {@link io.github.darthakiranihil.konna.core.log.KLogger}
@@ -33,7 +33,7 @@ public class KLoggingException extends KRuntimeException {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.WARNING;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.WARNING;
     }
 }

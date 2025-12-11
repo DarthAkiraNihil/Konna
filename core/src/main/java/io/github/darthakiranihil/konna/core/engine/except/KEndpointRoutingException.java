@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.engine.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when an endpoint of a component service failed to invoke.
@@ -39,7 +39,7 @@ public class KEndpointRoutingException extends KException implements KThrowable 
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.WARNING;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.WARNING;
     }
 }

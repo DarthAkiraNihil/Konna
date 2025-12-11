@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.data.json.except;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception that is caused by incorrect way of handling a Json value.
@@ -58,7 +58,7 @@ public class KJsonValueException extends KRuntimeException implements KThrowable
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

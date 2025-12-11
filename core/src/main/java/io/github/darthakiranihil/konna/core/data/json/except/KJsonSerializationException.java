@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown by different (de)serialization errors.
@@ -38,7 +38,7 @@ public class KJsonSerializationException extends KException implements KThrowabl
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

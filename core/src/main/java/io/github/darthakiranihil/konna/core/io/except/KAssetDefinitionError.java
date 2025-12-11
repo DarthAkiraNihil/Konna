@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.io.except;
 
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when an asset definition contained errors so
@@ -48,7 +48,7 @@ public class KAssetDefinitionError extends KRuntimeException {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.ERROR;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.ERROR;
     }
 }

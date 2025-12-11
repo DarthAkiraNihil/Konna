@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.engine.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when an engine component could not be loaded.
@@ -37,7 +37,7 @@ public class KComponentLoadingException extends KException implements KThrowable
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

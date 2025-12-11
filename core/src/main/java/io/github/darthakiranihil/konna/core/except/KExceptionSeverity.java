@@ -17,14 +17,14 @@
 package io.github.darthakiranihil.konna.core.except;
 
 /**
- * Represents severity level of an engine exception (throwable).
+ * Represents severity level of an engine exception.
  * The level could be important in exception handling since some
  * error are not directing the application to crash, so the work continues.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public enum KThrowableSeverity {
+public enum KExceptionSeverity {
 
     /**
      * The exception is expected to occur. Usually it means that there has been a test

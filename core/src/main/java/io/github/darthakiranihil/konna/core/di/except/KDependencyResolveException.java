@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.di.except;
 
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when a dependency could not be resolved. Typically, because
@@ -36,7 +36,7 @@ public class KDependencyResolveException extends KRuntimeException implements KT
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

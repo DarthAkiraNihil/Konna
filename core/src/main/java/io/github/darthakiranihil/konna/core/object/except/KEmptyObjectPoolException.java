@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.object.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KObjectPool} or
@@ -46,7 +46,7 @@ public class KEmptyObjectPoolException extends KException implements KThrowable 
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

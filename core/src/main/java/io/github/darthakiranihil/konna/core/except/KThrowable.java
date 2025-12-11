@@ -28,5 +28,5 @@ public interface KThrowable {
      * Getter for a severity level of a throwable.
      * @return The severity level of the throwable
      */
-    KThrowableSeverity getSeverity();
+    KExceptionSeverity getSeverity();
 }

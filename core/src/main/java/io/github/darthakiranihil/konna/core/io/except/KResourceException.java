@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.io.except;
 
 import io.github.darthakiranihil.konna.core.except.KRuntimeException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown on different resource or IO errors.
@@ -32,7 +32,7 @@ public class KResourceException extends KRuntimeException {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

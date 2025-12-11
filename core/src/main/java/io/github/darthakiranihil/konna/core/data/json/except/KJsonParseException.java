@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
 
 /**
@@ -50,7 +50,7 @@ public class KJsonParseException extends KException implements KThrowable {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.FATAL;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

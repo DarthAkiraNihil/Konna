@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KThrowable;
-import io.github.darthakiranihil.konna.core.except.KThrowableSeverity;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when json tokenizer can't get the next token because of reasons
@@ -49,8 +49,8 @@ public class KJsonTokenException extends KException implements KThrowable {
     }
 
     @Override
-    public KThrowableSeverity getSeverity() {
-        return KThrowableSeverity.ERROR;
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.ERROR;
     }
 
 }
