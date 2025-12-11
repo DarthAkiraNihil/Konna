@@ -25,7 +25,6 @@ import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +123,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.component.acceptMessageSync(v.shortEndpointName, message);
+                v.component.acceptMessage(v.shortEndpointName, message);
             });
 
     }

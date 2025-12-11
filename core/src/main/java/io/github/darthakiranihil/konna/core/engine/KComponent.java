@@ -30,7 +30,6 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.*;
 
@@ -97,22 +96,11 @@ public abstract class KComponent extends KObject {
 
     /**
      * Accepts given message, routes it to given endpoint of internal service, which will process it
-     * in other way. It happens asynchronously.
-     * @param endpoint Endpoint where the message is sent to
-     * @param message Message to accept.
-     */
-    public void acceptMessage(final String endpoint, final KMessage message) {
-
-        KThreadUtils.runAsync(() -> this.acceptMessageSync(endpoint, message));
-
-    }
-    /**
-     * Accepts given message, routes it to given endpoint of internal service, which will process it
      * in other way. It happens synchronously, that is useful for testing.
      * @param endpoint Endpoint where the message is sent to
      * @param message Message to accept.
      */
-    public void acceptMessageSync(final String endpoint, final KMessage message) {
+    public void acceptMessage(final String endpoint, final KMessage message) {
         var splitId = endpoint.split("\\.");
         String service = splitId[0];
         String route = splitId[1];
