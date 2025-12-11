@@ -33,7 +33,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Standard implementation of {@link KMessageSystem}.
+ * Standard implementation of {@link KMessageSystem} that uses a watcher thread
+ * to poll and deliver sent messages.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

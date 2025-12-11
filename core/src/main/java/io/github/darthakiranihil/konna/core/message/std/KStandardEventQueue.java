@@ -28,6 +28,13 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Standard implementation of {@link KEventQueue} that uses a watcher thread
+ * to poll and handle invoked events.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton(immortal = true)
 public class KStandardEventQueue extends KObject implements KEventQueue {
 
@@ -49,7 +56,7 @@ public class KStandardEventQueue extends KObject implements KEventQueue {
     }
 
     @Override
-    public <T> void queueEvent(KEvent<T> event, T arg) {
+    public <T> void queueEvent(final KEvent<T> event, final T arg) {
         this.eventQueue.add(() -> {
             event.invokeSync(arg);
             KSystemLogger.debug("Invoked event %s", event);
@@ -57,7 +64,7 @@ public class KStandardEventQueue extends KObject implements KEventQueue {
     }
 
     @Override
-    public void queueEvent(KSimpleEvent event) {
+    public void queueEvent(final KSimpleEvent event) {
         this.eventQueue.add(() -> {
             event.invokeSync();
             KSystemLogger.debug("Invoked event %s", event);

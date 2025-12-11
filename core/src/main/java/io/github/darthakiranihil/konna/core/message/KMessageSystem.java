@@ -39,7 +39,7 @@ public interface KMessageSystem {
 
     /**
      * Delivers given message to destinations specified by its message id. If no route is specified,
-     * the message won't be sent. This operation is synchronous, which is useful for testing.
+     * the message won't be sent. This operation is synchronous.
      * @param message Message to send.
      */
     void deliverMessageSync(KMessage message);
@@ -81,7 +81,18 @@ public interface KMessageSystem {
      * @param component Component to register
      */
     void registerComponent(KComponent component);
+
+    /**
+     * Starts polling process for this message system.
+     * This is required for the system to deliver sent messages.
+     */
     void startPolling();
+    /**
+     * Stops polling process for this message system.
+     * After this call you still can deliver messages with it,
+     * but they won't be handled until {@link KMessageSystem#startPolling()}
+     * is called.
+     */
     void stopPolling();
 
 }

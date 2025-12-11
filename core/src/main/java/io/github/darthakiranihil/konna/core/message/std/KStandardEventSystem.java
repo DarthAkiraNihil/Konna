@@ -49,7 +49,7 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
      * @param eventQueue Event queue to register events in
      */
     public KStandardEventSystem(
-        @KInject KEventQueue eventQueue
+        @KInject final KEventQueue eventQueue
     ) {
         super(
             "std_event_system",

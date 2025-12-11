@@ -16,18 +16,39 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+/**
+ * Interface for an event queue that holds invoked events
+ * and invokes them according to FIFO principle.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public interface KEventQueue {
 
-    <T> void queueEvent(
-        KEvent<T> event,
-        T arg
-    );
+    /**
+     * Puts an event to the queue.
+     * @param event Event object
+     * @param arg Event argument
+     * @param <T> Type of event argument
+     */
+    <T> void queueEvent(KEvent<T> event, T arg);
+    /**
+     * Puts a simple event to the queue.
+     * @param event Event object
+     */
+    void queueEvent(KSimpleEvent event);
 
-    void queueEvent(
-        KSimpleEvent event
-    );
-
+    /**
+     * Starts polling process for this event queue.
+     * This is required for the queue to handle put events.
+     */
     void startPolling();
+    /**
+     * Stops polling process for this event queue.
+     * After this call you still can put events to the queue,
+     * but they won't be handled until {@link KEventQueue#startPolling()}
+     * is called.
+     */
     void stopPolling();
 
 }

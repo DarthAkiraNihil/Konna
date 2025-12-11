@@ -96,6 +96,11 @@ public class KSimpleEvent extends KObject {
         }
     }
 
+    /**
+     * Sets an event queue for this event so on invoking asynchronously
+     * it will put its call to it instead of creating a task by itself.
+     * @param eventQueue Assigned event queue
+     */
     public void setEventQueue(final KEventQueue eventQueue) {
         this.eventQueue = eventQueue;
     }
