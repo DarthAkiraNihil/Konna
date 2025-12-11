@@ -118,6 +118,8 @@ public class KStandardTestClass extends KObject {
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
+        KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
+        KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
         KStandardTestClass.context = new KManuallyProvidedEngineContext(
             activator,

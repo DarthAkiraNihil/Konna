@@ -47,50 +47,50 @@ public class KStandardMessenger extends KMessenger {
 
     @Override
     public void sendRegular(final String internalMessageId, final KUniversalMap body) {
-        KThreadUtils.runAsync(() -> this
+        this
             .messageSystem
             .deliverMessage(
                 KMessage.regular(
                     this.makeFullMessageId(internalMessageId),
                     body
                 )
-            ));
+            );
     }
 
     @Override
     public void sendSystem(final String shortMessageId, final KUniversalMap body) {
-        KThreadUtils.runAsync(() -> this
+        this
             .messageSystem
             .deliverMessage(
                 KMessage.system(
                     this.makeFullMessageId(shortMessageId),
                     body
                 )
-            ));
+            );
     }
 
     @Override
     public void sendDebug(final String shortMessageId, final KUniversalMap body) {
-        KThreadUtils.runAsync(() -> this
+        this
             .messageSystem
             .deliverMessage(
                 KMessage.debug(
                     this.makeFullMessageId(shortMessageId),
                     body
                 )
-            ));
+            );
     }
 
     @Override
     public void sendMetrics(final String shortMessageId, final KUniversalMap body) {
-        KThreadUtils.runAsync(() -> this
+        this
             .messageSystem
             .deliverMessage(
                 KMessage.metrics(
                     this.makeFullMessageId(shortMessageId),
                     body
                 )
-            ));
+            );
     }
 
     @Override
