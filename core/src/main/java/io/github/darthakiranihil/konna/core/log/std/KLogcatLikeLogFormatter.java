@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.log.std;
 
-import io.github.darthakiranihil.konna.core.log.KLogFormatter;
-import io.github.darthakiranihil.konna.core.log.KLogHandler;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.log.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -106,6 +103,7 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
                             callerClass.getSuperclass() == KLogger.class
                         ||  callerClassInterfaces.contains(KLogHandler.class)
                         ||  callerClassInterfaces.contains(KLogFormatter.class)
+                        ||  callerClass == KSystemLogger.class
                     )
                 && stackTraceIdx < stackTrace.length
             ) {
