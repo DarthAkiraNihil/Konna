@@ -64,6 +64,20 @@ public class KStandardEventQueue extends KObject implements KEventQueue {
         });
     }
 
+    @Override
+    public void startPolling() {
+        this.polling = true;
+        this.watcher = new Thread(this::watch);
+        this.watcher.setName(WATCHER_THREAD_NAME);
+        this.watcher.start();
+    }
+
+    @Override
+    public void stopPolling() {
+        this.polling = false;
+        this.watcher = null;
+    }
+
     private void watch() {
 
         KSystemLogger.info(
@@ -84,20 +98,6 @@ public class KStandardEventQueue extends KObject implements KEventQueue {
             "Event watcher thread has been stopped [host = %s]",
             this
         );
-    }
-
-    @Override
-    public void startPolling() {
-        this.polling = true;
-        this.watcher = new Thread(this::watch);
-        this.watcher.setName(WATCHER_THREAD_NAME);
-        this.watcher.start();
-    }
-
-    @Override
-    public void stopPolling() {
-        this.polling = false;
-        this.watcher = null;
     }
 
 }

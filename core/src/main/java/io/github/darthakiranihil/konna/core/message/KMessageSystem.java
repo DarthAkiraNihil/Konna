@@ -81,5 +81,7 @@ public interface KMessageSystem {
      * @param component Component to register
      */
     void registerComponent(KComponent component);
+    void startPolling();
+    void stopPolling();
 
 }

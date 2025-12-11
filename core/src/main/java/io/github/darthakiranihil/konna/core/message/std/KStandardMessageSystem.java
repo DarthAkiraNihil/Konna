@@ -30,6 +30,8 @@ import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Standard implementation of {@link KMessageSystem}.
@@ -39,6 +41,8 @@ import java.util.Map;
  */
 @KSingleton(immortal = true)
 public class KStandardMessageSystem extends KObject implements KMessageSystem {
+
+    private static final String WATCHER_THREAD_NAME = "message_watcher";
 
     private record RouteConnectionData(
         KComponent component,
@@ -59,6 +63,10 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     private final Map<String, KComponent> components;
     private final Map<String, RouteData> routes;
 
+    private final Queue<KMessage> messageQueue;
+    private volatile boolean polling;
+    private Thread watcher;
+
     /**
      * Standard constructor.
      * @param activator Activator that will be used to create tunnel instances.
@@ -70,6 +78,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
 
         this.components = new HashMap<>();
         this.routes = new HashMap<>();
+        this.messageQueue = new ConcurrentLinkedQueue<>();
     }
 
     @Override
@@ -84,6 +93,13 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     @Override
     public void deliverMessage(final KMessage message) {
 
+        this.messageQueue.add(message);
+
+    }
+
+    @Override
+    public void deliverMessageSync(final KMessage message) {
+
         KSystemLogger.info(
             "Delivering message %s",
             message
@@ -92,36 +108,6 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
         if (!this.routes.containsKey(message.messageId())) {
             KSystemLogger.warning(
                 "Dropped message %s, as no route configured for it",
-                message
-            );
-            return;
-        }
-
-        var route = this.routes.get(message.messageId());
-        for (var v: route.connections.values()) {
-            KThreadUtils.runAsync(() -> {
-                KMessage finalMessage = message;
-                for (KTunnel tunnel: v.tunnels) {
-                    finalMessage = tunnel.processMessage(finalMessage);
-                }
-
-                v.component.acceptMessage(v.shortEndpointName, finalMessage);
-            });
-        }
-
-    }
-
-    @Override
-    public void deliverMessageSync(final KMessage message) {
-
-        KSystemLogger.info(
-            "Delivering synchronous message %s",
-            message
-        );
-
-        if (!this.routes.containsKey(message.messageId())) {
-            KSystemLogger.warning(
-                "Dropped synchronous message %s, as no route configured for it",
                 message
             );
             return;
@@ -172,6 +158,20 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
             destinationEndpoint
         );
         return this;
+    }
+
+    @Override
+    public void startPolling() {
+        this.polling = true;
+        this.watcher = new Thread(this::watch);
+        this.watcher.setName(WATCHER_THREAD_NAME);
+        this.watcher.start();
+    }
+
+    @Override
+    public void stopPolling() {
+        this.polling = false;
+        this.watcher = null;
     }
 
     private void internalAddMessageRoute(
@@ -228,6 +228,30 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
             instantiatedTunnels[i] = this.activator.create(tunnels.get(i));
         }
         return instantiatedTunnels;
+    }
+
+    private void watch() {
+
+        KSystemLogger.info(
+            "Message watcher thread has been started. Now polling messages [host = %s]",
+            this
+        );
+
+        while (this.polling || !this.messageQueue.isEmpty()) {
+
+            KMessage message = this.messageQueue.poll();
+            if (message == null) {
+                continue;
+            }
+
+            this.deliverMessageSync(message);
+        }
+
+        KSystemLogger.info(
+            "Message watcher thread has been stopped [host = %s]",
+            this
+        );
+
     }
 
 }
