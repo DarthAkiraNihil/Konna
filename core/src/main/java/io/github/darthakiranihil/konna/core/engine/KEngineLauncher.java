@@ -86,12 +86,12 @@ public class KEngineLauncher extends KObject {
 
         var ctx = contextLoader.load();
 
-        this.activator = ctx.activator();
-        this.containerResolver = ctx.containerResolver();
-        this.index = ctx.index();
-        this.messageSystem = ctx.messageSystem();
-        this.eventSystem = ctx.eventSystem();
-        this.assetLoader = ctx.assetLoader();
+        this.activator = ctx;//.activator();
+        this.containerResolver = ctx;//.containerResolver();
+        this.index = ctx;//.index();
+        this.messageSystem = ctx;//.messageSystem();
+        this.eventSystem = ctx;//.eventSystem();
+        this.assetLoader = ctx;//.assetLoader();
 
         KSystemLogger.info("Initializing engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -107,24 +107,9 @@ public class KEngineLauncher extends KObject {
             envs.size(),
             envs
         );
-        KSystemLogger.info(
-            "Got activator: %s", this.activator.getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got object registry: %s", ctx.objectRegistry().getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got event system: %s", this.eventSystem.getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got message system: %s", this.messageSystem.getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got asset loader: %s", ctx.assetLoader().getClass().getSimpleName()
-        );
 
-        this.jsonParser = this.activator.create(KJsonParser.class);
-        KContainer master = this.containerResolver.resolve();
+        this.jsonParser = this.activator.createObject(KJsonParser.class);
+        KContainer master = this.containerResolver.resolveContainer();
 
         master
             .add(config.serviceLoader())
@@ -132,11 +117,11 @@ public class KEngineLauncher extends KObject {
 
         try {
 
-            this.componentLoader = this.activator.create(config.componentLoader());
+            this.componentLoader = this.activator.createObject(config.componentLoader());
 
             KSystemLogger.info("Created component loader %s", config.componentLoader());
 
-            this.serviceLoader = this.activator.create(config.serviceLoader());
+            this.serviceLoader = this.activator.createObject(config.serviceLoader());
 
             KSystemLogger.info("Created service loader %s", config.serviceLoader());
 
@@ -182,7 +167,7 @@ public class KEngineLauncher extends KObject {
 
 
         for (var routeConfigurer: config.messageRoutesConfigurers()) {
-            KMessageRoutesConfigurer configurer = this.activator.create(routeConfigurer);
+            KMessageRoutesConfigurer configurer = this.activator.createObject(routeConfigurer);
             configurer.setupRoutes(this.messageSystem);
         }
 
@@ -192,7 +177,7 @@ public class KEngineLauncher extends KObject {
         );
 
         for (var eventRegisterer: config.eventRegisterers()) {
-            KEventRegisterer registerer = this.activator.create(eventRegisterer);
+            KEventRegisterer registerer = this.activator.createObject(eventRegisterer);
             registerer.registerEvents(this.eventSystem);
         }
 

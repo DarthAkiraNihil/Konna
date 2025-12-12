@@ -35,14 +35,14 @@ public interface KObjectRegistry {
      * @param obj Object to push
      * @param instantiationType Instantiation type of the object
      */
-    void push(KObject obj, KObjectInstantiationType instantiationType);
+    void pushObjectToRegistry(KObject obj, KObjectInstantiationType instantiationType);
 
     /**
      * Removes object from the registry. If the object with given id
      * is not registered, nothing will happen.
      * @param objectId ID of removed object.
      */
-    void remove(UUID objectId);
+    void removeObjectFromRegistry(UUID objectId);
 
     /**
      * Lists all objects that have been registered.

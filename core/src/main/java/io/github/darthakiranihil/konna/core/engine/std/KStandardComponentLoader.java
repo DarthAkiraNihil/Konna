@@ -110,12 +110,12 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 parsedConfig = this.parser.parse(config);
             }
 
-            KContainer master = ctx.containerResolver().resolve();
+            KContainer master = ctx.resolveContainer();
             master
                 .add(component)
                 .add(KServiceLoader.class, serviceLoader.getClass());
 
-            var loadedComponent = ctx.activator().create(
+            var loadedComponent = ctx.createObject(
                 component, meta.name(), ctx, meta.servicesPackage(), parsedConfig
             );
 

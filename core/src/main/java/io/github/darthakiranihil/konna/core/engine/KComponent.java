@@ -163,7 +163,7 @@ public abstract class KComponent extends KObject {
     ) {
 
         List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-            ctx.index(),
+            ctx,
             servicesPackage,
             KComponentServiceMetaInfo.class
         );
@@ -203,8 +203,7 @@ public abstract class KComponent extends KObject {
         final String name
     ) {
         return ctx
-            .activator()
-            .create(KMessenger.class, name);
+            .createObject(KMessenger.class, name);
     }
 
     protected abstract void applyConfig(KJsonValue config);

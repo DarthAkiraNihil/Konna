@@ -29,23 +29,23 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     private final KActivator activator;
     
     public KStandardActivatorPositiveTests() {
-        KContainer master = KStandardTestClass.context.containerResolver().resolve();
+        KContainer master = KStandardTestClass.context.resolveContainer();
         master
             .add(TestInterfaceToResolve.class, TestResolvedImplementation.class)
             .add(TestDependencyInterface.class, TestDependencyImplementation.class);
 
-        this.activator = KStandardTestClass.context.activator();
+        this.activator = KStandardTestClass.context;
     }
 
     private void assertExists(KObject... objects) {
-        var registered = KStandardTestClass.context.objectRegistry().listObjects();
+        var registered = KStandardTestClass.context.listObjects();
         for (var object: objects) {
             Assertions.assertTrue(registered.stream().anyMatch(x -> x.object().id() == object.id()));
         }
     }
 
     private void assertNotExists(KObject... objects) {
-        var registered = KStandardTestClass.context.objectRegistry().listObjects();
+        var registered = KStandardTestClass.context.listObjects();
         for (var object: objects) {
             Assertions.assertTrue(registered.stream().allMatch(x -> x.object().id() != object.id()));
         }
@@ -54,18 +54,18 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     @Test
     public void testCreateSingletons() {
 
-        var singleton1 = this.activator.create(TestSingleton.class);
-        var singleton2 = this.activator.create(TestSingleton.class);
+        var singleton1 = this.activator.createObject(TestSingleton.class);
+        var singleton2 = this.activator.createObject(TestSingleton.class);
 
         Assertions.assertEquals(singleton1.id(), singleton2.id());
 
-        var weakSingleton1 = this.activator.create(TestWeakSingleton.class);
-        var weakSingleton2 = this.activator.create(TestWeakSingleton.class);
+        var weakSingleton1 = this.activator.createObject(TestWeakSingleton.class);
+        var weakSingleton2 = this.activator.createObject(TestWeakSingleton.class);
 
         Assertions.assertEquals(weakSingleton1.id(), weakSingleton2.id());
 
-        var immortal1 = this.activator.create(TestImmortal.class);
-        var immortal2 = this.activator.create(TestImmortal.class);
+        var immortal1 = this.activator.createObject(TestImmortal.class);
+        var immortal2 = this.activator.createObject(TestImmortal.class);
 
         Assertions.assertEquals(immortal1.id(), immortal2.id());
         this.assertExists(singleton1, singleton2, weakSingleton1, weakSingleton2, immortal1, immortal2);
@@ -74,59 +74,59 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     @Test
     public void testCreatePoolables() {
 
-        var poolable = this.activator.create(TestPoolable.class, 1);
+        var poolable = this.activator.createObject(TestPoolable.class, 1);
         var id = poolable.id();
         Assertions.assertEquals(1, poolable.getField());
 
-        this.activator.delete(poolable);
-        poolable = this.activator.create(TestPoolable.class, 1);
-        this.activator.delete(poolable);
-        poolable = this.activator.create(TestPoolable.class, 1);
+        this.activator.deleteObject(poolable);
+        poolable = this.activator.createObject(TestPoolable.class, 1);
+        this.activator.deleteObject(poolable);
+        poolable = this.activator.createObject(TestPoolable.class, 1);
 
         Assertions.assertEquals(id, poolable.id());
 
-        var weakPoolable = this.activator.create(TestWeakPoolable.class,1);
+        var weakPoolable = this.activator.createObject(TestWeakPoolable.class,1);
         var weakId = weakPoolable.id();
         Assertions.assertEquals(1, weakPoolable.getField());
 
-        this.activator.delete(weakPoolable);
-        weakPoolable = this.activator.create(TestWeakPoolable.class, 1);
-        this.activator.delete(weakPoolable);
-        weakPoolable = this.activator.create(TestWeakPoolable.class, 1);
+        this.activator.deleteObject(weakPoolable);
+        weakPoolable = this.activator.createObject(TestWeakPoolable.class, 1);
+        this.activator.deleteObject(weakPoolable);
+        weakPoolable = this.activator.createObject(TestWeakPoolable.class, 1);
 
         Assertions.assertEquals(weakId, weakPoolable.id());
 
-        var specialPoolable = this.activator.create(TestPoolableWithoutSpecialMethods.class);
+        var specialPoolable = this.activator.createObject(TestPoolableWithoutSpecialMethods.class);
         Assertions.assertEquals(5, specialPoolable.baba());
-        this.activator.delete(specialPoolable);
+        this.activator.deleteObject(specialPoolable);
 
         this.assertExists(poolable, weakPoolable);
 
-        var poolableWithInjections = this.activator.create(TestPoolableWithInjectedParameters.class);
+        var poolableWithInjections = this.activator.createObject(TestPoolableWithInjectedParameters.class);
         Assertions.assertEquals(TestSingleton.class, poolableWithInjections.field().getClass());
         Assertions.assertEquals(10, poolableWithInjections.field().wawa());
-        this.activator.delete(poolableWithInjections);
+        this.activator.deleteObject(poolableWithInjections);
 
-        var weakPoolableWithInjections = this.activator.create(TestWeakPoolableWithInjectedParameters.class);
+        var weakPoolableWithInjections = this.activator.createObject(TestWeakPoolableWithInjectedParameters.class);
         Assertions.assertEquals(TestSingleton.class, weakPoolableWithInjections.field().getClass());
         Assertions.assertEquals(10, weakPoolableWithInjections.field().wawa());
-        this.activator.delete(weakPoolableWithInjections);
+        this.activator.deleteObject(weakPoolableWithInjections);
 
     }
 
     @Test
     public void testCreateTransients() {
 
-        var transientObject1 = this.activator.create(TestTransient.class);
-        var transientObject2 = this.activator.create(TestTransient.class);
+        var transientObject1 = this.activator.createObject(TestTransient.class);
+        var transientObject2 = this.activator.createObject(TestTransient.class);
         Assertions.assertNotEquals(transientObject1.id(), transientObject2.id());
 
-        var explicitTransientObject1 = this.activator.create(TestExplicitTransient.class);
-        var explicitTransientObject2 = this.activator.create(TestExplicitTransient.class);
+        var explicitTransientObject1 = this.activator.createObject(TestExplicitTransient.class);
+        var explicitTransientObject2 = this.activator.createObject(TestExplicitTransient.class);
         Assertions.assertNotEquals(explicitTransientObject1.id(), explicitTransientObject2.id());
 
-        var temporalObject1 = this.activator.create(TestTemporal.class);
-        var temporalObject2 = this.activator.create(TestTemporal.class);
+        var temporalObject1 = this.activator.createObject(TestTemporal.class);
+        var temporalObject2 = this.activator.createObject(TestTemporal.class);
         Assertions.assertNotEquals(temporalObject1.id(), temporalObject2.id());
 
         this.assertExists(transientObject1, transientObject2, explicitTransientObject1, explicitTransientObject2);
@@ -137,7 +137,7 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     @Test
     public void testCreateTransientWithDependency() {
 
-        var objectWithDependency = this.activator.create(TestInterfaceToResolve.class);
+        var objectWithDependency = this.activator.createObject(TestInterfaceToResolve.class);
         Assertions.assertInstanceOf(TestResolvedImplementation.class, objectWithDependency);
         Assertions.assertEquals(10, objectWithDependency.amogus());
 
@@ -153,25 +153,25 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
 
     @Test
     public void testDeleteTransients() {
-        var transientObject = this.activator.create(TestTransient.class);
-        this.activator.delete(transientObject);
+        var transientObject = this.activator.createObject(TestTransient.class);
+        this.activator.deleteObject(transientObject);
         this.assertNotExists(transientObject);
     }
 
     @Test
     public void testDeletePoolables() {
 
-        var poolable = this.activator.create(TestPoolable.class, 1);
+        var poolable = this.activator.createObject(TestPoolable.class, 1);
         Assertions.assertEquals(1, poolable.getField());
 
-        this.activator.delete(poolable);
+        this.activator.deleteObject(poolable);
         this.assertExists(poolable);
         Assertions.assertEquals(-1, poolable.getField());
 
-        var weakPoolable = this.activator.create(TestWeakPoolable.class, 1);
+        var weakPoolable = this.activator.createObject(TestWeakPoolable.class, 1);
         Assertions.assertEquals(1, weakPoolable.getField());
 
-        this.activator.delete(weakPoolable);
+        this.activator.deleteObject(weakPoolable);
         this.assertExists(weakPoolable);
         Assertions.assertEquals(-1, weakPoolable.getField());
 
@@ -180,12 +180,12 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     @Test
     public void testDeleteSingletons() {
 
-        var singleton = this.activator.create(TestSingleton.class);
-        this.activator.delete(singleton);
+        var singleton = this.activator.createObject(TestSingleton.class);
+        this.activator.deleteObject(singleton);
         this.assertNotExists(singleton);
 
-        var weakSingleton = this.activator.create(TestWeakSingleton.class);
-        this.activator.delete(weakSingleton);
+        var weakSingleton = this.activator.createObject(TestWeakSingleton.class);
+        this.activator.deleteObject(weakSingleton);
         this.assertNotExists(weakSingleton);
 
     }

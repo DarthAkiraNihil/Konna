@@ -62,7 +62,7 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
                 KJsonValue.fromMap(new HashMap<>())
             );
 
-            this.messageSystem = KStandardTestClass.context.messageSystem();
+            this.messageSystem = KStandardTestClass.context;
 
             this.serviceObjectField = KServiceEntry.class.getDeclaredField("service");
             this.componentServicesField = KComponent.class.getDeclaredField("services");

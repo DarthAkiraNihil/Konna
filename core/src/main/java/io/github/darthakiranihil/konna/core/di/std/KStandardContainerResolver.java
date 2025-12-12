@@ -118,7 +118,7 @@ public final class KStandardContainerResolver extends KObject implements KContai
      * @return Container the for caller class
      */
     @Override
-    public KContainer resolve() {
+    public KContainer resolveContainer() {
         var stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace.length == 0) {
             return this.env2container.get("");

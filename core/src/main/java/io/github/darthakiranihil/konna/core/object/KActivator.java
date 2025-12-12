@@ -46,7 +46,7 @@ public interface KActivator {
      * @see KContainer
      * @see KObjectInstantiationType
      */
-    <T> T create(
+    <T> T createObject(
         Class<? extends T> clazz,
         KContainer container,
         Object... nonInjectedArgs
@@ -64,7 +64,7 @@ public interface KActivator {
      * @see KContainer
      * @see KObjectInstantiationType
      */
-    <T> T create(
+    <T> T createObject(
         Class<? extends T> clazz,
         Object... nonInjectedArgs
     );
@@ -79,5 +79,5 @@ public interface KActivator {
      * @param object Object to delete
      * @param <T> Type of object to delete
      */
-    <T> void delete(T object);
+    <T> void deleteObject(T object);
 }

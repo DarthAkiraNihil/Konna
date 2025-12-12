@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.*;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
+import io.github.darthakiranihil.konna.core.engine.std.KProxiedEngineContext;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
@@ -93,11 +93,11 @@ public class KStandardTestClass extends KObject {
 
         var containerResolver = new KStandardContainerResolver(index);
         containerResolver
-            .resolve()
+            .resolveContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
-            .add(KActivator.class, KStandardActivator.class)
-            .add(KMessageSystem.class, KStandardMessageSystem.class)
+            .add(KActivator.class, KProxiedEngineContext.class)
+            .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class);
 
@@ -121,7 +121,7 @@ public class KStandardTestClass extends KObject {
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
-        KStandardTestClass.context = new KManuallyProvidedEngineContext(
+        KStandardTestClass.context = new KProxiedEngineContext(
             activator,
             containerResolver,
             index,
@@ -131,7 +131,7 @@ public class KStandardTestClass extends KObject {
             resourceLoader,
             assetLoader
         );
-        activator.addContextObjects(KStandardTestClass.context);
+        activator.addContext(KStandardTestClass.context);
     }
 
     /**

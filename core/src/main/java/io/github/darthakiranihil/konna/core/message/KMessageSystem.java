@@ -86,13 +86,13 @@ public interface KMessageSystem {
      * Starts polling process for this message system.
      * This is required for the system to deliver sent messages.
      */
-    void startPolling();
+    void startPollingMessages();
     /**
      * Stops polling process for this message system.
      * After this call you still can deliver messages with it,
-     * but they won't be handled until {@link KMessageSystem#startPolling()}
+     * but they won't be handled until {@link KMessageSystem#startPollingMessages()}
      * is called.
      */
-    void stopPolling();
+    void stopPollingMessages();
 
 }
