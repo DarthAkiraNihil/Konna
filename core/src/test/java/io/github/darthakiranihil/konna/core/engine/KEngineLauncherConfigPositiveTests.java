@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
+public class KEngineLauncherConfigPositiveTests extends KStandardTestClass {
 
     @Test
     public void testFromJsonSuccess() {

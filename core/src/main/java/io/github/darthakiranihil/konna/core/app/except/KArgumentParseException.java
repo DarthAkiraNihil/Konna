@@ -16,7 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.app.except;
 
-public class KArgumentParseException extends RuntimeException {
+import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
+
+public class KArgumentParseException extends KException {
 
     public static KArgumentParseException validationFailed(String arg) {
         return new KArgumentParseException(
@@ -47,5 +50,10 @@ public class KArgumentParseException extends RuntimeException {
 
     public KArgumentParseException(String message) {
         super(message);
+    }
+
+    @Override
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
     }
 }

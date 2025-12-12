@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class KEngineHypervisorPositiveTests extends KStandardTestClass {
+public class KEngineLauncherPositiveTests extends KStandardTestClass {
 
     @Test
     @SuppressWarnings("unchecked")
@@ -64,12 +64,12 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
         }
 
         Assertions.assertNotNull(loadedConfig);
-        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
+        KEngineLauncher hypervisor = new KEngineLauncher(loadedConfig);
 
         try {
-            Field componentLoader = KEngineHypervisor.class.getDeclaredField("componentLoader");
-            Field serviceLoader = KEngineHypervisor.class.getDeclaredField("serviceLoader");
-            Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
+            Field componentLoader = KEngineLauncher.class.getDeclaredField("componentLoader");
+            Field serviceLoader = KEngineLauncher.class.getDeclaredField("serviceLoader");
+            Field engineComponents = KEngineLauncher.class.getDeclaredField("engineComponents");
 
             componentLoader.setAccessible(true);
             serviceLoader.setAccessible(true);

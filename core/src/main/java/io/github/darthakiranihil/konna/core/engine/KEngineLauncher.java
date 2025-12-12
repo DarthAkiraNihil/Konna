@@ -40,13 +40,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
- * Konna Engine Hypervisor - the primal class for the engine that controls the whole system.
+ * Konna Engine launcher - the primal class for the engine that starts the whole system.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
 @KEnvironmentContainerModifier
-public class KEngineHypervisor extends KObject {
+public class KEngineLauncher extends KObject {
 
     private final KComponentLoader componentLoader;
     private final KServiceLoader serviceLoader;
@@ -64,12 +64,12 @@ public class KEngineHypervisor extends KObject {
      * Constructs hypervisor with provided config.
      * @param config Initialization config of the hypervisor
      */
-    public KEngineHypervisor(
+    public KEngineLauncher(
         final KEngineHypervisorConfig config
     ) {
 
         super(
-            KEngineHypervisor.class.getSimpleName(),
+            KEngineLauncher.class.getSimpleName(),
             KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
         );
 
