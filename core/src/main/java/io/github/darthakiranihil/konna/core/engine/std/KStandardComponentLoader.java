@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -42,7 +43,6 @@ import java.util.Map;
 @KEnvironmentContainerModifier
 public class KStandardComponentLoader extends KObject implements KComponentLoader {
 
-    private final ClassLoader classLoader;
     private final KJsonParser parser;
 
     public KStandardComponentLoader(@KInject final KJsonParser parser) {
@@ -53,7 +53,6 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 KTag.DefaultTags.STD
             )
         );
-        this.classLoader = Thread.currentThread().getContextClassLoader();
         this.parser = parser;
     }
 
@@ -98,8 +97,9 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
             }
 
             KJsonValue parsedConfig;
-            try (InputStream config = this.classLoader.getResourceAsStream(meta.configFilename())) {
-                if (config == null) {
+            try (KResource config = ctx.loadResource(meta.configFilename())) {
+                InputStream configStream = config.stream();
+                if (!config.exists() || configStream == null) {
                     throw new KComponentLoadingException(
                         String.format(
                             "Component config file %s not found",
@@ -107,7 +107,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                         )
                     );
                 }
-                parsedConfig = this.parser.parse(config);
+                parsedConfig = this.parser.parse(configStream);
             }
 
             KContainer master = ctx.resolveContainer();
