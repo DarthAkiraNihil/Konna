@@ -41,6 +41,7 @@ import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,7 @@ public class KStandardTestClass extends KObject {
     /**
      * Convenience reference to message system.
      */
-    public static KQueueBasedMessageSystem messageSystem;
+    protected static @Nullable KQueueBasedMessageSystem msgSystem;
 
     static {
         var index = new KStandardIndex();
@@ -137,7 +138,7 @@ public class KStandardTestClass extends KObject {
             assetLoader
         );
         activator.addContext(KStandardTestClass.context);
-        KStandardTestClass.messageSystem = messageSystem;
+        KStandardTestClass.msgSystem = messageSystem;
     }
 
     /**

@@ -64,7 +64,7 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
                 KJsonValue.fromMap(new HashMap<>())
             );
 
-            this.messageSystem = KStandardTestClass.messageSystem;
+            this.messageSystem = KStandardTestClass.msgSystem;
 
             this.messageSystem.registerComponent(this.component1);
             this.messageSystem.registerComponent(this.component2);
