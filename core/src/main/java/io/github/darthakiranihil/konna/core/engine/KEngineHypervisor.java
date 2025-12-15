@@ -179,7 +179,7 @@ public class KEngineHypervisor extends KObject {
             return;
         }
 
-        this.ctx.stopPollingMessages();
+        this.ctx.handleShutdown();
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
     }

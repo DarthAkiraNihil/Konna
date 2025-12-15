@@ -50,8 +50,8 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     private final KContainerResolver containerResolver;
     private final KIndex index;
     private final KObjectRegistry objectRegistry;
-    private final KEventSystem eventSystem;
-    private final KMessageSystem messageSystem;
+    private final KQueueBasedEventSystem eventSystem;
+    private final KQueueBasedMessageSystem messageSystem;
     private final KResourceLoader resourceLoader;
     private final KAssetLoader assetLoader;
 
@@ -71,8 +71,8 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final KContainerResolver containerResolver,
         final KIndex index,
         final KObjectRegistry objectRegistry,
-        final KEventSystem eventSystem,
-        final KMessageSystem messageSystem,
+        final KQueueBasedEventSystem eventSystem,
+        final KQueueBasedMessageSystem messageSystem,
         final KResourceLoader resourceLoader,
         final KAssetLoader assetLoader
         ) {
@@ -177,16 +177,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public void startPollingMessages() {
-        this.messageSystem.startPollingMessages();
-    }
-
-    @Override
-    public void stopPollingMessages() {
-        this.messageSystem.stopPollingMessages();
-    }
-
-    @Override
     public KContainer newContainer() {
         return this.activator.newContainer();
     }
@@ -229,5 +219,11 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     @Override
     public List<Package> getPackageIndex() {
         return this.index.getPackageIndex();
+    }
+
+    @Override
+    public void handleShutdown() {
+        this.messageSystem.stopPolling();
+        this.eventSystem.stopPolling();;
     }
 }

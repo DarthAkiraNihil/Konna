@@ -85,18 +85,12 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
             this.serviceObjectField.setAccessible(true);
             this.componentServicesField.setAccessible(true);
-            this.messageSystem.startPollingMessages();
 
         } catch (KComponentLoadingException | NoSuchFieldException e) {
             Assertions.fail(e);
             throw new RuntimeException(e);
         }
 
-    }
-
-    @AfterEach
-    void tearDown() {
-        this.messageSystem.stopPollingMessages();
     }
 
     @Test

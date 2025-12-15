@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-import io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.jspecify.annotations.NullMarked;
@@ -29,11 +28,10 @@ import java.util.concurrent.TimeUnit;
 @NullMarked
 public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
-    private final KEventSystem eventSystem;
+    private final KQueueBasedEventSystem eventSystem;
 
     private final KEvent<Integer> testEvent1;
     private final KSimpleEvent testEvent2;
-    private final KEventQueue eventQueue;
 
     private int changeableField;
 
@@ -42,9 +40,8 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
     public KStandardEventSystemPositiveTests() {
 
-        this.eventQueue = new KStandardEventQueue();
-        this.eventSystem = new KStandardEventSystem(this.eventQueue);
-        this.eventQueue.startPolling();
+        this.eventSystem = new KStandardEventSystem();
+        this.eventSystem.startPolling();
 
         this.testEvent1 = new KEvent<>("testEvent1");
         this.testEvent2 = new KSimpleEvent("testEvent2");
@@ -59,7 +56,7 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
     @AfterEach
     void tearDown() {
-        this.eventQueue.stopPolling();
+        this.eventSystem.stopPolling();
     }
 
     private void handleEvent1(int arg) {
