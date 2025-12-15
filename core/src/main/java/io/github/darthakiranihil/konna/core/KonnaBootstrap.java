@@ -94,7 +94,7 @@ final class KonnaBootstrap {
                 .newInstance();
 
         } catch (Throwable e) {
-            throw new KBootstrapException("Could not create engine hypervisor", e);
+            throw new KBootstrapException("Could not get argument parser", e);
         }
 
     }

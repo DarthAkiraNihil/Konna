@@ -28,6 +28,8 @@ import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -55,12 +57,14 @@ public final class Konna extends KObject implements Runnable {
     }
 
     public Konna(final String[] args) {
+        super("Konna", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.args = args;
         this.shutdownHook = new Thread(this::shutdown);
     }
 
     public Konna(final String[] args, List<KApplicationArgument> customArgs) {
+        super("Konna", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.args = args;
         this.shutdownHook = new Thread(this::shutdown);

@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.app;
+package io.github.darthakiranihil.konna.core.engine.impl;
 
-public interface KApplicationFeatures {
+import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import org.jspecify.annotations.NullMarked;
 
-    String getFeature(String key);
+@NullMarked
+public class EmptyRouteConfigurer implements KMessageRoutesConfigurer {
+
+
+    @Override
+    public void setupRoutes(KMessageSystem messageSystem) {
+
+    }
 
 }

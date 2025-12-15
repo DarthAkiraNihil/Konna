@@ -36,12 +36,14 @@ public class KStandardArgumentParser implements KArgumentParser {
 
             for (String arg: args) {
                 String shortQualifier = String.format(
-                    "-%s%s", option.kQualified() ? "K" : "",
+                    "-%s%s",
+                    option.kQualified() ? "K" : "",
                     option.shortKey()
                 );
 
                 String longQualifier = String.format(
-                    "--%s%s", option.kQualified() ? "K" : "",
+                    "--%s%s",
+                    option.kQualified() ? "K" : "",
                     option.longKey()
                 );
 
@@ -49,7 +51,12 @@ public class KStandardArgumentParser implements KArgumentParser {
                 if (arg.startsWith(shortQualifier)) {
                     value = arg.substring(shortQualifier.length());
                 } else if (arg.startsWith(longQualifier)) {
-                    value = arg.substring(longQualifier.length());
+                    var qualifierLength = longQualifier.length();
+                    if (arg.length() < qualifierLength + 1) {
+                        value = arg.substring(longQualifier.length());
+                    } else {
+                        value = arg.substring(longQualifier.length() + 1);
+                    }
                 } else {
                     continue;
                 }
@@ -62,6 +69,9 @@ public class KStandardArgumentParser implements KArgumentParser {
                     }
                 }
 
+                if (!option.validator().validate(value)) {
+                    throw KArgumentParseException.validationFailed(arg);
+                }
                 if (features.containsKey(option.longKey())) {
                     throw KArgumentParseException.argumentAlreadyParsed(arg);
                 }
@@ -74,4 +84,5 @@ public class KStandardArgumentParser implements KArgumentParser {
 
         return new KStandardApplicationFeatures(features);
     }
+
 }

@@ -22,7 +22,7 @@ package io.github.darthakiranihil.konna.core.except;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public abstract class KException extends RuntimeException {
+public class KException extends RuntimeException {
 
     /**
      * Constructs exception with a provided message.
@@ -53,5 +53,7 @@ public abstract class KException extends RuntimeException {
      * Getter for a severity level of a throwable.
      * @return The severity level of the throwable
      */
-    public abstract KExceptionSeverity getSeverity();
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.FATAL;
+    }
 }
