@@ -121,7 +121,7 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
     public String format(final KLogLevel level, final String message, final Object... args) {
         if (this.doNotColorize) {
             return String.format(
-                "[%s]\t%s\t%s %s",
+                "[%30s]\t%64s\t%s %s",
                 Instant.now(),
                 this.getCallerPackage(),
                 KLogcatLikeLogFormatter.levelToChar(level),
@@ -130,7 +130,7 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
         }
 
         return String.format(
-            "[%s]\t%s\t%s%s %s \033[0m %s%s\033[0m",
+            "[%30s]\t%64s\t%s%s %s \033[0m %s%s\033[0m",
             Instant.now(),
             this.getCallerPackage(),
             KLogcatLikeLogFormatter.levelToStatusBackgroundColor(level),

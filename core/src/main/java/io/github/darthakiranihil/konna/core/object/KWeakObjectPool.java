@@ -67,7 +67,10 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             }
             this.unusedObjects.add(new WeakReference<>(object));
             if (object instanceof KObject) {
-                objectRegistry.push((KObject) object, KObjectInstantiationType.WEAK_POOLABLE);
+                objectRegistry.pushObjectToRegistry(
+                    (KObject) object,
+                    KObjectInstantiationType.WEAK_POOLABLE
+                );
             }
         }
     }
@@ -132,7 +135,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
                     parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
                     nonResolvedArgsProcessed++;
                 } else {
-                    parameters[i] = this.activator.create(
+                    parameters[i] = this.activator.createObject(
                         this.onObtainParameterClasses[i],
                         container
                     );

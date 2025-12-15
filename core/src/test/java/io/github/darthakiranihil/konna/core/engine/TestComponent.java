@@ -27,7 +27,7 @@ import java.util.List;
 
 @KComponentMetaInfo(
     name = "TestComponent",
-    configFilename = "test_config.json",
+    configFilename = "classpath:test_config.json",
     servicesPackage = "io.github.darthakiranihil.konna.core.engine.impl"
 )
 @NullMarked

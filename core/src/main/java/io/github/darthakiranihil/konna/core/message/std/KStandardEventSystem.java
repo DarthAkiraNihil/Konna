@@ -16,12 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.message.std;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
-import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventQueue;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -30,6 +26,8 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Standard implementation of {@link KEventSystem} with automatic event registration
@@ -39,19 +37,21 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @KSingleton(immortal = true)
-public class KStandardEventSystem extends KObject implements KEventSystem {
+public class KStandardEventSystem extends KObject implements KQueueBasedEventSystem {
+
+    private static final String WATCHER_THREAD_NAME = "event_watcher";
+    private final Queue<Runnable> eventQueue;
 
     private final Map<String, KEvent<?>> events;
     private final Map<String, KSimpleEvent> simpleEvents;
-    private final KEventQueue eventQueue;
+
+    private @Nullable Thread watcher;
+    private volatile boolean polling;
 
     /**
      * Standard constructor.
-     * @param eventQueue Event queue to register events in
      */
-    public KStandardEventSystem(
-        @KInject final KEventQueue eventQueue
-    ) {
+    public KStandardEventSystem() {
         super(
             "std_event_system",
             KStructUtils.setOfTags(
@@ -60,7 +60,7 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
             )
         );
 
-        this.eventQueue = eventQueue;
+        this.eventQueue = new ConcurrentLinkedQueue<>();
         this.events = new HashMap<>();
         this.simpleEvents = new HashMap<>();
     }
@@ -74,7 +74,7 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
     @Override
     public <T> void registerEvent(final KEvent<T> event) {
         this.events.put(event.name(), event);
-        event.setEventQueue(this.eventQueue);
+        event.setEventQueue(this);
         KSystemLogger.debug("Registered event name=%s", event.name());
     }
 
@@ -86,7 +86,7 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
     @Override
     public void registerEvent(final KSimpleEvent event) {
         this.simpleEvents.put(event.name(), event);
-        event.setEventQueue(this.eventQueue);
+        event.setEventQueue(this);
         KSystemLogger.debug("Registered simple event name=%s", event.name());
     }
 
@@ -107,5 +107,57 @@ public class KStandardEventSystem extends KObject implements KEventSystem {
         }
 
         return null;
+    }
+
+    @Override
+    public <T> void queueEvent(final KEvent<T> event, final T arg) {
+        this.eventQueue.add(() -> {
+            event.invokeSync(arg);
+            KSystemLogger.debug("Invoked event %s", event);
+        });
+    }
+
+    @Override
+    public void queueEvent(final KSimpleEvent event) {
+        this.eventQueue.add(() -> {
+            event.invokeSync();
+            KSystemLogger.debug("Invoked event %s", event);
+        });
+    }
+
+    @Override
+    public void startPolling() {
+        this.polling = true;
+        this.watcher = new Thread(this::watch);
+        this.watcher.setName(WATCHER_THREAD_NAME);
+        this.watcher.start();
+    }
+
+    @Override
+    public void stopPolling() {
+        this.polling = false;
+        this.watcher = null;
+    }
+
+    private void watch() {
+
+        KSystemLogger.info(
+            "Event watcher thread has been started. Now polling events [host = %s]",
+            this
+        );
+
+        while (this.polling || !this.eventQueue.isEmpty()) {
+
+            Runnable eventInvoker = this.eventQueue.poll();
+            if (eventInvoker != null) {
+                eventInvoker.run();
+            }
+
+        }
+
+        KSystemLogger.info(
+            "Event watcher thread has been stopped [host = %s]",
+            this
+        );
     }
 }

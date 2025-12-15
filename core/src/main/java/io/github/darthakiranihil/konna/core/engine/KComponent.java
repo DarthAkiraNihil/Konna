@@ -163,7 +163,7 @@ public abstract class KComponent extends KObject {
     ) {
 
         List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-            ctx.index(),
+            ctx,
             servicesPackage,
             KComponentServiceMetaInfo.class
         );
@@ -203,9 +203,21 @@ public abstract class KComponent extends KObject {
         final String name
     ) {
         return ctx
-            .activator()
-            .create(KMessenger.class, name);
+            .createObject(KMessenger.class, name);
     }
 
+    /**
+     * Applies custom config to this component.
+     * @param config Custom component config.
+     */
     protected abstract void applyConfig(KJsonValue config);
+
+    /**
+     * Performs graceful shutdown for this component.
+     * It is highly recommended to override this method if there is no simple
+     * logic for its disposing.
+     */
+    protected void shutdown() {
+        KSystemLogger.info("Component %s has been shut down", this.name);
+    }
 }

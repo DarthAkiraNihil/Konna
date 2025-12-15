@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.engine.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when a component service fails to load.
@@ -35,8 +34,4 @@ public class KServiceLoadingException extends KException {
         super(cause);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

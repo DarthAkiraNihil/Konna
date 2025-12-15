@@ -33,46 +33,20 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public interface KEngineContext {
+public interface KEngineContext extends
+    KActivator,
+    KContainerResolver,
+    KIndex,
+    KObjectRegistry,
+    KEventSystem,
+    KMessageSystem,
+    KResourceLoader,
+    KAssetLoader {
+
     /**
-     * Returns activator of current context.
-     * @return Activator of current context
+     * Executes graceful shutdown for this context.
      */
-    KActivator activator();
-    /**
-     * Returns container resolver of current context.
-     * @return Container resolver of current context
-     */
-    KContainerResolver containerResolver();
-    /**
-     * Returns index of current context.
-     * @return Index of current context
-     */
-    KIndex index();
-    /**
-     * Returns object registry of current context.
-     * @return Object registry of current context
-     */
-    KObjectRegistry objectRegistry();
-    /**
-     * Returns event system of current context.
-     * @return Event system of current context
-     */
-    KEventSystem eventSystem();
-    /**
-     * Returns message system of current context.
-     * @return Message system of current context
-     */
-    KMessageSystem messageSystem();
-    /**
-     * Returns resource loader of current context.
-     * @return Resource loader of current context
-     */
-    KResourceLoader resourceLoader();
-    /**
-     * Returns asset loader of current context.
-     * @return Asset loader of current context
-     */
-    KAssetLoader assetLoader();
+    void handleShutdown();
+
 }
 

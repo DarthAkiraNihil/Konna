@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when json parser could not parse a json-containing data.
@@ -48,8 +47,4 @@ public class KJsonParseException extends KException {
         super(cause);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

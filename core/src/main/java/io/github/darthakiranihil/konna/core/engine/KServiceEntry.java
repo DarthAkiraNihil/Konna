@@ -94,7 +94,7 @@ public final class KServiceEntry {
                 parameters[i] = providedArgs[nonInjectedArgsProcessed];
                 nonInjectedArgsProcessed++;
             } else {
-                parameters[i] = this.activator.create(parameterTypes[i]);
+                parameters[i] = this.activator.createObject(parameterTypes[i]);
             }
         }
 

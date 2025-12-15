@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.object.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when there is an attempt of creating an
@@ -36,8 +35,4 @@ public class KInvalidPoolableClassException extends KException {
         super(message);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

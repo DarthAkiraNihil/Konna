@@ -16,31 +16,27 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerResolver;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
- * Konna Engine Hypervisor - the primal class for the engine that controls the whole system.
+ * Konna Engine hypervisor - the primal class for the engine that starts
+ * and controls the whole system.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -48,17 +44,18 @@ import java.util.*;
 @KEnvironmentContainerModifier
 public class KEngineHypervisor extends KObject {
 
-    private final KComponentLoader componentLoader;
-    private final KServiceLoader serviceLoader;
-    private final Map<String, KComponent> engineComponents;
-    private final KJsonParser jsonParser;
-
-    private final KActivator activator;
-    private final KContainerResolver containerResolver;
-    private final KIndex index;
-    private final KEventSystem eventSystem;
-    private final KMessageSystem messageSystem;
-    private final KAssetLoader assetLoader;
+    /**
+     * Configuration of this hypervisor.
+     */
+    protected final KEngineHypervisorConfig config;
+    /**
+     * Loaded engine components.
+     */
+    protected final Map<String, KComponent> engineComponents;
+    /**
+     * Loaded engine context.
+     */
+    protected @Nullable KEngineContext ctx;
 
     /**
      * Constructs hypervisor with provided config.
@@ -67,64 +64,53 @@ public class KEngineHypervisor extends KObject {
     public KEngineHypervisor(
         final KEngineHypervisorConfig config
     ) {
-
         super(
             KEngineHypervisor.class.getSimpleName(),
             KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
         );
 
+        this.config = config;
+
+        this.engineComponents = new HashMap<>();
+        this.ctx = null;
+    }
+
+    /**
+     * Launches the hypervisor with subsystem initialization,
+     * loading context, components and its services.
+     * @param features Application features, retrieved from
+     *                 {@link io.github.darthakiranihil.konna.core.app.KArgumentParser}
+     *                 after parsing arguments
+     */
+    public void launch(final KApplicationFeatures features) {
+
         KEngineContextLoader contextLoader;
         try {
             contextLoader = config.contextLoader().getDeclaredConstructor().newInstance();
         } catch (
-                NoSuchMethodException
+            NoSuchMethodException
             |   InstantiationException
             |   IllegalAccessException
             |   InvocationTargetException e) {
             throw new KHypervisorInitializationException(e);
         }
 
-        var ctx = contextLoader.load();
+        this.ctx = contextLoader.load(features);
 
-        this.activator = ctx.activator();
-        this.containerResolver = ctx.containerResolver();
-        this.index = ctx.index();
-        this.messageSystem = ctx.messageSystem();
-        this.eventSystem = ctx.eventSystem();
-        this.assetLoader = ctx.assetLoader();
-
-        KSystemLogger.info("Initializing engine hypervisor [config = %s]", config);
+        KSystemLogger.info("Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
-            "%s: Indexed %d classes in %d packages",
-            this.index.getClass().getSimpleName(),
-            this.index.getClassIndex().size(),
-            this.index.getPackageIndex().size()
+            "index: indexed %d classes in %d packages",
+            ctx.getClassIndex().size(),
+            ctx.getPackageIndex().size()
         );
-        var envs = this.containerResolver.getEnvironments();
+        var envs = ctx.getEnvironments();
         KSystemLogger.info(
-            "%s: created %d environments: %s",
-            this.containerResolver.getClass().getSimpleName(),
+            "container_resolver: created %d environments: %s",
             envs.size(),
             envs
         );
-        KSystemLogger.info(
-            "Got activator: %s", this.activator.getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got object registry: %s", ctx.objectRegistry().getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got event system: %s", this.eventSystem.getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got message system: %s", this.messageSystem.getClass().getSimpleName()
-        );
-        KSystemLogger.info(
-            "Got asset loader: %s", ctx.assetLoader().getClass().getSimpleName()
-        );
 
-        this.jsonParser = this.activator.create(KJsonParser.class);
-        KContainer master = this.containerResolver.resolve();
+        KContainer master = ctx.resolveContainer();
 
         master
             .add(config.serviceLoader())
@@ -132,26 +118,21 @@ public class KEngineHypervisor extends KObject {
 
         try {
 
-            this.componentLoader = this.activator.create(config.componentLoader());
-
+            KComponentLoader componentLoader = ctx.createObject(config.componentLoader());
             KSystemLogger.info("Created component loader %s", config.componentLoader());
-
-            this.serviceLoader = this.activator.create(config.serviceLoader());
-
+            KServiceLoader serviceLoader = ctx.createObject(config.serviceLoader());
             KSystemLogger.info("Created service loader %s", config.serviceLoader());
 
-            this.engineComponents = new HashMap<>();
-
             for (var component: config.components()) {
-                this.componentLoader.load(
+                componentLoader.load(
                     ctx,
                     component,
-                    this.serviceLoader,
+                    serviceLoader,
                     this.engineComponents
                 );
             }
 
-            KSystemLogger.info("Loaded %d components", this.engineComponents.size());
+            KSystemLogger.info("Loaded %d components", engineComponents.size());
 
         } catch (
             KComponentLoadingException e
@@ -160,13 +141,13 @@ public class KEngineHypervisor extends KObject {
             throw new KHypervisorInitializationException(e);
         }
 
-        this.engineComponents.forEach((_k, v) -> {
-            this.messageSystem.registerComponent(v);
+        engineComponents.forEach((_k, v) -> {
+            ctx.registerComponent(v);
 
             List<KPair<String, KJsonValidator>> assetSchemas = v.getAssetSchemas();
             for (var assetSchema: assetSchemas) {
 
-                this.assetLoader.addAssetTypeAlias(
+                ctx.addAssetTypeAlias(
                     assetSchema.first(),
                     assetSchema.second()
                 );
@@ -177,13 +158,13 @@ public class KEngineHypervisor extends KObject {
 
         KSystemLogger.info(
             "Registered %d components in the message system",
-            this.engineComponents.size()
+            engineComponents.size()
         );
 
 
         for (var routeConfigurer: config.messageRoutesConfigurers()) {
-            KMessageRoutesConfigurer configurer = this.activator.create(routeConfigurer);
-            configurer.setupRoutes(this.messageSystem);
+            KMessageRoutesConfigurer configurer = ctx.createObject(routeConfigurer);
+            configurer.setupRoutes(ctx);
         }
 
         KSystemLogger.info(
@@ -192,8 +173,8 @@ public class KEngineHypervisor extends KObject {
         );
 
         for (var eventRegisterer: config.eventRegisterers()) {
-            KEventRegisterer registerer = this.activator.create(eventRegisterer);
-            registerer.registerEvents(this.eventSystem);
+            KEventRegisterer registerer = ctx.createObject(eventRegisterer);
+            registerer.registerEvents(ctx);
         }
 
         KSystemLogger.info(
@@ -201,13 +182,25 @@ public class KEngineHypervisor extends KObject {
             config.eventRegisterers().size()
         );
 
-        this.engineComponents.forEach((_k, c) -> c.postInit());
+        engineComponents.values().forEach(KComponent::postInit);
 
         KSystemLogger.info(
-            "Component's post-init is completed"
+            "Components' post-init is completed"
         );
+    }
 
+    /**
+     * Performs graceful shutdown of this hypervisor.
+     * It won't have any effect if there is no loaded engine context.
+     */
+    public void shutdown() {
+        if (this.ctx == null) {
+            return;
+        }
 
+        this.ctx.handleShutdown();
+        this.engineComponents.values().forEach(KComponent::shutdown);
+        this.engineComponents.clear();
     }
 
 }

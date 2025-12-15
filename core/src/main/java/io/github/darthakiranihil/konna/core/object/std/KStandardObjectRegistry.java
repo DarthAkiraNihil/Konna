@@ -52,8 +52,16 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
      * @param instantiationType Instantiation type of the object
      */
     @Override
-    public void push(final KObject obj, final KObjectInstantiationType instantiationType) {
-        this.objects.add(new KObjectRegistryRecord(obj, instantiationType));
+    public void pushObjectToRegistry(
+        final KObject obj,
+        final KObjectInstantiationType instantiationType
+    ) {
+        this.objects.add(
+            new KObjectRegistryRecord(
+                obj,
+                instantiationType
+            )
+        );
     }
 
     /**
@@ -62,7 +70,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
      * @param objectId ID of removed object.
      */
     @Override
-    public void remove(final UUID objectId) {
+    public void removeObjectFromRegistry(final UUID objectId) {
         this.objects.removeIf(
             (x) -> x.object().id() == objectId
         );

@@ -130,7 +130,7 @@ public final class KStandardActivator extends KObject implements KActivator {
      */
     @Override
     public KContainer newContainer() {
-        return new KContainer(this.containerResolver.resolve());
+        return new KContainer(this.containerResolver.resolveContainer());
     }
 
     /**
@@ -148,7 +148,7 @@ public final class KStandardActivator extends KObject implements KActivator {
      * @see KInject
      */
     @Override
-    public <T> T create(
+    public <T> T createObject(
         final Class<? extends T> clazz,
         final KContainer container,
         final Object... nonInjectedArgs
@@ -192,7 +192,7 @@ public final class KStandardActivator extends KObject implements KActivator {
         };
 
         if (instantiationType != KObjectInstantiationType.TEMPORAL && created instanceof KObject) {
-            this.objectRegistry.push((KObject) created, instantiationType);
+            this.objectRegistry.pushObjectToRegistry((KObject) created, instantiationType);
             this.addTagsToCreatedObject((KObject) created, instantiationType);
         }
 
@@ -214,13 +214,13 @@ public final class KStandardActivator extends KObject implements KActivator {
      * @see KObjectRegistry
      */
     @Override
-    public <T> T create(
+    public <T> T createObject(
         final Class<? extends T> clazz,
         final Object... nonInjectedArgs
     ) {
-        return this.create(
+        return this.createObject(
             clazz,
-            this.containerResolver.resolve(),
+            this.containerResolver.resolveContainer(),
             nonInjectedArgs
         );
     }
@@ -237,7 +237,7 @@ public final class KStandardActivator extends KObject implements KActivator {
      * @param <T> Type of object to delete
      */
     @Override
-    public <T> void delete(final T object) {
+    public <T> void deleteObject(final T object) {
         var klass = object.getClass();
 
         KObjectInstantiationType
@@ -257,7 +257,7 @@ public final class KStandardActivator extends KObject implements KActivator {
                 &&  instantiationType != KObjectInstantiationType.POOLABLE
                 &&  instantiationType != KObjectInstantiationType.WEAK_POOLABLE
                 &&  object instanceof KObject) {
-            this.objectRegistry.remove(((KObject) object).id());
+            this.objectRegistry.removeObjectFromRegistry(((KObject) object).id());
         }
     }
 
@@ -268,48 +268,20 @@ public final class KStandardActivator extends KObject implements KActivator {
      * must extend {@link KObject} in order adding to be performed successfully
      * @param ctx Engine context objects of which is to be added
      */
-    public void addContextObjects(final KEngineContext ctx) {
-        this.addContextObject(
-            (KObject) ctx.activator(),
-            ctx.activator().getClass()
-        );
-        this.addContextObject(
-            (KObject) ctx.containerResolver(),
-            ctx.containerResolver().getClass()
-        );
-        this.addContextObject(
-            (KObject) ctx.index(),
-            ctx.index().getClass()
-        );
-        this.addContextObject(
-            (KObject) ctx.objectRegistry(),
-            ctx.objectRegistry().getClass()
-        );
-        this.addContextObject(
-            (KObject) ctx.eventSystem(),
-            ctx.eventSystem().getClass()
-        );
-        this.addContextObject(
-            (KObject) ctx.messageSystem(),
-            ctx.messageSystem().getClass()
-        );
-    }
+    public void addContext(final KEngineContext ctx) {
 
-    private void addContextObject(
-        final KObject contextObject,
-        final Class<?> clazz
-    ) {
-
+        var clazz = ctx.getClass();
         if (clazz.isAnnotationPresent(KSingleton.class)) {
             KSingleton meta = clazz.getAnnotation(KSingleton.class);
             if (meta.weak()) {
-                this.weakSingletons.put(clazz, new WeakReference<>(contextObject));
+                this.weakSingletons.put(clazz, new WeakReference<>((KObject) ctx));
             } else {
-                this.singletons.put(clazz, contextObject);
+                this.singletons.put(clazz, (KObject) ctx);
             }
         }
 
-        this.objectRegistry.push(contextObject, this.getInstantiationType(clazz));
+        this.objectRegistry.pushObjectToRegistry((KObject) ctx, this.getInstantiationType(clazz));
+
     }
 
     private <T> Class<T> getClassImplementation(
@@ -419,7 +391,7 @@ public final class KStandardActivator extends KObject implements KActivator {
                 parameters[i] = nonResolvedArgs[nonInjectedArgsProcessed];
                 nonInjectedArgsProcessed++;
             } else {
-                parameters[i] = this.create(parameterTypes[i], container);
+                parameters[i] = this.createObject(parameterTypes[i], container);
             }
         }
 

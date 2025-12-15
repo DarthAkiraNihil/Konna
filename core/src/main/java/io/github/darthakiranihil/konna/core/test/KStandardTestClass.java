@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.*;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.std.KManuallyProvidedEngineContext;
+import io.github.darthakiranihil.konna.core.engine.std.KProxiedEngineContext;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue;
+import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
@@ -41,6 +41,7 @@ import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -88,23 +89,28 @@ public class KStandardTestClass extends KObject {
         return KStandardTestClass.context;
     }
 
+    /**
+     * Convenience reference to message system.
+     */
+    protected static @Nullable KQueueBasedMessageSystem msgSystem;
+
     static {
         var index = new KStandardIndex();
 
         var containerResolver = new KStandardContainerResolver(index);
         containerResolver
-            .resolve()
+            .resolveContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
-            .add(KActivator.class, KStandardActivator.class)
-            .add(KMessageSystem.class, KStandardMessageSystem.class)
+            .add(KActivator.class, KProxiedEngineContext.class)
+            .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
         var activator = new KStandardActivator(containerResolver, objectRegistry, index);
         var messageSystem = new KStandardMessageSystem(activator);
-        var eventSystem = new KStandardEventSystem(new KStandardEventQueue());
+        var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
             List.of(
                 new KClasspathProtocol(
@@ -121,7 +127,7 @@ public class KStandardTestClass extends KObject {
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
-        KStandardTestClass.context = new KManuallyProvidedEngineContext(
+        KStandardTestClass.context = new KProxiedEngineContext(
             activator,
             containerResolver,
             index,
@@ -131,7 +137,8 @@ public class KStandardTestClass extends KObject {
             resourceLoader,
             assetLoader
         );
-        activator.addContextObjects(KStandardTestClass.context);
+        activator.addContext(KStandardTestClass.context);
+        KStandardTestClass.msgSystem = messageSystem;
     }
 
     /**

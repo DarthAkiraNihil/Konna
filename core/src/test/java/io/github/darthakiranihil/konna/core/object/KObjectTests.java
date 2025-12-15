@@ -27,7 +27,7 @@ public class KObjectTests extends KStandardTestClass {
     private final KActivator activator;
 
     public KObjectTests() {
-        this.activator = KStandardTestClass.context.activator();
+        this.activator = KStandardTestClass.context;
     }
 
     @Test
@@ -35,7 +35,7 @@ public class KObjectTests extends KStandardTestClass {
 
         Assertions.assertThrowsExactly(
             KInvalidPoolableClassException.class,
-            () -> new KObjectPool<>(TestPartialPoolable.class, 2, this.activator, KStandardTestClass.context.objectRegistry())
+            () -> new KObjectPool<>(TestPartialPoolable.class, 2, this.activator, KStandardTestClass.context)
         );
 
     }

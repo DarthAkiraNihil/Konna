@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -41,7 +42,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Darth Akira Nihil
  */
 @KSingleton(immortal = true)
-public class KStandardMessageSystem extends KObject implements KMessageSystem {
+public class KStandardMessageSystem extends KObject implements KQueueBasedMessageSystem {
 
     private static final String WATCHER_THREAD_NAME = "message_watcher";
 
@@ -226,7 +227,7 @@ public class KStandardMessageSystem extends KObject implements KMessageSystem {
     private KTunnel[] makeTunnels(final List<Class<? extends KTunnel>>  tunnels) {
         KTunnel[] instantiatedTunnels =  new KTunnel[tunnels.size()];
         for (int i = 0; i < tunnels.size(); i++) {
-            instantiatedTunnels[i] = this.activator.create(tunnels.get(i));
+            instantiatedTunnels[i] = this.activator.createObject(tunnels.get(i));
         }
         return instantiatedTunnels;
     }

@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.io.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when an asset failed to load.
@@ -35,8 +34,4 @@ public class KAssetLoadingException extends KException {
         super(cause);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

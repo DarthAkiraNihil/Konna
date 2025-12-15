@@ -84,7 +84,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
             KServiceEndpoint endpointMeta = method.getAnnotation(KServiceEndpoint.class);
             KMessageToEndpointConverter
-                converter = ctx.activator().create(endpointMeta.converter());
+                converter = ctx.createObject(endpointMeta.converter());
             endpoints.put(
                 endpointMeta.route(),
                 new KPair<>(converter, method)
@@ -97,16 +97,16 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             service
         );
 
-        KContainer master = ctx.containerResolver().resolve();
+        KContainer master = ctx.resolveContainer();
         master.add(service);
 
-        Object instantiatedService = ctx.activator().create(service);
+        Object instantiatedService = ctx.createObject(service);
         loadedServicesMap.put(
             serviceName,
             new KServiceEntry(
                 instantiatedService,
                 endpoints,
-                ctx.activator()
+                ctx
             )
         );
         KSystemLogger.info("Loaded service %s [%s]", serviceName, service);

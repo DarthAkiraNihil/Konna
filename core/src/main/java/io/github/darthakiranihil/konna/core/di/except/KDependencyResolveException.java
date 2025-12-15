@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.di.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when a dependency could not be resolved. Typically, because
@@ -34,8 +33,4 @@ public class KDependencyResolveException extends KException {
         );
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.util.KPoller;
+
 /**
  * Interface for an event queue that holds invoked events
  * and invokes them according to FIFO principle.
@@ -23,7 +25,7 @@ package io.github.darthakiranihil.konna.core.message;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public interface KEventQueue {
+public interface KEventQueue extends KPoller {
 
     /**
      * Puts an event to the queue.

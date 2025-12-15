@@ -37,7 +37,7 @@ public interface KContainerResolver {
      * depends on implementation.
      * @return Container the for caller class
      */
-    KContainer resolve();
+    KContainer resolveContainer();
 
     /**
      * Returns list of environment data, containing name of an environment and list of its packages.
