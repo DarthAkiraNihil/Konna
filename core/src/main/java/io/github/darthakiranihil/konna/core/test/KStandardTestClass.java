@@ -30,6 +30,7 @@ import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
@@ -87,6 +88,11 @@ public class KStandardTestClass extends KObject {
         return KStandardTestClass.context;
     }
 
+    /**
+     * Convenience reference to message system.
+     */
+    public static KQueueBasedMessageSystem messageSystem;
+
     static {
         var index = new KStandardIndex();
 
@@ -131,7 +137,7 @@ public class KStandardTestClass extends KObject {
             assetLoader
         );
         activator.addContext(KStandardTestClass.context);
-        messageSystem.startPolling();
+        KStandardTestClass.messageSystem = messageSystem;
     }
 
     /**

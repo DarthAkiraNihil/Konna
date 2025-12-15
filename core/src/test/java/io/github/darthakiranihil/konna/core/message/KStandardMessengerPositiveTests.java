@@ -40,7 +40,7 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
     private final KComponent component1;
     private final KComponent component2;
-    private final KMessageSystem messageSystem;
+    private final KQueueBasedMessageSystem messageSystem;
 
     private final Field serviceObjectField;
     private final Field componentServicesField;
@@ -64,7 +64,7 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
                 KJsonValue.fromMap(new HashMap<>())
             );
 
-            this.messageSystem = KStandardTestClass.context;
+            this.messageSystem = KStandardTestClass.messageSystem;
 
             this.messageSystem.registerComponent(this.component1);
             this.messageSystem.registerComponent(this.component2);
@@ -86,11 +86,18 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
             this.serviceObjectField.setAccessible(true);
             this.componentServicesField.setAccessible(true);
 
+            this.messageSystem.startPolling();
+
         } catch (KComponentLoadingException | NoSuchFieldException e) {
             Assertions.fail(e);
             throw new RuntimeException(e);
         }
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        this.messageSystem.stopPolling();
     }
 
     @Test
@@ -205,7 +212,7 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
         try {
 
             if (isAsync) {
-                TimeUnit.SECONDS.sleep(8);
+                TimeUnit.SECONDS.sleep(4);
             }
 
             Map<String, KServiceEntry> component1Services = (Map<String, KServiceEntry>) this.componentServicesField.get(this.component1);
