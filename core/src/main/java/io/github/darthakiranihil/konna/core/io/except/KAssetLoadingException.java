@@ -35,8 +35,4 @@ public class KAssetLoadingException extends KException {
         super(cause);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

@@ -36,8 +36,4 @@ public class KInvalidPoolableClassException extends KException {
         super(message);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

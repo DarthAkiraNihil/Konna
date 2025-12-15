@@ -31,8 +31,4 @@ public class KHypervisorInitializationException extends KException {
         super(cause);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

@@ -44,8 +44,4 @@ public class KEmptyObjectPoolException extends KException {
         );
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

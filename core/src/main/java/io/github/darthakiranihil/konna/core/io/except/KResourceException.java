@@ -31,8 +31,4 @@ public class KResourceException extends KException {
         super(cause);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

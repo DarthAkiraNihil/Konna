@@ -79,8 +79,4 @@ public class KArgumentParseException extends KException {
         super(message);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }
