@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.io.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown on different resource or IO errors.

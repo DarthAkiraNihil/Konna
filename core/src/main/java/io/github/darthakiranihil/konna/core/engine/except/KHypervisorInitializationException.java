@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.engine.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when Konna hypervisor could not be instantiated.

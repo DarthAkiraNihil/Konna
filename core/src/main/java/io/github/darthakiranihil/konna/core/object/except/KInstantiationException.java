@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.object.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KActivator}

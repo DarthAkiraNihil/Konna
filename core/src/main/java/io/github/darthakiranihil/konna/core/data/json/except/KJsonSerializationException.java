@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.data.json.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown by different (de)serialization errors.

@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.app.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when argument parsing has failed due to
