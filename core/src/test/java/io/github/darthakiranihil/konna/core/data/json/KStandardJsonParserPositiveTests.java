@@ -1,22 +1,44 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.core.util.KPair;
-import io.github.darthakiranihil.konna.core.util.KTriplet;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KTriplet;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
+import java.io.ByteArrayInputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static java.util.List.of;
+
+@NullMarked
 public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
     private final KJsonParser parser;
 
-    private static final List<KTriplet<String, KJsonValueType, Object>> dataForSimpleTests = List.of(
+    private static final List<KTriplet<String, KJsonValueType, Object>> dataForSimpleTests = of(
         new KTriplet<>("123", KJsonValueType.NUMBER_INT, 123),
         new KTriplet<>("123.0", KJsonValueType.NUMBER_FLOAT, 123.0f),
         new KTriplet<>("\"123\"", KJsonValueType.STRING, "123"),
@@ -25,7 +47,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
         new KTriplet<>("null", KJsonValueType.NULL, null)
     );
 
-    private static final List<KPair<KJsonValueType, Object>> arrayMatchList = List.of(
+    private static final List<KPair<KJsonValueType, Object>> arrayMatchList = of(
         new KPair<>(KJsonValueType.NUMBER_INT, 123),
         new KPair<>(KJsonValueType.STRING, "OLOLO"),
         new KPair<>(KJsonValueType.NUMBER_FLOAT, 123.0f),
@@ -35,17 +57,22 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
     );
 
     public KStandardJsonParserPositiveTests() {
-        this.parser = KStandardTestClass.jsonParser;
+        this.parser = this.jsonParser;
     }
 
     private void simpleTest(String input, KJsonValueType expectedType, Object expectedValue) {
         try {
+            List<KJsonValue> parsedFromDifferentSources = List.of(
+                this.parser.parse(input),
+                this.parser.parse(input.toCharArray()),
+                this.parser.parse(new StringReader(input)),
+                this.parser.parse(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)))
+            );
 
-            KJsonValue parsed = this.parser.parse(input);
-
-            Assertions.assertEquals(expectedType, parsed.getType());
-            Assertions.assertEquals(expectedValue, parsed.getRawObject());
-
+            for (var parsed: parsedFromDifferentSources) {
+                Assertions.assertEquals(expectedType, parsed.getType());
+                Assertions.assertEquals(expectedValue, parsed.getRawObject());
+            }
         } catch (KJsonParseException e) {
             Assertions.fail(e);
         }
@@ -71,8 +98,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(KJsonValueType.ARRAY, parsed.getType());
             int i = 0;
-            for (var it = parsed.iterator(); it.hasNext();) {
-                it.next();
+            for (KJsonValue value : parsed) {
                 i++;
             }
 
@@ -139,9 +165,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
             Assertions.assertEquals(KJsonValueType.ARRAY, result.getType());
 
             int i = 0;
-            for (Iterator<KJsonValue> it = result.iterator(); it.hasNext();) {
-                KJsonValue entry = it.next();
-
+            for (KJsonValue entry : result) {
                 var match = KStandardJsonParserPositiveTests.arrayMatchList.get(i);
                 Assertions.assertEquals(match.first(), entry.getType());
                 Assertions.assertEquals(match.second(), entry.getRawObject());
@@ -165,9 +189,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(KJsonValueType.ARRAY, result.getType());
 
-            for (Iterator<KJsonValue> it = result.iterator(); it.hasNext();) {
-                KJsonValue entry = it.next();
-
+            for (KJsonValue entry : result) {
                 Assertions.assertEquals(KJsonValueType.OBJECT, entry.getType());
             }
         } catch (KJsonParseException e) {
@@ -187,9 +209,7 @@ public class KStandardJsonParserPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(KJsonValueType.ARRAY, result.getType());
 
-            for (Iterator<KJsonValue> it = result.iterator(); it.hasNext();) {
-                KJsonValue entry = it.next();
-
+            for (KJsonValue entry : result) {
                 Assertions.assertEquals(KJsonValueType.ARRAY, entry.getType());
             }
         } catch (KJsonParseException e) {

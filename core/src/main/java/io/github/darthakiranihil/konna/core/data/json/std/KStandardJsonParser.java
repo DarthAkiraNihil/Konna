@@ -1,45 +1,86 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
- * Standard implementation of KJsonParser
+ * Standard implementation of {@link KJsonParser}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
  */
-public class KStandardJsonParser implements KJsonParser {
+@KSingleton(immortal = true)
+public class KStandardJsonParser extends KObject implements KJsonParser {
 
     private final KJsonTokenizer tokenizer;
 
     /**
-     * Constructs parser with concrete tokenizer
+     * Constructs parser with concrete tokenizer.
      * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser(KJsonTokenizer tokenizer) {
+    public KStandardJsonParser(@KInject final KJsonTokenizer tokenizer) {
+        super("std_json_parser", KStructUtils.setOfTags(KTag.DefaultTags.STD));
         this.tokenizer = tokenizer;
     }
 
     @Override
-    public KJsonValue parse(String string) throws KJsonParseException {
-        this.tokenizer.reset(string);
+    public KJsonValue parse(final String string) {
+        return this.parse(new StringReader(string));
+    }
 
-        KJsonValue result = this.value(this.tokenizer);
+    @Override
+    public KJsonValue parse(final InputStream stream) {
+        return this.parse(new InputStreamReader(stream));
+    }
 
-        KJsonTokenPair last = this.getTokenOrFail(this.tokenizer);
+    @Override
+    public KJsonValue parse(final Reader reader) {
+        int sequenceToken = this.tokenizer.addSource(reader);
+
+        KJsonValue result = this.value(sequenceToken);
+
+        KJsonTokenPair last = this.getTokenOrFail(sequenceToken);
         if (last.token() != KJsonToken.EOF) {
             throw new KJsonParseException(last.token());
         }
 
         return result;
-
     }
 
-    private KJsonValue value(KJsonTokenizer tokenizer, KJsonTokenPair token) throws KJsonParseException {
+    @Override
+    public KJsonValue parse(final char[] chars) {
+        return this.parse(new CharArrayReader(chars));
+    }
+
+    private KJsonValue value(
+        final KJsonTokenPair token,
+        int sequenceToken
+    ) {
         return switch (token.token()) {
             case STRING -> new KJsonValue(KJsonValueType.STRING, token.value());
             case NUMBER_INT -> new KJsonValue(KJsonValueType.NUMBER_INT, token.value());
@@ -47,14 +88,14 @@ public class KStandardJsonParser implements KJsonParser {
             case TRUE -> new KJsonValue(KJsonValueType.BOOLEAN, true);
             case FALSE -> new KJsonValue(KJsonValueType.BOOLEAN, false);
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
-            case OPEN_BRACE -> this.object(tokenizer);
-            case OPEN_SQUARE_BRACKET -> this.array(tokenizer);
+            case OPEN_BRACE -> this.object(sequenceToken);
+            case OPEN_SQUARE_BRACKET -> this.array(sequenceToken);
             default -> throw new KJsonParseException(token.token());
         };
     }
 
-    private KJsonValue value(KJsonTokenizer tokenizer) throws KJsonParseException {
-        KJsonTokenPair token = this.getTokenOrFail(tokenizer);
+    private KJsonValue value(int sequenceToken) {
+        KJsonTokenPair token = this.getTokenOrFail(sequenceToken);
 
         return switch (token.token()) {
             case STRING -> new KJsonValue(KJsonValueType.STRING, token.value());
@@ -63,15 +104,15 @@ public class KStandardJsonParser implements KJsonParser {
             case TRUE -> new KJsonValue(KJsonValueType.BOOLEAN, true);
             case FALSE -> new KJsonValue(KJsonValueType.BOOLEAN, false);
             case NULL -> new KJsonValue(KJsonValueType.NULL, null);
-            case OPEN_BRACE -> this.object(tokenizer);
-            case OPEN_SQUARE_BRACKET -> this.array(tokenizer);
+            case OPEN_BRACE -> this.object(sequenceToken);
+            case OPEN_SQUARE_BRACKET -> this.array(sequenceToken);
             default -> throw new KJsonParseException(token.token());
         };
 
     }
 
-    private KJsonValue object(KJsonTokenizer tokenizer) throws KJsonParseException{
-        KJsonTokenPair token = this.getTokenOrFail(tokenizer);
+    private KJsonValue object(int sequenceToken) {
+        KJsonTokenPair token = this.getTokenOrFail(sequenceToken);
 
         if (token.token() == KJsonToken.CLOSE_BRACE) {
             return KJsonValue.fromMap(new LinkedHashMap<>());
@@ -87,16 +128,16 @@ public class KStandardJsonParser implements KJsonParser {
 
             String key = (String) token.value();
 
-            token = this.getTokenOrFail(tokenizer);
+            token = this.getTokenOrFail(sequenceToken);
             if (token.token() != KJsonToken.SEMICOLON) {
                 throw new KJsonParseException(token.token());
             }
 
-            result.put(key, this.value(tokenizer));
+            result.put(key, this.value(sequenceToken));
 
-            token = this.getTokenOrFail(tokenizer);
+            token = this.getTokenOrFail(sequenceToken);
             if (token.token() == KJsonToken.COMMA) {
-                token = this.getTokenOrFail(tokenizer);
+                token = this.getTokenOrFail(sequenceToken);
             }
 
         } while (token.token() != KJsonToken.CLOSE_BRACE);
@@ -105,8 +146,8 @@ public class KStandardJsonParser implements KJsonParser {
 
     }
 
-    private KJsonValue array(KJsonTokenizer tokenizer) throws KJsonParseException{
-        KJsonTokenPair token = this.getTokenOrFail(tokenizer);
+    private KJsonValue array(int sequenceToken) {
+        KJsonTokenPair token = this.getTokenOrFail(sequenceToken);
 
         if (token.token() == KJsonToken.CLOSE_SQUARE_BRACKET) {
             return KJsonValue.fromList(new LinkedList<>());
@@ -115,11 +156,11 @@ public class KStandardJsonParser implements KJsonParser {
         List<KJsonValue> result = new LinkedList<>();
 
         do {
-            result.add(this.value(tokenizer, token));
+            result.add(this.value(token, sequenceToken));
 
-            token = this.getTokenOrFail(tokenizer);
+            token = this.getTokenOrFail(sequenceToken);
             if (token.token() == KJsonToken.COMMA) {
-                token = this.getTokenOrFail(tokenizer);
+                token = this.getTokenOrFail(sequenceToken);
             }
 
         } while (token.token() != KJsonToken.CLOSE_SQUARE_BRACKET);
@@ -127,9 +168,9 @@ public class KStandardJsonParser implements KJsonParser {
         return KJsonValue.fromList(result);
     }
 
-    private KJsonTokenPair getTokenOrFail(KJsonTokenizer tokenizer) throws KJsonParseException {
+    private KJsonTokenPair getTokenOrFail(int sequenceToken) {
         try {
-            return tokenizer.getNextToken();
+            return this.tokenizer.getNextToken(sequenceToken);
         } catch (KJsonTokenException e) {
             throw new KJsonParseException(e);
         }
