@@ -18,14 +18,17 @@ package io.github.darthakiranihil.konna.core;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,9 +36,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class Konna extends KObject {
+public final class Konna extends KObject implements Runnable {
 
     private static final String BOOTSTRAP_CONFIG = "bootstrap.json";
+
+    private final Thread shutdownHook;
+    private volatile boolean running;
+    private @Nullable Thread hypervisorThread;
+
+    private final List<KApplicationArgument> applicationArgsOptions;
+    private final String[] args;
+    private @Nullable KEngineHypervisor hypervisor;
 
     private static List<KApplicationArgument> defaultAndCustom(List<KApplicationArgument> customArgs) {
         List<KApplicationArgument> concatenated = new ArrayList<>(KApplicationArgument.DEFAULT_ARGS);
@@ -44,8 +55,21 @@ public final class Konna extends KObject {
     }
 
     public Konna(final String[] args) {
-        this(args, KApplicationArgument.DEFAULT_ARGS);
+        this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
+        this.args = args;
+        this.shutdownHook = new Thread(this::shutdown);
+    }
 
+    public Konna(final String[] args, List<KApplicationArgument> customArgs) {
+        this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
+        this.args = args;
+        this.shutdownHook = new Thread(this::shutdown);
+    }
+
+    @Override
+    public void run() {
+
+        KApplicationFeatures features;
         try (InputStream bootstrapConfig = ClassLoader
             .getSystemClassLoader()
             .getResourceAsStream(BOOTSTRAP_CONFIG)
@@ -65,19 +89,41 @@ public final class Konna extends KObject {
             KonnaBootstrap.SCHEMA.validate(config);
             KonnaBootstrap bootstrap = new KonnaBootstrap(config);
 
-            KApplicationFeatures features = bootstrap.argumentParser().parse(args, KApplicationArgument.DEFAULT_ARGS);
+            KArgumentParser argParser = bootstrap.getArgumentParser();
+            features = argParser.parse(this.args, this.applicationArgsOptions);
+            this.hypervisor = bootstrap.createHypervisor();
 
 
         } catch (IOException e) {
-
+            return;
         } catch (KJsonValidationError e) {
             KSystemLogger.fatal(e);
+            return;
         }
 
+        this.running = true;
+        this.hypervisorThread = new Thread(
+            () -> {
+                this.hypervisor.launch(features);
+                while (this.running) {
+                    Thread.onSpinWait();
+                }
+            }
+        );
+
+        Runtime.getRuntime().addShutdownHook(this.shutdownHook);
+        this.hypervisorThread.start();
     }
 
-    public Konna(final String[] args, List<KApplicationArgument> customArgs) {
-        //this.
-    }
+    private void shutdown() {
+        KSystemLogger.info("Shutdown initiated");
+        if (this.hypervisor == null) {
+            return;
+        }
 
+        this.running = false;
+        this.hypervisor.shutdown();
+        this.hypervisorThread = null;
+        KSystemLogger.info("Shutdown finished");
+    }
 }

@@ -17,18 +17,20 @@
 package io.github.darthakiranihil.konna.core;
 
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 
 final class KonnaBootstrap {
 
-    private static final String ARG_PARSER_KEY = "arg_parser";
-    private static final String LAUNCHER_CONFIG_KEY = "launcher_config";
+    private static final String ARG_PARSER_CLASS_KEY = "arg_parser";
+    private static final String HYPERVISOR_ROOT_KEY = "hypervisor";
+    private static final String HYPERVISOR_CLASS_KEY = "class";
+    private static final String HYPERVISOR_CONFIG_KEY = "config";
 
     private static class Schema implements KJsonValidator {
 
@@ -39,13 +41,29 @@ final class KonnaBootstrap {
 
             this.validator = new KJsonObjectValidator(
                 builder
-                    .withName(ARG_PARSER_KEY)
+                    .withName(ARG_PARSER_CLASS_KEY)
                     .withExpectedType(KJsonValueType.STRING)
                     .withValidator(KJsonValueIsClassValidator.INSTANCE)
                     .build(),
                 builder
-                    .withName(LAUNCHER_CONFIG_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
+                    .withName(HYPERVISOR_ROOT_KEY)
+                    .withExpectedType(KJsonValueType.OBJECT)
+                    .withValidator(
+                        new KJsonObjectValidator(
+                            builder
+                                .createSeparated()
+                                .withName(HYPERVISOR_CLASS_KEY)
+                                .withExpectedType(KJsonValueType.STRING)
+                                .withValidator(KJsonValueIsClassValidator.INSTANCE)
+                                .build(),
+                            builder
+                                .createSeparated()
+                                .withName(HYPERVISOR_CONFIG_KEY)
+                                .withExpectedType(KJsonValueType.OBJECT)
+                                .withValidator(KEngineHypervisorConfig.SCHEMA)
+                                .build()
+                        )
+                    )
                     .build()
             );
         }
@@ -58,32 +76,53 @@ final class KonnaBootstrap {
 
     public static final KJsonValidator SCHEMA = new Schema();
 
-    private final KArgumentParser argumentParser;
-    private final String launcherConfig;
+    private final KJsonValue config;
+
+    public KonnaBootstrap(KJsonValue validatedConfig) {
+        this.config = validatedConfig;
+    }
 
     @SuppressWarnings("unchecked")
-    public KonnaBootstrap(KJsonValue validatedConfig) {
+    public KArgumentParser getArgumentParser() {
 
         try {
-            Class<? extends KArgumentParser> argParserClass = (Class<? extends KArgumentParser>)
-                Class.forName(validatedConfig.getProperty(ARG_PARSER_KEY).getString());
+            var argumentParserClass = (Class<? extends KArgumentParser>)
+                Class.forName(this.config.getProperty(ARG_PARSER_CLASS_KEY).getString());
 
-            this.argumentParser = argParserClass.getConstructor().newInstance();
-            this.launcherConfig = validatedConfig.getProperty(LAUNCHER_CONFIG_KEY).getString();
-
+            return argumentParserClass
+                .getConstructor()
+                .newInstance();
 
         } catch (Throwable e) {
-            throw new KBootstrapException(e);
+            throw new KBootstrapException("Could not create engine hypervisor", e);
         }
 
     }
+    @SuppressWarnings("unchecked")
+    public KEngineHypervisor createHypervisor() {
 
-    public KArgumentParser argumentParser() {
-        return this.argumentParser;
-    }
+        KJsonDeserializer deserializer = new KStandardJsonDeserializer();
 
-    public String launcherConfig() {
-        return this.launcherConfig;
+        try {
+
+            var hypervisorData = this.config.getProperty(HYPERVISOR_ROOT_KEY);
+
+            var engineHypervisorClass = (Class<? extends KEngineHypervisor>)
+                Class.forName(hypervisorData.getProperty(HYPERVISOR_CLASS_KEY).getString());
+
+            var engineHypervisorConfig = hypervisorData.getProperty(HYPERVISOR_CONFIG_KEY);
+            KEngineHypervisorConfig deserializedConfig = deserializer.deserialize(
+                engineHypervisorConfig,
+                KEngineHypervisorConfig.class
+            );
+
+            return engineHypervisorClass
+                .getConstructor(KEngineHypervisorConfig.class)
+                .newInstance(deserializedConfig);
+
+        } catch (Throwable e) {
+            throw new KBootstrapException("Could not create engine hypervisor", e);
+        }
     }
 
 }

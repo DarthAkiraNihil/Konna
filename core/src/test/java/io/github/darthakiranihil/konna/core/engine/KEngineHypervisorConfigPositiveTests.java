@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KEngineLauncherConfigPositiveTests extends KStandardTestClass {
+public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
 
     @Test
     public void testFromJsonSuccess() {
@@ -37,6 +37,7 @@ public class KEngineLauncherConfigPositiveTests extends KStandardTestClass {
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
             "\"route_configurers\": []," +
             "\"event_registerers\": []," +
+            "\"event_queue\": \"io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue\"," +
             "\"components\": [" +
                 "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";

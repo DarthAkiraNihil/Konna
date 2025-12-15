@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
@@ -207,4 +208,8 @@ public abstract class KComponent extends KObject {
     }
 
     protected abstract void applyConfig(KJsonValue config);
+
+    protected void shutdown() {
+        KSystemLogger.info("Component %s has been shut down", this.name);
+    }
 }

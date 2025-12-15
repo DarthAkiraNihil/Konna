@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine.impl;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
@@ -25,7 +26,7 @@ import org.jspecify.annotations.NullMarked;
 public class TestContextLoader implements KEngineContextLoader {
 
     @Override
-    public KEngineContext load() {
+    public KEngineContext load(KApplicationFeatures features) {
         return KStandardTestClass.getContext();
     }
 }

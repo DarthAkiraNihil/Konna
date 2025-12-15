@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KEngineLauncherConfigNegativeTests extends KStandardTestClass {
+public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
     @Test
     public void testFromJsonFailedNoKey() {

@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
+import io.github.darthakiranihil.konna.core.message.KEventQueue;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import org.jspecify.annotations.NullMarked;
@@ -58,7 +59,10 @@ public record KEngineHypervisorConfig(
 
     @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
     @KJsonArray(elementType = Class.class)
-    Class<? extends KComponent>[] components
+    Class<? extends KComponent>[] components,
+
+    @KJsonSerialized @KJsonCustomName(name = EVENT_QUEUE_KEY)
+    Class<? extends KEventQueue> eventQueue
 ) {
 
     private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";
@@ -67,6 +71,7 @@ public record KEngineHypervisorConfig(
     private static final String COMPONENTS_KEY = "components";
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
+    private static final String EVENT_QUEUE_KEY = "event_queue";
 
     @NullMarked
     private static final class Schema implements KJsonValidator {
@@ -126,6 +131,13 @@ public record KEngineHypervisorConfig(
                             KJsonValueType.STRING,
                             KJsonValueIsClassValidator.INSTANCE
                         )
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(EVENT_QUEUE_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
                     )
                     .build()
 

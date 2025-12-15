@@ -18,8 +18,8 @@ package io.github.darthakiranihil.konna.core.except;
 
 public class KBootstrapException extends KException {
 
-    public KBootstrapException(Throwable cause) {
-        super(cause);
+    public KBootstrapException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     public KBootstrapException(String message) {

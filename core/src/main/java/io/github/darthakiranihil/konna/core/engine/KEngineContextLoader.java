@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+
 /**
  * Represents interface for loading the engine context, which
  * means it must initialize all essential classes.
@@ -29,5 +31,5 @@ public interface KEngineContextLoader {
      * and returns it.
      * @return Loaded context
      */
-    KEngineContext load();
+    KEngineContext load(KApplicationFeatures features);
 }

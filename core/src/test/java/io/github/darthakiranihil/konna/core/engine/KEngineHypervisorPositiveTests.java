@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.std.KStandardApplicationFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
@@ -26,9 +27,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
-public class KEngineLauncherPositiveTests extends KStandardTestClass {
+public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
     @Test
     @SuppressWarnings("unchecked")
@@ -40,6 +42,7 @@ public class KEngineLauncherPositiveTests extends KStandardTestClass {
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
             "\"route_configurers\": []," +
             "\"event_registerers\": []," +
+            "\"event_queue\": \"io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue\"," +
             "\"components\": [" +
             "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";
@@ -64,19 +67,13 @@ public class KEngineLauncherPositiveTests extends KStandardTestClass {
         }
 
         Assertions.assertNotNull(loadedConfig);
-        KEngineLauncher hypervisor = new KEngineLauncher(loadedConfig);
-
+        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
+        hypervisor.launch(new KStandardApplicationFeatures(new HashMap<>()));
+        ;
         try {
-            Field componentLoader = KEngineLauncher.class.getDeclaredField("componentLoader");
-            Field serviceLoader = KEngineLauncher.class.getDeclaredField("serviceLoader");
-            Field engineComponents = KEngineLauncher.class.getDeclaredField("engineComponents");
+            Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
 
-            componentLoader.setAccessible(true);
-            serviceLoader.setAccessible(true);
             engineComponents.setAccessible(true);
-
-            Assertions.assertEquals(KStandardComponentLoader.class, componentLoader.get(hypervisor).getClass());
-            Assertions.assertEquals(KStandardServiceLoader.class, serviceLoader.get(hypervisor).getClass());
 
             Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
             Assertions.assertTrue(mapOfComponents.containsKey("TestComponent"));
