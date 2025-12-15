@@ -205,7 +205,7 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
         try {
 
             if (isAsync) {
-                TimeUnit.SECONDS.sleep(4);
+                TimeUnit.SECONDS.sleep(8);
             }
 
             Map<String, KServiceEntry> component1Services = (Map<String, KServiceEntry>) this.componentServicesField.get(this.component1);
