@@ -36,7 +36,7 @@ final class KonnaBootstrap {
 
         private final KJsonValidator validator;
 
-        public Schema() {
+        Schema() {
             var builder = new KJsonPropertyValidationInfo.Builder();
 
             this.validator = new KJsonObjectValidator(
@@ -69,16 +69,19 @@ final class KonnaBootstrap {
         }
 
         @Override
-        public void validate(KJsonValue value) {
+        public void validate(final KJsonValue value) {
             this.validator.validate(value);
         }
     }
 
+    /**
+     * Json schema for Konna bootstrap config.
+     */
     public static final KJsonValidator SCHEMA = new Schema();
 
     private final KJsonValue config;
 
-    public KonnaBootstrap(KJsonValue validatedConfig) {
+    KonnaBootstrap(final KJsonValue validatedConfig) {
         this.config = validatedConfig;
     }
 

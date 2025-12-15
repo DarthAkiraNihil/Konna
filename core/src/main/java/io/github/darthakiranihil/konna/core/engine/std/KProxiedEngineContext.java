@@ -37,7 +37,8 @@ import java.util.UUID;
 
 /**
  * Implementation of {@link KEngineContext} that requires ready instances of all
- * context class in order to construct the context.
+ * context classes in order to construct the context. It is basically just a proxy
+ * to all context services such as resource loader, message system etc.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -98,81 +99,88 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public KAsset loadAsset(String assetId, String typeAlias) {
+    public KAsset loadAsset(final String assetId, final String typeAlias) {
         return this.assetLoader.loadAsset(assetId, typeAlias);
     }
 
     @Override
-    public void addAssetTypeAlias(String typeAlias, KJsonValidator schema) {
+    public void addAssetTypeAlias(final String typeAlias, final KJsonValidator schema) {
         this.assetLoader.addAssetTypeAlias(typeAlias, schema);
     }
 
     @Override
-    public void addNewAsset(String assetId, String internalType, KJsonValue rawDefinition) {
+    public void addNewAsset(
+        final String assetId,
+        final String internalType,
+        final KJsonValue rawDefinition
+    ) {
         this.assetLoader.addNewAsset(assetId, internalType, rawDefinition);
     }
 
     @Override
-    public void addProtocol(KProtocol protocol) {
+    public void addProtocol(final KProtocol protocol) {
         this.resourceLoader.addProtocol(protocol);
     }
 
     @Override
-    public KResource loadResource(String path) {
+    public KResource loadResource(final String path) {
         return this.resourceLoader.loadResource(path);
     }
 
     @Override
-    public KResource loadResource(String path, KProtocol protocol) {
+    public KResource loadResource(final String path, final KProtocol protocol) {
         return this.resourceLoader.loadResource(path, protocol);
     }
 
     @Override
-    public <T> void registerEvent(KEvent<T> event) {
+    public <T> void registerEvent(final KEvent<T> event) {
         this.eventSystem.registerEvent(event);
     }
 
     @Override
-    public void registerEvent(KSimpleEvent event) {
+    public void registerEvent(final KSimpleEvent event) {
         this.eventSystem.registerEvent(event);
     }
 
     @Override
-    public @Nullable <T> KEvent<T> getEvent(String eventName) {
+    public @Nullable <T> KEvent<T> getEvent(final String eventName) {
         return this.eventSystem.getEvent(eventName);
     }
 
     @Override
-    public @Nullable KSimpleEvent getSimpleEvent(String eventName) {
+    public @Nullable KSimpleEvent getSimpleEvent(final String eventName) {
         return this.eventSystem.getSimpleEvent(eventName);
     }
 
     @Override
-    public void deliverMessage(KMessage message) {
+    public void deliverMessage(final KMessage message) {
         this.messageSystem.deliverMessage(message);
     }
 
     @Override
-    public void deliverMessageSync(KMessage message) {
+    public void deliverMessageSync(final KMessage message) {
         this.messageSystem.deliverMessageSync(message);
     }
 
     @Override
     public KMessageSystem addMessageRoute(
-        String messageId,
-        String destinationEndpoint,
-        List<Class<? extends KTunnel>> tunnels
+        final String messageId,
+        final String destinationEndpoint,
+        final List<Class<? extends KTunnel>> tunnels
     ) {
         return this.messageSystem.addMessageRoute(messageId, destinationEndpoint, tunnels);
     }
 
     @Override
-    public KMessageSystem addMessageRoute(String messageId, String destinationEndpoint) {
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final String destinationEndpoint
+    ) {
         return this.messageSystem.addMessageRoute(messageId, destinationEndpoint);
     }
 
     @Override
-    public void registerComponent(KComponent component) {
+    public void registerComponent(final KComponent component) {
         this.messageSystem.registerComponent(component);
     }
 
@@ -182,27 +190,34 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public <T> T createObject(Class<? extends T> clazz, KContainer container, Object... nonInjectedArgs) {
+    public <T> T createObject(
+        final Class<? extends T> clazz,
+        final KContainer container,
+        final Object... nonInjectedArgs
+    ) {
         return this.activator.createObject(clazz, container, nonInjectedArgs);
     }
 
     @Override
-    public <T> T createObject(Class<? extends T> clazz, Object... nonInjectedArgs) {
+    public <T> T createObject(final Class<? extends T> clazz, final Object... nonInjectedArgs) {
         return this.activator.createObject(clazz, nonInjectedArgs);
     }
 
     @Override
-    public <T> void deleteObject(T object) {
+    public <T> void deleteObject(final T object) {
         this.activator.deleteObject(object);
     }
 
     @Override
-    public void pushObjectToRegistry(KObject obj, KObjectInstantiationType instantiationType) {
+    public void pushObjectToRegistry(
+        final KObject obj,
+        final KObjectInstantiationType instantiationType
+    ) {
         this.objectRegistry.pushObjectToRegistry(obj, instantiationType);
     }
 
     @Override
-    public void removeObjectFromRegistry(UUID objectId) {
+    public void removeObjectFromRegistry(final UUID objectId) {
         this.objectRegistry.removeObjectFromRegistry(objectId);
     }
 
@@ -224,6 +239,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     @Override
     public void handleShutdown() {
         this.messageSystem.stopPolling();
-        this.eventSystem.stopPolling();;
+        this.eventSystem.stopPolling();
     }
 }

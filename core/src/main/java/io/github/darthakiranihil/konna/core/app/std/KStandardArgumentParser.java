@@ -25,10 +25,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Standard implementation of {@link KArgumentParser}.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KStandardArgumentParser implements KArgumentParser {
 
     @Override
-    public KApplicationFeatures parse(String[] args, List<KApplicationArgument> options) {
+    public KApplicationFeatures parse(
+        final String[] args,
+        final List<KApplicationArgument> options
+    ) {
 
         Map<String, String> features = new HashMap<>();
 

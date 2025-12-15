@@ -18,8 +18,23 @@ package io.github.darthakiranihil.konna.core.app;
 
 import java.util.List;
 
+/**
+ * Interface for an argument parser which purpose is
+ * to take args passed to {@code main} method, validate them
+ * and build corresponding application features, that may be references by
+ * any part of Konna system.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public interface KArgumentParser {
 
+    /**
+     * Parses application arguments and builds application features.
+     * @param args Args, passed to {@code main} method
+     * @param options Parsing options
+     * @return Built application features
+     */
     KApplicationFeatures parse(String[] args, List<KApplicationArgument> options);
 
 }

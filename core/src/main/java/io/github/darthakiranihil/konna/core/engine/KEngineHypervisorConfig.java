@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
-import io.github.darthakiranihil.konna.core.message.KEventQueue;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import org.jspecify.annotations.NullMarked;

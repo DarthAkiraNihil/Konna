@@ -22,7 +22,6 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
@@ -207,8 +206,17 @@ public abstract class KComponent extends KObject {
             .createObject(KMessenger.class, name);
     }
 
+    /**
+     * Applies custom config to this component.
+     * @param config Custom component config.
+     */
     protected abstract void applyConfig(KJsonValue config);
 
+    /**
+     * Performs graceful shutdown for this component.
+     * It is highly recommended to override this method if there is no simple
+     * logic for its disposing.
+     */
     protected void shutdown() {
         KSystemLogger.info("Component %s has been shut down", this.name);
     }

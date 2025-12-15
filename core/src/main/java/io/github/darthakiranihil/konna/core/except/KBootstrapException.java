@@ -16,18 +16,20 @@
 
 package io.github.darthakiranihil.konna.core.except;
 
+/**
+ * Exception thrown when application fails to start.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KBootstrapException extends KException {
 
-    public KBootstrapException(String message, Throwable cause) {
+    public KBootstrapException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public KBootstrapException(String message) {
+    public KBootstrapException(final String message) {
         super(message);
     }
 
-    @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.FATAL;
-    }
 }

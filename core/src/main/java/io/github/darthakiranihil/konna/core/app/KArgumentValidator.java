@@ -16,14 +16,28 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+/**
+ * Interface for an application argument validator
+ * that is used in argument parsing.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KArgumentValidator {
 
+    /**
+     * Default validator that checks if value is a string,
+     * so it will always return {@code true}.
+     */
     KArgumentValidator STRING = (String arg) -> true;
+    /**
+     * Default validator that checks if value is an integer.
+     */
     KArgumentValidator INTEGER = (String arg) -> {
 
         try {
-            int _i = Integer.parseInt(arg);
+            int i = Integer.parseInt(arg);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -31,6 +45,11 @@ public interface KArgumentValidator {
 
     };
 
+    /**
+     * Validates passed argument.
+     * @param arg Validated argument
+     * @return {@code true} if the argument is valid, else {@code false}
+     */
     boolean validate(String arg);
 
 }

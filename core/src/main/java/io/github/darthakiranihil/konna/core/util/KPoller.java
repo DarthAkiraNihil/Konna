@@ -16,8 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
-import io.github.darthakiranihil.konna.core.message.KEventQueue;
-
+/**
+ * Utility interface for objects that start a queue in a separated
+ * thread in order to handle it async-like.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public interface KPoller {
 
     /**

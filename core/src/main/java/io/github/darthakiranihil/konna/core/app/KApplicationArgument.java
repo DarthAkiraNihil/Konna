@@ -20,6 +20,21 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Representation of argument parsing option used by {@link KArgumentParser}.
+ *
+ * @param shortKey Short key of the arg (for e.g -a123)
+ * @param longKey Long key of the arg (for e.g --arg=123)
+ * @param kQualified Flag if the argument is started with "K"
+ *                   (if {@code true}, it should be -Ka or --Karg if short
+ *                   and long keys are set as a and accordingly (default is {@code true}
+ * @param defaultValue Default value of the arg
+ *                     (if {@code null} - the arg is considered required)
+ * @param validator Validator for this argument (default is {@link KArgumentValidator#STRING})
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public record KApplicationArgument(
     String shortKey,
     String longKey,
@@ -28,6 +43,10 @@ public record KApplicationArgument(
     KArgumentValidator validator
 ) {
 
+    /**
+     * Default Konna arguments options that will be used no matter
+     * if custom options are provided to {@link io.github.darthakiranihil.konna.core.Konna}.
+     */
     public static final List<KApplicationArgument> DEFAULT_ARGS = List.of();
 
     public KApplicationArgument(

@@ -52,8 +52,16 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
      * @param instantiationType Instantiation type of the object
      */
     @Override
-    public void pushObjectToRegistry(final KObject obj, final KObjectInstantiationType instantiationType) {
-        this.objects.add(new KObjectRegistryRecord(obj, instantiationType));
+    public void pushObjectToRegistry(
+        final KObject obj,
+        final KObjectInstantiationType instantiationType
+    ) {
+        this.objects.add(
+            new KObjectRegistryRecord(
+                obj,
+                instantiationType
+            )
+        );
     }
 
     /**

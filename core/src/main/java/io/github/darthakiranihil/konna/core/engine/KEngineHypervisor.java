@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
-import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
@@ -45,8 +44,17 @@ import java.util.*;
 @KEnvironmentContainerModifier
 public class KEngineHypervisor extends KObject {
 
+    /**
+     * Configuration of this hypervisor.
+     */
     protected final KEngineHypervisorConfig config;
+    /**
+     * Loaded engine components.
+     */
     protected final Map<String, KComponent> engineComponents;
+    /**
+     * Loaded engine context.
+     */
     protected @Nullable KEngineContext ctx;
 
     /**
@@ -67,7 +75,14 @@ public class KEngineHypervisor extends KObject {
         this.ctx = null;
     }
 
-    public void launch(KApplicationFeatures features) {
+    /**
+     * Launches the hypervisor with subsystem initialization,
+     * loading context, components and its services.
+     * @param features Application features, retrieved from
+     *                 {@link io.github.darthakiranihil.konna.core.app.KArgumentParser}
+     *                 after parsing arguments
+     */
+    public void launch(final KApplicationFeatures features) {
 
         KEngineContextLoader contextLoader;
         try {
@@ -174,6 +189,10 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
+    /**
+     * Performs graceful shutdown of this hypervisor.
+     * It won't have any effect if there is no loaded engine context.
+     */
     public void shutdown() {
         if (this.ctx == null) {
             return;

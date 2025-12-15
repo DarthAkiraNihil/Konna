@@ -43,6 +43,9 @@ public interface KEngineContext extends
     KResourceLoader,
     KAssetLoader {
 
+    /**
+     * Executes graceful shutdown for this context.
+     */
     void handleShutdown();
 
 }

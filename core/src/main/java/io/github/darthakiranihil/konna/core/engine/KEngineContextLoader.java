@@ -29,6 +29,9 @@ public interface KEngineContextLoader {
     /**
      * Loads the engine context - initializes all required classes
      * and returns it.
+     * @param features Application features, retrieved from
+     *                 {@link io.github.darthakiranihil.konna.core.app.KArgumentParser}
+     *                 after parsing application arguments
      * @return Loaded context
      */
     KEngineContext load(KApplicationFeatures features);

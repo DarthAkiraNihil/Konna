@@ -17,9 +17,16 @@
 package io.github.darthakiranihil.konna.core.app.std;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * Standard implementation of {@link KApplicationFeatures}.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public class KStandardApplicationFeatures implements KApplicationFeatures {
 
     private final Map<String, String> features;
@@ -29,7 +36,7 @@ public class KStandardApplicationFeatures implements KApplicationFeatures {
     }
 
     @Override
-    public String getFeature(String key) {
+    public @Nullable String getFeature(final String key) {
         return this.features.get(key);
     }
 

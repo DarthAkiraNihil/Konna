@@ -65,7 +65,10 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             }
             this.unusedObjects.add(object);
             if (object instanceof KObject) {
-                objectRegistry.pushObjectToRegistry((KObject) object, KObjectInstantiationType.POOLABLE);
+                objectRegistry.pushObjectToRegistry(
+                    (KObject) object,
+                    KObjectInstantiationType.POOLABLE
+                );
             }
         }
     }

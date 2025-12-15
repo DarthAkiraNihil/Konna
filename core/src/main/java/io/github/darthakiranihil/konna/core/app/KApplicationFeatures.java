@@ -16,8 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import org.jspecify.annotations.Nullable;
+
+/**
+ * Interface for a simple container that contain
+ * different values that may influence application functionality.
+ * The container is read-only.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 public interface KApplicationFeatures {
 
-    String getFeature(String key);
+    /**
+     * Gets value for specific feature.
+     * @param key Feature key
+     * @return Value of this feature.
+     */
+    @Nullable String getFeature(String key);
 
 }
