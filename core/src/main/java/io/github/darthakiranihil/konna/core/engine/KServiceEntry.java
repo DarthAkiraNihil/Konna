@@ -101,6 +101,7 @@ public final class KServiceEntry {
         try {
             endpoint.invoke(this.service, parameters);
             KSystemLogger.debug(
+                "service_entry",
                 "Successfully called endpoint %s of service %s",
                 route,
                 this.service

@@ -75,7 +75,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
     public <T> void registerEvent(final KEvent<T> event) {
         this.events.put(event.name(), event);
         event.setEventQueue(this);
-        KSystemLogger.debug("Registered event name=%s", event.name());
+        KSystemLogger.debug(this.name, "Registered event name=%s", event.name());
     }
 
     /**
@@ -87,7 +87,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
     public void registerEvent(final KSimpleEvent event) {
         this.simpleEvents.put(event.name(), event);
         event.setEventQueue(this);
-        KSystemLogger.debug("Registered simple event name=%s", event.name());
+        KSystemLogger.debug(this.name, "Registered simple event name=%s", event.name());
     }
 
     @SuppressWarnings("unchecked")
@@ -113,7 +113,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
     public <T> void queueEvent(final KEvent<T> event, final T arg) {
         this.eventQueue.add(() -> {
             event.invokeSync(arg);
-            KSystemLogger.debug("Invoked event %s", event);
+            KSystemLogger.debug(this.name, "Invoked event %s", event);
         });
     }
 
@@ -121,7 +121,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
     public void queueEvent(final KSimpleEvent event) {
         this.eventQueue.add(() -> {
             event.invokeSync();
-            KSystemLogger.debug("Invoked event %s", event);
+            KSystemLogger.debug(this.name, "Invoked event %s", event);
         });
     }
 
@@ -142,6 +142,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
     private void watch() {
 
         KSystemLogger.info(
+            this.name,
             "Event watcher thread has been started. Now polling events [host = %s]",
             this
         );
@@ -156,6 +157,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
         }
 
         KSystemLogger.info(
+            this.name,
             "Event watcher thread has been stopped [host = %s]",
             this
         );

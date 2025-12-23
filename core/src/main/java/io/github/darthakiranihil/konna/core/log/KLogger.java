@@ -80,62 +80,71 @@ public abstract class KLogger extends KObject {
 
     /**
      * Logs a message with {@link KLogLevel}.FATAL level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public abstract void fatal(String message, Object... args);
+    public abstract void fatal(String tag, String message, Object... args);
 
     /**
      * Logs a throwable with {@link KLogLevel}.FATAL level.
+     * @param tag Log message tag
      * @param throwable Throwable to log
      */
-    public abstract void fatal(Throwable throwable);
+    public abstract void fatal(String tag, Throwable throwable);
 
     /**
      * Logs a message with {@link KLogLevel}.ERROR level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public abstract void error(String message, Object... args);
+    public abstract void error(String tag, String message, Object... args);
 
     /**
      * Logs a throwable with {@link KLogLevel}.ERROR level.
+     * @param tag Log message tag
      * @param throwable Throwable to log
      */
-    public abstract void error(Throwable throwable);
+    public abstract void error(String tag, Throwable throwable);
 
     /**
      * Logs a message with {@link KLogLevel}.WARNING level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public abstract void warning(String message, Object... args);
+    public abstract void warning(String tag, String message, Object... args);
 
     /**
      * Logs a throwable with {@link KLogLevel}.WARNING level.
+     * @param tag Log message tag
      * @param throwable Throwable to log
      */
-    public abstract void warning(Throwable throwable);
+    public abstract void warning(String tag, Throwable throwable);
 
     /**
      * Logs a message with {@link KLogLevel}.INFO level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public abstract void info(String message, Object... args);
+    public abstract void info(String tag, String message, Object... args);
 
     /**
      * Logs a message with {@link KLogLevel}.DEBUG level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public abstract void debug(String message, Object... args);
+    public abstract void debug(String tag, String message, Object... args);
 
     /**
      * Logs a message with {@link KLogLevel}.TRACE level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public abstract void trace(String message, Object... args);
+    public abstract void trace(String tag, String message, Object... args);
 
 }

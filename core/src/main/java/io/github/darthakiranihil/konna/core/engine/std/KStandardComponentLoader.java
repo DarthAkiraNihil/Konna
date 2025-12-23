@@ -47,7 +47,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
 
     public KStandardComponentLoader(@KInject final KJsonParser parser) {
         super(
-            KStandardComponentLoader.class.getSimpleName(),
+            "std_component_loader",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD
@@ -66,7 +66,11 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
-                KSystemLogger.fatal("Cannot load component %s: meta info not provided", component);
+                KSystemLogger.fatal(
+                    this.name,
+                    "Cannot load component %s: meta info not provided",
+                    component
+                );
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: meta info not provided",
@@ -78,10 +82,11 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
             KComponentMetaInfo meta = component.getAnnotation(KComponentMetaInfo.class);
             String componentName = meta.name();
 
-            KSystemLogger.info("Loading component %s", componentName);
+            KSystemLogger.info(this.name, "Loading component %s", componentName);
             
             if (loadedComponentMap.containsKey(componentName)) {
                 KSystemLogger.fatal(
+                    this.name,
                     "Cannot load component %s: there is a component with the same name: %s",
                     component,
                     componentName
@@ -123,9 +128,9 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
                 componentName,
                 loadedComponent
             );
-            KSystemLogger.info("Loaded component %s", componentName);
+            KSystemLogger.info(this.name, "Loaded component %s", componentName);
         } catch (Exception e) {
-            KSystemLogger.fatal(e);
+            KSystemLogger.fatal(this.name, e);
             throw new KComponentLoadingException(e);
         }
     }

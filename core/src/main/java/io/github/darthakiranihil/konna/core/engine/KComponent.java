@@ -71,10 +71,11 @@ public abstract class KComponent extends KObject {
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
 
         String componentClass = this.getClass().toString();
-        KSystemLogger.info("Creating component %s", componentClass);
+        KSystemLogger.info(name, "Creating component %s", componentClass);
 
         this.services = this.loadServices(ctx, servicesPackage, serviceLoader);
         KSystemLogger.info(
+            name,
             "Loaded %d services of component %s",
             this.services.size(),
             componentClass
@@ -82,16 +83,17 @@ public abstract class KComponent extends KObject {
 
         this.messenger = this.loadMessenger(ctx, name);
         KSystemLogger.info(
+            name,
             "Created messenger %s for the component %s",
             this.messenger,
             componentClass
         );
 
-        KSystemLogger.info("Applying config for %s", componentClass);
+        KSystemLogger.info(name, "Applying config for %s", componentClass);
         this.applyConfig(config);
 
 
-        KSystemLogger.info("Created component %s", componentClass);
+        KSystemLogger.info(name, "Created component %s", componentClass);
     }
 
     /**
@@ -117,6 +119,7 @@ public abstract class KComponent extends KObject {
         try {
             serviceEntry.callEndpoint(route, message);
             KSystemLogger.debug(
+                this.name,
                 "Successfully accepted message %s. Destination: %s.%s",
                 message,
                 this.name,
@@ -124,6 +127,7 @@ public abstract class KComponent extends KObject {
             );
         } catch (KEndpointRoutingException e) {
             KSystemLogger.warning(
+                this.name,
                 "%s: Unexpected error occurred when accepting message: %s",
                 this.getClass().getCanonicalName(),
                 e
@@ -168,6 +172,7 @@ public abstract class KComponent extends KObject {
             KComponentServiceMetaInfo.class
         );
         KSystemLogger.info(
+            this.name,
             "Found %d services of component %s",
             serviceClasses.size(),
             this.getClass().getCanonicalName()
@@ -185,7 +190,7 @@ public abstract class KComponent extends KObject {
         } catch (
             KServiceLoadingException e
         ) {
-            KSystemLogger.fatal(e);
+            KSystemLogger.fatal(this.name, e);
             throw new KComponentLoadingException(e);
         }
         return instantiatedServices;
@@ -218,6 +223,6 @@ public abstract class KComponent extends KObject {
      * logic for its disposing.
      */
     protected void shutdown() {
-        KSystemLogger.info("Component %s has been shut down", this.name);
+        KSystemLogger.info(this.name, "Component %s has been shut down", this.name);
     }
 }

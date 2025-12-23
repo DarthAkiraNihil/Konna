@@ -158,7 +158,7 @@ public final class Konna extends KObject implements Runnable {
         } catch (IOException e) {
             return;
         } catch (KJsonValidationError e) {
-            KSystemLogger.fatal(e);
+            KSystemLogger.fatal(this.name, e);
             return;
         }
 
@@ -177,7 +177,7 @@ public final class Konna extends KObject implements Runnable {
     }
 
     private void shutdown() {
-        KSystemLogger.info("Shutdown initiated");
+        KSystemLogger.info(this.name, "Shutdown initiated");
         if (this.hypervisor == null) {
             return;
         }
@@ -185,6 +185,6 @@ public final class Konna extends KObject implements Runnable {
         this.running = false;
         this.hypervisor.shutdown();
         this.hypervisorThread = null;
-        KSystemLogger.info("Shutdown finished");
+        KSystemLogger.info(this.name, "Shutdown finished");
     }
 }

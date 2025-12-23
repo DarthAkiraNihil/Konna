@@ -28,10 +28,11 @@ public interface KLogHandler {
     /**
      * Handles log in its own way.
      * @param logLevel Log message level
+     * @param tag Log message tag
      * @param message Log message itself
      * @param args Format arguments
      */
-    void handleLog(KLogLevel logLevel, String message, Object... args);
+    void handleLog(KLogLevel logLevel, String tag, String message, Object... args);
 
     /**
      * Return state of custom {@link KLogFormatter} containment inside implementation

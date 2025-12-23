@@ -65,7 +65,7 @@ public class KEngineHypervisor extends KObject {
         final KEngineHypervisorConfig config
     ) {
         super(
-            KEngineHypervisor.class.getSimpleName(),
+            "konna_hypervisor",
             KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
         );
 
@@ -97,14 +97,16 @@ public class KEngineHypervisor extends KObject {
 
         this.ctx = contextLoader.load(features);
 
-        KSystemLogger.info("Launching engine hypervisor [config = %s]", config);
+        KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
+            this.name,
             "index: indexed %d classes in %d packages",
             ctx.getClassIndex().size(),
             ctx.getPackageIndex().size()
         );
         var envs = ctx.getEnvironments();
         KSystemLogger.info(
+            this.name,
             "container_resolver: created %d environments: %s",
             envs.size(),
             envs
@@ -119,9 +121,9 @@ public class KEngineHypervisor extends KObject {
         try {
 
             KComponentLoader componentLoader = ctx.createObject(config.componentLoader());
-            KSystemLogger.info("Created component loader %s", config.componentLoader());
+            KSystemLogger.info(this.name, "Created component loader %s", config.componentLoader());
             KServiceLoader serviceLoader = ctx.createObject(config.serviceLoader());
-            KSystemLogger.info("Created service loader %s", config.serviceLoader());
+            KSystemLogger.info(this.name, "Created service loader %s", config.serviceLoader());
 
             for (var component: config.components()) {
                 componentLoader.load(
@@ -132,12 +134,12 @@ public class KEngineHypervisor extends KObject {
                 );
             }
 
-            KSystemLogger.info("Loaded %d components", engineComponents.size());
+            KSystemLogger.info(this.name, "Loaded %d components", engineComponents.size());
 
         } catch (
             KComponentLoadingException e
         ) {
-            KSystemLogger.error(e);
+            KSystemLogger.error(this.name, e);
             throw new KHypervisorInitializationException(e);
         }
 
@@ -157,6 +159,7 @@ public class KEngineHypervisor extends KObject {
         });
 
         KSystemLogger.info(
+            this.name,
             "Registered %d components in the message system",
             engineComponents.size()
         );
@@ -168,6 +171,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(
+            this.name,
             "%d message route configurers have been executed",
             config.messageRoutesConfigurers().size()
         );
@@ -178,6 +182,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(
+            this.name,
             "%d event registerers have been executed",
             config.eventRegisterers().size()
         );
@@ -185,6 +190,7 @@ public class KEngineHypervisor extends KObject {
         engineComponents.values().forEach(KComponent::postInit);
 
         KSystemLogger.info(
+            this.name,
             "Components' post-init is completed"
         );
     }
