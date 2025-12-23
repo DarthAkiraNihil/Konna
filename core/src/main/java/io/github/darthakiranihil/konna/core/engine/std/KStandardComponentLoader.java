@@ -66,7 +66,11 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
         try {
 
             if (!component.isAnnotationPresent(KComponentMetaInfo.class)) {
-                KSystemLogger.fatal(this.name, "Cannot load component %s: meta info not provided", component);
+                KSystemLogger.fatal(
+                    this.name,
+                    "Cannot load component %s: meta info not provided",
+                    component
+                );
                 throw new KComponentLoadingException(
                     String.format(
                         "Cannot load component %s: meta info not provided",

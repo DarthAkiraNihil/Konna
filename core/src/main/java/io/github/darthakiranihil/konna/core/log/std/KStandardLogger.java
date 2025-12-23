@@ -100,7 +100,12 @@ public final class KStandardLogger extends KLogger {
         this.log(KLogLevel.TRACE, tag, message, args);
     }
 
-    private void log(final KLogLevel level, final String tag, final String message, final Object... args) {
+    private void log(
+        final KLogLevel level,
+        final String tag,
+        final String message,
+        final Object... args
+    ) {
 
         if (level.ordinal() > this.logLevel.ordinal()) {
             return;

@@ -61,7 +61,12 @@ public class KFileLogHandler extends KObject implements KLogHandler, AutoCloseab
     }
 
     @Override
-    public void handleLog(final KLogLevel logLevel, final String tag, final String message, final Object... args) {
+    public void handleLog(
+        final KLogLevel logLevel,
+        final String tag,
+        final String message,
+        final Object... args
+    ) {
         if (this.fileWriter == null) {
             System.out.println("Warning: file writer of KFileLogHandler is null!");
             return;

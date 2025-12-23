@@ -47,7 +47,12 @@ public class KTerminalLogHandler extends KObject implements KLogHandler {
     }
 
     @Override
-    public void handleLog(final KLogLevel logLevel, final String tag, final String message, final Object... args) {
+    public void handleLog(
+        final KLogLevel logLevel,
+        final String tag,
+        final String message,
+        final Object... args
+    ) {
 
         System.out.println(this.logFormatter.format(logLevel, tag, message, args));
 

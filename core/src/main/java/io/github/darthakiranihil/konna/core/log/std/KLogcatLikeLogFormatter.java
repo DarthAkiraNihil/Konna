@@ -133,7 +133,12 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
     }
 
     @Override
-    public String format(final KLogLevel level, final String tag, final String message, final Object... args) {
+    public String format(
+        final KLogLevel level,
+        final String tag,
+        final String message,
+        final Object... args
+    ) {
         if (this.doNotColorize) {
             return String.format(
                 "[%30s]\t%24s\t%64s\t%s %s",
