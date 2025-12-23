@@ -56,51 +56,51 @@ public final class KStandardLogger extends KLogger {
     }
 
     @Override
-    public void fatal(final String message, final Object... args) {
-        this.log(KLogLevel.FATAL, message, args);
+    public void fatal(final String tag, final String message, final Object... args) {
+        this.log(KLogLevel.FATAL, tag, message, args);
     }
 
     @Override
-    public void fatal(final Throwable throwable) {
-        this.log(KLogLevel.FATAL, this.prepareThrowable(throwable));
+    public void fatal(final String tag, final Throwable throwable) {
+        this.log(KLogLevel.FATAL, tag, this.prepareThrowable(throwable));
     }
 
     @Override
-    public void error(final String message, final Object... args) {
-        this.log(KLogLevel.ERROR, message, args);
+    public void error(final String tag, final String message, final Object... args) {
+        this.log(KLogLevel.ERROR, tag, message, args);
     }
 
     @Override
-    public void error(final Throwable throwable) {
-        this.log(KLogLevel.ERROR, this.prepareThrowable(throwable));
+    public void error(final String tag, final Throwable throwable) {
+        this.log(KLogLevel.ERROR, tag, this.prepareThrowable(throwable));
     }
 
     @Override
-    public void warning(final String message, final Object... args) {
-        this.log(KLogLevel.WARNING, message, args);
+    public void warning(final String tag, final String message, final Object... args) {
+        this.log(KLogLevel.WARNING, tag, message, args);
     }
 
     @Override
-    public void warning(final Throwable throwable) {
-        this.log(KLogLevel.WARNING, this.prepareThrowable(throwable));
+    public void warning(final String tag, final Throwable throwable) {
+        this.log(KLogLevel.WARNING, tag, this.prepareThrowable(throwable));
     }
 
     @Override
-    public void info(final String message, final Object... args) {
-        this.log(KLogLevel.INFO, message, args);
+    public void info(final String tag, final String message, final Object... args) {
+        this.log(KLogLevel.INFO, tag, message, args);
     }
 
     @Override
-    public void debug(final String message, final Object... args) {
-        this.log(KLogLevel.DEBUG, message, args);
+    public void debug(final String tag, final String message, final Object... args) {
+        this.log(KLogLevel.DEBUG, tag, message, args);
     }
 
     @Override
-    public void trace(final String message, final Object... args) {
-        this.log(KLogLevel.TRACE, message, args);
+    public void trace(final String tag, final String message, final Object... args) {
+        this.log(KLogLevel.TRACE, tag, message, args);
     }
 
-    private void log(final KLogLevel level, final String message, final Object... args) {
+    private void log(final KLogLevel level, final String tag, final String message, final Object... args) {
 
         if (level.ordinal() > this.logLevel.ordinal()) {
             return;
@@ -109,10 +109,10 @@ public final class KStandardLogger extends KLogger {
         for (var handler: this.logHandlers) {
             synchronized (KStandardLogger.LOG_LOCK) {
                 if (handler.hasFormatter()) {
-                    handler.handleLog(level, message, args);
+                    handler.handleLog(level, tag, message, args);
                 } else {
                     handler.handleLog(
-                        level, this.defaultLogFormatter.format(level, message, args)
+                        level, tag, this.defaultLogFormatter.format(level, tag, message, args)
                     );
                 }
             }

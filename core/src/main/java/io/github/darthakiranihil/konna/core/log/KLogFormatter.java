@@ -29,10 +29,11 @@ public interface KLogFormatter {
      * Formats a log message.
      *
      * @param level Log message level
+     * @param tag Log message tag
      * @param message Base message
      * @param args Format arguments
      * @return Formatted log message
      */
-    String format(KLogLevel level, String message, Object... args);
+    String format(KLogLevel level, String tag, String message, Object... args);
 
 }

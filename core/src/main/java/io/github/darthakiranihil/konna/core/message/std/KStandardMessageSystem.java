@@ -26,6 +26,8 @@ import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -76,6 +78,13 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     public KStandardMessageSystem(
         @KInject final KActivator activator
     ) {
+        super(
+            "std_message_system",
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
+            )
+        );
         this.activator = activator;
 
         this.components = new HashMap<>();
@@ -87,6 +96,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     public void registerComponent(final KComponent component) {
         this.components.put(component.name(), component);
         KSystemLogger.debug(
+            this.name,
             "Component %s has been registered in message system",
             component.name()
         );
@@ -103,12 +113,14 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     public void deliverMessageSync(final KMessage message) {
 
         KSystemLogger.info(
+            this.name,
             "Delivering message %s",
             message
         );
 
         if (!this.routes.containsKey(message.messageId())) {
             KSystemLogger.warning(
+                this.name,
                 "Dropped message %s, as no route configured for it",
                 message
             );
@@ -140,6 +152,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     ) {
         this.internalAddMessageRoute(messageId, destinationEndpoint, tunnels);
         KSystemLogger.debug(
+            this.name,
             "Added message route for messageId=%s to destinationEndpoint=%s with %d tunnels",
             messageId,
             destinationEndpoint,
@@ -155,6 +168,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     ) {
         this.internalAddMessageRoute(messageId, destinationEndpoint, List.of());
         KSystemLogger.debug(
+            this.name,
             "Added message route for messageId=%s to destinationEndpoint=%s",
             messageId,
             destinationEndpoint
@@ -235,6 +249,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     private void watch() {
 
         KSystemLogger.info(
+            "message_watcher",
             "Message watcher thread has been started. Now polling messages [host = %s]",
             this
         );
@@ -250,6 +265,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
         }
 
         KSystemLogger.info(
+            "message_watcher",
             "Message watcher thread has been stopped [host = %s]",
             this
         );

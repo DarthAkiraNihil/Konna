@@ -34,6 +34,10 @@ import java.util.Arrays;
  */
 public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
 
+    private static final int RED_SHIFT = 16;
+    private static final int GREEN_SHIFT = 8;
+    private static final int COLOR_CHANNEL_VALUE = 256;
+
     private final boolean doNotColorize;
 
     /**
@@ -117,12 +121,24 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
         }
     }
 
+    private String getTagColor(final String tag) {
+        int hash = Math.abs(tag.hashCode());
+        int r = (hash >> RED_SHIFT) % COLOR_CHANNEL_VALUE;
+        int g = (hash >> GREEN_SHIFT) % COLOR_CHANNEL_VALUE;
+        int b = hash % COLOR_CHANNEL_VALUE;
+
+        return String.format(
+            "\033[38;2;%d;%d;%dm", r, g, b
+        );
+    }
+
     @Override
-    public String format(final KLogLevel level, final String message, final Object... args) {
+    public String format(final KLogLevel level, final String tag, final String message, final Object... args) {
         if (this.doNotColorize) {
             return String.format(
-                "[%30s]\t%64s\t%s %s",
+                "[%30s]\t%24s\t%64s\t%s %s",
                 Instant.now(),
+                tag,
                 this.getCallerPackage(),
                 KLogcatLikeLogFormatter.levelToChar(level),
                 String.format(message, args)
@@ -130,8 +146,10 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
         }
 
         return String.format(
-            "[%30s]\t%64s\t%s%s %s \033[0m %s%s\033[0m",
+            "[%30s]%s\t%24s\033[m\t%64s\t%s%s %s \033[0m %s%s\033[0m",
             Instant.now(),
+            this.getTagColor(tag),
+            tag,
             this.getCallerPackage(),
             KLogcatLikeLogFormatter.levelToStatusBackgroundColor(level),
             KLogcatLikeLogFormatter.levelStatusToForegroundColor(level),

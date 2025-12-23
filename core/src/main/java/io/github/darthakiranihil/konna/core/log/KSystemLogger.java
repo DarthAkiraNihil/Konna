@@ -86,107 +86,116 @@ public final class KSystemLogger extends KUninstantiable {
 
     /**
      * Logs a message with {@link KLogLevel}.FATAL level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public static void fatal(final String message, final Object... args) {
+    public static void fatal(final String tag, final String message, final Object... args) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.fatal(message, args);
+        PROXIED_LOGGER.fatal(tag, message, args);
     }
 
     /**
      * Logs a throwable with {@link KLogLevel}.FATAL level.
+     * @param tag Log message tag
      * @param throwable Throwable to log
      */
-    public static void fatal(final Throwable throwable) {
+    public static void fatal(final String tag, final Throwable throwable) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.fatal(throwable);
+        PROXIED_LOGGER.fatal(tag, throwable);
     }
 
     /**
      * Logs a message with {@link KLogLevel}.ERROR level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public static void error(final String message, final Object... args) {
+    public static void error(final String tag, final String message, final Object... args) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.error(message, args);
+        PROXIED_LOGGER.error(tag, message, args);
     }
 
     /**
      * Logs a throwable with {@link KLogLevel}.ERROR level.
+     * @param tag Log message tag
      * @param throwable Throwable to log
      */
-    public static void error(final Throwable throwable) {
+    public static void error(final String tag, final Throwable throwable) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.error(throwable);
+        PROXIED_LOGGER.error(tag, throwable);
     }
 
     /**
      * Logs a message with {@link KLogLevel}.WARNING level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public static void warning(final String message, final Object... args) {
+    public static void warning(final String tag, final String message, final Object... args) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.warning(message, args);
+        PROXIED_LOGGER.warning(tag, message, args);
     }
 
     /**
      * Logs a throwable with {@link KLogLevel}.WARNING level.
+     * @param tag Log message tag
      * @param throwable Throwable to log
      */
-    public static void warning(final Throwable throwable) {
+    public static void warning(final String tag, final Throwable throwable) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.warning(throwable);
+        PROXIED_LOGGER.warning(tag, throwable);
     }
 
     /**
      * Logs a message with {@link KLogLevel}.INFO level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public static void info(final String message, final Object... args) {
+    public static void info(final String tag, final String message, final Object... args) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.info(message, args);
+        PROXIED_LOGGER.info(tag, message, args);
     }
 
     /**
      * Logs a message with {@link KLogLevel}.DEBUG level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public static void debug(final String message, final Object... args) {
+    public static void debug(final String tag, final String message, final Object... args) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.debug(message, args);
+        PROXIED_LOGGER.debug(tag, message, args);
     }
 
     /**
      * Logs a message with {@link KLogLevel}.TRACE level.
+     * @param tag Log message tag
      * @param message Message template
      * @param args Format args
      */
-    public static void trace(final String message, final Object... args) {
+    public static void trace(final String tag, final String message, final Object... args) {
         if (!KSystemLogger.enabled) {
             return;
         }
-        PROXIED_LOGGER.trace(message, args);
+        PROXIED_LOGGER.trace(tag, message, args);
     }
 
 }

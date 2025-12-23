@@ -40,7 +40,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
     public KStandardServiceLoader() {
         super(
-            KStandardServiceLoader.class.getSimpleName(),
+            "std_service_loader",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD
@@ -56,10 +56,11 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
     ) {
 
         String serviceName = service.getAnnotation(KComponentServiceMetaInfo.class).name();
-        KSystemLogger.info("Loading service %s [%s]", serviceName, service);
+        KSystemLogger.info(this.name, "Loading service %s [%s]", serviceName, service);
 
         if (loadedServicesMap.containsKey(serviceName)) {
             KSystemLogger.fatal(
+                this.name,
             "Cannot load service %s: there is a service with the same name"
                 +   "within the component: %s",
                 service,
@@ -91,6 +92,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
             );
         }
         KSystemLogger.info(
+            this.name,
             "Found %d service endpoints in %s [%s]",
             endpoints.size(),
             serviceName,
@@ -109,6 +111,6 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
                 ctx
             )
         );
-        KSystemLogger.info("Loaded service %s [%s]", serviceName, service);
+        KSystemLogger.info(this.name, "Loaded service %s [%s]", serviceName, service);
     }
 }
