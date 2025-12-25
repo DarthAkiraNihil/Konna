@@ -10,3 +10,6 @@ include 'core'
 
 include 'libfrontend:libfrontend-opengl'
 findProject(':libfrontend:libfrontend-opengl')?.name = 'libfrontend-opengl'
+
+include 'backend:backend-lwjgl'
+findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
