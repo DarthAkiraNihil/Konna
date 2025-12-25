@@ -27,10 +27,27 @@ import java.nio.FloatBuffer;
  */
 public interface KGlfwGamepadState {
 
+    /**
+     * Returns buttons data from the struct.
+     * @return GLFW gamepad buttons data
+     */
     ByteBuffer getButtons();
+
+    /**
+     * Sets new buttons data to the struct.
+     * @param buttons New GLFW gamepad buttons data
+     */
     void setButtons(ByteBuffer buttons);
 
+    /**
+     * Returns axes data from the struct.
+     * @return GLFW gamepad axes data
+     */
     FloatBuffer getAxes();
+    /**
+     * Sets new axes data to the struct.
+     * @param axes New GLFW gamepad axes data
+     */
     void setAxes(FloatBuffer axes);
 
 }

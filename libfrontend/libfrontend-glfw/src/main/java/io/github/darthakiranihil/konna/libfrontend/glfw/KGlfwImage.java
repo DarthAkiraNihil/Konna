@@ -19,15 +19,27 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
 import java.nio.ByteBuffer;
 
 /**
- * Wrapper interface for GLFW image struct.
+ * Wrapper interface for GLFW image struct (readonly).
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
 public interface KGlfwImage {
 
+    /**
+     * Returns width of the image.
+     * @return Width of GLFW image
+     */
     int width();
+    /**
+     * Returns height of the image.
+     * @return Height of GLFW image
+     */
     int height();
+    /**
+     * Returns pixels of the image.
+     * @return Pixels of GLFW image
+     */
     ByteBuffer pixels();
 
 }

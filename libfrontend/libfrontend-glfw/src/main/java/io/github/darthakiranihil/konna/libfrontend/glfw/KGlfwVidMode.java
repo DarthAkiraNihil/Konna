@@ -17,18 +17,42 @@
 package io.github.darthakiranihil.konna.libfrontend.glfw;
 
 /**
- * Wrapper interface for GLFW VidMode struct.
+ * Wrapper interface for GLFW VidMode struct (readonly).
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
 public interface KGlfwVidMode {
 
+    /**
+     * Returns width of this video mode.
+     * @return Width of this GLFW video mode
+     */
     int width();
+    /**
+     * Returns height of this video mode.
+     * @return height of this GLFW video mode
+     */
     int height();
+    /**
+     * Returns red bits of this video mode.
+     * @return Red bits of this GLFW video mode
+     */
     int redBits();
+    /**
+     * Returns green bits of this video mode.
+     * @return Green bits of this GLFW video mode
+     */
     int greenBits();
+    /**
+     * Returns blue bits of this video mode.
+     * @return Blue bits of this GLFW video mode
+     */
     int blueBits();
+    /**
+     * Returns refresh rate of this video mode.
+     * @return Refresh rate of this GLFW video mode
+     */
     int refreshRate();
 
 }
