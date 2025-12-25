@@ -28,4 +28,6 @@
     <suppress checks="ConstantName" files="KStbImage.java"/>
 
     <suppress checks="MissingJavadocMethod" files="KStb[a-zA-Z0-9]*.java"/>
+
+    <suppress checks="ParameterName" files="KStbImageLwjgl.java"/>
 </suppressions>
