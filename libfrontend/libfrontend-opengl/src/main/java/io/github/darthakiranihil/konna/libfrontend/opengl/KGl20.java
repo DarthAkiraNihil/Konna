@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.libfrontend.opengl;
 
+import org.jspecify.annotations.Nullable;
+
 import java.nio.*;
 
 /**
@@ -1141,7 +1143,7 @@ public interface KGl20 {
     void glArrayElement(int i);
     void glBegin(int mode);
     void glBindTexture(int target, int texture);
-    void glBitmap(int w, int h, float xOrig, float yOrig, float xInc, float yInc, ByteBuffer data);
+    void glBitmap(int w, int h, float xOrig, float yOrig, float xInc, float yInc, @Nullable ByteBuffer data);
     void glBitmap(int w, int h, float xOrig, float yOrig, float xInc, float yInc, long data);
     void glBlendFunc(int sfactor, int dfactor);
     void glCallList(int list);
@@ -1277,7 +1279,7 @@ public interface KGl20 {
     long glGetPointer(int pname);
     void glGetPolygonStipple(ByteBuffer pattern);
     void glGetPolygonStipple(long pattern);
-    String glGetString(int name);
+    @Nullable String glGetString(int name);
     void glGetTexEnviv(int env, int pname, IntBuffer data);
     int glGetTexEnvi(int env, int pname);
     void glGetTexEnvfv(int env, int pname, FloatBuffer data);
@@ -1531,7 +1533,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        ByteBuffer pixels
+        @Nullable ByteBuffer pixels
     );
     void glTexImage1D(
         int target,
@@ -1551,7 +1553,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        ShortBuffer pixels
+        @Nullable ShortBuffer pixels
     );
     void glTexImage1D(
         int target,
@@ -1561,7 +1563,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        IntBuffer pixels
+        @Nullable IntBuffer pixels
     );
     void glTexImage1D(
         int target,
@@ -1571,7 +1573,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        FloatBuffer pixels
+        @Nullable FloatBuffer pixels
     );
     void glTexImage1D(
         int target,
@@ -1581,7 +1583,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        DoubleBuffer pixels
+        @Nullable DoubleBuffer pixels
     );
     void glTexImage2D(
         int target,
@@ -1592,7 +1594,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        ByteBuffer pixels
+        @Nullable ByteBuffer pixels
     );
     void glTexImage2D(
         int target,
@@ -1614,7 +1616,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        ShortBuffer pixels
+        @Nullable ShortBuffer pixels
     );
     void glTexImage2D(
         int target,
@@ -1625,7 +1627,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        IntBuffer pixels
+        @Nullable IntBuffer pixels
     );
     void glTexImage2D(
         int target,
@@ -1636,7 +1638,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        FloatBuffer pixels
+        @Nullable FloatBuffer pixels
     );
     void glTexImage2D(
         int target,
@@ -1647,7 +1649,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        DoubleBuffer pixels
+        @Nullable DoubleBuffer pixels
     );
     void glCopyTexImage1D(int target, int level, int internalFormat, int x, int y, int width, int border);
     void glCopyTexImage2D(int target, int level, int internalFormat, int x, int y, int width, int height, int border);
@@ -1915,7 +1917,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        short[] pixels
+        short @Nullable [] pixels
     );
     void glTexImage1D(
         int target,
@@ -1925,7 +1927,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        int[] pixels
+        int @Nullable [] pixels
     );
     void glTexImage1D(
         int target,
@@ -1935,7 +1937,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        float[] pixels
+        float @Nullable [] pixels
     );
     void glTexImage1D(
         int target,
@@ -1945,7 +1947,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        double[] pixels
+        double @Nullable [] pixels
     );
     void glTexImage2D(
         int target,
@@ -1956,7 +1958,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        short[] pixels
+        short @Nullable [] pixels
     );
     void glTexImage2D(
         int target,
@@ -1967,7 +1969,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        int[] pixels
+        int @Nullable [] pixels
     );
     void glTexImage2D(
         int target,
@@ -1978,7 +1980,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        float[] pixels
+        float @Nullable [] pixels
     );
     void glTexImage2D(
         int target,
@@ -1989,7 +1991,7 @@ public interface KGl20 {
         int border,
         int format,
         int type,
-        double[] pixels
+        double @Nullable [] pixels
     );
     void glTexParameteriv(int target, int pname, int[] params);
     void glTexParameterfv(int target, int pname, float[] params);
@@ -2056,12 +2058,12 @@ public interface KGl20 {
 
     // GL 1.2 Functions
 
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, ByteBuffer pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, @Nullable ByteBuffer pixels);
     void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, long pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, ShortBuffer pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, IntBuffer pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, FloatBuffer pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, DoubleBuffer pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, @Nullable ShortBuffer pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, @Nullable IntBuffer pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, @Nullable FloatBuffer pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, @Nullable DoubleBuffer pixels);
     void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, ByteBuffer pixels);
     void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, long pixels);
     void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, ShortBuffer pixels);
@@ -2074,10 +2076,10 @@ public interface KGl20 {
     void glDrawRangeElements(int mode, int start, int end, ByteBuffer indices);
     void glDrawRangeElements(int mode, int start, int end, ShortBuffer indices);
     void glDrawRangeElements(int mode, int start, int end, IntBuffer indices);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, short [] pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int [] pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, float [] pixels);
-    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, double [] pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, short @Nullable [] pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int @Nullable [] pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, float @Nullable [] pixels);
+    void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, double @Nullable [] pixels);
     void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, short[] pixels);
     void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int[] pixels);
     void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, float[] pixels);
@@ -2086,11 +2088,11 @@ public interface KGl20 {
     // GL 1.3 Functions
 
     void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int imageSize, long data);
-    void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, ByteBuffer data);
+    void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, @Nullable ByteBuffer data);
     void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, long data);
-    void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, ByteBuffer data);
+    void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, @Nullable ByteBuffer data);
     void glCompressedTexImage1D(int target, int level, int internalformat, int width, int border, int imageSize, long data);
-    void glCompressedTexImage1D(int target, int level, int internalformat, int width, int border, ByteBuffer data);
+    void glCompressedTexImage1D(int target, int level, int internalformat, int width, int border, @Nullable ByteBuffer data);
     void glCompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int imageSize, long data);
     void glCompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, ByteBuffer data);
     void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, long data);
@@ -2263,9 +2265,9 @@ public interface KGl20 {
     void glGetBufferSubData(int target, long offset, LongBuffer data);
     void glGetBufferSubData(int target, long offset, FloatBuffer data);
     void glGetBufferSubData(int target, long offset, DoubleBuffer data);
-    ByteBuffer glMapBuffer(int target, int access);
-    ByteBuffer glMapBuffer(int target, int access, ByteBuffer oldBuffer);
-    ByteBuffer glMapBuffer(int target, int access, long length, ByteBuffer oldBuffer);
+    @Nullable ByteBuffer glMapBuffer(int target, int access);
+    @Nullable ByteBuffer glMapBuffer(int target, int access, @Nullable ByteBuffer oldBuffer);
+    @Nullable ByteBuffer glMapBuffer(int target, int access, long length, @Nullable ByteBuffer oldBuffer);
     boolean glUnmapBuffer(int target);
     void glGetBufferParameteriv(int target, int pname, IntBuffer params);
     int glGetBufferParameteri(int target, int pname);
@@ -2320,7 +2322,7 @@ public interface KGl20 {
     boolean glIsShader(int shader);
     void glAttachShader(int program, int shader);
     void glDetachShader(int program, int shader);
-    void glShaderSource(int shader, LongBuffer strings, IntBuffer length);
+    void glShaderSource(int shader, LongBuffer strings, @Nullable IntBuffer length);
     void glShaderSource(int shader, CharSequence... strings);
     void glShaderSource(int shader, CharSequence string);
     void glCompileShader(int shader);
@@ -2350,23 +2352,23 @@ public interface KGl20 {
     int glGetShaderi(int shader, int pname);
     void glGetProgramiv(int program, int pname, IntBuffer params);
     int glGetProgrami(int program, int pname);
-    void glGetShaderInfoLog(int shader, IntBuffer length, ByteBuffer infoLog);
+    void glGetShaderInfoLog(int shader, @Nullable IntBuffer length, ByteBuffer infoLog);
     String glGetShaderInfoLog(int shader, int maxLength);
     String glGetShaderInfoLog(int shader);
-    void glGetProgramInfoLog(int program, IntBuffer length, ByteBuffer infoLog);
+    void glGetProgramInfoLog(int program, @Nullable IntBuffer length, ByteBuffer infoLog);
     String glGetProgramInfoLog(int program, int maxLength);
     String glGetProgramInfoLog(int program);
-    void glGetAttachedShaders(int program, IntBuffer count, IntBuffer shaders);
+    void glGetAttachedShaders(int program, @Nullable IntBuffer count, IntBuffer shaders);
     int glGetUniformLocation(int program, ByteBuffer name);
     int glGetUniformLocation(int program, CharSequence name);
-    void glGetActiveUniform(int program, int index, IntBuffer length, IntBuffer size, IntBuffer type, ByteBuffer name);
+    void glGetActiveUniform(int program, int index, @Nullable IntBuffer length, IntBuffer size, IntBuffer type, ByteBuffer name);
     String glGetActiveUniform(int program, int index, int maxLength, IntBuffer size, IntBuffer type);
     String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type);
     void glGetUniformfv(int program, int location, FloatBuffer params);
     float glGetUniformf(int program, int location);
     void glGetUniformiv(int program, int location, IntBuffer params);
     int glGetUniformi(int program, int location);
-    void glGetShaderSource(int shader, IntBuffer length, ByteBuffer source);
+    void glGetShaderSource(int shader, @Nullable IntBuffer length, ByteBuffer source);
     String glGetShaderSource(int shader, int maxLength);
     String glGetShaderSource(int shader);
     void glVertexAttrib1f(int index, float v0);
@@ -2414,7 +2416,7 @@ public interface KGl20 {
     void glDisableVertexAttribArray(int index);
     void glBindAttribLocation(int program, int index, ByteBuffer name);
     void glBindAttribLocation(int program, int index, CharSequence name);
-    void glGetActiveAttrib(int program, int index, IntBuffer length, IntBuffer size, IntBuffer type, ByteBuffer name);
+    void glGetActiveAttrib(int program, int index, @Nullable IntBuffer length, IntBuffer size, IntBuffer type, ByteBuffer name);
     String glGetActiveAttrib(int program, int index, int maxLength, IntBuffer size, IntBuffer type);
     String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type);
     int glGetAttribLocation(int program, ByteBuffer name);
@@ -2431,7 +2433,7 @@ public interface KGl20 {
     void glStencilOpSeparate(int face, int sfail, int dpfail, int dppass);
     void glStencilFuncSeparate(int face, int func, int ref, int mask);
     void glStencilMaskSeparate(int face, int mask);
-    void glShaderSource(int shader, LongBuffer strings, int [] length);
+    void glShaderSource(int shader, LongBuffer strings, int @Nullable [] length);
     void glUniform1fv(int location, float[] value);
     void glUniform2fv(int location, float[] value);
     void glUniform3fv(int location, float[] value);
@@ -2445,13 +2447,13 @@ public interface KGl20 {
     void glUniformMatrix4fv(int location, boolean transpose, float[] value);
     void glGetShaderiv(int shader, int pname, int[] params);
     void glGetProgramiv(int program, int pname, int[] params);
-    void glGetShaderInfoLog(int shader, int [] length, ByteBuffer infoLog);
-    void glGetProgramInfoLog(int program, int [] length, ByteBuffer infoLog);
-    void glGetAttachedShaders(int program, int [] count, int[] shaders);
-    void glGetActiveUniform(int program, int index, int [] length, int[] size, int[] type, ByteBuffer name);
+    void glGetShaderInfoLog(int shader, int @Nullable [] length, ByteBuffer infoLog);
+    void glGetProgramInfoLog(int program, int @Nullable [] length, ByteBuffer infoLog);
+    void glGetAttachedShaders(int program, int @Nullable [] count, int[] shaders);
+    void glGetActiveUniform(int program, int index, int @Nullable [] length, int[] size, int[] type, ByteBuffer name);
     void glGetUniformfv(int program, int location, float[] params);
     void glGetUniformiv(int program, int location, int[] params);
-    void glGetShaderSource(int shader, int [] length, ByteBuffer source);
+    void glGetShaderSource(int shader, int @Nullable [] length, ByteBuffer source);
     void glVertexAttrib1fv(int index, float[] v);
     void glVertexAttrib1sv(int index, short[] v);
     void glVertexAttrib1dv(int index, double[] v);
@@ -2471,7 +2473,7 @@ public interface KGl20 {
     void glVertexAttrib4Niv(int index, int[] v);
     void glVertexAttrib4Nusv(int index, short[] v);
     void glVertexAttrib4Nuiv(int index, int[] v);
-    void glGetActiveAttrib(int program, int index, int [] length, int[] size, int[] type, ByteBuffer name);
+    void glGetActiveAttrib(int program, int index, int @Nullable [] length, int[] size, int[] type, ByteBuffer name);
     void glGetVertexAttribiv(int index, int pname, int[] params);
     void glGetVertexAttribfv(int index, int pname, float[] params);
     void glGetVertexAttribdv(int index, int pname, double[] params);

@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.libfrontend.opengl;
 
+import org.jspecify.annotations.Nullable;
+
 import java.nio.*;
 
 /**
@@ -577,7 +579,7 @@ public interface KGl33 extends KGl20 {
 
     // GL 3.0 Functions
 
-    String glGetStringi(int name, int index);
+    @Nullable String glGetStringi(int name, int index);
     void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value);
     void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value);
     void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value);
@@ -626,13 +628,13 @@ public interface KGl33 extends KGl20 {
     int glGetFragDataLocation(int program, CharSequence name);
     void glBeginConditionalRender(int id, int mode);
     void glEndConditionalRender();
-    ByteBuffer glMapBufferRange(int target, long offset, long length, int access);
-    ByteBuffer glMapBufferRange(
+    @Nullable ByteBuffer glMapBufferRange(int target, long offset, long length, int access);
+    @Nullable ByteBuffer glMapBufferRange(
         int target,
         long offset,
         long length,
         int access,
-        ByteBuffer old_buffer
+        @Nullable ByteBuffer old_buffer
     );
     void glFlushMappedBufferRange(int target, long offset, long length);
     void glClampColor(int target, int clamp);
@@ -722,7 +724,7 @@ public interface KGl33 extends KGl20 {
     void glGetTransformFeedbackVarying(
         int program,
         int index,
-        IntBuffer length,
+        @Nullable IntBuffer length,
         IntBuffer size,
         IntBuffer type,
         ByteBuffer name
@@ -776,7 +778,7 @@ public interface KGl33 extends KGl20 {
     void glGetTransformFeedbackVarying(
         int program,
         int index,
-        int[] length,
+        int @Nullable [] length,
         int[] size,
         int[] type,
         ByteBuffer name
@@ -809,7 +811,7 @@ public interface KGl33 extends KGl20 {
     void glGetActiveUniformName(
         int program,
         int uniformIndex,
-        IntBuffer length,
+        @Nullable IntBuffer length,
         ByteBuffer uniformName
     );
     String glGetActiveUniformName(int program, int uniformIndex, int bufSize);
@@ -821,7 +823,7 @@ public interface KGl33 extends KGl20 {
     void glGetActiveUniformBlockName(
         int program,
         int uniformBlockIndex,
-        IntBuffer length,
+        @Nullable IntBuffer length,
         ByteBuffer uniformBlockName
     );
     String glGetActiveUniformBlockName(int program, int uniformBlockIndex, int bufSize);
@@ -832,14 +834,14 @@ public interface KGl33 extends KGl20 {
     void glGetActiveUniformName(
         int program,
         int uniformIndex,
-        int[] length,
+        int @Nullable [] length,
         ByteBuffer uniformName
     );
     void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, int[] params);
     void glGetActiveUniformBlockName(
         int program,
         int uniformBlockIndex,
-        int[] length,
+        int @Nullable [] length,
         ByteBuffer uniformBlockName
     );
 
@@ -961,8 +963,8 @@ public interface KGl33 extends KGl20 {
     long glGetInteger64(int pname);
     void glGetInteger64i_v(int pname, int index, LongBuffer params);
     long glGetInteger64i(int pname, int index);
-    void glGetSynciv(long sync, int pname, IntBuffer length, IntBuffer values);
-    int glGetSynci(long sync, int pname, IntBuffer length);
+    void glGetSynciv(long sync, int pname, @Nullable IntBuffer length, IntBuffer values);
+    int glGetSynci(long sync, int pname, @Nullable IntBuffer length);
     void glGetBufferParameteri64v(int target, int pname, long[] params);
     void glMultiDrawElementsBaseVertex(
         int mode,
@@ -974,7 +976,7 @@ public interface KGl33 extends KGl20 {
     void glGetMultisamplefv(int pname, int index, float[] val);
     void glGetInteger64v(int pname, long[] params);
     void glGetInteger64i_v(int pname, int index, long[] params);
-    void glGetSynciv(long sync, int pname, int[] length, int[] values);
+    void glGetSynciv(long sync, int pname, int @Nullable [] length, int[] values);
 
     // GL 3.3 Functions
 
