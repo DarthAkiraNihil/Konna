@@ -1,6 +1,5 @@
 /**
- * Provides the library frontend for GLFW and some implementations
- * of classes that uses this library frontend.
+ * Provides the library frontend for GLFW.
  *
  * @author Darth Akira Nihil
  * @since 0.1.0
