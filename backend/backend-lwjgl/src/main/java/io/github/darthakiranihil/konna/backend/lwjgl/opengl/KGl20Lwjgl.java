@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.backend.lwjgl.opengl;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl20;
 import org.jspecify.annotations.Nullable;
@@ -34,6 +35,7 @@ import java.nio.*;
  * @author Darth Akira Nihil
  * @version 0.1.0
  */
+@KSingleton
 @KExcludeFromGeneratedCoverageReport
 public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwjgl {
 
