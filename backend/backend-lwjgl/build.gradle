@@ -35,6 +35,7 @@ repositories {
 dependencies {
 
     implementation project(":libfrontend:libfrontend-opengl")
+    implementation project(":libfrontend:libfrontend-glfw")
 
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 

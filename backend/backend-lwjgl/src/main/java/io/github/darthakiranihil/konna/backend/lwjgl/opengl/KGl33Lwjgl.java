@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.backend.lwjgl.opengl;
 
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 import org.jspecify.annotations.Nullable;
@@ -32,6 +33,7 @@ import java.nio.*;
  * @author Darth Akira Nihil
  * @version 0.1.0
  */
+@KSingleton
 @KExcludeFromGeneratedCoverageReport
 public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
 
