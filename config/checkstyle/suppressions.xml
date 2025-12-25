@@ -21,4 +21,11 @@
 
     <suppress checks="ParameterName" files="KGlfwPreeditCallback.java"/>
     <suppress checks="ParameterName" files="KGlfwPreeditCandidateCallback.java"/>
+
+    <suppress checks="ParameterName" files="KStbImage.java"/>
+    <suppress checks="MethodName" files="KStbImage.java"/>
+    <suppress checks="JavadocVariable" files="KStbImage.java"/>
+    <suppress checks="ConstantName" files="KStbImage.java"/>
+
+    <suppress checks="MissingJavadocMethod" files="KStb[a-zA-Z0-9]*.java"/>
 </suppressions>
