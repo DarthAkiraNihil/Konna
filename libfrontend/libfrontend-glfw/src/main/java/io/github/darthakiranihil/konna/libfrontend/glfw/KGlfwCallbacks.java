@@ -24,7 +24,15 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
  */
 public interface KGlfwCallbacks {
 
+    /**
+     * Frees all callbacks assigned to specific window.
+     * @param window Window to free callbacks from.
+     */
     void glfwFreeCallbacks(long window);
+    /**
+     * Frees last callback assigned to specific window.
+     * @param window Window to free callback from.
+     */
     void freeLastCallback(long window);
 
 }

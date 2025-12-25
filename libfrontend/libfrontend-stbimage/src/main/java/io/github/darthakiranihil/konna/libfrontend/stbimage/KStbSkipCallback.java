@@ -14,32 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.glfw;
-
-import java.nio.ByteBuffer;
+package io.github.darthakiranihil.konna.libfrontend.stbimage;
 
 /**
- * Wrapper interface for GLFW image struct (readonly).
+ * Interface representing skip callback of STBImage.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KGlfwImage {
+@FunctionalInterface
+public interface KStbSkipCallback {
 
-    /**
-     * Returns width of the image.
-     * @return Width of GLFW image
-     */
-    int width();
-    /**
-     * Returns height of the image.
-     * @return Height of GLFW image
-     */
-    int height();
-    /**
-     * Returns pixels of the image.
-     * @return Pixels of GLFW image
-     */
-    ByteBuffer pixels();
+    void invoke(long user, int n);
 
 }

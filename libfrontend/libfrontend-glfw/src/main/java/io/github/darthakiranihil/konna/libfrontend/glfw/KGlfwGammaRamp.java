@@ -19,16 +19,32 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
 import java.nio.ShortBuffer;
 
 /**
- * Wrapper interface for GLFW gamma ramp struct.
+ * Wrapper interface for GLFW gamma ramp struct (readonly).
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
 public interface KGlfwGammaRamp {
 
+    /**
+     * Returns red value for the gamma ramp.
+     * @return Red value of GLFW gamma ramp
+     */
     ShortBuffer red();
+    /**
+     * Returns green value for the gamma ramp.
+     * @return Green value of GLFW gamma ramp
+     */
     ShortBuffer green();
+    /**
+     * Returns blue value for the gamma ramp.
+     * @return Blue value of GLFW gamma ramp
+     */
     ShortBuffer blue();
+    /**
+     * Returns size of the gamma ramp.
+     * @return Size of GLFW gamma ramp
+     */
     int size();
 
 }
