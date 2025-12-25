@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.libfrontend.glfw;
 
+/**
+ * Wrapper interface for GLFW reallocate function, used by {@link KGlfwAllocator}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KGlfwReallocateFunction {
 

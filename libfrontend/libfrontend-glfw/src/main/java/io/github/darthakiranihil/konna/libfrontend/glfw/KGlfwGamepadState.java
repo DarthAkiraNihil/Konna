@@ -19,6 +19,12 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+/**
+ * Wrapper interface for GLFW gamepad state struct.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KGlfwGamepadState {
 
     ByteBuffer getButtons();

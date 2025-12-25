@@ -24,6 +24,12 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 
+/**
+ * Library frontend for GLFW.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KGlfw {
 
     int GLFW_VERSION_MAJOR = 3;

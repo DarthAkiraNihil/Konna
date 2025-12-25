@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.libfrontend.glfw;
 
+/**
+ * Wrapper interface for GLFW allocator struct.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KGlfwAllocator {
 
     KGlfwAllocateFunction allocate();
