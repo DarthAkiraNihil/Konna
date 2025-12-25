@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.libfrontend.stbimage;
 
+import org.jspecify.annotations.Nullable;
+
 import java.nio.*;
 
 /**
@@ -32,28 +34,28 @@ public interface KStbImage {
     int STBI_rgb = 3;
     int STBI_rgb_alpha = 4;
 
-    ByteBuffer stbi_load(
+    @Nullable ByteBuffer stbi_load(
         ByteBuffer filename,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load(
+    @Nullable ByteBuffer stbi_load(
         CharSequence filename,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load_from_memory(
+    @Nullable ByteBuffer stbi_load_from_memory(
         ByteBuffer buffer,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load_from_callbacks(
+    @Nullable ByteBuffer stbi_load_from_callbacks(
         KStbIoCallbacks clbk,
         long user,
         IntBuffer x,
@@ -61,7 +63,7 @@ public interface KStbImage {
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load_gif_from_memory(
+    @Nullable ByteBuffer stbi_load_gif_from_memory(
         ByteBuffer buffer,
         LongBuffer delays,
         IntBuffer x,
@@ -70,28 +72,28 @@ public interface KStbImage {
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16(
+    @Nullable ShortBuffer stbi_load_16(
         ByteBuffer filename,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16(
+    @Nullable ShortBuffer stbi_load_16(
         CharSequence filename,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16_from_memory(
+    @Nullable ShortBuffer stbi_load_16_from_memory(
         ByteBuffer buffer,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16_from_callbacks(
+    @Nullable ShortBuffer stbi_load_16_from_callbacks(
         KStbIoCallbacks clbk,
         long user,
         IntBuffer x,
@@ -99,28 +101,28 @@ public interface KStbImage {
         IntBuffer channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf(
+    @Nullable FloatBuffer stbi_loadf(
         ByteBuffer filename,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf(
+    @Nullable FloatBuffer stbi_loadf(
         CharSequence filename,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf_from_memory(
+    @Nullable FloatBuffer stbi_loadf_from_memory(
         ByteBuffer buffer,
         IntBuffer x,
         IntBuffer y,
         IntBuffer channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf_from_callbacks(
+    @Nullable FloatBuffer stbi_loadf_from_callbacks(
         KStbIoCallbacks clbk,
         long user,
         IntBuffer x,
@@ -137,7 +139,7 @@ public interface KStbImage {
     boolean stbi_is_hdr(CharSequence filename);
     boolean stbi_is_hdr_from_memory(ByteBuffer buffer);
     boolean stbi_is_hdr_from_callbacks(KStbIoCallbacks clbk, long user);
-    String stbi_failure_reason();
+    @Nullable String stbi_failure_reason();
     void stbi_image_free(ShortBuffer retval_from_stbi_load);
     void stbi_image_free(FloatBuffer retval_from_stbi_load);
     boolean stbi_info(ByteBuffer filename, IntBuffer x, IntBuffer y, IntBuffer comp);
@@ -159,40 +161,40 @@ public interface KStbImage {
     void stbi_set_flip_vertically_on_load(boolean flag_true_if_should_flip);
     void stbi_convert_iphone_png_to_rgb_thread(boolean flag_true_if_should_convert);
     void stbi_set_flip_vertically_on_load_thread(int flag_true_if_should_flip);
-    ByteBuffer stbi_zlib_decode_malloc_guesssize(ByteBuffer buffer, int initial_size);
-    ByteBuffer stbi_zlib_decode_malloc_guesssize_headerflag(
+    @Nullable ByteBuffer stbi_zlib_decode_malloc_guesssize(ByteBuffer buffer, int initial_size);
+    @Nullable ByteBuffer stbi_zlib_decode_malloc_guesssize_headerflag(
         ByteBuffer buffer,
         int initial_size,
         boolean parse_header
     );
 
-    ByteBuffer stbi_zlib_decode_malloc(ByteBuffer buffer);
+    @Nullable ByteBuffer stbi_zlib_decode_malloc(ByteBuffer buffer);
     int stbi_zlib_decode_buffer(ByteBuffer obuffer, ByteBuffer ibuffer);
-    ByteBuffer stbi_zlib_decode_noheader_malloc(ByteBuffer buffer);
+    @Nullable ByteBuffer stbi_zlib_decode_noheader_malloc(ByteBuffer buffer);
     int stbi_zlib_decode_noheader_buffer(ByteBuffer obuffer, ByteBuffer ibuffer);
 
-    ByteBuffer stbi_load(
+    @Nullable ByteBuffer stbi_load(
         ByteBuffer filename,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load(
+    @Nullable ByteBuffer stbi_load(
         CharSequence filename,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load_from_memory(
+    @Nullable ByteBuffer stbi_load_from_memory(
         ByteBuffer buffer,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load_from_callbacks(
+    @Nullable ByteBuffer stbi_load_from_callbacks(
         KStbIoCallbacks clbk,
         long user,
         int[] x,
@@ -200,7 +202,7 @@ public interface KStbImage {
         int[] channels_in_file,
         int desired_channels
     );
-    ByteBuffer stbi_load_gif_from_memory(
+    @Nullable ByteBuffer stbi_load_gif_from_memory(
         ByteBuffer buffer,
         LongBuffer delays,
         int[] x,
@@ -209,28 +211,28 @@ public interface KStbImage {
         int[] channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16(
+    @Nullable ShortBuffer stbi_load_16(
         ByteBuffer filename,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16(
+    @Nullable ShortBuffer stbi_load_16(
         CharSequence filename,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16_from_memory(
+    @Nullable ShortBuffer stbi_load_16_from_memory(
         ByteBuffer buffer,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    ShortBuffer stbi_load_16_from_callbacks(
+    @Nullable ShortBuffer stbi_load_16_from_callbacks(
         KStbIoCallbacks clbk,
         long user,
         int[] x,
@@ -238,28 +240,28 @@ public interface KStbImage {
         int[] channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf(
+    @Nullable FloatBuffer stbi_loadf(
         ByteBuffer filename,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf(
+    @Nullable FloatBuffer stbi_loadf(
         CharSequence filename,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf_from_memory(
+    @Nullable FloatBuffer stbi_loadf_from_memory(
         ByteBuffer buffer,
         int[] x,
         int[] y,
         int[] channels_in_file,
         int desired_channels
     );
-    FloatBuffer stbi_loadf_from_callbacks(
+    @Nullable FloatBuffer stbi_loadf_from_callbacks(
         KStbIoCallbacks clbk,
         long user,
         int[] x,
