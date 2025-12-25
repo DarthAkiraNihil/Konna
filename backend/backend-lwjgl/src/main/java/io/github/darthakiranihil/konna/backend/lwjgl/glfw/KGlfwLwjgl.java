@@ -61,7 +61,11 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetVersion(final @Nullable IntBuffer major, final @Nullable IntBuffer minor, final @Nullable IntBuffer rev) {
+    public void glfwGetVersion(
+        final @Nullable IntBuffer major,
+        final @Nullable IntBuffer minor,
+        final @Nullable IntBuffer rev
+    ) {
         GLFW.glfwGetVersion(major, minor, rev);
     }
 
@@ -88,7 +92,9 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public @Nullable KGlfwErrorCallback glfwSetErrorCallback(final @Nullable KGlfwErrorCallback cbfun) {
+    public @Nullable KGlfwErrorCallback glfwSetErrorCallback(
+        final @Nullable KGlfwErrorCallback cbfun
+    ) {
 
         var result = GLFW.glfwSetErrorCallback(KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
@@ -127,7 +133,11 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetMonitorPos(long monitor, final @Nullable IntBuffer xpos, final @Nullable IntBuffer ypos) {
+    public void glfwGetMonitorPos(
+        long monitor,
+        final @Nullable IntBuffer xpos,
+        final @Nullable IntBuffer ypos
+    ) {
         GLFW.glfwGetMonitorPos(monitor, xpos, ypos);
     }
 
@@ -176,7 +186,9 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public @Nullable KGlfwMonitorCallback glfwSetMonitorCallback(final @Nullable KGlfwMonitorCallback cbfun) {
+    public @Nullable KGlfwMonitorCallback glfwSetMonitorCallback(
+        final @Nullable KGlfwMonitorCallback cbfun
+    ) {
 
         var result = GLFW.glfwSetMonitorCallback(KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
@@ -311,7 +323,11 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetWindowPos(long window, final @Nullable IntBuffer xpos, final @Nullable IntBuffer ypos) {
+    public void glfwGetWindowPos(
+        long window,
+        final @Nullable IntBuffer xpos,
+        final @Nullable IntBuffer ypos
+    ) {
         GLFW.glfwGetWindowPos(window, xpos, ypos);
     }
 
@@ -321,7 +337,11 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetWindowSize(long window, final @Nullable IntBuffer width, final @Nullable IntBuffer height) {
+    public void glfwGetWindowSize(
+        long window,
+        final @Nullable IntBuffer width,
+        final @Nullable IntBuffer height
+    ) {
         try (MemoryStack ms = MemoryStack.stackPush()) {
 
             IntBuffer pWidth = ms.callocInt(1);
@@ -361,7 +381,11 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetFramebufferSize(long window, final @Nullable IntBuffer width, final @Nullable IntBuffer height) {
+    public void glfwGetFramebufferSize(
+        long window,
+        final @Nullable IntBuffer width,
+        final @Nullable IntBuffer height
+    ) {
         GLFW.glfwGetFramebufferSize(window, width, height);
     }
 
@@ -605,7 +629,11 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetCursorPos(long window, final @Nullable DoubleBuffer xpos, final @Nullable DoubleBuffer ypos) {
+    public void glfwGetCursorPos(
+        long window,
+        final @Nullable DoubleBuffer xpos,
+        final @Nullable DoubleBuffer ypos
+    ) {
         GLFW.glfwGetCursorPos(window, xpos, ypos);
     }
 
@@ -661,13 +689,19 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public @Nullable KGlfwKeyCallback glfwSetKeyCallback(long window, final @Nullable KGlfwKeyCallback cbfun) {
+    public @Nullable KGlfwKeyCallback glfwSetKeyCallback(
+        long window,
+        final @Nullable KGlfwKeyCallback cbfun
+    ) {
         var result = GLFW.glfwSetKeyCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
-    public @Nullable KGlfwCharCallback glfwSetCharCallback(long window, final @Nullable KGlfwCharCallback cbfun) {
+    public @Nullable KGlfwCharCallback glfwSetCharCallback(
+        long window,
+        final @Nullable KGlfwCharCallback cbfun
+    ) {
         var result = GLFW.glfwSetCharCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
     }
@@ -736,13 +770,19 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public @Nullable KGlfwScrollCallback glfwSetScrollCallback(long window, final @Nullable KGlfwScrollCallback cbfun) {
+    public @Nullable KGlfwScrollCallback glfwSetScrollCallback(
+        long window,
+        final @Nullable KGlfwScrollCallback cbfun
+    ) {
         var result = GLFW.glfwSetScrollCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
     }
 
     @Override
-    public @Nullable KGlfwDropCallback glfwSetDropCallback(long window, final @Nullable KGlfwDropCallback cbfun) {
+    public @Nullable KGlfwDropCallback glfwSetDropCallback(
+        long window,
+        final @Nullable KGlfwDropCallback cbfun
+    ) {
         var result = GLFW.glfwSetDropCallback(window, KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
     }
@@ -793,7 +833,9 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public @Nullable KGlfwJoystickCallback glfwSetJoystickCallback(final @Nullable KGlfwJoystickCallback cbfun) {
+    public @Nullable KGlfwJoystickCallback glfwSetJoystickCallback(
+        final @Nullable KGlfwJoystickCallback cbfun
+    ) {
         var result = GLFW.glfwSetJoystickCallback(KGlfwLwjglWrapper.wrap(cbfun));
         return KGlfwLwjglUnwrapper.wrap(result);
     }
@@ -893,12 +935,20 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetVersion(final int @Nullable [] major, final int @Nullable [] minor, final int @Nullable [] rev) {
+    public void glfwGetVersion(
+        final int @Nullable [] major,
+        final int @Nullable [] minor,
+        final int @Nullable [] rev
+    ) {
         GLFW.glfwGetVersion(major, minor, rev);
     }
 
     @Override
-    public void glfwGetMonitorPos(long monitor, final int @Nullable [] xpos, final int @Nullable [] ypos) {
+    public void glfwGetMonitorPos(
+        long monitor,
+        final int @Nullable [] xpos,
+        final int @Nullable [] ypos
+    ) {
         GLFW.glfwGetMonitorPos(monitor, xpos, ypos);
     }
 
@@ -932,17 +982,29 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetWindowPos(long window, final int @Nullable [] xpos, final int @Nullable [] ypos) {
+    public void glfwGetWindowPos(
+        long window,
+        final int @Nullable [] xpos,
+        final int @Nullable [] ypos
+    ) {
         GLFW.glfwGetWindowPos(window, xpos, ypos);
     }
 
     @Override
-    public void glfwGetWindowSize(long window, final int @Nullable [] width, final int @Nullable [] height) {
+    public void glfwGetWindowSize(
+        long window,
+        final int @Nullable [] width,
+        final int @Nullable [] height
+    ) {
         GLFW.glfwGetWindowSize(window, width, height);
     }
 
     @Override
-    public void glfwGetFramebufferSize(long window, final int @Nullable [] width, final int @Nullable [] height) {
+    public void glfwGetFramebufferSize(
+        long window,
+        final int @Nullable [] width,
+        final int @Nullable [] height
+    ) {
         GLFW.glfwGetFramebufferSize(window, width, height);
     }
 
@@ -958,12 +1020,20 @@ public final class KGlfwLwjgl extends KObject implements KGlfw {
     }
 
     @Override
-    public void glfwGetWindowContentScale(long window, final float @Nullable [] xscale, final float @Nullable [] yscale) {
+    public void glfwGetWindowContentScale(
+        long window,
+        final float @Nullable [] xscale,
+        final float @Nullable [] yscale
+    ) {
         GLFW.glfwGetWindowContentScale(window, xscale, yscale);
     }
 
     @Override
-    public void glfwGetCursorPos(long window, final double @Nullable [] xpos, final double @Nullable [] ypos) {
+    public void glfwGetCursorPos(
+        long window,
+        final double @Nullable [] xpos,
+        final double @Nullable [] ypos
+    ) {
         GLFW.glfwGetCursorPos(window, xpos, ypos);
     }
 

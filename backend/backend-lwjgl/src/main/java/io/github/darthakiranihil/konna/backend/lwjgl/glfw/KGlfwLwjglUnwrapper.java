@@ -30,7 +30,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwJoystickCallback wrap(final @Nullable GLFWJoystickCallbackI original) {
+    public static @Nullable KGlfwJoystickCallback wrap(
+        final @Nullable GLFWJoystickCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -48,7 +50,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwCharModsCallback wrap(final @Nullable GLFWCharModsCallbackI original) {
+    public static @Nullable KGlfwCharModsCallback wrap(
+        final @Nullable GLFWCharModsCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -71,7 +75,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowFocusCallback wrap(final @Nullable GLFWWindowFocusCallbackI original) {
+    public static @Nullable KGlfwWindowFocusCallback wrap(
+        final @Nullable GLFWWindowFocusCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -79,7 +85,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwCursorEnterCallback wrap(final @Nullable GLFWCursorEnterCallbackI original) {
+    public static @Nullable KGlfwCursorEnterCallback wrap(
+        final @Nullable GLFWCursorEnterCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -87,7 +95,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwMonitorCallback wrap(final @Nullable GLFWMonitorCallbackI original) {
+    public static @Nullable KGlfwMonitorCallback wrap(
+        final @Nullable GLFWMonitorCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -95,7 +105,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowIconifyCallback wrap(final @Nullable GLFWWindowIconifyCallbackI original) {
+    public static @Nullable KGlfwWindowIconifyCallback wrap(
+        final @Nullable GLFWWindowIconifyCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -103,7 +115,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwCursorPosCallback wrap(final @Nullable GLFWCursorPosCallbackI original) {
+    public static @Nullable KGlfwCursorPosCallback wrap(
+        final @Nullable GLFWCursorPosCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -111,7 +125,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwMouseButtonCallback wrap(final @Nullable GLFWMouseButtonCallbackI original) {
+    public static @Nullable KGlfwMouseButtonCallback wrap(
+        final @Nullable GLFWMouseButtonCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -119,7 +135,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowMaximizeCallback wrap(final @Nullable GLFWWindowMaximizeCallbackI original) {
+    public static @Nullable KGlfwWindowMaximizeCallback wrap(
+        final @Nullable GLFWWindowMaximizeCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -135,7 +153,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwPreeditCallback wrap(final @Nullable GLFWPreeditCallbackI original) {
+    public static @Nullable KGlfwPreeditCallback wrap(
+        final @Nullable GLFWPreeditCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -143,7 +163,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowPosCallback wrap(final @Nullable GLFWWindowPosCallbackI original) {
+    public static @Nullable KGlfwWindowPosCallback wrap(
+        final @Nullable GLFWWindowPosCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -159,7 +181,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwPreeditCandidateCallback wrap(final @Nullable GLFWPreeditCandidateCallbackI original) {
+    public static @Nullable KGlfwPreeditCandidateCallback wrap(
+        final @Nullable GLFWPreeditCandidateCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -167,7 +191,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowRefreshCallback wrap(final @Nullable GLFWWindowRefreshCallbackI original) {
+    public static @Nullable KGlfwWindowRefreshCallback wrap(
+        final @Nullable GLFWWindowRefreshCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -175,7 +201,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwFramebufferSizeCallback wrap(final @Nullable GLFWFramebufferSizeCallbackI original) {
+    public static @Nullable KGlfwFramebufferSizeCallback wrap(
+        final @Nullable GLFWFramebufferSizeCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -191,7 +219,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowSizeCallback wrap(final @Nullable GLFWWindowSizeCallbackI original) {
+    public static @Nullable KGlfwWindowSizeCallback wrap(
+        final @Nullable GLFWWindowSizeCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -267,7 +297,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwImeStatusCallback wrap(final @Nullable GLFWIMEStatusCallbackI original) {
+    public static @Nullable KGlfwImeStatusCallback wrap(
+        final @Nullable GLFWIMEStatusCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
@@ -275,7 +307,9 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
     }
 
 
-    public static @Nullable KGlfwWindowCloseCallback wrap(final @Nullable GLFWWindowCloseCallbackI original) {
+    public static @Nullable KGlfwWindowCloseCallback wrap(
+        final @Nullable GLFWWindowCloseCallbackI original
+    ) {
         if (original == null) {
             return null;
         }
