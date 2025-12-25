@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.libfrontend.opengl;
 import java.nio.*;
 
 /**
- * Library frontend for OpenGL 2.0
+ * Library frontend for OpenGL 2.0.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
