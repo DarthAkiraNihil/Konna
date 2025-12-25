@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.backend.lwjgl.stbimage;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.stbimage.KStbImage;
 import io.github.darthakiranihil.konna.libfrontend.stbimage.KStbIoCallbacks;
 import org.jspecify.annotations.Nullable;
@@ -34,6 +36,8 @@ import java.nio.*;
  * @author Darth Akira Nihil
  * @version 0.1.0
  */
+@KSingleton
+@KExcludeFromGeneratedCoverageReport
 public final class KStbImageLwjgl extends KObject implements KStbImage {
 
     private static STBIIOCallbacks wrap(final KStbIoCallbacks callbacks) {
