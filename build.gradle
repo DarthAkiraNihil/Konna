@@ -62,6 +62,7 @@ def exportedProjects = [
     ":",
     ":core",
     ":libfrontend-opengl",
+    ":backend-lwjgl",
 ]
 
 tasks.withType(Javadoc).configureEach {
