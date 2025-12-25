@@ -36,7 +36,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
 
         private final GLFWGammaRamp original;
 
-        public KGlfwGammaRampLwjgl(GLFWGammaRamp original) {
+        KGlfwGammaRampLwjgl(final GLFWGammaRamp original) {
             this.original = original;
         }
 
@@ -59,14 +59,14 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
         public int size() {
             return this.original.size();
         }
-    };
+    }
 
     @KExcludeFromGeneratedCoverageReport
     private static final class KGlfwVidModeLwjgl implements KGlfwVidMode {
 
         private final GLFWVidMode original;
 
-        public KGlfwVidModeLwjgl(GLFWVidMode original) {
+        KGlfwVidModeLwjgl(final GLFWVidMode original) {
             this.original = original;
         }
 
