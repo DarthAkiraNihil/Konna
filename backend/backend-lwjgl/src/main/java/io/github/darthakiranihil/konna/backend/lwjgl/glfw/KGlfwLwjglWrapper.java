@@ -17,10 +17,12 @@
 package io.github.darthakiranihil.konna.backend.lwjgl.glfw;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.glfw.*;
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.*;
 
+@KExcludeFromGeneratedCoverageReport
 final class KGlfwLwjglWrapper extends KUninstantiable {
 
     public static @Nullable GLFWAllocator wrap(final @Nullable KGlfwAllocator original) {
@@ -31,12 +33,7 @@ final class KGlfwLwjglWrapper extends KUninstantiable {
         internal.set(
             (size, user) -> original.allocate().invoke(size, user),
             (block, size, user) -> original.reallocate().invoke(block, size, user),
-            new GLFWDeallocateCallback() {
-                @Override
-                public void invoke(long block, long user) {
-                    original.deallocate().invoke(block, user);
-                }
-            },
+            (block, user) -> original.deallocate().invoke(block, user),
             original.user()
         );
         return internal;

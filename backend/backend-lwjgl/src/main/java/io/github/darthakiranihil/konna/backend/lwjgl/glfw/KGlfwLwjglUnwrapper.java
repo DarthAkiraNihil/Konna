@@ -17,16 +17,88 @@
 package io.github.darthakiranihil.konna.backend.lwjgl.glfw;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.glfw.*;
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.*;
 
 import java.nio.ShortBuffer;
 
+@KExcludeFromGeneratedCoverageReport
 final class KGlfwLwjglUnwrapper extends KUninstantiable {
 
     private KGlfwLwjglUnwrapper() {
         super();
+    }
+
+    @KExcludeFromGeneratedCoverageReport
+    private static final class KGlfwGammaRampLwjgl implements KGlfwGammaRamp {
+
+        private final GLFWGammaRamp original;
+
+        public KGlfwGammaRampLwjgl(GLFWGammaRamp original) {
+            this.original = original;
+        }
+
+        @Override
+        public ShortBuffer red() {
+            return this.original.red();
+        }
+
+        @Override
+        public ShortBuffer green() {
+            return this.original.green();
+        }
+
+        @Override
+        public ShortBuffer blue() {
+            return this.original.blue();
+        }
+
+        @Override
+        public int size() {
+            return this.original.size();
+        }
+    };
+
+    @KExcludeFromGeneratedCoverageReport
+    private static final class KGlfwVidModeLwjgl implements KGlfwVidMode {
+
+        private final GLFWVidMode original;
+
+        public KGlfwVidModeLwjgl(GLFWVidMode original) {
+            this.original = original;
+        }
+
+        @Override
+        public int width() {
+            return this.original.width();
+        }
+
+        @Override
+        public int height() {
+            return this.original.height();
+        }
+
+        @Override
+        public int redBits() {
+            return this.original.redBits();
+        }
+
+        @Override
+        public int greenBits() {
+            return this.original.greenBits();
+        }
+
+        @Override
+        public int blueBits() {
+            return this.original.blueBits();
+        }
+
+        @Override
+        public int refreshRate() {
+            return this.original.refreshRate();
+        }
     }
 
 
@@ -234,27 +306,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
             return null;
         }
 
-        return new KGlfwGammaRamp() {
-            @Override
-            public ShortBuffer red() {
-                return original.red();
-            }
-
-            @Override
-            public ShortBuffer green() {
-                return original.green();
-            }
-
-            @Override
-            public ShortBuffer blue() {
-                return original.blue();
-            }
-
-            @Override
-            public int size() {
-                return original.size();
-            }
-        };
+        return new KGlfwGammaRampLwjgl(original);
     }
 
 
@@ -263,37 +315,7 @@ final class KGlfwLwjglUnwrapper extends KUninstantiable {
             return null;
         }
 
-        return new KGlfwVidMode() {
-            @Override
-            public int width() {
-                return original.width();
-            }
-
-            @Override
-            public int height() {
-                return original.height();
-            }
-
-            @Override
-            public int redBits() {
-                return original.redBits();
-            }
-
-            @Override
-            public int greenBits() {
-                return original.greenBits();
-            }
-
-            @Override
-            public int blueBits() {
-                return original.blueBits();
-            }
-
-            @Override
-            public int refreshRate() {
-                return original.refreshRate();
-            }
-        };
+        return new KGlfwVidModeLwjgl(original);
     }
 
 
