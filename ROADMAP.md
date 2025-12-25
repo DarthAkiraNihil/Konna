@@ -58,13 +58,13 @@ The foundation that is essential for the whole engine
   - [x] Add libfrontend for OpenGL 2.0 and 3.3
   - [ ] Add libfrontend for Dear ImGui
   - [x] Add libfrontend for GLFW
-  - [ ] Add libfrontend for STBImage
+  - [x] Add libfrontend for STBImage
   - [ ] Maybe add all other required libfrontends
 - [ ] Add modules that provide implementations of libfrontends (backend)
   - [x] Add backend for OpenGL 2.0 and 3.3 using LWJGL
   - [ ] Add backend for Dear ImGui using LWJGL
   - [x] Add backend for GLFW using LWJGL
-  - [ ] Add backend for STBImage using LWJGL
+  - [x] Add backend for STBImage using LWJGL
   - [ ] Maybe add all other required backends using LWJGL and the like
 - [ ] Implement Graphics component
   - [ ] Implement services to render different objects
