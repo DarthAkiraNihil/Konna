@@ -62,6 +62,8 @@ def exportedProjects = [
     ":",
     ":core",
     ":libfrontend-opengl",
+    ":libfrontend-glfw",
+    ":libfrontend-stbimage",
     ":backend-lwjgl",
 ]
 
