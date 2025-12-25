@@ -7,4 +7,9 @@
 <suppressions>
     <suppress checks="[a-zA-Z0-9]*" files="KGl20.java"/>
     <suppress checks="[a-zA-Z0-9]*" files="KGl33.java"/>
+
+    <suppress checks="FileLength" files="KGl20Lwjgl.java"/>
+    <suppress checks="FileLength" files="KGl33Lwjgl.java"/>
+
+    <suppress checks="ParameterName" files="KGl33Lwjgl.java"/>
 </suppressions>

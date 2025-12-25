@@ -5341,7 +5341,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public final @Nullable ByteBuffer glMapBuffer(int target, int access, final @Nullable ByteBuffer oldBuffer) {
+    public final @Nullable ByteBuffer glMapBuffer(
+        int target,
+        int access,
+        final @Nullable ByteBuffer oldBuffer
+    ) {
         return GL20.glMapBuffer(target, access, oldBuffer);
     }
 
@@ -5621,7 +5625,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glShaderSource(int shader, final LongBuffer strings, final @Nullable IntBuffer length) {
+    public void glShaderSource(
+        int shader,
+        final LongBuffer strings,
+        final @Nullable IntBuffer length
+    ) {
 
         PointerBuffer stringBuf = BufferUtils.createPointerBuffer(strings.capacity());
         stringBuf.put(strings);
@@ -5781,7 +5789,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetShaderInfoLog(int shader, final @Nullable IntBuffer length, final ByteBuffer infoLog) {
+    public void glGetShaderInfoLog(
+        int shader,
+        final @Nullable IntBuffer length,
+        final ByteBuffer infoLog
+    ) {
         GL20.glGetShaderInfoLog(shader, length, infoLog);
     }
 
@@ -5796,7 +5808,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetProgramInfoLog(int program, final @Nullable IntBuffer length, final ByteBuffer infoLog) {
+    public void glGetProgramInfoLog(
+        int program,
+        final @Nullable IntBuffer length,
+        final ByteBuffer infoLog
+    ) {
         GL20.glGetProgramInfoLog(program, length, infoLog);
     }
 
@@ -5811,7 +5827,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetAttachedShaders(int program, final @Nullable IntBuffer count, final IntBuffer shaders) {
+    public void glGetAttachedShaders(
+        int program,
+        final @Nullable IntBuffer count,
+        final IntBuffer shaders
+    ) {
         GL20.glGetAttachedShaders(program, count, shaders);
     }
 
@@ -5879,7 +5899,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetShaderSource(int shader, final @Nullable IntBuffer length, final ByteBuffer source) {
+    public void glGetShaderSource(
+        int shader,
+        final @Nullable IntBuffer length,
+        final ByteBuffer source
+    ) {
         GL20.glGetShaderSource(shader, length, source);
     }
 
@@ -6267,7 +6291,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glShaderSource(int shader, final LongBuffer strings, final int @Nullable [] length) {
+    public void glShaderSource(
+        int shader,
+        final LongBuffer strings,
+        final int @Nullable [] length
+    ) {
         PointerBuffer stringBuf = BufferUtils.createPointerBuffer(strings.capacity());
         stringBuf.put(strings);
 
@@ -6345,17 +6373,29 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetShaderInfoLog(int shader, final int @Nullable [] length, final ByteBuffer infoLog) {
+    public void glGetShaderInfoLog(
+        int shader,
+        final int @Nullable [] length,
+        final ByteBuffer infoLog
+    ) {
         GL20.glGetShaderInfoLog(shader, length, infoLog);
     }
 
     @Override
-    public void glGetProgramInfoLog(int program, final int @Nullable [] length, final ByteBuffer infoLog) {
+    public void glGetProgramInfoLog(
+        int program,
+        final int @Nullable [] length,
+        final ByteBuffer infoLog
+    ) {
         GL20.glGetProgramInfoLog(program, length, infoLog);
     }
 
     @Override
-    public void glGetAttachedShaders(int program, final int @Nullable [] count, final int[] shaders) {
+    public void glGetAttachedShaders(
+        int program,
+        final int @Nullable [] count,
+        final int[] shaders
+    ) {
         GL20.glGetAttachedShaders(program, count, shaders);
     }
 
@@ -6382,7 +6422,11 @@ public sealed class KGl20Lwjgl extends KObject implements KGl20 permits KGl33Lwj
     }
 
     @Override
-    public void glGetShaderSource(int shader, final int @Nullable [] length, final ByteBuffer source) {
+    public void glGetShaderSource(
+        int shader,
+        final int @Nullable [] length,
+        final ByteBuffer source
+    ) {
         GL20.glGetShaderSource(shader, length, source);
     }
 

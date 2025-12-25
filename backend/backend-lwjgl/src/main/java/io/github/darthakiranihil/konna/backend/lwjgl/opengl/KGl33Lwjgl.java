@@ -21,7 +21,6 @@ import org.jspecify.annotations.Nullable;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GLUtil;
 
 import java.nio.*;
 
@@ -33,10 +32,6 @@ import java.nio.*;
  * @version 0.1.0
  */
 public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
-
-    public void debug() {
-        GLUtil.setupDebugMessageCallback();
-    }
 
     @Override
     public void glUniformMatrix2x3fv(int location, boolean transpose, final FloatBuffer value) {
@@ -1487,7 +1482,12 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetSynciv(long sync, int pname, final @Nullable IntBuffer length, final IntBuffer values) {
+    public void glGetSynciv(
+        long sync,
+        int pname,
+        final @Nullable IntBuffer length,
+        final IntBuffer values
+    ) {
         GL33.glGetSynciv(sync, pname, length, values);
     }
 
@@ -1537,7 +1537,12 @@ public final class KGl33Lwjgl extends KGl20Lwjgl implements KGl33 {
     }
 
     @Override
-    public void glGetSynciv(long sync, int pname, final int @Nullable [] length, final int[] values) {
+    public void glGetSynciv(
+        long sync,
+        int pname,
+        final int @Nullable [] length,
+        final int[] values
+    ) {
         GL33.glGetSynciv(sync, pname, length, values);
     }
 
