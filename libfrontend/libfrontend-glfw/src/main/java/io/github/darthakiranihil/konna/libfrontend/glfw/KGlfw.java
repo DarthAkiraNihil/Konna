@@ -478,7 +478,11 @@ public interface KGlfw {
     void glfwTerminate();
     void glfwInitHint(int hint, int value);
     void glfwInitAllocator(@Nullable KGlfwAllocator allocator);
-    void glfwGetVersion(@Nullable IntBuffer major, @Nullable IntBuffer minor, @Nullable IntBuffer rev);
+    void glfwGetVersion(
+        @Nullable IntBuffer major,
+        @Nullable IntBuffer minor,
+        @Nullable IntBuffer rev
+    );
     String glfwGetVersionString();
     int glfwGetError(@Nullable LongBuffer description);
     @Nullable KGlfwErrorCallback glfwSetErrorCallback(@Nullable KGlfwErrorCallback cbfun);
@@ -494,8 +498,16 @@ public interface KGlfw {
         @Nullable IntBuffer width,
         @Nullable IntBuffer height
     );
-    void glfwGetMonitorPhysicalSize(long monitor, @Nullable IntBuffer widthMM, @Nullable IntBuffer heightMM);
-    void glfwGetMonitorContentScale(long monitor, @Nullable FloatBuffer xscale, @Nullable FloatBuffer yscale);
+    void glfwGetMonitorPhysicalSize(
+        long monitor,
+        @Nullable IntBuffer widthMM,
+        @Nullable IntBuffer heightMM
+    );
+    void glfwGetMonitorContentScale(
+        long monitor,
+        @Nullable FloatBuffer xscale,
+        @Nullable FloatBuffer yscale
+    );
     @Nullable String glfwGetMonitorName(long monitor);
     void glfwSetMonitorUserPointer(long monitor, long pointer);
     long glfwGetMonitorUserPointer(long monitor);
@@ -538,7 +550,11 @@ public interface KGlfw {
         @Nullable IntBuffer right,
         @Nullable IntBuffer bottom
     );
-    void glfwGetWindowContentScale(long window, @Nullable FloatBuffer xscale, @Nullable FloatBuffer yscale);
+    void glfwGetWindowContentScale(
+        long window,
+        @Nullable FloatBuffer xscale,
+        @Nullable FloatBuffer yscale
+    );
     float glfwGetWindowOpacity(long window);
     void glfwSetWindowOpacity(long window, float opacity);
     void glfwIconifyWindow(long window);
@@ -562,14 +578,26 @@ public interface KGlfw {
     void glfwSetWindowAttrib(long window, int attrib, int value);
     void glfwSetWindowUserPointer(long window, long pointer);
     long glfwGetWindowUserPointer(long window);
-    @Nullable KGlfwWindowPosCallback glfwSetWindowPosCallback(long window, @Nullable KGlfwWindowPosCallback cbfun);
-    @Nullable KGlfwWindowSizeCallback glfwSetWindowSizeCallback(long window, @Nullable KGlfwWindowSizeCallback cbfun);
-    @Nullable KGlfwWindowCloseCallback glfwSetWindowCloseCallback(long window, @Nullable KGlfwWindowCloseCallback cbfun);
+    @Nullable KGlfwWindowPosCallback glfwSetWindowPosCallback(
+        long window,
+        @Nullable KGlfwWindowPosCallback cbfun
+    );
+    @Nullable KGlfwWindowSizeCallback glfwSetWindowSizeCallback(
+        long window,
+        @Nullable KGlfwWindowSizeCallback cbfun
+    );
+    @Nullable KGlfwWindowCloseCallback glfwSetWindowCloseCallback(
+        long window,
+        @Nullable KGlfwWindowCloseCallback cbfun
+    );
     @Nullable KGlfwWindowRefreshCallback glfwSetWindowRefreshCallback(
         long window,
         @Nullable KGlfwWindowRefreshCallback cbfun
     );
-    @Nullable KGlfwWindowFocusCallback glfwSetWindowFocusCallback(long window, @Nullable KGlfwWindowFocusCallback cbfun);
+    @Nullable KGlfwWindowFocusCallback glfwSetWindowFocusCallback(
+        long window,
+        @Nullable KGlfwWindowFocusCallback cbfun
+    );
     @Nullable KGlfwWindowIconifyCallback glfwSetWindowIconifyCallback(
         long window,
         @Nullable KGlfwWindowIconifyCallback cbfun
@@ -615,17 +643,38 @@ public interface KGlfw {
     @Nullable IntBuffer glfwGetPreeditCandidate(long window, int index);
     @Nullable KGlfwKeyCallback glfwSetKeyCallback(long window, @Nullable KGlfwKeyCallback cbfun);
     @Nullable KGlfwCharCallback glfwSetCharCallback(long window, @Nullable KGlfwCharCallback cbfun);
-    @Nullable KGlfwCharModsCallback glfwSetCharModsCallback(long window, @Nullable KGlfwCharModsCallback cbfun);
-    @Nullable KGlfwPreeditCallback glfwSetPreeditCallback(long window, @Nullable KGlfwPreeditCallback cbfun);
-    @Nullable KGlfwImeStatusCallback glfwSetImeStatusCallback(long window, @Nullable KGlfwImeStatusCallback cbfun);
+    @Nullable KGlfwCharModsCallback glfwSetCharModsCallback(
+        long window,
+        @Nullable KGlfwCharModsCallback cbfun
+    );
+    @Nullable KGlfwPreeditCallback glfwSetPreeditCallback(
+        long window,
+        @Nullable KGlfwPreeditCallback cbfun
+    );
+    @Nullable KGlfwImeStatusCallback glfwSetImeStatusCallback(
+        long window,
+        @Nullable KGlfwImeStatusCallback cbfun
+    );
     @Nullable KGlfwPreeditCandidateCallback glfwSetPreeditCandidateCallback(
         long window,
         @Nullable KGlfwPreeditCandidateCallback cbfun
     );
-    @Nullable KGlfwMouseButtonCallback glfwSetMouseButtonCallback(long window, @Nullable KGlfwMouseButtonCallback cbfun);
-    @Nullable KGlfwCursorPosCallback glfwSetCursorPosCallback(long window, @Nullable KGlfwCursorPosCallback cbfun);
-    @Nullable KGlfwCursorEnterCallback glfwSetCursorEnterCallback(long window, @Nullable KGlfwCursorEnterCallback cbfun);
-    @Nullable KGlfwScrollCallback glfwSetScrollCallback(long window, @Nullable KGlfwScrollCallback cbfun);
+    @Nullable KGlfwMouseButtonCallback glfwSetMouseButtonCallback(
+        long window,
+        @Nullable KGlfwMouseButtonCallback cbfun
+    );
+    @Nullable KGlfwCursorPosCallback glfwSetCursorPosCallback(
+        long window,
+        @Nullable KGlfwCursorPosCallback cbfun
+    );
+    @Nullable KGlfwCursorEnterCallback glfwSetCursorEnterCallback(
+        long window,
+        @Nullable KGlfwCursorEnterCallback cbfun
+    );
+    @Nullable KGlfwScrollCallback glfwSetScrollCallback(
+        long window,
+        @Nullable KGlfwScrollCallback cbfun
+    );
     @Nullable KGlfwDropCallback glfwSetDropCallback(long window, @Nullable KGlfwDropCallback cbfun);
     boolean glfwJoystickPresent(int jid);
     @Nullable FloatBuffer glfwGetJoystickAxes(int jid);
@@ -657,15 +706,45 @@ public interface KGlfw {
     long glfwGetProcAddress(CharSequence procname);
     void glfwGetVersion(int @Nullable [] major, int @Nullable [] minor, int @Nullable [] rev);
     void glfwGetMonitorPos(long monitor, int @Nullable [] xpos, int @Nullable [] ypos);
-    void glfwGetMonitorWorkarea(long monitor, int @Nullable [] xpos, int @Nullable [] ypos, int @Nullable [] width, int @Nullable [] height);
-    void glfwGetMonitorPhysicalSize(long monitor, int @Nullable [] widthMM, int @Nullable [] heightMM);
-    void glfwGetMonitorContentScale(long monitor, float @Nullable [] xscale, float @Nullable [] yscale);
+    void glfwGetMonitorWorkarea(
+        long monitor,
+        int @Nullable [] xpos,
+        int @Nullable [] ypos,
+        int @Nullable [] width,
+        int @Nullable [] height
+    );
+    void glfwGetMonitorPhysicalSize(
+        long monitor,
+        int @Nullable [] widthMM,
+        int @Nullable [] heightMM
+    );
+    void glfwGetMonitorContentScale(
+        long monitor,
+        float @Nullable [] xscale,
+        float @Nullable [] yscale
+    );
     void glfwGetWindowPos(long window, int @Nullable [] xpos, int @Nullable [] ypos);
     void glfwGetWindowSize(long window, int @Nullable [] width, int @Nullable [] height);
     void glfwGetFramebufferSize(long window, int @Nullable [] width, int @Nullable [] height);
-    void glfwGetWindowFrameSize(long window, int @Nullable [] left, int @Nullable [] top, int @Nullable [] right, int @Nullable [] bottom);
-    void glfwGetWindowContentScale(long window, float @Nullable [] xscale, float @Nullable [] yscale);
+    void glfwGetWindowFrameSize(
+        long window,
+        int @Nullable [] left,
+        int @Nullable [] top,
+        int @Nullable [] right,
+        int @Nullable [] bottom
+    );
+    void glfwGetWindowContentScale(
+        long window,
+        float @Nullable [] xscale,
+        float @Nullable [] yscale
+    );
     void glfwGetCursorPos(long window, double @Nullable [] xpos, double @Nullable [] ypos);
-    void glfwGetPreeditCursorRectangle(long window, int @Nullable [] x, int @Nullable [] y, int @Nullable [] w, int @Nullable [] h);
+    void glfwGetPreeditCursorRectangle(
+        long window,
+        int @Nullable [] x,
+        int @Nullable [] y,
+        int @Nullable [] w,
+        int @Nullable [] h
+    );
 
 }

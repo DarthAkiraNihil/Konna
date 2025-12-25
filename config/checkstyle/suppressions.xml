@@ -12,4 +12,13 @@
     <suppress checks="FileLength" files="KGl33Lwjgl.java"/>
 
     <suppress checks="ParameterName" files="KGl33Lwjgl.java"/>
+
+    <suppress checks="MissingJavadocMethod" files="KGlfw.java"/>
+    <suppress checks="JavadocVariable" files="KGlfw.java"/>
+    <suppress checks="MultipleVariableDeclarations" files="KGlfw.java"/>
+
+    <suppress checks="MissingJavadocMethod" files="KGlfw[a-zA-Z0-9]*.java"/>
+
+    <suppress checks="ParameterName" files="KGlfwPreeditCallback.java"/>
+    <suppress checks="ParameterName" files="KGlfwPreeditCandidateCallback.java"/>
 </suppressions>
