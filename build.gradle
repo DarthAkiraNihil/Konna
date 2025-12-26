@@ -48,6 +48,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     implementation(project(":core"))
+    implementation(project(":libfrontend:libfrontend-opengl"))
+    implementation(project(":libfrontend:libfrontend-glfw"))
+    implementation(project(":libfrontend:libfrontend-stbimage"))
+    implementation(project(":backend:backend-lwjgl"))
 }
 
 distributions {
@@ -62,10 +66,10 @@ def exportedProjects = [
     ":",
     ":core",
     ":components:graphics",
-    ":libfrontend-opengl",
-    ":libfrontend-glfw",
-    ":libfrontend-stbimage",
-    ":backend-lwjgl",
+    ":libfrontend:libfrontend-opengl",
+    ":libfrontend:libfrontend-glfw",
+    ":libfrontend:libfrontend-stbimage",
+    ":backend:backend-lwjgl",
 ]
 
 tasks.withType(Javadoc).configureEach {

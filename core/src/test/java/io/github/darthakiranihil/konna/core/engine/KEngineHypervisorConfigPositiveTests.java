@@ -19,10 +19,10 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
-import io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.core.test.KTestContextLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
     public void testFromJsonSuccess() {
 
         String config = "{" +
-            "\"context_loader\": \"io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader\"" +
+            "\"context_loader\": \"io.github.darthakiranihil.konna.core.test.KTestContextLoader\"" +
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
             "\"route_configurers\": []," +
@@ -61,7 +61,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
             Assertions.assertEquals(TestComponent.class, loadedConfig.components()[0]);
             Assertions.assertEquals(KStandardComponentLoader.class, loadedConfig.componentLoader());
             Assertions.assertEquals(KStandardServiceLoader.class, loadedConfig.serviceLoader());
-            Assertions.assertEquals(TestContextLoader.class, loadedConfig.contextLoader());
+            Assertions.assertEquals(KTestContextLoader.class, loadedConfig.contextLoader());
             Assertions.assertEquals(0, loadedConfig.eventRegisterers().size());
             Assertions.assertEquals(0, loadedConfig.messageRoutesConfigurers().size());
 
