@@ -20,11 +20,18 @@ import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import org.jetbrains.annotations.TestOnly;
 
+/**
+ * Implementation of {@link KEventRegisterer} to be used only in tests.
+ * Does nothing.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @TestOnly
-public class KEmptyEventRegisterer implements KEventRegisterer {
+public final class KEmptyEventRegisterer implements KEventRegisterer {
 
     @Override
-    public void registerEvents(KEventSystem eventSystem) {
+    public void registerEvents(final KEventSystem eventSystem) {
 
     }
 

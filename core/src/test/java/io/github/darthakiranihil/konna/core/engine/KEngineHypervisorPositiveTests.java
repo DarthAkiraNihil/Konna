@@ -37,7 +37,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
     public void testInstantiateHypervisorSuccess() {
 
         String config = "{" +
-            "\"context_loader\": \"io.github.darthakiranihil.konna.core.engine.impl.TestContextLoader\"" +
+            "\"context_loader\": \"io.github.darthakiranihil.konna.core.test.KTestContextLoader\"" +
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
             "\"route_configurers\": []," +

@@ -20,11 +20,18 @@ import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import org.jetbrains.annotations.TestOnly;
 
+/**
+ * Implementation of {@link KMessageRoutesConfigurer} to be used only in tests.
+ * Does nothing.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @TestOnly
-public class KEmptyRouteConfigurer implements KMessageRoutesConfigurer {
+public final class KEmptyRouteConfigurer implements KMessageRoutesConfigurer {
 
     @Override
-    public void setupRoutes(KMessageSystem messageSystem) {
+    public void setupRoutes(final KMessageSystem messageSystem) {
 
     }
 
