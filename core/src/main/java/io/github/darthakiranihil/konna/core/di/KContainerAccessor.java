@@ -16,10 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.struct.KPair;
-
-import java.util.*;
-
 /**
  * A base class for a container resolver - an essential class, that is designed
  * to return a {@link KContainer} depending on the environment of the caller class, i.e.

@@ -50,7 +50,13 @@ public final class KStandardContainerAccessor extends KObject implements KContai
      * @param index Built system index (must contain complete package and class list)
      */
     public KStandardContainerAccessor(final KIndex index) {
-        super("container_accessor", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
+        super(
+            "container_accessor",
+            KStructUtils.setOfTags(
+                KTag.DefaultTags.SYSTEM,
+                KTag.DefaultTags.STD
+            )
+        );
 
         this.index = index;
         this.rootContainer = this.buildContainer();
