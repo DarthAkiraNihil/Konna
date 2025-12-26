@@ -53,7 +53,7 @@ public record KGraphicsComponentConfig(
         }
 
         @Override
-        public void validate(KJsonValue value) {
+        public void validate(final KJsonValue value) {
             this.schema.validate(value);
         }
     }
