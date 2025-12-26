@@ -17,19 +17,19 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.object.impl.*;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-@KEnvironmentContainerModifier
+@KContainerModifier
 public class KStandardActivatorPositiveTests extends KStandardTestClass {
 
     private final KActivator activator;
     
     public KStandardActivatorPositiveTests() {
-        KContainer master = KStandardTestClass.context.resolveContainer();
+        KContainer master = KStandardTestClass.context.getContainer();
         master
             .add(TestInterfaceToResolve.class, TestResolvedImplementation.class)
             .add(TestDependencyInterface.class, TestDependencyImplementation.class);

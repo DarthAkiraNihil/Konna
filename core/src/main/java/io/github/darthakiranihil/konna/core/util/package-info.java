@@ -6,8 +6,6 @@
  */
 @NullMarked
 @KIndexedPackage
-@KPackageEnvironment(name = "core")
 package io.github.darthakiranihil.konna.core.util;
 
-import io.github.darthakiranihil.konna.core.di.KPackageEnvironment;
 import org.jspecify.annotations.NullMarked;

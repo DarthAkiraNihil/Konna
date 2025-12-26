@@ -18,8 +18,8 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.*;
-import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
-import io.github.darthakiranihil.konna.core.di.std.KStandardContainerResolver;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.std.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KProxiedEngineContext;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
@@ -54,7 +54,7 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @TestOnly
-@KEnvironmentContainerModifier
+@KContainerModifier
 public class KStandardTestClass extends KObject {
 
     /**
@@ -99,9 +99,9 @@ public class KStandardTestClass extends KObject {
     static {
         var index = new KStandardIndex();
 
-        var containerResolver = new KStandardContainerResolver(index);
+        var containerResolver = new KStandardContainerAccessor(index);
         containerResolver
-            .resolveContainer()
+            .getContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
             .add(KActivator.class, KProxiedEngineContext.class)

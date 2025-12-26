@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Signalizes that this type of caller class is allowed to modify the resolved
- * environment container, so {@link KContainerResolver} should not return
+ * environment container, so {@link KContainerAccessor} should not return
  * an immutable container.
  *
  * @since 0.2.0
@@ -31,5 +31,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface KEnvironmentContainerModifier {
+public @interface KContainerModifier {
 }

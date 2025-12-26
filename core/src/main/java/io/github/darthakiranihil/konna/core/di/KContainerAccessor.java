@@ -22,22 +22,22 @@ import java.util.*;
 
 /**
  * A base class for a container resolver - an essential class, that is designed
- * to return a {@link KContainer} depending on the environment of the caller class.
+ * to return a {@link KContainer} depending on the environment of the caller class, i.e.
+ * container will be unlocked for modification or not.
  *
  * @since 0.2.0
  * @author Dartk Akira Nihil
  *
- * @see KPackageEnvironment
- * @see KEnvironmentContainerModifier
+ * @see KContainerModifier
  */
-public interface KContainerResolver {
+public interface KContainerAccessor {
 
     /**
-     * Returns the container according to the caller class. Container resolution
-     * depends on implementation.
+     * Returns the container according to the caller class. Container modification allowance
+     * status depends on implementation.
      * @return Container the for caller class
      */
-    KContainer resolveContainer();
+    KContainer getContainer();
 
     /**
      * Returns list of environment data, containing name of an environment and list of its packages.

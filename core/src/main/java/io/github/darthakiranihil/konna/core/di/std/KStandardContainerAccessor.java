@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.util.*;
 import java.util.*;
 
 /**
- * Standard implementation of {@link KContainerResolver}.
+ * Standard implementation of {@link KContainerAccessor}.
  * It actively uses {@link KPackageEnvironment} data to define package environments, that are
  * resolved depending on the caller class. It requires a built package and class index to
  * create a package-to-environment mapping.
@@ -38,7 +38,7 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KStandardContainerResolver extends KObject implements KContainerResolver {
+public final class KStandardContainerAccessor extends KObject implements KContainerAccessor {
 
     private static final int CLASS_BEFORE_ACTIVATOR = 3;
 
@@ -79,7 +79,7 @@ public final class KStandardContainerResolver extends KObject implements KContai
      * groups all records by environment name and builds container according to group result.
      * @param index Built system index (must contain complete package and class list)
      */
-    public KStandardContainerResolver(final KIndex index) {
+    public KStandardContainerAccessor(final KIndex index) {
         super("container_resolver", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.index = index;
         this.addTag(KTag.DefaultTags.STD);
@@ -112,13 +112,13 @@ public final class KStandardContainerResolver extends KObject implements KContai
      * If caller class cannot be got, the root container is returned. If the caller
      * class is an instance of {@link KActivator}, the container will be resolved for
      * the caller class of the activator.
-     * If the caller class does not have {@link KEnvironmentContainerModifier},
+     * If the caller class does not have {@link KContainerModifier},
      * an {@link KImmutableContainer} will be returned instead of regular {@link KContainer}.
      *
      * @return Container the for caller class
      */
     @Override
-    public KContainer resolveContainer() {
+    public KContainer getContainer() {
         var stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace.length == 0) {
             return this.env2container.get("");
@@ -128,7 +128,7 @@ public final class KStandardContainerResolver extends KObject implements KContai
             Class<?> callerClass = Class.forName(stackTrace[2].getClassName());
             if (callerClass == KActivator.class) {
                 callerClass = Class.forName(
-                    stackTrace[KStandardContainerResolver.CLASS_BEFORE_ACTIVATOR].getClassName()
+                    stackTrace[KStandardContainerAccessor.CLASS_BEFORE_ACTIVATOR].getClassName()
                 );
             }
 
@@ -143,7 +143,7 @@ public final class KStandardContainerResolver extends KObject implements KContai
                 retrieved = this.env2container.get("");
             }
 
-            if (!callerClass.isAnnotationPresent(KEnvironmentContainerModifier.class)) {
+            if (!callerClass.isAnnotationPresent(KContainerModifier.class)) {
                 return new KImmutableContainer(retrieved);
             }
 
