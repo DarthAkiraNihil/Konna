@@ -16,5 +16,41 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
-public class KGraphicsComponent {
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+
+import java.util.List;
+
+@KComponentMetaInfo(
+    name = "Graphics",
+    configFilename = "classpath:config/graphics.json",
+    servicesPackage = "io.github.darthakiranihil.konna.graphics.service"
+)
+public class KGraphicsComponent extends KComponent {
+
+    public KGraphicsComponent(
+        KServiceLoader serviceLoader,
+        String name,
+        KEngineContext ctx,
+        String servicesPackage,
+        KJsonValue config
+    ) {
+        super(serviceLoader, name, ctx, servicesPackage, config);
+    }
+
+    @Override
+    public List<KPair<String, KJsonValidator>> getAssetSchemas() {
+        return List.of();
+    }
+
+    @Override
+    protected void applyConfig(KJsonValue config) {
+
+    }
+
 }

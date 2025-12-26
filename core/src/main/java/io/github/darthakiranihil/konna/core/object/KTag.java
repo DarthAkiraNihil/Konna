@@ -38,6 +38,10 @@ public record KTag(String name) {
          */
         public static final KTag SYSTEM = new KTag("system");
         /**
+         * Marks that the object is a service of an engine component.
+         */
+        public static final KTag SERVICE = new KTag("service");
+        /**
          * Marks that the object is used or created in test context.
          */
         public static final KTag TEST = new KTag("test");
