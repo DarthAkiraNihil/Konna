@@ -16,13 +16,19 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 
 import java.util.List;
 
@@ -36,6 +42,8 @@ import java.util.List;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+@KEnvironmentContainerModifier
+@KSingleton
 @KComponentMetaInfo(
     name = "Graphics",
     configFilename = "classpath:config/graphics.json",
@@ -60,6 +68,19 @@ public class KGraphicsComponent extends KComponent {
 
     @Override
     protected void applyConfig(final KJsonValue config) {
+
+        KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
+        KGraphicsComponentConfig.SCHEMA.validate(config);
+        KGraphicsComponentConfig deserializedConfig = deserializer.deserialize(
+            config,
+            KGraphicsComponentConfig.class
+        );
+        if (deserializedConfig == null) {
+            throw new KComponentLoadingException("Could not read component config");
+        }
+
+        KContainer container = this.ctx.resolveContainer();
+        container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
 
     }
 
