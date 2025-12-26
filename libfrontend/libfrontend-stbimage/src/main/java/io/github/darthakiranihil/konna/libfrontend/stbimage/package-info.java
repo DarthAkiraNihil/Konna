@@ -4,7 +4,8 @@
  * @author Darth Akira Nihil
  * @since 0.1.0
  */
-@KIndexedPackage @NullMarked
+@KIndexedPackage
+@NullMarked
 package io.github.darthakiranihil.konna.libfrontend.stbimage;
 
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
