@@ -39,10 +39,4 @@ public interface KContainerAccessor {
      */
     KContainer getContainer();
 
-    /**
-     * Returns list of environment data, containing name of an environment and list of its packages.
-     * @return Data of created environments.
-     */
-    List<KPair<String, List<String>>> getEnvironments();
-
 }

@@ -94,11 +94,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public List<KPair<String, List<String>>> getEnvironments() {
-        return this.containerResolver.getEnvironments();
-    }
-
-    @Override
     public KAsset loadAsset(final String assetId, final String typeAlias) {
         return this.assetLoader.loadAsset(assetId, typeAlias);
     }

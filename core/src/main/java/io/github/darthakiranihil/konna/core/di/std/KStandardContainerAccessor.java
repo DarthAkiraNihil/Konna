@@ -21,19 +21,13 @@ import io.github.darthakiranihil.konna.core.except.KUnknownException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.struct.KTriplet;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.core.util.*;
 
 import java.util.*;
 
 /**
  * Standard implementation of {@link KContainerAccessor}.
- * It actively uses {@link KPackageEnvironment} data to define package environments, that are
- * resolved depending on the caller class. It requires a built package and class index to
- * create a package-to-environment mapping.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -42,33 +36,9 @@ public final class KStandardContainerAccessor extends KObject implements KContai
 
     private static final int CLASS_BEFORE_ACTIVATOR = 3;
 
-    private static final class PackageEnvRecord {
-
-        private static int unnamedEnvironmentsCreated = 0;
-
-        private String name;
-        private String parentEnvironmentName;
-        private final String packageName;
-        private final int packageNameLength;
-        private boolean isDefiningEnvironment;
-
-        PackageEnvRecord(
-            final String name,
-            final String packageName,
-            boolean isDefiningEnvironment
-        ) {
-            this.name = name;
-            this.packageName = packageName;
-            this.packageNameLength = packageName.split("\\.").length;
-            this.isDefiningEnvironment = isDefiningEnvironment;
-
-            this.parentEnvironmentName = "";
-        }
-    }
-
     private final KIndex index;
-    private final Map<String, KContainer> env2container;
-    private final Map<String, String> package2env;
+    private final KContainer rootContainer;
+    private final KImmutableContainer lockedRootContainer;
 
     /**
      * Standard constructor.
@@ -80,30 +50,12 @@ public final class KStandardContainerAccessor extends KObject implements KContai
      * @param index Built system index (must contain complete package and class list)
      */
     public KStandardContainerAccessor(final KIndex index) {
-        super("container_resolver", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("container_accessor", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
+
         this.index = index;
-        this.addTag(KTag.DefaultTags.STD);
+        this.rootContainer = this.buildContainer();
+        this.lockedRootContainer = new KImmutableContainer(this.rootContainer);
 
-        this.env2container = new HashMap<>();
-        this.package2env = new HashMap<>();
-
-        List<KTriplet<String, String, Boolean>>
-            indexedPackages = this.collectIndexedPackages();
-
-        List<PackageEnvRecord>
-            records = this.createEnvRecords(indexedPackages);
-
-        this.processEnvironmentDefiningPackages(records);
-        this.processEmptyEnvironments(records);
-
-        Map<String, KPair<Set<String>, String>>
-            groupedEnvironments = this.groupEnvironmentRecords(records);
-        Map<String, KContainer> containers = this.buildContainers(groupedEnvironments);
-
-        this.env2container.putAll(containers);
-        groupedEnvironments.forEach(
-            (k, v) -> v.first().forEach((p) -> this.package2env.put(p, k))
-        );
     }
 
     /**
@@ -121,7 +73,7 @@ public final class KStandardContainerAccessor extends KObject implements KContai
     public KContainer getContainer() {
         var stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace.length == 0) {
-            return this.env2container.get("");
+            return this.lockedRootContainer;
         }
 
         try {
@@ -132,217 +84,31 @@ public final class KStandardContainerAccessor extends KObject implements KContai
                 );
             }
 
-            KContainer retrieved = this.env2container.get(
-                this.package2env.get(
-                    callerClass
-                        .getPackage()
-                        .getName()
-                )
-            );
-            if (retrieved == null) {
-                retrieved = this.env2container.get("");
-            }
-
             if (!callerClass.isAnnotationPresent(KContainerModifier.class)) {
-                return new KImmutableContainer(retrieved);
+                return this.lockedRootContainer;
             }
 
-            return retrieved;
+            return this.rootContainer;
         } catch (Throwable e) {
             throw new KUnknownException(e);
         }
     }
 
-    @Override
-    public List<KPair<String, List<String>>> getEnvironments() {
-        return this
-            .env2container
-            .keySet()
-            .stream()
-            .map(
-                container -> new KPair<>(
-                    container,
-                    this
-                        .package2env
-                        .entrySet()
-                        .stream()
-                        .filter(
-                            (p) -> p
-                                .getValue()
-                                .equals(container)
-                        )
-                        .map(Map.Entry::getKey)
-                        .toList()
-                )
-            )
-            .toList();
+    private KContainer buildContainer() {
+        KContainer root = new KContainer("root_container");
+        List<String> packages = this.collectIndexedPackages();
+        KClassUtils
+            .getRealClassesInPackages(new HashSet<>(packages))
+            .forEach(root::add);
+        return root;
     }
 
-    private List<KTriplet<String, String, Boolean>> collectIndexedPackages() {
+    private List<String> collectIndexedPackages() {
         return this
             .index
             .getPackageIndex()
             .stream()
-            .map((x) -> {
-                if (!x.isAnnotationPresent(KPackageEnvironment.class)) {
-                    return new KTriplet<>(x.getName(), "", false);
-                }
-
-                var meta = x.getAnnotation(KPackageEnvironment.class);
-                return new KTriplet<>(x.getName(), meta.name(), true);
-            })
+            .map(Package::getName)
             .toList();
     }
-
-    private List<PackageEnvRecord> createEnvRecords(
-        final List<KTriplet<String, String, Boolean>> indexedPackages
-    ) {
-        List<PackageEnvRecord> records = new ArrayList<>(indexedPackages.size());
-        for (var indexedPackage: indexedPackages) {
-            records.add(
-                new PackageEnvRecord(
-                    indexedPackage.second(),
-                    indexedPackage.first(),
-                    indexedPackage.third()
-                )
-            );
-        }
-        return records;
-    }
-
-    private void processEnvironmentDefiningPackages(
-        final List<PackageEnvRecord> records
-    ) {
-        var environmentDefiningPackages = records
-            .stream()
-            .filter((x) -> !x.name.isEmpty())
-            .sorted(Comparator.comparingInt(x -> x.packageNameLength))
-            .map((x) -> new PackageEnvRecord(x.name, x.packageName, x.isDefiningEnvironment))
-            .toList();
-
-        for (PackageEnvRecord environmentDefiningPackage: environmentDefiningPackages) {
-            records.forEach((r) -> {
-                if (
-                    r.packageName.equals(environmentDefiningPackage.packageName)
-                        ||  !r.packageName.startsWith(environmentDefiningPackage.packageName)
-                ) {
-                    return;
-                }
-
-                if (r.isDefiningEnvironment) {
-                    r.parentEnvironmentName = environmentDefiningPackage.name;
-                    return;
-                }
-
-                r.name = environmentDefiningPackage.name;
-            });
-        }
-    }
-
-    @KExcludeFromGeneratedCoverageReport
-    private void processEmptyEnvironments(
-        final List<PackageEnvRecord> records
-    ) {
-        var minimumUnnamedEnvPackageLength = records
-            .stream()
-            .filter((x) -> x.name.isEmpty())
-            .map((x) -> x.packageNameLength)
-            .min(Comparator.comparingInt((x) -> x));
-
-        while (minimumUnnamedEnvPackageLength.isPresent()) {
-            var minLength = minimumUnnamedEnvPackageLength.get();
-
-            var emptyPackages = records
-                .stream()
-                .filter((x) -> x.name.isEmpty() && x.packageNameLength == minLength)
-                .toList();
-
-            for (PackageEnvRecord emptyPackage: emptyPackages) {
-                emptyPackage.name = String.format(
-                    "env@%d",
-                    PackageEnvRecord.unnamedEnvironmentsCreated++
-                );
-                emptyPackage.isDefiningEnvironment = true;
-                records.forEach((r) -> {
-                    if (
-                        r.packageName.equals(emptyPackage.packageName)
-                            ||  !r.packageName.startsWith(emptyPackage.packageName)
-                    ) {
-                        return;
-                    }
-
-                    if (r.isDefiningEnvironment) {
-                        r.parentEnvironmentName = emptyPackage.name;
-                        return;
-                    }
-
-                    r.name = emptyPackage.name;
-                });
-            }
-
-            minimumUnnamedEnvPackageLength = records
-                .stream()
-                .filter((x) -> x.name.isEmpty())
-                .map((x) -> x.packageNameLength)
-                .min(Comparator.comparingInt((x) -> x));
-        }
-    }
-
-    private Map<String, KPair<Set<String>, String>> groupEnvironmentRecords(
-        final List<PackageEnvRecord> records
-    ) {
-        Map<String, KPair<Set<String>, String>> groupResult = new HashMap<>();
-        for (var record: records) {
-            if (groupResult.containsKey(record.name)) {
-                var value = groupResult.get(record.name);
-                value.first().add(record.packageName);
-                continue;
-            }
-
-            Set<String> packages = new HashSet<>();
-            packages.add(record.packageName);
-            groupResult.put(
-                record.name, new KPair<>(packages, record.parentEnvironmentName)
-            );
-        }
-        return groupResult;
-    }
-
-    private Map<String, KContainer> buildContainers(
-        final Map<String, KPair<Set<String>, String>> environments
-    ) {
-        Map<String, KContainer> containers = new HashMap<>(environments.size());
-        KContainer root = new KContainer("root_container");
-        containers.put("", root);
-
-        environments
-            .entrySet()
-            .stream()
-            .filter((e) -> e.getValue().second().isEmpty())
-            .forEach((e) -> {
-                String containerName = String.format("container_of_environment_%s", e.getKey());
-                KContainer container = new KContainer(root, containerName);
-                KClassUtils
-                    .getRealClassesInPackages(e.getValue().first())
-                    .forEach(container::add);
-                containers.put(e.getKey(), container);
-            });
-
-        environments
-            .entrySet()
-            .stream()
-            .filter((e) -> !e.getValue().second().isEmpty())
-            .forEach((e) -> {
-                String containerName = String.format("container_of_environment_%s", e.getKey());
-                KContainer parent = containers.get(e.getValue().second());
-                KContainer container = new KContainer(parent, containerName);
-                KClassUtils
-                    .getRealClassesInPackages(e.getValue().first())
-                    .forEach(container::add);
-                containers.put(e.getKey(), container);
-            });
-
-        return containers;
-    }
-
 }

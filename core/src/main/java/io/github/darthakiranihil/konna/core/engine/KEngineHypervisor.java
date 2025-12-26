@@ -104,13 +104,6 @@ public class KEngineHypervisor extends KObject {
             ctx.getClassIndex().size(),
             ctx.getPackageIndex().size()
         );
-        var envs = ctx.getEnvironments();
-        KSystemLogger.info(
-            this.name,
-            "container_resolver: created %d environments: %s",
-            envs.size(),
-            envs
-        );
 
         KContainer master = ctx.getContainer();
 
