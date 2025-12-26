@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.impl;
+package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import org.jspecify.annotations.NullMarked;
+import org.jetbrains.annotations.TestOnly;
 
-@NullMarked
-public class EmptyRouteConfigurer implements KMessageRoutesConfigurer {
-
+/**
+ * Implementation of {@link KMessageRoutesConfigurer} to be used only in tests.
+ * Does nothing.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+@TestOnly
+public final class KEmptyRouteConfigurer implements KMessageRoutesConfigurer {
 
     @Override
-    public void setupRoutes(KMessageSystem messageSystem) {
+    public void setupRoutes(final KMessageSystem messageSystem) {
 
     }
 

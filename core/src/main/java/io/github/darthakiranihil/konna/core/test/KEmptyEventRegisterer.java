@@ -14,17 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.impl;
+package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import org.jspecify.annotations.NullMarked;
+import org.jetbrains.annotations.TestOnly;
 
-@NullMarked
-public class EmptyEventRegisterer implements KEventRegisterer {
+/**
+ * Implementation of {@link KEventRegisterer} to be used only in tests.
+ * Does nothing.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+@TestOnly
+public final class KEmptyEventRegisterer implements KEventRegisterer {
 
     @Override
-    public void registerEvents(KEventSystem eventSystem) {
+    public void registerEvents(final KEventSystem eventSystem) {
 
     }
+
 }

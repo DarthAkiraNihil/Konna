@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.impl;
+package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import org.jspecify.annotations.NullMarked;
+import org.jetbrains.annotations.TestOnly;
 
-@NullMarked
-public class TestContextLoader implements KEngineContextLoader {
+/**
+ * Implementation of {@link KEngineContextLoader} to be used only in tests.
+ * Returns context, defined in {@link KStandardTestClass#context}
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+@TestOnly
+public final class KTestContextLoader implements KEngineContextLoader {
 
     @Override
-    public KEngineContext load(KApplicationFeatures features) {
+    public KEngineContext load(final KApplicationFeatures features) {
         return KStandardTestClass.getContext();
     }
+
 }
