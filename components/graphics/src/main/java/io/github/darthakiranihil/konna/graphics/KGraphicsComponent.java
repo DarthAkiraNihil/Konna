@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -52,7 +53,7 @@ import java.util.List;
 public class KGraphicsComponent extends KComponent {
 
     public KGraphicsComponent(
-        final KServiceLoader serviceLoader,
+        @KInject final KServiceLoader serviceLoader,
         final String name,
         final KEngineContext ctx,
         final String servicesPackage,

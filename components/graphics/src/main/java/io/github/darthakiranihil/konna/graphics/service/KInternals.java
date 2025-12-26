@@ -21,9 +21,9 @@ import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
-final class KInternals extends KUninstantiable {
+public final class KInternals extends KUninstantiable {
 
-    static final class MessageToRenderableConverter implements KMessageToEndpointConverter {
+    public static final class MessageToRenderableConverter implements KMessageToEndpointConverter {
 
         @Override
         public Object[] convert(final KMessage message) {
