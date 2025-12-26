@@ -16,5 +16,12 @@
 
 package io.github.darthakiranihil.konna.graphics.render;
 
+/**
+ * Interface for a render frontend that renders object using implementation-defined
+ * tools and classes.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KRenderFrontend {
 }

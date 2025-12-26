@@ -26,6 +26,16 @@ import io.github.darthakiranihil.konna.core.struct.KPair;
 
 import java.util.List;
 
+/**
+ * Konna Graphics component, used for rendering object on the screen.
+ * Provided endpoints:
+ * <ul>
+ *     <li>RenderService.render</li>
+ * </ul>
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KComponentMetaInfo(
     name = "Graphics",
     configFilename = "classpath:config/graphics.json",
@@ -34,11 +44,11 @@ import java.util.List;
 public class KGraphicsComponent extends KComponent {
 
     public KGraphicsComponent(
-        KServiceLoader serviceLoader,
-        String name,
-        KEngineContext ctx,
-        String servicesPackage,
-        KJsonValue config
+        final KServiceLoader serviceLoader,
+        final String name,
+        final KEngineContext ctx,
+        final String servicesPackage,
+        final KJsonValue config
     ) {
         super(serviceLoader, name, ctx, servicesPackage, config);
     }
@@ -49,7 +59,7 @@ public class KGraphicsComponent extends KComponent {
     }
 
     @Override
-    protected void applyConfig(KJsonValue config) {
+    protected void applyConfig(final KJsonValue config) {
 
     }
 

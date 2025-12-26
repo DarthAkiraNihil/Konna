@@ -23,11 +23,11 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
 final class KInternals extends KUninstantiable {
 
-    final static class MessageToRenderableConverter implements KMessageToEndpointConverter {
+    static final class MessageToRenderableConverter implements KMessageToEndpointConverter {
 
         @Override
-        public Object[] convert(KMessage message) {
-            return new Object[] { new KRenderable.EMPTY() };
+        public Object[] convert(final KMessage message) {
+            return new Object[] {new KRenderable.EMPTY()};
         }
     }
 

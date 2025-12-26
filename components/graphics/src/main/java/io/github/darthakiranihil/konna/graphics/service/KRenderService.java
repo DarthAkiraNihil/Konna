@@ -26,6 +26,12 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
+/**
+ * Service for rendering different objects using {@link KRenderFrontend}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @KComponentServiceMetaInfo(
     name = "RenderService"
@@ -34,16 +40,24 @@ public class KRenderService extends KObject {
 
     private final KRenderFrontend renderFrontend;
 
-    public KRenderService(@KInject KRenderFrontend renderFrontend) {
+    /**
+     * Standard constructor.
+     * @param renderFrontend Render frontend to use for rendering objects
+     */
+    public KRenderService(@KInject final KRenderFrontend renderFrontend) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
     }
 
+    /**
+     * Renders an object.
+     * @param renderable Object to be rendered with {@link KRenderFrontend}
+     */
     @KServiceEndpoint(
         route = "render",
         converter = KInternals.MessageToRenderableConverter.class
     )
-    public void render(KRenderable renderable) {
+    public void render(final KRenderable renderable) {
         renderable.render(this.renderFrontend);
     }
 

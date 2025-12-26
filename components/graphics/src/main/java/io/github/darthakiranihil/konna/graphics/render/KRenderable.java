@@ -16,15 +16,30 @@
 
 package io.github.darthakiranihil.konna.graphics.render;
 
+/**
+ * Interface for an object that can be rendered with
+ * {@link KRenderFrontend}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KRenderable {
 
+    /**
+     * Implementation of an empty rendered object that literally
+     * is not rendered at all. May be useful for test purposes.
+     */
     final class EMPTY implements KRenderable {
         @Override
-        public void render(KRenderFrontend rf) {
+        public void render(final KRenderFrontend rf) {
 
         }
     }
 
+    /**
+     * Renders this object.
+     * @param rf Render frontend used for object rendering
+     */
     void render(KRenderFrontend rf);
 
 }
