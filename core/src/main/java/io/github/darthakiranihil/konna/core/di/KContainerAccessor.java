@@ -16,20 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Signalizes that this type of caller class is allowed to modify the resolved
- * environment container, so {@link KContainerResolver} should not return
- * an immutable container.
+ * A base class for a container resolver - an essential class, that is designed
+ * to return a {@link KContainer} depending on the environment of the caller class, i.e.
+ * container will be unlocked for modification or not.
  *
  * @since 0.2.0
- * @author Darth Akira Nihil
+ * @author Dartk Akira Nihil
+ *
+ * @see KContainerModifier
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface KEnvironmentContainerModifier {
+public interface KContainerAccessor {
+
+    /**
+     * Returns the container according to the caller class. Container modification allowance
+     * status depends on implementation.
+     * @return Container the for caller class
+     */
+    KContainer getContainer();
+
 }

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.di.KContainerResolver;
+import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -34,8 +34,7 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
  * @author Darth Akira Nihil
  */
 public interface KEngineContext extends
-    KActivator,
-    KContainerResolver,
+    KActivator, KContainerAccessor,
     KIndex,
     KObjectRegistry,
     KEventSystem,

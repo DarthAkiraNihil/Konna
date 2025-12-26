@@ -22,18 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Sets a specific environment for a package. This annotation's data should
- * be used by {@link KContainerResolver}
+ * Signalizes that this type of caller class is allowed to modify the resolved
+ * environment container, so {@link KContainerAccessor} should not return
+ * an immutable container.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PACKAGE)
-public @interface KPackageEnvironment {
-    /**
-     * Name of the package environment.
-     * @return Name of the package environment
-     */
-    String name();
+@Target(ElementType.TYPE)
+public @interface KContainerModifier {
 }

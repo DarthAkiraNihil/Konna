@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.object.std;
 import io.github.classgraph.ClassGraph;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
-import io.github.darthakiranihil.konna.core.di.KContainerResolver;
+import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -50,7 +50,7 @@ import java.util.Map;
 @KSingleton(immortal = true)
 public final class KStandardActivator extends KObject implements KActivator {
 
-    private final KContainerResolver containerResolver;
+    private final KContainerAccessor containerResolver;
     private final KObjectRegistry objectRegistry;
 
     private final Map<Class<?>, KObject> singletons;
@@ -70,7 +70,7 @@ public final class KStandardActivator extends KObject implements KActivator {
      * @param index System index
      */
     public KStandardActivator(
-        final KContainerResolver containerResolver,
+        final KContainerAccessor containerResolver,
         final KObjectRegistry objectRegistry,
         final KIndex index
     ) {
@@ -130,7 +130,7 @@ public final class KStandardActivator extends KObject implements KActivator {
      */
     @Override
     public KContainer newContainer() {
-        return new KContainer(this.containerResolver.resolveContainer());
+        return new KContainer(this.containerResolver.getContainer());
     }
 
     /**
@@ -220,7 +220,7 @@ public final class KStandardActivator extends KObject implements KActivator {
     ) {
         return this.createObject(
             clazz,
-            this.containerResolver.resolveContainer(),
+            this.containerResolver.getContainer(),
             nonInjectedArgs
         );
     }

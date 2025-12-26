@@ -6,7 +6,6 @@
  */
 @NullMarked
 @KIndexedPackage
-@KPackageEnvironment(name = "core")
 package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
