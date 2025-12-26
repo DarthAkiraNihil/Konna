@@ -41,6 +41,7 @@ import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
+import org.jetbrains.annotations.TestOnly;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -52,6 +53,7 @@ import java.util.Map;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+@TestOnly
 @KEnvironmentContainerModifier
 public class KStandardTestClass extends KObject {
 
