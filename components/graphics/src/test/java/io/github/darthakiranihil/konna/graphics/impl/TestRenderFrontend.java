@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihli.konna.graphics.impl;
+package io.github.darthakiranihil.konna.graphics.impl;
 
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 

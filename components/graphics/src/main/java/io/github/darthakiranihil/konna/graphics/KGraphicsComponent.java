@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
@@ -43,7 +43,7 @@ import java.util.List;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@KEnvironmentContainerModifier
+@KContainerModifier
 @KSingleton
 @KComponentMetaInfo(
     name = "Graphics",
@@ -80,7 +80,7 @@ public class KGraphicsComponent extends KComponent {
             throw new KComponentLoadingException("Could not read component config");
         }
 
-        KContainer container = this.ctx.resolveContainer();
+        KContainer container = this.ctx.getContainer();
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
 
     }

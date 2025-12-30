@@ -104,6 +104,8 @@ public class KStandardTestClass extends KObject {
             .getContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
+            .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
+            .add(KJsonSerializer.class, KStandardJsonSerializer.class)
             .add(KActivator.class, KProxiedEngineContext.class)
             .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)

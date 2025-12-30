@@ -76,6 +76,9 @@ public abstract class KComponent extends KObject {
 
         String componentClass = this.getClass().toString();
         KSystemLogger.info(name, "Creating component %s", componentClass);
+        this.ctx = ctx;
+        KSystemLogger.info(name, "Applying config for %s", componentClass);
+        this.applyConfig(config);
 
         this.services = this.loadServices(ctx, servicesPackage, serviceLoader);
         KSystemLogger.info(
@@ -92,11 +95,6 @@ public abstract class KComponent extends KObject {
             this.messenger,
             componentClass
         );
-        this.ctx = ctx;
-
-        KSystemLogger.info(name, "Applying config for %s", componentClass);
-        this.applyConfig(config);
-
 
         KSystemLogger.info(name, "Created component %s", componentClass);
     }
