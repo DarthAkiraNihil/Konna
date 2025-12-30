@@ -65,6 +65,7 @@ distributions {
 def exportedProjects = [
     ":",
     ":core",
+    ":components:graphics",
     ":libfrontend:libfrontend-opengl",
     ":libfrontend:libfrontend-glfw",
     ":libfrontend:libfrontend-stbimage",

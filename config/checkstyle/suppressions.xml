@@ -5,6 +5,8 @@
         "http://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+    <suppress checks="HiddenField" files="KComponent.java"/>
+
     <suppress checks="[a-zA-Z0-9]*" files="KGl20.java"/>
     <suppress checks="[a-zA-Z0-9]*" files="KGl33.java"/>
 

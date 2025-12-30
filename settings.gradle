@@ -8,6 +8,9 @@ pluginManagement {
 rootProject.name = 'Konna'
 include 'core'
 
+include 'components:graphics'
+findProject(':components:graphics')?.name = 'graphics'
+
 include 'libfrontend:libfrontend-opengl'
 findProject(':libfrontend:libfrontend-opengl')?.name = 'libfrontend-opengl'
 
