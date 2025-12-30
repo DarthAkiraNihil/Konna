@@ -19,14 +19,13 @@ package io.github.darthakiranihil.konna.core.engine.std;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerResolver;
-import io.github.darthakiranihil.konna.core.di.KEnvironmentContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.*;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -44,11 +43,11 @@ import java.util.UUID;
  * @author Darth Akira Nihil
  */
 @KSingleton(immortal = true)
-@KEnvironmentContainerModifier
+@KContainerModifier
 public final class KProxiedEngineContext extends KObject implements KEngineContext {
 
     private final KActivator activator;
-    private final KContainerResolver containerResolver;
+    private final KContainerAccessor containerResolver;
     private final KIndex index;
     private final KObjectRegistry objectRegistry;
     private final KQueueBasedEventSystem eventSystem;
@@ -69,7 +68,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      */
     public KProxiedEngineContext(
         final KActivator activator,
-        final KContainerResolver containerResolver,
+        final KContainerAccessor containerResolver,
         final KIndex index,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
@@ -89,13 +88,8 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public KContainer resolveContainer() {
-        return this.containerResolver.resolveContainer();
-    }
-
-    @Override
-    public List<KPair<String, List<String>>> getEnvironments() {
-        return this.containerResolver.getEnvironments();
+    public KContainer getContainer() {
+        return this.containerResolver.getContainer();
     }
 
     @Override
