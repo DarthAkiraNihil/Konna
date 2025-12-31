@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformable;
 
@@ -27,6 +28,8 @@ import io.github.darthakiranihil.konna.graphics.KTransformable;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+// since transformable methods are wrappers to KTransform methods
+@KExcludeFromGeneratedCoverageReport
 public abstract class KAbstractShape implements KShape {
 
     private final KTransform transform;

@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KOvalPositiveTests extends KShapeTestClass {
@@ -73,6 +74,33 @@ public class KOvalPositiveTests extends KShapeTestClass {
 
         KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height(), this.outlineColor);
         this.assertOval(shape, this.center, this.size, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    @SuppressWarnings({ "ConstantValue", "SimplifiableAssertion" })
+    public void testEqualsAndHashCode() {
+
+        KOval primal = new KOval(10, 10, 10, 10, KColor.PINK, KColor.BLUE);
+
+        KOval diff1 = new KOval(10, 11, 10, 10, KColor.PINK, KColor.BLUE);
+        KOval diff2 = new KOval(10, 10, 10, 11, KColor.PINK, KColor.BLUE);
+        KOval diff3 = new KOval(10, 10, 10, 10, KColor.RED, KColor.BLUE);
+        KOval diff4 = new KOval(10, 10, 10, 10, KColor.PINK, KColor.GREEN);
+
+        KOval equal = new KOval(10, 10, 10, 10, KColor.PINK, KColor.BLUE);
+
+        Assertions.assertFalse(primal.equals(null));
+        Assertions.assertFalse(primal.equals(1));
+
+        Assertions.assertFalse(primal.equals(diff1));
+        Assertions.assertFalse(primal.equals(diff2));
+        Assertions.assertFalse(primal.equals(diff3));
+        Assertions.assertFalse(primal.equals(diff4));
+
+        Assertions.assertTrue(primal.equals(equal));
+
+        Assertions.assertEquals(primal.hashCode(), equal.hashCode());
 
     }
 

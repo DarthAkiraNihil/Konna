@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KPolylinePositiveTests extends KShapeTestClass {
@@ -61,6 +62,57 @@ public class KPolylinePositiveTests extends KShapeTestClass {
 
         KPolyline shape = new KPolyline(this.xs, this.ys);
         this.assertPolyline(shape, this.points, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    @SuppressWarnings({ "ConstantValue", "SimplifiableAssertion" })
+    public void testEqualsAndHashCode() {
+
+        KPolyline primal = new KPolyline(
+            new KVector2i[] {
+                new KVector2i(10, 10),
+                new KVector2i(10, 16),
+                new KVector2i(16, 16),
+            },
+            KColor.PINK
+        );
+
+        KPolyline diff1 = new KPolyline(
+            new KVector2i[] {
+                new KVector2i(10, 11),
+                new KVector2i(10, 16),
+                new KVector2i(16, 16),
+            },
+            KColor.PINK
+        );
+        KPolyline diff2 = new KPolyline(
+            new KVector2i[] {
+                new KVector2i(10, 10),
+                new KVector2i(10, 16),
+                new KVector2i(16, 16),
+            },
+            KColor.GREEN
+        );
+
+        KPolyline equal = new KPolyline(
+            new KVector2i[] {
+                new KVector2i(10, 10),
+                new KVector2i(10, 16),
+                new KVector2i(16, 16),
+            },
+            KColor.PINK
+        );
+
+        Assertions.assertFalse(primal.equals(null));
+        Assertions.assertFalse(primal.equals(1));
+
+        Assertions.assertFalse(primal.equals(diff1));
+        Assertions.assertFalse(primal.equals(diff2));
+
+        Assertions.assertTrue(primal.equals(equal));
+
+        Assertions.assertEquals(primal.hashCode(), equal.hashCode());
 
     }
 

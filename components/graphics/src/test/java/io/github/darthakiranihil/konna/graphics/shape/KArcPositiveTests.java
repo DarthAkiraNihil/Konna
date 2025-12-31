@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KArcPositiveTests extends KShapeTestClass {
@@ -75,6 +76,37 @@ public class KArcPositiveTests extends KShapeTestClass {
 
         KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle, this.outlineColor);
         this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    @SuppressWarnings({ "ConstantValue", "SimplifiableAssertion" })
+    public void testEqualsAndHashCode() {
+
+        KArc primal = new KArc(10, 10, 11, 11, 10, 10, KColor.PINK, KColor.ORANGE);
+
+        KArc diff1 = new KArc(10, 11, 11, 11, 10, 10, KColor.PINK, KColor.ORANGE);
+        KArc diff2 = new KArc(10, 10, 11, 10, 10, 10, KColor.PINK, KColor.ORANGE);
+        KArc diff3 = new KArc(10, 10, 11, 11, 11, 10, KColor.PINK, KColor.ORANGE);
+        KArc diff4 = new KArc(10, 10, 11, 11, 10, 11, KColor.PINK, KColor.ORANGE);
+        KArc diff5 = new KArc(10, 10, 11, 11, 10, 10, KColor.RED, KColor.ORANGE);
+        KArc diff6 = new KArc(10, 10, 11, 11, 10, 10, KColor.PINK, KColor.GRAY);
+
+        KArc equal = new KArc(10, 10, 11, 11, 10, 10, KColor.PINK, KColor.ORANGE);
+
+        Assertions.assertFalse(primal.equals(null));
+        Assertions.assertFalse(primal.equals(1));
+
+        Assertions.assertFalse(primal.equals(diff1));
+        Assertions.assertFalse(primal.equals(diff2));
+        Assertions.assertFalse(primal.equals(diff3));
+        Assertions.assertFalse(primal.equals(diff4));
+        Assertions.assertFalse(primal.equals(diff5));
+        Assertions.assertFalse(primal.equals(diff6));
+
+        Assertions.assertTrue(primal.equals(equal));
+
+        Assertions.assertEquals(primal.hashCode(), equal.hashCode());
 
     }
 }

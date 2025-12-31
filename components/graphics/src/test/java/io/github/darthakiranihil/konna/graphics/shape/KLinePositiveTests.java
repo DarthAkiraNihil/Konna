@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KLinePositiveTests extends KShapeTestClass {
@@ -55,6 +56,31 @@ public class KLinePositiveTests extends KShapeTestClass {
 
         KLine shape = new KLine(this.start.x(), this.end.x(), this.start.y(), this.end.y());
         this.assertLine(shape, this.start, this.end, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    @SuppressWarnings({ "ConstantValue", "SimplifiableAssertion" })
+    public void testEqualsAndHashCode() {
+
+        KLine primal = new KLine(10, 11, 10, 11, KColor.PINK);
+
+        KLine diff1 = new KLine(10, 12, 10, 11, KColor.PINK);
+        KLine diff2 = new KLine(10, 11, 10, 12, KColor.PINK);
+        KLine diff3 = new KLine(10, 11, 10, 11, KColor.RED);
+
+        KLine equal = new KLine(10, 11, 10, 11, KColor.PINK);
+
+        Assertions.assertFalse(primal.equals(null));
+        Assertions.assertFalse(primal.equals(1));
+
+        Assertions.assertFalse(primal.equals(diff1));
+        Assertions.assertFalse(primal.equals(diff2));
+        Assertions.assertFalse(primal.equals(diff3));
+
+        Assertions.assertTrue(primal.equals(equal));
+
+        Assertions.assertEquals(primal.hashCode(), equal.hashCode());
 
     }
 
