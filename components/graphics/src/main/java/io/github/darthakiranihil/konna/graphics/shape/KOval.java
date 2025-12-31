@@ -108,18 +108,34 @@ public class KOval extends KAbstractShape {
         this(new KVector2i(x, y), new KSize(width, height), outlineColor, fillColor);
     }
 
+    /**
+     * Returns center coordinates of the oval.
+     * @return Center coordinates of this oval
+     */
     public KVector2i center() {
         return this.center;
     }
 
+    /**
+     * Returns size of the oval.
+     * @return Size of this oval
+     */
     public KSize size() {
         return this.size;
     }
 
+    /**
+     * Returns outline color of the oval
+     * @return Outline color of this oval
+     */
     public KColor getOutlineColor() {
         return outlineColor;
     }
 
+    /**
+     * Returns fill color of the oval
+     * @return Fill color of this oval
+     */
     public KColor getFillColor() {
         return fillColor;
     }

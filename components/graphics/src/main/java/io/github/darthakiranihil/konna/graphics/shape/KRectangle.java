@@ -185,10 +185,18 @@ public class KRectangle extends KPolygon {
         return new KRectangle(x, y, side, side, outlineColor, fillColor);
     }
 
+    /**
+     * Returns width of the rectangle.
+     * @return Width of the rectangle.
+     */
     public int width() {
         return this.width;
     }
 
+    /**
+     * Returns height of the rectangle.
+     * @return Height of the rectangle.
+     */
     public int height() {
         return this.height;
     }

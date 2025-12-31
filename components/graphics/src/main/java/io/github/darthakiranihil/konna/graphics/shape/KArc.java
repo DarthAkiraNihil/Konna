@@ -128,26 +128,50 @@ public class KArc extends KAbstractShape {
         rf.render(this);
     }
 
+    /**
+     * Returns center coordinates of the oval of the arc.
+     * @return Center coordinates of this arc
+     */
     public KVector2i center() {
         return this.center;
     }
 
+    /**
+     * Returns size of the oval of the arc.
+     * @return Size of this arc
+     */
     public KSize size() {
         return this.size;
     }
 
+    /**
+     * Returns arc's start angle on its oval.
+     * @return Start angle of this arc
+     */
     public int startAngle() {
         return this.startAngle;
     }
 
+    /**
+     * Returns arc's angle on its oval.
+     * @return Angle of this arc
+     */
     public int arcAngle() {
         return this.arcAngle;
     }
 
+    /**
+     * Returns outline color of the arc
+     * @return Outline color of this arc
+     */
     public KColor getOutlineColor() {
         return outlineColor;
     }
 
+    /**
+     * Returns fill color of the arc
+     * @return Fill color of this arc
+     */
     public KColor getFillColor() {
         return fillColor;
     }

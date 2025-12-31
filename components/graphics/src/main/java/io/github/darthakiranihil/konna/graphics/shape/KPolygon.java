@@ -103,14 +103,26 @@ public class KPolygon extends KAbstractShape {
         this(KStructUtils.furlArraysToVectors(xPoints, yPoints), outlineColor, fillColor);
     }
 
+    /**
+     * Returns points of the polygon.
+     * @return Points (vertices) of this polygon
+     */
     public KVector2i[] points() {
         return this.points;
     }
 
+    /**
+     * Returns outline color of the polygon
+     * @return Outline color of this polygon
+     */
     public KColor getOutlineColor() {
         return this.outlineColor;
     }
 
+    /**
+     * Returns fill color of the polygon
+     * @return Fill color of this polygon
+     */
     public KColor getFillColor() {
         return this.fillColor;
     }

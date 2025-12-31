@@ -85,14 +85,26 @@ public class KLine extends KAbstractShape {
         rf.render(this);
     }
 
+    /**
+     * Returns color of the line.
+     * @return Color of this line
+     */
     public KColor getColor() {
         return color;
     }
 
+    /**
+     * Returns start coordinates of the line.
+     * @return Start coordinates of this line
+     */
     public KVector2i start() {
         return this.start;
     }
 
+    /**
+     * Returns end coordinates of the line.
+     * @return End coordinates of this line
+     */
     public KVector2i end() {
         return this.end;
     }

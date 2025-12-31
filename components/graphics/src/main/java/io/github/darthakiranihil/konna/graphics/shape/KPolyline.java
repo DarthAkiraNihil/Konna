@@ -79,10 +79,18 @@ public class KPolyline extends KAbstractShape {
         rf.render(this);
     }
 
+    /**
+     * Returns points of the polyline.
+     * @return Points (vertices) of this polyline
+     */
     public KVector2i[] points() {
         return this.points;
     }
 
+    /**
+     * Returns color of the polyline.
+     * @return Color of this polyline
+     */
     public KColor getColor() {
         return color;
     }
