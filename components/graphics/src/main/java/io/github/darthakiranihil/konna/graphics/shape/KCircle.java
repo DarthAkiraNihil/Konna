@@ -36,7 +36,7 @@ public class KCircle extends KOval {
      * @param fillColor Circle's fill color
      */
     public KCircle(final KVector2i coordinates, int r, final KColor outlineColor, final KColor fillColor) {
-        super(coordinates, KSize.squared(r), outlineColor, fillColor);
+        super(coordinates, KSize.squared(2 * r), outlineColor, fillColor);
     }
 
     /**
@@ -46,7 +46,7 @@ public class KCircle extends KOval {
      * @param outlineColor Circle's outline color
      */
     public KCircle(final KVector2i coordinates, int r, final KColor outlineColor) {
-        super(coordinates, KSize.squared(r), outlineColor);
+        super(coordinates, KSize.squared(2 * r), outlineColor);
     }
 
     /**
@@ -55,7 +55,7 @@ public class KCircle extends KOval {
      * @param r Circle's radius
      */
     public KCircle(final KVector2i coordinates, int r) {
-        super(coordinates, KSize.squared(r));
+        super(coordinates, KSize.squared(2 * r));
     }
 
     /**

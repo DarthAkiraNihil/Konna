@@ -37,7 +37,7 @@ public record KVector2i(
     /**
      * Adds a vector to this vector.
      * @param other Vector to add
-     * @return This vector (for method chaining)
+     * @return Result vector
      */
     public KVector2i add(KVector2i other) {
         return new KVector2i(this.x + other.x(), this.y + other.y());
@@ -46,7 +46,7 @@ public record KVector2i(
     /**
      * Subtracts a vector from this vector.
      * @param other Vector to subtract
-     * @return This vector (for method chaining)
+     * @return Result vector
      */
     public KVector2i subtract(KVector2i other) {
         return new KVector2i(this.x - other.x(), this.y - other.y());

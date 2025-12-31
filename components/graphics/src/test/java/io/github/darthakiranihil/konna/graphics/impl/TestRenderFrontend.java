@@ -17,6 +17,44 @@
 package io.github.darthakiranihil.konna.graphics.impl;
 
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shape.*;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class TestRenderFrontend implements KRenderFrontend {
+
+    @Override
+    public void render(KLine line) {
+
+    }
+
+    @Override
+    public void render(KPolyline polyline) {
+
+    }
+
+    @Override
+    public void render(KPolygon polygon) {
+
+    }
+
+    @Override
+    public void render(KRectangle rectangle) {
+
+    }
+
+    @Override
+    public void render(KOval oval) {
+
+    }
+
+    @Override
+    public void render(KCircle circle) {
+
+    }
+
+    @Override
+    public void render(KArc arc) {
+
+    }
 }

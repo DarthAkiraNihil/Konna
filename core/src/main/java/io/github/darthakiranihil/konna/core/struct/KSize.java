@@ -38,4 +38,12 @@ public record KSize(
     public static KSize squared(int side) {
         return new KSize(side, side);
     }
+
+    /**
+     * Returns size as {@link KVector2i} instance.
+     * @return Vector representation of the size
+     */
+    public KVector2i vector() {
+        return new KVector2i(this.width, this.height);
+    }
 }
