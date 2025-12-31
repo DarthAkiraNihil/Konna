@@ -30,11 +30,11 @@ public record KVector2d(
 ) {
 
     /**
-     * Zero vector - (0,0)
+     * Zero vector - (0,0).
      */
     public static final KVector2d ZERO = new KVector2d(0.0, 0.0);
     /**
-     * Unit vector - (1,1)
+     * Unit vector - (1,1).
      */
     public static final KVector2d ONE = new KVector2d(1.0, 1.0);
 

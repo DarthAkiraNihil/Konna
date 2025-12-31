@@ -39,8 +39,20 @@ public class KRectangle extends KPolygon {
      * @param outlineColor Rectangle's outline color
      * @param fillColor Rectangle's fill color
      */
-    public KRectangle(final KVector2i coordinates, final KSize size, final KColor outlineColor, final KColor fillColor) {
-        this(coordinates.x(), coordinates.y(), size.width(), size.height(), outlineColor, fillColor);
+    public KRectangle(
+        final KVector2i coordinates,
+        final KSize size,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        this(
+            coordinates.x(),
+            coordinates.y(),
+            size.width(),
+            size.height(),
+            outlineColor,
+            fillColor
+        );
     }
 
     /**
@@ -72,7 +84,14 @@ public class KRectangle extends KPolygon {
      * @param outlineColor Rectangle's outline color
      * @param fillColor Rectangle's fill color
      */
-    public KRectangle(int x, int y, int width, int height, final KColor outlineColor, final KColor fillColor) {
+    public KRectangle(
+        int x,
+        int y,
+        int width,
+        int height,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         super(
             new KVector2i[] {
                 new KVector2i(x, y),
@@ -130,7 +149,11 @@ public class KRectangle extends KPolygon {
      * @param outlineColor Square's outline color
      * @return Rectangle with square dimensions
      */
-    public static KRectangle square(final KVector2i coordinates, int side, final KColor outlineColor) {
+    public static KRectangle square(
+        final KVector2i coordinates,
+        int side,
+        final KColor outlineColor
+    ) {
         return new KRectangle(coordinates, KSize.squared(side), outlineColor);
     }
 
@@ -142,7 +165,12 @@ public class KRectangle extends KPolygon {
      * @param fillColor Square's fill color
      * @return Rectangle with square dimensions
      */
-    public static KRectangle square(final KVector2i coordinates, int side, final KColor outlineColor, final KColor fillColor) {
+    public static KRectangle square(
+        final KVector2i coordinates,
+        int side,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         return new KRectangle(coordinates, KSize.squared(side), outlineColor, fillColor);
     }
 
@@ -181,7 +209,13 @@ public class KRectangle extends KPolygon {
      * @param fillColor Square's fill color
      * @return Rectangle with square dimensions
      */
-    public static KRectangle square(int x, int y, int side, final KColor outlineColor, final KColor fillColor) {
+    public static KRectangle square(
+        int x,
+        int y,
+        int side,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         return new KRectangle(x, y, side, side, outlineColor, fillColor);
     }
 

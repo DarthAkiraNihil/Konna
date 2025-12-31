@@ -34,6 +34,12 @@ public final class KTransform implements KTransformable {
     private final float[][] matrix;
     private boolean cached;
 
+    /**
+     * Standard constructor.
+     * @param rotation Rotation
+     * @param translation Translation
+     * @param scaling Scaling
+     */
     public KTransform(
         double rotation,
         final KVector2i translation,
@@ -46,6 +52,10 @@ public final class KTransform implements KTransformable {
         this.cached = false;
     }
 
+    /**
+     * Creates transform with zero rotation, zero translation
+     * and 1.0 scaling for X and Y coordinates.
+     */
     public KTransform() {
         this(0.0, KVector2i.ZERO, KVector2d.ONE);
     }
@@ -58,7 +68,7 @@ public final class KTransform implements KTransformable {
     }
 
     @Override
-    public KTransformable rotate(double theta, KVector2i pivot) {
+    public KTransformable rotate(double theta, final KVector2i pivot) {
         this.rotation += theta;
         this.translation = this.translation.add(pivot);
         this.cached = false;
@@ -66,23 +76,31 @@ public final class KTransform implements KTransformable {
     }
 
     @Override
-    public KTransformable scale(KVector2d factor) {
+    public KTransformable scale(final KVector2d factor) {
         this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
         this.cached = false;
         return this;
     }
 
     @Override
-    public KTransformable translate(KVector2i value) {
+    public KTransformable translate(final KVector2i value) {
         this.translation = this.translation.add(value);
         this.cached = false;
         return this;
     }
 
+    /**
+     * Returns rotation of this transform.
+     * @return Rotation of this transform.
+     */
     public double getRotation() {
         return this.rotation;
     }
 
+    /**
+     * Returns translation of this transform.
+     * @return Translation of this transform
+     */
     public KVector2i getTranslation() {
         return this.translation;
     }
@@ -93,11 +111,16 @@ public final class KTransform implements KTransformable {
     }
 
     @Override
-    public KTransformable setScaling(KVector2d scale) {
+    public KTransformable setScaling(final KVector2d scale) {
         this.scaling = scale;
         return this;
     }
 
+    /**
+     * Returns transformation matrix representation
+     * of this transform.
+     * @return Transformation matrix of this transform
+     */
     public float[][] matrix() {
 
         if (cached) {

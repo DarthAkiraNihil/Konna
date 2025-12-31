@@ -81,7 +81,7 @@ public class KLine extends KAbstractShape {
     }
 
     @Override
-    public void render(KRenderFrontend rf) {
+    public void render(final KRenderFrontend rf) {
         rf.render(this);
     }
 
@@ -110,7 +110,7 @@ public class KLine extends KAbstractShape {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }

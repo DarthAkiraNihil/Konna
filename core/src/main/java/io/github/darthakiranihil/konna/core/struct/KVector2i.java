@@ -30,7 +30,7 @@ public record KVector2i(
 ) {
 
     /**
-     * Zero vector - (0,0)
+     * Zero vector - (0,0).
      */
     public static final KVector2i ZERO = new KVector2i(0, 0);
 
@@ -39,7 +39,7 @@ public record KVector2i(
      * @param other Vector to add
      * @return Result vector
      */
-    public KVector2i add(KVector2i other) {
+    public KVector2i add(final KVector2i other) {
         return new KVector2i(this.x + other.x(), this.y + other.y());
     }
 
@@ -48,7 +48,7 @@ public record KVector2i(
      * @param other Vector to subtract
      * @return Result vector
      */
-    public KVector2i subtract(KVector2i other) {
+    public KVector2i subtract(final KVector2i other) {
         return new KVector2i(this.x - other.x(), this.y - other.y());
     }
 

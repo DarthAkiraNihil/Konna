@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
+import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 
 /**
  * Representation of a circle that is oval with squared size.
@@ -35,7 +36,12 @@ public class KCircle extends KOval {
      * @param outlineColor Circle's outline color
      * @param fillColor Circle's fill color
      */
-    public KCircle(final KVector2i coordinates, int r, final KColor outlineColor, final KColor fillColor) {
+    public KCircle(
+        final KVector2i coordinates,
+        int r,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         super(coordinates, KSize.squared(2 * r), outlineColor, fillColor);
     }
 
@@ -96,4 +102,8 @@ public class KCircle extends KOval {
         super(x, y, 2 * r, 2 * r, outlineColor, fillColor);
     }
 
+    @Override
+    public void render(final KRenderFrontend rf) {
+        rf.render(this);
+    }
 }

@@ -43,7 +43,12 @@ public class KOval extends KAbstractShape {
      * @param outlineColor Oval's outline color
      * @param fillColor Oval's fill color
      */
-    public KOval(final KVector2i center, final KSize size, final KColor outlineColor, final KColor fillColor) {
+    public KOval(
+        final KVector2i center,
+        final KSize size,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         this.center = center;
         this.size = size;
         this.outlineColor = outlineColor;
@@ -104,7 +109,14 @@ public class KOval extends KAbstractShape {
      * @param outlineColor Oval's outline color
      * @param fillColor Oval's fill color
      */
-    public KOval(int x, int y, int width, int height, final KColor outlineColor, final KColor fillColor) {
+    public KOval(
+        int x,
+        int y,
+        int width,
+        int height,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         this(new KVector2i(x, y), new KSize(width, height), outlineColor, fillColor);
     }
 
@@ -125,7 +137,7 @@ public class KOval extends KAbstractShape {
     }
 
     /**
-     * Returns outline color of the oval
+     * Returns outline color of the oval.
      * @return Outline color of this oval
      */
     public KColor getOutlineColor() {
@@ -133,7 +145,7 @@ public class KOval extends KAbstractShape {
     }
 
     /**
-     * Returns fill color of the oval
+     * Returns fill color of the oval.
      * @return Fill color of this oval
      */
     public KColor getFillColor() {
@@ -141,12 +153,12 @@ public class KOval extends KAbstractShape {
     }
 
     @Override
-    public void render(KRenderFrontend rf) {
+    public void render(final KRenderFrontend rf) {
         rf.render(this);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }

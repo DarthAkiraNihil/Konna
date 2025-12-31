@@ -47,7 +47,14 @@ public class KArc extends KAbstractShape {
      * @param outlineColor Arc's outline color
      * @param fillColor Arc's fill color
      */
-    public KArc(final KVector2i center, final KSize size, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
+    public KArc(
+        final KVector2i center,
+        final KSize size,
+        int startAngle,
+        int arcAngle,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         this.center = center;
         this.size = size;
         this.startAngle = startAngle;
@@ -63,7 +70,8 @@ public class KArc extends KAbstractShape {
      * @param startAngle Start angle of the arc on the oval
      * @param arcAngle Arc angle on the oval
      */
-    public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle) {
+    public KArc(
+        final KVector2i coordinates, final KSize size, int startAngle, int arcAngle) {
         this(coordinates, size, startAngle, arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
@@ -75,7 +83,13 @@ public class KArc extends KAbstractShape {
      * @param arcAngle Arc angle on the oval
      * @param outlineColor Arc's outline color
      */
-    public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor) {
+    public KArc(
+        final KVector2i coordinates,
+        final KSize size,
+        int startAngle,
+        int arcAngle,
+        final KColor outlineColor
+    ) {
         this(coordinates, size, startAngle, arcAngle, outlineColor, KColor.TRANSPARENT);
     }
 
@@ -90,7 +104,14 @@ public class KArc extends KAbstractShape {
      * @param arcAngle Arc angle on the oval
      */
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this(
+            new KVector2i(x, y),
+            new KSize(width, height),
+            startAngle,
+            arcAngle,
+            KColor.TRANSPARENT,
+            KColor.TRANSPARENT
+        );
     }
 
     /**
@@ -104,8 +125,23 @@ public class KArc extends KAbstractShape {
      * @param arcAngle Arc angle on the oval
      * @param outlineColor Arc's outline color
      */
-    public KArc(int x, int y, int width, int height, int startAngle, int arcAngle, final KColor outlineColor) {
-        this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, outlineColor, KColor.TRANSPARENT);
+    public KArc(
+        int x,
+        int y,
+        int width,
+        int height,
+        int startAngle,
+        int arcAngle,
+        final KColor outlineColor
+    ) {
+        this(
+            new KVector2i(x, y),
+            new KSize(width, height),
+            startAngle,
+            arcAngle,
+            outlineColor,
+            KColor.TRANSPARENT
+        );
     }
 
     /**
@@ -119,12 +155,28 @@ public class KArc extends KAbstractShape {
      * @param outlineColor Arc's outline color
      * @param fillColor Arc's fill color
      */
-    public KArc(int x, int y, int width, int height, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
-        this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, outlineColor, fillColor);
+    public KArc(
+        int x,
+        int y,
+        int width,
+        int height,
+        int startAngle,
+        int arcAngle,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        this(
+            new KVector2i(x, y),
+            new KSize(width, height),
+            startAngle,
+            arcAngle,
+            outlineColor,
+            fillColor
+        );
     }
 
     @Override
-    public void render(KRenderFrontend rf) {
+    public void render(final KRenderFrontend rf) {
         rf.render(this);
     }
 
@@ -161,7 +213,7 @@ public class KArc extends KAbstractShape {
     }
 
     /**
-     * Returns outline color of the arc
+     * Returns outline color of the arc.
      * @return Outline color of this arc
      */
     public KColor getOutlineColor() {
@@ -169,7 +221,7 @@ public class KArc extends KAbstractShape {
     }
 
     /**
-     * Returns fill color of the arc
+     * Returns fill color of the arc.
      * @return Fill color of this arc
      */
     public KColor getFillColor() {
@@ -177,7 +229,7 @@ public class KArc extends KAbstractShape {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }

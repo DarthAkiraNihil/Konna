@@ -43,9 +43,9 @@ public class KPolygon extends KAbstractShape {
      * @param fillColor Polygon's fill color
      */
     public KPolygon(
-        KVector2i[] points,
-        KColor outlineColor,
-        KColor fillColor
+        final KVector2i[] points,
+        final KColor outlineColor,
+        final KColor fillColor
     ) {
         this.points = points;
         this.outlineColor = outlineColor;
@@ -99,7 +99,12 @@ public class KPolygon extends KAbstractShape {
      * @param outlineColor Polygon's outline color
      * @param fillColor Polygon's fill color
      */
-    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor, final KColor fillColor) {
+    public KPolygon(
+        final int[] xPoints,
+        final int[] yPoints,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
         this(KStructUtils.furlArraysToVectors(xPoints, yPoints), outlineColor, fillColor);
     }
 
@@ -112,7 +117,7 @@ public class KPolygon extends KAbstractShape {
     }
 
     /**
-     * Returns outline color of the polygon
+     * Returns outline color of the polygon.
      * @return Outline color of this polygon
      */
     public KColor getOutlineColor() {
@@ -120,7 +125,7 @@ public class KPolygon extends KAbstractShape {
     }
 
     /**
-     * Returns fill color of the polygon
+     * Returns fill color of the polygon.
      * @return Fill color of this polygon
      */
     public KColor getFillColor() {
@@ -128,12 +133,12 @@ public class KPolygon extends KAbstractShape {
     }
 
     @Override
-    public void render(KRenderFrontend rf) {
+    public void render(final KRenderFrontend rf) {
         rf.render(this);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }

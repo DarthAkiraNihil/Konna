@@ -53,19 +53,19 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
-    public KTransformable rotate(double theta, KVector2i pivot) {
+    public KTransformable rotate(double theta, final KVector2i pivot) {
         this.transform.rotate(theta, pivot);
         return this;
     }
 
     @Override
-    public KTransformable scale(KVector2d factor) {
+    public KTransformable scale(final KVector2d factor) {
         this.transform.scale(factor);
         return this;
     }
 
     @Override
-    public KTransformable translate(KVector2i value) {
+    public KTransformable translate(final KVector2i value) {
         this.transform.translate(value);
         return this;
     }
@@ -76,7 +76,7 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
-    public KTransformable setScaling(KVector2d scale) {
+    public KTransformable setScaling(final KVector2d scale) {
         this.transform.setScaling(scale);
         return this;
     }
