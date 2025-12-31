@@ -17,25 +17,25 @@
 package io.github.darthakiranihil.konna.core.struct;
 
 /**
- * Representation of a 2d vector, which coordinates are represented with floats.
- * @param x X coordinate
- * @param y Y coordinate
+ * Representation of a size, that is basically {@link KVector2i}, but with other
+ * coordinates names.
+ * @param width Width
+ * @param height Height
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public record KVector2f(
-    float x,
-    float y
+public record KSize(
+    int width,
+    int height
 ) {
 
     /**
-     * Zero vector - (0,0)
+     * Creates size with equal width and height (just like a square has).
+     * @param side Side of the size.
+     * @return Size with equal width and height, defined by size
      */
-    public static final KVector2f ZERO = new KVector2f(0.0f, 0.0f);
-    /**
-     * Unit vector - (1,1)
-     */
-    public static final KVector2f ONE = new KVector2f(1.0f, 1.0f);
-
+    public static KSize squared(int side) {
+        return new KSize(side, side);
+    }
 }

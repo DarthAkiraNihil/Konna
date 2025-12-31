@@ -20,10 +20,21 @@ import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformable;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
+/**
+ * Interface for a shape that can be rendered (it is not required to represent
+ * only geometrical ones).
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KShape extends
     KRenderable,
     KTransformable {
 
+    /**
+     * Returns the transform of this object.
+     * @return Transform of this object
+     */
     KTransform getTransform();
 
 }

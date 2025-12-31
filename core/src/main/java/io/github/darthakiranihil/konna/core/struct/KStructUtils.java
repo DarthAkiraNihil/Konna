@@ -44,4 +44,24 @@ public final class KStructUtils extends KUninstantiable {
         return new HashSet<>(List.of(tags));
     }
 
+    /**
+     * Creates a new array of int 2d vectors from two separated arrays of corresponding
+     * x and y coordinates. If they do not have the same length, the result array will
+     * have the min length of them.
+     * @param x Array of x coordinates
+     * @param y Array of y coordinates
+     * @return Array of int 2d vectors with coordinates taken from the arrays
+     *
+     * @since 0.3.0
+     * @author Darth Akira Nihil
+     */
+    public static KVector2i[] furlArraysToVectors(final int[] x, final int[] y) {
+        int count = x.length == y.length ? x.length : Math.min(x.length, y.length);
+        KVector2i[] furled = new KVector2i[count];
+        for (int i = 0; i < count; i++) {
+            furled[i] = new KVector2i(x[i], y[i]);
+        }
+        return furled;
+    }
+
 }

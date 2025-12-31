@@ -16,12 +16,26 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
+/**
+ * Representation of a 2d vector, which coordinates are represented with doubles.
+ * @param x X coordinate
+ * @param y Y coordinate
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public record KVector2d(
     double x,
     double y
 ) {
 
+    /**
+     * Zero vector - (0,0)
+     */
     public static final KVector2d ZERO = new KVector2d(0.0, 0.0);
+    /**
+     * Unit vector - (1,1)
+     */
     public static final KVector2d ONE = new KVector2d(1.0, 1.0);
 
 }

@@ -19,6 +19,12 @@ package io.github.darthakiranihil.konna.graphics;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+/**
+ * Representation of position, rotation and scaling of an object.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public final class KTransform implements KTransformable {
 
     private double rotation;

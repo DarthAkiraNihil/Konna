@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.graphics.render;
 
+import io.github.darthakiranihil.konna.graphics.shape.*;
+
 /**
  * Interface for a render frontend that renders object using implementation-defined
  * tools and classes.
@@ -24,4 +26,41 @@ package io.github.darthakiranihil.konna.graphics.render;
  * @author Darth Akira Nihil
  */
 public interface KRenderFrontend {
+
+    /**
+     * Renders a line.
+     * @param line Line object ro render
+     */
+    void render(KLine line);
+    /**
+     * Renders a polyline.
+     * @param polyline Polyline object ro render
+     */
+    void render(KPolyline polyline);
+    /**
+     * Renders a polygon.
+     * @param polygon Polygon object ro render
+     */
+    void render(KPolygon polygon);
+    /**
+     * Renders a rectangle.
+     * @param rectangle Rectangle object ro render
+     */
+    void render(KRectangle rectangle);
+    /**
+     * Renders an oval.
+     * @param oval Oval object ro render
+     */
+    void render(KOval oval);
+    /**
+     * Renders a circle.
+     * @param circle Circle object ro render
+     */
+    void render(KCircle circle);
+    /**
+     * Renders an arc.
+     * @param arc Arc object ro render
+     */
+    void render(KArc arc);
+
 }
