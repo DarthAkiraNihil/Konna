@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.graphics;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public class KTransform implements KTransformable {
+public final class KTransform implements KTransformable {
 
     private double rotation;
     private KVector2i translation;
@@ -45,28 +45,32 @@ public class KTransform implements KTransformable {
     }
 
     @Override
-    public void rotate(double theta) {
+    public KTransformable rotate(double theta) {
         this.rotation += theta;
         this.cached = false;
+        return this;
     }
 
     @Override
-    public void rotate(double theta, KVector2i pivot) {
+    public KTransformable rotate(double theta, KVector2i pivot) {
         this.rotation += theta;
         this.translation = this.translation.add(pivot);
         this.cached = false;
+        return this;
     }
 
     @Override
-    public void scale(KVector2d factor) {
+    public KTransformable scale(KVector2d factor) {
         this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
         this.cached = false;
+        return this;
     }
 
     @Override
-    public void translate(KVector2i value) {
+    public KTransformable translate(KVector2i value) {
         this.translation = this.translation.add(value);
         this.cached = false;
+        return this;
     }
 
     public double getRotation() {
@@ -83,8 +87,9 @@ public class KTransform implements KTransformable {
     }
 
     @Override
-    public void setScaling(KVector2d scale) {
+    public KTransformable setScaling(KVector2d scale) {
         this.scaling = scale;
+        return this;
     }
 
     public float[][] matrix() {
