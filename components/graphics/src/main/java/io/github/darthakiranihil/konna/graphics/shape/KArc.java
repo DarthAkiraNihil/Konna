@@ -23,6 +23,12 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 
 import java.util.Objects;
 
+/**
+ * Representation of an arc (of an oval).
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public class KArc extends KAbstractShape {
 
     private final KVector2i center;
@@ -32,6 +38,15 @@ public class KArc extends KAbstractShape {
     private KColor outlineColor;
     private KColor fillColor;
 
+    /**
+     * Standard constructor.
+     * @param center Center of oval of the arc
+     * @param size Size of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param outlineColor Arc's outline color
+     * @param fillColor Arc's fill color
+     */
     public KArc(final KVector2i center, final KSize size, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
         this.center = center;
         this.size = size;
@@ -41,22 +56,69 @@ public class KArc extends KAbstractShape {
         this.fillColor = fillColor;
     }
 
+    /**
+     * Creates an arc with transparent outline and fill colors.
+     * @param coordinates Center of oval of the arc
+     * @param size Size of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     */
     public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle) {
         this(coordinates, size, startAngle, arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
+    /**
+     * Creates an arc with transparent fill color.
+     * @param coordinates Center of oval of the arc
+     * @param size Size of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param outlineColor Arc's outline color
+     */
     public KArc(final KVector2i coordinates, final KSize size, int startAngle, int arcAngle, final KColor outlineColor) {
         this(coordinates, size, startAngle, arcAngle, outlineColor, KColor.TRANSPARENT);
     }
 
+    /**
+     * Standard constructor, but center and size are defined by separated int parameters.
+     * Also creates an arc with transparent outline and fill colors.
+     * @param x X coordinate of center of oval of the arc
+     * @param y Y coordinate of center of oval of the arc
+     * @param width Width of oval of the arc
+     * @param height Height of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     */
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
         this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
+    /**
+     * Standard constructor, but center and size are defined by separated int parameters.
+     * Also creates an arc with transparent fill color.
+     * @param x X coordinate of center of oval of the arc
+     * @param y Y coordinate of center of oval of the arc
+     * @param width Width of oval of the arc
+     * @param height Height of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param outlineColor Arc's outline color
+     */
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle, final KColor outlineColor) {
         this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, outlineColor, KColor.TRANSPARENT);
     }
 
+    /**
+     * Standard constructor, but center and size are defined by separated int parameters.
+     * @param x X coordinate of center of oval of the arc
+     * @param y Y coordinate of center of oval of the arc
+     * @param width Width of oval of the arc
+     * @param height Height of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param outlineColor Arc's outline color
+     * @param fillColor Arc's fill color
+     */
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle, final KColor outlineColor, final KColor fillColor) {
         this(new KVector2i(x, y), new KSize(width, height), startAngle, arcAngle, outlineColor, fillColor);
     }

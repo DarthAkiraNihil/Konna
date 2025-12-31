@@ -24,12 +24,24 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Representation of a polygon.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public class KPolygon extends KAbstractShape {
 
     private final KVector2i[] points;
     private KColor outlineColor;
     private KColor fillColor;
 
+    /**
+     * Standard constructor.
+     * @param points Array of polygon's points (vertices)
+     * @param outlineColor Polygon's outline color
+     * @param fillColor Polygon's fill color
+     */
     public KPolygon(
         KVector2i[] points,
         KColor outlineColor,
@@ -40,25 +52,56 @@ public class KPolygon extends KAbstractShape {
         this.fillColor = fillColor;
     }
 
-    public KPolygon(final int[] xPoints, final int[] yPoints) {
-        this(xPoints, yPoints, KColor.TRANSPARENT, KColor.TRANSPARENT);
-    }
-
-    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor) {
-        this(xPoints, yPoints, outlineColor, KColor.TRANSPARENT);
-    }
-
-    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor, final KColor fillColor) {
-        this(KStructUtils.furlArraysToVectors(xPoints, yPoints), outlineColor, fillColor);
-    }
-
+    /**
+     * Creates a polygon with transparent outline and fill colors.
+     * @param points Array of polygon's points (vertices)
+     */
     public KPolygon(final KVector2i[] points) {
         this(points, KColor.TRANSPARENT, KColor.TRANSPARENT);
     }
 
+    /**
+     * Creates a polygon with transparent fill color.
+     * @param points Array of polygon's points (vertices)
+     * @param outlineColor Polygon's outline color
+     */
     public KPolygon(final KVector2i[] points, final KColor outlineColor) {
         this(points, outlineColor, KColor.TRANSPARENT);
     };
+
+    /**
+     * Standard constructor, but X and Y coordinates of polygon's points
+     * are passed in different arrays.
+     * Also creates a polygon with transparent outline and fill colors.
+     * @param xPoints Array of X coordinates of polygon's points (vertices)
+     * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     */
+    public KPolygon(final int[] xPoints, final int[] yPoints) {
+        this(xPoints, yPoints, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but X and Y coordinates of polygon's points
+     * are passed in different arrays. Also creates a polygon with transparent fill color.
+     * @param xPoints Array of X coordinates of polygon's points (vertices)
+     * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     * @param outlineColor Polygon's outline color
+     */
+    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor) {
+        this(xPoints, yPoints, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but X and Y coordinates of polygon's points
+     * are passed in different arrays.
+     * @param xPoints Array of X coordinates of polygon's points (vertices)
+     * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     * @param outlineColor Polygon's outline color
+     * @param fillColor Polygon's fill color
+     */
+    public KPolygon(final int[] xPoints, final int[] yPoints, final KColor outlineColor, final KColor fillColor) {
+        this(KStructUtils.furlArraysToVectors(xPoints, yPoints), outlineColor, fillColor);
+    }
 
     public KVector2i[] points() {
         return this.points;

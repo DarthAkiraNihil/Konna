@@ -24,26 +24,54 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Representation of a polyline.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public class KPolyline extends KAbstractShape {
 
     private final KVector2i[] points;
     private KColor color;
 
+    /**
+     * Standard constructor.
+     * @param points Array of polyline's points (vertices)
+     * @param color Polyline's color
+     */
     public KPolyline(final KVector2i[] points, final KColor color) {
         this.points = points;
         this.color = color;
     }
 
+    /**
+     * Creates a polyline with transparent color.
+     * @param points Array of polyline's points (vertices)
+     */
+    public KPolyline(final KVector2i[] points) {
+        this(points, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but X and Y coordinates of polyline's points
+     * are passed in different arrays.
+     * @param xPoints Array X coordinates of polyline's points (vertices)
+     * @param yPoints Array Y coordinates of polyline's points (vertices)
+     * @param color Polyline's color
+     */
     public KPolyline(final int[] xPoints, final int[] yPoints, final KColor color) {
         this(KStructUtils.furlArraysToVectors(xPoints, yPoints), color);
     }
 
+    /**
+     * Standard constructor, but X and Y coordinates of polyline's points
+     * are passed in different arrays. Also creates a polyline with transparent color.
+     * @param xPoints Array X coordinates of polyline's points (vertices)
+     * @param yPoints Array Y coordinates of polyline's points (vertices)
+     */
     public KPolyline(final int[] xPoints, final int[] yPoints) {
         this(KStructUtils.furlArraysToVectors(xPoints, yPoints), KColor.TRANSPARENT);
-    }
-
-    public KPolyline(final KVector2i[] points) {
-        this(points, KColor.TRANSPARENT);
     }
 
     @Override
