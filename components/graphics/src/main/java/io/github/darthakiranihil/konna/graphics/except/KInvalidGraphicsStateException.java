@@ -27,7 +27,7 @@ import io.github.darthakiranihil.konna.core.except.KException;
  */
 public class KInvalidGraphicsStateException extends KException {
 
-    public KInvalidGraphicsStateException(String message) {
+    public KInvalidGraphicsStateException(final String message) {
         super(message);
     }
 

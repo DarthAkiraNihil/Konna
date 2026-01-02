@@ -65,7 +65,9 @@ public class KGlfwFrame extends KObject implements KFrame {
         );
 
         if (this.handle == 0) {
-            throw new KInvalidGraphicsStateException("Unable to initialize frame: failed to create GLFW window");
+            throw new KInvalidGraphicsStateException(
+                "Unable to initialize frame: failed to create GLFW window"
+            );
         }
 
         glfw.glfwMakeContextCurrent(this.handle);
@@ -88,7 +90,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     }
 
     @Override
-    public void setSize(KSize newSize) {
+    public void setSize(final KSize newSize) {
         this.glfw.glfwSetWindowSize(this.handle, newSize.width(), newSize.height());
         this.currentSize = newSize;
     }

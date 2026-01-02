@@ -31,11 +31,23 @@ import java.nio.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Render frontend implementation using OpenGL 3.3.
+ * Uses buffers for storing object render data (at least for primitives)
+ * that are cached. Cache expires after 512 render calls.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KExcludeFromGeneratedCoverageReport
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
     private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
     private static final int DEFAULT_TTL = 512;
+
+    /**
+     * Default side of viewport size.
+     */
     public static final int DEFAULT_VIEWPORT_SIZE_SIDE = 640;
 
     private final KGl33 gl;
@@ -51,7 +63,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * library frontend.
      * @param gl OpenGL 3.3 frontend
      */
-    public KGl33RenderFrontend(@KInject KGl33 gl) {
+    public KGl33RenderFrontend(@KInject final KGl33 gl) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
@@ -62,18 +74,18 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void setViewportSize(KSize size) {
+    public void setViewportSize(final KSize size) {
         this.viewportSize = size;
         this.bufferMaker.setViewportSize(size);
     }
 
     @Override
-    public void render(KRectangle rectangle) {
+    public void render(final KRectangle rectangle) {
         this.render((KPolygon) rectangle);
     }
 
     @Override
-    public void render(KPolygon polygon) {
+    public void render(final KPolygon polygon) {
 
         int hash = KRenderableHasher.hash(polygon);
         KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KPolygon.class, hash);
@@ -98,7 +110,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void render(KLine line) {
+    public void render(final KLine line) {
 
         int hash = KRenderableHasher.hash(line);
         KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KLine.class, hash);
@@ -114,7 +126,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void render(KPolyline polyline) {
+    public void render(final KPolyline polyline) {
         int hash = KRenderableHasher.hash(polyline);
         KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KPolyline.class, hash);
         if (!this.cache.containsKey(key)) {
@@ -129,7 +141,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void render(KOval oval) {
+    public void render(final KOval oval) {
         int hash = KRenderableHasher.hash(oval);
         KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KOval.class, hash);
         if (!this.cache.containsKey(key)) {
@@ -141,16 +153,23 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.ttl.put(key, DEFAULT_TTL);
         KBufferMaker.BufferInfo info = this.cache.get(key);
-        this.render(info, oval, oval.getFillColor(), oval.getOutlineColor(), CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_LINE_LOOP);
+        this.render(
+            info,
+            oval,
+            oval.getFillColor(),
+            oval.getOutlineColor(),
+            CIRCLE_DISCRETIZATION_POINTS,
+            KGl33.GL_LINE_LOOP
+        );
     }
 
     @Override
-    public void render(KCircle circle) {
+    public void render(final KCircle circle) {
         this.render((KOval) circle);
     }
 
     @Override
-    public void render(KArc arc) {
+    public void render(final KArc arc) {
         int hash = KRenderableHasher.hash(arc);
         KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KArc.class, hash);
         if (!this.cache.containsKey(key)) {
@@ -187,7 +206,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        // transform applying TODO: move to shader`
+        // transform applying todo: move to shader`
         this.applyTransform(shape);
 
         this.gl.glColor4fv(fillColor.normalized());
@@ -216,7 +235,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        // transform applying TODO: move to shader
+        // transform applying todo: move to shader
         this.applyTransform(shape);
 
         this.gl.glColor4fv(color.normalized());
@@ -239,7 +258,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         float glTranslationY = (float) -translation.y() / this.viewportSize.height();
 
         this.gl.glLoadIdentity();
-        this.gl.glRotated(rotation, 0.0, 0.0, 1.0); // TODO: fix pivot working
+        this.gl.glRotated(rotation, 0.0, 0.0, 1.0); // todo: fix pivot working
         this.gl.glScaled(scaling.x(), scaling.y(), 1.0);
         this.gl.glTranslatef(glTranslationX, glTranslationY, 0.0f);
 
