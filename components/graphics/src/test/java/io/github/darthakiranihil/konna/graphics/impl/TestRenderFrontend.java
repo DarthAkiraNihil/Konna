@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.impl;
 
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import org.jspecify.annotations.NullMarked;
@@ -55,6 +56,11 @@ public class TestRenderFrontend implements KRenderFrontend {
 
     @Override
     public void render(KArc arc) {
+
+    }
+
+    @Override
+    public void setViewportSize(KSize size) {
 
     }
 }

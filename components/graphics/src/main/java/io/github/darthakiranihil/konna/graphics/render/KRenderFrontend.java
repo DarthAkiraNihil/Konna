@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.render;
 
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 
 /**
@@ -62,5 +63,14 @@ public interface KRenderFrontend {
      * @param arc Arc object ro render
      */
     void render(KArc arc);
+
+    /**
+     * Sets viewport size for this render frontend. Usually it is required
+     * if internal rendering process relies on normalized coordinates ((-1,1) range)
+     * instead of screen coordinates, so after setting the size 0 will represent "-1" coordinate
+     * and corresponding size value will represent "1" coordinate.
+     * @param size Size of the viewport
+     */
+    void setViewportSize(KSize size);
 
 }
