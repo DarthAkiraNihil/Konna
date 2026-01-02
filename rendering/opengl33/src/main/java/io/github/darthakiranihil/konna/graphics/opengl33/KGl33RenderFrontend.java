@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
@@ -76,26 +77,14 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             );
         }
         KBufferMaker.BufferInfo info = this.cache.get(key);
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
-
-        this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
-
-
-        // transform applying TODO: move to shader
-        this.applyTransform(polygon);
-
-        this.gl.glColor4fv(polygon.getFillColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, polygon.points().length, KGl33.GL_UNSIGNED_INT, 0L);
-
-        this.gl.glColor4fv(polygon.getOutlineColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_LOOP, polygon.points().length, KGl33.GL_UNSIGNED_INT, 0L);
-
-        this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.render(
+            info,
+            polygon,
+            polygon.getFillColor(),
+            polygon.getOutlineColor(),
+            polygon.points().length,
+            KGl33.GL_LINE_LOOP
+        );
 
     }
 
@@ -111,22 +100,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             );
         }
         KBufferMaker.BufferInfo info = this.cache.get(key);
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
-
-        this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
-
-        // transform applying TODO: move to shader
-        this.applyTransform(line);
-
-        this.gl.glColor4fv(line.getColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_STRIP, 2, KGl33.GL_UNSIGNED_INT, 0L);
-
-        this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.render(info, line, line.getColor(), 2);
     }
 
     @Override
@@ -140,22 +114,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             );
         }
         KBufferMaker.BufferInfo info = this.cache.get(key);
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
-
-        this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
-
-        // transform applying TODO: move to shader
-        this.applyTransform(polyline);
-
-        this.gl.glColor4fv(polyline.getColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_STRIP, polyline.points().length, KGl33.GL_UNSIGNED_INT, 0L);
-
-        this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.render(info, polyline, polyline.getColor(), polyline.points().length);
     }
 
     @Override
@@ -169,25 +128,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             );
         }
         KBufferMaker.BufferInfo info = this.cache.get(key);
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
-
-        this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
-
-        // transform applying TODO: move to shader
-        this.applyTransform(oval);
-
-        this.gl.glColor4fv(oval.getFillColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_UNSIGNED_INT, 0L);
-
-        this.gl.glColor4fv(oval.getOutlineColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_LOOP, CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_UNSIGNED_INT, 0L);
-
-        this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.render(info, oval, oval.getFillColor(), oval.getOutlineColor(), CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_LINE_LOOP);
     }
 
     @Override
@@ -206,6 +147,24 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             );
         }
         KBufferMaker.BufferInfo info = this.cache.get(key);
+        this.render(
+            info,
+            arc,
+            arc.getFillColor(),
+            arc.getOutlineColor(),
+            CIRCLE_DISCRETIZATION_POINTS,
+            KGl33.GL_LINE_STRIP
+        );
+    }
+
+    private void render(
+        final KBufferMaker.BufferInfo info,
+        final KShape shape,
+        final KColor fillColor,
+        final KColor outlineColor,
+        int pointCount,
+        int outlineRenderMode
+    ) {
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -214,24 +173,44 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
         // transform applying TODO: move to shader`
-        this.applyTransform(arc);
+        this.applyTransform(shape);
 
-        this.gl.glColor4fv(arc.getFillColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_UNSIGNED_INT, 0L);
+        this.gl.glColor4fv(fillColor.normalized());
+        this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
-        this.gl.glColor4fv(arc.getOutlineColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_STRIP, CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_UNSIGNED_INT, 0L);
+        this.gl.glColor4fv(outlineColor.normalized());
+        this.gl.glDrawElements(outlineRenderMode, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
+
+        this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
+
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    }
+
+    private void render(
+        final KBufferMaker.BufferInfo info,
+        final KShape shape,
+        final KColor color,
+        int pointCount
+    ) {
+
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
+
+        this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
+        this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
+
+        // transform applying TODO: move to shader
+        this.applyTransform(shape);
+
+        this.gl.glColor4fv(color.normalized());
+        this.gl.glDrawElements(KGl33.GL_LINE_STRIP, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-    }
 
-    private KVector2f plainToGl(KVector2i v) {
-        float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
-        float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
-
-        return new KVector2f(x, y);
     }
 
     private void applyTransform(final KShape shape) {
@@ -249,6 +228,5 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glTranslatef(glTranslationX, glTranslationY, 0.0f);
 
     }
-
 
 }
