@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.libfrontend.glfw.*;
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWGamepadState;
 import org.lwjgl.glfw.GLFWImage;
@@ -40,7 +41,20 @@ import java.nio.*;
  */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
-public final class KGlfwLwjgl extends KObject implements KGlfw {
+public final class KGlfwLwjgl extends KObject implements KGlfw, KGlfwCallbacks {
+
+    @Override
+    public void glfwFreeCallbacks(long window) {
+        Callbacks.glfwFreeCallbacks(window);
+    }
+
+    @Override
+    public void freeLastCallback(long window) {
+        var callback = GLFW.glfwSetErrorCallback(null);
+        if (callback != null) {
+            callback.free();
+        }
+    }
 
     @Override
     public boolean glfwInit() {
