@@ -21,7 +21,9 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullUnmarked;
 import sun.misc.Unsafe; //! I don't like this but there is no other way
@@ -115,22 +117,9 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
 
                 try {
 
-                    if (Map.class.isAssignableFrom(clazz)) {
-
-                        if (!clazz.isAnnotationPresent(KJsonMap.class)) {
-                            throw new KJsonSerializationException(
-                                    "Could not deserialize object, as it is a map-like"
-                                +   "and the KJsonMap annotation is not provided"
-                            );
-                        }
-
-                        KJsonMap meta = clazz.getAnnotation(KJsonMap.class);
-                        return (T) this.deserialize(value, clazz, meta.valueType());
-
-                    }
-
-                    var deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
+                    Object deserialized;
                     if (clazz.isRecord()) {
+                        deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
                         for (var entry: value.entrySet()) {
                             deserialized = this.setRecordField(
                                 clazz,
@@ -140,7 +129,67 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                             );
                         }
                     } else {
+                        var constructors = clazz.getConstructors();
+                        Constructor<?> constructorCandidate = null;
+                        List<KPair<@NotNull String, @NotNull Class<?>>>
+                            parameterMapping = new LinkedList<>();
+
+                        for (var constructor: constructors) {
+                            var parametersAnnotations = constructor.getParameterAnnotations();
+                            var parameterTypes = constructor.getParameterTypes();
+
+                            boolean constructorOk = true;
+                            for (int i = 0; i < parameterTypes.length; i++) {
+
+                                boolean parameterOk = false;
+                                for (var annotation: parametersAnnotations[i]) {
+                                    if (annotation instanceof KJsonConstructorParameter) {
+                                        parameterOk = true;
+                                        parameterMapping.add(
+                                            new KPair<>(
+                                                ((KJsonConstructorParameter) annotation).name(),
+                                                parameterTypes[i]
+                                            )
+                                        );
+                                        break;
+                                    }
+                                }
+
+                                if (!parameterOk) {
+                                    parameterMapping.clear();
+                                    constructorOk = false;
+                                    break;
+                                }
+                            }
+
+                            if (constructorOk) {
+                                constructorCandidate = constructor;
+                                break;
+                            }
+                        }
+
+                        Set<String> ignored = new HashSet<>();
+                        if (constructorCandidate == null) {
+                            deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(
+                                clazz
+                            );
+                        } else {
+                            Object[] params = new Object[parameterMapping.size()];
+                            for (int i = 0; i < parameterMapping.size(); i++) {
+                                var mapping = parameterMapping.get(i);
+                                params[i] = this.deserialize(
+                                    value.getProperty(mapping.first()), mapping.second()
+                                );
+                                ignored.add(mapping.first());
+                            }
+                            deserialized = constructorCandidate.newInstance(params);
+                        }
+
                         for (var entry: value.entrySet()) {
+                            if (ignored.contains(entry.getKey())) {
+                                continue;
+                            }
+
                             this.setObjectField(
                                 clazz,
                                 entry.getKey(),
@@ -261,6 +310,24 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
         Field field = this.getField(clazz, key);
         field.setAccessible(true);
 
+        if (
+                value.getType() == KJsonValueType.OBJECT
+            &&  Map.class.isAssignableFrom(field.getType())) {
+            if (!field.isAnnotationPresent(KJsonMap.class)) {
+                throw new KJsonSerializationException(
+                    "Could not deserialize object, as it is a map-like "
+                        +   "and the KJsonMap annotation is not provided"
+                );
+            }
+
+            KJsonMap meta = field.getAnnotation(KJsonMap.class);
+            field.set(
+                deserialized,
+                this.deserialize(value, meta.mapType(), meta.valueType())
+            );
+            return;
+        }
+
         if (value.getType() != KJsonValueType.ARRAY) {
             field.set(
                 deserialized,
@@ -317,6 +384,22 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
             var component = components[i];
             if (!this.pointsToSameComponent(component, key)) {
                 params[i] = component.getAccessor().invoke(deserialized);
+                continue;
+            }
+
+            if (
+                    value.getType() == KJsonValueType.OBJECT
+                &&  Map.class.isAssignableFrom(component.getType())
+            ) {
+                if (!component.isAnnotationPresent(KJsonMap.class)) {
+                    throw new KJsonSerializationException(
+                        "Could not deserialize object, as it is a map-like "
+                            +   "and the KJsonMap annotation is not provided"
+                    );
+                }
+
+                KJsonMap meta = component.getAnnotation(KJsonMap.class);
+                params[i] = this.deserialize(value, meta.mapType(), meta.valueType());
                 continue;
             }
 

@@ -22,18 +22,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Provides to a serializer a custom name for serialized field key in a json value.
- * Also used by deserializer to recognize the required field if
- * its json name differs from class-declared.
+ * Sets name for the constructor parameter that should be used when deserializing a class.
+ * Deserializer may use it in case deserialized class contains
+ * final fields, that only can be set using constructors. It is recommended to
+ * map them in that way that deserializing class in serialized representation contains
+ * the data required for deserialization (basically serialized and deserialized representations
+ * of the class should remain the same)
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.RECORD_COMPONENT, ElementType.PARAMETER})
-public @interface KJsonCustomName {
+@Target(ElementType.PARAMETER)
+public @interface KJsonConstructorParameter {
     /**
-     * Returns the custom name of the field.
+     * Returns the name of the constructor parameter.
      * @return The actual name
      */
     String name();
