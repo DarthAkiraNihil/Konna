@@ -23,5 +23,8 @@ findProject(':libfrontend:libfrontend-stbimage')?.name = 'libfrontend-stbimage'
 include 'rendering:opengl33'
 findProject(':rendering:opengl33')?.name = 'opengl33'
 
+include 'rendering:glfw'
+findProject(':rendering:glfw')?.name = 'glfw'
+
 include 'backend:backend-lwjgl'
 findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'

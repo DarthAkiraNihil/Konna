@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":libfrontend:libfrontend-stbimage"))
 
     implementation(project(":rendering:opengl33"))
+    implementation(project(":rendering:glfw"))
 
     implementation(project(":backend:backend-lwjgl"))
 }
@@ -76,6 +77,7 @@ def exportedProjects = [
     ":libfrontend:libfrontend-glfw",
     ":libfrontend:libfrontend-stbimage",
     ":rendering:opengl33",
+    ":rendering:glfw",
     ":backend:backend-lwjgl",
 ]
 
