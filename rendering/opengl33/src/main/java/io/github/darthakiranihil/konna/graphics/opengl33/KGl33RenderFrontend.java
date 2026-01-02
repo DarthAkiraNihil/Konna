@@ -33,13 +33,16 @@ import java.util.Map;
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
     private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
+    private static final int DEFAULT_TTL = 512;
     public static final int DEFAULT_VIEWPORT_SIZE_SIDE = 640;
 
     private final KGl33 gl;
     private KSize viewportSize;
 
     private final KBufferMaker bufferMaker;
+
     private final Map<KPair<Class<? extends KRenderable>, Integer>, KBufferMaker.BufferInfo> cache;
+    private final Map<KPair<Class<? extends KRenderable>, Integer>, Integer> ttl;
 
     /**
      * Constructs render frontend with provided OpenGL 3.3
@@ -51,6 +54,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
         this.cache = new HashMap<>();
+        this.ttl = new HashMap<>();
+
         this.bufferMaker = new KBufferMaker(this.gl);
     }
 
@@ -76,6 +81,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
                 this.bufferMaker.make(polygon)
             );
         }
+
+        this.ttl.put(key, DEFAULT_TTL);
         KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(
             info,
@@ -99,6 +106,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
                 this.bufferMaker.make(line)
             );
         }
+        this.ttl.put(key, DEFAULT_TTL);
         KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(info, line, line.getColor(), 2);
     }
@@ -113,6 +121,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
                 this.bufferMaker.make(polyline)
             );
         }
+        this.ttl.put(key, DEFAULT_TTL);
         KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(info, polyline, polyline.getColor(), polyline.points().length);
     }
@@ -127,6 +136,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
                 this.bufferMaker.make(oval, CIRCLE_DISCRETIZATION_POINTS)
             );
         }
+
+        this.ttl.put(key, DEFAULT_TTL);
         KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(info, oval, oval.getFillColor(), oval.getOutlineColor(), CIRCLE_DISCRETIZATION_POINTS, KGl33.GL_LINE_LOOP);
     }
@@ -146,6 +157,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
                 this.bufferMaker.make(arc, CIRCLE_DISCRETIZATION_POINTS)
             );
         }
+
+        this.ttl.put(key, DEFAULT_TTL);
         KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(
             info,
@@ -185,7 +198,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-
+        this.updateTtl();
     }
 
     private void render(
@@ -210,6 +223,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.updateTtl();
 
     }
 
@@ -227,6 +241,25 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glScaled(scaling.x(), scaling.y(), 1.0);
         this.gl.glTranslatef(glTranslationX, glTranslationY, 0.0f);
 
+    }
+
+    private void updateTtl() {
+        this.ttl.replaceAll((k, v) -> v - 1);
+
+        var entrySet = this.ttl.entrySet();
+        for (var entry: entrySet) {
+            if (entry.getValue() > 0) {
+                continue;
+            }
+
+            var key = entry.getKey();
+            KBufferMaker.BufferInfo info = this.cache.get(key);
+
+            info.free(this.gl);
+            this.cache.remove(key);
+            this.ttl.remove(key);
+
+        }
     }
 
 }
