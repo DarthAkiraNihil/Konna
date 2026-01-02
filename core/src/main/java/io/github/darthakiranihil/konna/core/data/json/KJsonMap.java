@@ -37,7 +37,12 @@ import java.util.Map;
 @Target({ ElementType.FIELD, ElementType.RECORD_COMPONENT, ElementType.TYPE})
 public @interface KJsonMap {
 
-    Class<? extends Map> mapClass();
+    /**
+     * Returns the type of the map that should be
+     * created when deserializing an object. The type must not be abstract!
+     * @return The type to use for map instantiation
+     */
+    Class<? extends Map> mapType();
     /**
      * Returns the type of map values.
      * @return The actual type

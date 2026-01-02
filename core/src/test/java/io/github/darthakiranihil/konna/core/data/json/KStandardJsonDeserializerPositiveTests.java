@@ -37,7 +37,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         @KJsonSerialized @KJsonArray(elementType = int.class) private int[] field6;
         @KJsonMap(
             valueType = Object.class,
-            mapClass = HashMap.class
+            mapType = HashMap.class
         ) public Map<String, Object> field7;
 
         public SerializerTestClass(int field1, float field2, String field3, List<Float> field4, boolean field5) {
@@ -83,7 +83,7 @@ public class KStandardJsonDeserializerPositiveTests extends KStandardTestClass {
         @KJsonIgnored int aboba,
         String biba,
         @KJsonArray(elementType = int.class) int[] boba,
-        @KJsonMap(mapClass = HashMap.class, valueType = Object.class) Map<String, Object> chungus
+        @KJsonMap(mapType = HashMap.class, valueType = Object.class) Map<String, Object> chungus
     ) {
 
     }
