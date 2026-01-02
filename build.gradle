@@ -48,9 +48,15 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     implementation(project(":core"))
+
+    implementation(project(":components:graphics"))
+
     implementation(project(":libfrontend:libfrontend-opengl"))
     implementation(project(":libfrontend:libfrontend-glfw"))
     implementation(project(":libfrontend:libfrontend-stbimage"))
+
+    implementation(project(":rendering:opengl33"))
+
     implementation(project(":backend:backend-lwjgl"))
 }
 
@@ -69,6 +75,7 @@ def exportedProjects = [
     ":libfrontend:libfrontend-opengl",
     ":libfrontend:libfrontend-glfw",
     ":libfrontend:libfrontend-stbimage",
+    ":rendering:opengl33",
     ":backend:backend-lwjgl",
 ]
 
