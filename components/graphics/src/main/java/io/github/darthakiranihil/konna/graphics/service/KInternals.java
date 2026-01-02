@@ -16,9 +16,11 @@
 
 package io.github.darthakiranihil.konna.graphics.service;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KMessageToEndpointConverter;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.graphics.internal.KRenderableObjectTypeMapping;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -26,6 +28,12 @@ import org.jetbrains.annotations.ApiStatus;
 final class KInternals extends KUninstantiable {
 
     public static final class MessageToRenderableConverter implements KMessageToEndpointConverter {
+
+        private final KRenderableObjectTypeMapping mapping;
+
+        public MessageToRenderableConverter(@KInject final KRenderableObjectTypeMapping mapping) {
+            this.mapping = mapping;
+        }
 
         @Override
         public Object[] convert(final KMessage message) {

@@ -29,6 +29,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.graphics.internal.KRenderableObjectTypeMapping;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 
 import java.util.List;
@@ -83,6 +84,10 @@ public class KGraphicsComponent extends KComponent {
         KContainer container = this.ctx.getContainer();
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
 
+        KRenderableObjectTypeMapping mapping = this.ctx.createObject(KRenderableObjectTypeMapping.class);
+        // add custom types
     }
+
+
 
 }
