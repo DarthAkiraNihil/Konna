@@ -21,11 +21,13 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
-import org.jspecify.annotations.Nullable;
 
 import java.nio.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
@@ -35,6 +37,9 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     private final KGl33 gl;
     private KSize viewportSize;
 
+    private final KBufferMaker bufferMaker;
+    private final Map<KPair<Class<? extends KRenderable>, Integer>, KBufferMaker.BufferInfo> cache;
+
     /**
      * Constructs render frontend with provided OpenGL 3.3
      * library frontend.
@@ -43,11 +48,15 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     public KGl33RenderFrontend(@KInject KGl33 gl) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
+
+        this.cache = new HashMap<>();
+        this.bufferMaker = new KBufferMaker(this.gl);
     }
 
     @Override
     public void setViewportSize(KSize size) {
         this.viewportSize = size;
+        this.bufferMaker.setViewportSize(size);
     }
 
     @Override
@@ -58,76 +67,53 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     @Override
     public void render(KPolygon polygon) {
 
-        KVector2i[] points = polygon.points();
-        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(points.length * 2);
-        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(points.length);
-
-        for (int i = 0; i < points.length * 2; i += 2) {
-            KVector2f glPoint = this.plainToGl(points[i / 2]);
-            pointBuffer.put(glPoint.x());
-            pointBuffer.put(glPoint.y());
-            indicesBuffer.put(i / 2);
+        int hash = KRenderableHasher.hash(polygon);
+        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KPolygon.class, hash);
+        if (!this.cache.containsKey(key)) {
+            this.cache.put(
+                key,
+                this.bufferMaker.make(polygon)
+            );
         }
+        KBufferMaker.BufferInfo info = this.cache.get(key);
 
-        pointBuffer.flip();
-        indicesBuffer.flip();
-
-        int vbo = this.gl.glGenBuffers();
-        int ibo = this.gl.glGenBuffers();
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
-        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, pointBuffer, KGl33.GL_STATIC_DRAW);
-
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl33.GL_STATIC_DRAW);
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
 
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
+
 
         // transform applying TODO: move to shader
         this.applyTransform(polygon);
 
         this.gl.glColor4fv(polygon.getFillColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, points.length, KGl33.GL_UNSIGNED_INT, 0L);
+        this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, polygon.points().length, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glColor4fv(polygon.getOutlineColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_LOOP, points.length, KGl33.GL_UNSIGNED_INT, 0L);
+        this.gl.glDrawElements(KGl33.GL_LINE_LOOP, polygon.points().length, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.gl.glDeleteBuffers(vbo);
-        this.gl.glDeleteBuffers(ibo);
 
     }
 
     @Override
     public void render(KLine line) {
 
-        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(4); // 2 points with 2 coordinates
-        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(2);
+        int hash = KRenderableHasher.hash(line);
+        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KLine.class, hash);
+        if (!this.cache.containsKey(key)) {
+            this.cache.put(
+                key,
+                this.bufferMaker.make(line)
+            );
+        }
+        KBufferMaker.BufferInfo info = this.cache.get(key);
 
-        KVector2f glStart = this.plainToGl(line.start());
-        KVector2f glEnd = this.plainToGl(line.end());
-        pointBuffer.put(glStart.x());
-        pointBuffer.put(glStart.y());
-        pointBuffer.put(glEnd.x());
-        pointBuffer.put(glEnd.y());
-
-        indicesBuffer.put(0);
-        indicesBuffer.put(1);
-
-        pointBuffer.flip();
-        indicesBuffer.flip();
-
-        int vbo = this.gl.glGenBuffers();
-        int ibo = this.gl.glGenBuffers();
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
-        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, pointBuffer, KGl33.GL_STATIC_DRAW);
-
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl33.GL_STATIC_DRAW);
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
 
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
@@ -141,34 +127,22 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.gl.glDeleteBuffers(vbo);
-        this.gl.glDeleteBuffers(ibo);
     }
 
     @Override
     public void render(KPolyline polyline) {
-        KVector2i[] points = polyline.points();
-        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(points.length * 2);
-        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(points.length);
-
-        for (int i = 0; i < points.length * 2; i += 2) {
-            KVector2f glPoint = this.plainToGl(points[i / 2]);
-            pointBuffer.put(glPoint.x());
-            pointBuffer.put(glPoint.y());
-            indicesBuffer.put(i / 2);
+        int hash = KRenderableHasher.hash(polyline);
+        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KPolyline.class, hash);
+        if (!this.cache.containsKey(key)) {
+            this.cache.put(
+                key,
+                this.bufferMaker.make(polyline)
+            );
         }
+        KBufferMaker.BufferInfo info = this.cache.get(key);
 
-        pointBuffer.flip();
-        indicesBuffer.flip();
-
-        int vbo = this.gl.glGenBuffers();
-        int ibo = this.gl.glGenBuffers();
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
-        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, pointBuffer, KGl33.GL_STATIC_DRAW);
-
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl33.GL_STATIC_DRAW);
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
 
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
@@ -177,41 +151,27 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.applyTransform(polyline);
 
         this.gl.glColor4fv(polyline.getColor().normalized());
-        this.gl.glDrawElements(KGl33.GL_LINE_STRIP, points.length, KGl33.GL_UNSIGNED_INT, 0L);
+        this.gl.glDrawElements(KGl33.GL_LINE_STRIP, polyline.points().length, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.gl.glDeleteBuffers(vbo);
-        this.gl.glDeleteBuffers(ibo);
     }
 
     @Override
     public void render(KOval oval) {
-        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(CIRCLE_DISCRETIZATION_POINTS * 2);
-        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(CIRCLE_DISCRETIZATION_POINTS);
-
-        KSize size = oval.size();
-        KVector2f center = this.plainToGl(oval.center());
-        for (int i = 0; i < CIRCLE_DISCRETIZATION_POINTS; i++) {
-            float x = ((float) size.width() / this.viewportSize.width()) * (float) Math.cos(i * 2 * Math.PI / CIRCLE_DISCRETIZATION_POINTS) + center.x();
-            float y = ((float) size.height() / this.viewportSize.height()) * (float) Math.sin(i * 2 * Math.PI / CIRCLE_DISCRETIZATION_POINTS) + center.y();
-            pointBuffer.put(x);
-            pointBuffer.put(y);
-            indicesBuffer.put(i);
+        int hash = KRenderableHasher.hash(oval);
+        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KOval.class, hash);
+        if (!this.cache.containsKey(key)) {
+            this.cache.put(
+                key,
+                this.bufferMaker.make(oval, CIRCLE_DISCRETIZATION_POINTS)
+            );
         }
+        KBufferMaker.BufferInfo info = this.cache.get(key);
 
-        pointBuffer.flip();
-        indicesBuffer.flip();
-
-        int vbo = this.gl.glGenBuffers();
-        int ibo = this.gl.glGenBuffers();
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
-        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, pointBuffer, KGl33.GL_STATIC_DRAW);
-
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl33.GL_STATIC_DRAW);
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
 
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
@@ -228,8 +188,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.gl.glDeleteBuffers(vbo);
-        this.gl.glDeleteBuffers(ibo);
     }
 
     @Override
@@ -239,34 +197,18 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(KArc arc) {
-        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(CIRCLE_DISCRETIZATION_POINTS * 2);
-        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(CIRCLE_DISCRETIZATION_POINTS);
-
-        KSize size = arc.size();
-        KVector2f center = this.plainToGl(arc.center());
-        int startAngle = arc.startAngle();
-        int arcAngle = arc.arcAngle();
-
-
-        for (int i = startAngle; i < startAngle + arcAngle; i++) {
-            float x = ((float) size.width() / this.viewportSize.width()) * (float) Math.cos(i * Math.PI / 180) + center.x();
-            float y = ((float) size.height() / this.viewportSize.height()) * (float) Math.sin(i * Math.PI / 180) + center.y();
-            pointBuffer.put(x);
-            pointBuffer.put(y);
-            indicesBuffer.put(i);
+        int hash = KRenderableHasher.hash(arc);
+        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KArc.class, hash);
+        if (!this.cache.containsKey(key)) {
+            this.cache.put(
+                key,
+                this.bufferMaker.make(arc, CIRCLE_DISCRETIZATION_POINTS)
+            );
         }
+        KBufferMaker.BufferInfo info = this.cache.get(key);
 
-        pointBuffer.flip();
-        indicesBuffer.flip();
-
-        int vbo = this.gl.glGenBuffers();
-        int ibo = this.gl.glGenBuffers();
-
-        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
-        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, pointBuffer, KGl33.GL_STATIC_DRAW);
-
-        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, KGl33.GL_STATIC_DRAW);
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
 
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
@@ -283,8 +225,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.gl.glDeleteBuffers(vbo);
-        this.gl.glDeleteBuffers(ibo);
     }
 
     private KVector2f plainToGl(KVector2i v) {
