@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
@@ -33,6 +34,7 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
         @KJsonSerialized final private String field3;
         @KJsonCustomName(name = "field_44") @KJsonArray(elementType = Float.class) public List<Float> field4;
         private final boolean field5;
+        private Map<String, Object> field6;
 
         public SerializerTestClass(int field1, float field2, String field3, List<Float> field4, boolean field5) {
             this.field1 = field1;
@@ -109,4 +111,51 @@ public class KStandardJsonDeserializerNegativeTests extends KStandardTestClass {
         });
     }
 
+    private static class TestClassWithUnmarkedMap {
+
+        private Map<String, Object> field1;
+
+    }
+
+    @Test
+    public void testDeserializeWithMapWithoutAnnotation() {
+
+        String data = "{\"field1\": {\"123\": 123}}";
+        KJsonValue jsonValue;
+        try {
+            jsonValue = this.jsonParser.parse(data);
+        } catch (KJsonParseException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        Assertions.assertThrowsExactly(KJsonSerializationException.class, () -> {
+            this.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.TestClassWithUnmarkedMap.class);
+        });
+
+    }
+
+    private record TestRecordWithUnmarkedMap(
+        Map<String, Object> field1
+    ) {
+
+    }
+
+    @Test
+    public void testDeserializeRecordWithMapWithoutAnnotation() {
+
+        String data = "{\"field1\": {\"123\": 123}}";
+        KJsonValue jsonValue;
+        try {
+            jsonValue = this.jsonParser.parse(data);
+        } catch (KJsonParseException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        Assertions.assertThrowsExactly(KJsonSerializationException.class, () -> {
+            this.jsonDeserializer.deserialize(jsonValue, KStandardJsonDeserializerNegativeTests.TestRecordWithUnmarkedMap.class);
+        });
+
+    }
 }
