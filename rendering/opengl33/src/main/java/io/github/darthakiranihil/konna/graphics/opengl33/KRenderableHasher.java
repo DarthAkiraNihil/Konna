@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @ApiStatus.Internal
+@KExcludeFromGeneratedCoverageReport
 final class KRenderableHasher extends KUninstantiable {
 
     public static int hash(final KArc arc) {

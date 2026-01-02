@@ -20,12 +20,16 @@ import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+@ApiStatus.Internal
+@KExcludeFromGeneratedCoverageReport
 final class KBufferMaker {
 
     public record BufferInfo(

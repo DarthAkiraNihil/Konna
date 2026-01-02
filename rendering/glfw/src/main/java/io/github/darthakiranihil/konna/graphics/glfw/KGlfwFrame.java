@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.glfw;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KFrame;
 import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfw;
@@ -26,6 +27,7 @@ import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
 
 import java.nio.IntBuffer;
 
+@KExcludeFromGeneratedCoverageReport
 public class KGlfwFrame extends KObject implements KFrame {
 
     private final KGlfw glfw;

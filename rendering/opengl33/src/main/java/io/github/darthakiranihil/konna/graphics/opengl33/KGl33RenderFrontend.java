@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
@@ -30,6 +31,7 @@ import java.nio.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@KExcludeFromGeneratedCoverageReport
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
     private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
