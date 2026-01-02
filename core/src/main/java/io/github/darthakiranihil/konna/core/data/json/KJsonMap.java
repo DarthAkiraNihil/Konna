@@ -20,6 +20,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Map;
 
 /**
  * Indicates the type of map-like field elements (the generic type).
@@ -36,6 +37,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.RECORD_COMPONENT, ElementType.TYPE})
 public @interface KJsonMap {
 
+    Class<? extends Map> mapClass();
     /**
      * Returns the type of map values.
      * @return The actual type
