@@ -18,6 +18,8 @@
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-stbimage" />
+            <option value="$PROJECT_DIR$/rendering" />
+            <option value="$PROJECT_DIR$/rendering/glfw" />
           </set>
         </option>
       </GradleProjectSettings>
