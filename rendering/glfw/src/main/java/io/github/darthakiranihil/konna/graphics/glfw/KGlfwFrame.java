@@ -33,6 +33,12 @@ import java.nio.IntBuffer;
 import java.util.AbstractMap;
 import java.util.Map;
 
+/**
+ * Implementation of {@link KFrame} that uses GLFW for its functionality.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
 public class KGlfwFrame extends KObject implements KFrame {

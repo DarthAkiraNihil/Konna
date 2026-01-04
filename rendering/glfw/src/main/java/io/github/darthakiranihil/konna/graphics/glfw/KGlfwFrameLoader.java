@@ -23,6 +23,12 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.object.KTransient;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
+/**
+ * GLFW Frame loader.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KTransient(temporal = true)
 @KExcludeFromGeneratedCoverageReport
 public class KGlfwFrameLoader implements KFrameLoader {
