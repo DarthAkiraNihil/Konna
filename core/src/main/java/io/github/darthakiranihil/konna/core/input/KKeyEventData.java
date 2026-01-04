@@ -18,6 +18,18 @@ package io.github.darthakiranihil.konna.core.input;
 
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
+/**
+ * Container for key event data.
+ * @param key Pressed key
+ * @param withShift Flag if key is followed with "Shift" modifier
+ * @param withAlt Flag if key is followed with "Alt" modifier
+ * @param withSuper Flag if key is followed with "Super" modifier
+ * @param withCapsLock Flag if key is followed with "CapsLock" modifier
+ * @param withNumLock Flag if key is followed with "NumLock" modifier
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @KExcludeFromGeneratedCoverageReport
 public record KKeyEventData(
     KKey key,

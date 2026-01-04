@@ -18,8 +18,21 @@ package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 
+/**
+ * Interface frame loader, that is likely to perform some post-initialization
+ * operations.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihl
+ */
 public interface KFrameLoader {
 
+    /**
+     * Loads the frame in current context with passed spawn options.
+     * @param ctx Current engine context
+     * @param spawnOptions Initial frame spawn options
+     * @return Loaded and initialized frame
+     */
     KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions);
 
 }

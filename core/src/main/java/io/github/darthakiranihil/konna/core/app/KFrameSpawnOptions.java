@@ -21,6 +21,14 @@ import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import org.jspecify.annotations.NullMarked;
 
+/**
+ * Container for frame spawn options that are supposed to be used on its loading.
+ * @param size Frame size
+ * @param title Frame title (that is usually window's title)
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public record KFrameSpawnOptions(
     @KJsonSerialized
     KSize size,
@@ -58,5 +66,8 @@ public record KFrameSpawnOptions(
 
     }
 
+    /**
+     * Json schema of frame spawn options.
+     */
     public static final KJsonValidator SCHEMA = new Schema();
 }

@@ -36,6 +36,8 @@ import java.util.List;
  * @param messageRoutesConfigurers List of engine message routes configurers
  * @param eventRegisterers List of engine event registerers
  * @param components List of engine components classes to load
+ * @param frameLoader Class of application's frame loader
+ * @param frameSpawnOptions Initial spawn options of application's frame
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

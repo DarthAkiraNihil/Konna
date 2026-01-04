@@ -30,7 +30,7 @@ public class KHypervisorInitializationException extends KException {
         super(cause);
     }
 
-    public KHypervisorInitializationException(String message) {
+    public KHypervisorInitializationException(final String message) {
         super(message);
     }
 }

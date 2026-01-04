@@ -276,7 +276,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     }
 
     @Override
-    public void addKeyListener(KKeyListener listener) {
+    public void addKeyListener(final KKeyListener listener) {
 
         glfw.glfwSetKeyCallback(
             this.handle,

@@ -20,8 +20,6 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.input.KKey;
-import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KTransient;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
@@ -32,18 +30,10 @@ public class KGlfwFrameLoader implements KFrameLoader {
     @Override
     public KFrame load(final KEngineContext ctx, final KFrameSpawnOptions spawnOptions) {
 
-        KFrame frame = ctx.createObject(
+        return ctx.createObject(
             KGlfwFrame.class,
             spawnOptions.title(),
             spawnOptions.size()
         );
-        frame.addKeyListener(data -> {
-            if (data.key() == KKey.ESCAPE) {
-                frame.setShouldClose(true);
-            }
-            KSystemLogger.debug("listener", "Key pressed: %s", data.key());
-        });
-
-        return frame;
     }
 }

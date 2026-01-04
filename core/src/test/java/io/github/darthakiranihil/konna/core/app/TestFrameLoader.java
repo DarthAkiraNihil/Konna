@@ -17,11 +17,13 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class TestFrameLoader implements KFrameLoader {
 
     @Override
     public KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions) {
-        return null;
+        return new TestFrame();
     }
 }

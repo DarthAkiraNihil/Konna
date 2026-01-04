@@ -62,6 +62,10 @@ public interface KFrame {
      */
     void hide();
 
+    /**
+     * Adds a key listener to this frame.
+     * @param listener A new key listener
+     */
     void addKeyListener(KKeyListener listener);
 
     /**

@@ -24,9 +24,6 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
-import io.github.darthakiranihil.konna.core.input.KKey;
-import io.github.darthakiranihil.konna.core.input.KKeyEventData;
-import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
@@ -61,6 +58,9 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine context.
      */
     protected @Nullable KEngineContext ctx;
+    /**
+     * Spawned application's frame.
+     */
     protected @Nullable KFrame frame;
 
     /**
@@ -195,6 +195,12 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
+    /**
+     * Creates a frame of the application and enters the main event loop,
+     * until it should close.
+     *
+     * @since 0.3.0
+     */
     public void frameLoop() {
 
         if (this.ctx == null) {
