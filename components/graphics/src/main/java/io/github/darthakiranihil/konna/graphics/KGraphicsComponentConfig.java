@@ -30,9 +30,13 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
  */
 public record KGraphicsComponentConfig(
     @KJsonSerialized @KJsonCustomName(name = RENDER_FRONTEND_CLASS_KEY)
-    Class<? extends KRenderFrontend> renderFrontendClass
+    Class<? extends KRenderFrontend> renderFrontendClass,
+
+    @KJsonSerialized @KJsonCustomName(name = FRAME_CLASS_KEY)
+    Class<? extends KFrame> frameClass
 ) {
     private static final String RENDER_FRONTEND_CLASS_KEY = "render_frontend";
+    private static final String FRAME_CLASS_KEY = "frame";
 
     private static final class Schema implements KJsonValidator {
 
@@ -44,6 +48,13 @@ public record KGraphicsComponentConfig(
             this.schema = new KJsonObjectValidator(
                 propInfoBuilder
                     .withName(RENDER_FRONTEND_CLASS_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(FRAME_CLASS_KEY)
                     .withExpectedType(KJsonValueType.STRING)
                     .withValidator(
                         KJsonValueIsClassValidator.INSTANCE

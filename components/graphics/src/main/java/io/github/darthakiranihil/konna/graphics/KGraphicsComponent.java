@@ -22,16 +22,15 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.service.KFrameService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Konna Graphics component, used for rendering object on the screen.
@@ -82,8 +81,18 @@ public class KGraphicsComponent extends KComponent {
 
         KContainer container = this.ctx.getContainer();
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
+        container.add(KFrame.class, deserializedConfig.frameClass());
+
     }
 
+    @Override
+    protected Map<String, KServiceEntry> loadServices(
+        KEngineContext ctx,
+        String servicesPackage,
+        KServiceLoader serviceLoader
+    ) {
+        ctx.registerEvent(KFrameService.RENDER_REQUIRED);
 
-
+        return super.loadServices(ctx, servicesPackage, serviceLoader);
+    }
 }

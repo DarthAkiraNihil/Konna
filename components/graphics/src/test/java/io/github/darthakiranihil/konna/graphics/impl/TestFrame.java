@@ -17,60 +17,64 @@
 package io.github.darthakiranihil.konna.graphics.impl;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.graphics.shape.*;
+import io.github.darthakiranihil.konna.graphics.KFrame;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class TestRenderFrontend implements KRenderFrontend {
+public class TestFrame implements KFrame {
 
     @Override
-    public void render(KLine line) {
+    public void setTitle(String newTitle) {
 
     }
 
     @Override
-    public void render(KPolyline polyline) {
+    public KSize getSize() {
+        return new KSize(0, 0);
+    }
+
+    @Override
+    public void setSize(KSize newSize) {
 
     }
 
     @Override
-    public void render(KPolygon polygon) {
+    public void setResizable(boolean state) {
 
     }
 
     @Override
-    public void render(KRectangle rectangle) {
+    public void show() {
 
     }
 
     @Override
-    public void render(KOval oval) {
+    public void hide() {
 
     }
 
     @Override
-    public void render(KCircle circle) {
+    public void terminate() {
 
     }
 
     @Override
-    public void render(KArc arc) {
+    public boolean shouldClose() {
+        return false;
+    }
+
+    @Override
+    public void setShouldClose(boolean flag) {
 
     }
 
     @Override
-    public void setViewportSize(KSize size) {
+    public void swapBuffers() {
 
     }
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public void initializeIfNot() {
+    public void pollEvents() {
 
     }
 }

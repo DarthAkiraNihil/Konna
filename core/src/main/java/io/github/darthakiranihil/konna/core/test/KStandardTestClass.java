@@ -28,6 +28,7 @@ import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
@@ -108,6 +109,7 @@ public class KStandardTestClass extends KObject {
             .add(KJsonSerializer.class, KStandardJsonSerializer.class)
             .add(KActivator.class, KProxiedEngineContext.class)
             .add(KMessageSystem.class, KProxiedEngineContext.class)
+            .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class);
 

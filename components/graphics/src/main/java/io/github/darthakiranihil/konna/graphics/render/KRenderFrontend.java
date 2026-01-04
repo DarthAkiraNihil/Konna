@@ -63,6 +63,7 @@ public interface KRenderFrontend {
      * @param arc Arc object ro render
      */
     void render(KArc arc);
+    void clear();
 
     /**
      * Sets viewport size for this render frontend. Usually it is required
@@ -72,5 +73,7 @@ public interface KRenderFrontend {
      * @param size Size of the viewport
      */
     void setViewportSize(KSize size);
+
+    void initializeIfNot();
 
 }

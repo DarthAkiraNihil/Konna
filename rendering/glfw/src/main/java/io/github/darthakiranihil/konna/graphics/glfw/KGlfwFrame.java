@@ -41,9 +41,9 @@ public class KGlfwFrame extends KObject implements KFrame {
 
     public KGlfwFrame(
         @KInject final KGlfw glfw,
-        @KInject final KGlfwCallbacks glfwCallbacks,
-        final String title,
-        final KSize size
+        @KInject final KGlfwCallbacks glfwCallbacks
+//        final String title,
+//        final KSize size
     ) {
         this.glfw = glfw;
         this.glfwCallbacks = glfwCallbacks;
@@ -55,6 +55,9 @@ public class KGlfwFrame extends KObject implements KFrame {
         }
 
         this.setResizable(true);
+
+        KSize size = KSize.squared(600);
+        String title = "TITLE";
 
         this.handle = this.glfw.glfwCreateWindow(
             size.width(),
@@ -70,12 +73,18 @@ public class KGlfwFrame extends KObject implements KFrame {
             );
         }
 
-        glfw.glfwMakeContextCurrent(this.handle);
+        //glfw.glfwMakeContextCurrent(this.handle);
         glfw.glfwSwapInterval(1);
 
         this.pHeight = IntBuffer.allocate(1);
         this.pWidth = IntBuffer.allocate(1);
         this.updateSize();
+
+        //! DEBUG ONLY
+        glfw.glfwSetKeyCallback(this.handle, (w, key, scancode, action, mods) -> {
+            if ( key == KGlfw.GLFW_KEY_ESCAPE && action == KGlfw.GLFW_RELEASE )
+                glfw.glfwSetWindowShouldClose(w, true); // We will detect this in the rendering loop
+        });
 
     }
 
@@ -138,5 +147,15 @@ public class KGlfwFrame extends KObject implements KFrame {
     @Override
     public void swapBuffers() {
         this.glfw.glfwSwapBuffers(this.handle);
+    }
+
+    @Override
+    public void pollEvents() {
+        this.glfw.glfwPollEvents();
+    }
+
+    @Override
+    public void assignToCurrentContext() {
+        glfw.glfwMakeContextCurrent(this.handle);
     }
 }

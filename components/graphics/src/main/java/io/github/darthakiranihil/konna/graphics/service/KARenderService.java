@@ -19,12 +19,19 @@ package io.github.darthakiranihil.konna.graphics.service;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
+import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Service for rendering different objects using {@link KRenderFrontend}.
@@ -36,17 +43,34 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 @KComponentServiceMetaInfo(
     name = "RenderService"
 )
-public class KRenderService extends KObject {
+public class KARenderService extends KObject {
 
     private final KRenderFrontend renderFrontend;
+    private final List<KRenderable> currentRenderables;
+    private final KRectangle rekt;
 
     /**
      * Standard constructor.
      * @param renderFrontend Render frontend to use for rendering objects
      */
-    public KRenderService(@KInject final KRenderFrontend renderFrontend) {
+    public KARenderService(
+        @KInject final KRenderFrontend renderFrontend,
+        @KInject final KEventSystem eventSystem
+    ) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
+        this.currentRenderables = new LinkedList<>();
+        this.rekt = KRectangle.square(100, 100, 400, KColor.RED);
+        this.currentRenderables.add(this.rekt);
+
+        KSimpleEvent renderRequiredEvent = eventSystem.getSimpleEvent(
+            KFrameService.RENDER_REQUIRED.name()
+        );
+
+        if (renderRequiredEvent != null) {
+            renderRequiredEvent.subscribe(this::render);
+        }
+
     }
 
     /**
@@ -58,7 +82,9 @@ public class KRenderService extends KObject {
         converter = KInternals.MessageToRenderableConverter.class
     )
     public void render(final KRenderable renderable) {
-        renderable.render(this.renderFrontend);
+        this.currentRenderables.clear();
+        this.currentRenderables.add(renderable);
+        //renderable.render(this.renderFrontend);
     }
 
     /**
@@ -70,7 +96,18 @@ public class KRenderService extends KObject {
         converter = KInternals.MessageToRenderableArrayConverter.class
     )
     public void render(final KRenderable[] renderables) {
-        for (KRenderable renderable: renderables) {
+        this.currentRenderables.clear();
+        this.currentRenderables.addAll(List.of(renderables));
+//        for (KRenderable renderable: renderables) {
+//            renderable.render(this.renderFrontend);
+//        }
+    }
+
+    private void render() {
+        this.renderFrontend.initializeIfNot();
+        this.renderFrontend.clear();
+        this.rekt.rotate(0.1);
+        for (KRenderable renderable: this.currentRenderables) {
             renderable.render(this.renderFrontend);
         }
     }

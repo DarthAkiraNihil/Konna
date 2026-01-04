@@ -83,5 +83,7 @@ public interface KFrame {
      * If the frame has double-buffering, then this method swaps used buffers.
      */
     void swapBuffers();
+    void pollEvents();
+    void assignToCurrentContext();
 
 }

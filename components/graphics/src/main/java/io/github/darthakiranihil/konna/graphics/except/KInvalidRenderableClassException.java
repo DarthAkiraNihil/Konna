@@ -18,10 +18,11 @@ package io.github.darthakiranihil.konna.graphics.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
+import io.github.darthakiranihil.konna.graphics.service.KARenderService;
 
 /**
  * Exception thrown when an incorrect renderable class is passed to config
- * or {@link io.github.darthakiranihil.konna.graphics.service.KRenderService}
+ * or {@link KARenderService}
  * tries to render unknown object type.
  *
  * @since 0.1.0

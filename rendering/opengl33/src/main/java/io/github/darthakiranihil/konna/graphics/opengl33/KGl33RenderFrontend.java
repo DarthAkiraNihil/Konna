@@ -52,6 +52,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     private final KGl33 gl;
     private KSize viewportSize;
+    private boolean initialized;
 
     private final KBufferMaker bufferMaker;
 
@@ -189,6 +190,21 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             CIRCLE_DISCRETIZATION_POINTS,
             KGl33.GL_LINE_STRIP
         );
+    }
+
+    @Override
+    public void clear() {
+        this.gl.glClear(KGl33.GL_COLOR_BUFFER_BIT | KGl33.GL_DEPTH_BUFFER_BIT);
+    }
+
+    @Override
+    public void initializeIfNot() {
+        if (this.initialized) {
+            return;
+        }
+
+        this.gl.createCapabilities();
+        this.initialized = true;
     }
 
     private void render(

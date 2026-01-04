@@ -111,6 +111,17 @@ public class KEngineHypervisor extends KObject {
             .add(config.serviceLoader())
             .add(config.componentLoader());
 
+        for (var eventRegisterer: config.eventRegisterers()) {
+            KEventRegisterer registerer = ctx.createObject(eventRegisterer);
+            registerer.registerEvents(ctx);
+        }
+
+        KSystemLogger.info(
+            this.name,
+            "%d event registerers have been executed",
+            config.eventRegisterers().size()
+        );
+
         try {
 
             KComponentLoader componentLoader = ctx.createObject(config.componentLoader());
@@ -167,17 +178,6 @@ public class KEngineHypervisor extends KObject {
             this.name,
             "%d message route configurers have been executed",
             config.messageRoutesConfigurers().size()
-        );
-
-        for (var eventRegisterer: config.eventRegisterers()) {
-            KEventRegisterer registerer = ctx.createObject(eventRegisterer);
-            registerer.registerEvents(ctx);
-        }
-
-        KSystemLogger.info(
-            this.name,
-            "%d event registerers have been executed",
-            config.eventRegisterers().size()
         );
 
         engineComponents.values().forEach(KComponent::postInit);

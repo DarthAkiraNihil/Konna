@@ -1,3 +1,4 @@
 {
-    "render_frontend": "io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend"
+    "render_frontend": "io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend",
+    "frame": "io.github.darthakiranihil.konna.graphics.impl.TestFrame"
 }
