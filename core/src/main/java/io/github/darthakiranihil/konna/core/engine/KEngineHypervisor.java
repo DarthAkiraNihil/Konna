@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -56,6 +57,7 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine context.
      */
     protected @Nullable KEngineContext ctx;
+    protected @Nullable KFrame frame;
 
     /**
      * Constructs hypervisor with provided config.
@@ -109,7 +111,8 @@ public class KEngineHypervisor extends KObject {
 
         master
             .add(config.serviceLoader())
-            .add(config.componentLoader());
+            .add(config.componentLoader())
+            .add(KFrame.class, config.frame());
 
         try {
 
@@ -188,6 +191,34 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
+    public void frameLoop() {
+
+        if (this.ctx == null) {
+            throw new KHypervisorInitializationException(
+                "Cannot enter frame loop: context is null!"
+            );
+        }
+
+        this.frame = this.ctx.createObject(KFrame.class);
+        this.frame.show();
+
+        KSystemLogger.info(
+            this.name,
+            "Entering frame loop. Class: %s",
+            this.frame.getClass().getCanonicalName()
+        );
+
+        while (!this.frame.shouldClose()) {
+
+            this.frame.swapBuffers();
+            this.frame.pollEvents();
+
+        }
+
+        KSystemLogger.info(this.name, "Leaving frame loop");
+
+    }
+
     /**
      * Performs graceful shutdown of this hypervisor.
      * It won't have any effect if there is no loaded engine context.
@@ -200,6 +231,10 @@ public class KEngineHypervisor extends KObject {
         this.ctx.handleShutdown();
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
+
+        if (this.frame != null) {
+            this.frame.setShouldClose(true);
+        }
     }
 
 }

@@ -51,7 +51,9 @@ dependencies {
     implementation(project(":libfrontend:libfrontend-opengl"))
     implementation(project(":libfrontend:libfrontend-glfw"))
     implementation(project(":libfrontend:libfrontend-stbimage"))
+
     implementation(project(":rendering:glfw"))
+
     implementation(project(":backend:backend-lwjgl"))
 }
 
