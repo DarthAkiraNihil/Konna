@@ -167,9 +167,6 @@ public final class Konna extends KObject implements Runnable {
             () -> {
                 this.hypervisor.launch(features);
                 this.hypervisor.frameLoop();
-//                while (this.running) {
-//                    Thread.onSpinWait();
-//                }
             }
         );
 

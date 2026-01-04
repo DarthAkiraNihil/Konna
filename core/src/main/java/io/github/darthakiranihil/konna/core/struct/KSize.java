@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
+
 /**
  * Representation of a size, that is basically {@link KVector2i}, but with other
  * coordinates names.
@@ -26,7 +28,9 @@ package io.github.darthakiranihil.konna.core.struct;
  * @author Darth Akira Nihil
  */
 public record KSize(
+    @KJsonSerialized
     int width,
+    @KJsonSerialized
     int height
 ) {
 

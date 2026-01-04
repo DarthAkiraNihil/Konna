@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 
 /**
@@ -61,7 +62,7 @@ public interface KFrame {
      */
     void hide();
 
-    // void addKeyListener(KKeyListener listener);
+    void addKeyListener(KKeyListener listener);
 
     /**
      * Terminates this frame (including closing) and releases all its resources.

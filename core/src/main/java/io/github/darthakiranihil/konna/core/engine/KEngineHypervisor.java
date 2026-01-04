@@ -18,11 +18,15 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.input.KKey;
+import io.github.darthakiranihil.konna.core.input.KKeyEventData;
+import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
@@ -112,7 +116,7 @@ public class KEngineHypervisor extends KObject {
         master
             .add(config.serviceLoader())
             .add(config.componentLoader())
-            .add(KFrame.class, config.frame());
+            .add(KFrameLoader.class, config.frameLoader());
 
         try {
 
@@ -199,7 +203,9 @@ public class KEngineHypervisor extends KObject {
             );
         }
 
-        this.frame = this.ctx.createObject(KFrame.class);
+
+        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
+        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
         this.frame.show();
 
         KSystemLogger.info(
