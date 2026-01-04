@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.except;
+package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import org.jspecify.annotations.NullMarked;
 
-/**
- * Exception thrown when Konna hypervisor could not be instantiated.
- *
- * @since 0.2.0
- * @author Darth Akira Nihil
- */
-public class KHypervisorInitializationException extends KException {
+@NullMarked
+public class TestFrameLoader implements KFrameLoader {
 
-    public KHypervisorInitializationException(final Throwable cause) {
-        super(cause);
-    }
-
-    public KHypervisorInitializationException(final String message) {
-        super(message);
+    @Override
+    public KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions) {
+        return new TestFrame();
     }
 }

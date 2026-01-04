@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'io.github.darthakiranihil.konna'
-version = '0.2.0'
+version = '0.3.0'
 
 subprojects {
     apply plugin: 'java'
@@ -51,6 +51,9 @@ dependencies {
     implementation(project(":libfrontend:libfrontend-opengl"))
     implementation(project(":libfrontend:libfrontend-glfw"))
     implementation(project(":libfrontend:libfrontend-stbimage"))
+
+    implementation(project(":rendering:glfw"))
+
     implementation(project(":backend:backend-lwjgl"))
 }
 

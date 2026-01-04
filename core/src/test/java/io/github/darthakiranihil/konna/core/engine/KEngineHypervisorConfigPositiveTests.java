@@ -31,16 +31,24 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
     @Test
     public void testFromJsonSuccess() {
 
-        String config = "{" +
-            "\"context_loader\": \"io.github.darthakiranihil.konna.core.test.KTestContextLoader\"" +
-            "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
-            "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader\"," +
-            "\"route_configurers\": []," +
-            "\"event_registerers\": []," +
-            "\"event_queue\": \"io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue\"," +
-            "\"components\": [" +
-                "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
-            "]}";
+        String config = """
+            {\
+            "context_loader": "io.github.darthakiranihil.konna.core.test.KTestContextLoader"\
+            "component_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader",\
+            "service_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader",\
+            "route_configurers": [],\
+            "event_registerers": [],\
+            "event_queue": "io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue",\
+            "components": [\
+            "io.github.darthakiranihil.konna.core.engine.TestComponent"\
+            ],"frame_loader": "io.github.darthakiranihil.konna.core.app.TestFrameLoader",
+                  "frame_options": {
+                    "size": {
+                      "width": 1000,
+                      "height": 800
+                    },
+                    "title": "Hello, world!"
+                  }}""";
 
         KJsonValue parsed;
         try {

@@ -20,5 +20,8 @@ findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
 include 'libfrontend:libfrontend-stbimage'
 findProject(':libfrontend:libfrontend-stbimage')?.name = 'libfrontend-stbimage'
 
+include 'rendering:glfw'
+findProject(':rendering:glfw')?.name = 'glfw'
+
 include 'backend:backend-lwjgl'
 findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
