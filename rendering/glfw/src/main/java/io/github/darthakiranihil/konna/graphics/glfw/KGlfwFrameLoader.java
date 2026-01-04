@@ -23,8 +23,10 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.input.KKey;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KTransient;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
 @KTransient(temporal = true)
+@KExcludeFromGeneratedCoverageReport
 public class KGlfwFrameLoader implements KFrameLoader {
 
     @Override

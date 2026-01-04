@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.input;
+package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 
-@KExcludeFromGeneratedCoverageReport
-public interface KKeyListener {
+public class TestFrameLoader implements KFrameLoader {
 
-    void keyPressed(KKeyEventData data);
-    default void keyReleased(KKeyEventData data) {
-
+    @Override
+    public KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions) {
+        return null;
     }
-    // void keyHold(KKeyEventData data);
-
 }

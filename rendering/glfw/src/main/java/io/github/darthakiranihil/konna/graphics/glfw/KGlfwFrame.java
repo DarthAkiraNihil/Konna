@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.input.KKey;
 import io.github.darthakiranihil.konna.core.input.KKeyEventData;
 import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfw;
@@ -32,6 +33,7 @@ import java.nio.IntBuffer;
 import java.util.AbstractMap;
 import java.util.Map;
 
+@KSingleton
 @KExcludeFromGeneratedCoverageReport
 public class KGlfwFrame extends KObject implements KFrame {
 

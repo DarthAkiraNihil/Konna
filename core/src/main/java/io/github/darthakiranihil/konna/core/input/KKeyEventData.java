@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.input;
 
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+
+@KExcludeFromGeneratedCoverageReport
 public record KKeyEventData(
     KKey key,
     boolean withShift,
