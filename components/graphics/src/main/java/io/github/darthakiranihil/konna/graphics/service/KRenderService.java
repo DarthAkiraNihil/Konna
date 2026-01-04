@@ -61,4 +61,18 @@ public class KRenderService extends KObject {
         renderable.render(this.renderFrontend);
     }
 
+    /**
+     * Renders an array of objects.
+     * @param renderables Object array to be rendered with {@link KRenderFrontend}
+     */
+    @KServiceEndpoint(
+        route = "bulkRender",
+        converter = KInternals.MessageToRenderableArrayConverter.class
+    )
+    public void render(final KRenderable[] renderables) {
+        for (KRenderable renderable: renderables) {
+            renderable.render(this.renderFrontend);
+        }
+    }
+
 }
