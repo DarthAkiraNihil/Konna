@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.KFrameLoader;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
@@ -34,6 +36,8 @@ import java.util.List;
  * @param messageRoutesConfigurers List of engine message routes configurers
  * @param eventRegisterers List of engine event registerers
  * @param components List of engine components classes to load
+ * @param frameLoader Class of application's frame loader
+ * @param frameSpawnOptions Initial spawn options of application's frame
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -58,7 +62,13 @@ public record KEngineHypervisorConfig(
 
     @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
     @KJsonArray(elementType = Class.class)
-    Class<? extends KComponent>[] components
+    Class<? extends KComponent>[] components,
+
+    @KJsonSerialized @KJsonCustomName(name = FRAME_LOADER_KEY)
+    Class<? extends KFrameLoader> frameLoader,
+
+    @KJsonSerialized @KJsonCustomName(name = FRAME_OPTIONS_KEY)
+    KFrameSpawnOptions frameSpawnOptions
 ) {
 
     private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";
@@ -67,6 +77,8 @@ public record KEngineHypervisorConfig(
     private static final String COMPONENTS_KEY = "components";
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
+    private static final String FRAME_LOADER_KEY = "frame_loader";
+    private static final String FRAME_OPTIONS_KEY = "frame_options";
 
     @NullMarked
     private static final class Schema implements KJsonValidator {
@@ -127,8 +139,21 @@ public record KEngineHypervisorConfig(
                             KJsonValueIsClassValidator.INSTANCE
                         )
                     )
+                    .build(),
+                propInfoBuilder
+                    .withName(FRAME_LOADER_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(FRAME_OPTIONS_KEY)
+                    .withExpectedType(KJsonValueType.OBJECT)
+                    .withValidator(
+                        KFrameSpawnOptions.SCHEMA
+                    )
                     .build()
-
             );
         }
 

@@ -14,7 +14,15 @@
       ],
       "components": [
         "io.github.darthakiranihil.konna.core.engine.TestComponent"
-      ]
+      ],
+      "frame_loader": "io.github.darthakiranihil.konna.core.app.TestFrameLoader",
+      "frame_options": {
+        "size": {
+            "width": 1000,
+            "height": 800
+        },
+        "title": "Hello, world!"
+      }
     }
   }
 }

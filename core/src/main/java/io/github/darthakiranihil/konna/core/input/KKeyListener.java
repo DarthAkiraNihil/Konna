@@ -14,23 +14,30 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.except;
+package io.github.darthakiranihil.konna.core.input;
 
-import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
 /**
- * Exception thrown when Konna hypervisor could not be instantiated.
+ * Interface for key listener that listens for key pressing and releasing.
  *
- * @since 0.2.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public class KHypervisorInitializationException extends KException {
+@KExcludeFromGeneratedCoverageReport
+public interface KKeyListener {
 
-    public KHypervisorInitializationException(final Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Handler for key pressing.
+     * @param data Key event data
+     */
+    void keyPressed(KKeyEventData data);
 
-    public KHypervisorInitializationException(final String message) {
-        super(message);
-    }
+    /**
+     * Handler for key releasing.
+     * @param data Key event data
+     */
+    void keyReleased(KKeyEventData data);
+    // void keyHold(KKeyEventData data);
+
 }

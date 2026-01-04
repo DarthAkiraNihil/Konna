@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine.except;
+package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 
 /**
- * Exception thrown when Konna hypervisor could not be instantiated.
+ * Interface frame loader, that is likely to perform some post-initialization
+ * operations.
  *
- * @since 0.2.0
- * @author Darth Akira Nihil
+ * @since 0.3.0
+ * @author Darth Akira Nihl
  */
-public class KHypervisorInitializationException extends KException {
+public interface KFrameLoader {
 
-    public KHypervisorInitializationException(final Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Loads the frame in current context with passed spawn options.
+     * @param ctx Current engine context
+     * @param spawnOptions Initial frame spawn options
+     * @return Loaded and initialized frame
+     */
+    KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions);
 
-    public KHypervisorInitializationException(final String message) {
-        super(message);
-    }
 }

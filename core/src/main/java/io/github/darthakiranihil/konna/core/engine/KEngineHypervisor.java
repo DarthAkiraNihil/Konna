@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -56,6 +58,10 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine context.
      */
     protected @Nullable KEngineContext ctx;
+    /**
+     * Spawned application's frame.
+     */
+    protected @Nullable KFrame frame;
 
     /**
      * Constructs hypervisor with provided config.
@@ -109,7 +115,8 @@ public class KEngineHypervisor extends KObject {
 
         master
             .add(config.serviceLoader())
-            .add(config.componentLoader());
+            .add(config.componentLoader())
+            .add(KFrameLoader.class, config.frameLoader());
 
         for (var eventRegisterer: config.eventRegisterers()) {
             KEventRegisterer registerer = ctx.createObject(eventRegisterer);
@@ -189,6 +196,42 @@ public class KEngineHypervisor extends KObject {
     }
 
     /**
+     * Creates a frame of the application and enters the main event loop,
+     * until it should close.
+     *
+     * @since 0.3.0
+     */
+    public void frameLoop() {
+
+        if (this.ctx == null) {
+            throw new KHypervisorInitializationException(
+                "Cannot enter frame loop: context is null!"
+            );
+        }
+
+
+        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
+        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
+        this.frame.show();
+
+        KSystemLogger.info(
+            this.name,
+            "Entering frame loop. Class: %s",
+            this.frame.getClass().getCanonicalName()
+        );
+
+        while (!this.frame.shouldClose()) {
+
+            this.frame.swapBuffers();
+            this.frame.pollEvents();
+
+        }
+
+        KSystemLogger.info(this.name, "Leaving frame loop");
+
+    }
+
+    /**
      * Performs graceful shutdown of this hypervisor.
      * It won't have any effect if there is no loaded engine context.
      */
@@ -200,6 +243,10 @@ public class KEngineHypervisor extends KObject {
         this.ctx.handleShutdown();
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
+
+        if (this.frame != null) {
+            this.frame.setShouldClose(true);
+        }
     }
 
 }
