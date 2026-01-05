@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.service;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -43,7 +44,7 @@ import java.util.List;
 @KComponentServiceMetaInfo(
     name = "RenderService"
 )
-public class KARenderService extends KObject {
+public class KRenderService extends KObject {
 
     private final KRenderFrontend renderFrontend;
     private final List<KRenderable> currentRenderables;
@@ -53,9 +54,8 @@ public class KARenderService extends KObject {
      * Standard constructor.
      * @param renderFrontend Render frontend to use for rendering objects
      */
-    public KARenderService(
-        @KInject final KRenderFrontend renderFrontend,
-        @KInject final KEventSystem eventSystem
+    public KRenderService(
+        @KInject final KRenderFrontend renderFrontend
     ) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
@@ -63,14 +63,10 @@ public class KARenderService extends KObject {
         this.rekt = KRectangle.square(100, 100, 400, KColor.RED);
         this.currentRenderables.add(this.rekt);
 
-        KSimpleEvent renderRequiredEvent = eventSystem.getSimpleEvent(
-            KFrameService.RENDER_REQUIRED.name()
+        KSystemLogger.debug(
+            "Graphics.RenderService",
+            "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
-
-        if (renderRequiredEvent != null) {
-            renderRequiredEvent.subscribe(this::render);
-        }
-
     }
 
     /**

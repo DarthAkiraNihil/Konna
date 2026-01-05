@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.graphics.service.KFrameService;
 
 public class KGraphicsComponentEventRegisterer implements KEventRegisterer {
 

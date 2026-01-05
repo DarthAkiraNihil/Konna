@@ -27,7 +27,6 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.graphics.service.KFrameService;
 
 import java.util.List;
 import java.util.Map;

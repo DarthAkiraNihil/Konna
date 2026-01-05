@@ -54,7 +54,9 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
         for (int i = 0; i < initialSize; i++) {
             T object;
             try {
-                object = clazz.getConstructor().newInstance();
+                var constructor = clazz.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                object = constructor.newInstance();
             } catch (
                     InstantiationException
                 |   NoSuchMethodException

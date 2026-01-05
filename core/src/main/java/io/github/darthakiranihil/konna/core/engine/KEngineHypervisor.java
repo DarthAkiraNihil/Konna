@@ -222,6 +222,9 @@ public class KEngineHypervisor extends KObject {
 
         while (!this.frame.shouldClose()) {
 
+            while (this.frame.isLocked()) {
+                Thread.onSpinWait();
+            }
             this.frame.swapBuffers();
             this.frame.pollEvents();
 

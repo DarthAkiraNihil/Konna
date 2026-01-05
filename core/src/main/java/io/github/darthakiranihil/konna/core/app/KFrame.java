@@ -95,4 +95,9 @@ public interface KFrame {
     void pollEvents();
     //void assignToCurrentContext();
 
+    void addLock(KFrameLock lock);
+    void removeLock(KFrameLock lock);
+
+    boolean isLocked();
+
 }

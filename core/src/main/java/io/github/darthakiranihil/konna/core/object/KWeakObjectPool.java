@@ -56,7 +56,9 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
         for (int i = 0; i < initialSize; i++) {
             T object;
             try {
-                object = clazz.getConstructor().newInstance();
+                var constructor = clazz.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                object = constructor.newInstance();
             } catch (
                     InstantiationException
                 |   NoSuchMethodException
@@ -98,7 +100,9 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
         T obtained = ref.get();
         if (obtained == null) {
             try {
-                obtained = clazz.getConstructor().newInstance();
+                var constructor = clazz.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                obtained = constructor.newInstance();
             } catch (
                     InstantiationException
                 |   NoSuchMethodException
