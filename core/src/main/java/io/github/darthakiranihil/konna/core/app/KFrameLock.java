@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -42,6 +43,11 @@ public final class KFrameLock extends KObject {
     private void lock(@KInject final KFrame frame) {
         this.frame = frame;
         frame.addLock(this);
+
+        KSystemLogger.debug(
+            "Frame",
+            "Acquired frame lock"
+        );
     }
 
     @KOnPoolableObjectRelease
@@ -51,6 +57,11 @@ public final class KFrameLock extends KObject {
         }
 
         this.frame.removeLock(this);
+
+        KSystemLogger.debug(
+            "Frame",
+            "Released frame lock"
+        );
     }
 
 }

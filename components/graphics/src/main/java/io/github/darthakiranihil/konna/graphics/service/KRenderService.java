@@ -16,12 +16,15 @@
 
 package io.github.darthakiranihil.konna.graphics.service;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameLock;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -47,6 +50,8 @@ import java.util.List;
 public class KRenderService extends KObject {
 
     private final KRenderFrontend renderFrontend;
+    private final KActivator activator;
+
     private final List<KRenderable> currentRenderables;
     private final KRectangle rekt;
 
@@ -55,10 +60,14 @@ public class KRenderService extends KObject {
      * @param renderFrontend Render frontend to use for rendering objects
      */
     public KRenderService(
-        @KInject final KRenderFrontend renderFrontend
+        @KInject final KFrame frame,
+        @KInject final KRenderFrontend renderFrontend,
+        @KInject final KActivator activator
     ) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
+        this.activator = activator;
+
         this.currentRenderables = new LinkedList<>();
         this.rekt = KRectangle.square(100, 100, 400, KColor.RED);
         this.currentRenderables.add(this.rekt);
@@ -67,6 +76,14 @@ public class KRenderService extends KObject {
             "Graphics.RenderService",
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
+
+        var t = new Thread(() -> {
+            frame.initializeContext();
+            while (true) {
+                this.render();
+            }
+        });
+        t.start();
     }
 
     /**
@@ -103,9 +120,14 @@ public class KRenderService extends KObject {
         this.renderFrontend.initializeIfNot();
         this.renderFrontend.clear();
         this.rekt.rotate(0.1);
+
+        KFrameLock lock = this.activator.createObject(KFrameLock.class);
+
         for (KRenderable renderable: this.currentRenderables) {
             renderable.render(this.renderFrontend);
         }
+
+        this.activator.deleteObject(lock);
     }
 
 }

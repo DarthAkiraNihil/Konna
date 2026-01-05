@@ -100,4 +100,6 @@ public interface KFrame {
 
     boolean isLocked();
 
+    void initializeContext();
+
 }

@@ -332,4 +332,9 @@ public class KGlfwFrame extends KObject implements KFrame {
     public boolean isLocked() {
         return !this.frameLocks.isEmpty();
     }
+
+    @Override
+    public void initializeContext() {
+        this.glfw.glfwMakeContextCurrent(this.handle);
+    }
 }

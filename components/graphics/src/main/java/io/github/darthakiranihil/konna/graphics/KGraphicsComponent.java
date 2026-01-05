@@ -83,15 +83,4 @@ public class KGraphicsComponent extends KComponent {
         container.add(KFrame.class, deserializedConfig.frameClass());
 
     }
-
-    @Override
-    protected Map<String, KServiceEntry> loadServices(
-        KEngineContext ctx,
-        String servicesPackage,
-        KServiceLoader serviceLoader
-    ) {
-        ctx.registerEvent(KFrameService.RENDER_REQUIRED);
-
-        return super.loadServices(ctx, servicesPackage, serviceLoader);
-    }
 }
