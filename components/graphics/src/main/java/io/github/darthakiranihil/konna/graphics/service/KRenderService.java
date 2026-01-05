@@ -60,9 +60,9 @@ public class KRenderService extends KObject {
      * @param renderFrontend Render frontend to use for rendering objects
      */
     public KRenderService(
-        @KInject final KFrame frame,
         @KInject final KRenderFrontend renderFrontend,
-        @KInject final KActivator activator
+        @KInject final KActivator activator,
+        @KInject final KEventSystem eventSystem
     ) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
@@ -77,13 +77,10 @@ public class KRenderService extends KObject {
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
-        var t = new Thread(() -> {
-            frame.initializeContext();
-            while (true) {
-                this.render();
-            }
-        });
-        t.start();
+        KSimpleEvent tick = eventSystem.getSimpleEvent(KFrame.TICK_EVENT_NAME);
+        if (tick != null) {
+            tick.subscribe(this::render);
+        }
     }
 
     /**

@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializat
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
+import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
@@ -63,6 +64,8 @@ public class KEngineHypervisor extends KObject {
      */
     protected @Nullable KFrame frame;
 
+    private final KSimpleEvent tick;
+
     /**
      * Constructs hypervisor with provided config.
      * @param config Initialization config of the hypervisor
@@ -79,6 +82,7 @@ public class KEngineHypervisor extends KObject {
 
         this.engineComponents = new HashMap<>();
         this.ctx = null;
+        this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
     }
 
     /**
@@ -102,6 +106,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx = contextLoader.load(features);
+        this.ctx.registerEvent(this.tick);
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -221,6 +226,8 @@ public class KEngineHypervisor extends KObject {
         );
 
         while (!this.frame.shouldClose()) {
+
+            this.tick.invokeSync();
 
             while (this.frame.isLocked()) {
                 Thread.onSpinWait();

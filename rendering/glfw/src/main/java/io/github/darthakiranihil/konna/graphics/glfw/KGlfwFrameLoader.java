@@ -36,6 +36,13 @@ public class KGlfwFrameLoader implements KFrameLoader {
     @Override
     public KFrame load(final KEngineContext ctx, final KFrameSpawnOptions spawnOptions) {
 
+        ctx
+            .getContainer()
+            .add(
+                KFrame.class,
+                KGlfwFrame.class
+            );
+
         return ctx.createObject(
             KGlfwFrame.class,
             spawnOptions.title(),

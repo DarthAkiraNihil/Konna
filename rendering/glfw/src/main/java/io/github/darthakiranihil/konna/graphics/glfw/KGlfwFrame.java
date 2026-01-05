@@ -210,7 +210,7 @@ public class KGlfwFrame extends KObject implements KFrame {
             );
         }
 
-        //glfw.glfwMakeContextCurrent(this.handle);
+        glfw.glfwMakeContextCurrent(this.handle);
         glfw.glfwSwapInterval(1);
 
         this.pHeight = IntBuffer.allocate(1);

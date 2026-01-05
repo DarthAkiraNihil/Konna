@@ -28,6 +28,8 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
  */
 public interface KFrame {
 
+    String TICK_EVENT_NAME = "tick";
+
     /**
      * Sets frame's title.
      * @param newTitle Title of the frame
