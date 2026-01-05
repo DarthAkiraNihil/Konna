@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.graphics.impl;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.graphics.KFrame;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked

@@ -80,7 +80,6 @@ public class KGraphicsComponent extends KComponent {
 
         KContainer container = this.ctx.getContainer();
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
-        container.add(KFrame.class, deserializedConfig.frameClass());
 
     }
 }
