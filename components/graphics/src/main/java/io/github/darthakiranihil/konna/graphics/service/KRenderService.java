@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KFrameLock;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
@@ -36,6 +35,7 @@ import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Service for rendering different objects using {@link KRenderFrontend}.
@@ -50,10 +50,8 @@ import java.util.List;
 public class KRenderService extends KObject {
 
     private final KRenderFrontend renderFrontend;
-    private final KActivator activator;
 
     private final List<KRenderable> currentRenderables;
-    private final KRectangle rekt;
 
     /**
      * Standard constructor.
@@ -61,16 +59,13 @@ public class KRenderService extends KObject {
      */
     public KRenderService(
         @KInject final KRenderFrontend renderFrontend,
-        @KInject final KActivator activator,
-        @KInject final KEventSystem eventSystem
+        @KInject final KEventSystem eventSystem,
+        @KInject final KFrame frame
     ) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
-        this.activator = activator;
 
-        this.currentRenderables = new LinkedList<>();
-        this.rekt = KRectangle.square(100, 100, 400, KColor.RED);
-        this.currentRenderables.add(this.rekt);
+        this.currentRenderables = new CopyOnWriteArrayList<>();
 
         KSystemLogger.debug(
             "Graphics.RenderService",
@@ -81,6 +76,8 @@ public class KRenderService extends KObject {
         if (tick != null) {
             tick.subscribe(this::render);
         }
+
+        this.renderFrontend.setViewportSize(frame.getSize());
     }
 
     /**
@@ -94,7 +91,6 @@ public class KRenderService extends KObject {
     public void render(final KRenderable renderable) {
         this.currentRenderables.clear();
         this.currentRenderables.add(renderable);
-        //renderable.render(this.renderFrontend);
     }
 
     /**
@@ -108,23 +104,20 @@ public class KRenderService extends KObject {
     public void render(final KRenderable[] renderables) {
         this.currentRenderables.clear();
         this.currentRenderables.addAll(List.of(renderables));
-//        for (KRenderable renderable: renderables) {
-//            renderable.render(this.renderFrontend);
-//        }
     }
 
     private void render() {
-        this.renderFrontend.initializeIfNot();
-        this.renderFrontend.clear();
-        this.rekt.rotate(0.1);
 
-        KFrameLock lock = this.activator.createObject(KFrameLock.class);
+        this.renderFrontend.clear();
+
+        //KFrameLock lock = this.activator.createObject(KFrameLock.class);
 
         for (KRenderable renderable: this.currentRenderables) {
             renderable.render(this.renderFrontend);
         }
 
-        this.activator.deleteObject(lock);
+        //this.activator.deleteObject(lock);
+
     }
 
 }

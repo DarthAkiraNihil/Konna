@@ -96,7 +96,7 @@ public class KEngineHypervisor extends KObject {
 
         KEngineContextLoader contextLoader;
         try {
-            contextLoader = config.contextLoader().getDeclaredConstructor().newInstance();
+            contextLoader = this.config.contextLoader().getDeclaredConstructor().newInstance();
         } catch (
             NoSuchMethodException
             |   InstantiationException
@@ -106,6 +106,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx = contextLoader.load(features);
+
         this.ctx.registerEvent(this.tick);
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
@@ -122,6 +123,9 @@ public class KEngineHypervisor extends KObject {
             .add(config.serviceLoader())
             .add(config.componentLoader())
             .add(KFrameLoader.class, config.frameLoader());
+
+        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
+        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
 
         for (var eventRegisterer: config.eventRegisterers()) {
             KEventRegisterer registerer = ctx.createObject(eventRegisterer);
@@ -215,8 +219,7 @@ public class KEngineHypervisor extends KObject {
         }
 
 
-        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
-        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
+
         this.frame.show();
 
         KSystemLogger.info(

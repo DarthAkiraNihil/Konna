@@ -70,7 +70,7 @@ public class TestRenderFrontend implements KRenderFrontend {
     }
 
     @Override
-    public void initializeIfNot() {
+    public void initialize() {
 
     }
 }

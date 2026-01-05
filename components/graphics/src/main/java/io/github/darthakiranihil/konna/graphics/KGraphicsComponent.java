@@ -82,4 +82,12 @@ public class KGraphicsComponent extends KComponent {
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
 
     }
+
+    @Override
+    public void postInit() {
+
+        KRenderFrontend rf = this.ctx.createObject(KRenderFrontend.class);
+        rf.initialize();
+
+    }
 }

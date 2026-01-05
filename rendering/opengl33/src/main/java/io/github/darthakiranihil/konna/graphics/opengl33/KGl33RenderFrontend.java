@@ -30,6 +30,7 @@ import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 import java.nio.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Render frontend implementation using OpenGL 3.3.
@@ -68,8 +69,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
-        this.cache = new HashMap<>();
-        this.ttl = new HashMap<>();
+        this.cache = new ConcurrentHashMap<>();
+        this.ttl = new ConcurrentHashMap<>();
 
         this.bufferMaker = new KBufferMaker(this.gl);
     }
@@ -198,7 +199,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void initializeIfNot() {
+    public void initialize() {
         if (this.initialized) {
             return;
         }

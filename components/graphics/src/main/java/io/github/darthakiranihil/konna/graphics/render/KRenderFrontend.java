@@ -74,6 +74,6 @@ public interface KRenderFrontend {
      */
     void setViewportSize(KSize size);
 
-    void initializeIfNot();
+    void initialize();
 
 }
