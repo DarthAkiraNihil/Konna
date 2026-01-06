@@ -220,7 +220,11 @@ public class KEngineHypervisor extends KObject {
             );
         }
 
-
+        if (this.frame == null) {
+            throw new KHypervisorInitializationException(
+                "Cannot enter frame loop: frame is null!"
+            );
+        }
 
         this.frame.show();
 
@@ -248,6 +252,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
+        this.shutdown();
 
     }
 
@@ -261,11 +266,14 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx.handleShutdown();
+        this.ctx = null;
+
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
 
         if (this.frame != null) {
             this.frame.setShouldClose(true);
+            this.frame = null;
         }
     }
 
