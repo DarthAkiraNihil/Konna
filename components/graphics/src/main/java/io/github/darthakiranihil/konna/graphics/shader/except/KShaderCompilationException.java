@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.shader.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
  * Exception thrown when a shader or shader program compilation has failed.
@@ -27,5 +28,10 @@ import io.github.darthakiranihil.konna.core.except.KException;
 public class KShaderCompilationException extends KException {
     public KShaderCompilationException(String message) {
         super(message);
+    }
+
+    @Override
+    public KExceptionSeverity getSeverity() {
+        return KExceptionSeverity.WARNING;
     }
 }
