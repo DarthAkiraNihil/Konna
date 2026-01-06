@@ -14,27 +14,43 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.app;
+package io.github.darthakiranihil.konna.core.test;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameLock;
 import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import org.jspecify.annotations.NullMarked;
+import org.jetbrains.annotations.TestOnly;
 
-@NullMarked
-public class TestFrame implements KFrame {
+/**
+ * Implementation of {@link KFrame} to be used only in tests.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+@TestOnly
+public final class KTestFrame implements KFrame {
+
+    private boolean shouldClose;
+
+    public KTestFrame() {
+
+        this.shouldClose = false;
+
+    }
 
     @Override
-    public void setTitle(String newTitle) {
+    public void setTitle(final String newTitle) {
 
     }
 
     @Override
     public KSize getSize() {
-        return new KSize(0, 0);
+        return KSize.squared(0);
     }
 
     @Override
-    public void setSize(KSize newSize) {
+    public void setSize(final KSize newSize) {
 
     }
 
@@ -54,18 +70,25 @@ public class TestFrame implements KFrame {
     }
 
     @Override
+    public void addKeyListener(final KKeyListener listener) {
+
+    }
+
+    @Override
     public void terminate() {
 
     }
 
     @Override
     public boolean shouldClose() {
-        return false;
+        boolean flag = this.shouldClose;
+        this.setShouldClose(true);
+        return flag;
     }
 
     @Override
     public void setShouldClose(boolean flag) {
-
+        this.shouldClose = flag;
     }
 
     @Override
@@ -79,7 +102,17 @@ public class TestFrame implements KFrame {
     }
 
     @Override
-    public void addKeyListener(KKeyListener listener) {
+    public void addLock(final KFrameLock lock) {
 
+    }
+
+    @Override
+    public void removeLock(final KFrameLock lock) {
+
+    }
+
+    @Override
+    public boolean isLocked() {
+        return false;
     }
 }

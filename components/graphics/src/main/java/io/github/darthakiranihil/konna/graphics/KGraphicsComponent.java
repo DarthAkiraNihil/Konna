@@ -22,10 +22,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
@@ -37,7 +34,8 @@ import java.util.List;
  * Konna Graphics component, used for rendering object on the screen.
  * Provided endpoints:
  * <ul>
- *     <li>RenderService.render</li>
+ *     <li>Graphics.RenderService.render</li>
+ *     <li>Graphics.RenderService.bulkRender</li>
  * </ul>
  *
  * @since 0.1.0
@@ -85,4 +83,11 @@ public class KGraphicsComponent extends KComponent {
 
     }
 
+    @Override
+    public void postInit() {
+
+        KRenderFrontend rf = this.ctx.createObject(KRenderFrontend.class);
+        rf.initialize();
+
+    }
 }

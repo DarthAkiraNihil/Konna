@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.glfw;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameLock;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.input.KKey;
@@ -31,6 +32,8 @@ import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
 
 import java.nio.IntBuffer;
 import java.util.AbstractMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,7 +42,7 @@ import java.util.Map;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@KSingleton
+@KSingleton(immortal = true)
 @KExcludeFromGeneratedCoverageReport
 public class KGlfwFrame extends KObject implements KFrame {
 
@@ -170,6 +173,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     private final KGlfwCallbacks glfwCallbacks;
     private final IntBuffer pWidth;
     private final IntBuffer pHeight;
+    private final List<KFrameLock> frameLocks;
 
     private long handle;
     private KSize currentSize;
@@ -206,13 +210,13 @@ public class KGlfwFrame extends KObject implements KFrame {
             );
         }
 
-        //glfw.glfwMakeContextCurrent(this.handle);
+        glfw.glfwMakeContextCurrent(this.handle);
         glfw.glfwSwapInterval(1);
 
         this.pHeight = IntBuffer.allocate(1);
         this.pWidth = IntBuffer.allocate(1);
         this.updateSize();
-
+        this.frameLocks = new LinkedList<>();
     }
 
     @Override
@@ -307,5 +311,25 @@ public class KGlfwFrame extends KObject implements KFrame {
                 }
             }
         );
+    }
+
+    @Override
+    public void addLock(final KFrameLock lock) {
+        if (this.frameLocks.contains(lock)) {
+            return;
+        }
+        this.frameLocks.add(lock);
+    }
+
+    @Override
+    public void removeLock(final KFrameLock lock) {
+        this.frameLocks.removeIf(
+            l -> l.id() == lock.id()
+        );
+    }
+
+    @Override
+    public boolean isLocked() {
+        return !this.frameLocks.isEmpty();
     }
 }

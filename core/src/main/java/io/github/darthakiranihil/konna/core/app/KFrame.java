@@ -29,6 +29,14 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 public interface KFrame {
 
     /**
+     * Tick event name. It is used by
+     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to
+     * create the tick event that one should subscribe if its action is required
+     * to be executed in the frame loop (since it is invoked in it).
+     */
+    String TICK_EVENT_NAME = "tick";
+
+    /**
      * Sets frame's title.
      * @param newTitle Title of the frame
      */
@@ -94,5 +102,26 @@ public interface KFrame {
      */
     void pollEvents();
     //void assignToCurrentContext();
+
+    /**
+     * Adds a frame lock to this frame. Should not be called manually since this is
+     * automatically called when obtaining a {@link KFrameLock} object.
+     * @param lock The frame lock
+     */
+    void addLock(KFrameLock lock);
+
+    /**
+     * Removes the lock from this frame. As well as for {@link KFrame#addLock(KFrameLock)},
+     * this method should not be called manually since it is called automatically when releasing
+     * a {@link KFrameLock} object.
+     * @param lock The frame lock to remove
+     */
+    void removeLock(KFrameLock lock);
+
+    /**
+     * Returns flag if the frame has active locks or not.
+     * @return Flag of frame locking state
+     */
+    boolean isLocked();
 
 }

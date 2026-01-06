@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.engine.KMessageToEndpointConverter;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.message.except.KInvalidMessageException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import org.jetbrains.annotations.ApiStatus;
@@ -27,10 +28,46 @@ final class KInternals extends KUninstantiable {
 
     public static final class MessageToRenderableConverter implements KMessageToEndpointConverter {
 
+        private static final String RENDERABLE_KEY = "object";
+
         @Override
         public Object[] convert(final KMessage message) {
-            return new Object[] {new KRenderable.EMPTY()};
+
+            var body = message.body();
+
+            if (!body.containsKey(RENDERABLE_KEY)) {
+                throw new KInvalidMessageException(
+                    "Could not get renderable object from the message"
+                );
+            }
+
+            KRenderable object = body.get(RENDERABLE_KEY, KRenderable.class);
+            return new Object[] {object};
+
         }
+    }
+
+    public static final class MessageToRenderableArrayConverter
+        implements KMessageToEndpointConverter {
+
+        private static final String RENDERABLE_ARRAY_KEY = "objects";
+
+        @Override
+        public Object[] convert(final KMessage message) {
+
+            var body = message.body();
+
+            if (!body.containsKey(RENDERABLE_ARRAY_KEY)) {
+                throw new KInvalidMessageException(
+                    "Could not get renderable object array from the message"
+                );
+            }
+
+            KRenderable[] objects = body.get(RENDERABLE_ARRAY_KEY, KRenderable[].class);
+            return new Object[] {objects};
+
+        }
+
     }
 
 }

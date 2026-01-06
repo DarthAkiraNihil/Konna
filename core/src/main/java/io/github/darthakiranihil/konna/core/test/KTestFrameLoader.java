@@ -14,39 +14,31 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.graphics.glfw;
+package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.object.KTransient;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import org.jetbrains.annotations.TestOnly;
 
 /**
- * GLFW Frame loader.
+ * Implementation of {@link KFrameLoader} to be used only in tests.
+ * Returns a new {@link KTestFrame}.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KTransient(temporal = true)
-@KExcludeFromGeneratedCoverageReport
-public class KGlfwFrameLoader implements KFrameLoader {
+@TestOnly
+public class KTestFrameLoader implements KFrameLoader {
 
     @Override
     public KFrame load(final KEngineContext ctx, final KFrameSpawnOptions spawnOptions) {
 
         ctx
             .getContainer()
-            .add(
-                KFrame.class,
-                KGlfwFrame.class
-            );
+            .add(KFrame.class, KTestFrame.class);
 
-        return ctx.createObject(
-            KGlfwFrame.class,
-            spawnOptions.title(),
-            spawnOptions.size()
-        );
+        return new KTestFrame();
     }
 }

@@ -56,7 +56,15 @@ public class KGraphicsComponentPositiveTests extends KStandardTestClass {
                 ],
                 "components": [
                     "io.github.darthakiranihil.konna.graphics.KGraphicsComponent"
-                ]
+                ],
+                "frame_loader": "io.github.darthakiranihil.konna.core.test.KTestFrameLoader",
+                  "frame_options": {
+                    "size": {
+                        "width": 1000,
+                        "height": 800
+                    },
+                    "title": "Hello, world!"
+                  }
             }""";
 
         KJsonValue parsed;

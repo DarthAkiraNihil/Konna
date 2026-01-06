@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.app;
+package io.github.darthakiranihil.konna.graphics.except;
 
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import org.jspecify.annotations.NullMarked;
+import io.github.darthakiranihil.konna.core.except.KException;
 
-@NullMarked
-public class TestFrameLoader implements KFrameLoader {
+/**
+ * Exception thrown if graphics are in invalid state caused, usually,
+ * by failed initialization, backend errors etc.
+ *
+ * @since 0.1.0
+ * @author Darth AKira Nihil
+ */
+public class KInvalidGraphicsStateException extends KException {
 
-    @Override
-    public KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions) {
-        return new TestFrame();
+    public KInvalidGraphicsStateException(final String message) {
+        super(message);
     }
+
 }

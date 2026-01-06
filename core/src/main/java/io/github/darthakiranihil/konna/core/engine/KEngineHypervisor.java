@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializat
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
+import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
@@ -34,6 +35,8 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -45,6 +48,8 @@ import java.util.*;
  */
 @KContainerModifier
 public class KEngineHypervisor extends KObject {
+
+    private static final float ONE_NANOSEC = 1000000000.0f;
 
     /**
      * Configuration of this hypervisor.
@@ -63,6 +68,8 @@ public class KEngineHypervisor extends KObject {
      */
     protected @Nullable KFrame frame;
 
+    private final KSimpleEvent tick;
+
     /**
      * Constructs hypervisor with provided config.
      * @param config Initialization config of the hypervisor
@@ -79,6 +86,7 @@ public class KEngineHypervisor extends KObject {
 
         this.engineComponents = new HashMap<>();
         this.ctx = null;
+        this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
     }
 
     /**
@@ -92,7 +100,7 @@ public class KEngineHypervisor extends KObject {
 
         KEngineContextLoader contextLoader;
         try {
-            contextLoader = config.contextLoader().getDeclaredConstructor().newInstance();
+            contextLoader = this.config.contextLoader().getDeclaredConstructor().newInstance();
         } catch (
             NoSuchMethodException
             |   InstantiationException
@@ -102,6 +110,8 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx = contextLoader.load(features);
+
+        this.ctx.registerEvent(this.tick);
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -117,6 +127,20 @@ public class KEngineHypervisor extends KObject {
             .add(config.serviceLoader())
             .add(config.componentLoader())
             .add(KFrameLoader.class, config.frameLoader());
+
+        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
+        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
+
+        for (var eventRegisterer: config.eventRegisterers()) {
+            KEventRegisterer registerer = ctx.createObject(eventRegisterer);
+            registerer.registerEvents(ctx);
+        }
+
+        KSystemLogger.info(
+            this.name,
+            "%d event registerers have been executed",
+            config.eventRegisterers().size()
+        );
 
         try {
 
@@ -176,17 +200,6 @@ public class KEngineHypervisor extends KObject {
             config.messageRoutesConfigurers().size()
         );
 
-        for (var eventRegisterer: config.eventRegisterers()) {
-            KEventRegisterer registerer = ctx.createObject(eventRegisterer);
-            registerer.registerEvents(ctx);
-        }
-
-        KSystemLogger.info(
-            this.name,
-            "%d event registerers have been executed",
-            config.eventRegisterers().size()
-        );
-
         engineComponents.values().forEach(KComponent::postInit);
 
         KSystemLogger.info(
@@ -209,9 +222,12 @@ public class KEngineHypervisor extends KObject {
             );
         }
 
+        if (this.frame == null) {
+            throw new KHypervisorInitializationException(
+                "Cannot enter frame loop: frame is null!"
+            );
+        }
 
-        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
-        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
         this.frame.show();
 
         KSystemLogger.info(
@@ -222,12 +238,23 @@ public class KEngineHypervisor extends KObject {
 
         while (!this.frame.shouldClose()) {
 
+            Instant beginTime = Instant.now();
+
+            this.tick.invokeSync();
+
+            while (this.frame.isLocked()) {
+                Thread.onSpinWait();
+            }
             this.frame.swapBuffers();
             this.frame.pollEvents();
+
+            var deltaTime = Duration.between(beginTime, Instant.now());
+            KSystemLogger.debug("hypervisor", "FPS: %f", ONE_NANOSEC / deltaTime.getNano());
 
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
+        this.shutdown();
 
     }
 
@@ -241,11 +268,14 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx.handleShutdown();
+        this.ctx = null;
+
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
 
         if (this.frame != null) {
             this.frame.setShouldClose(true);
+            this.frame = null;
         }
     }
 
