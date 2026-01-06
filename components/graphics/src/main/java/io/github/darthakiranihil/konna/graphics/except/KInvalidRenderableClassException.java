@@ -18,18 +18,17 @@ package io.github.darthakiranihil.konna.graphics.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
-import io.github.darthakiranihil.konna.graphics.service.KRenderService;
 
 /**
  * Exception thrown when an incorrect renderable class is passed to config
- * or {@link KRenderService}
+ * or {@link io.github.darthakiranihil.konna.graphics.service.KRenderService}
  * tries to render unknown object type.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
 public class KInvalidRenderableClassException extends KException {
-    public KInvalidRenderableClassException(String message) {
+    public KInvalidRenderableClassException(final String message) {
         super(message);
     }
 

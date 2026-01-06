@@ -29,7 +29,6 @@ import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Konna Graphics component, used for rendering object on the screen.

@@ -21,11 +21,24 @@ import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Utility object that prevent frame updating when the lock is active.
+ * This object is pollable and its count is limited to {@link KFrameLock#MAX_LOCKS},
+ * since its usage requires maximum caution, as it may highly reduce application's
+ * performance. May be useful for tasks that are required to be finished before the next
+ * frame update.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @KPoolable(
     initialPoolSize = KFrameLock.MAX_LOCKS
 )
 public final class KFrameLock extends KObject {
 
+    /**
+     * Max number of active frame locks.
+     */
     public static final int MAX_LOCKS = 8;
     private @Nullable KFrame frame;
 
@@ -39,9 +52,9 @@ public final class KFrameLock extends KObject {
     }
 
     @KOnPoolableObjectObtain
-    private void lock(@KInject final KFrame frame) {
-        this.frame = frame;
-        frame.addLock(this);
+    private void lock(@KInject final KFrame lockedFrame) {
+        this.frame = lockedFrame;
+        lockedFrame.addLock(this);
     }
 
     @KOnPoolableObjectRelease

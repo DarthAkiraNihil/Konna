@@ -22,6 +22,12 @@ import io.github.darthakiranihil.konna.core.input.KKeyListener;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import org.jetbrains.annotations.TestOnly;
 
+/**
+ * Implementation of {@link KFrame} to be used only in tests.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @TestOnly
 public final class KTestFrame implements KFrame {
 
@@ -34,7 +40,7 @@ public final class KTestFrame implements KFrame {
     }
 
     @Override
-    public void setTitle(String newTitle) {
+    public void setTitle(final String newTitle) {
 
     }
 
@@ -44,7 +50,7 @@ public final class KTestFrame implements KFrame {
     }
 
     @Override
-    public void setSize(KSize newSize) {
+    public void setSize(final KSize newSize) {
 
     }
 
@@ -64,7 +70,7 @@ public final class KTestFrame implements KFrame {
     }
 
     @Override
-    public void addKeyListener(KKeyListener listener) {
+    public void addKeyListener(final KKeyListener listener) {
 
     }
 
@@ -96,22 +102,17 @@ public final class KTestFrame implements KFrame {
     }
 
     @Override
-    public void addLock(KFrameLock lock) {
+    public void addLock(final KFrameLock lock) {
 
     }
 
     @Override
-    public void removeLock(KFrameLock lock) {
+    public void removeLock(final KFrameLock lock) {
 
     }
 
     @Override
     public boolean isLocked() {
         return false;
-    }
-
-    @Override
-    public void initializeContext() {
-
     }
 }

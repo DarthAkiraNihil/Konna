@@ -23,17 +23,13 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
-import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -58,6 +54,8 @@ public class KRenderService extends KObject {
     /**
      * Standard constructor.
      * @param renderFrontend Render frontend to use for rendering objects
+     * @param eventSystem Event system that contain the registered tick event.
+     * @param frame The frame of the current context
      */
     public KRenderService(
         @KInject final KRenderFrontend renderFrontend,

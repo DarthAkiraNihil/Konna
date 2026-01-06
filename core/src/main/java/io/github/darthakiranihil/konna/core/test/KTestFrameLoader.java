@@ -22,11 +22,18 @@ import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import org.jetbrains.annotations.TestOnly;
 
+/**
+ * Implementation of {@link KFrameLoader} to be used only in tests.
+ * Returns a new {@link KTestFrame}.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @TestOnly
 public class KTestFrameLoader implements KFrameLoader {
 
     @Override
-    public KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions) {
+    public KFrame load(final KEngineContext ctx, final KFrameSpawnOptions spawnOptions) {
 
         ctx
             .getContainer()

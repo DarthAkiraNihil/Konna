@@ -63,6 +63,10 @@ public interface KRenderFrontend {
      * @param arc Arc object ro render
      */
     void render(KArc arc);
+
+    /**
+     * Clears the viewport.
+     */
     void clear();
 
     /**
@@ -74,6 +78,9 @@ public interface KRenderFrontend {
      */
     void setViewportSize(KSize size);
 
+    /**
+     * Additionally initializes the frontend. Should not have effect when called twice.
+     */
     void initialize();
 
 }

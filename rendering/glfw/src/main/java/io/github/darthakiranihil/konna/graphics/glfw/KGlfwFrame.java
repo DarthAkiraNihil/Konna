@@ -314,7 +314,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     }
 
     @Override
-    public void addLock(KFrameLock lock) {
+    public void addLock(final KFrameLock lock) {
         if (this.frameLocks.contains(lock)) {
             return;
         }
@@ -322,7 +322,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     }
 
     @Override
-    public void removeLock(KFrameLock lock) {
+    public void removeLock(final KFrameLock lock) {
         this.frameLocks.removeIf(
             l -> l.id() == lock.id()
         );
@@ -331,10 +331,5 @@ public class KGlfwFrame extends KObject implements KFrame {
     @Override
     public boolean isLocked() {
         return !this.frameLocks.isEmpty();
-    }
-
-    @Override
-    public void initializeContext() {
-        this.glfw.glfwMakeContextCurrent(this.handle);
     }
 }

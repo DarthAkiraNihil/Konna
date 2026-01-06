@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 public class KInvalidMessageException extends KException {
-    public KInvalidMessageException(String message) {
+    public KInvalidMessageException(final String message) {
         super(message);
     }
 

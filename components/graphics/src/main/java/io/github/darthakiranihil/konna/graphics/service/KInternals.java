@@ -36,16 +36,19 @@ final class KInternals extends KUninstantiable {
             var body = message.body();
 
             if (!body.containsKey(RENDERABLE_KEY)) {
-                throw new KInvalidMessageException("Could not get renderable object from the message");
+                throw new KInvalidMessageException(
+                    "Could not get renderable object from the message"
+                );
             }
 
             KRenderable object = body.get(RENDERABLE_KEY, KRenderable.class);
-            return new Object[] { object };
+            return new Object[] {object};
 
         }
     }
 
-    public static final class MessageToRenderableArrayConverter implements KMessageToEndpointConverter {
+    public static final class MessageToRenderableArrayConverter
+        implements KMessageToEndpointConverter {
 
         private static final String RENDERABLE_ARRAY_KEY = "objects";
 
@@ -55,11 +58,13 @@ final class KInternals extends KUninstantiable {
             var body = message.body();
 
             if (!body.containsKey(RENDERABLE_ARRAY_KEY)) {
-                throw new KInvalidMessageException("Could not get renderable object array from the message");
+                throw new KInvalidMessageException(
+                    "Could not get renderable object array from the message"
+                );
             }
 
             KRenderable[] objects = body.get(RENDERABLE_ARRAY_KEY, KRenderable[].class);
-            return new Object[] { objects };
+            return new Object[] {objects};
 
         }
 
