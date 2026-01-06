@@ -34,7 +34,8 @@ import java.util.List;
  * Konna Graphics component, used for rendering object on the screen.
  * Provided endpoints:
  * <ul>
- *     <li>RenderService.render</li>
+ *     <li>Graphics.RenderService.render</li>
+ *     <li>Graphics.RenderService.bulkRender</li>
  * </ul>
  *
  * @since 0.1.0

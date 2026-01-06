@@ -19,6 +19,13 @@ package io.github.darthakiranihil.konna.core.message.except;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
+/**
+ * Exception thrown when accepted message does not fit endpoint requirements.
+ * Usually it happens when converting the message into endpoint args.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public class KInvalidMessageException extends KException {
     public KInvalidMessageException(final String message) {
         super(message);
