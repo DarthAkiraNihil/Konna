@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.app;
+package io.github.darthakiranihil.konna.core.test;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameLoader;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import org.jspecify.annotations.NullMarked;
+import org.jetbrains.annotations.TestOnly;
 
-@NullMarked
-public class TestFrameLoader implements KFrameLoader {
+@TestOnly
+public class KTestFrameLoader implements KFrameLoader {
 
     @Override
     public KFrame load(KEngineContext ctx, KFrameSpawnOptions spawnOptions) {
-        return new TestFrame();
+
+        ctx
+            .getContainer()
+            .add(KFrame.class, KTestFrame.class);
+
+        return new KTestFrame();
     }
 }

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class KonnaPositiveTests extends KStandardTestClass {
 
@@ -57,6 +58,9 @@ public class KonnaPositiveTests extends KStandardTestClass {
             Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa")));
             konnaWithCustomArgs.run();
             Assertions.assertNotNull(hypervisorThread.get(konnaWithCustomArgs));
+
+            TimeUnit.SECONDS.sleep(1);
+
             Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithCustomArgs));
 
         } catch (Throwable e) {

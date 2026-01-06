@@ -41,7 +41,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
             "event_queue": "io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue",\
             "components": [\
             "io.github.darthakiranihil.konna.core.engine.TestComponent"\
-            ],"frame_loader": "io.github.darthakiranihil.konna.core.app.TestFrameLoader",
+            ],"frame_loader": "io.github.darthakiranihil.konna.core.test.KTestFrameLoader",
                   "frame_options": {
                     "size": {
                       "width": 1000,

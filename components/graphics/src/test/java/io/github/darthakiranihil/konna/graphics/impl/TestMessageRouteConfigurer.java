@@ -16,64 +16,25 @@
 
 package io.github.darthakiranihil.konna.graphics.impl;
 
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class TestFrame implements KFrame {
+public class TestMessageRouteConfigurer implements KMessageRoutesConfigurer {
 
     @Override
-    public void setTitle(String newTitle) {
+    public void setupRoutes(KMessageSystem messageSystem) {
 
-    }
+        messageSystem.addMessageRoute(
+            "render",
+            "Graphics.RenderService.render"
+        );
 
-    @Override
-    public KSize getSize() {
-        return new KSize(0, 0);
-    }
-
-    @Override
-    public void setSize(KSize newSize) {
-
-    }
-
-    @Override
-    public void setResizable(boolean state) {
-
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void terminate() {
-
-    }
-
-    @Override
-    public boolean shouldClose() {
-        return false;
-    }
-
-    @Override
-    public void setShouldClose(boolean flag) {
-
-    }
-
-    @Override
-    public void swapBuffers() {
-
-    }
-
-    @Override
-    public void pollEvents() {
+        messageSystem.addMessageRoute(
+            "bulkRender",
+            "Graphics.RenderService.bulkRender"
+        );
 
     }
 }
