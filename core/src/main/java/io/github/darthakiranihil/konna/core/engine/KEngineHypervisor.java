@@ -35,6 +35,8 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -230,6 +232,8 @@ public class KEngineHypervisor extends KObject {
 
         while (!this.frame.shouldClose()) {
 
+            Instant beginTime = Instant.now();
+
             this.tick.invokeSync();
 
             while (this.frame.isLocked()) {
@@ -237,6 +241,9 @@ public class KEngineHypervisor extends KObject {
             }
             this.frame.swapBuffers();
             this.frame.pollEvents();
+
+            var deltaTime = Duration.between(beginTime, Instant.now());
+            KSystemLogger.debug("hypervisor", "FPS: %f", 1000000000.0f  / deltaTime.getNano());
 
         }
 

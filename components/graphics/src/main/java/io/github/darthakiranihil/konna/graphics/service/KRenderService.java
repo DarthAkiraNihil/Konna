@@ -49,6 +49,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 )
 public class KRenderService extends KObject {
 
+    private final Object renderLock = new Object();
+
     private final KRenderFrontend renderFrontend;
 
     private final List<KRenderable> currentRenderables;
@@ -66,6 +68,7 @@ public class KRenderService extends KObject {
         this.renderFrontend = renderFrontend;
 
         this.currentRenderables = new CopyOnWriteArrayList<>();
+
 
         KSystemLogger.debug(
             "Graphics.RenderService",
@@ -89,8 +92,12 @@ public class KRenderService extends KObject {
         converter = KInternals.MessageToRenderableConverter.class
     )
     public void render(final KRenderable renderable) {
-        this.currentRenderables.clear();
-        this.currentRenderables.add(renderable);
+
+        synchronized (this.renderLock) {
+            this.currentRenderables.clear();
+            this.currentRenderables.add(renderable);
+        }
+
     }
 
     /**
@@ -102,20 +109,23 @@ public class KRenderService extends KObject {
         converter = KInternals.MessageToRenderableArrayConverter.class
     )
     public void render(final KRenderable[] renderables) {
-        this.currentRenderables.clear();
-        this.currentRenderables.addAll(List.of(renderables));
+
+        synchronized (this.renderLock) {
+            this.currentRenderables.clear();
+            this.currentRenderables.addAll(List.of(renderables));
+        }
     }
 
     private void render() {
+        synchronized (this.renderLock) {
+            this.renderFrontend.clear();
 
-        this.renderFrontend.clear();
+            //KFrameLock lock = this.activator.createObject(KFrameLock.class);
 
-        //KFrameLock lock = this.activator.createObject(KFrameLock.class);
-
-        for (KRenderable renderable: this.currentRenderables) {
-            renderable.render(this.renderFrontend);
+            for (KRenderable renderable : this.currentRenderables) {
+                renderable.render(this.renderFrontend);
+            }
         }
-
         //this.activator.deleteObject(lock);
 
     }

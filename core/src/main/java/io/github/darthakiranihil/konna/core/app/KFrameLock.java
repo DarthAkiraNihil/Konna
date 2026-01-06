@@ -43,11 +43,6 @@ public final class KFrameLock extends KObject {
     private void lock(@KInject final KFrame frame) {
         this.frame = frame;
         frame.addLock(this);
-
-        KSystemLogger.debug(
-            "Frame",
-            "Acquired frame lock"
-        );
     }
 
     @KOnPoolableObjectRelease
@@ -57,11 +52,6 @@ public final class KFrameLock extends KObject {
         }
 
         this.frame.removeLock(this);
-
-        KSystemLogger.debug(
-            "Frame",
-            "Released frame lock"
-        );
     }
 
 }
