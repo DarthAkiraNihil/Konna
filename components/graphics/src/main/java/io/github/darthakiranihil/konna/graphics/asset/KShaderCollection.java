@@ -16,12 +16,20 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
@@ -34,6 +42,45 @@ import java.util.Map;
 public final class KShaderCollection extends KObject implements KAssetCollection<KShader> {
 
     public static final String SHADER_ASSET_TYPE = "Graphics.shader";
+    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
+        SHADER_ASSET_TYPE,
+        new ShaderAssetSchema()
+    );
+
+    private static final class ShaderAssetSchema implements KJsonValidator {
+
+        private final KJsonValidator schema;
+
+        public ShaderAssetSchema() {
+
+            var builder = new KJsonPropertyValidationInfo.Builder();
+
+            this.schema = new KJsonObjectValidator(
+                builder
+                    .withName("type")
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator((v) -> {
+                        String s = v.getString();
+                        try {
+                            KShaderType.fromString(s);
+                        } catch (KInvalidArgumentException e) {
+                            throw new KJsonValidationError(e.getMessage());
+                        }
+                    })
+                    .build(),
+                builder
+                    .withName("source")
+                    .withExpectedType(KJsonValueType.STRING) // todo: value is path
+                    .build()
+            );
+
+        }
+
+        @Override
+        public void validate(KJsonValue value) {
+            this.schema.validate(value);
+        }
+    }
 
     private final Map<String, KShader> loadedShaders;
 

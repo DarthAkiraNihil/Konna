@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
@@ -42,7 +43,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
      * Constructs shader compiler with provided OpenGL 3.3 frontend.
      * @param gl OpenGL 3.3 frontend
      */
-    public KGl33ShaderCompiler(final KGl33 gl) {
+    public KGl33ShaderCompiler(@KInject final KGl33 gl) {
         this.gl = gl;
     }
 
@@ -97,7 +98,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         this.gl.glLinkProgram(program);
 
         IntBuffer status = KBufferUtils.createIntBuffer(1);
-        this.gl.glGetShaderiv(program, KGl33.GL_LINK_STATUS, status);
+        this.gl.glGetProgramiv(program, KGl33.GL_LINK_STATUS, status);
         if (status.get(0) == 0) {
             String log = this.gl.glGetProgramInfoLog(program);
             this.gl.glDeleteProgram(program);

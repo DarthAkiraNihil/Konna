@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 
 /**
  * Record class of Konna Graphics component configuration.
@@ -30,9 +31,13 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
  */
 public record KGraphicsComponentConfig(
     @KJsonSerialized @KJsonCustomName(name = RENDER_FRONTEND_CLASS_KEY)
-    Class<? extends KRenderFrontend> renderFrontendClass
+    Class<? extends KRenderFrontend> renderFrontendClass,
+
+    @KJsonSerialized @KJsonCustomName(name = SHADER_COMPILER_CLASS_KEY)
+    Class<? extends KShaderCompiler> shaderCompilerClass
 ) {
     private static final String RENDER_FRONTEND_CLASS_KEY = "render_frontend";
+    private static final String SHADER_COMPILER_CLASS_KEY = "shader_compiler";
 
     private static final class Schema implements KJsonValidator {
 
@@ -44,6 +49,13 @@ public record KGraphicsComponentConfig(
             this.schema = new KJsonObjectValidator(
                 propInfoBuilder
                     .withName(RENDER_FRONTEND_CLASS_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(SHADER_COMPILER_CLASS_KEY)
                     .withExpectedType(KJsonValueType.STRING)
                     .withValidator(
                         KJsonValueIsClassValidator.INSTANCE

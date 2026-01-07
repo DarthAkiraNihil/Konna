@@ -16,18 +16,20 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
-import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.graphics.shader.KShader;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +37,41 @@ import java.util.Map;
 public final class KShaderProgramCollection extends KObject implements KAssetCollection<KShaderProgram> {
 
     public static final String SHADER_PROGRAM_ASSET_TYPE = "Graphics.shaderProgram";
+    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
+        SHADER_PROGRAM_ASSET_TYPE,
+        new ShaderProgramAssetSchema()
+    );
+
+    private static final class ShaderProgramAssetSchema implements KJsonValidator {
+
+        private final KJsonValidator schema;
+
+        public ShaderProgramAssetSchema() {
+
+            var builder = new KJsonPropertyValidationInfo.Builder();
+
+            this.schema = new KJsonObjectValidator(
+                builder
+                    .withName("vertex")
+                    .withExpectedType(KJsonValueType.STRING)
+                    //.withRequired(false)
+                    //.withDefaultValue(null)
+                    .build(),
+                builder
+                    .withName("fragment")
+                    .withExpectedType(KJsonValueType.STRING)
+                    //.withRequired(false)
+                    //.withDefaultValue(null)
+                    .build()
+            );
+
+        }
+
+        @Override
+        public void validate(KJsonValue value) {
+            this.schema.validate(value);
+        }
+    }
 
     private final Map<String, KShaderProgram> loadedPrograms;
 

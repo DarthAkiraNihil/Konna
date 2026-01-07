@@ -26,7 +26,10 @@ import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.graphics.asset.KShaderCollection;
+import io.github.darthakiranihil.konna.graphics.asset.KShaderProgramCollection;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 
 import java.util.List;
 
@@ -63,7 +66,8 @@ public class KGraphicsComponent extends KComponent {
     @Override
     public List<KPair<String, KJsonValidator>> getAssetSchemas() {
         return List.of(
-            new KPair<>("Graphics.shader", KGraphicsComponentsAssetSchemas.SHADER)
+            KShaderCollection.ASSET_SCHEMA,
+            KShaderProgramCollection.ASSET_SCHEMA
         );
     }
 
@@ -82,6 +86,7 @@ public class KGraphicsComponent extends KComponent {
 
         KContainer container = this.ctx.getContainer();
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
+        container.add(KShaderCompiler.class, deserializedConfig.shaderCompilerClass());
 
     }
 
