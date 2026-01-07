@@ -62,7 +62,9 @@ public class KGraphicsComponent extends KComponent {
 
     @Override
     public List<KPair<String, KJsonValidator>> getAssetSchemas() {
-        return List.of();
+        return List.of(
+            new KPair<>("Graphics.shader", KGraphicsComponentsAssetSchemas.SHADER)
+        );
     }
 
     @Override
