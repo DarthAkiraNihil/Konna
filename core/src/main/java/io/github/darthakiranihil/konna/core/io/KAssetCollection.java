@@ -16,8 +16,24 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
+/**
+ * Interface of simple collection of assets of concrete type. It is supposed to
+ * be used in components for handling internal asset types. However, it is useful
+ * in tunnels to transform assets from one type to another. This interface should not be
+ * used as is, only its implementations.
+ *
+ * @param <T> Asset class type
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public interface KAssetCollection<T> {
 
+    /**
+     * Returns built asset class object by its asset id.
+     * @param assetId Asset id of building object
+     * @return Built asset object of concrete type
+     */
     T getAsset(String assetId);
 
 }

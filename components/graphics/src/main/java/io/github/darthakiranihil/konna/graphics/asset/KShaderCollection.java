@@ -38,10 +38,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Collection of shader assets of type {@link KShaderCollection#SHADER_ASSET_TYPE}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 public final class KShaderCollection extends KObject implements KAssetCollection<KShader> {
 
+    /**
+     * Constant for shader asset type inside Graphics component.
+     */
     public static final String SHADER_ASSET_TYPE = "Graphics.shader";
+    /**
+     * Shader asset type schema.
+     */
     public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
         SHADER_ASSET_TYPE,
         new ShaderAssetSchema()
@@ -88,11 +100,17 @@ public final class KShaderCollection extends KObject implements KAssetCollection
     private final KResourceLoader resourceLoader;
     private final KShaderCompiler shaderCompiler;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader (to load shader asset definition)
+     * @param resourceLoader Resource loader (to read shader source file)
+     * @param shaderCompiler Shader compiler (to compile the shader)
+     */
     public KShaderCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KResourceLoader resourceLoader,
         @KInject final KShaderCompiler shaderCompiler
-        ) {
+    ) {
         this.assetLoader = assetLoader;
         this.resourceLoader = resourceLoader;
         this.shaderCompiler = shaderCompiler;

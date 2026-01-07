@@ -33,10 +33,23 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Collection of shader programs of type
+ * {@link KShaderProgramCollection#SHADER_PROGRAM_ASSET_TYPE}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 public final class KShaderProgramCollection extends KObject implements KAssetCollection<KShaderProgram> {
 
+    /**
+     * Constant for shader program asset type inside Graphics component.
+     */
     public static final String SHADER_PROGRAM_ASSET_TYPE = "Graphics.shaderProgram";
+    /**
+     * Shader program asset type schema.
+     */
     public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
         SHADER_PROGRAM_ASSET_TYPE,
         new ShaderProgramAssetSchema()
@@ -79,6 +92,12 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
     private final KShaderCollection shaderCollection;
     private final KShaderCompiler shaderCompiler;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader (to load shader program definition)
+     * @param shaderCollection Shader collection (to get shaders of the shader program)
+     * @param shaderCompiler Shader compiler (to link shader program from shaders)
+     */
     public KShaderProgramCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KShaderCollection shaderCollection,

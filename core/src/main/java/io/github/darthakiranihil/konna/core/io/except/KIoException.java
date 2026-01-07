@@ -18,6 +18,12 @@ package io.github.darthakiranihil.konna.core.io.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 
+/**
+ * Exception thrown on different IO errors.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public class KIoException extends KException {
 
     public KIoException(String message) {
