@@ -27,8 +27,11 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.graphics.image.KTexture;
+import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,6 +90,7 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
     }
 
     private final Map<String, KShaderProgram> loadedPrograms;
+    private @Nullable KShaderProgram defaultTextureShader;
 
     private final KAssetLoader assetLoader;
     private final KShaderCollection shaderCollection;
@@ -156,5 +160,16 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
         );
 
         return linkedProgram;
+    }
+
+    public KShaderProgram getDefaultTextureShader() {
+        if (this.defaultTextureShader == null) {
+            this.defaultTextureShader = this.shaderCompiler.createShaderProgram(
+                this.shaderCompiler.compileFragmentShader(KTexture.DEFAULT_FRAG_SHADER),
+                this.shaderCompiler.compileVertexShader(KTexture.DEFAULT_VERT_SHADER)
+            );
+        }
+
+        return this.defaultTextureShader;
     }
 }

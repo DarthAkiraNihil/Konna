@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.graphics.render;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
+import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 
@@ -36,39 +38,45 @@ public interface KRenderFrontend {
 
     /**
      * Renders a line.
-     * @param line Line object ro render
+     * @param line Line object to render
      */
     void render(KLine line);
     /**
      * Renders a polyline.
-     * @param polyline Polyline object ro render
+     * @param polyline Polyline object to render
      */
     void render(KPolyline polyline);
     /**
      * Renders a polygon.
-     * @param polygon Polygon object ro render
+     * @param polygon Polygon object to render
      */
     void render(KPolygon polygon);
     /**
      * Renders a rectangle.
-     * @param rectangle Rectangle object ro render
+     * @param rectangle Rectangle object to render
      */
     void render(KRectangle rectangle);
     /**
      * Renders an oval.
-     * @param oval Oval object ro render
+     * @param oval Oval object to render
      */
     void render(KOval oval);
     /**
      * Renders a circle.
-     * @param circle Circle object ro render
+     * @param circle Circle object to render
      */
     void render(KCircle circle);
     /**
      * Renders an arc.
-     * @param arc Arc object ro render
+     * @param arc Arc object to render
      */
     void render(KArc arc);
+
+    /**
+     * Render a texture.
+     * @param texture Texture object to render
+     */
+    void render(KRenderableTexture texture);
 
     /**
      * Clears the viewport.
@@ -91,7 +99,7 @@ public interface KRenderFrontend {
     void setActiveShader(KShaderProgram shader);
 
     /**
-     * Disables currently active shader of this render frotnend.
+     * Disables currently active shader of this render frontend.
      */
     void disableActiveShader();
 
