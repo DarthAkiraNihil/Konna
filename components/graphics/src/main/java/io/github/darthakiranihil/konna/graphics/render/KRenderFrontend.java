@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.render;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 
 /**
@@ -27,6 +28,11 @@ import io.github.darthakiranihil.konna.graphics.shape.*;
  * @author Darth Akira Nihil
  */
 public interface KRenderFrontend {
+
+    /**
+     * Additionally initializes the frontend. Should not have effect when called twice.
+     */
+    void initialize();
 
     /**
      * Renders a line.
@@ -79,8 +85,14 @@ public interface KRenderFrontend {
     void setViewportSize(KSize size);
 
     /**
-     * Additionally initializes the frontend. Should not have effect when called twice.
+     * Sets a shader for this render frontend as active.
+     * @param shader Activated shader
      */
-    void initialize();
+    void setActiveShader(KShaderProgram shader);
+
+    /**
+     * Disables currently active shader of this render frotnend.
+     */
+    void disableActiveShader();
 
 }

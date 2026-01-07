@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 
@@ -297,6 +298,16 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             this.ttl.remove(key);
 
         }
+    }
+
+    @Override
+    public void setActiveShader(KShaderProgram shader) {
+        this.gl.glUseProgram(shader.id());
+    }
+
+    @Override
+    public void disableActiveShader() {
+        this.gl.glUseProgram(0);
     }
 
 }
