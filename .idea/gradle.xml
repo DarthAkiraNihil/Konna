@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/rendering" />
             <option value="$PROJECT_DIR$/rendering/glfw" />
             <option value="$PROJECT_DIR$/rendering/opengl33" />
+            <option value="$PROJECT_DIR$/rendering/stb" />
           </set>
         </option>
       </GradleProjectSettings>
