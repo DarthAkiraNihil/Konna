@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
 
 import java.util.Arrays;
@@ -28,10 +27,62 @@ import java.util.Objects;
 
 public class KRenderableTexture extends KAbstractShape {
 
+    private static final KVector2f[] DEFAULT_UV = new KVector2f[] {
+        new KVector2f(0.0f, 0.0f),
+        new KVector2f(1.0f, 0.0f),
+        new KVector2f(1.0f, 1.0f),
+        new KVector2f(0.0f, 1.0f),
+    };
+
+    private static final KColor[] ALL_WHITES = new KColor[] {
+        KColor.WHITE,
+        KColor.WHITE,
+        KColor.WHITE,
+        KColor.WHITE,
+    };
+
     private final KVector2f[] uv;
     private final KVector2i[] xy;
     private final KColor[] colors;
     private final KTexture texture;
+
+    public static KRenderableTexture wrapIntoRectangle(final KVector2i leftTopCorner, final KTexture texture) {
+
+        KImage sourceImage = texture.attachedImage();
+        KVector2i[] xy = new KVector2i[] {
+            new KVector2i(leftTopCorner.x(), leftTopCorner.y()),
+            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y()),
+            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y() + sourceImage.height()),
+            new KVector2i(leftTopCorner.x(), leftTopCorner.y() + sourceImage.height()),
+        };
+
+        return new KRenderableTexture(
+            DEFAULT_UV,
+            xy,
+            ALL_WHITES,
+            texture
+        );
+
+    }
+
+    public static KRenderableTexture wrapIntoRectangle(final KVector2i leftTopCorner, final KTexture texture, final KColor[] colors) {
+
+        KImage sourceImage = texture.attachedImage();
+        KVector2i[] xy = new KVector2i[] {
+            new KVector2i(leftTopCorner.x(), leftTopCorner.y()),
+            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y()),
+            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y() + sourceImage.height()),
+            new KVector2i(leftTopCorner.x(), leftTopCorner.y() + sourceImage.height()),
+        };
+
+        return new KRenderableTexture(
+            DEFAULT_UV,
+            xy,
+            colors,
+            texture
+        );
+
+    }
 
     public KRenderableTexture(
         KVector2f[] uv,
