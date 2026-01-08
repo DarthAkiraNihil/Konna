@@ -26,25 +26,6 @@ import org.jspecify.annotations.Nullable;
 
 public class KTexture {
 
-    public static final String U_TEXTURE = "u_texture";
-    public static final String U_PROJ_VIEW = "u_projView";
-
-    public static final String ATTR_COLOR = "a_color";
-    public static final String ATTR_POSITION = "a_position";
-    public static final String ATTR_TEX_COORD = "a_tex_coord";
-
-    public static final String DEFAULT_VERT_SHADER = "uniform mat4 " + U_PROJ_VIEW + ";\n"
-        + "attribute vec4 " + ATTR_COLOR + ";\n" + "attribute vec2 " + ATTR_TEX_COORD + ";\n"
-        + "attribute vec2 " + ATTR_POSITION + ";\n" + "varying vec4 vColor;\n"
-        + "varying vec2 vTexCoord; \n" + "void main() {\n" + "	vColor = " + ATTR_COLOR + ";\n"
-        + "	vTexCoord = " + ATTR_TEX_COORD + ";\n" + "	gl_Position = " + U_PROJ_VIEW
-        + " * vec4(" + ATTR_POSITION + ".xy, 0.0, 1.0);\n" + "}";
-
-    public static final String DEFAULT_FRAG_SHADER = "uniform sampler2D " + U_TEXTURE + ";\n"
-        + "varying vec4 vColor;\n" + "varying vec2 vTexCoord;\n" + "void main() {\n"
-        + "	vec4 texColor = texture2D(" + U_TEXTURE + ", vTexCoord);\n"
-        + "	gl_FragColor = vColor * texColor;\n" + "}";
-
     private final KColor color;
 
     private KImage attachedImage;

@@ -22,6 +22,9 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class KRenderableTexture extends KAbstractShape {
 
     private final KVector2f[] uv;
@@ -46,6 +49,10 @@ public class KRenderableTexture extends KAbstractShape {
         return this.uv;
     }
 
+    public KTexture texture() {
+        return this.texture;
+    }
+
     @Override
     public void render(KRenderFrontend rf) {
         KShaderProgram textureShader = this.texture.getShader();
@@ -55,5 +62,19 @@ public class KRenderableTexture extends KAbstractShape {
 
         rf.render(this);
         rf.disableActiveShader();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        KRenderableTexture that = (KRenderableTexture) o;
+        return Objects.deepEquals(this.uv, that.uv) && Objects.deepEquals(this.xy, that.xy) && Objects.equals(this.texture, that.texture);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(this.uv), Arrays.hashCode(this.xy), this.texture);
     }
 }

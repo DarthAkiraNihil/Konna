@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 public class KImage implements KCopyable<KImage> {
 
@@ -91,6 +92,23 @@ public class KImage implements KCopyable<KImage> {
         ByteBuffer copied = KBufferUtils.createByteBuffer(this.width * this.height * COLOR_COMPONENTS_COUNT);
         copied.put(this.rawImageData);
         return new KImage(copied, this.width, this.height);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        KImage kImage = (KImage) o;
+        return
+                this.width == kImage.width
+            &&  this.height == kImage.height
+            &&  Objects.equals(this.rawImageData, kImage.rawImageData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.rawImageData, this.width, this.height);
     }
 
     // todo: make a filter

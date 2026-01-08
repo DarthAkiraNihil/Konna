@@ -163,13 +163,6 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
     }
 
     public KShaderProgram getDefaultTextureShader() {
-        if (this.defaultTextureShader == null) {
-            this.defaultTextureShader = this.shaderCompiler.createShaderProgram(
-                this.shaderCompiler.compileFragmentShader(KTexture.DEFAULT_FRAG_SHADER),
-                this.shaderCompiler.compileVertexShader(KTexture.DEFAULT_VERT_SHADER)
-            );
-        }
-
-        return this.defaultTextureShader;
+        return this.shaderCompiler.getDefaultTextureShader();
     }
 }

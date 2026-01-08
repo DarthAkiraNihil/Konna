@@ -62,4 +62,6 @@ public interface KShaderCompiler {
      */
     KShaderProgram createShaderProgram(KShader shader);
 
+    KShaderProgram getDefaultTextureShader();
+
 }

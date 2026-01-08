@@ -22,6 +22,9 @@ import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.KTransform;
+import io.github.darthakiranihil.konna.graphics.image.KImage;
+import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
+import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -44,7 +47,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
     private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
-    private static final int DEFAULT_TTL = 512;
 
     /**
      * Default side of viewport size.
@@ -56,9 +58,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     private boolean initialized;
 
     private final KBufferMaker bufferMaker;
+    private final KTextureMaker textureMaker;
 
-    private final Map<KPair<Class<? extends KRenderable>, Integer>, KBufferMaker.BufferInfo> cache;
-    private final Map<KPair<Class<? extends KRenderable>, Integer>, Integer> ttl;
 
     /**
      * Constructs render frontend with provided OpenGL 3.3
@@ -69,9 +70,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
-        this.cache = new ConcurrentHashMap<>();
-        this.ttl = new ConcurrentHashMap<>();
-
+        this.textureMaker = new KTextureMaker(this.gl);
         this.bufferMaker = new KBufferMaker(this.gl);
     }
 
@@ -79,6 +78,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     public void setViewportSize(final KSize size) {
         this.viewportSize = size;
         this.bufferMaker.setViewportSize(size);
+        this.textureMaker.setViewportSize(size);
     }
 
     @Override
@@ -88,20 +88,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(final KPolygon polygon) {
-
-        int hash = KRenderableHasher.hash(polygon);
-        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KPolygon.class, hash);
-        if (!this.cache.containsKey(key)) {
-            this.cache.put(
-                key,
-                this.bufferMaker.make(polygon)
-            );
-        }
-
-        this.ttl.put(key, DEFAULT_TTL);
-        KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(
-            info,
+            this.bufferMaker.make(polygon),
             polygon,
             polygon.getFillColor(),
             polygon.getOutlineColor(),
@@ -113,50 +101,18 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(final KLine line) {
-
-        int hash = KRenderableHasher.hash(line);
-        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KLine.class, hash);
-        if (!this.cache.containsKey(key)) {
-            this.cache.put(
-                key,
-                this.bufferMaker.make(line)
-            );
-        }
-        this.ttl.put(key, DEFAULT_TTL);
-        KBufferMaker.BufferInfo info = this.cache.get(key);
-        this.render(info, line, line.getColor(), 2);
+        this.render(this.bufferMaker.make(line), line, line.getColor(), 2);
     }
 
     @Override
     public void render(final KPolyline polyline) {
-        int hash = KRenderableHasher.hash(polyline);
-        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KPolyline.class, hash);
-        if (!this.cache.containsKey(key)) {
-            this.cache.put(
-                key,
-                this.bufferMaker.make(polyline)
-            );
-        }
-        this.ttl.put(key, DEFAULT_TTL);
-        KBufferMaker.BufferInfo info = this.cache.get(key);
-        this.render(info, polyline, polyline.getColor(), polyline.points().length);
+        this.render(this.bufferMaker.make(polyline), polyline, polyline.getColor(), polyline.points().length);
     }
 
     @Override
     public void render(final KOval oval) {
-        int hash = KRenderableHasher.hash(oval);
-        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KOval.class, hash);
-        if (!this.cache.containsKey(key)) {
-            this.cache.put(
-                key,
-                this.bufferMaker.make(oval, CIRCLE_DISCRETIZATION_POINTS)
-            );
-        }
-
-        this.ttl.put(key, DEFAULT_TTL);
-        KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(
-            info,
+            this.bufferMaker.make(oval),
             oval,
             oval.getFillColor(),
             oval.getOutlineColor(),
@@ -172,19 +128,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(final KArc arc) {
-        int hash = KRenderableHasher.hash(arc);
-        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(KArc.class, hash);
-        if (!this.cache.containsKey(key)) {
-            this.cache.put(
-                key,
-                this.bufferMaker.make(arc, CIRCLE_DISCRETIZATION_POINTS)
-            );
-        }
-
-        this.ttl.put(key, DEFAULT_TTL);
-        KBufferMaker.BufferInfo info = this.cache.get(key);
         this.render(
-            info,
+            this.bufferMaker.make(arc),
             arc,
             arc.getFillColor(),
             arc.getOutlineColor(),
@@ -205,6 +150,10 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         }
 
         this.gl.createCapabilities();
+
+        this.gl.glEnable(KGl33.GL_BLEND);
+        this.gl.glBlendFunc(KGl33.GL_SRC_ALPHA, KGl33.GL_ONE_MINUS_SRC_ALPHA);
+
         this.initialized = true;
     }
 
@@ -281,25 +230,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     }
 
-    private void updateTtl() {
-        this.ttl.replaceAll((k, v) -> v - 1);
-
-        var entrySet = this.ttl.entrySet();
-        for (var entry: entrySet) {
-            if (entry.getValue() > 0) {
-                continue;
-            }
-
-            var key = entry.getKey();
-            KBufferMaker.BufferInfo info = this.cache.get(key);
-
-            info.free(this.gl);
-            this.cache.remove(key);
-            this.ttl.remove(key);
-
-        }
-    }
-
     @Override
     public void setActiveShader(KShaderProgram shader) {
         this.gl.glUseProgram(shader.id());
@@ -310,4 +240,140 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glUseProgram(0);
     }
 
+    @Override
+    public void render(KRenderableTexture texture) {
+
+//        KTexture src = texture.texture();
+//
+//        int tex = this.gl.glGenTextures();
+//        this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
+//        this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
+//
+//        KImage attachedImage = src.getAttachedImage();
+//        this.gl.glTexImage2D(
+//            KGl33.GL_TEXTURE_2D,
+//            0,
+//            KGl33.GL_RGBA,
+//            attachedImage.width(),
+//            attachedImage.height(),
+//            0,
+//            KGl33.GL_RGBA,
+//            KGl33.GL_UNSIGNED_BYTE,
+//            attachedImage.rawData()
+//        );
+//        this.gl.glGenerateMipmap(KGl33.GL_TEXTURE_2D);
+//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_S, KGl33.GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_T, KGl33.GL_REPEAT);
+//        // set texture filtering parameters
+//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MIN_FILTER, KGl33.GL_LINEAR_MIPMAP_LINEAR);
+//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MAG_FILTER, KGl33.GL_LINEAR);
+//
+//
+//        KVector2i[] verts = texture.xy();
+//        KVector2f[] uvs = texture.uv();
+//        FloatBuffer vertices = KBufferUtils.createFloatBuffer(32); // TODO: remove hardcode
+//        IntBuffer indices = KBufferUtils.createIntBuffer(6);
+//        indices.put(0).put(1).put(3).put(1).put(2).put(3);
+//
+//        for (int i = 0; i < verts.length; i++) {
+//            KVector2f glPoint = this.plainToGl(verts[i]);
+//
+//            vertices
+//                .put(glPoint.x())
+//                .put(glPoint.y())
+//                .put(src.color().normalized())
+//                .put(uvs[i].x())
+//                .put(uvs[i].y());
+//
+//        }
+//        vertices.flip();
+//        indices.flip();
+//        int vao = this.gl.glGenVertexArrays();
+//        int vbo = this.gl.glGenBuffers();
+//        int ebo = this.gl.glGenBuffers();
+//
+//        this.gl.glBindVertexArray(vao);
+//
+//        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
+//        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, vertices, KGl33.GL_STATIC_DRAW);
+//
+//        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ebo);
+//        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indices, KGl33.GL_STATIC_DRAW);
+//
+//        int stride = Float.BYTES * 8;
+//
+//        this.gl.glVertexAttribPointer(0, 2, KGl33.GL_FLOAT, false, stride, 0);
+//        this.gl.glEnableVertexAttribArray(0);
+//
+//        this.gl.glVertexAttribPointer(1, 4, KGl33.GL_FLOAT, false, stride, 2 * Float.BYTES);
+//        this.gl.glEnableVertexAttribArray(1);
+//
+//        this.gl.glVertexAttribPointer(2, 2, KGl33.GL_FLOAT, false, stride, 6 * Float.BYTES);
+//        this.gl.glEnableVertexAttribArray(2);
+//        //vertices.flip();
+//        this.gl.glUniform1i(
+//            this.gl.glGetUniformLocation(src.getShader().id(), "ourTexture"), 0
+//        );
+//        this.gl.glBindVertexArray(vao);
+//        this.gl.glDrawElements(KGl33.GL_TRIANGLES, 6, KGl33.GL_UNSIGNED_INT, 0L);
+//
+//        this.gl.glDisableVertexAttribArray(0);
+//        this.gl.glDisableVertexAttribArray(1);
+//        this.gl.glDisableVertexAttribArray(2);
+//
+//        this.gl.glDeleteBuffers(vbo);
+//        this.gl.glDeleteBuffers(ebo);
+//        this.gl.glDeleteVertexArrays(vao);
+//        this.gl.glDeleteTextures(tex);
+
+        KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
+        KTexture sourceTexture = texture.texture();
+
+        this.gl.glBindVertexArray(textureInfo.vao());
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, textureInfo.vbo());
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, textureInfo.ebo());
+
+        int stride = Float.BYTES * KTextureMaker.TEXTURE_ELEMENTS_COUNT;
+
+        this.gl.glVertexAttribPointer(0, 2, KGl33.GL_FLOAT, false, stride, 0);
+        this.gl.glEnableVertexAttribArray(0);
+
+        this.gl.glVertexAttribPointer(1, 4, KGl33.GL_FLOAT, false, stride, 2 * Float.BYTES);
+        this.gl.glEnableVertexAttribArray(1);
+
+        this.gl.glVertexAttribPointer(2, 2, KGl33.GL_FLOAT, false, stride, 6 * Float.BYTES);
+        this.gl.glEnableVertexAttribArray(2);
+
+        this.gl.glUniform1i(
+            this.gl.glGetUniformLocation(sourceTexture.getShader().id(), "ourTexture"), 0
+        );
+
+        this.gl.glBindVertexArray(textureInfo.vao());
+        this.gl.glDrawElements(
+            KGl33.GL_TRIANGLES,
+            6,
+            KGl33.GL_UNSIGNED_INT,
+            0L
+        );
+
+        this.gl.glDisableVertexAttribArray(0);
+        this.gl.glDisableVertexAttribArray(1);
+        this.gl.glDisableVertexAttribArray(2);
+
+        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
+        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    }
+
+    private void updateTtl() {
+        this.textureMaker.updateTtl();
+        this.bufferMaker.updateTtl();
+    }
+
+    private KVector2f plainToGl(final KVector2i v) {
+        float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
+        float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
+
+        return new KVector2f(x, y);
+    }
 }

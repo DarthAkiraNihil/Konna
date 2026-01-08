@@ -16,17 +16,19 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
-import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
+import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ApiStatus.Internal
 @KExcludeFromGeneratedCoverageReport
@@ -41,7 +43,11 @@ final class KBufferMaker {
             gl.glDeleteBuffers(vbo);
             gl.glDeleteBuffers(ibo);
         }
+
     }
+
+    private final Map<KPair<Class<? extends KRenderable>, Integer>, KBufferMaker.BufferInfo> cache;
+    private final Map<KPair<Class<? extends KRenderable>, Integer>, Integer> ttl;
 
     private final KGl33 gl;
     private KSize viewportSize;
@@ -49,13 +55,68 @@ final class KBufferMaker {
     KBufferMaker(final KGl33 gl) {
         this.gl = gl;
         this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
+
+        this.cache = new ConcurrentHashMap<>();
+        this.ttl = new ConcurrentHashMap<>();
     }
 
     public void setViewportSize(final KSize newSize) {
         this.viewportSize = newSize;
     }
 
-    public BufferInfo make(final KPolygon polygon) {
+    public BufferInfo make(final KRenderable renderable) {
+
+        int hash = KRenderableHasher.hash(renderable);
+        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(renderable.getClass(), hash);
+
+        if (!this.cache.containsKey(key)) {
+            BufferInfo bufferInfo = switch (renderable) {
+                case KArc a -> this.make(a);
+                case KLine l -> this.make(l);
+                case KOval o -> this.make(o);
+                case KPolygon p -> this.make(p);
+                case KPolyline p -> this.make(p);
+                case KRenderableTexture tex -> this.make(tex);
+                default -> throw new KInvalidArgumentException(
+                    String.format(
+                        "Cannot create buffer for renderable object of class %s",
+                        renderable.getClass()
+                    )
+                );
+            };
+
+            this.cache.put(
+                key,
+                bufferInfo
+            );
+        }
+
+        this.ttl.put(key, KInternals.DEFAULT_TTL);
+        return this.cache.get(key);
+    }
+
+    public void updateTtl() {
+
+        this.ttl.replaceAll((k, v) -> v - 1);
+
+        var entrySet = this.ttl.entrySet();
+        for (var entry: entrySet) {
+            if (entry.getValue() > 0) {
+                continue;
+            }
+
+            var key = entry.getKey();
+            KBufferMaker.BufferInfo info = this.cache.get(key);
+
+            info.free(this.gl);
+            this.cache.remove(key);
+            this.ttl.remove(key);
+
+        }
+
+    }
+
+    private BufferInfo make(final KPolygon polygon) {
 
         KVector2i[] points = polygon.points();
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(points.length * 2);
@@ -74,7 +135,7 @@ final class KBufferMaker {
         return this.createBuffer(pointBuffer, indicesBuffer);
     }
 
-    public BufferInfo make(final KArc arc, int circleDiscretizationPoints) {
+    private BufferInfo make(final KArc arc, int circleDiscretizationPoints) {
 
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(circleDiscretizationPoints * 2);
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(circleDiscretizationPoints);
@@ -102,7 +163,7 @@ final class KBufferMaker {
         return this.createBuffer(pointBuffer, indicesBuffer);
     }
 
-    public BufferInfo make(final KLine line) {
+    private BufferInfo make(final KLine line) {
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(4); // 2 points with 2 coordinates
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(2);
 
@@ -122,7 +183,7 @@ final class KBufferMaker {
         return this.createBuffer(pointBuffer, indicesBuffer);
     }
 
-    public BufferInfo make(final KPolyline polyline) {
+    private BufferInfo make(final KPolyline polyline) {
         KVector2i[] points = polyline.points();
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(points.length * 2);
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(points.length);
@@ -140,7 +201,7 @@ final class KBufferMaker {
         return this.createBuffer(pointBuffer, indicesBuffer);
     }
 
-    public BufferInfo make(final KOval oval, int circleDiscretizationPoints) {
+    private BufferInfo make(final KOval oval, int circleDiscretizationPoints) {
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(circleDiscretizationPoints * 2);
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(circleDiscretizationPoints);
 

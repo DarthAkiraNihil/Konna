@@ -19,12 +19,14 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
+import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 import io.github.darthakiranihil.konna.graphics.shader.except.KShaderCompilationException;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.IntBuffer;
 
@@ -37,7 +39,40 @@ import java.nio.IntBuffer;
  */
 public final class KGl33ShaderCompiler extends KObject implements KShaderCompiler {
 
+    public static final String DEFAULT_TEXTURE_FRAGMENT_SHADER = """
+        #version 330 core
+        out vec4 FragColor;
+        \s
+        in vec3 ourColor;
+        in vec2 TexCoord;
+        \s
+        uniform sampler2D ourTexture;
+        \s
+        void main()
+        {
+            FragColor = texture(ourTexture, TexCoord);
+        }
+    """;
+
+    public static final String DEFAULT_TEXTURE_VERTEX_SHADER = """
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec3 aColor;
+        layout (location = 2) in vec2 aTexCoord;
+        \s
+        out vec3 ourColor;
+        out vec2 TexCoord;
+        \s
+        void main()
+        {
+            gl_Position = vec4(aPos, 1.0);
+            ourColor = aColor;
+            TexCoord = aTexCoord;
+        }
+    """;
+
     private final KGl33 gl;
+    private @Nullable KShaderProgram defaultTextureShader;
 
     /**
      * Constructs shader compiler with provided OpenGL 3.3 frontend.
@@ -116,4 +151,15 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         return new KGl33ShaderProgram(program, this.gl);
     }
 
+    @Override
+    public KShaderProgram getDefaultTextureShader() {
+        if (this.defaultTextureShader == null) {
+            this.defaultTextureShader = this.createShaderProgram(
+                this.compileFragmentShader(DEFAULT_TEXTURE_FRAGMENT_SHADER),
+                this.compileVertexShader(DEFAULT_TEXTURE_VERTEX_SHADER)
+            );
+        }
+
+        return this.defaultTextureShader;
+    }
 }
