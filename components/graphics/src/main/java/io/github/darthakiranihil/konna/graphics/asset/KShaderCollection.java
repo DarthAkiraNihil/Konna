@@ -74,7 +74,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
                     .withValidator((v) -> {
                         String s = v.getString();
                         try {
-                            KShaderType.fromString(s);
+                            KShaderType.valueOf(s);
                         } catch (KInvalidArgumentException e) {
                             throw new KJsonValidationError(e.getMessage());
                         }
@@ -151,7 +151,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
                 );
             }
 
-            KShaderType shaderType = KShaderType.fromString(rawType);
+            KShaderType shaderType = KShaderType.valueOf(rawType);
             KShader compiledShader = this.shaderCompiler.compileShader(
                 shaderSource.string(), shaderType
             );

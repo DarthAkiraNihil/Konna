@@ -14,27 +14,38 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.graphics.shader;
+package io.github.darthakiranihil.konna.graphics.image;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 
 /**
- * Enumeration for all supported shader types.
+ * Enumeration representing different modes of texture wrapping.
+ * Their applying depends on
+ * {@link io.github.darthakiranihil.konna.graphics.render.KRenderFrontend}
+ * implementation.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public enum KShaderType {
+public enum KTextureWrapping {
 
     /**
-     * Fragment shader.
+     * Repeats the mirrored texture.
      */
-    FRAGMENT,
+    MIRRORED_REPEAT,
     /**
-     * Vertex shader.
+     * Repeats edge pixels of the texture.
      */
-    VERTEX;
+    CLAMP_TO_EDGE,
+    /**
+     * Does nothing (no texel will be produced).
+     */
+    CLAMP_TO_BORDER,
+    /**
+     * Repeats the texture.
+     */
+    REPEAT;
 
     /**
      * Json validator for this type.
@@ -43,7 +54,7 @@ public enum KShaderType {
         String s = v.getString();
 
         try {
-            KShaderType.valueOf(s);
+            KTextureWrapping.valueOf(s);
         } catch (IllegalArgumentException e) {
             throw new KJsonValidationError(e.getMessage());
         }

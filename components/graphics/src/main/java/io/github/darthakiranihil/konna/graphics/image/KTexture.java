@@ -29,9 +29,11 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
  */
 public record KTexture(
     KImage attachedImage,
-    KShaderProgram shader
+    KShaderProgram shader,
+    KTextureFiltering minFilter,
+    KTextureFiltering magFilter,
+    KTextureWrapping uWrapping,
+    KTextureWrapping vWrapping
 ) {
-
-
 
 }

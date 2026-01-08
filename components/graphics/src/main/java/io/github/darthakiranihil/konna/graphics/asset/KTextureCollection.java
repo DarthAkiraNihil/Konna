@@ -30,9 +30,7 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.graphics.image.KImage;
-import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
-import io.github.darthakiranihil.konna.graphics.image.KTexture;
+import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 import java.util.HashMap;
@@ -77,6 +75,60 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
                     .withExpectedType(KJsonValueType.STRING)
                     .withRequired(false)
                     .withDefaultValue("default")
+                    .build(),
+                builder
+                    .withName("wrapping")
+                    .withExpectedType(KJsonValueType.OBJECT)
+                    .withRequired(false)
+                    .withDefaultValue(
+                        Map.of(
+                            "u", KJsonValue.fromString("REPEAT"),
+                            "v", KJsonValue.fromString("REPEAT")
+                        )
+                    )
+                    .withValidator(
+                        new KJsonObjectValidator(
+                            builder
+                                .createSeparated()
+                                .withName("u")
+                                .withExpectedType(KJsonValueType.STRING)
+                                .withValidator(KTextureWrapping.VALIDATOR)
+                                .build(),
+                            builder
+                                .createSeparated()
+                                .withName("v")
+                                .withExpectedType(KJsonValueType.STRING)
+                                .withValidator(KTextureWrapping.VALIDATOR)
+                                .build()
+                        )
+                    )
+                    .build(),
+                builder
+                    .withName("filtering")
+                    .withExpectedType(KJsonValueType.OBJECT)
+                    .withRequired(false)
+                    .withDefaultValue(
+                        Map.of(
+                            "min", KJsonValue.fromString("MIPMAP_LINEAR_LINEAR"),
+                            "mag", KJsonValue.fromString("LINEAR")
+                        )
+                    )
+                    .withValidator(
+                        new KJsonObjectValidator(
+                            builder
+                                .createSeparated()
+                                .withName("min")
+                                .withExpectedType(KJsonValueType.STRING)
+                                .withValidator(KTextureFiltering.VALIDATOR)
+                                .build(),
+                            builder
+                                .createSeparated()
+                                .withName("mag")
+                                .withExpectedType(KJsonValueType.STRING)
+                                .withValidator(KTextureFiltering.VALIDATOR)
+                                .build()
+                        )
+                    )
                     .build()
             );
 
@@ -144,10 +196,23 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         KImage image = this.imageLoader.load(imageFile);
 
+        KAssetDefinition filtering = textureDefinition.getSubdefinition("filtering");
+        KAssetDefinition wrapping = textureDefinition.getSubdefinition("wrapping");
+
+        KTextureFiltering minFilter = KTextureFiltering.valueOf(filtering.getString("min"));
+        KTextureFiltering magFilter = KTextureFiltering.valueOf(filtering.getString("mag"));
+        KTextureWrapping uWrapping = KTextureWrapping.valueOf(wrapping.getString("u"));
+        KTextureWrapping vWrapping = KTextureWrapping.valueOf(wrapping.getString("v"));
+
         KTexture texture = new KTexture(
             image,
-            textureShader
+            textureShader,
+            minFilter,
+            magFilter,
+            uWrapping,
+            vWrapping
         );
+
         this.loadedTextures.put(assetId, texture);
         return texture;
     }
