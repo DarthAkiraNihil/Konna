@@ -133,9 +133,10 @@ final class KTextureMaker {
         KVector2f[] uvs = texture.uv();
 
         FloatBuffer verticesBuffer = KBufferUtils.createFloatBuffer(vertices.length * TEXTURE_ELEMENTS_COUNT);
-        IntBuffer indices = KBufferUtils.createIntBuffer(6);
-        // TODO: triangulation (fuck)
-        indices.put(0).put(1).put(3).put(1).put(2).put(3);
+
+        int[] triangulatedIndices = KGeometryUtils.getTriangulatedVerticesIndices(vertices);
+        IntBuffer indices = KBufferUtils.createIntBuffer(triangulatedIndices.length);
+        indices.put(triangulatedIndices);
 
         for (int i = 0; i < vertices.length; i++) {
             KVector2f glPoint = this.plainToGl(vertices[i]);
@@ -146,9 +147,6 @@ final class KTextureMaker {
                 .put(sourceTexture.color().normalized())
                 .put(uvs[i].x())
                 .put(uvs[i].y());
-            //indices.put(i);
-            //indices.put(i);
-
         }
 
         verticesBuffer.flip();
