@@ -397,7 +397,9 @@ public final class KStandardActivator extends KObject implements KActivator {
 
         try {
             return (T) constructor.newInstance(parameters);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (InvocationTargetException e) {
+            throw new KInstantiationException(clazz, e.getTargetException());
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new KInstantiationException(clazz, e);
         }
     }

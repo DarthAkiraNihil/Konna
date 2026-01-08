@@ -39,6 +39,7 @@ public record KTag(String name) {
         public static final KTag SYSTEM = new KTag("system");
         /**
          * Marks that the object is a service of an engine component.
+         * @since 0.2.0
          */
         public static final KTag SERVICE = new KTag("service");
         /**
@@ -92,5 +93,11 @@ public record KTag(String name) {
          * @see io.github.darthakiranihil.konna.core.message.KSimpleEvent
          */
         public static final KTag EVENT = new KTag("event");
+        /**
+         * Marks the object is an asset collection.
+         * @see io.github.darthakiranihil.konna.core.io.KAssetCollection
+         * @since 0.3.0
+         */
+        public static final KTag ASSET_COLLECTION = new KTag("asset_collection");
     }
 }

@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    testImplementation project(":backend:backend-lwjgl")
+    testImplementation project(":libfrontend:libfrontend-stbimage")
+    testImplementation project(":rendering:stb")
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }

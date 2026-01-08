@@ -1,0 +1,8 @@
+{
+  "sp1": {
+    "Graphics.shaderProgram": {
+      "vertex": "vs1",
+      "fragment": "fs1"
+    }
+  }
+}

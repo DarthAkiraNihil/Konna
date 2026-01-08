@@ -120,7 +120,7 @@ public class KClasspathResource implements KResource {
                     throw new KResourceException(e);
                 }
             })
-            .collect(Collectors.joining());
+            .collect(Collectors.joining("\n"));
         return this.cachedStringContent;
     }
 

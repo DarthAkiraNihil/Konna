@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
+import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -51,6 +53,26 @@ final class KRenderableHasher extends KUninstantiable {
 
     public static int hash(final KPolyline polyline) {
         return Objects.hash(Arrays.hashCode(polyline.points()));
+    }
+
+    public static int hash(final KRenderableTexture texture) {
+        return Objects.hash(
+            Arrays.hashCode(texture.uv()),
+            Arrays.hashCode(texture.xy()),
+            texture.texture()
+        );
+    }
+
+    public static int hash(final KRenderable renderable) {
+        return switch (renderable) {
+            case KArc a -> hash(a);
+            case KLine l -> hash(l);
+            case KOval o -> hash(o);
+            case KPolygon p -> hash(p);
+            case KPolyline p -> hash(p);
+            case KRenderableTexture tex -> hash(tex);
+            default -> Objects.hash(renderable);
+        };
     }
 
 }

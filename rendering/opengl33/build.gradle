@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation project(":libfrontend:libfrontend-opengl")
     implementation project(":components:graphics")
+    implementation 'org.orbisgis:poly2tri-core:0.1.2'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
