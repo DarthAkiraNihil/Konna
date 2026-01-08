@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -165,11 +166,18 @@ public final class Konna extends KObject implements Runnable {
         this.running = true;
         this.hypervisorThread = new Thread(
             () -> {
-                this.hypervisor.launch(features);
-                this.hypervisor.frameLoop();
+                try {
+                    this.hypervisor.launch(features);
+                    this.hypervisor.frameLoop();
+                } catch (Throwable e) {
+                    KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
+                    KSystemLogger.fatal(this.name, e);
+                    this.hypervisor.shutdown();
+                }
             }
         );
 
+        this.hypervisorThread.setName("konna_hypervisor_thread");
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
         this.hypervisorThread.start();
     }
