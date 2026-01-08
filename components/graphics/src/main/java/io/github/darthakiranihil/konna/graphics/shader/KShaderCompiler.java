@@ -62,6 +62,10 @@ public interface KShaderCompiler {
      */
     KShaderProgram createShaderProgram(KShader shader);
 
+    /**
+     * Returns default texture shader of this compiler.
+     * @return Default texture shader
+     */
     KShaderProgram getDefaultTextureShader();
 
 }

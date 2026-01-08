@@ -16,11 +16,24 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-final class KInternals {
+final class KInternals extends KUninstantiable {
 
-    public static int DEFAULT_TTL = 512;
+    private KInternals() {
+        super();
+    }
+
+    /**
+     * Number of points to create to render a circle.
+     */
+    public static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
+
+    /**
+     * Default TTL of stored buffers and textures.
+     */
+    public static final int DEFAULT_TTL = 512;
 
 }

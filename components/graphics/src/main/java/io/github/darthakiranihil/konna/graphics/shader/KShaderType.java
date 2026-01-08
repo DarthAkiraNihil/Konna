@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.graphics.shader;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Enumeration for all supported shader types.
@@ -36,6 +35,14 @@ public enum KShaderType {
      */
     VERTEX;
 
+    /**
+     * Creates enum object from its string representation.
+     * Supported values are "fragment" (converts to {@link KShaderType#FRAGMENT}) and
+     * "vertex" (converts to {@link KShaderType#VERTEX}). Other values will produce
+     * {@link KInvalidArgumentException}.
+     * @param type String representation of shader type
+     * @return Enum object of passed shader type
+     */
     public static KShaderType fromString(final String type) {
         if (type.equals("fragment")) {
             return FRAGMENT;

@@ -16,8 +16,20 @@
 
 package io.github.darthakiranihil.konna.graphics.image;
 
+/**
+ * Interface for image loader whose purpose is to load
+ * images from files.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImageLoader {
 
+    /**
+     * Loads the image.
+     * @param filename Image filename
+     * @return Loaded image
+     */
     KImage load(String filename);
 
 }

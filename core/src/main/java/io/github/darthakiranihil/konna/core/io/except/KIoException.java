@@ -26,11 +26,11 @@ import io.github.darthakiranihil.konna.core.except.KException;
  */
 public class KIoException extends KException {
 
-    public KIoException(String message) {
+    public KIoException(final String message) {
         super(message);
     }
 
-    public KIoException(Throwable cause) {
+    public KIoException(final Throwable cause) {
         super(cause);
     }
 }

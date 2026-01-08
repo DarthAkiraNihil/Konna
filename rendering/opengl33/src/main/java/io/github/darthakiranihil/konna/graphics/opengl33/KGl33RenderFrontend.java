@@ -40,8 +40,6 @@ import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 @KExcludeFromGeneratedCoverageReport
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
-    private static final int CIRCLE_DISCRETIZATION_POINTS = 16384;
-
     /**
      * Default side of viewport size.
      */
@@ -100,7 +98,12 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(final KPolyline polyline) {
-        this.render(this.bufferMaker.make(polyline), polyline, polyline.getColor(), polyline.points().length);
+        this.render(
+            this.bufferMaker.make(polyline),
+            polyline,
+            polyline.getColor(),
+            polyline.points().length
+        );
     }
 
     @Override
@@ -110,7 +113,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             oval,
             oval.getFillColor(),
             oval.getOutlineColor(),
-            CIRCLE_DISCRETIZATION_POINTS,
+            KInternals.CIRCLE_DISCRETIZATION_POINTS,
             KGl33.GL_LINE_LOOP
         );
     }
@@ -127,7 +130,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
             arc,
             arc.getFillColor(),
             arc.getOutlineColor(),
-            CIRCLE_DISCRETIZATION_POINTS,
+            KInternals.CIRCLE_DISCRETIZATION_POINTS,
             KGl33.GL_LINE_STRIP
         );
     }
@@ -225,7 +228,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void setActiveShader(KShaderProgram shader) {
+    public void setActiveShader(final KShaderProgram shader) {
         this.gl.glUseProgram(shader.id());
     }
 
@@ -235,7 +238,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void render(KRenderableTexture texture) {
+    public void render(final KRenderableTexture texture) {
         KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
         KTexture sourceTexture = texture.texture();
 
@@ -245,13 +248,34 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         int stride = Float.BYTES * KTextureMaker.TEXTURE_ELEMENTS_COUNT;
 
-        this.gl.glVertexAttribPointer(0, 2, KGl33.GL_FLOAT, false, stride, 0);
+        this.gl.glVertexAttribPointer(
+            0,
+            KTextureMaker.POINT_ATTRIBUTE_ELEMENTS_COUNT,
+            KGl33.GL_FLOAT,
+            false,
+            stride,
+            0
+        );
         this.gl.glEnableVertexAttribArray(0);
 
-        this.gl.glVertexAttribPointer(1, 4, KGl33.GL_FLOAT, false, stride, 2 * Float.BYTES);
+        this.gl.glVertexAttribPointer(
+            1,
+            KTextureMaker.COLOR_ATTRIBUTE_ELEMENTS_COUNT,
+            KGl33.GL_FLOAT,
+            false,
+            stride,
+            2 * Float.BYTES
+        );
         this.gl.glEnableVertexAttribArray(1);
 
-        this.gl.glVertexAttribPointer(2, 2, KGl33.GL_FLOAT, false, stride, 6 * Float.BYTES);
+        this.gl.glVertexAttribPointer(
+            2,
+            KTextureMaker.UV_ATTRIBUTE_ELEMENTS_COUNT,
+            KGl33.GL_FLOAT,
+            false,
+            stride,
+            6 * Float.BYTES
+        );
         this.gl.glEnableVertexAttribArray(2);
 
         this.gl.glUniform1i(
@@ -261,7 +285,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glDrawElements(
             KGl33.GL_TRIANGLES,
-            6,
+            textureInfo.indicesCount(),
             KGl33.GL_UNSIGNED_INT,
             0L
         );
@@ -280,10 +304,4 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.bufferMaker.updateTtl();
     }
 
-    private KVector2f plainToGl(final KVector2i v) {
-        float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
-        float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
-
-        return new KVector2f(x, y);
-    }
 }

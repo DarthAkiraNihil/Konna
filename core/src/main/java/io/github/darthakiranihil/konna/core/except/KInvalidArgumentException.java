@@ -16,8 +16,16 @@
 
 package io.github.darthakiranihil.konna.core.except;
 
+/**
+ * Exception that is usually thrown when argument of called method is invalid.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public class KInvalidArgumentException extends KException {
-    public KInvalidArgumentException(String message) {
+
+    public KInvalidArgumentException(final String message) {
         super(message);
     }
+
 }

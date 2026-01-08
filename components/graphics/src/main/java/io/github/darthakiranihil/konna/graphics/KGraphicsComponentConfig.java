@@ -26,6 +26,8 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 /**
  * Record class of Konna Graphics component configuration.
  * @param renderFrontendClass Class of render frontend
+ * @param shaderCompilerClass Class of shader compiler
+ * @param imageLoaderClass Class of image loader
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

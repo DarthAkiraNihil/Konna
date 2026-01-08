@@ -20,11 +20,12 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInf
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.KAsset;
+import io.github.darthakiranihil.konna.core.io.KAssetCollection;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -33,7 +34,6 @@ import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +63,7 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         private final KJsonValidator schema;
 
-        public TextureAssetSchema() {
+        TextureAssetSchema() {
 
             var builder = new KJsonPropertyValidationInfo.Builder();
 
@@ -83,7 +83,7 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         }
 
         @Override
-        public void validate(KJsonValue value) {
+        public void validate(final KJsonValue value) {
             this.schema.validate(value);
         }
     }
@@ -94,6 +94,12 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
     private final Map<String, KTexture> loadedTextures;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader (to load texture assets)
+     * @param imageLoader Image loader (to load texture images)
+     * @param shaderProgramCollection (to load texture shaders)
+     */
     public KTextureCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KImageLoader imageLoader,
@@ -106,8 +112,15 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         this.loadedTextures = new HashMap<>();
     }
 
+    /**
+     * Returns built texture asset by its asset id.
+     * In order to build it, the collection check for shader and image options
+     * of loading texture asset. Shader is taken from {@link KShaderProgramCollection}.
+     * @param assetId Asset id of texture
+     * @return Built texture
+     */
     @Override
-    public KTexture getAsset(String assetId) {
+    public KTexture getAsset(final String assetId) {
 
         if (this.loadedTextures.containsKey(assetId)) {
             return this.loadedTextures.get(assetId);

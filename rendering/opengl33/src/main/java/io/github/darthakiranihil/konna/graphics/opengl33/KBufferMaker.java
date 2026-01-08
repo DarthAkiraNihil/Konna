@@ -123,7 +123,7 @@ final class KBufferMaker {
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(points.length);
 
         for (int i = 0; i < points.length * 2; i += 2) {
-            KVector2f glPoint = this.plainToGl(points[i / 2]);
+            KVector2f glPoint = KGeometryUtils.plainToGl(points[i / 2], this.viewportSize);
             pointBuffer.put(glPoint.x());
             pointBuffer.put(glPoint.y());
             indicesBuffer.put(i / 2);
@@ -135,13 +135,14 @@ final class KBufferMaker {
         return this.createBuffer(pointBuffer, indicesBuffer);
     }
 
-    private BufferInfo make(final KArc arc, int circleDiscretizationPoints) {
+    private BufferInfo make(final KArc arc) {
 
+        int circleDiscretizationPoints = KInternals.CIRCLE_DISCRETIZATION_POINTS;
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(circleDiscretizationPoints * 2);
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(circleDiscretizationPoints);
 
         KSize size = arc.size();
-        KVector2f center = this.plainToGl(arc.center());
+        KVector2f center = KGeometryUtils.plainToGl(arc.center(), this.viewportSize);
         int startAngle = arc.startAngle();
         int arcAngle = arc.arcAngle();
 
@@ -167,8 +168,9 @@ final class KBufferMaker {
         FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(4); // 2 points with 2 coordinates
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(2);
 
-        KVector2f glStart = this.plainToGl(line.start());
-        KVector2f glEnd = this.plainToGl(line.end());
+        KVector2f glStart = KGeometryUtils.plainToGl(line.start(), this.viewportSize);
+        KVector2f glEnd = KGeometryUtils.plainToGl(line.end(), this.viewportSize);
+
         pointBuffer.put(glStart.x());
         pointBuffer.put(glStart.y());
         pointBuffer.put(glEnd.x());
@@ -189,7 +191,7 @@ final class KBufferMaker {
         IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(points.length);
 
         for (int i = 0; i < points.length * 2; i += 2) {
-            KVector2f glPoint = this.plainToGl(points[i / 2]);
+            KVector2f glPoint = KGeometryUtils.plainToGl(points[i / 2], this.viewportSize);
             pointBuffer.put(glPoint.x());
             pointBuffer.put(glPoint.y());
             indicesBuffer.put(i / 2);
@@ -201,19 +203,20 @@ final class KBufferMaker {
         return this.createBuffer(pointBuffer, indicesBuffer);
     }
 
-    private BufferInfo make(final KOval oval, int circleDiscretizationPoints) {
-        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(circleDiscretizationPoints * 2);
-        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(circleDiscretizationPoints);
+    private BufferInfo make(final KOval oval) {
+        int circleDiscretisationPoints = KInternals.CIRCLE_DISCRETIZATION_POINTS;
+        FloatBuffer pointBuffer = KBufferUtils.createFloatBuffer(circleDiscretisationPoints * 2);
+        IntBuffer indicesBuffer = KBufferUtils.createIntBuffer(circleDiscretisationPoints);
 
         KSize size = oval.size();
-        KVector2f center = this.plainToGl(oval.center());
-        for (int i = 0; i < circleDiscretizationPoints; i++) {
+        KVector2f center = KGeometryUtils.plainToGl(oval.center(), this.viewportSize);
+        for (int i = 0; i < circleDiscretisationPoints; i++) {
             float x =
                     ((float) size.width() / this.viewportSize.width())
-                *   (float) Math.cos(i * 2 * Math.PI / circleDiscretizationPoints) + center.x();
+                *   (float) Math.cos(i * 2 * Math.PI / circleDiscretisationPoints) + center.x();
             float y =
                     ((float) size.height() / this.viewportSize.height())
-                *   (float) Math.sin(i * 2 * Math.PI / circleDiscretizationPoints) + center.y();
+                *   (float) Math.sin(i * 2 * Math.PI / circleDiscretisationPoints) + center.y();
             pointBuffer.put(x);
             pointBuffer.put(y);
             indicesBuffer.put(i);
@@ -241,10 +244,4 @@ final class KBufferMaker {
         return new BufferInfo(vbo, ibo);
     }
 
-    private KVector2f plainToGl(final KVector2i v) {
-        float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
-        float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
-
-        return new KVector2f(x, y);
-    }
 }

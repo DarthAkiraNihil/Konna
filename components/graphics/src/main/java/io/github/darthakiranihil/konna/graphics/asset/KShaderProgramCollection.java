@@ -22,13 +22,14 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.KAsset;
+import io.github.darthakiranihil.konna.core.io.KAssetCollection;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.graphics.image.KTexture;
-import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import org.jspecify.annotations.Nullable;
@@ -44,7 +45,9 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KShaderProgramCollection extends KObject implements KAssetCollection<KShaderProgram> {
+public final class KShaderProgramCollection
+    extends KObject
+    implements KAssetCollection<KShaderProgram> {
 
     /**
      * Constant for shader program asset type inside Graphics component.
@@ -62,7 +65,7 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
 
         private final KJsonValidator schema;
 
-        public ShaderProgramAssetSchema() {
+        ShaderProgramAssetSchema() {
 
             var builder = new KJsonPropertyValidationInfo.Builder();
 
@@ -84,7 +87,7 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
         }
 
         @Override
-        public void validate(KJsonValue value) {
+        public void validate(final KJsonValue value) {
             this.schema.validate(value);
         }
     }
@@ -116,8 +119,15 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
 
     }
 
+    /**
+     * Returns build shader program asset by its asset id.
+     * If loading shader program has not been compiled, it performs it by calling
+     * {@link KShaderCompiler}.
+     * @param assetId Asset id of building object
+     * @return Built shader program asset
+     */
     @Override
-    public KShaderProgram getAsset(String assetId) {
+    public KShaderProgram getAsset(final String assetId) {
 
         if (this.loadedPrograms.containsKey(assetId)) {
             return this.loadedPrograms.get(assetId);
@@ -135,7 +145,8 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
         if (vertexShaderAssetId == null && fragmentShaderAssetId == null) {
             throw new KAssetLoadingException(
                 String.format(
-                    "Cannot load shader program %s: fragment and vertex shaders cannot be both null",
+                        "Cannot load shader program %s: "
+                    +   "fragment and vertex shaders cannot be both null",
                     assetId
                 )
             );
@@ -162,6 +173,10 @@ public final class KShaderProgramCollection extends KObject implements KAssetCol
         return linkedProgram;
     }
 
+    /**
+     * Convenience method to get default texture shader from {@link KShaderCompiler}.
+     * @return Default texture shader
+     */
     public KShaderProgram getDefaultTextureShader() {
         return this.shaderCompiler.getDefaultTextureShader();
     }

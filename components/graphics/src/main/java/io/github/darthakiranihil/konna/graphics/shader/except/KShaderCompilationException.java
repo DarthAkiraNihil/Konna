@@ -26,7 +26,8 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
  * @author Darth Akira Niihl
  */
 public class KShaderCompilationException extends KException {
-    public KShaderCompilationException(String message) {
+
+    public KShaderCompilationException(final String message) {
         super(message);
     }
 

@@ -45,7 +45,7 @@ public class KStbImageLoader extends KObject implements KImageLoader {
     private final KResourceLoader resourceLoader;
 
     /**
-     * Constructs image loader with provided STBImage frontend
+     * Constructs image loader with provided STBImage frontend.
      * @param stbImage STBImage frontend
      * @param resourceLoader Resource loader
      */
@@ -63,7 +63,7 @@ public class KStbImageLoader extends KObject implements KImageLoader {
         IntBuffer height = KBufferUtils.createIntBuffer(1);
         IntBuffer channels = KBufferUtils.createIntBuffer(1);
 
-        try (KResource resource = this.resourceLoader.loadResource(filename)){
+        try (KResource resource = this.resourceLoader.loadResource(filename)) {
 
             if (!resource.exists()) {
                 throw new KIoException(
@@ -78,7 +78,9 @@ public class KStbImageLoader extends KObject implements KImageLoader {
             src.put(sourceBytes);
             src.flip();
 
-            ByteBuffer loaded = this.stbImage.stbi_load_from_memory(src, width, height, channels, 0);
+            ByteBuffer loaded = this.stbImage.stbi_load_from_memory(
+                src, width, height, channels, 0
+            );
             if (loaded == null) {
                 throw new KIoException(
                     String.format(

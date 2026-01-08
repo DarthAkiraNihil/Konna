@@ -34,16 +34,29 @@ import java.util.concurrent.ConcurrentHashMap;
 @KExcludeFromGeneratedCoverageReport
 final class KTextureMaker {
 
+    /**
+     * Total texture elements count.
+     */
     public static final int TEXTURE_ELEMENTS_COUNT = 8;
+    /**
+     * Points attribute elements count.
+     */
     public static final int POINT_ATTRIBUTE_ELEMENTS_COUNT = 2;
+    /**
+     * Color attribute elements count.
+     */
     public static final int COLOR_ATTRIBUTE_ELEMENTS_COUNT = 4;
+    /**
+     * UV attribute elements count.
+     */
     public static final int UV_ATTRIBUTE_ELEMENTS_COUNT = 2;
 
     public record TextureInfo(
         int id,
         int vao,
         int vbo,
-        int ebo
+        int ebo,
+        int indicesCount
     ) {
 
         public void free(final KGl33 gl) {
@@ -61,7 +74,7 @@ final class KTextureMaker {
     private final KGl33 gl;
     private KSize viewportSize;
 
-    public KTextureMaker(final KGl33 gl) {
+    KTextureMaker(final KGl33 gl) {
         this.gl = gl;
         this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
 
@@ -75,17 +88,15 @@ final class KTextureMaker {
     }
 
 
-    public TextureInfo make(KRenderableTexture texture) {
+    public TextureInfo make(final KRenderableTexture texture) {
 
         int hash = KRenderableHasher.hash(texture);
 
         if (!this.cache.containsKey(hash)) {
-
             this.cache.put(
                 hash,
                 this.createTextureInfo(texture)
             );
-
         }
 
         this.ttl.put(hash, KInternals.DEFAULT_TTL);
@@ -128,20 +139,23 @@ final class KTextureMaker {
             this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
         } else {
             tex = this.createTexture(attachedImage);
+            this.textureCache.put(imageHash, tex);
         }
 
         KVector2i[] vertices = texture.xy();
         KVector2f[] uvs = texture.uv();
         KColor[] colors = texture.colors();
 
-        FloatBuffer verticesBuffer = KBufferUtils.createFloatBuffer(vertices.length * TEXTURE_ELEMENTS_COUNT);
+        FloatBuffer verticesBuffer = KBufferUtils.createFloatBuffer(
+            vertices.length * TEXTURE_ELEMENTS_COUNT
+        );
 
         int[] triangulatedIndices = KGeometryUtils.getTriangulatedVerticesIndices(vertices);
         IntBuffer indices = KBufferUtils.createIntBuffer(triangulatedIndices.length);
         indices.put(triangulatedIndices);
 
         for (int i = 0; i < vertices.length; i++) {
-            KVector2f glPoint = this.plainToGl(vertices[i]);
+            KVector2f glPoint = KGeometryUtils.plainToGl(vertices[i], this.viewportSize);
 
             verticesBuffer
                 .put(glPoint.x())
@@ -171,7 +185,8 @@ final class KTextureMaker {
             tex,
             vao,
             vbo,
-            ebo
+            ebo,
+            triangulatedIndices.length
         );
 
     }
@@ -194,20 +209,26 @@ final class KTextureMaker {
             attachedImage.rawData()
         );
 
-        this.gl.glGenerateMipmap(KGl33.GL_TEXTURE_2D);
-        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_S, KGl33.GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_T, KGl33.GL_REPEAT);
-        // set texture filtering parameters
-        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MIN_FILTER, KGl33.GL_LINEAR_MIPMAP_LINEAR);
-        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MAG_FILTER, KGl33.GL_LINEAR);
+        this.gl.glGenerateMipmap(
+            KGl33.GL_TEXTURE_2D
+        );
+        this.gl.glTexParameteri(
+            KGl33.GL_TEXTURE_2D,
+            KGl33.GL_TEXTURE_WRAP_S,
+            KGl33.GL_REPEAT
+        );
+        this.gl.glTexParameteri(
+            KGl33.GL_TEXTURE_2D,
+            KGl33.GL_TEXTURE_MIN_FILTER,
+            KGl33.GL_LINEAR_MIPMAP_LINEAR
+        );
+        this.gl.glTexParameteri(
+            KGl33.GL_TEXTURE_2D,
+            KGl33.GL_TEXTURE_MAG_FILTER,
+            KGl33.GL_LINEAR
+        );
 
         return tex;
     }
 
-    private KVector2f plainToGl(final KVector2i v) {
-        float x = 2.0f * ((float) v.x() / this.viewportSize.width()) - 1.0f;
-        float y = -2.0f * ((float) v.y() / this.viewportSize.height()) + 1.0f;
-
-        return new KVector2f(x, y);
-    }
 }

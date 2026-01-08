@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
-import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -39,6 +38,9 @@ import java.nio.IntBuffer;
  */
 public final class KGl33ShaderCompiler extends KObject implements KShaderCompiler {
 
+    /**
+     * Default texture fragment shader.
+     */
     public static final String DEFAULT_TEXTURE_FRAGMENT_SHADER = """
         #version 330 core
         out vec4 FragColor;
@@ -54,6 +56,9 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         }
     """;
 
+    /**
+     * Default texture vertex shader.
+     */
     public static final String DEFAULT_TEXTURE_VERTEX_SHADER = """
         #version 330 core
         layout (location = 0) in vec3 aPos;

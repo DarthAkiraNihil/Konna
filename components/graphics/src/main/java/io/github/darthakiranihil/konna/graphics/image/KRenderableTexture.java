@@ -25,6 +25,13 @@ import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Representation of a texture that can be rendered on screen that does
+ * not depend on used graphics library.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public class KRenderableTexture extends KAbstractShape {
 
     private static final KVector2f[] DEFAULT_UV = new KVector2f[] {
@@ -46,33 +53,55 @@ public class KRenderableTexture extends KAbstractShape {
     private final KColor[] colors;
     private final KTexture texture;
 
-    public static KRenderableTexture wrapIntoRectangle(final KVector2i leftTopCorner, final KTexture texture) {
+    /**
+     * Does the same job as
+     * {@link KRenderableTexture#wrapIntoRectangle(KVector2i, KTexture, KColor[])},
+     * but all vertices colors are {@link KColor#WHITE}.
+     * @param leftTopCorner Left top corner coordinate of texture
+     * @param texture Attached texture data
+     * @return Wrapped renderable texture of full image
+     */
+    public static KRenderableTexture wrapIntoRectangle(
+        final KVector2i leftTopCorner,
+        final KTexture texture
+    ) {
 
-        KImage sourceImage = texture.attachedImage();
-        KVector2i[] xy = new KVector2i[] {
-            new KVector2i(leftTopCorner.x(), leftTopCorner.y()),
-            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y()),
-            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y() + sourceImage.height()),
-            new KVector2i(leftTopCorner.x(), leftTopCorner.y() + sourceImage.height()),
-        };
-
-        return new KRenderableTexture(
-            DEFAULT_UV,
-            xy,
-            ALL_WHITES,
-            texture
-        );
+        return KRenderableTexture.wrapIntoRectangle(leftTopCorner, texture, ALL_WHITES);
 
     }
 
-    public static KRenderableTexture wrapIntoRectangle(final KVector2i leftTopCorner, final KTexture texture, final KColor[] colors) {
+    /**
+     * Wraps texture data into that renderable texture that has full size as its source
+     * image, without rotation with specified place of origin and vertices colors.
+     * @param leftTopCorner Left top corner coordinate of texture
+     * @param texture Attached texture data
+     * @param colors Vertices colors
+     * @return Wrapped renderable texture of full image
+     */
+    public static KRenderableTexture wrapIntoRectangle(
+        final KVector2i leftTopCorner,
+        final KTexture texture,
+        final KColor[] colors
+    ) {
 
         KImage sourceImage = texture.attachedImage();
         KVector2i[] xy = new KVector2i[] {
-            new KVector2i(leftTopCorner.x(), leftTopCorner.y()),
-            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y()),
-            new KVector2i(leftTopCorner.x() + sourceImage.width(), leftTopCorner.y() + sourceImage.height()),
-            new KVector2i(leftTopCorner.x(), leftTopCorner.y() + sourceImage.height()),
+            new KVector2i(
+                leftTopCorner.x(),
+                leftTopCorner.y()
+            ),
+            new KVector2i(
+                leftTopCorner.x() + sourceImage.width(),
+                leftTopCorner.y()
+            ),
+            new KVector2i(
+                leftTopCorner.x() + sourceImage.width(),
+                leftTopCorner.y() + sourceImage.height()
+            ),
+            new KVector2i(
+                leftTopCorner.x(),
+                leftTopCorner.y() + sourceImage.height()
+            ),
         };
 
         return new KRenderableTexture(
@@ -84,11 +113,18 @@ public class KRenderableTexture extends KAbstractShape {
 
     }
 
+    /**
+     * Standard constructor.
+     * @param uv UV coordinates of this texture
+     * @param xy Screen coordinates of texture vertices
+     * @param colors Color of texture vertices
+     * @param texture Attached texture data
+     */
     public KRenderableTexture(
-        KVector2f[] uv,
-        KVector2i[] xy,
-        KColor[] colors,
-        KTexture texture
+        final KVector2f[] uv,
+        final KVector2i[] xy,
+        final KColor[] colors,
+        final KTexture texture
     ) {
         this.uv = uv;
         this.xy = xy;
@@ -96,36 +132,55 @@ public class KRenderableTexture extends KAbstractShape {
         this.texture = texture;
     }
 
+    /**
+     * Returns vertices screen coordinates for this texture.
+     * @return Screen coordinates of vertices of this texture.
+     */
     public KVector2i[] xy() {
         return this.xy;
     }
 
+    /**
+     * Returns UV coordinates for this texture.
+     * @return UV coordinates for this texture
+     */
     public KVector2f[] uv() {
         return this.uv;
     }
 
+    /**
+     * Returns vertices' colors of this texture.
+     * @return Vertices' colors of this texture
+     */
     public KColor[] colors() {
         return this.colors;
     }
 
+    /**
+     * Returns texture data for this renderable texture.
+     * @return Texture data of this renderable texture
+     */
     public KTexture texture() {
         return this.texture;
     }
 
     @Override
-    public void render(KRenderFrontend rf) {
+    public void render(final KRenderFrontend rf) {
         rf.setActiveShader(this.texture.shader());
         rf.render(this);
         rf.disableActiveShader();
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         KRenderableTexture that = (KRenderableTexture) o;
-        return Objects.deepEquals(this.uv, that.uv) && Objects.deepEquals(this.xy, that.xy) && Objects.equals(this.texture, that.texture);
+        return
+                Objects.deepEquals(this.uv, that.uv)
+            &&  Objects.deepEquals(this.xy, that.xy)
+            &&  Objects.equals(this.texture, that.texture);
     }
 
     @Override

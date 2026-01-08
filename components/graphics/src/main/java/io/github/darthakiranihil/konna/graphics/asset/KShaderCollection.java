@@ -63,7 +63,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
 
         private final KJsonValidator schema;
 
-        public ShaderAssetSchema() {
+        ShaderAssetSchema() {
 
             var builder = new KJsonPropertyValidationInfo.Builder();
 
@@ -89,7 +89,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
         }
 
         @Override
-        public void validate(KJsonValue value) {
+        public void validate(final KJsonValue value) {
             this.schema.validate(value);
         }
     }
@@ -118,8 +118,14 @@ public final class KShaderCollection extends KObject implements KAssetCollection
         this.loadedShaders = new HashMap<>();
     }
 
+    /**
+     * Returns built shader asset by its shader id and compiles it if it has
+     * not been compiled yet.
+     * @param assetId Asset id of building object
+     * @return Built shader asset
+     */
     @Override
-    public KShader getAsset(String assetId) {
+    public KShader getAsset(final String assetId) {
 
         if (this.loadedShaders.containsKey(assetId)) {
             return this.loadedShaders.get(assetId);
@@ -146,7 +152,9 @@ public final class KShaderCollection extends KObject implements KAssetCollection
             }
 
             KShaderType shaderType = KShaderType.fromString(rawType);
-            KShader compiledShader = this.shaderCompiler.compileShader(shaderSource.string(), shaderType);
+            KShader compiledShader = this.shaderCompiler.compileShader(
+                shaderSource.string(), shaderType
+            );
 
             this.loadedShaders.put(assetId, compiledShader);
 

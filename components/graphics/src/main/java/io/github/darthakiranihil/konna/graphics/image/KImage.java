@@ -25,6 +25,12 @@ import io.github.darthakiranihil.konna.graphics.KColor;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
+/**
+ * Representation of a simple image.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public class KImage implements KCopyable<KImage> {
 
     private static final int COLOR_COMPONENTS_COUNT = 4;
@@ -37,20 +43,43 @@ public class KImage implements KCopyable<KImage> {
     private final int width;
     private final int height;
 
+    /**
+     * Standard constructor.
+     * @param rawImageData Buffer of raw image data
+     * @param width Image width
+     * @param height Image height
+     */
     public KImage(final ByteBuffer rawImageData, int width, int height) {
         this.rawImageData = rawImageData;
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * Standard constructor, but raw image data is stored in a byte array.
+     * @param rawImageData Array of raw image data
+     * @param width Image width
+     * @param height Image height
+     */
     public KImage(final byte[] rawImageData, int width, int height) {
         this(KBufferUtils.wrapByteArrayToBuffer(rawImageData), width, height);
     }
 
-    public KColor getPixelColor(KVector2i pixel) {
+    /**
+     * Returns color of specific image pixel.
+     * @param pixel Image pixel coordinates
+     * @return Pixel's color
+     */
+    public KColor getPixelColor(final KVector2i pixel) {
         return this.getPixelColor(pixel.x(), pixel.y());
     }
 
+    /**
+     * Returns color of specific image pixel.
+     * @param x X coordinate of a pixel
+     * @param y Y coordinate of a pixel
+     * @return Pixel's color
+     */
     public KColor getPixelColor(int x, int y) {
         int offset = (y * this.width + x) * COLOR_COMPONENTS_COUNT;
 
@@ -62,40 +91,68 @@ public class KImage implements KCopyable<KImage> {
         );
     }
 
+    /**
+     * Returns slice of the image.
+     * @param from Top left corner of slicing beginning
+     * @param size Size of the sliced image
+     * @return Slice of this image
+     */
     public KImage slice(final KVector2i from, final KSize size) {
         return this.slice(from.x(), from.y(), size.width(), size.height());
     }
 
-    public KImage slice(int x, int y, int width, int height) {
-        int dataLength = width * height * COLOR_COMPONENTS_COUNT;
+    /**
+     * Returns slice of the image.
+     * @param x X coordinate of top left corner of slicing beginning
+     * @param y Y coordinate of top left corner of slicing beginning
+     * @param sliceWidth Width of the sliced image
+     * @param sliceHeight Height of the sliced image
+     * @return Slice of this image
+     */
+    public KImage slice(int x, int y, int sliceWidth, int sliceHeight) {
+        int dataLength = sliceWidth * sliceHeight * COLOR_COMPONENTS_COUNT;
         int offset = (y * this.width + x) * COLOR_COMPONENTS_COUNT;
 
         byte[] cloned = new byte[dataLength];
         this.rawImageData.get(cloned, offset, dataLength);
-        return new KImage(cloned, width, height);
+        return new KImage(cloned, sliceWidth, sliceHeight);
     }
 
+    /**
+     * Returns width of this image.
+     * @return Width of this image
+     */
     public int width() {
         return this.width;
     }
 
+    /**
+     * Returns height of this image.
+     * @return Height of this image
+     */
     public int height() {
         return this.height;
     }
 
+    /**
+     * Returns raw data of this image.
+     * @return Raw data of this image
+     */
     public ByteBuffer rawData() {
         return this.rawImageData;
     }
 
     @Override
     public KImage copy() {
-        ByteBuffer copied = KBufferUtils.createByteBuffer(this.width * this.height * COLOR_COMPONENTS_COUNT);
+        ByteBuffer copied = KBufferUtils.createByteBuffer(
+            this.width * this.height * COLOR_COMPONENTS_COUNT
+        );
         copied.put(this.rawImageData);
         return new KImage(copied, this.width, this.height);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
