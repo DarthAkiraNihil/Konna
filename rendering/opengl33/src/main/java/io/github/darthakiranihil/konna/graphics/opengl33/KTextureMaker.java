@@ -49,6 +49,7 @@ final class KTextureMaker {
      */
     public static final int UV_ATTRIBUTE_ELEMENTS_COUNT = 2;
 
+    @KExcludeFromGeneratedCoverageReport
     public record TextureInfo(
         int id,
         int vao,

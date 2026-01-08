@@ -73,14 +73,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
                 builder
                     .withName("type")
                     .withExpectedType(KJsonValueType.STRING)
-                    .withValidator((v) -> {
-                        String s = v.getString();
-                        try {
-                            KShaderType.valueOf(s);
-                        } catch (KInvalidArgumentException e) {
-                            throw new KJsonValidationError(e.getMessage());
-                        }
-                    })
+                    .withValidator(KShaderType.VALIDATOR)
                     .build(),
                 builder
                     .withName("source")

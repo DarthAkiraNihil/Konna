@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import org.jetbrains.annotations.ApiStatus;
 import org.poly2tri.Poly2Tri;
 import org.poly2tri.geometry.polygon.Polygon;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 @ApiStatus.Internal
+@KExcludeFromGeneratedCoverageReport
 final class KGeometryUtils extends KUninstantiable {
 
     private KGeometryUtils() {

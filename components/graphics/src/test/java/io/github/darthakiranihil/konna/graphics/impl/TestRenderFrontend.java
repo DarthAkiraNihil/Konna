@@ -17,7 +17,9 @@
 package io.github.darthakiranihil.konna.graphics.impl;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import org.jspecify.annotations.NullMarked;
 
@@ -71,6 +73,21 @@ public class TestRenderFrontend implements KRenderFrontend {
 
     @Override
     public void initialize() {
+
+    }
+
+    @Override
+    public void render(KRenderableTexture texture) {
+        
+    }
+
+    @Override
+    public void setActiveShader(KShaderProgram shader) {
+
+    }
+
+    @Override
+    public void disableActiveShader() {
 
     }
 }

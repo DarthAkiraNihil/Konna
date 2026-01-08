@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @KExcludeFromGeneratedCoverageReport
 final class KBufferMaker {
 
+    @KExcludeFromGeneratedCoverageReport
     public record BufferInfo(
         int vbo,
         int ibo

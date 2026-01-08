@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 
@@ -26,6 +27,7 @@ import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
+@KExcludeFromGeneratedCoverageReport
 public final class KGl33ShaderProgram implements KShaderProgram {
 
     private final int id;

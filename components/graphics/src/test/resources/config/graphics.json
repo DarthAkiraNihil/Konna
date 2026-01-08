@@ -1,3 +1,5 @@
 {
-    "render_frontend": "io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend"
+    "render_frontend": "io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend",
+    "shader_compiler": "io.github.darthakiranihil.konna.graphics.impl.TestShaderCompiler",
+    "image_loader": "io.github.darthakiranihil.konna.graphics.impl.TestImageLoader"
 }

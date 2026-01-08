@@ -79,7 +79,7 @@ public class KStbImageLoader extends KObject implements KImageLoader {
             src.flip();
 
             ByteBuffer loaded = this.stbImage.stbi_load_from_memory(
-                src, width, height, channels, 0
+                src, width, height, channels, 4
             );
             if (loaded == null) {
                 throw new KIoException(

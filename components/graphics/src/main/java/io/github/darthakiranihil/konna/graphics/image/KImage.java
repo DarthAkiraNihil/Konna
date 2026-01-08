@@ -83,11 +83,17 @@ public class KImage implements KCopyable<KImage> {
     public KColor getPixelColor(int x, int y) {
         int offset = (y * this.width + x) * COLOR_COMPONENTS_COUNT;
 
+        int r = this.rawImageData.get(offset + RED_OFFSET);
+        int g = this.rawImageData.get(offset + GREEN_OFFSET);
+        int b = this.rawImageData.get(offset + BLUE_OFFSET);
+        int alpha = this.rawImageData.get(offset + ALPHA_OFFSET);
+
+
         return new KColor(
-            this.rawImageData.get(offset + RED_OFFSET),
-            this.rawImageData.get(offset + GREEN_OFFSET),
-            this.rawImageData.get(offset + BLUE_OFFSET),
-            this.rawImageData.get(offset + ALPHA_OFFSET)
+            r < 0 ? 256 + r : r,
+            g < 0 ? 256 + g : g,
+            b < 0 ? 256 + b : b,
+            alpha < 0 ? 256 + alpha : alpha
         );
     }
 
@@ -111,10 +117,19 @@ public class KImage implements KCopyable<KImage> {
      */
     public KImage slice(int x, int y, int sliceWidth, int sliceHeight) {
         int dataLength = sliceWidth * sliceHeight * COLOR_COMPONENTS_COUNT;
-        int offset = (y * this.width + x) * COLOR_COMPONENTS_COUNT;
-
         byte[] cloned = new byte[dataLength];
-        this.rawImageData.get(cloned, offset, dataLength);
+
+        for (int h = 0; h < sliceHeight; h++) {
+            int offset = ((y + h) * this.width + x) * COLOR_COMPONENTS_COUNT;
+            this.rawImageData.position(offset);
+            this.rawImageData.get(
+                cloned,
+                sliceWidth * COLOR_COMPONENTS_COUNT * h,
+                sliceWidth * COLOR_COMPONENTS_COUNT
+            );
+        }
+
+        this.rawImageData.position(0);
         return new KImage(cloned, sliceWidth, sliceHeight);
     }
 
