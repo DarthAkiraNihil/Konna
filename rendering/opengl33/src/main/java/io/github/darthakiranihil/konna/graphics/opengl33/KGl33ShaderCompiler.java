@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
@@ -84,6 +85,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
      * @param gl OpenGL 3.3 frontend
      */
     public KGl33ShaderCompiler(@KInject final KGl33 gl) {
+        super("gl33_shader_compiler");
         this.gl = gl;
     }
 
@@ -105,6 +107,10 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
             throw new KShaderCompilationException(log);
         }
 
+        KSystemLogger.info(
+            this.name,
+            "Compiled shader id: %d", shaderId
+        );
         return new KShader(shaderId, type);
     }
 
@@ -145,6 +151,13 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
             throw new KShaderCompilationException(log);
         }
 
+        KSystemLogger.info(
+            this.name,
+            "Linked shader program id: %d, vertex: %s, fragment: %s",
+            program,
+            vertex,
+            fragment
+        );
         return new KGl33ShaderProgram(program, this.gl);
     }
 

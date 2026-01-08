@@ -29,7 +29,9 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import org.jspecify.annotations.Nullable;
@@ -110,6 +112,11 @@ public final class KShaderProgramCollection
         @KInject final KShaderCollection shaderCollection,
         @KInject final KShaderCompiler shaderCompiler
     ) {
+
+        super(
+            "Graphics.shaderProgramCollection",
+            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+        );
 
         this.assetLoader = assetLoader;
         this.shaderCollection = shaderCollection;

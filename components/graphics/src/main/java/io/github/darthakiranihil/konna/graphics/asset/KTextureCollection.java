@@ -29,7 +29,9 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
@@ -157,6 +159,11 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         @KInject final KImageLoader imageLoader,
         @KInject final KShaderProgramCollection shaderProgramCollection
     ) {
+        super(
+            "Graphics.textureCollection",
+            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+        );
+
         this.assetLoader = assetLoader;
         this.imageLoader = imageLoader;
         this.shaderProgramCollection = shaderProgramCollection;
