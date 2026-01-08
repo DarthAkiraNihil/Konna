@@ -19,9 +19,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
-import io.github.darthakiranihil.konna.graphics.image.KImage;
-import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
-import io.github.darthakiranihil.konna.graphics.image.KTexture;
+import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -138,7 +136,7 @@ final class KTextureMaker {
             this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
             this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
         } else {
-            tex = this.createTexture(attachedImage);
+            tex = this.createTexture(attachedImage, sourceTexture);
             this.textureCache.put(imageHash, tex);
         }
 
@@ -191,7 +189,7 @@ final class KTextureMaker {
 
     }
 
-    private int createTexture(final KImage attachedImage) {
+    private int createTexture(final KImage attachedImage, final KTexture texture) {
         int tex = this.gl.glGenTextures();
 
         this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
@@ -209,26 +207,60 @@ final class KTextureMaker {
             attachedImage.rawData()
         );
 
-        this.gl.glGenerateMipmap(
-            KGl33.GL_TEXTURE_2D
-        );
+        this.applyTextureParameters(texture);
+
+        return tex;
+    }
+
+    private void applyTextureParameters(final KTexture texture) {
+
+        if (texture.minFilter().isMipmap()) {
+            this.gl.glGenerateMipmap(
+                KGl33.GL_TEXTURE_2D
+            );
+        }
+
         this.gl.glTexParameteri(
             KGl33.GL_TEXTURE_2D,
             KGl33.GL_TEXTURE_WRAP_S,
-            KGl33.GL_REPEAT
+            this.getGlTextureWrapping(texture.uWrapping())
+        );
+        this.gl.glTexParameteri(
+            KGl33.GL_TEXTURE_2D,
+            KGl33.GL_TEXTURE_WRAP_T,
+            this.getGlTextureWrapping(texture.vWrapping())
         );
         this.gl.glTexParameteri(
             KGl33.GL_TEXTURE_2D,
             KGl33.GL_TEXTURE_MIN_FILTER,
-            KGl33.GL_LINEAR_MIPMAP_LINEAR
+            this.getGlTextureFiltering(texture.minFilter())
         );
         this.gl.glTexParameteri(
             KGl33.GL_TEXTURE_2D,
             KGl33.GL_TEXTURE_MAG_FILTER,
-            KGl33.GL_LINEAR
+            this.getGlTextureFiltering(texture.magFilter())
         );
 
-        return tex;
+    }
+
+    private int getGlTextureWrapping(final KTextureWrapping wrapping) {
+        return switch (wrapping) {
+            case REPEAT ->  KGl33.GL_REPEAT;
+            case CLAMP_TO_BORDER ->  KGl33.GL_CLAMP_TO_BORDER;
+            case CLAMP_TO_EDGE ->  KGl33.GL_CLAMP_TO_EDGE;
+            case MIRRORED_REPEAT ->  KGl33.GL_MIRRORED_REPEAT;
+        };
+    }
+
+    private int getGlTextureFiltering(final KTextureFiltering filtering) {
+        return switch (filtering) {
+            case LINEAR -> KGl33.GL_LINEAR;
+            case NEAREST -> KGl33.GL_NEAREST;
+            case MIPMAP, MIPMAP_LINEAR_LINEAR -> KGl33.GL_LINEAR_MIPMAP_LINEAR;
+            case MIPMAP_LINEAR_NEAREST -> KGl33.GL_LINEAR_MIPMAP_NEAREST;
+            case MIPMAP_NEAREST_LINEAR -> KGl33.GL_NEAREST_MIPMAP_LINEAR;
+            case MIPMAP_NEAREST_NEAREST -> KGl33.GL_NEAREST_MIPMAP_NEAREST;
+        };
     }
 
 }

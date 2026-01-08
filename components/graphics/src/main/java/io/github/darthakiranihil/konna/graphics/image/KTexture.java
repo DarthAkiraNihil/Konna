@@ -23,6 +23,10 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
  * However, this is not renderable since does not provide vertices and uvs.
  * @param attachedImage Image attached to this texture
  * @param shader Shader used for rendering this texture
+ * @param minFilter Texture min filtering mode
+ * @param magFilter Texture mag filtering mode
+ * @param uWrapping Texture wrapping for u coordinate
+ * @param vWrapping Texture wrapping for v coordinate
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

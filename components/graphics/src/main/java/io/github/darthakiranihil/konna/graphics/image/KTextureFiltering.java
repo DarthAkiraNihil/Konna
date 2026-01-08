@@ -65,6 +65,14 @@ public enum KTextureFiltering {
     MIPMAP_LINEAR_LINEAR;
 
     /**
+     * Returns whether this texture filtering mode is mipmap or not.
+     * @return Whether this texture filtering mode is mipmap or not
+     */
+    public boolean isMipmap() {
+        return this != NEAREST && this != LINEAR;
+    }
+
+    /**
      * Json validator for this type.
      */
     public static final KJsonValidator VALIDATOR = (v) -> {
