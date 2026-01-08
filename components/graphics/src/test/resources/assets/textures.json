@@ -1,0 +1,8 @@
+{
+  "cute_image": {
+    "Graphics.texture": {
+      "image": "classpath:assets/textures/cute_image.png",
+      "shader": "default"
+    }
+  }
+}

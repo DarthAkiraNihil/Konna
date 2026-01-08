@@ -1,0 +1,14 @@
+{
+  "vs1": {
+    "Graphics.shader": {
+      "type": "VERTEX",
+      "source": "classpath:assets/shaders/vs1.vert"
+    }
+  },
+  "fs1": {
+    "Graphics.shader": {
+      "type": "FRAGMENT",
+      "source": "classpath:assets/shaders/fs1.frag"
+    }
+  }
+}
