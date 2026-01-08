@@ -278,9 +278,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         );
         this.gl.glEnableVertexAttribArray(2);
 
-        this.gl.glUniform1i(
-            this.gl.glGetUniformLocation(sourceTexture.shader().id(), "ourTexture"), 0
-        );
+        sourceTexture.shader().setUniform("ourTexture", 0);
 
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glDrawElements(
