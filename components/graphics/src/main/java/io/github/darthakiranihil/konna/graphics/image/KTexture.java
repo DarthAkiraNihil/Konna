@@ -16,20 +16,12 @@
 
 package io.github.darthakiranihil.konna.graphics.image;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.graphics.KColor;
-import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
-import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
-import org.jspecify.annotations.Nullable;
 
 public class KTexture {
 
-    private final KColor color;
-
-    private KImage attachedImage;
-    private @Nullable KShaderProgram shader;
+    private final KImage attachedImage;
+    private final KShaderProgram shader;
 
     public KTexture(
         KImage image,
@@ -37,27 +29,14 @@ public class KTexture {
     ) {
         this.attachedImage = image;
         this.shader = shader;
-        this.color = KColor.WHITE;
     }
 
-    public KColor color() {
-        return this.color;
-    }
-
-    public KImage getAttachedImage() {
+    public KImage attachedImage() {
         return this.attachedImage;
     }
 
-    public void setAttachedImage(KImage attachedImage) {
-        this.attachedImage = attachedImage;
-    }
-
-    public @Nullable KShaderProgram getShader() {
+    public KShaderProgram shader() {
         return this.shader;
-    }
-
-    public void setShader(KShaderProgram shader) {
-        this.shader = shader;
     }
 
 }

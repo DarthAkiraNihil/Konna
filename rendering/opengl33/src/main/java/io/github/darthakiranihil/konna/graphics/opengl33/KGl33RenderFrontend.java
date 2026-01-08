@@ -22,18 +22,12 @@ import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.KTransform;
-import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
-
-import java.nio.*;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Render frontend implementation using OpenGL 3.3.
@@ -242,90 +236,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(KRenderableTexture texture) {
-
-//        KTexture src = texture.texture();
-//
-//        int tex = this.gl.glGenTextures();
-//        this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
-//        this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
-//
-//        KImage attachedImage = src.getAttachedImage();
-//        this.gl.glTexImage2D(
-//            KGl33.GL_TEXTURE_2D,
-//            0,
-//            KGl33.GL_RGBA,
-//            attachedImage.width(),
-//            attachedImage.height(),
-//            0,
-//            KGl33.GL_RGBA,
-//            KGl33.GL_UNSIGNED_BYTE,
-//            attachedImage.rawData()
-//        );
-//        this.gl.glGenerateMipmap(KGl33.GL_TEXTURE_2D);
-//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_S, KGl33.GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_WRAP_T, KGl33.GL_REPEAT);
-//        // set texture filtering parameters
-//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MIN_FILTER, KGl33.GL_LINEAR_MIPMAP_LINEAR);
-//        this.gl.glTexParameteri(KGl33.GL_TEXTURE_2D, KGl33.GL_TEXTURE_MAG_FILTER, KGl33.GL_LINEAR);
-//
-//
-//        KVector2i[] verts = texture.xy();
-//        KVector2f[] uvs = texture.uv();
-//        FloatBuffer vertices = KBufferUtils.createFloatBuffer(32); // TODO: remove hardcode
-//        IntBuffer indices = KBufferUtils.createIntBuffer(6);
-//        indices.put(0).put(1).put(3).put(1).put(2).put(3);
-//
-//        for (int i = 0; i < verts.length; i++) {
-//            KVector2f glPoint = this.plainToGl(verts[i]);
-//
-//            vertices
-//                .put(glPoint.x())
-//                .put(glPoint.y())
-//                .put(src.color().normalized())
-//                .put(uvs[i].x())
-//                .put(uvs[i].y());
-//
-//        }
-//        vertices.flip();
-//        indices.flip();
-//        int vao = this.gl.glGenVertexArrays();
-//        int vbo = this.gl.glGenBuffers();
-//        int ebo = this.gl.glGenBuffers();
-//
-//        this.gl.glBindVertexArray(vao);
-//
-//        this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, vbo);
-//        this.gl.glBufferData(KGl33.GL_ARRAY_BUFFER, vertices, KGl33.GL_STATIC_DRAW);
-//
-//        this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, ebo);
-//        this.gl.glBufferData(KGl33.GL_ELEMENT_ARRAY_BUFFER, indices, KGl33.GL_STATIC_DRAW);
-//
-//        int stride = Float.BYTES * 8;
-//
-//        this.gl.glVertexAttribPointer(0, 2, KGl33.GL_FLOAT, false, stride, 0);
-//        this.gl.glEnableVertexAttribArray(0);
-//
-//        this.gl.glVertexAttribPointer(1, 4, KGl33.GL_FLOAT, false, stride, 2 * Float.BYTES);
-//        this.gl.glEnableVertexAttribArray(1);
-//
-//        this.gl.glVertexAttribPointer(2, 2, KGl33.GL_FLOAT, false, stride, 6 * Float.BYTES);
-//        this.gl.glEnableVertexAttribArray(2);
-//        //vertices.flip();
-//        this.gl.glUniform1i(
-//            this.gl.glGetUniformLocation(src.getShader().id(), "ourTexture"), 0
-//        );
-//        this.gl.glBindVertexArray(vao);
-//        this.gl.glDrawElements(KGl33.GL_TRIANGLES, 6, KGl33.GL_UNSIGNED_INT, 0L);
-//
-//        this.gl.glDisableVertexAttribArray(0);
-//        this.gl.glDisableVertexAttribArray(1);
-//        this.gl.glDisableVertexAttribArray(2);
-//
-//        this.gl.glDeleteBuffers(vbo);
-//        this.gl.glDeleteBuffers(ebo);
-//        this.gl.glDeleteVertexArrays(vao);
-//        this.gl.glDeleteTextures(tex);
-
         KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
         KTexture sourceTexture = texture.texture();
 
@@ -345,7 +255,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableVertexAttribArray(2);
 
         this.gl.glUniform1i(
-            this.gl.glGetUniformLocation(sourceTexture.getShader().id(), "ourTexture"), 0
+            this.gl.glGetUniformLocation(sourceTexture.shader().id(), "ourTexture"), 0
         );
 
         this.gl.glBindVertexArray(textureInfo.vao());

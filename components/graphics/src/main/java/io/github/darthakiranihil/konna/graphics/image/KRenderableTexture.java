@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.image;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
@@ -29,15 +30,18 @@ public class KRenderableTexture extends KAbstractShape {
 
     private final KVector2f[] uv;
     private final KVector2i[] xy;
+    private final KColor[] colors;
     private final KTexture texture;
 
     public KRenderableTexture(
         KVector2f[] uv,
         KVector2i[] xy,
+        KColor[] colors,
         KTexture texture
     ) {
         this.uv = uv;
         this.xy = xy;
+        this.colors = colors;
         this.texture = texture;
     }
 
@@ -49,17 +53,17 @@ public class KRenderableTexture extends KAbstractShape {
         return this.uv;
     }
 
+    public KColor[] colors() {
+        return this.colors;
+    }
+
     public KTexture texture() {
         return this.texture;
     }
 
     @Override
     public void render(KRenderFrontend rf) {
-        KShaderProgram textureShader = this.texture.getShader();
-        if (textureShader != null) {
-            rf.setActiveShader(textureShader);
-        }
-
+        rf.setActiveShader(this.texture.shader());
         rf.render(this);
         rf.disableActiveShader();
     }

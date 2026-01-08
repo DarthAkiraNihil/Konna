@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
@@ -117,7 +118,7 @@ final class KTextureMaker {
 
         KTexture sourceTexture = texture.texture();
 
-        KImage attachedImage = sourceTexture.getAttachedImage();
+        KImage attachedImage = sourceTexture.attachedImage();
         int imageHash = attachedImage.hashCode();
 
         int tex;
@@ -131,6 +132,7 @@ final class KTextureMaker {
 
         KVector2i[] vertices = texture.xy();
         KVector2f[] uvs = texture.uv();
+        KColor[] colors = texture.colors();
 
         FloatBuffer verticesBuffer = KBufferUtils.createFloatBuffer(vertices.length * TEXTURE_ELEMENTS_COUNT);
 
@@ -144,7 +146,7 @@ final class KTextureMaker {
             verticesBuffer
                 .put(glPoint.x())
                 .put(glPoint.y())
-                .put(sourceTexture.color().normalized())
+                .put(colors[i].normalized())
                 .put(uvs[i].x())
                 .put(uvs[i].y());
         }
