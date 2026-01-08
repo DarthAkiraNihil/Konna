@@ -43,6 +43,7 @@ public class KStbImageLoader extends KObject implements KImageLoader {
 
     private final KStbImage stbImage;
     private final KResourceLoader resourceLoader;
+    private static final int DESIRED_CHANNELS = 4;
 
     /**
      * Constructs image loader with provided STBImage frontend.
@@ -79,7 +80,7 @@ public class KStbImageLoader extends KObject implements KImageLoader {
             src.flip();
 
             ByteBuffer loaded = this.stbImage.stbi_load_from_memory(
-                src, width, height, channels, 4
+                src, width, height, channels, DESIRED_CHANNELS
             );
             if (loaded == null) {
                 throw new KIoException(

@@ -38,6 +38,7 @@ public class KImage implements KCopyable<KImage> {
     private static final int GREEN_OFFSET = 1;
     private static final int BLUE_OFFSET = 2;
     private static final int ALPHA_OFFSET = 3;
+    private static final int CHANNEL_LIMIT = 256;
 
     private final ByteBuffer rawImageData;
     private final int width;
@@ -90,10 +91,10 @@ public class KImage implements KCopyable<KImage> {
 
 
         return new KColor(
-            r < 0 ? 256 + r : r,
-            g < 0 ? 256 + g : g,
-            b < 0 ? 256 + b : b,
-            alpha < 0 ? 256 + alpha : alpha
+            r < 0 ? CHANNEL_LIMIT + r : r,
+            g < 0 ? CHANNEL_LIMIT + g : g,
+            b < 0 ? CHANNEL_LIMIT + b : b,
+            alpha < 0 ? CHANNEL_LIMIT + alpha : alpha
         );
     }
 
