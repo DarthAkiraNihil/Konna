@@ -165,11 +165,18 @@ public final class Konna extends KObject implements Runnable {
         this.running = true;
         this.hypervisorThread = new Thread(
             () -> {
-                this.hypervisor.launch(features);
-                this.hypervisor.frameLoop();
+                try {
+                    this.hypervisor.launch(features);
+                    this.hypervisor.frameLoop();
+                } catch (Throwable e) {
+                    KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
+                    KSystemLogger.fatal(this.name, e);
+                    this.hypervisor.shutdown();
+                }
             }
         );
 
+        this.hypervisorThread.setName("konna_hypervisor_thread");
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
         this.hypervisorThread.start();
     }

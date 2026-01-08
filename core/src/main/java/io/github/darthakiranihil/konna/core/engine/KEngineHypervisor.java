@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
@@ -238,19 +239,39 @@ public class KEngineHypervisor extends KObject {
 
         while (!this.frame.shouldClose()) {
 
-            Instant beginTime = Instant.now();
+            try {
 
-            this.tick.invokeSync();
+                Instant beginTime = Instant.now();
 
-            while (this.frame.isLocked()) {
-                Thread.onSpinWait();
+                this.tick.invokeSync();
+
+                while (this.frame.isLocked()) {
+                    Thread.onSpinWait();
+                }
+                this.frame.swapBuffers();
+                this.frame.pollEvents();
+
+                var deltaTime = Duration.between(beginTime, Instant.now());
+                KSystemLogger.debug("hypervisor", "FPS: %f", ONE_NANOSEC / deltaTime.getNano());
+
+            } catch (KException kex) {
+                switch (kex.getSeverity()) {
+                    case EXPECTED, WARNING: {
+                        KSystemLogger.warning(this.name, kex);
+                        break;
+                    }
+                    case ERROR: {
+                        KSystemLogger.error(this.name, kex);
+                        break;
+                    }
+                    case FATAL: {
+                        KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
+                        KSystemLogger.fatal(this.name, kex);
+                        this.shutdown();
+                        break;
+                    }
+                }
             }
-            this.frame.swapBuffers();
-            this.frame.pollEvents();
-
-            var deltaTime = Duration.between(beginTime, Instant.now());
-            KSystemLogger.debug("hypervisor", "FPS: %f", ONE_NANOSEC / deltaTime.getNano());
-
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
