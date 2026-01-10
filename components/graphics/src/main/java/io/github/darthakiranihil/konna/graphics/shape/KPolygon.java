@@ -48,6 +48,7 @@ public class KPolygon extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
+        super(KAbstractShape.centroidOfPoints(points));
         this.points = points;
         this.outlineColor = outlineColor;
         this.fillColor = fillColor;
@@ -122,7 +123,7 @@ public class KPolygon extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
-        super(shader);
+        super(KAbstractShape.centroidOfPoints(points), shader);
         this.points = points;
         this.outlineColor = outlineColor;
         this.fillColor = fillColor;

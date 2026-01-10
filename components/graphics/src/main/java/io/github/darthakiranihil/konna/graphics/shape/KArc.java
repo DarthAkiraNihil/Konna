@@ -56,6 +56,7 @@ public class KArc extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
+        super(center);
         this.center = center;
         this.size = size;
         this.startAngle = startAngle;
@@ -195,7 +196,7 @@ public class KArc extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
-        super(shader);
+        super(center, shader);
         this.center = center;
         this.size = size;
         this.startAngle = startAngle;

@@ -50,6 +50,7 @@ public class KOval extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
+        super(center);
         this.center = center;
         this.size = size;
         this.outlineColor = outlineColor;
@@ -136,7 +137,7 @@ public class KOval extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
-        super(shader);
+        super(center, shader);
         this.center = center;
         this.size = size;
         this.outlineColor = outlineColor;

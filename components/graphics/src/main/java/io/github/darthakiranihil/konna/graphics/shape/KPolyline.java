@@ -42,6 +42,7 @@ public class KPolyline extends KAbstractShape {
      * @param color Polyline's color
      */
     public KPolyline(final KVector2i[] points, final KColor color) {
+        super(KAbstractShape.centroidOfPoints(points));
         this.points = points;
         this.color = color;
     }
@@ -82,7 +83,7 @@ public class KPolyline extends KAbstractShape {
      * @param color Polyline's color
      */
     public KPolyline(final KVector2i[] points, final KShaderProgram shader, final KColor color) {
-        super(shader);
+        super(KAbstractShape.centroidOfPoints(points), shader);
         this.points = points;
         this.color = color;
     }

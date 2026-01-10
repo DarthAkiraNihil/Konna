@@ -30,6 +30,7 @@ public final class KTransform implements KTransformable {
     private double rotation;
     private KVector2i translation;
     private KVector2d scaling;
+    private KVector2i center;
 
     private final float[] matrix;
     private boolean cached;
@@ -43,8 +44,10 @@ public final class KTransform implements KTransformable {
     public KTransform(
         double rotation,
         final KVector2i translation,
-        final KVector2d scaling
+        final KVector2d scaling,
+        final KVector2i center
     ) {
+        this.center = center;
         this.rotation = rotation;
         this.translation = translation;
         this.scaling = scaling;
@@ -57,7 +60,11 @@ public final class KTransform implements KTransformable {
      * and 1.0 scaling for X and Y coordinates.
      */
     public KTransform() {
-        this(0.0, KVector2i.ZERO, KVector2d.ONE);
+        this(0.0, KVector2i.ZERO, KVector2d.ONE, KVector2i.ZERO);
+    }
+
+    public KTransform(final KVector2i center) {
+        this(0.0, KVector2i.ZERO, KVector2d.ONE, center);
     }
 
     @Override

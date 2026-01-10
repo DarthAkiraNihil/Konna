@@ -42,6 +42,10 @@ public class KLine extends KAbstractShape {
      * @param color Line's color
      */
     public KLine(final KVector2i start, final KVector2i end, final KColor color) {
+        super(new KVector2i(
+            start.x() / 2,
+            start.y() / 2
+        ));
         this.start = start;
         this.end = end;
         this.color = color;
@@ -94,7 +98,13 @@ public class KLine extends KAbstractShape {
         final KShaderProgram shader,
         final KColor color
     ) {
-        super(shader);
+        super(
+            new KVector2i(
+                start.x() / 2,
+                start.y() / 2
+            ),
+            shader
+        );
         this.start = start;
         this.end = end;
         this.color = color;

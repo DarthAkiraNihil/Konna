@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformable;
-import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import org.jspecify.annotations.Nullable;
 
@@ -41,16 +40,16 @@ public abstract class KAbstractShape implements KShape {
     /**
      * Creates the shape with initial transform without shader.
      */
-    public KAbstractShape() {
-        this.transform = new KTransform();
+    protected KAbstractShape(final KVector2i center) {
+        this.transform = new KTransform(center);
         this.shader = null;
     }
 
     /**
      * Creates the shape with initial transform and passed shader.
      */
-    public KAbstractShape(final KShaderProgram shader) {
-        this.transform = new KTransform();
+    protected KAbstractShape(final KVector2i center, final KShaderProgram shader) {
+        this.transform = new KTransform(center);
         this.shader = shader;
     }
 
@@ -97,6 +96,28 @@ public abstract class KAbstractShape implements KShape {
     @Override
     public @Nullable KShaderProgram getShader() {
         return this.shader;
+    }
+
+    public static KVector2i centroidOfPoints(final KVector2i[] points) {
+        double x = 0, y = 0;
+        double signedArea = 0;
+        for (int i = 0; i < points.length; i++) {
+            KVector2i p0 = points[i];
+            KVector2i p1 = points[( i + 1 ) % points.length];
+
+            double area = ( p0.x() * p1.y() ) - ( p1.x() * p0.y() );
+            signedArea += area;
+
+            x += (p0.x() * p1.x()) * area;
+            y += (p0.y() * p1.y()) * area;
+
+        }
+
+        signedArea *= 0.5;
+        x /= 6 * signedArea;
+        y /= 6 * signedArea;
+
+        return new KVector2i((int) x, (int) y);
     }
 
 }
