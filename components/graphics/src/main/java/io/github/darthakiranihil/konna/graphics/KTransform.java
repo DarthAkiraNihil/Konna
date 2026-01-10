@@ -31,7 +31,7 @@ public final class KTransform implements KTransformable {
     private KVector2i translation;
     private KVector2d scaling;
 
-    private final float[][] matrix;
+    private final float[] matrix;
     private boolean cached;
 
     /**
@@ -48,7 +48,7 @@ public final class KTransform implements KTransformable {
         this.rotation = rotation;
         this.translation = translation;
         this.scaling = scaling;
-        this.matrix = new float[3][3];
+        this.matrix = new float[16];
         this.cached = false;
     }
 
@@ -121,21 +121,22 @@ public final class KTransform implements KTransformable {
      * of this transform.
      * @return Transformation matrix of this transform
      */
-    public float[][] matrix() {
+    public float[] matrix() {
 
         if (cached) {
             return this.matrix;
         }
 
-        this.matrix[0][0] = (float) (Math.cos(this.rotation) * this.scaling.x());
-        this.matrix[1][0] = (float) Math.sin(this.rotation);
+        this.matrix[0] = (float) (Math.cos(this.rotation) * this.scaling.x()); // 0, 0
+        this.matrix[4] = (float) Math.sin(this.rotation); // 1, 0
         // this.matrix[2][0] = 0.0f;
-        this.matrix[0][1] = (float) -Math.sin(this.rotation);
-        this.matrix[1][1] = (float) (Math.cos(this.rotation) * this.scaling.y());
+        this.matrix[1] = (float) -Math.sin(this.rotation); // 0, 1
+        this.matrix[5] = (float) (Math.cos(this.rotation) * this.scaling.y()); // 1, 1
         // this.matrix[2][1] = 0.0f;
-        this.matrix[0][2] = (float) this.translation.x();
-        this.matrix[1][2] = (float) this.translation.y();
-        this.matrix[2][2] = 1.0f;
+        this.matrix[3] = (float) this.translation.x(); // 0, 3
+        this.matrix[7] = (float) this.translation.y(); // 1, 3
+        this.matrix[10] = 1.0f; // 2, 2
+        this.matrix[15] = 1.0f; // 3, 3
 
         this.cached = true;
         return this.matrix;

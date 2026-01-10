@@ -73,6 +73,15 @@ public final class KGl33ShaderProgram implements KShaderProgram {
         );
     }
 
+    @Override
+    public void setUniformMatrix(String uniformName, float[] value) {
+        this.gl.glUniformMatrix4fv(
+            this.getUniformLocation(uniformName),
+            false,
+            value
+        );
+    }
+
     private int getUniformLocation(final String uniformName) {
         if (!this.uniformLocations.containsKey(uniformName)) {
             this.uniformLocations.put(

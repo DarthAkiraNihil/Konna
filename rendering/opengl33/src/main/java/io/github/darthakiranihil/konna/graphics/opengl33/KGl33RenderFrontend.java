@@ -18,14 +18,12 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
-import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
@@ -48,7 +46,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     public static final int DEFAULT_VIEWPORT_SIZE_SIDE = 640;
 
     private final KGl33 gl;
-    private KSize viewportSize;
     private boolean initialized;
 
     private final KBufferMaker bufferMaker;
@@ -63,7 +60,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      */
     public KGl33RenderFrontend(@KInject final KGl33 gl, @KInject final KShaderCompiler shaderCompiler) {
         this.gl = gl;
-        this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
         this.textureMaker = new KTextureMaker(this.gl);
         this.bufferMaker = new KBufferMaker(this.gl);
@@ -72,7 +68,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void setViewportSize(final KSize size) {
-        this.viewportSize = size;
         this.bufferMaker.setViewportSize(size);
         this.textureMaker.setViewportSize(size);
     }
@@ -178,8 +173,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        // transform applying todo: move to shader`
-        this.applyTransform(shape);
+        shader.setUniformMatrix("transform", shape.getTransform().matrix());
 
         shader.setUniform(KGl33ShaderCompiler.U_COLOR, fillColor.normalized());
         this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
@@ -213,8 +207,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        // transform applying todo: move to shader
-        this.applyTransform(shape);
+        shader.setUniformMatrix("transform", shape.getTransform().matrix());
 
         shader.setUniform(KGl33ShaderCompiler.U_COLOR, color.normalized());
         this.gl.glDrawElements(KGl33.GL_LINE_STRIP, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
@@ -224,22 +217,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.updateTtl();
         this.disableActiveShader();
-
-    }
-
-    private void applyTransform(final KShape shape) {
-
-        KTransform transform = shape.getTransform();
-        double rotation = transform.getRotation();
-        KVector2i translation = transform.getTranslation();
-        KVector2d scaling = transform.getScaling();
-        float glTranslationX = (float) translation.x() / this.viewportSize.width();
-        float glTranslationY = (float) -translation.y() / this.viewportSize.height();
-
-        this.gl.glLoadIdentity();
-        this.gl.glRotated(rotation, 0.0, 0.0, 1.0); // todo: fix pivot working
-        this.gl.glScaled(scaling.x(), scaling.y(), 1.0);
-        this.gl.glTranslatef(glTranslationX, glTranslationY, 0.0f);
 
     }
 
@@ -302,6 +279,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableVertexAttribArray(2);
 
         sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, 0);
+        sourceTexture.shader().setUniformMatrix("transform", texture.getTransform().matrix());
 
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glDrawElements(

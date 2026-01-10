@@ -32,5 +32,6 @@ public interface KShaderProgram {
 
     void setUniform(String uniformName, float[] value);
     void setUniform(String uniformName, int value);
+    void setUniformMatrix(String uniformName, float[] value);
 
 }
