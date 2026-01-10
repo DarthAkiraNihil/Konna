@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 import java.util.Objects;
 
@@ -170,6 +171,170 @@ public class KArc extends KAbstractShape {
             new KSize(width, height),
             startAngle,
             arcAngle,
+            outlineColor,
+            fillColor
+        );
+    }
+
+    /**
+     * Standard constructor but shader is not default.
+     * @param center Center of oval of the arc
+     * @param size Size of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Arc's outline color
+     * @param fillColor Arc's fill color
+     */
+    public KArc(
+        final KVector2i center,
+        final KSize size,
+        int startAngle,
+        int arcAngle,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        super(shader);
+        this.center = center;
+        this.size = size;
+        this.startAngle = startAngle;
+        this.arcAngle = arcAngle;
+        this.outlineColor = outlineColor;
+        this.fillColor = fillColor;
+    }
+
+    /**
+     * Creates an arc with transparent outline and fill colors and shader is not default.
+     * @param coordinates Center of oval of the arc
+     * @param size Size of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param shader Specific shader used for its rendering
+     */
+    public KArc(
+        final KVector2i coordinates,
+        final KSize size,
+        int startAngle,
+        int arcAngle,
+        final KShaderProgram shader
+    ) {
+        this(coordinates, size, startAngle, arcAngle, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Creates an arc with transparent fill color and shader is not default.
+     * @param coordinates Center of oval of the arc
+     * @param size Size of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Arc's outline color
+     */
+    public KArc(
+        final KVector2i coordinates,
+        final KSize size,
+        int startAngle,
+        int arcAngle,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        this(coordinates, size, startAngle, arcAngle, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but center and size are defined by separated int parameters and shader is not default.
+     * Also creates an arc with transparent outline and fill colors.
+     * @param x X coordinate of center of oval of the arc
+     * @param y Y coordinate of center of oval of the arc
+     * @param width Width of oval of the arc
+     * @param height Height of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param shader Specific shader used for its rendering
+     */
+    public KArc(
+        int x,
+        int y,
+        int width,
+        int height,
+        int startAngle,
+        int arcAngle,
+        final KShaderProgram shader
+    ) {
+        this(
+            new KVector2i(x, y),
+            new KSize(width, height),
+            startAngle,
+            arcAngle,
+            shader,
+            KColor.TRANSPARENT,
+            KColor.TRANSPARENT
+        );
+    }
+
+    /**
+     * Standard constructor, but center and size are defined by separated int parameters and shader is not default.
+     * Also creates an arc with transparent fill color.
+     * @param x X coordinate of center of oval of the arc
+     * @param y Y coordinate of center of oval of the arc
+     * @param width Width of oval of the arc
+     * @param height Height of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Arc's outline color
+     */
+    public KArc(
+        int x,
+        int y,
+        int width,
+        int height,
+        int startAngle,
+        int arcAngle,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        this(
+            new KVector2i(x, y),
+            new KSize(width, height),
+            startAngle,
+            arcAngle,
+            shader,
+            outlineColor,
+            KColor.TRANSPARENT
+        );
+    }
+
+    /**
+     * Standard constructor, but center and size are defined by separated int parameters and shader is not default.
+     * @param x X coordinate of center of oval of the arc
+     * @param y Y coordinate of center of oval of the arc
+     * @param width Width of oval of the arc
+     * @param height Height of oval of the arc
+     * @param startAngle Start angle of the arc on the oval
+     * @param arcAngle Arc angle on the oval
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Arc's outline color
+     * @param fillColor Arc's fill color
+     */
+    public KArc(
+        int x,
+        int y,
+        int width,
+        int height,
+        int startAngle,
+        int arcAngle,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        this(
+            new KVector2i(x, y),
+            new KSize(width, height),
+            startAngle,
+            arcAngle,
+            shader,
             outlineColor,
             fillColor
         );

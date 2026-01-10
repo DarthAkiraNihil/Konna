@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 import java.util.Objects;
 
@@ -118,6 +119,106 @@ public class KOval extends KAbstractShape {
         final KColor fillColor
     ) {
         this(new KVector2i(x, y), new KSize(width, height), outlineColor, fillColor);
+    }
+
+    /**
+     * Standard constructor but used shader is not default.
+     * @param center Coordinates of oval's center
+     * @param size Size of the oval
+     @param shader Specific shader used for its rendering
+     * @param outlineColor Oval's outline color
+     * @param fillColor Oval's fill color
+     */
+    public KOval(
+        final KVector2i center,
+        final KSize size,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        super(shader);
+        this.center = center;
+        this.size = size;
+        this.outlineColor = outlineColor;
+        this.fillColor = fillColor;
+    }
+
+    /**
+     * Creates an oval with transparent outline and fill colors and used shader is not default.
+     * @param center Coordinates of oval's center
+     * @param size Size of the oval
+     @param shader Specific shader used for its rendering
+     */
+    public KOval(final KVector2i center, final KSize size, final KShaderProgram shader) {
+        this(center, size, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Creates an oval with transparent fill color and used shader is not default.
+     * @param center Coordinates of oval's center
+     * @param size Size of the oval
+     @param shader Specific shader used for its rendering
+     * @param outlineColor Oval's outline color
+     */
+    public KOval(
+        final KVector2i center,
+        final KSize size,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        this(center, size, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but center coordinates and size are defined by separated
+     * int parameters. Also creates an oval with transparent outline and fill colors
+     * and used shader is not default.
+     * @param x X coordinate of oval's center
+     * @param y Y coordinate of oval's center
+     * @param width Oval's width
+     * @param height Oval's height
+     * @param shader Specific shader used for its rendering
+     */
+    public KOval(int x, int y, int width, int height, final KShaderProgram shader) {
+        this(x, y, width, height, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but center coordinates and size are defined by separated
+     * int parameters. Also creates an oval with transparent fill color
+     * and used shader is not default.
+     * @param x X coordinate of oval's center
+     * @param y Y coordinate of oval's center
+     * @param width Oval's width
+     * @param height Oval's height
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Oval's outline color
+     */
+    public KOval(int x, int y, int width, int height, final KShaderProgram shader, final KColor outlineColor) {
+        this(x, y, width, height, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but center coordinates and size are defined by separated
+     * int parameters and used shader is not default.
+     * @param x X coordinate of oval's center
+     * @param y Y coordinate of oval's center
+     * @param width Oval's width
+     * @param height Oval's height
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Oval's outline color
+     * @param fillColor Oval's fill color
+     */
+    public KOval(
+        int x,
+        int y,
+        int width,
+        int height,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        this(new KVector2i(x, y), new KSize(width, height), shader, outlineColor, fillColor);
     }
 
     /**

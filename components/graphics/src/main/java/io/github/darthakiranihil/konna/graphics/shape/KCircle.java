@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 /**
  * Representation of a circle that is oval with squared size.
@@ -100,6 +101,113 @@ public class KCircle extends KOval {
      */
     public KCircle(int x, int y, int r, final KColor outlineColor, final KColor fillColor) {
         super(x, y, 2 * r, 2 * r, outlineColor, fillColor);
+    }
+
+    /**
+     * Standard constructor but used shader is not default.
+     * @param coordinates Coordinates of circle's center
+     * @param r Circle's radius
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Circle's outline color
+     * @param fillColor Circle's fill color
+     */
+    public KCircle(
+        final KVector2i coordinates,
+        int r,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        super(coordinates, KSize.squared(2 * r), shader, outlineColor, fillColor);
+    }
+
+    /**
+     * Creates a circle with transparent fill color and used shader is not default.
+     * @param coordinates Coordinates of circle's center
+     * @param r Circle's radius
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Circle's outline color
+     */
+    public KCircle(
+        final KVector2i coordinates,
+        int r,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        super(coordinates, KSize.squared(2 * r), shader, outlineColor);
+    }
+
+    /**
+     * Creates a circle with transparent outline and fill color and used shader is not default.
+     * @param coordinates Coordinates of circle's center
+     * @param r Circle's radius
+     * @param shader Specific shader used for its rendering
+     */
+    public KCircle(
+        final KVector2i coordinates,
+        int r,
+        final KShaderProgram shader
+    ) {
+        super(coordinates, KSize.squared(2 * r), shader);
+    }
+
+    /**
+     * Standard constructor, but circle's center coordinates
+     * are defined by separated int parameters. Also creates a
+     * circle with transparent outline and fill color and used shader is not default.
+     * @param x X coordinate of circle's center
+     * @param y Y coordinate of circle's center
+     * @param r Circle's radius
+     * @param shader Specific shader used for its rendering
+     */
+    public KCircle(
+        int x,
+        int y,
+        int r,
+        final KShaderProgram shader
+    ) {
+        super(x, y, 2 * r, 2 * r, shader);
+    }
+
+    /**
+     * Standard constructor, but circle's center coordinates
+     * are defined by separated int parameters. Also creates a circle
+     * with transparent fill color and used shader is not default.
+     * @param x X coordinate of circle's center
+     * @param y Y coordinate of circle's center
+     * @param r Circle's radius
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Circle's outline color
+     */
+    public KCircle(
+        int x,
+        int y,
+        int r,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        super(x, y, 2 * r, 2 * r, shader, outlineColor);
+    }
+
+    /**
+     * Standard constructor, but circle's center coordinates
+     * are defined by separated int parameters and used shader is not default.
+     * @param x X coordinate of circle's center
+     * @param y Y coordinate of circle's center
+     * @param r Circle's radius
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Circle's outline color
+     * @param fillColor Circle's fill color
+     */
+    public KCircle(
+        int x,
+        int y,
+        int r,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        super(x, y, 2 * r, 2 * r, shader, outlineColor, fillColor);
     }
 
     @Override

@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 import java.util.Objects;
 
@@ -78,6 +79,74 @@ public class KLine extends KAbstractShape {
      */
     public KLine(int x1, int x2, int y1, int y2) {
         this(new KVector2i(x1, y1), new KVector2i(x2, y2), KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor but used shader is not default.
+     * @param start Start coordinates of the line
+     * @param end End coordinates of the line
+     *  @param shader Specific shader used for its rendering
+     * @param color Line's color
+     */
+    public KLine(
+        final KVector2i start,
+        final KVector2i end,
+        final KShaderProgram shader,
+        final KColor color
+    ) {
+        super(shader);
+        this.start = start;
+        this.end = end;
+        this.color = color;
+    }
+
+    /**
+     * Creates a line with transparent color and used shader is not default.
+     * @param start Start coordinates of the line
+     * @param end End coordinates of the line
+     *  @param shader Specific shader used for its rendering
+     */
+    public KLine(
+        final KVector2i start,
+        final KVector2i end,
+        final KShaderProgram shader
+    ) {
+        this(start, end, shader, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but start and end coordinates are defined
+     * by separated int parameters and used shader is not default.
+     * @param x1 X coordinate of start of the line
+     * @param x2 X coordinate of end of the line
+     * @param y1 Y coordinate of start of the line
+     * @param y2 Y coordinate of end of the line
+     * @param shader Specific shader used for its rendering
+     * @param color Line's color
+     */
+    public KLine(
+        int x1,
+        int x2,
+        int y1,
+        int y2,
+        final KShaderProgram shader,
+        final KColor color
+    ) {
+        this(new KVector2i(x1, y1), new KVector2i(x2, y2), shader, color);
+    }
+
+    /**
+     * Standard constructor, but start and end coordinates are defined
+     * by separated int parameters. Also creates a line with transparent color
+     * and used shader is not default.
+     * @param x1 X coordinate of start of the line
+     * @param x2 X coordinate of end of the line
+     * @param y1 Y coordinate of start of the line
+     * @param y2 Y coordinate of end of the line
+     * @param shader Specific shader used for its rendering
+     */
+    public KLine(int x1, int x2, int y1, int y2, final KShaderProgram shader) {
+        this(new KVector2i(x1, y1), new KVector2i(x2, y2), shader, KColor.TRANSPARENT);
     }
 
     @Override

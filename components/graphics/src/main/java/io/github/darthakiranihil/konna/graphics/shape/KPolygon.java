@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -106,6 +107,99 @@ public class KPolygon extends KAbstractShape {
         final KColor fillColor
     ) {
         this(KStructUtils.furlArraysToVectors(xPoints, yPoints), outlineColor, fillColor);
+    }
+
+    /**
+     * Standard constructor but used shader is not default.
+     * @param points Array of polygon's points (vertices)
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Polygon's outline color
+     * @param fillColor Polygon's fill color
+     */
+    public KPolygon(
+        final KVector2i[] points,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        super(shader);
+        this.points = points;
+        this.outlineColor = outlineColor;
+        this.fillColor = fillColor;
+    }
+
+    /**
+     * Creates a polygon with transparent outline and fill colors and used shader is not default.
+     * @param points Array of polygon's points (vertices)
+     * @param shader Specific shader used for its rendering
+     */
+    public KPolygon(final KVector2i[] points, final KShaderProgram shader) {
+        this(points, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Creates a polygon with transparent fill color and used shader is not default.
+     * @param points Array of polygon's points (vertices)
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Polygon's outline color
+     */
+    public KPolygon(
+        final KVector2i[] points,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        this(points, shader, outlineColor, KColor.TRANSPARENT);
+    };
+
+    /**
+     * Standard constructor, but X and Y coordinates of polygon's points
+     * are passed in different arrays and used shader is not default.
+     * Also creates a polygon with transparent outline and fill colors.
+     * @param xPoints Array of X coordinates of polygon's points (vertices)
+     * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     *  @param shader Specific shader used for its rendering
+     */
+    public KPolygon(
+        final int[] xPoints,
+        final int[] yPoints,
+        final KShaderProgram shader
+    ) {
+        this(xPoints, yPoints, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but X and Y coordinates of polygon's points
+     * are passed in different arrays. Also creates a polygon with transparent fill color
+     * and used shader is not default.
+     * @param xPoints Array of X coordinates of polygon's points (vertices)
+     * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     * @param outlineColor Polygon's outline color
+     */
+    public KPolygon(
+        final int[] xPoints,
+        final int[] yPoints,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        this(xPoints, yPoints, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but X and Y coordinates of polygon's points
+     * are passed in different arrays and used shader is not default.
+     * @param xPoints Array of X coordinates of polygon's points (vertices)
+     * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     * @param outlineColor Polygon's outline color
+     * @param fillColor Polygon's fill color
+     */
+    public KPolygon(
+        final int[] xPoints,
+        final int[] yPoints,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        this(KStructUtils.furlArraysToVectors(xPoints, yPoints), shader, outlineColor, fillColor);
     }
 
     /**

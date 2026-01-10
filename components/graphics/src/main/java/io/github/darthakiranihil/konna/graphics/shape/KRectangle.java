@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 
 /**
  * Representation of a rectangle, a polygon of 4 points and right angles.
@@ -133,6 +134,117 @@ public class KRectangle extends KPolygon {
     }
 
     /**
+     * Standard constructor but used shader is not default.
+     * @param coordinates Coordinates of rectangle's top left corner
+     * @param size Size of the rectangle
+     * @param outlineColor Rectangle's outline color
+     * @param fillColor Rectangle's fill color
+     */
+    public KRectangle(
+        final KVector2i coordinates,
+        final KSize size,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        this(
+            coordinates.x(),
+            coordinates.y(),
+            size.width(),
+            size.height(),
+            shader,
+            outlineColor,
+            fillColor
+        );
+    }
+
+    /**
+     * Creates a rectangle with transparent outline and fill colors and used shader is not default.
+     * @param coordinates Coordinates of rectangle's top left corner
+     * @param size Size of the rectangle
+     * @param shader Specific shader used for its rendering
+     */
+    public KRectangle(final KVector2i coordinates, final KSize size, final KShaderProgram shader) {
+        this(coordinates, size, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Creates a rectangle with transparent fill color and used shader is not default.
+     * @param coordinates Coordinates of rectangle's top left corner
+     * @param size Size of the rectangle
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Rectangle's outline color
+     */
+    public KRectangle(final KVector2i coordinates, final KSize size, final KShaderProgram shader, final KColor outlineColor) {
+        this(coordinates, size, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but top left corner coordinates and size are passed
+     * in separated int parameters and used shader is not default.
+     * @param x X coordinate of rectangle's top left corner
+     * @param y Y coordinate of rectangle's top left corner
+     * @param width Width of the rectangle
+     * @param height Height of the rectangle
+     *   @param shader Specific shader used for its rendering
+     * @param outlineColor Rectangle's outline color
+     * @param fillColor Rectangle's fill color
+     */
+    public KRectangle(
+        int x,
+        int y,
+        int width,
+        int height,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        super(
+            new KVector2i[] {
+                new KVector2i(x, y),
+                new KVector2i(x + width, y),
+                new KVector2i(x + width, y + height),
+                new KVector2i(x, y + height),
+            },
+            shader,
+            outlineColor,
+            fillColor
+        );
+        this.width = width;
+        this.height = height;
+    }
+
+    /**
+     * Standard constructor, but top left corner coordinates and size are passed
+     * in separated int parameters.
+     * Also creates a rectangle with transparent outline and fill colors
+     * and used shader is not default.
+     * @param x X coordinate of rectangle's top left corner
+     * @param y Y coordinate of rectangle's top left corner
+     * @param width Width of the rectangle
+     * @param height Height of the rectangle
+     *   @param shader Specific shader used for its rendering
+     */
+    public KRectangle(int x, int y, int width, int height, final KShaderProgram shader) {
+        this(x, y, width, height, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Standard constructor, but top left corner coordinates and size are passed
+     * in separated int parameters. Also creates a rectangle with transparent fill color
+     * and used shader is not default.
+     * @param x X coordinate of rectangle's top left corner
+     * @param y Y coordinate of rectangle's top left corner
+     * @param width Width of the rectangle
+     * @param height Height of the rectangle
+     *   @param shader Specific shader used for its rendering
+     * @param outlineColor Rectangle's outline color
+     */
+    public KRectangle(int x, int y, int width, int height, final KShaderProgram shader, final KColor outlineColor) {
+        this(x, y, width, height, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
      * Creates a square with transparent outline and fill colors.
      * @param coordinates Coordinates of square's top left corner
      * @param side Side of the square
@@ -217,6 +329,105 @@ public class KRectangle extends KPolygon {
         final KColor fillColor
     ) {
         return new KRectangle(x, y, side, side, outlineColor, fillColor);
+    }
+
+    /**
+     * Creates a square with transparent outline and fill colors and used shader is not default.
+     * @param coordinates Coordinates of square's top left corner
+     * @param side Side of the square
+     * @param shader Specific shader used for its rendering
+     * @return Rectangle with square dimensions
+     */
+    public static KRectangle square(final KVector2i coordinates, int side, final KShaderProgram shader) {
+        return new KRectangle(coordinates, KSize.squared(side), shader);
+    }
+
+    /**
+     * Creates a square with transparent fill color and used shader is not default.
+     * @param coordinates Coordinates of square's top left corner
+     * @param side Side of the square
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Square's outline color
+     * @return Rectangle with square dimensions
+     */
+    public static KRectangle square(
+        final KVector2i coordinates,
+        int side,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
+        return new KRectangle(coordinates, KSize.squared(side), shader, outlineColor);
+    }
+
+    /**
+     * Creates a square but used shader is not default.
+     * @param coordinates Coordinates of square's top left corner
+     * @param side Side of the square
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Square's outline color
+     * @param fillColor Square's fill color
+     * @return Rectangle with square dimensions
+     */
+    public static KRectangle square(
+        final KVector2i coordinates,
+        int side,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        return new KRectangle(coordinates, KSize.squared(side), shader, outlineColor, fillColor);
+    }
+
+    /**
+     * Creates a square with transparent outline and fill colors.
+     * Coordinates of square's top left corner are passed in separated int parameters
+     * and used shader is not default.
+     * @param x X coordinate of square's top left corner
+     * @param y Y coordinate of square's top left corner
+     * @param side Side of the square
+     * @param shader Specific shader used for its rendering
+     * @return Rectangle with square dimensions
+     */
+    public static KRectangle square(int x, int y, int side, final KShaderProgram shader) {
+        return new KRectangle(x, y, side, side, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Creates a square with transparent fill color.
+     * Coordinates of square's top left corner are passed in separated int parameters
+     * and used shader is not default.
+     * @param x X coordinate of square's top left corner
+     * @param y Y coordinate of square's top left corner
+     * @param side Side of the square
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Square's outline color
+     * @return Rectangle with square dimensions
+     */
+    public static KRectangle square(int x, int y, int side, final KShaderProgram shader, final KColor outlineColor) {
+        return new KRectangle(x, y, side, side, shader, outlineColor, KColor.TRANSPARENT);
+    }
+
+    /**
+     * Creates a square
+     * Coordinates of square's top left corner are passed in separated int parameters
+     * and used shader is not default.
+     * @param x X coordinate of square's top left corner
+     * @param y Y coordinate of square's top left corner
+     * @param side Side of the square
+     * @param shader Specific shader used for its rendering
+     * @param outlineColor Square's outline color
+     * @param fillColor Square's fill color
+     * @return Rectangle with square dimensions
+     */
+    public static KRectangle square(
+        int x,
+        int y,
+        int side,
+        final KShaderProgram shader,
+        final KColor outlineColor,
+        final KColor fillColor
+    ) {
+        return new KRectangle(x, y, side, side, shader, outlineColor, fillColor);
     }
 
     /**
