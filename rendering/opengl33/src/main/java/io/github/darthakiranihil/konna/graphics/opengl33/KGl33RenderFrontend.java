@@ -168,10 +168,9 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     ) {
         KShaderProgram shader = shape.getShader();
         if (shader == null) {
-            this.useDefaultShader();
-        } else {
-            this.setActiveShader(shader);
+            shader = this.shaderCompiler.getDefaultShader();
         }
+        this.setActiveShader(shader);
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -182,10 +181,10 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         // transform applying todo: move to shader`
         this.applyTransform(shape);
 
-        this.gl.glColor4fv(fillColor.normalized());
+        shader.setUniform(KGl33ShaderCompiler.U_COLOR, fillColor.normalized());
         this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
-        this.gl.glColor4fv(outlineColor.normalized());
+        shader.setUniform(KGl33ShaderCompiler.U_COLOR, outlineColor.normalized());
         this.gl.glDrawElements(outlineRenderMode, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
@@ -204,10 +203,9 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     ) {
         KShaderProgram shader = shape.getShader();
         if (shader == null) {
-            this.useDefaultShader();
-        } else {
-            this.setActiveShader(shader);
+            shader = this.shaderCompiler.getDefaultShader();
         }
+        this.setActiveShader(shader);
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -218,7 +216,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         // transform applying todo: move to shader
         this.applyTransform(shape);
 
-        this.gl.glColor4fv(color.normalized());
+        shader.setUniform(KGl33ShaderCompiler.U_COLOR, color.normalized());
         this.gl.glDrawElements(KGl33.GL_LINE_STRIP, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
@@ -303,7 +301,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         );
         this.gl.glEnableVertexAttribArray(2);
 
-        sourceTexture.shader().setUniform("ourTexture", 0);
+        sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, 0);
 
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glDrawElements(
