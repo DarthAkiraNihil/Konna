@@ -167,9 +167,7 @@ public class KRenderableTexture extends KAbstractShape {
 
     @Override
     public void render(final KRenderFrontend rf) {
-        rf.setActiveShader(this.texture.shader());
         rf.render(this);
-        rf.disableActiveShader();
     }
 
     @Override

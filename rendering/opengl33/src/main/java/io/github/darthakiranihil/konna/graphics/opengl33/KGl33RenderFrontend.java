@@ -25,6 +25,8 @@ import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShader;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
@@ -51,6 +53,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     private final KBufferMaker bufferMaker;
     private final KTextureMaker textureMaker;
+    private final KShaderCompiler shaderCompiler;
 
 
     /**
@@ -58,12 +61,13 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * library frontend.
      * @param gl OpenGL 3.3 frontend
      */
-    public KGl33RenderFrontend(@KInject final KGl33 gl) {
+    public KGl33RenderFrontend(@KInject final KGl33 gl, @KInject final KShaderCompiler shaderCompiler) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
         this.textureMaker = new KTextureMaker(this.gl);
         this.bufferMaker = new KBufferMaker(this.gl);
+        this.shaderCompiler = shaderCompiler;
     }
 
     @Override
@@ -162,6 +166,12 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         int pointCount,
         int outlineRenderMode
     ) {
+        KShaderProgram shader = shape.getShader();
+        if (shader == null) {
+            this.useDefaultShader();
+        } else {
+            this.setActiveShader(shader);
+        }
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -183,6 +193,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.updateTtl();
+        this.disableActiveShader();
     }
 
     private void render(
@@ -191,6 +202,12 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         final KColor color,
         int pointCount
     ) {
+        KShaderProgram shader = shape.getShader();
+        if (shader == null) {
+            this.useDefaultShader();
+        } else {
+            this.setActiveShader(shader);
+        }
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -208,6 +225,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.updateTtl();
+        this.disableActiveShader();
 
     }
 
@@ -233,6 +251,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
+    public void useDefaultShader() {
+        this.setActiveShader(this.shaderCompiler.getDefaultShader());
+    }
+
+    @Override
     public void disableActiveShader() {
         this.gl.glUseProgram(0);
     }
@@ -241,6 +264,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     public void render(final KRenderableTexture texture) {
         KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
         KTexture sourceTexture = texture.texture();
+
+        this.setActiveShader(sourceTexture.shader());
 
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, textureInfo.vbo());
@@ -294,6 +319,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.disableActiveShader();
 
     }
 

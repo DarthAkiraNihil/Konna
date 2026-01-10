@@ -41,6 +41,28 @@ import java.nio.IntBuffer;
 @KExcludeFromGeneratedCoverageReport
 public final class KGl33ShaderCompiler extends KObject implements KShaderCompiler {
 
+    public static final String DEFAULT_SHAPE_FRAGMENT_SHADER = """
+        #version 330 core
+        out vec4 FragColor;
+        \s
+        uniform vec4 ourColor; // we set this variable in the OpenGL code.
+        \s
+        void main()
+        {
+            FragColor = ourColor;
+        }
+    """;
+
+    public static final String DEFAULT_SHAPE_VERTEX_SHADER = """
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        \s
+        void main()
+        {
+            gl_Position = vec4(aPos, 1.0); // see how we directly give a vec3 to vec4's constructor
+        }
+    """;
+
     /**
      * Default texture fragment shader.
      */
@@ -80,6 +102,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
     """;
 
     private final KGl33 gl;
+    private @Nullable KShaderProgram defaultShader;
     private @Nullable KShaderProgram defaultTextureShader;
 
     /**
@@ -181,5 +204,17 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         }
 
         return this.defaultTextureShader;
+    }
+
+    @Override
+    public KShaderProgram getDefaultShader() {
+        if (this.defaultShader == null) {
+            this.defaultShader = this.createShaderProgram(
+                this.compileFragmentShader(DEFAULT_SHAPE_FRAGMENT_SHADER),
+                this.compileVertexShader(DEFAULT_SHAPE_VERTEX_SHADER)
+            );
+        }
+
+        return this.defaultShader;
     }
 }

@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.graphics.render;
 
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import org.jspecify.annotations.Nullable;
+
 /**
  * Interface for an object that can be rendered with
  * {@link KRenderFrontend}.
@@ -34,6 +37,11 @@ public interface KRenderable {
         public void render(final KRenderFrontend rf) {
 
         }
+
+        @Override
+        public @Nullable KShaderProgram getShader() {
+            return null;
+        }
     }
 
     /**
@@ -41,5 +49,6 @@ public interface KRenderable {
      * @param rf Render frontend used for object rendering
      */
     void render(KRenderFrontend rf);
+    @Nullable KShaderProgram getShader();
 
 }

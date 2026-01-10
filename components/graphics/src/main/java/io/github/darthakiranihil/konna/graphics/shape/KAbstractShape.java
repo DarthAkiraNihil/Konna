@@ -21,6 +21,9 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformable;
+import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Abstract base for all standard shapes.
@@ -33,12 +36,22 @@ import io.github.darthakiranihil.konna.graphics.KTransformable;
 public abstract class KAbstractShape implements KShape {
 
     private final KTransform transform;
+    private final @Nullable KShaderProgram shader;
 
     /**
-     * Creates shape with initial transform.
+     * Creates the shape with initial transform without shader.
      */
     public KAbstractShape() {
         this.transform = new KTransform();
+        this.shader = null;
+    }
+
+    /**
+     * Creates the shape with initial transform and passed shader.
+     */
+    public KAbstractShape(final KShaderProgram shader) {
+        this.transform = new KTransform();
+        this.shader = shader;
     }
 
     @Override
@@ -79,6 +92,11 @@ public abstract class KAbstractShape implements KShape {
     public KTransformable setScaling(final KVector2d scale) {
         this.transform.setScaling(scale);
         return this;
+    }
+
+    @Override
+    public @Nullable KShaderProgram getShader() {
+        return this.shader;
     }
 
 }
