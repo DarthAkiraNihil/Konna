@@ -16,10 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import org.jspecify.annotations.Nullable;
-
 /**
  * Interface representation of a transformable object that
  * can be rotated, scaled and translated in render space.
@@ -35,6 +31,11 @@ public interface KTransformable {
      * @return Transform of this object
      */
     KTransform getTransform();
+
+    /**
+     * Sets a specific transform to this object.
+     * @param newTransform New transform
+     */
     void setTransform(KTransform newTransform);
 
 }

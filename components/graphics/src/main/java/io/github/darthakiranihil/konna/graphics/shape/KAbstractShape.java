@@ -16,16 +16,11 @@
 
 package io.github.darthakiranihil.konna.graphics.shape;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
-import io.github.darthakiranihil.konna.graphics.KTransformable;
-import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Map;
 
 /**
  * Abstract base for all standard shapes.
@@ -42,6 +37,7 @@ public abstract class KAbstractShape implements KShape {
 
     /**
      * Creates the shape with initial transform without shader.
+     * @param center Center of the shape
      */
     protected KAbstractShape(final KVector2i center) {
         this.transform = new KTransform(center);
@@ -50,8 +46,13 @@ public abstract class KAbstractShape implements KShape {
 
     /**
      * Creates the shape with initial transform and passed shader.
+     * @param center Center of the shape
+     * @param shader Shader using for rendering this shape
      */
-    protected KAbstractShape(final KVector2i center, final KShaderProgram shader) {
+    protected KAbstractShape(
+        final KVector2i center,
+        final KShaderProgram shader
+    ) {
         this.transform = new KTransform(center);
         this.shader = shader;
     }
@@ -62,13 +63,8 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
-    public void setTransform(KTransform newTransform) {
+    public void setTransform(final KTransform newTransform) {
         this.transform = newTransform;
-    }
-
-    @Override
-    public void render(KRenderFrontend rf) {
-
     }
 
     @Override
@@ -76,14 +72,20 @@ public abstract class KAbstractShape implements KShape {
         return this.shader;
     }
 
+    /**
+     * Returns centroid of passed array of points.
+     * @param points Array of points to get centroid of
+     * @return Centroid of passed points
+     */
     public static KVector2i centroidOfPoints(final KVector2i[] points) {
-        double x = 0, y = 0;
+        double x = 0.0;
+        double y = 0.0;
         double signedArea = 0;
         for (int i = 0; i < points.length; i++) {
             KVector2i p0 = points[i];
-            KVector2i p1 = points[( i + 1 ) % points.length];
+            KVector2i p1 = points[(i + 1) % points.length];
 
-            double area = ( p0.x() * p1.y() ) - ( p1.x() * p0.y() );
+            double area = (p0.x() * p1.y()) - (p1.x() * p0.y());
             signedArea += area;
 
             x += (p0.x() + p1.x()) * area;

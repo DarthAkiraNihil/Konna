@@ -25,7 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Representation of position, rotation and scaling of an object.
+ * Representation of position, rotation and scaling of an object,
+ * supporting parent transforms.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -35,6 +36,10 @@ public final class KTransform {
 
     private static @Nullable KTransformMatrixCalculator transformMatrixCalculator;
 
+    /**
+     * Sets a global transform matrix calculator.
+     * @param calculator New global matrix calculator
+     */
     public static void setTransformMatrixCalculator(final KTransformMatrixCalculator calculator) {
         KTransform.transformMatrixCalculator = calculator;
     }
@@ -56,6 +61,7 @@ public final class KTransform {
      * @param rotation Rotation
      * @param translation Translation
      * @param scaling Scaling
+     * @param center Center of this transform
      */
     public KTransform(
         double rotation,
@@ -75,17 +81,27 @@ public final class KTransform {
     }
 
     /**
-     * Creates transform with zero rotation, zero translation
-     * and 1.0 scaling for X and Y coordinates.
+     * Creates transform with zero rotation, zero translation,
+     * 1.0 scaling for X and Y coordinates and zero as center coordinate.
      */
     public KTransform() {
         this(0.0, KVector2i.ZERO, KVector2d.ONE, KVector2i.ZERO);
     }
 
+    /**
+     * Creates transform with zero rotation, zero translation,
+     * 1.0 scaling for X and Y coordinates and specific center coordinate.
+     * Center should depend on the renderable object shape configuration.
+     * @param center Center of this transform
+     */
     public KTransform(final KVector2i center) {
         this(0.0, KVector2i.ZERO, KVector2d.ONE, center);
     }
 
+    /**
+     * Returns center of this transform.
+     * @return Center of this transform
+     */
     public KVector2i getCenter() {
         return this.center;
     }
@@ -158,32 +174,56 @@ public final class KTransform {
         return this;
     }
 
+    /**
+     * Returns parent transform for this transform.
+     * @return Parent transform, if presented, else {@code null}
+     */
     public @Nullable KTransform getParent() {
         return this.parent;
     }
 
-    public void setParent(KTransform parentTransform) {
+    /**
+     * Sets a parent for this transform.
+     * @param parentTransform New parent transform
+     */
+    public void setParent(final KTransform parentTransform) {
         parentTransform.addChild(this);
         this.parent = parentTransform;
     }
 
+    /**
+     * Returns list of children of this transform.
+     * @return Children of this transform
+     */
     public List<KTransform> getChildren() {
         return this.children;
     }
 
-    public void addChild(final KTransform child) {
+    /**
+     * Adds a child to this transform.
+     * @param child Child transform to add
+     * @return This transform
+     */
+    public KTransform addChild(final KTransform child) {
         this.children.add(child);
         child.invalidateCache();
         this.invalidateCache();
+        return this;
     }
 
-    public void removeChild(final KTransform child) {
+    /**
+     * Removes a child from this transform.
+     * @param child Child transform to remove
+     * @return This transform
+     */
+    public KTransform removeChild(final KTransform child) {
         this.children.remove(child);
 
         child.parent = null;
         child.invalidateCache();
 
         this.invalidateCache();
+        return this;
     }
 
     private void invalidateCache() {
@@ -191,6 +231,20 @@ public final class KTransform {
         this.children.forEach(KTransform::invalidateCache);
     }
 
+    /**
+     * Gets plain matrix representation of this transform.
+     * It relies on {@link KTransform#transformMatrixCalculator} field, that should be
+     * set by {@link KGraphicsComponent} on applying its config. If it is not, then
+     * {@link KInvalidGraphicsStateException} will be thrown that is fatal.
+     * If transform parameters or parent transform is not changed,
+     * then cached matrix will be used. If a transform is added to this as a child,
+     * then added matrix cache will be invalidated.
+     * Implementation of {@link KTransformMatrixCalculator} should reflect used render frontend
+     * as it will prevent errors caused by different coordinate systems used by the final transform
+     * and the render window.
+     *
+     * @return Plain matrix representation of this transform.
+     */
     public float[] getMatrix() {
 
         if (this.cached) {

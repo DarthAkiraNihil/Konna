@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.shape;
 
-import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformable;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 

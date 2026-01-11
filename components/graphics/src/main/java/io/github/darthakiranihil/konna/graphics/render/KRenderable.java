@@ -49,6 +49,11 @@ public interface KRenderable {
      * @param rf Render frontend used for object rendering
      */
     void render(KRenderFrontend rf);
+
+    /**
+     * Returns shader using for rendering this object.
+     * @return Used shader
+     */
     @Nullable KShaderProgram getShader();
 
 }

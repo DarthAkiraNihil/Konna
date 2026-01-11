@@ -21,13 +21,21 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformMatrixCalculator;
 import org.joml.Matrix4f;
 
+/**
+ * Transform matrix calculator implementation using JOML and fixes
+ * according to OpenGL NDC's.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
-public final class KGl33TransformMatrixCalculator extends KObject implements KTransformMatrixCalculator {
+public final class KGl33TransformMatrixCalculator
+    extends KObject
+    implements KTransformMatrixCalculator {
 
     private KSize viewportSize;
 
@@ -35,6 +43,10 @@ public final class KGl33TransformMatrixCalculator extends KObject implements KTr
         this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
     }
 
+    /**
+     * Sets viewport size in which to calculate the matrix.
+     * @param size Size of the viewport
+     */
     public void setViewportSize(final KSize size) {
         this.viewportSize = size;
     }

@@ -195,7 +195,14 @@ public class KOval extends KAbstractShape {
      * @param shader Specific shader used for its rendering
      * @param outlineColor Oval's outline color
      */
-    public KOval(int x, int y, int width, int height, final KShaderProgram shader, final KColor outlineColor) {
+    public KOval(
+        int x,
+        int y,
+        int width,
+        int height,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
         this(x, y, width, height, shader, outlineColor, KColor.TRANSPARENT);
     }
 

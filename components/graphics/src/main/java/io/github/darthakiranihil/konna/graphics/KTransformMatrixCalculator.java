@@ -16,8 +16,21 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
+/**
+ * Interface for a transform matrix calculator that uses
+ * {@link KTransform} parameters to create its matrix representation
+ * to pass in to shaders (usually).
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KTransformMatrixCalculator {
 
+    /**
+     * Calculates transform matrix of passed transform.
+     * @param transform Transform to calculate the matrix of
+     * @param dst Calculation destination
+     */
     void calculateMatrix(KTransform transform, float[] dst);
 
 }

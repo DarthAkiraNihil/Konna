@@ -22,7 +22,6 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
-import io.github.darthakiranihil.konna.graphics.shape.KArc;
 
 import java.util.Arrays;
 import java.util.Objects;

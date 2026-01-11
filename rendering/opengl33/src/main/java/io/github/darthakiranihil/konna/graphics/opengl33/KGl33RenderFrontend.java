@@ -59,6 +59,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * Constructs render frontend with provided OpenGL 3.3
      * library frontend.
      * @param gl OpenGL 3.3 frontend
+     * @param shaderCompiler Shader compiler used for getting default shape shader
+     * @param calculator Transform matrix calculator implemented in this module
      */
     public KGl33RenderFrontend(
         @KInject final KGl33 gl,
@@ -239,11 +241,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     @Override
     public void setActiveShader(final KShaderProgram shader) {
         this.gl.glUseProgram(shader.id());
-    }
-
-    @Override
-    public void useDefaultShader() {
-        this.setActiveShader(this.shaderCompiler.getDefaultShader());
     }
 
     @Override

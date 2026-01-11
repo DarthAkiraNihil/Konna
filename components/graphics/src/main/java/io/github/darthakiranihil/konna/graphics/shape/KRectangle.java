@@ -137,6 +137,7 @@ public class KRectangle extends KPolygon {
      * Standard constructor but used shader is not default.
      * @param coordinates Coordinates of rectangle's top left corner
      * @param size Size of the rectangle
+     * @param shader Specific shader used for its rendering
      * @param outlineColor Rectangle's outline color
      * @param fillColor Rectangle's fill color
      */
@@ -175,7 +176,12 @@ public class KRectangle extends KPolygon {
      * @param shader Specific shader used for its rendering
      * @param outlineColor Rectangle's outline color
      */
-    public KRectangle(final KVector2i coordinates, final KSize size, final KShaderProgram shader, final KColor outlineColor) {
+    public KRectangle(
+        final KVector2i coordinates,
+        final KSize size,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
         this(coordinates, size, shader, outlineColor, KColor.TRANSPARENT);
     }
 
@@ -240,7 +246,14 @@ public class KRectangle extends KPolygon {
      *   @param shader Specific shader used for its rendering
      * @param outlineColor Rectangle's outline color
      */
-    public KRectangle(int x, int y, int width, int height, final KShaderProgram shader, final KColor outlineColor) {
+    public KRectangle(
+        int x,
+        int y,
+        int width,
+        int height,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
         this(x, y, width, height, shader, outlineColor, KColor.TRANSPARENT);
     }
 
@@ -338,7 +351,11 @@ public class KRectangle extends KPolygon {
      * @param shader Specific shader used for its rendering
      * @return Rectangle with square dimensions
      */
-    public static KRectangle square(final KVector2i coordinates, int side, final KShaderProgram shader) {
+    public static KRectangle square(
+        final KVector2i coordinates,
+        int side,
+        final KShaderProgram shader
+    ) {
         return new KRectangle(coordinates, KSize.squared(side), shader);
     }
 
@@ -403,7 +420,13 @@ public class KRectangle extends KPolygon {
      * @param outlineColor Square's outline color
      * @return Rectangle with square dimensions
      */
-    public static KRectangle square(int x, int y, int side, final KShaderProgram shader, final KColor outlineColor) {
+    public static KRectangle square(
+        int x,
+        int y,
+        int side,
+        final KShaderProgram shader,
+        final KColor outlineColor
+    ) {
         return new KRectangle(x, y, side, side, shader, outlineColor, KColor.TRANSPARENT);
     }
 

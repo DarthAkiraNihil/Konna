@@ -22,7 +22,10 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.*;
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
@@ -31,7 +34,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.asset.KShaderCollection;
 import io.github.darthakiranihil.konna.graphics.asset.KShaderProgramCollection;
 import io.github.darthakiranihil.konna.graphics.asset.KTextureCollection;
-import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
@@ -91,20 +93,26 @@ public class KGraphicsComponent extends KComponent {
         }
 
         KContainer container = this.ctx.getContainer();
-        container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
-        container.add(KShaderCompiler.class, deserializedConfig.shaderCompilerClass());
-        container.add(KImageLoader.class, deserializedConfig.imageLoaderClass());
-        container.add(KTransformMatrixCalculator.class, deserializedConfig.transformMatrixCalculatorClass());
+        container
+            .add(KRenderFrontend.class, deserializedConfig.renderFrontendClass())
+            .add(KShaderCompiler.class, deserializedConfig.shaderCompilerClass())
+            .add(KImageLoader.class, deserializedConfig.imageLoaderClass())
+            .add(
+                KTransformMatrixCalculator.class,
+                deserializedConfig.transformMatrixCalculatorClass()
+            );
 
-        KTransformMatrixCalculator calculator = this.ctx.createObject(KTransformMatrixCalculator.class);
+        KTransformMatrixCalculator calculator = this
+            .ctx
+            .createObject(KTransformMatrixCalculator.class);
         KTransform.setTransformMatrixCalculator(calculator);
 
         // A test that transform matrix calculator is really set
         (
             new KTransform(
-                1.1,
-                new KVector2i(10, 10),
-                new KVector2d(1.0, 1.1),
+                0.0,
+                new KVector2i(1, 1),
+                new KVector2d(0.0, 0.0),
                 KVector2i.ZERO
             )
         ).getMatrix();

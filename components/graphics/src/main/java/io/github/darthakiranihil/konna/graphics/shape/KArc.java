@@ -220,7 +220,15 @@ public class KArc extends KAbstractShape {
         int arcAngle,
         final KShaderProgram shader
     ) {
-        this(coordinates, size, startAngle, arcAngle, shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this(
+            coordinates,
+            size,
+            startAngle,
+            arcAngle,
+            shader,
+            KColor.TRANSPARENT,
+            KColor.TRANSPARENT
+        );
     }
 
     /**
@@ -244,7 +252,8 @@ public class KArc extends KAbstractShape {
     }
 
     /**
-     * Standard constructor, but center and size are defined by separated int parameters and shader is not default.
+     * Standard constructor, but center and size are defined by separated int parameters
+     * and shader is not default.
      * Also creates an arc with transparent outline and fill colors.
      * @param x X coordinate of center of oval of the arc
      * @param y Y coordinate of center of oval of the arc
@@ -275,7 +284,8 @@ public class KArc extends KAbstractShape {
     }
 
     /**
-     * Standard constructor, but center and size are defined by separated int parameters and shader is not default.
+     * Standard constructor, but center and size are defined by separated int parameters
+     * and shader is not default.
      * Also creates an arc with transparent fill color.
      * @param x X coordinate of center of oval of the arc
      * @param y Y coordinate of center of oval of the arc
@@ -308,7 +318,8 @@ public class KArc extends KAbstractShape {
     }
 
     /**
-     * Standard constructor, but center and size are defined by separated int parameters and shader is not default.
+     * Standard constructor, but center and size are defined by separated int parameters
+     * and shader is not default.
      * @param x X coordinate of center of oval of the arc
      * @param y Y coordinate of center of oval of the arc
      * @param width Width of oval of the arc

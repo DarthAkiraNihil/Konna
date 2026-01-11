@@ -105,7 +105,12 @@ public class KPolyline extends KAbstractShape {
      *  @param shader Specific shader used for its rendering
      * @param color Polyline's color
      */
-    public KPolyline(final int[] xPoints, final int[] yPoints, final KShaderProgram shader, final KColor color) {
+    public KPolyline(
+        final int[] xPoints,
+        final int[] yPoints,
+        final KShaderProgram shader,
+        final KColor color
+    ) {
         this(KStructUtils.furlArraysToVectors(xPoints, yPoints), shader, color);
     }
 

@@ -41,10 +41,22 @@ import java.nio.IntBuffer;
 @KExcludeFromGeneratedCoverageReport
 public final class KGl33ShaderCompiler extends KObject implements KShaderCompiler {
 
+    /**
+     * Uniform name of a color.
+     */
     public static final String U_COLOR = "u_color";
+    /**
+     * Uniform name of a texture.
+     */
     public static final String U_TEXTURE = "u_texture";
+    /**
+     * Uniform name of a transform matrix.
+     */
     public static final String U_TRANSFORM = "u_transform";
 
+    /**
+     * Default shape fragment shader.
+     */
     public static final String DEFAULT_SHAPE_FRAGMENT_SHADER = """
         #version 330 core
         out vec4 FragColor;
@@ -58,6 +70,9 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         }
     """;
 
+    /**
+     * Default shape vertex shader.
+     */
     public static final String DEFAULT_SHAPE_VERTEX_SHADER = """
         #version 330 core
         layout (location = 0) in vec3 aPos;

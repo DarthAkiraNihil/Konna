@@ -174,6 +174,7 @@ public class KPolygon extends KAbstractShape {
      * and used shader is not default.
      * @param xPoints Array of X coordinates of polygon's points (vertices)
      * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     * @param shader Specific shader used for its rendering
      * @param outlineColor Polygon's outline color
      */
     public KPolygon(
@@ -190,6 +191,7 @@ public class KPolygon extends KAbstractShape {
      * are passed in different arrays and used shader is not default.
      * @param xPoints Array of X coordinates of polygon's points (vertices)
      * @param yPoints Array of Y coordinates of polygon's points (vertices)
+     * @param shader Specific shader used for its rendering
      * @param outlineColor Polygon's outline color
      * @param fillColor Polygon's fill color
      */

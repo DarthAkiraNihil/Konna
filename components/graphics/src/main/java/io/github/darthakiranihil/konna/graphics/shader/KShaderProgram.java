@@ -30,8 +30,23 @@ public interface KShaderProgram {
      */
     int id();
 
+    /**
+     * Sets a uniform for this shader.
+     * @param uniformName Name of the uniform
+     * @param value Uniform value
+     */
     void setUniform(String uniformName, float[] value);
+    /**
+     * Sets a uniform for this shader.
+     * @param uniformName Name of the uniform
+     * @param value Uniform value
+     */
     void setUniform(String uniformName, int value);
+    /**
+     * Sets a uniform matrix for this shader.
+     * @param uniformName Name of the uniform
+     * @param value Uniform matrix
+     */
     void setUniformMatrix(String uniformName, float[] value);
 
 }
