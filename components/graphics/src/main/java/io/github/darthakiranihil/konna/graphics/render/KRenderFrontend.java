@@ -96,7 +96,6 @@ public interface KRenderFrontend {
      * @param shader Activated shader
      */
     void setActiveShader(KShaderProgram shader);
-
     /**
      * Disables currently active shader of this render frontend.
      */

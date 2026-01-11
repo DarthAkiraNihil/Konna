@@ -16,11 +16,11 @@
 
 package io.github.darthakiranihil.konna.graphics.shape;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
-import io.github.darthakiranihil.konna.graphics.KTransformable;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Abstract base for all standard shapes.
@@ -32,13 +32,29 @@ import io.github.darthakiranihil.konna.graphics.KTransformable;
 @KExcludeFromGeneratedCoverageReport
 public abstract class KAbstractShape implements KShape {
 
-    private final KTransform transform;
+    private KTransform transform;
+    private final @Nullable KShaderProgram shader;
 
     /**
-     * Creates shape with initial transform.
+     * Creates the shape with initial transform without shader.
+     * @param center Center of the shape
      */
-    public KAbstractShape() {
-        this.transform = new KTransform();
+    protected KAbstractShape(final KVector2i center) {
+        this.transform = new KTransform(center);
+        this.shader = null;
+    }
+
+    /**
+     * Creates the shape with initial transform and passed shader.
+     * @param center Center of the shape
+     * @param shader Shader using for rendering this shape
+     */
+    protected KAbstractShape(
+        final KVector2i center,
+        final KShaderProgram shader
+    ) {
+        this.transform = new KTransform(center);
+        this.shader = shader;
     }
 
     @Override
@@ -47,38 +63,41 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
-    public KTransformable rotate(double theta) {
-        this.transform.rotate(theta);
-        return this;
+    public void setTransform(final KTransform newTransform) {
+        this.transform = newTransform;
     }
 
     @Override
-    public KTransformable rotate(double theta, final KVector2i pivot) {
-        this.transform.rotate(theta, pivot);
-        return this;
+    public @Nullable KShaderProgram getShader() {
+        return this.shader;
     }
 
-    @Override
-    public KTransformable scale(final KVector2d factor) {
-        this.transform.scale(factor);
-        return this;
-    }
+    /**
+     * Returns centroid of passed array of points.
+     * @param points Array of points to get centroid of
+     * @return Centroid of passed points
+     */
+    public static KVector2i centroidOfPoints(final KVector2i[] points) {
+        double x = 0.0;
+        double y = 0.0;
+        double signedArea = 0;
+        for (int i = 0; i < points.length; i++) {
+            KVector2i p0 = points[i];
+            KVector2i p1 = points[(i + 1) % points.length];
 
-    @Override
-    public KTransformable translate(final KVector2i value) {
-        this.transform.translate(value);
-        return this;
-    }
+            double area = (p0.x() * p1.y()) - (p1.x() * p0.y());
+            signedArea += area;
 
-    @Override
-    public KVector2d getScaling() {
-        return this.transform.getScaling();
-    }
+            x += (p0.x() + p1.x()) * area;
+            y += (p0.y() + p1.y()) * area;
 
-    @Override
-    public KTransformable setScaling(final KVector2d scale) {
-        this.transform.setScaling(scale);
-        return this;
+        }
+
+        signedArea *= 0.5;
+        x /= 6 * signedArea;
+        y /= 6 * signedArea;
+
+        return new KVector2i((int) x, (int) y);
     }
 
 }

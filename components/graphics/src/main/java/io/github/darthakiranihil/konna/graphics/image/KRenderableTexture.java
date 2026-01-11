@@ -127,6 +127,7 @@ public class KRenderableTexture extends KAbstractShape {
         final KColor[] colors,
         final KTexture texture
     ) {
+        super(KAbstractShape.centroidOfPoints(xy));
         this.uv = uv;
         this.xy = xy;
         this.colors = colors;
@@ -167,9 +168,7 @@ public class KRenderableTexture extends KAbstractShape {
 
     @Override
     public void render(final KRenderFrontend rf) {
-        rf.setActiveShader(this.texture.shader());
         rf.render(this);
-        rf.disableActiveShader();
     }
 
     @Override

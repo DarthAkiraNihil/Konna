@@ -31,7 +31,7 @@ public class KCirclePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KCircle shape = new KCircle(this.coordinates, this.radius, this.outlineColor, this.fillColor);
-        this.assertCircle(shape, this.coordinates, this.radius, this.outlineColor, this.fillColor);
+        this.assertCircle(shape, this.coordinates, this.radius, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -39,7 +39,7 @@ public class KCirclePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KCircle shape = new KCircle(this.coordinates, this.radius);
-        this.assertCircle(shape, this.coordinates, this.radius, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertCircle(shape, this.coordinates, this.radius, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -47,7 +47,7 @@ public class KCirclePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColor() {
 
         KCircle shape = new KCircle(this.coordinates, this.radius, this.outlineColor);
-        this.assertCircle(shape, this.coordinates, this.radius, this.outlineColor, KColor.TRANSPARENT);
+        this.assertCircle(shape, this.coordinates, this.radius, null, this.outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -55,7 +55,7 @@ public class KCirclePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KCircle shape = new KCircle(this.coordinates.x(), this.coordinates.y(), this.radius, this.outlineColor, this.fillColor);
-        this.assertCircle(shape, this.coordinates, this.radius, this.outlineColor, this.fillColor);
+        this.assertCircle(shape, this.coordinates, this.radius, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -63,7 +63,7 @@ public class KCirclePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KCircle shape = new KCircle(this.coordinates.x(), this.coordinates.y(), this.radius);
-        this.assertCircle(shape, this.coordinates, this.radius, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertCircle(shape, this.coordinates, this.radius, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -71,7 +71,55 @@ public class KCirclePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColorSeparated() {
 
         KCircle shape = new KCircle(this.coordinates.x(), this.coordinates.y(), this.radius, this.outlineColor);
-        this.assertCircle(shape, this.coordinates, this.radius, this.outlineColor, KColor.TRANSPARENT);
+        this.assertCircle(shape, this.coordinates, this.radius, null, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KCircle shape = new KCircle(this.coordinates, this.radius, this.shader, this.outlineColor, this.fillColor);
+        this.assertCircle(shape, this.coordinates, this.radius, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KCircle shape = new KCircle(this.coordinates, this.radius, this.shader);
+        this.assertCircle(shape, this.coordinates, this.radius, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorWithShader() {
+
+        KCircle shape = new KCircle(this.coordinates, this.radius, this.shader, this.outlineColor);
+        this.assertCircle(shape, this.coordinates, this.radius, this.shader, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KCircle shape = new KCircle(this.coordinates.x(), this.coordinates.y(), this.radius, this.shader, this.outlineColor, this.fillColor);
+        this.assertCircle(shape, this.coordinates, this.radius, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KCircle shape = new KCircle(this.coordinates.x(), this.coordinates.y(), this.radius, this.shader);
+        this.assertCircle(shape, this.coordinates, this.radius, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorSeparatedWithShader() {
+
+        KCircle shape = new KCircle(this.coordinates.x(), this.coordinates.y(), this.radius, this.shader, this.outlineColor);
+        this.assertCircle(shape, this.coordinates, this.radius, this.shader, this.outlineColor, KColor.TRANSPARENT);
 
     }
 

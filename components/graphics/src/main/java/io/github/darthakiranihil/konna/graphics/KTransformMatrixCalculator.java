@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.graphics.shape;
-
-import io.github.darthakiranihil.konna.graphics.KTransformable;
-import io.github.darthakiranihil.konna.graphics.render.KRenderable;
+package io.github.darthakiranihil.konna.graphics;
 
 /**
- * Interface for a shape that can be rendered (it is not required to represent
- * only geometrical ones).
+ * Interface for a transform matrix calculator that uses
+ * {@link KTransform} parameters to create its matrix representation
+ * to pass in to shaders (usually).
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KShape extends
-    KRenderable,
-    KTransformable {
+public interface KTransformMatrixCalculator {
+
+    /**
+     * Calculates transform matrix of passed transform.
+     * @param transform Transform to calculate the matrix of
+     * @param dst Calculation destination
+     */
+    void calculateMatrix(KTransform transform, float[] dst);
 
 }

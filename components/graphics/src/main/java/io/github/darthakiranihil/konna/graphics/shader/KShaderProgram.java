@@ -31,16 +31,22 @@ public interface KShaderProgram {
     int id();
 
     /**
-     * Returns id of specified shader program attribute.
-     * @param name Name of the attribute
-     * @return Shader program's attribute id
+     * Sets a uniform for this shader.
+     * @param uniformName Name of the uniform
+     * @param value Uniform value
      */
-    int getAttribute(String name);
+    void setUniform(String uniformName, float[] value);
     /**
-     * Returns id of specified shader program uniform.
-     * @param name Name of the uniform
-     * @return Shader program's uniform id
+     * Sets a uniform for this shader.
+     * @param uniformName Name of the uniform
+     * @param value Uniform value
      */
-    int getUniform(String name);
+    void setUniform(String uniformName, int value);
+    /**
+     * Sets a uniform matrix for this shader.
+     * @param uniformName Name of the uniform
+     * @param value Uniform matrix
+     */
+    void setUniformMatrix(String uniformName, float[] value);
 
 }

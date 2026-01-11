@@ -20,6 +20,9 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implementation of {@link KShaderProgram} that requires OpenGL 3.3
  * to be created.
@@ -33,6 +36,8 @@ public final class KGl33ShaderProgram implements KShaderProgram {
     private final int id;
     private final KGl33 gl;
 
+    private final Map<String, Integer> uniformLocations;
+
     /**
      * Constructs a shader program with provided id and
      * OpenGL 3.3 library frontend to be used to set shader attributes,
@@ -43,6 +48,8 @@ public final class KGl33ShaderProgram implements KShaderProgram {
     public KGl33ShaderProgram(int id, final KGl33 gl) {
         this.id = id;
         this.gl = gl;
+
+        this.uniformLocations = new HashMap<>();
     }
 
     @Override
@@ -51,13 +58,38 @@ public final class KGl33ShaderProgram implements KShaderProgram {
     }
 
     @Override
-    public int getAttribute(final String name) {
-        return this.gl.glGetAttribLocation(this.id, name);
+    public void setUniform(final String uniformName, final float[] value) {
+        this.gl.glUniform4fv(
+            this.getUniformLocation(uniformName),
+            value
+        );
     }
 
     @Override
-    public int getUniform(final String name) {
-        return this.gl.glGetUniformLocation(this.id, name);
+    public void setUniform(final String uniformName, int value) {
+        this.gl.glUniform1i(
+            this.getUniformLocation(uniformName),
+            value
+        );
     }
 
+    @Override
+    public void setUniformMatrix(final String uniformName, final float[] value) {
+        this.gl.glUniformMatrix4fv(
+            this.getUniformLocation(uniformName),
+            false,
+            value
+        );
+    }
+
+    private int getUniformLocation(final String uniformName) {
+        if (!this.uniformLocations.containsKey(uniformName)) {
+            this.uniformLocations.put(
+                uniformName,
+                this.gl.glGetUniformLocation(this.id, uniformName)
+            );
+        }
+
+        return this.uniformLocations.get(uniformName);
+    }
 }

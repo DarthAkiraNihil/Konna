@@ -37,7 +37,7 @@ public class KPolylinePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KPolyline shape = new KPolyline(this.points, this.color);
-        this.assertPolyline(shape, this.points, this.color);
+        this.assertPolyline(shape, this.points, null, this.color);
 
     }
 
@@ -45,7 +45,7 @@ public class KPolylinePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KPolyline shape = new KPolyline(this.points);
-        this.assertPolyline(shape, this.points, KColor.TRANSPARENT);
+        this.assertPolyline(shape, this.points, null, KColor.TRANSPARENT);
 
     }
 
@@ -53,7 +53,7 @@ public class KPolylinePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KPolyline shape = new KPolyline(this.xs, this.ys, this.color);
-        this.assertPolyline(shape, this.points, this.color);
+        this.assertPolyline(shape, this.points, null, this.color);
 
     }
 
@@ -61,7 +61,39 @@ public class KPolylinePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KPolyline shape = new KPolyline(this.xs, this.ys);
-        this.assertPolyline(shape, this.points, KColor.TRANSPARENT);
+        this.assertPolyline(shape, this.points, null, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KPolyline shape = new KPolyline(this.points, this.shader, this.color);
+        this.assertPolyline(shape, this.points, this.shader, this.color);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KPolyline shape = new KPolyline(this.points, this.shader);
+        this.assertPolyline(shape, this.points, this.shader, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KPolyline shape = new KPolyline(this.xs, this.ys, this.shader, this.color);
+        this.assertPolyline(shape, this.points, this.shader, this.color);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KPolyline shape = new KPolyline(this.xs, this.ys, this.shader);
+        this.assertPolyline(shape, this.points, this.shader, KColor.TRANSPARENT);
 
     }
 

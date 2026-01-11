@@ -18,13 +18,13 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
-import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
@@ -46,29 +46,40 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     public static final int DEFAULT_VIEWPORT_SIZE_SIDE = 640;
 
     private final KGl33 gl;
-    private KSize viewportSize;
     private boolean initialized;
+    private KSize viewportSize;
 
     private final KBufferMaker bufferMaker;
     private final KTextureMaker textureMaker;
+    private final KShaderCompiler shaderCompiler;
+    private final KGl33TransformMatrixCalculator transformMatrixCalculator;
 
 
     /**
      * Constructs render frontend with provided OpenGL 3.3
      * library frontend.
      * @param gl OpenGL 3.3 frontend
+     * @param shaderCompiler Shader compiler used for getting default shape shader
+     * @param calculator Transform matrix calculator implemented in this module
      */
-    public KGl33RenderFrontend(@KInject final KGl33 gl) {
+    public KGl33RenderFrontend(
+        @KInject final KGl33 gl,
+        @KInject final KShaderCompiler shaderCompiler,
+        @KInject final KGl33TransformMatrixCalculator calculator
+    ) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
         this.textureMaker = new KTextureMaker(this.gl);
         this.bufferMaker = new KBufferMaker(this.gl);
+        this.shaderCompiler = shaderCompiler;
+        this.transformMatrixCalculator = calculator;
     }
 
     @Override
     public void setViewportSize(final KSize size) {
         this.viewportSize = size;
+        this.transformMatrixCalculator.setViewportSize(size);
         this.bufferMaker.setViewportSize(size);
         this.textureMaker.setViewportSize(size);
     }
@@ -162,6 +173,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         int pointCount,
         int outlineRenderMode
     ) {
+        KShaderProgram shader = shape.getShader();
+        if (shader == null) {
+            shader = this.shaderCompiler.getDefaultShader();
+        }
+        this.setActiveShader(shader);
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -169,13 +185,15 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        // transform applying todo: move to shader`
-        this.applyTransform(shape);
+        shader.setUniformMatrix(
+            KGl33ShaderCompiler.U_TRANSFORM,
+            shape.getTransform().getMatrix()
+        );
 
-        this.gl.glColor4fv(fillColor.normalized());
+        shader.setUniform(KGl33ShaderCompiler.U_COLOR, fillColor.normalized());
         this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
-        this.gl.glColor4fv(outlineColor.normalized());
+        shader.setUniform(KGl33ShaderCompiler.U_COLOR, outlineColor.normalized());
         this.gl.glDrawElements(outlineRenderMode, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
@@ -183,6 +201,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.updateTtl();
+        this.disableActiveShader();
     }
 
     private void render(
@@ -191,6 +210,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         final KColor color,
         int pointCount
     ) {
+        KShaderProgram shader = shape.getShader();
+        if (shader == null) {
+            shader = this.shaderCompiler.getDefaultShader();
+        }
+        this.setActiveShader(shader);
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, info.vbo());
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, info.ibo());
@@ -198,32 +222,19 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        // transform applying todo: move to shader
-        this.applyTransform(shape);
+        shader.setUniformMatrix(
+            KGl33ShaderCompiler.U_TRANSFORM,
+            shape.getTransform().getMatrix()
+        );
 
-        this.gl.glColor4fv(color.normalized());
+        shader.setUniform(KGl33ShaderCompiler.U_COLOR, color.normalized());
         this.gl.glDrawElements(KGl33.GL_LINE_STRIP, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
 
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.updateTtl();
-
-    }
-
-    private void applyTransform(final KShape shape) {
-
-        KTransform transform = shape.getTransform();
-        double rotation = transform.getRotation();
-        KVector2i translation = transform.getTranslation();
-        KVector2d scaling = transform.getScaling();
-        float glTranslationX = (float) translation.x() / this.viewportSize.width();
-        float glTranslationY = (float) -translation.y() / this.viewportSize.height();
-
-        this.gl.glLoadIdentity();
-        this.gl.glRotated(rotation, 0.0, 0.0, 1.0); // todo: fix pivot working
-        this.gl.glScaled(scaling.x(), scaling.y(), 1.0);
-        this.gl.glTranslatef(glTranslationX, glTranslationY, 0.0f);
+        this.disableActiveShader();
 
     }
 
@@ -241,6 +252,8 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     public void render(final KRenderableTexture texture) {
         KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
         KTexture sourceTexture = texture.texture();
+
+        this.setActiveShader(sourceTexture.shader());
 
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, textureInfo.vbo());
@@ -278,8 +291,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         );
         this.gl.glEnableVertexAttribArray(2);
 
-        this.gl.glUniform1i(
-            this.gl.glGetUniformLocation(sourceTexture.shader().id(), "ourTexture"), 0
+        sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, 0);
+
+        sourceTexture.shader().setUniformMatrix(
+            KGl33ShaderCompiler.U_TRANSFORM,
+            texture.getTransform().getMatrix()
         );
 
         this.gl.glBindVertexArray(textureInfo.vao());
@@ -296,6 +312,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
+        this.disableActiveShader();
 
     }
 

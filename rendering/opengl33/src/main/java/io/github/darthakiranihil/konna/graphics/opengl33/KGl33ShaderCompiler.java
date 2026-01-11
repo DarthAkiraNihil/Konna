@@ -42,20 +42,67 @@ import java.nio.IntBuffer;
 public final class KGl33ShaderCompiler extends KObject implements KShaderCompiler {
 
     /**
+     * Uniform name of a color.
+     */
+    public static final String U_COLOR = "u_color";
+    /**
+     * Uniform name of a texture.
+     */
+    public static final String U_TEXTURE = "u_texture";
+    /**
+     * Uniform name of a transform matrix.
+     */
+    public static final String U_TRANSFORM = "u_transform";
+
+    /**
+     * Default shape fragment shader.
+     */
+    public static final String DEFAULT_SHAPE_FRAGMENT_SHADER = """
+        #version 330 core
+        out vec4 FragColor;
+        \s
+        uniform vec4\s""" + U_COLOR + """
+        ;
+        void main()
+        {
+            FragColor =\s""" + U_COLOR + """
+            ;
+        }
+    """;
+
+    /**
+     * Default shape vertex shader.
+     */
+    public static final String DEFAULT_SHAPE_VERTEX_SHADER = """
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        \s
+        uniform mat4\s""" + U_TRANSFORM + """
+        ;
+        \s
+        void main()
+        {
+            gl_Position =\s""" + U_TRANSFORM + """
+            * vec4(aPos, 1.0);
+        }
+    """;
+
+    /**
      * Default texture fragment shader.
      */
     public static final String DEFAULT_TEXTURE_FRAGMENT_SHADER = """
         #version 330 core
         out vec4 FragColor;
         \s
-        in vec3 ourColor;
+        in vec3 TexColor;
         in vec2 TexCoord;
         \s
-        uniform sampler2D ourTexture;
-        \s
+        uniform sampler2D\s""" + U_TEXTURE + """
+        ;
         void main()
         {
-            FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);
+            FragColor = texture(""" + U_TEXTURE + """
+            , TexCoord) * vec4(TexColor, 1.0);
         }
     """;
 
@@ -68,18 +115,23 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         layout (location = 1) in vec3 aColor;
         layout (location = 2) in vec2 aTexCoord;
         \s
-        out vec3 ourColor;
+        out vec3 TexColor;
         out vec2 TexCoord;
+        \s
+        uniform mat4\s""" + U_TRANSFORM + """
+        ;
         \s
         void main()
         {
-            gl_Position = vec4(aPos, 1.0);
-            ourColor = aColor;
+            gl_Position =\s""" + U_TRANSFORM + """
+            * vec4(aPos, 1.0);
+            TexColor = aColor;
             TexCoord = aTexCoord;
         }
     """;
 
     private final KGl33 gl;
+    private @Nullable KShaderProgram defaultShader;
     private @Nullable KShaderProgram defaultTextureShader;
 
     /**
@@ -181,5 +233,17 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
         }
 
         return this.defaultTextureShader;
+    }
+
+    @Override
+    public KShaderProgram getDefaultShader() {
+        if (this.defaultShader == null) {
+            this.defaultShader = this.createShaderProgram(
+                this.compileFragmentShader(DEFAULT_SHAPE_FRAGMENT_SHADER),
+                this.compileVertexShader(DEFAULT_SHAPE_VERTEX_SHADER)
+            );
+        }
+
+        return this.defaultShader;
     }
 }

@@ -18,20 +18,42 @@ package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
+import org.jspecify.annotations.Nullable;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Representation of position, rotation and scaling of an object.
+ * Representation of position, rotation and scaling of an object,
+ * supporting parent transforms.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public final class KTransform implements KTransformable {
+@SuppressWarnings("UnusedReturnValue")
+public final class KTransform {
+
+    private static @Nullable KTransformMatrixCalculator transformMatrixCalculator;
+
+    /**
+     * Sets a global transform matrix calculator.
+     * @param calculator New global matrix calculator
+     */
+    public static void setTransformMatrixCalculator(final KTransformMatrixCalculator calculator) {
+        KTransform.transformMatrixCalculator = calculator;
+    }
 
     private double rotation;
     private KVector2i translation;
     private KVector2d scaling;
 
-    private final float[][] matrix;
+    private @Nullable KTransform parent;
+    private final List<KTransform> children;
+
+    private final KVector2i center;
+
+    private final float[] matrix;
     private boolean cached;
 
     /**
@@ -39,53 +61,81 @@ public final class KTransform implements KTransformable {
      * @param rotation Rotation
      * @param translation Translation
      * @param scaling Scaling
+     * @param center Center of this transform
      */
     public KTransform(
         double rotation,
         final KVector2i translation,
-        final KVector2d scaling
+        final KVector2d scaling,
+        final KVector2i center
     ) {
         this.rotation = rotation;
-        this.translation = translation;
         this.scaling = scaling;
-        this.matrix = new float[3][3];
+        this.translation = translation;
+        this.center = center;
+
+        this.children = new LinkedList<>();
+
+        this.matrix = new float[16];
         this.cached = false;
     }
 
     /**
-     * Creates transform with zero rotation, zero translation
-     * and 1.0 scaling for X and Y coordinates.
+     * Creates transform with zero rotation, zero translation,
+     * 1.0 scaling for X and Y coordinates and zero as center coordinate.
      */
     public KTransform() {
-        this(0.0, KVector2i.ZERO, KVector2d.ONE);
+        this(0.0, KVector2i.ZERO, KVector2d.ONE, KVector2i.ZERO);
     }
 
-    @Override
-    public KTransformable rotate(double theta) {
+    /**
+     * Creates transform with zero rotation, zero translation,
+     * 1.0 scaling for X and Y coordinates and specific center coordinate.
+     * Center should depend on the renderable object shape configuration.
+     * @param center Center of this transform
+     */
+    public KTransform(final KVector2i center) {
+        this(0.0, KVector2i.ZERO, KVector2d.ONE, center);
+    }
+
+    /**
+     * Returns center of this transform.
+     * @return Center of this transform
+     */
+    public KVector2i getCenter() {
+        return this.center;
+    }
+
+    /**
+     * Rotates the object.
+     * @param theta Rotation angle
+     * @return This object (for method chaining)
+     */
+    public KTransform rotate(double theta) {
         this.rotation += theta;
-        this.cached = false;
+        this.invalidateCache();
         return this;
     }
 
-    @Override
-    public KTransformable rotate(double theta, final KVector2i pivot) {
-        this.rotation += theta;
-        this.translation = this.translation.add(pivot);
-        this.cached = false;
-        return this;
-    }
-
-    @Override
-    public KTransformable scale(final KVector2d factor) {
+    /**
+     * Scales the object with multiplying its current scaling on passed factor.
+     * @param factor Scale factor
+     * @return This object (for method chaining)
+     */
+    public KTransform scale(final KVector2d factor) {
         this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
-        this.cached = false;
+        this.invalidateCache();
         return this;
     }
 
-    @Override
-    public KTransformable translate(final KVector2i value) {
+    /**
+     * Translates the object.
+     * @param value Translation vector
+     * @return This object (for method chaining)
+     */
+    public KTransform translate(final KVector2i value) {
         this.translation = this.translation.add(value);
-        this.cached = false;
+        this.invalidateCache();
         return this;
     }
 
@@ -105,41 +155,115 @@ public final class KTransform implements KTransformable {
         return this.translation;
     }
 
-    @Override
+    /**
+     * Returns scaling of the object.
+     * @return Scaling of this object
+     */
     public KVector2d getScaling() {
         return this.scaling;
     }
 
-    @Override
-    public KTransformable setScaling(final KVector2d scale) {
+    /**
+     * Sets scaling for the object.
+     * @param scale New object scaling.
+     * @return This object (for method chaining)
+     */
+    public KTransform setScaling(final KVector2d scale) {
         this.scaling = scale;
+        this.invalidateCache();
         return this;
     }
 
     /**
-     * Returns transformation matrix representation
-     * of this transform.
-     * @return Transformation matrix of this transform
+     * Returns parent transform for this transform.
+     * @return Parent transform, if presented, else {@code null}
      */
-    public float[][] matrix() {
+    public @Nullable KTransform getParent() {
+        return this.parent;
+    }
 
-        if (cached) {
+    /**
+     * Sets a parent for this transform.
+     * @param parentTransform New parent transform
+     */
+    public void setParent(final KTransform parentTransform) {
+        parentTransform.addChild(this);
+        this.parent = parentTransform;
+    }
+
+    /**
+     * Returns list of children of this transform.
+     * @return Children of this transform
+     */
+    public List<KTransform> getChildren() {
+        return this.children;
+    }
+
+    /**
+     * Adds a child to this transform.
+     * @param child Child transform to add
+     * @return This transform
+     */
+    public KTransform addChild(final KTransform child) {
+        this.children.add(child);
+        child.parent = this;
+
+        child.invalidateCache();
+        this.invalidateCache();
+        return this;
+    }
+
+    /**
+     * Removes a child from this transform.
+     * @param child Child transform to remove
+     * @return This transform
+     */
+    public KTransform removeChild(final KTransform child) {
+        this.children.remove(child);
+
+        child.parent = null;
+        child.invalidateCache();
+
+        this.invalidateCache();
+        return this;
+    }
+
+    private void invalidateCache() {
+        this.cached = false;
+        this.children.forEach(KTransform::invalidateCache);
+    }
+
+    /**
+     * Gets plain matrix representation of this transform.
+     * It relies on {@link KTransform#transformMatrixCalculator} field, that should be
+     * set by {@link KGraphicsComponent} on applying its config. If it is not, then
+     * {@link KInvalidGraphicsStateException} will be thrown that is fatal.
+     * If transform parameters or parent transform is not changed,
+     * then cached matrix will be used. If a transform is added to this as a child,
+     * then added matrix cache will be invalidated.
+     * Implementation of {@link KTransformMatrixCalculator} should reflect used render frontend
+     * as it will prevent errors caused by different coordinate systems used by the final transform
+     * and the render window.
+     *
+     * @return Plain matrix representation of this transform.
+     */
+    public float[] getMatrix() {
+
+        if (this.cached) {
             return this.matrix;
         }
 
-        this.matrix[0][0] = (float) (Math.cos(this.rotation) * this.scaling.x());
-        this.matrix[1][0] = (float) Math.sin(this.rotation);
-        // this.matrix[2][0] = 0.0f;
-        this.matrix[0][1] = (float) -Math.sin(this.rotation);
-        this.matrix[1][1] = (float) (Math.cos(this.rotation) * this.scaling.y());
-        // this.matrix[2][1] = 0.0f;
-        this.matrix[0][2] = (float) this.translation.x();
-        this.matrix[1][2] = (float) this.translation.y();
-        this.matrix[2][2] = 1.0f;
+        if (KTransform.transformMatrixCalculator == null) {
+            throw new KInvalidGraphicsStateException(
+                    "Cannot calculate transform matrix: matrix calculator is not set. "
+                +   "Make sure it is defined in graphics component's config "
+                +   "by transform_matrix_calculator key"
+            );
+        }
 
+        KTransform.transformMatrixCalculator.calculateMatrix(this, this.matrix);
         this.cached = true;
         return this.matrix;
 
     }
-
 }
