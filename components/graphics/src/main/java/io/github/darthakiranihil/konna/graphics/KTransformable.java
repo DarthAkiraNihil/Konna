@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Interface representation of a transformable object that
@@ -35,14 +36,6 @@ public interface KTransformable {
      * @return This object (for method chaining)
      */
     KTransformable rotate(double theta);
-
-    /**
-     * Rotates the object with concrete rotation pivot.
-     * @param theta Rotation angle
-     * @param pivot Rotation pivot
-     * @return This object (for method chaining)
-     */
-    KTransformable rotate(double theta, KVector2i pivot);
 
     /**
      * Scales the object with multiplying its current scaling on passed factor.
@@ -70,5 +63,9 @@ public interface KTransformable {
      * @return This object (for method chaining)
      */
     KTransformable translate(KVector2i value);
+
+    @Nullable KTransformable getParent();
+    void setParent(KTransformable parentTransform);
+    float[] getMatrix();
 
 }

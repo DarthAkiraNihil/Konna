@@ -18,6 +18,11 @@ package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Arrays;
 
 /**
  * Representation of position, rotation and scaling of an object.
@@ -27,10 +32,17 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
  */
 public final class KTransform implements KTransformable {
 
+    private static @Nullable KTransformMatrixCalculator transformMatrixCalculator;
+
+    public static void setTransformMatrixCalculator(final KTransformMatrixCalculator calculator) {
+        KTransform.transformMatrixCalculator = calculator;
+    }
+
     private double rotation;
     private KVector2i translation;
     private KVector2d scaling;
-    private KVector2i center;
+    private @Nullable KTransformable parent;
+    private final KVector2i center;
 
     private final float[] matrix;
     private boolean cached;
@@ -47,10 +59,11 @@ public final class KTransform implements KTransformable {
         final KVector2d scaling,
         final KVector2i center
     ) {
-        this.center = center;
         this.rotation = rotation;
-        this.translation = translation;
         this.scaling = scaling;
+        this.translation = translation;
+        this.center = center;
+
         this.matrix = new float[16];
         this.cached = false;
     }
@@ -75,14 +88,6 @@ public final class KTransform implements KTransformable {
     }
 
     @Override
-    public KTransformable rotate(double theta, final KVector2i pivot) {
-        this.rotation += theta;
-        this.translation = this.translation.add(pivot);
-        this.cached = false;
-        return this;
-    }
-
-    @Override
     public KTransformable scale(final KVector2d factor) {
         this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
         this.cached = false;
@@ -94,6 +99,10 @@ public final class KTransform implements KTransformable {
         this.translation = this.translation.add(value);
         this.cached = false;
         return this;
+    }
+
+    public KVector2i getCenter() {
+        return this.center;
     }
 
     /**
@@ -120,34 +129,38 @@ public final class KTransform implements KTransformable {
     @Override
     public KTransformable setScaling(final KVector2d scale) {
         this.scaling = scale;
+        this.cached = false;
         return this;
     }
 
-    /**
-     * Returns transformation matrix representation
-     * of this transform.
-     * @return Transformation matrix of this transform
-     */
-    public float[] matrix() {
+    @Override
+    public @Nullable KTransformable getParent() {
+        return this.parent;
+    }
 
-        if (cached) {
+    @Override
+    public void setParent(KTransformable parentTransform) {
+        this.parent = parentTransform;
+    }
+
+    @Override
+    public float[] getMatrix() {
+
+        if (this.cached) {
             return this.matrix;
         }
 
-        this.matrix[0] = (float) (Math.cos(this.rotation) * this.scaling.x()); // 0, 0
-        this.matrix[4] = (float) Math.sin(this.rotation); // 1, 0
-        // this.matrix[2][0] = 0.0f;
-        this.matrix[1] = (float) -Math.sin(this.rotation); // 0, 1
-        this.matrix[5] = (float) (Math.cos(this.rotation) * this.scaling.y()); // 1, 1
-        // this.matrix[2][1] = 0.0f;
-        this.matrix[3] = (float) this.translation.x(); // 0, 3
-        this.matrix[7] = (float) this.translation.y(); // 1, 3
-        this.matrix[10] = 1.0f; // 2, 2
-        this.matrix[15] = 1.0f; // 3, 3
+        if (KTransform.transformMatrixCalculator == null) {
+            throw new KInvalidGraphicsStateException(
+                    "Cannot calculate transform matrix: matrix calculator is not set. "
+                +   "Make sure it is defined in graphics component's config "
+                +   "by transform_matrix_calculator key"
+            );
+        }
 
+        KTransform.transformMatrixCalculator.calculateMatrix(this, this.matrix);
         this.cached = true;
         return this.matrix;
 
     }
-
 }

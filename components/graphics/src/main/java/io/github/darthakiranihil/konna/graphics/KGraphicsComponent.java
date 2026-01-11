@@ -26,9 +26,12 @@ import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.asset.KShaderCollection;
 import io.github.darthakiranihil.konna.graphics.asset.KShaderProgramCollection;
 import io.github.darthakiranihil.konna.graphics.asset.KTextureCollection;
+import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
@@ -91,6 +94,20 @@ public class KGraphicsComponent extends KComponent {
         container.add(KRenderFrontend.class, deserializedConfig.renderFrontendClass());
         container.add(KShaderCompiler.class, deserializedConfig.shaderCompilerClass());
         container.add(KImageLoader.class, deserializedConfig.imageLoaderClass());
+        container.add(KTransformMatrixCalculator.class, deserializedConfig.transformMatrixCalculatorClass());
+
+        KTransformMatrixCalculator calculator = this.ctx.createObject(KTransformMatrixCalculator.class);
+        KTransform.setTransformMatrixCalculator(calculator);
+
+        // A test that transform matrix calculator is really set
+        (
+            new KTransform(
+                1.1,
+                new KVector2i(10, 10),
+                new KVector2d(1.0, 1.1),
+                KVector2i.ZERO
+            )
+        ).getMatrix();
 
     }
 

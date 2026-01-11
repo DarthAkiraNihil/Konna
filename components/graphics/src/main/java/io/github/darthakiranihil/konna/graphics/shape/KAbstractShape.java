@@ -24,6 +24,8 @@ import io.github.darthakiranihil.konna.graphics.KTransformable;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Map;
+
 /**
  * Abstract base for all standard shapes.
  *
@@ -65,12 +67,6 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
-    public KTransformable rotate(double theta, final KVector2i pivot) {
-        this.transform.rotate(theta, pivot);
-        return this;
-    }
-
-    @Override
     public KTransformable scale(final KVector2d factor) {
         this.transform.scale(factor);
         return this;
@@ -94,6 +90,21 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
+    public @Nullable KTransformable getParent() {
+        return this.transform.getParent();
+    }
+
+    @Override
+    public void setParent(final KTransformable parentTransform) {
+        this.transform.setParent(parentTransform);
+    }
+
+    @Override
+    public float[] getMatrix() {
+        return this.transform.getMatrix();
+    }
+
+    @Override
     public @Nullable KShaderProgram getShader() {
         return this.shader;
     }
@@ -108,8 +119,8 @@ public abstract class KAbstractShape implements KShape {
             double area = ( p0.x() * p1.y() ) - ( p1.x() * p0.y() );
             signedArea += area;
 
-            x += (p0.x() * p1.x()) * area;
-            y += (p0.y() * p1.y()) * area;
+            x += (p0.x() + p1.x()) * area;
+            y += (p0.y() + p1.y()) * area;
 
         }
 

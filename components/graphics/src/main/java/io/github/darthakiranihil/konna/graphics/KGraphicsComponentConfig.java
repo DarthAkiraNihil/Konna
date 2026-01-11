@@ -40,11 +40,15 @@ public record KGraphicsComponentConfig(
     Class<? extends KShaderCompiler> shaderCompilerClass,
 
     @KJsonSerialized @KJsonCustomName(name = IMAGE_LOADER_CLASS_KEY)
-    Class<? extends KImageLoader> imageLoaderClass
+    Class<? extends KImageLoader> imageLoaderClass,
+
+    @KJsonSerialized @KJsonCustomName(name = TRANSFORM_MATRIX_CALCULATOR_CLASS)
+    Class<? extends KTransformMatrixCalculator> transformMatrixCalculatorClass
 ) {
     private static final String RENDER_FRONTEND_CLASS_KEY = "render_frontend";
     private static final String SHADER_COMPILER_CLASS_KEY = "shader_compiler";
     private static final String IMAGE_LOADER_CLASS_KEY = "image_loader";
+    private static final String TRANSFORM_MATRIX_CALCULATOR_CLASS = "transform_matrix_calculator";
 
     private static final class Schema implements KJsonValidator {
 
@@ -70,6 +74,13 @@ public record KGraphicsComponentConfig(
                     .build(),
                 propInfoBuilder
                     .withName(IMAGE_LOADER_CLASS_KEY)
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withValidator(
+                        KJsonValueIsClassValidator.INSTANCE
+                    )
+                    .build(),
+                propInfoBuilder
+                    .withName(TRANSFORM_MATRIX_CALCULATOR_CLASS)
                     .withExpectedType(KJsonValueType.STRING)
                     .withValidator(
                         KJsonValueIsClassValidator.INSTANCE
