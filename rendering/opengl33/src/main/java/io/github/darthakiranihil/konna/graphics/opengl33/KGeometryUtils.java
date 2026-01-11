@@ -83,10 +83,10 @@ final class KGeometryUtils extends KUninstantiable {
     }
 
     /**
-     * Converts screen point to OpenGL format.
-     * @param v Screen point coordinates
+     * Converts translation to OpenGL format.
+     * @param v Translation vector
      * @param viewportSize Viewport size
-     * @return OpenGL representation of passed point
+     * @return OpenGL representation of passed translation
      */
     public static KVector2f plainTranslationToGl(
         final KVector2i v,
