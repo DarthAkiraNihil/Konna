@@ -62,7 +62,7 @@ final class KTextureMaker {
             gl.glDeleteBuffers(vao);
             gl.glDeleteBuffers(vbo);
             gl.glDeleteBuffers(ebo);
-            gl.glDeleteTextures(id);
+            // gl.glDeleteTextures(id);
         }
 
     }
@@ -87,14 +87,14 @@ final class KTextureMaker {
     }
 
 
-    public TextureInfo make(final KRenderableTexture texture) {
+    public TextureInfo make(final KRenderableTexture texture, boolean doNotTriangulate) {
 
         int hash = KRenderableHasher.hash(texture);
 
         if (!this.cache.containsKey(hash)) {
             this.cache.put(
                 hash,
-                this.createTextureInfo(texture)
+                this.createTextureInfo(texture, doNotTriangulate)
             );
         }
 
@@ -124,7 +124,7 @@ final class KTextureMaker {
 
     }
 
-    private TextureInfo createTextureInfo(final KRenderableTexture texture) {
+    private TextureInfo createTextureInfo(final KRenderableTexture texture, boolean doNotTriangulate) {
 
         KTexture sourceTexture = texture.texture();
 
@@ -141,7 +141,7 @@ final class KTextureMaker {
             this.textureCache.put(imageHash, tex);
         }
 
-        KVector2i[] vertices = texture.xy();
+        KVector2i[] vertices = texture.xy(); // v * 4
         KVector2f[] uvs = texture.uv();
         KColor[] colors = texture.colors();
 
@@ -149,7 +149,20 @@ final class KTextureMaker {
             vertices.length * TEXTURE_ELEMENTS_COUNT
         );
 
-        int[] triangulatedIndices = KGeometryUtils.getTriangulatedVerticesIndices(vertices);
+        int[] triangulatedIndices;
+        if (doNotTriangulate) {
+            triangulatedIndices = new int[(vertices.length * 3) / 2]; // v * 6
+            for (int i = 0; i < vertices.length / 4; i++ ) {
+                triangulatedIndices[(i * 6)] = i * 4;
+                triangulatedIndices[(i * 6) + 1] = i * 4 + 1;
+                triangulatedIndices[(i * 6) + 2] = i * 4 + 3;
+                triangulatedIndices[(i * 6) + 3] = i * 4 + 1;
+                triangulatedIndices[(i * 6) + 4] = i * 4 + 2;
+                triangulatedIndices[(i * 6) + 5] = i * 4 + 3;
+            }
+        } else {
+            triangulatedIndices = KGeometryUtils.getTriangulatedVerticesIndices(vertices);
+        }
         IntBuffer indices = KBufferUtils.createIntBuffer(triangulatedIndices.length);
         indices.put(triangulatedIndices);
 

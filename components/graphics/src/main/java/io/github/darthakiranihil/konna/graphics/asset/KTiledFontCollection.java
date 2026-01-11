@@ -1,0 +1,141 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.darthakiranihil.konna.graphics.asset;
+
+import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.io.KAsset;
+import io.github.darthakiranihil.konna.core.io.KAssetCollection;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.graphics.image.*;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
+import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public final class KTiledFontCollection extends KObject implements KAssetCollection<KTiledFont> {
+
+    /**
+     * Constant for tiled font asset type inside Graphics component.
+     */
+    public static final String TILED_FONT_ASSET_TYPE = "Graphics.tiledFont";
+    /**
+     * Tiled font asset type schema.
+     */
+    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
+        TILED_FONT_ASSET_TYPE,
+        new TiledFontAssetSchema()
+    );
+
+    private static final class TiledFontAssetSchema implements KJsonValidator {
+
+        private final KJsonValidator schema;
+
+        TiledFontAssetSchema() {
+
+            var builder = new KJsonPropertyValidationInfo.Builder();
+
+            this.schema = new KJsonObjectValidator();
+
+        }
+
+        @Override
+        public void validate(final KJsonValue value) {
+            this.schema.validate(value);
+        }
+    }
+
+    private final KAssetLoader assetLoader;
+    private final KTextureCollection textureCollection;
+    private final KActivator activator;
+
+    private final Map<String, KTiledFont> loadedFonts;
+
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader (to load texture assets)
+     */
+    public KTiledFontCollection(
+        @KInject final KAssetLoader assetLoader,
+        @KInject final KTextureCollection textureCollection,
+        @KInject final KActivator activator
+    ) {
+        super(
+            "Graphics.tiledFontCollection",
+            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+        );
+
+        this.assetLoader = assetLoader;
+        this.textureCollection = textureCollection;
+        this.activator = activator;
+
+        this.loadedFonts = new HashMap<>();
+    }
+
+    @Override
+    public KTiledFont getAsset(final String assetId) {
+
+        if (this.loadedFonts.containsKey(assetId)) {
+            return this.loadedFonts.get(assetId);
+        }
+
+        KAsset asset = this.assetLoader.loadAsset(assetId, TILED_FONT_ASSET_TYPE);
+        KAssetDefinition fontDefinition = asset.definition();
+
+        String name = fontDefinition.getString("name");
+        String faceId = fontDefinition.getString("face");
+        KAssetDefinition glyphSizeData = fontDefinition.getSubdefinition("glyph_size");
+        KSize glyphSize = new KSize(glyphSizeData.getInt("width"), glyphSizeData.getInt("height"));
+
+        KTexture face = this.textureCollection.getAsset(faceId);
+
+        KTiledFontFormat fontFormat;
+        try {
+            String fontFormatClass = fontDefinition.getString("format");
+            fontFormat = this
+                .activator
+                .createObject(
+                    (Class<? extends KTiledFontFormat>) Class.forName(fontFormatClass)
+                );
+        } catch (Throwable e) {
+            throw new KAssetLoadingException(e);
+        }
+
+        KTiledFont font = new KTiledFont(
+            name,
+            face,
+            fontFormat,
+            glyphSize
+        );
+
+        this.loadedFonts.put(assetId, font);
+        return font;
+    }
+}

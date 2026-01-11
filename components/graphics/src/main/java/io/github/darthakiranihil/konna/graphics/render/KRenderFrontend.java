@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
+import io.github.darthakiranihil.konna.graphics.text.KTiledText;
 
 /**
  * Interface for a render frontend that renders object using implementation-defined
@@ -76,6 +77,7 @@ public interface KRenderFrontend {
      * @param texture Texture object to render
      */
     void render(KRenderableTexture texture);
+    void render(KTiledText tiledText);
 
     /**
      * Clears the viewport.

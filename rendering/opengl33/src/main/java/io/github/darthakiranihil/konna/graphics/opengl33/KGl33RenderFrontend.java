@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
+import io.github.darthakiranihil.konna.graphics.text.KTiledText;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 
 /**
@@ -250,7 +251,16 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(final KRenderableTexture texture) {
-        KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
+        this.render(texture, false);
+    }
+
+    @Override
+    public void render(KTiledText tiledText) {
+        this.render(tiledText.getRendered(), true);
+    }
+
+    private void render(KRenderableTexture texture, boolean doNotTriangulate) {
+        KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture, doNotTriangulate);
         KTexture sourceTexture = texture.texture();
 
         this.setActiveShader(sourceTexture.shader());
@@ -313,7 +323,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.disableActiveShader();
-
     }
 
     private void updateTtl() {
