@@ -31,10 +31,4 @@ public interface KShape extends
     KRenderable,
     KTransformable {
 
-    /**
-     * Returns the transform of this object.
-     * @return Transform of this object
-     */
-    KTransform getTransform();
-
 }

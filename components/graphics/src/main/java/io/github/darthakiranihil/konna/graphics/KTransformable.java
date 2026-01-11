@@ -31,41 +31,10 @@ import org.jspecify.annotations.Nullable;
 public interface KTransformable {
 
     /**
-     * Rotates the object.
-     * @param theta Rotation angle
-     * @return This object (for method chaining)
+     * Returns the transform of this object.
+     * @return Transform of this object
      */
-    KTransformable rotate(double theta);
-
-    /**
-     * Scales the object with multiplying its current scaling on passed factor.
-     * @param factor Scale factor
-     * @return This object (for method chaining)
-     */
-    KTransformable scale(KVector2d factor);
-
-    /**
-     * Returns scaling of the object.
-     * @return Scaling of this object
-     */
-    KVector2d getScaling();
-
-    /**
-     * Sets scaling for the object.
-     * @param scale New object scaling.
-     * @return This object (for method chaining)
-     */
-    KTransformable setScaling(KVector2d scale);
-
-    /**
-     * Translates the object.
-     * @param value Translation vector
-     * @return This object (for method chaining)
-     */
-    KTransformable translate(KVector2i value);
-
-    @Nullable KTransformable getParent();
-    void setParent(KTransformable parentTransform);
-    float[] getMatrix();
+    KTransform getTransform();
+    void setTransform(KTransform newTransform);
 
 }

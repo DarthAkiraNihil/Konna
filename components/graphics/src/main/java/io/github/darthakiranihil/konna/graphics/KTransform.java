@@ -19,10 +19,10 @@ package io.github.darthakiranihil.konna.graphics;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Representation of position, rotation and scaling of an object.
@@ -30,7 +30,8 @@ import java.util.Arrays;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public final class KTransform implements KTransformable {
+@SuppressWarnings("UnusedReturnValue")
+public final class KTransform {
 
     private static @Nullable KTransformMatrixCalculator transformMatrixCalculator;
 
@@ -41,7 +42,10 @@ public final class KTransform implements KTransformable {
     private double rotation;
     private KVector2i translation;
     private KVector2d scaling;
-    private @Nullable KTransformable parent;
+
+    private @Nullable KTransform parent;
+    private final List<KTransform> children;
+
     private final KVector2i center;
 
     private final float[] matrix;
@@ -64,6 +68,8 @@ public final class KTransform implements KTransformable {
         this.translation = translation;
         this.center = center;
 
+        this.children = new LinkedList<>();
+
         this.matrix = new float[16];
         this.cached = false;
     }
@@ -80,29 +86,41 @@ public final class KTransform implements KTransformable {
         this(0.0, KVector2i.ZERO, KVector2d.ONE, center);
     }
 
-    @Override
-    public KTransformable rotate(double theta) {
-        this.rotation += theta;
-        this.cached = false;
-        return this;
-    }
-
-    @Override
-    public KTransformable scale(final KVector2d factor) {
-        this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
-        this.cached = false;
-        return this;
-    }
-
-    @Override
-    public KTransformable translate(final KVector2i value) {
-        this.translation = this.translation.add(value);
-        this.cached = false;
-        return this;
-    }
-
     public KVector2i getCenter() {
         return this.center;
+    }
+
+    /**
+     * Rotates the object.
+     * @param theta Rotation angle
+     * @return This object (for method chaining)
+     */
+    public KTransform rotate(double theta) {
+        this.rotation += theta;
+        this.invalidateCache();
+        return this;
+    }
+
+    /**
+     * Scales the object with multiplying its current scaling on passed factor.
+     * @param factor Scale factor
+     * @return This object (for method chaining)
+     */
+    public KTransform scale(final KVector2d factor) {
+        this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
+        this.invalidateCache();
+        return this;
+    }
+
+    /**
+     * Translates the object.
+     * @param value Translation vector
+     * @return This object (for method chaining)
+     */
+    public KTransform translate(final KVector2i value) {
+        this.translation = this.translation.add(value);
+        this.invalidateCache();
+        return this;
     }
 
     /**
@@ -121,29 +139,58 @@ public final class KTransform implements KTransformable {
         return this.translation;
     }
 
-    @Override
+    /**
+     * Returns scaling of the object.
+     * @return Scaling of this object
+     */
     public KVector2d getScaling() {
         return this.scaling;
     }
 
-    @Override
-    public KTransformable setScaling(final KVector2d scale) {
+    /**
+     * Sets scaling for the object.
+     * @param scale New object scaling.
+     * @return This object (for method chaining)
+     */
+    public KTransform setScaling(final KVector2d scale) {
         this.scaling = scale;
-        this.cached = false;
+        this.invalidateCache();
         return this;
     }
 
-    @Override
-    public @Nullable KTransformable getParent() {
+    public @Nullable KTransform getParent() {
         return this.parent;
     }
 
-    @Override
-    public void setParent(KTransformable parentTransform) {
+    public void setParent(KTransform parentTransform) {
+        parentTransform.addChild(this);
         this.parent = parentTransform;
     }
 
-    @Override
+    public List<KTransform> getChildren() {
+        return this.children;
+    }
+
+    public void addChild(final KTransform child) {
+        this.children.add(child);
+        child.invalidateCache();
+        this.invalidateCache();
+    }
+
+    public void removeChild(final KTransform child) {
+        this.children.remove(child);
+
+        child.parent = null;
+        child.invalidateCache();
+
+        this.invalidateCache();
+    }
+
+    private void invalidateCache() {
+        this.cached = false;
+        this.children.forEach(KTransform::invalidateCache);
+    }
+
     public float[] getMatrix() {
 
         if (this.cached) {

@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformable;
+import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import org.jspecify.annotations.Nullable;
 
@@ -36,7 +37,7 @@ import java.util.Map;
 @KExcludeFromGeneratedCoverageReport
 public abstract class KAbstractShape implements KShape {
 
-    private final KTransform transform;
+    private KTransform transform;
     private final @Nullable KShaderProgram shader;
 
     /**
@@ -61,47 +62,13 @@ public abstract class KAbstractShape implements KShape {
     }
 
     @Override
-    public KTransformable rotate(double theta) {
-        this.transform.rotate(theta);
-        return this;
+    public void setTransform(KTransform newTransform) {
+        this.transform = newTransform;
     }
 
     @Override
-    public KTransformable scale(final KVector2d factor) {
-        this.transform.scale(factor);
-        return this;
-    }
+    public void render(KRenderFrontend rf) {
 
-    @Override
-    public KTransformable translate(final KVector2i value) {
-        this.transform.translate(value);
-        return this;
-    }
-
-    @Override
-    public KVector2d getScaling() {
-        return this.transform.getScaling();
-    }
-
-    @Override
-    public KTransformable setScaling(final KVector2d scale) {
-        this.transform.setScaling(scale);
-        return this;
-    }
-
-    @Override
-    public @Nullable KTransformable getParent() {
-        return this.transform.getParent();
-    }
-
-    @Override
-    public void setParent(final KTransformable parentTransform) {
-        this.transform.setParent(parentTransform);
-    }
-
-    @Override
-    public float[] getMatrix() {
-        return this.transform.getMatrix();
     }
 
     @Override

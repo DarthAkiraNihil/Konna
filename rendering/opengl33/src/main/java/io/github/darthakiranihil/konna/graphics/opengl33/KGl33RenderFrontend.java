@@ -183,19 +183,10 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
 
-        float[] transformMatrix = shape.getMatrix();
-//        Arrays.copyOf(shape.getTransform().matrix(), 16);
-//        KVector2f glTransform = KGeometryUtils.plainTransformToGl(new KVector2i(
-//            (int) transformMatrix[12],
-//            (int) transformMatrix[13]
-//        ), this.viewportSize);
-//        // БЛЯТЬ ЗДЕСЬ СОБАКА ЗАРЫТА НАХУЙ ДОЛЖЕН БРАТЬ ИЗ МАТРИЦЫ ТРАНСФОРМ
-//        transformMatrix[12] = glTransform.x();
-//        transformMatrix[13] = glTransform.y();
-
-        //KSystemLogger.trace("ref", "GLT: %s", glTransform);
-
-        shader.setUniformMatrix("transform", transformMatrix);
+        shader.setUniformMatrix(
+            KGl33ShaderCompiler.U_TRANSFORM,
+            shape.getTransform().getMatrix()
+        );
 
         shader.setUniform(KGl33ShaderCompiler.U_COLOR, fillColor.normalized());
         this.gl.glDrawElements(KGl33.GL_TRIANGLE_FAN, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
@@ -228,17 +219,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glEnableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glVertexPointer(2, KGl33.GL_FLOAT, 0, 0L);
-        float[] transformMatrix = shape.getMatrix();
 
-//        float[] transformMatrix = Arrays.copyOf(shape.getTransform().matrix(), 16);
-//        KVector2f glTransform = KGeometryUtils.plainTransformToGl(new KVector2i(
-//            (int) transformMatrix[12],
-//            (int) transformMatrix[13]
-//        ), this.viewportSize);
-//        transformMatrix[12] = glTransform.x();
-//        transformMatrix[13] = glTransform.y();
-
-        shader.setUniformMatrix("transform", transformMatrix);
+        shader.setUniformMatrix(
+            KGl33ShaderCompiler.U_TRANSFORM,
+            shape.getTransform().getMatrix()
+        );
 
         shader.setUniform(KGl33ShaderCompiler.U_COLOR, color.normalized());
         this.gl.glDrawElements(KGl33.GL_LINE_STRIP, pointCount, KGl33.GL_UNSIGNED_INT, 0L);
@@ -311,16 +296,10 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, 0);
 
-        float[] transformMatrix = texture.getMatrix();
-//        float[] transformMatrix = Arrays.copyOf(texture.getTransform().matrix(), 16);
-//        KVector2f glTransform = KGeometryUtils.plainTransformToGl(new KVector2i(
-//            (int) transformMatrix[12],
-//            (int) transformMatrix[13]
-//        ), this.viewportSize);
-//        transformMatrix[12] = glTransform.x();
-//        transformMatrix[13] = glTransform.y();
-
-        sourceTexture.shader().setUniformMatrix("transform", transformMatrix);
+        sourceTexture.shader().setUniformMatrix(
+            KGl33ShaderCompiler.U_TRANSFORM,
+            texture.getTransform().getMatrix()
+        );
 
         this.gl.glBindVertexArray(textureInfo.vao());
         this.gl.glDrawElements(

@@ -19,10 +19,11 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformMatrixCalculator;
-import io.github.darthakiranihil.konna.graphics.KTransformable;
 import org.joml.Matrix4f;
 
 @KSingleton
@@ -43,7 +44,7 @@ public final class KGl33TransformMatrixCalculator extends KObject implements KTr
         KVector2f center = KGeometryUtils.plainToGl(transform.getCenter(), this.viewportSize);
 
         Matrix4f matrix = new Matrix4f();
-        KTransformable parent = transform.getParent();
+        KTransform parent = transform.getParent();
         if (parent != null) {
             matrix.set(parent.getMatrix());
         } else {
@@ -51,10 +52,18 @@ public final class KGl33TransformMatrixCalculator extends KObject implements KTr
                 .identity();
         }
 
+        KVector2d scaling = transform.getScaling();
+        KVector2f translation = KGeometryUtils.plainToGl(
+            transform.getTranslation(),
+            this.viewportSize
+        );
+
         matrix
             .translate(center.x(), center.y(), 0.0f)
             .rotate((float) transform.getRotation(), 0.0f, 0.0f, 1.0f)
             .translate(-center.x(), -center.y(), 0.0f)
+            .scaleXY((float) scaling.x(), (float) scaling.y())
+            .translate(translation.x(), translation.y(), 0.0f)
             .get(dst);
 
     }
