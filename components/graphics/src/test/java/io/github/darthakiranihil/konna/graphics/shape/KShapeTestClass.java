@@ -20,9 +20,18 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.KColor;
+import io.github.darthakiranihil.konna.graphics.impl.TestShaderProgram;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 
 class KShapeTestClass extends KStandardTestClass {
+
+    protected final KShaderProgram shader;
+
+    protected KShapeTestClass() {
+        this.shader = new TestShaderProgram();
+    }
 
     protected void assertArc(
         KArc arc,
@@ -30,6 +39,7 @@ class KShapeTestClass extends KStandardTestClass {
         KSize size,
         int startAngle,
         int arcAngle,
+        @Nullable KShaderProgram shader,
         KColor outlineColor,
         KColor fillColor
     ) {
@@ -38,6 +48,7 @@ class KShapeTestClass extends KStandardTestClass {
         Assertions.assertEquals(size, arc.size());
         Assertions.assertEquals(startAngle, arc.startAngle());
         Assertions.assertEquals(arcAngle, arc.arcAngle());
+        Assertions.assertEquals(shader, arc.getShader());
         Assertions.assertEquals(outlineColor, arc.getOutlineColor());
         Assertions.assertEquals(fillColor, arc.getFillColor());
 
@@ -47,12 +58,14 @@ class KShapeTestClass extends KStandardTestClass {
         KCircle circle,
         KVector2i coordinates,
         int r,
+        @Nullable KShaderProgram shader,
         KColor outlineColor,
         KColor fillColor
     ) {
 
         Assertions.assertEquals(coordinates, circle.center());
         Assertions.assertEquals(KSize.squared(2 * r), circle.size());
+        Assertions.assertEquals(shader, circle.getShader());
         Assertions.assertEquals(outlineColor, circle.getOutlineColor());
         Assertions.assertEquals(fillColor, circle.getFillColor());
 
@@ -62,11 +75,13 @@ class KShapeTestClass extends KStandardTestClass {
         KLine line,
         KVector2i start,
         KVector2i end,
+        @Nullable KShaderProgram shader,
         KColor color
     ) {
 
         Assertions.assertEquals(start, line.start());
         Assertions.assertEquals(end, line.end());
+        Assertions.assertEquals(shader, line.getShader());
         Assertions.assertEquals(color, line.getColor());
 
     }
@@ -75,12 +90,14 @@ class KShapeTestClass extends KStandardTestClass {
         KOval oval,
         KVector2i center,
         final KSize size,
+        @Nullable KShaderProgram shader,
         final KColor outlineColor,
         final KColor fillColor
     ) {
 
         Assertions.assertEquals(center, oval.center());
         Assertions.assertEquals(size, oval.size());
+        Assertions.assertEquals(shader, oval.getShader());
         Assertions.assertEquals(outlineColor, oval.getOutlineColor());
         Assertions.assertEquals(fillColor, oval.getFillColor());
 
@@ -89,6 +106,7 @@ class KShapeTestClass extends KStandardTestClass {
     protected void assertPolygon(
         KPolygon polygon,
         KVector2i[] points,
+        @Nullable KShaderProgram shader,
         KColor outlineColor,
         KColor fillColor
     ) {
@@ -98,6 +116,7 @@ class KShapeTestClass extends KStandardTestClass {
         for (int i = 0; i < points.length; i++) {
             Assertions.assertEquals(points[i], polygonPoints[i]);
         }
+        Assertions.assertEquals(shader, polygon.getShader());
         Assertions.assertEquals(outlineColor, polygon.getOutlineColor());
         Assertions.assertEquals(fillColor, polygon.getFillColor());
 
@@ -106,6 +125,7 @@ class KShapeTestClass extends KStandardTestClass {
     protected void assertPolyline(
         KPolyline polyline,
         KVector2i[] points,
+        @Nullable KShaderProgram shader,
         KColor color
     ) {
 
@@ -114,6 +134,7 @@ class KShapeTestClass extends KStandardTestClass {
         for (int i = 0; i < points.length; i++) {
             Assertions.assertEquals(points[i], polylinePoints[i]);
         }
+        Assertions.assertEquals(shader, polyline.getShader());
         Assertions.assertEquals(color, polyline.getColor());
 
     }
@@ -122,6 +143,7 @@ class KShapeTestClass extends KStandardTestClass {
         KRectangle rectangle,
         KVector2i coordinates,
         KSize size,
+        @Nullable KShaderProgram shader,
         KColor outlineColor,
         KColor fillColor
     ) {
@@ -136,6 +158,7 @@ class KShapeTestClass extends KStandardTestClass {
 
         Assertions.assertEquals(size.width(), rectangle.width());
         Assertions.assertEquals(size.height(), rectangle.height());
+        Assertions.assertEquals(shader, rectangle.getShader());
         Assertions.assertEquals(outlineColor, rectangle.getOutlineColor());
         Assertions.assertEquals(fillColor, rectangle.getFillColor());
 
@@ -145,6 +168,7 @@ class KShapeTestClass extends KStandardTestClass {
         KRectangle square,
         KVector2i coordinates,
         int side,
+        @Nullable KShaderProgram shader,
         KColor outlineColor,
         KColor fillColor
     ) {
@@ -159,6 +183,7 @@ class KShapeTestClass extends KStandardTestClass {
 
         Assertions.assertEquals(side, square.width());
         Assertions.assertEquals(side, square.height());
+        Assertions.assertEquals(shader, square.getShader());
         Assertions.assertEquals(outlineColor, square.getOutlineColor());
         Assertions.assertEquals(fillColor, square.getFillColor());
 

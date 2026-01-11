@@ -31,7 +31,7 @@ public class KLinePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KLine shape = new KLine(this.start, this.end, this.color);
-        this.assertLine(shape, this.start, this.end, this.color);
+        this.assertLine(shape, this.start, this.end, null, this.color);
 
     }
 
@@ -39,7 +39,7 @@ public class KLinePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KLine shape = new KLine(this.start, this.end);
-        this.assertLine(shape, this.start, this.end, KColor.TRANSPARENT);
+        this.assertLine(shape, this.start, this.end, null, KColor.TRANSPARENT);
 
     }
 
@@ -47,7 +47,7 @@ public class KLinePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KLine shape = new KLine(this.start.x(), this.end.x(), this.start.y(), this.end.y(), this.color);
-        this.assertLine(shape, this.start, this.end, this.color);
+        this.assertLine(shape, this.start, this.end, null, this.color);
 
     }
 
@@ -55,7 +55,39 @@ public class KLinePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KLine shape = new KLine(this.start.x(), this.end.x(), this.start.y(), this.end.y());
-        this.assertLine(shape, this.start, this.end, KColor.TRANSPARENT);
+        this.assertLine(shape, this.start, this.end, null, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KLine shape = new KLine(this.start, this.end, this.shader, this.color);
+        this.assertLine(shape, this.start, this.end, this.shader, this.color);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KLine shape = new KLine(this.start, this.end, this.shader);
+        this.assertLine(shape, this.start, this.end, this.shader, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KLine shape = new KLine(this.start.x(), this.end.x(), this.start.y(), this.end.y(), this.shader, this.color);
+        this.assertLine(shape, this.start, this.end, this.shader, this.color);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KLine shape = new KLine(this.start.x(), this.end.x(), this.start.y(), this.end.y(), this.shader);
+        this.assertLine(shape, this.start, this.end, this.shader, KColor.TRANSPARENT);
 
     }
 

@@ -206,6 +206,8 @@ public final class KTransform {
      */
     public KTransform addChild(final KTransform child) {
         this.children.add(child);
+        child.parent = this;
+
         child.invalidateCache();
         this.invalidateCache();
         return this;

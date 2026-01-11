@@ -51,6 +51,11 @@ public class TestShaderCompiler implements KShaderCompiler {
     }
 
     @Override
+    public KShaderProgram getDefaultShader() {
+        return new TestShaderProgram();
+    }
+
+    @Override
     public KShaderProgram getDefaultTextureShader() {
         return new TestShaderProgram();
     }

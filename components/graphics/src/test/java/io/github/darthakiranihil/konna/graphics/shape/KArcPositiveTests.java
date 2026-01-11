@@ -35,7 +35,7 @@ public class KArcPositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KArc shape = new KArc(this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor, this.fillColor);
-        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor, this.fillColor);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -43,7 +43,7 @@ public class KArcPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KArc shape = new KArc(this.coordinates, this.size, this.startAngle, this.arcAngle);
-        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -51,7 +51,7 @@ public class KArcPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColor() {
 
         KArc shape = new KArc(this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor);
-        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor, KColor.TRANSPARENT);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, null, this.outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -59,7 +59,7 @@ public class KArcPositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle, this.outlineColor, this.fillColor);
-        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor, this.fillColor);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -67,7 +67,7 @@ public class KArcPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle);
-        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -75,7 +75,55 @@ public class KArcPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColorSeparated() {
 
         KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle, this.outlineColor);
-        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.outlineColor, KColor.TRANSPARENT);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, null, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KArc shape = new KArc(this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, this.outlineColor, this.fillColor);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KArc shape = new KArc(this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorWithShader() {
+
+        KArc shape = new KArc(this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, this.outlineColor);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle, this.shader, this.outlineColor, this.fillColor);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle, this.shader);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorSeparatedWithShader() {
+
+        KArc shape = new KArc(this.coordinates.x(), this.coordinates.y(), this.size.width(), this.size.height(), this.startAngle, this.arcAngle, this.shader, this.outlineColor);
+        this.assertArc(shape, this.coordinates, this.size, this.startAngle, this.arcAngle, this.shader, this.outlineColor, KColor.TRANSPARENT);
 
     }
 

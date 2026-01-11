@@ -28,13 +28,17 @@ public class TestShaderProgram implements KShaderProgram {
     }
 
     @Override
-    public int getAttribute(String name) {
-        return 0;
+    public void setUniform(String uniformName, float[] value) {
+
     }
 
     @Override
-    public int getUniform(String name) {
-        return 0;
+    public void setUniform(String uniformName, int value) {
+
     }
 
+    @Override
+    public void setUniformMatrix(String uniformName, float[] value) {
+
+    }
 }

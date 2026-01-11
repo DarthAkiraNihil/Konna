@@ -33,7 +33,7 @@ public class KOvalPositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KOval shape = new KOval(this.center, this.size, this.outlineColor, this.fillColor);
-        this.assertOval(shape, this.center, this.size, this.outlineColor, this.fillColor);
+        this.assertOval(shape, this.center, this.size, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -41,7 +41,7 @@ public class KOvalPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KOval shape = new KOval(this.center, this.size);
-        this.assertOval(shape, this.center, this.size, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertOval(shape, this.center, this.size, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -49,7 +49,7 @@ public class KOvalPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColor() {
 
         KOval shape = new KOval(center, this.size, this.outlineColor);
-        this.assertOval(shape, this.center, this.size, this.outlineColor, KColor.TRANSPARENT);
+        this.assertOval(shape, this.center, this.size, null, this.outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -57,7 +57,7 @@ public class KOvalPositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height(), this.outlineColor, this.fillColor);
-        this.assertOval(shape, this.center, this.size, this.outlineColor, this.fillColor);
+        this.assertOval(shape, this.center, this.size, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -65,7 +65,7 @@ public class KOvalPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height());
-        this.assertOval(shape, this.center, this.size, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertOval(shape, this.center, this.size, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -73,7 +73,55 @@ public class KOvalPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColorSeparated() {
 
         KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height(), this.outlineColor);
-        this.assertOval(shape, this.center, this.size, this.outlineColor, KColor.TRANSPARENT);
+        this.assertOval(shape, this.center, this.size, null, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KOval shape = new KOval(this.center, this.size, this.shader, this.outlineColor, this.fillColor);
+        this.assertOval(shape, this.center, this.size, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KOval shape = new KOval(this.center, this.size, this.shader);
+        this.assertOval(shape, this.center, this.size, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorWithShader() {
+
+        KOval shape = new KOval(center, this.size, this.shader, this.outlineColor);
+        this.assertOval(shape, this.center, this.size, this.shader, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height(), this.shader, this.outlineColor, this.fillColor);
+        this.assertOval(shape, this.center, this.size, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height(), this.shader);
+        this.assertOval(shape, this.center, this.size, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorSeparatedWithShader() {
+
+        KOval shape = new KOval(this.center.x(), this.center.y(), this.size.width(), this.size.height(), this.shader, this.outlineColor);
+        this.assertOval(shape, this.center, this.size, this.shader, this.outlineColor, KColor.TRANSPARENT);
 
     }
 

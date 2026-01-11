@@ -1,5 +1,6 @@
 {
     "render_frontend": "io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend",
     "shader_compiler": "io.github.darthakiranihil.konna.graphics.impl.TestShaderCompiler",
-    "image_loader": "io.github.darthakiranihil.konna.graphics.impl.TestImageLoader"
+    "image_loader": "io.github.darthakiranihil.konna.graphics.impl.TestImageLoader",
+    "transform_matrix_calculator": "io.github.darthakiranihil.konna.graphics.opengl33.KGl33TransformMatrixCalculator"
 }

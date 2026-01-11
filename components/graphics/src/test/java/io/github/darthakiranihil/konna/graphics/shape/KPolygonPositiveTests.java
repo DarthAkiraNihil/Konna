@@ -38,7 +38,7 @@ public class KPolygonPositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KPolygon shape = new KPolygon(this.points, this.outlineColor, this.fillColor);
-        this.assertPolygon(shape, this.points, this.outlineColor, this.fillColor);
+        this.assertPolygon(shape, this.points, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -46,7 +46,7 @@ public class KPolygonPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KPolygon shape = new KPolygon(this.points);
-        this.assertPolygon(shape, this.points, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertPolygon(shape, this.points, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -54,7 +54,7 @@ public class KPolygonPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColor() {
 
         KPolygon shape = new KPolygon(this.points, this.outlineColor);
-        this.assertPolygon(shape, this.points, outlineColor, KColor.TRANSPARENT);
+        this.assertPolygon(shape, this.points, null, outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -62,7 +62,7 @@ public class KPolygonPositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KPolygon shape = new KPolygon(this.xs, this.ys, this.outlineColor, this.fillColor);
-        this.assertPolygon(shape, this.points, this.outlineColor, this.fillColor);
+        this.assertPolygon(shape, this.points, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -70,7 +70,7 @@ public class KPolygonPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KPolygon shape = new KPolygon(this.xs, this.ys);
-        this.assertPolygon(shape, this.points, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertPolygon(shape, this.points, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -78,7 +78,55 @@ public class KPolygonPositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColorSeparated() {
 
         KPolygon shape = new KPolygon(this.xs, this.ys, this.outlineColor);
-        this.assertPolygon(shape, this.points, this.outlineColor, KColor.TRANSPARENT);
+        this.assertPolygon(shape, this.points, null, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KPolygon shape = new KPolygon(this.points, this.shader, this.outlineColor, this.fillColor);
+        this.assertPolygon(shape, this.points, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KPolygon shape = new KPolygon(this.points, this.shader);
+        this.assertPolygon(shape, this.points, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorWithShader() {
+
+        KPolygon shape = new KPolygon(this.points, this.shader, this.outlineColor);
+        this.assertPolygon(shape, this.points, this.shader, outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KPolygon shape = new KPolygon(this.xs, this.ys, this.shader, this.outlineColor, this.fillColor);
+        this.assertPolygon(shape, this.points, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KPolygon shape = new KPolygon(this.xs, this.ys, this.shader);
+        this.assertPolygon(shape, this.points, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorSeparatedWithShader() {
+
+        KPolygon shape = new KPolygon(this.xs, this.ys, this.shader, this.outlineColor);
+        this.assertPolygon(shape, this.points, this.shader, this.outlineColor, KColor.TRANSPARENT);
 
     }
 

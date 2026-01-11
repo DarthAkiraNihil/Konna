@@ -37,7 +37,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandard() {
 
         KRectangle shape = new KRectangle(this.corner, this.size, this.outlineColor, this.fillColor);
-        this.assertRectangle(shape, this.corner, this.size, this.outlineColor, this.fillColor);
+        this.assertRectangle(shape, this.corner, this.size, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -45,7 +45,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColors() {
 
         KRectangle shape = new KRectangle(this.corner, this.size);
-        this.assertRectangle(shape, this.corner, this.size, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertRectangle(shape, this.corner, this.size, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -53,7 +53,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColor() {
 
         KRectangle shape = new KRectangle(this.corner, this.size, this.outlineColor);
-        this.assertRectangle(shape, this.corner, this.size, outlineColor, KColor.TRANSPARENT);
+        this.assertRectangle(shape, this.corner, this.size, null, outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -61,7 +61,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateShapeStandardSeparated() {
 
         KRectangle shape = new KRectangle(this.corner.x(), this.corner.y(), this.size.width(), this.size.height(), this.outlineColor, this.fillColor);
-        this.assertRectangle(shape, this.corner, this.size, this.outlineColor, this.fillColor);
+        this.assertRectangle(shape, this.corner, this.size, null, this.outlineColor, this.fillColor);
 
     }
 
@@ -69,7 +69,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutColorsSeparated() {
 
         KRectangle shape = new KRectangle(this.corner.x(), this.corner.y(), this.size.width(), this.size.height());
-        this.assertRectangle(shape, this.corner, this.size, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertRectangle(shape, this.corner, this.size, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -77,7 +77,55 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateShapeWithoutFillColorSeparated() {
 
         KRectangle shape = new KRectangle(this.corner.x(), this.corner.y(), this.size.width(), this.size.height(), this.outlineColor);
-        this.assertRectangle(shape, this.corner, this.size, this.outlineColor, KColor.TRANSPARENT);
+        this.assertRectangle(shape, this.corner, this.size, null, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardWithShader() {
+
+        KRectangle shape = new KRectangle(this.corner, this.size, this.shader, this.outlineColor, this.fillColor);
+        this.assertRectangle(shape, this.corner, this.size, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsWithShader() {
+
+        KRectangle shape = new KRectangle(this.corner, this.size, this.shader);
+        this.assertRectangle(shape, this.corner, this.size,this.shader,  KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorWithShader() {
+
+        KRectangle shape = new KRectangle(this.corner, this.size, this.shader, this.outlineColor);
+        this.assertRectangle(shape, this.corner, this.size, this.shader, outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeStandardSeparatedWithShader() {
+
+        KRectangle shape = new KRectangle(this.corner.x(), this.corner.y(), this.size.width(), this.size.height(), this.shader, this.outlineColor, this.fillColor);
+        this.assertRectangle(shape, this.corner, this.size, this.shader, this.outlineColor, this.fillColor);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutColorsSeparatedWithShader() {
+
+        KRectangle shape = new KRectangle(this.corner.x(), this.corner.y(), this.size.width(), this.size.height(), this.shader);
+        this.assertRectangle(shape, this.corner, this.size, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateShapeWithoutFillColorSeparatedWithShader() {
+
+        KRectangle shape = new KRectangle(this.corner.x(), this.corner.y(), this.size.width(), this.size.height(), this.shader, this.outlineColor);
+        this.assertRectangle(shape, this.corner, this.size, this.shader, this.outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -85,7 +133,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateSquareStandard() {
 
         KRectangle shape = KRectangle.square(this.corner, this.side, this.outlineColor, this.fillColor2);
-        this.assertSquare(shape, this.corner, this.side, this.outlineColor, this.fillColor2);
+        this.assertSquare(shape, this.corner, this.side, null, this.outlineColor, this.fillColor2);
 
     }
 
@@ -93,7 +141,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateSquareWithoutColors() {
 
         KRectangle shape = KRectangle.square(this.corner, this.side);
-        this.assertSquare(shape, this.corner, this.side, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertSquare(shape, this.corner, this.side, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -101,7 +149,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateSquareWithoutFillColor() {
 
         KRectangle shape = KRectangle.square(this.corner, this.side, this.outlineColor);
-        this.assertSquare(shape, this.corner, this.side, outlineColor, KColor.TRANSPARENT);
+        this.assertSquare(shape, this.corner, this.side, null, outlineColor, KColor.TRANSPARENT);
 
     }
 
@@ -109,7 +157,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateSquareStandardSeparated() {
 
         KRectangle shape = KRectangle.square(this.corner.x(), this.corner.y(), this.side, this.outlineColor, this.fillColor2);
-        this.assertSquare(shape, this.corner, this.side, this.outlineColor, this.fillColor2);
+        this.assertSquare(shape, this.corner, this.side, null, this.outlineColor, this.fillColor2);
 
     }
 
@@ -117,7 +165,7 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateSquareWithoutColorsSeparated() {
 
         KRectangle shape = KRectangle.square(this.corner.x(), this.corner.y(), this.side);
-        this.assertSquare(shape, this.corner, this.side, KColor.TRANSPARENT, KColor.TRANSPARENT);
+        this.assertSquare(shape, this.corner, this.side, null, KColor.TRANSPARENT, KColor.TRANSPARENT);
 
     }
 
@@ -125,7 +173,55 @@ public class KRectanglePositiveTests extends KShapeTestClass {
     public void testCreateSquareWithoutFillColorSeparated() {
 
         KRectangle shape = KRectangle.square(this.corner.x(), this.corner.y(), this.side, this.outlineColor);
-        this.assertSquare(shape, this.corner, this.side, this.outlineColor, KColor.TRANSPARENT);
+        this.assertSquare(shape, this.corner, this.side, null, this.outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateSquareStandardWithShader() {
+
+        KRectangle shape = KRectangle.square(this.corner, this.side, this.shader, this.outlineColor, this.fillColor2);
+        this.assertSquare(shape, this.corner, this.side, this.shader, this.outlineColor, this.fillColor2);
+
+    }
+
+    @Test
+    public void testCreateSquareWithoutColorsWithShader() {
+
+        KRectangle shape = KRectangle.square(this.corner, this.side, this.shader);
+        this.assertSquare(shape, this.corner, this.side, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateSquareWithoutFillColorWithShader() {
+
+        KRectangle shape = KRectangle.square(this.corner, this.side, this.shader, this.outlineColor);
+        this.assertSquare(shape, this.corner, this.side, this.shader, outlineColor, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateSquareStandardSeparatedWithShader() {
+
+        KRectangle shape = KRectangle.square(this.corner.x(), this.corner.y(), this.side, this.shader, this.outlineColor, this.fillColor2);
+        this.assertSquare(shape, this.corner, this.side, this.shader, this.outlineColor, this.fillColor2);
+
+    }
+
+    @Test
+    public void testCreateSquareWithoutColorsSeparatedWithShader() {
+
+        KRectangle shape = KRectangle.square(this.corner.x(), this.corner.y(), this.side, this.shader);
+        this.assertSquare(shape, this.corner, this.side, this.shader, KColor.TRANSPARENT, KColor.TRANSPARENT);
+
+    }
+
+    @Test
+    public void testCreateSquareWithoutFillColorSeparatedWithShader() {
+
+        KRectangle shape = KRectangle.square(this.corner.x(), this.corner.y(), this.side, this.shader, this.outlineColor);
+        this.assertSquare(shape, this.corner, this.side, this.shader, this.outlineColor, KColor.TRANSPARENT);
 
     }
 

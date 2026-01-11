@@ -65,7 +65,7 @@ public final class KGl33TransformMatrixCalculator
         }
 
         KVector2d scaling = transform.getScaling();
-        KVector2f translation = KGeometryUtils.plainToGl(
+        KVector2f translation = KGeometryUtils.plainTranslationToGl(
             transform.getTranslation(),
             this.viewportSize
         );
