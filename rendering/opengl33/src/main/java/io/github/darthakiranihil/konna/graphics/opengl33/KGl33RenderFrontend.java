@@ -162,6 +162,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glEnable(KGl33.GL_BLEND);
         this.gl.glBlendFunc(KGl33.GL_SRC_ALPHA, KGl33.GL_ONE_MINUS_SRC_ALPHA);
+        this.gl.glEnable(KGl33.GL_TEXTURE_2D);
 
         this.initialized = true;
     }
@@ -263,6 +264,9 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture, doNotTriangulate);
         KTexture sourceTexture = texture.texture();
 
+        this.gl.glActiveTexture(doNotTriangulate ? KGl33.GL_TEXTURE0 : KGl33.GL_TEXTURE1);
+        this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, textureInfo.id());
+
         this.setActiveShader(sourceTexture.shader());
 
         this.gl.glBindVertexArray(textureInfo.vao());
@@ -301,7 +305,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         );
         this.gl.glEnableVertexAttribArray(2);
 
-        sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, 0);
+        sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, doNotTriangulate ? 0 : 1);
 
         sourceTexture.shader().setUniformMatrix(
             KGl33ShaderCompiler.U_TRANSFORM,

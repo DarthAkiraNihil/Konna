@@ -115,46 +115,48 @@ public class KTiledText extends KAbstractShape {
         int textLengthFull = this.text.length() * 4;
         for (int i = 0; i < textLengthFull; i += 4) {
 
-            KVector2f[] glyphUv = glyphs[i].uv();
+            int charIdx = i / 4;
+            int col = charIdx / 24;
+            KVector2f[] glyphUv = glyphs[charIdx].uv();
 
             xy[i] = new KVector2i(
-                this.startPos.x() + i * this.font.glyphSize().width(),
-                this.startPos.y()
+                this.startPos.x() + (charIdx % 24) * this.font.glyphSize().width(),
+                this.startPos.y() + (col) * this.font.glyphSize().height()
             );
 
-            uv[i] = glyphUv[i];
+            uv[i] = glyphUv[0];
             colors[i] = KColor.WHITE;
 
             xy[i + 1] = new KVector2i(
-                this.startPos.x() + (i + 1) * this.font.glyphSize().width(),
-                this.startPos.y()
+                this.startPos.x() + (charIdx % 24 + 1) * this.font.glyphSize().width(),
+                this.startPos.y() + (col) * this.font.glyphSize().height()
             );
 
-            uv[i + 1] = glyphUv[i + 1];
-            colors[i] = KColor.WHITE;
+            uv[i + 1] = glyphUv[1];
+            colors[i + 1] = KColor.WHITE;
 
             xy[i + 2] = new KVector2i(
-                this.startPos.x() + (i + 1) * this.font.glyphSize().width(),
-                this.startPos.y() + this.font.glyphSize().height()
+                this.startPos.x() + (charIdx % 24 + 1) * this.font.glyphSize().width(),
+                this.startPos.y() + (col + 1) * this.font.glyphSize().height()
             );
 
-            uv[i + 2] = glyphUv[i + 2];
-            colors[i] = KColor.WHITE;
+            uv[i + 2] = glyphUv[2];
+            colors[i + 2] = KColor.WHITE;
 
             xy[i + 3] = new KVector2i(
-                this.startPos.x() + i * this.font.glyphSize().width(),
-                this.startPos.y() + this.font.glyphSize().height()
+                this.startPos.x() + charIdx % 24 * this.font.glyphSize().width(),
+                this.startPos.y() + (col + 1) * this.font.glyphSize().height()
             );
 
-            uv[i + 3] = glyphUv[i + 3];
-            colors[i] = KColor.WHITE;
+            uv[i + 3] = glyphUv[3];
+            colors[i + 3] = KColor.WHITE;
         }
 
         this.rendered = new KRenderableTexture(
             uv,
             xy,
             colors,
-            this.font.texture()
+            this.font.face()
         );
         return this.rendered;
     }

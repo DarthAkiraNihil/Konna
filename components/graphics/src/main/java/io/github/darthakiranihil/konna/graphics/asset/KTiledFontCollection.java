@@ -19,7 +19,9 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -36,6 +38,7 @@ import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
+import io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontFormat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +65,41 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
 
             var builder = new KJsonPropertyValidationInfo.Builder();
 
-            this.schema = new KJsonObjectValidator();
+            this.schema = new KJsonObjectValidator(
+                builder
+                    .withName("name")
+                    .withExpectedType(KJsonValueType.STRING)
+                    .build(),
+                builder
+                    .withName("face")
+                    .withExpectedType(KJsonValueType.STRING)
+                    .build(),
+                builder
+                    .withName("glyph_size")
+                    .withExpectedType(KJsonValueType.OBJECT)
+                    .withValidator(
+                        new KJsonObjectValidator(
+                            builder
+                                .createSeparated()
+                                .withName("width")
+                                .withExpectedType(KJsonValueType.NUMBER_INT)
+                                .build(),
+                            builder
+                                .createSeparated()
+                                .withName("height")
+                                .withExpectedType(KJsonValueType.NUMBER_INT)
+                                .build()
+                        )
+                    )
+                    .build(),
+                builder
+                    .withName("format")
+                    .withExpectedType(KJsonValueType.STRING)
+                    .withRequired(false)
+                    .withDefaultValue(KSquaredAsciiTiledFontFormat.class.getCanonicalName())
+                    .withValidator(KJsonValueIsClassValidator.INSTANCE)
+                    .build()
+            );
 
         }
 
@@ -100,6 +137,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public KTiledFont getAsset(final String assetId) {
 
         if (this.loadedFonts.containsKey(assetId)) {
@@ -110,22 +148,50 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
         KAssetDefinition fontDefinition = asset.definition();
 
         String name = fontDefinition.getString("name");
-        String faceId = fontDefinition.getString("face");
+        if (name == null) {
+            throw new KAssetLoadingException(
+                String.format(
+                    "Cannot get tiled font asset %s: name cannot be null",
+                    assetId
+                )
+            );
+        }
+
         KAssetDefinition glyphSizeData = fontDefinition.getSubdefinition("glyph_size");
-        KSize glyphSize = new KSize(glyphSizeData.getInt("width"), glyphSizeData.getInt("height"));
+        KSize glyphSize = new KSize(
+            glyphSizeData.getInt("width"),
+            glyphSizeData.getInt("height")
+        );
+
+        String faceId = fontDefinition.getString("face");
+        if (faceId == null) {
+            throw new KAssetLoadingException(
+                String.format(
+                    "Cannot get tiled font asset %s: font face id cannot be null",
+                    assetId
+                )
+            );
+        }
 
         KTexture face = this.textureCollection.getAsset(faceId);
 
         KTiledFontFormat fontFormat;
+        String fontFormatClass = fontDefinition.getString("format");
         try {
-            String fontFormatClass = fontDefinition.getString("format");
             fontFormat = this
                 .activator
                 .createObject(
                     (Class<? extends KTiledFontFormat>) Class.forName(fontFormatClass)
                 );
         } catch (Throwable e) {
-            throw new KAssetLoadingException(e);
+            throw new KAssetLoadingException(
+                String.format(
+                        "Cannot get tiled font asset %s: cannot load format class %s. "
+                    +   "Make sure it exists and implement KTiledFontFormat interface",
+                    assetId,
+                    fontFormatClass
+                )
+            );
         }
 
         KTiledFont font = new KTiledFont(

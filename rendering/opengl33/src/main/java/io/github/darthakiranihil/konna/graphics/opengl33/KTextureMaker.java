@@ -134,7 +134,6 @@ final class KTextureMaker {
         int tex;
         if (this.textureCache.containsKey(imageHash)) {
             tex = this.textureCache.get(imageHash);
-            this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
             this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
         } else {
             tex = this.createTexture(attachedImage, sourceTexture);
@@ -205,8 +204,6 @@ final class KTextureMaker {
 
     private int createTexture(final KImage attachedImage, final KTexture texture) {
         int tex = this.gl.glGenTextures();
-
-        this.gl.glActiveTexture(KGl33.GL_TEXTURE0);
         this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
 
         this.gl.glTexImage2D(
