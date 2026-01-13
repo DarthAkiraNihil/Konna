@@ -19,6 +19,13 @@ package io.github.darthakiranihil.konna.graphics.text;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 
+/**
+ * Container for a tiled font where characters are taken from a tilesheet.
+ * @param name Name of the font
+ * @param face Font tilesheet texture to get characters from
+ * @param format Tile font format
+ * @param glyphSize Size of a character inside its tilesheet
+ */
 public record KTiledFont(
     String name,
     KTexture face,
@@ -26,6 +33,11 @@ public record KTiledFont(
     KSize glyphSize
 ) {
 
+    /**
+     * Returns glyph data for passed string.
+     * @param text Text to get glyphs of
+     * @return Font glyphs of the text
+     */
     public KTiledFontGlyph[] getTextGlyphs(final String text) {
 
         KTiledFontGlyph[] glyphs = new KTiledFontGlyph[text.length()];

@@ -16,8 +16,22 @@
 
 package io.github.darthakiranihil.konna.graphics.text;
 
+/**
+ * Interface for a tiled font format that returns glyph data for a character
+ * inside font's tilesheet. However, it does not actually depend on it since
+ * UV coordinates do not connect to tiled font texture size so only characters'
+ * positioning inside it matters.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KTiledFontFormat {
 
+    /**
+     * Returns glyph data for a passed character.
+     * @param symbol Character to get glyph data of
+     * @return Glyph data of the character
+     */
     KTiledFontGlyph getGlyph(char symbol);
 
 }

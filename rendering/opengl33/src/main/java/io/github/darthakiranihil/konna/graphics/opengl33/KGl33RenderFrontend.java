@@ -256,11 +256,11 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     }
 
     @Override
-    public void render(KTiledText tiledText) {
+    public void render(final KTiledText tiledText) {
         this.render(tiledText.getRendered(), true);
     }
 
-    private void render(KRenderableTexture texture, boolean doNotTriangulate) {
+    private void render(final KRenderableTexture texture, boolean doNotTriangulate) {
         KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture, doNotTriangulate);
         KTexture sourceTexture = texture.texture();
 

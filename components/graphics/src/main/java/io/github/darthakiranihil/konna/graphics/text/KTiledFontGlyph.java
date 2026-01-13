@@ -18,6 +18,13 @@ package io.github.darthakiranihil.konna.graphics.text;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 
+/**
+ * Container for character information of a tiled font from its tilesheet.
+ * @param uv UV coordinates of the character in tiled font's tilesheet
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public record KTiledFontGlyph(
     KVector2f[] uv
 ) {

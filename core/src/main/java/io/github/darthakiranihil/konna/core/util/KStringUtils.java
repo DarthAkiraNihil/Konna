@@ -19,12 +19,24 @@ package io.github.darthakiranihil.konna.core.util;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Provides different useful string utils.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public final class KStringUtils extends KUninstantiable {
 
     private KStringUtils() {
         super();
     }
 
+    /**
+     * Counts substring occurrences in a string.
+     * @param source String to count substring in
+     * @param substring Substring to search
+     * @return Substring occurrences in the string
+     */
     public static int count(final @Nullable String source, final @Nullable String substring) {
 
         if (source == null || substring == null || substring.isEmpty()) {

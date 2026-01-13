@@ -73,10 +73,15 @@ public interface KRenderFrontend {
     void render(KArc arc);
 
     /**
-     * Render a texture.
+     * Renders a texture.
      * @param texture Texture object to render
      */
     void render(KRenderableTexture texture);
+
+    /**
+     * Renders a tiled text.
+     * @param tiledText Tiled text object to render
+     */
     void render(KTiledText tiledText);
 
     /**

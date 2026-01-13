@@ -34,8 +34,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.graphics.image.*;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
 import io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontFormat;
@@ -118,6 +117,8 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
     /**
      * Standard constructor.
      * @param assetLoader Asset loader (to load texture assets)
+     * @param textureCollection Texture collection (to load font faces)
+     * @param activator Activator to instantiate tiled font formats
      */
     public KTiledFontCollection(
         @KInject final KAssetLoader assetLoader,

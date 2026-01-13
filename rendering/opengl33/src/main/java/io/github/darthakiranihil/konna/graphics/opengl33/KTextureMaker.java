@@ -124,7 +124,10 @@ final class KTextureMaker {
 
     }
 
-    private TextureInfo createTextureInfo(final KRenderableTexture texture, boolean doNotTriangulate) {
+    private TextureInfo createTextureInfo(
+        final KRenderableTexture texture,
+        boolean doNotTriangulate
+    ) {
 
         KTexture sourceTexture = texture.texture();
 
@@ -151,7 +154,8 @@ final class KTextureMaker {
         int[] triangulatedIndices;
         if (doNotTriangulate) {
             triangulatedIndices = new int[(vertices.length * 3) / 2]; // v * 6
-            for (int i = 0; i < vertices.length / 4; i++ ) {
+
+            for (int i = 0; i < vertices.length / 4; i++) {
                 triangulatedIndices[(i * 6)] = i * 4;
                 triangulatedIndices[(i * 6) + 1] = i * 4 + 1;
                 triangulatedIndices[(i * 6) + 2] = i * 4 + 3;

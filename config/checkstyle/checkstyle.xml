@@ -164,7 +164,9 @@
             <property name="ignoreConstructorParameter" value="true" />
         </module>
         <module name="IllegalInstantiation"/>
-        <module name="MagicNumber"/>
+        <module name="MagicNumber">
+            <property name="ignoreNumbers" value="-1, 0, 1, 2, 3"/>
+        </module>
         <module name="MultipleVariableDeclarations"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>

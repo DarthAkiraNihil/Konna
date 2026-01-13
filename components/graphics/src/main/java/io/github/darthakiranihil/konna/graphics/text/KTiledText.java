@@ -26,6 +26,18 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Renderable primitive that represents text, which characters are taken
+ * from a tilesheet (that is a texture) with fixed size of them.
+ * It is a mutable container so its text can be edited without creating a
+ * new object of this type. By default, all tiled texts do not render newlines
+ * as a character from their own tilesheets (and then it creates a new line on rendered text).
+ * In order to ignore it and render '\n' char as is, a ignoreNewline flag should be enabled
+ * via {@link KTiledText#setIgnoreNewline(boolean)}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public class KTiledText extends KAbstractShape {
 
     private static final int ELEMENTS_PER_GLYPH = 4;
@@ -39,6 +51,13 @@ public class KTiledText extends KAbstractShape {
 
     private @Nullable KRenderableTexture rendered;
 
+    /**
+     * Standard constructor.
+     * @param text Text string
+     * @param startPos Render start position
+     * @param font Text font
+     * @param color Text color
+     */
     public KTiledText(
         final String text,
         final KVector2i startPos,
@@ -54,6 +73,12 @@ public class KTiledText extends KAbstractShape {
         this.ignoreNewline = false;
     }
 
+    /**
+     * Standard constructor with empty text.
+     * @param startPos Render start position
+     * @param font Text font
+     * @param color Text color
+     */
     public KTiledText(
         final KVector2i startPos,
         final KTiledFont font,
@@ -62,6 +87,14 @@ public class KTiledText extends KAbstractShape {
         this("", startPos, font, color);
     }
 
+    /**
+     * Standard constructor with specific shader.
+     * @param text Text string
+     * @param startPos Render start position
+     * @param font Text font
+     * @param color Text color
+     * @param shader Specific shader to be used for its rendering
+     */
     public KTiledText(
         final String text,
         final KVector2i startPos,
@@ -81,6 +114,13 @@ public class KTiledText extends KAbstractShape {
         this.ignoreNewline = false;
     }
 
+    /**
+     * Standard constructor with empty text and specific shader.
+     * @param startPos Render start position
+     * @param font Text font
+     * @param color Text color
+     * @param shader Specific shader to be used for its rendering
+     */
     public KTiledText(
         final KVector2i startPos,
         final KTiledFont font,
@@ -90,40 +130,73 @@ public class KTiledText extends KAbstractShape {
         this("", startPos, font, color, shader);
     }
 
+    /**
+     * @return Text string of this tiled text object
+     */
     public String getText() {
         return this.text;
     }
 
-    public void setText(String text) {
+    /**
+     * Sets text string for this tiled text object.
+     * @param text New text string
+     */
+    public void setText(final String text) {
         this.text = text;
         this.rendered = null;
     }
 
+    /**
+     * @return Font of this tiled text object.
+     */
     public KTiledFont getFont() {
         return this.font;
     }
 
-    public void setFont(KTiledFont font) {
+    /**
+     * Sets font for this tiled text object.
+     * @param font New text font
+     */
+    public void setFont(final KTiledFont font) {
         this.font = font;
         this.rendered = null;
     }
 
+    /**
+     * @return Color of this tiled text object.
+     */
     public KColor getColor() {
         return this.color;
     }
 
-    public void setColor(KColor color) {
+    /**
+     * Sets text color for this tiled text object.
+     * @param color New text color
+     */
+    public void setColor(final KColor color) {
         this.color = color;
+        this.rendered = null;
     }
 
+    /**
+     * @return IgnoreNewLine flag of this tiled text object
+     */
     public boolean isIgnoreNewline() {
         return this.ignoreNewline;
     }
 
+    /**
+     * Sets IgnoreNewLine flag for this tiled text object.
+     * @param ignoreNewline New value of IgnoreNewLine flag
+     */
     public void setIgnoreNewline(boolean ignoreNewline) {
         this.ignoreNewline = ignoreNewline;
+        this.rendered = null;
     }
 
+    /**
+     * @return Renderable texture representation for this tiled text object.
+     */
     public KRenderableTexture getRendered() {
         if (this.rendered != null) {
             return this.rendered;
@@ -161,7 +234,7 @@ public class KTiledText extends KAbstractShape {
                 this.startPos.x() + (column + 1) * this.font.glyphSize().width(),
                 this.startPos.y() + line * this.font.glyphSize().height()
             );
-            uv[putChars * ELEMENTS_PER_GLYPH+ 1] = glyphUv[1];
+            uv[putChars * ELEMENTS_PER_GLYPH + 1] = glyphUv[1];
             colors[putChars * ELEMENTS_PER_GLYPH + 1] = this.color;
 
             xy[putChars * ELEMENTS_PER_GLYPH + 2] = new KVector2i(
@@ -193,8 +266,6 @@ public class KTiledText extends KAbstractShape {
 
     @Override
     public void render(final KRenderFrontend rf) {
-
         rf.render(this);
-
     }
 }
