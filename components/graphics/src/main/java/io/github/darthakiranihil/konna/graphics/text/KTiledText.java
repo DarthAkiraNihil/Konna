@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.text;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.util.KStringUtils;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
@@ -27,7 +28,12 @@ import org.jspecify.annotations.Nullable;
 
 public class KTiledText extends KAbstractShape {
 
+    private static final int ELEMENTS_PER_GLYPH = 4;
+
     private final KVector2i startPos;
+
+    private KColor color;
+    private boolean ignoreNewline;
     private String text;
     private KTiledFont font;
 
@@ -36,52 +42,52 @@ public class KTiledText extends KAbstractShape {
     public KTiledText(
         final String text,
         final KVector2i startPos,
-        final KTiledFont font
+        final KTiledFont font,
+        final KColor color
     ) {
-        super(
-            new KVector2i(
-                text.length() / 2 * font.glyphSize().width(),
-                text.length() / 2 * font.glyphSize().height()
-            )
-        );
+        super(startPos);
 
         this.text = text;
         this.font = font;
         this.startPos = startPos;
+        this.color = color;
+        this.ignoreNewline = false;
     }
 
     public KTiledText(
         final KVector2i startPos,
-        final KTiledFont font
+        final KTiledFont font,
+        final KColor color
     ) {
-        this("", startPos, font);
+        this("", startPos, font, color);
     }
 
     public KTiledText(
         final String text,
         final KVector2i startPos,
         final KTiledFont font,
+        final KColor color,
         final KShaderProgram shader
     ) {
         super(
-            new KVector2i(
-                text.length() / 2 * font.glyphSize().width(),
-                text.length() / 2 * font.glyphSize().height()
-            ),
+            startPos,
             shader
         );
 
         this.text = text;
         this.font = font;
         this.startPos = startPos;
+        this.color = color;
+        this.ignoreNewline = false;
     }
 
     public KTiledText(
         final KVector2i startPos,
         final KTiledFont font,
+        final KColor color,
         final KShaderProgram shader
     ) {
-        this("", startPos, font, shader);
+        this("", startPos, font, color, shader);
     }
 
     public String getText() {
@@ -102,54 +108,78 @@ public class KTiledText extends KAbstractShape {
         this.rendered = null;
     }
 
+    public KColor getColor() {
+        return this.color;
+    }
+
+    public void setColor(KColor color) {
+        this.color = color;
+    }
+
+    public boolean isIgnoreNewline() {
+        return this.ignoreNewline;
+    }
+
+    public void setIgnoreNewline(boolean ignoreNewline) {
+        this.ignoreNewline = ignoreNewline;
+    }
+
     public KRenderableTexture getRendered() {
         if (this.rendered != null) {
             return this.rendered;
         }
 
         KTiledFontGlyph[] glyphs = this.font.getTextGlyphs(this.text);
-        KVector2i[] xy = new KVector2i[this.text.length() * 4];
-        KVector2f[] uv = new KVector2f[this.text.length() * 4];
-        KColor[] colors = new KColor[this.text.length() * 4];
+        int textLengthFull = this.ignoreNewline
+            ? this.text.length() * ELEMENTS_PER_GLYPH
+            : (this.text.length() - KStringUtils.count(this.text, "\n")) * ELEMENTS_PER_GLYPH;
 
-        int textLengthFull = this.text.length() * 4;
-        for (int i = 0; i < textLengthFull; i += 4) {
+        KVector2i[] xy = new KVector2i[textLengthFull];
+        KVector2f[] uv = new KVector2f[textLengthFull];
+        KColor[] colors = new KColor[textLengthFull];
 
-            int charIdx = i / 4;
-            int col = charIdx / 24;
-            KVector2f[] glyphUv = glyphs[charIdx].uv();
+        int line = 0;
+        int column = 0;
+        int putChars = 0;
 
-            xy[i] = new KVector2i(
-                this.startPos.x() + (charIdx % 24) * this.font.glyphSize().width(),
-                this.startPos.y() + (col) * this.font.glyphSize().height()
+        for (int i = 0; i < this.text.length(); i++) {
+            if (!this.ignoreNewline && this.text.charAt(i) == '\n') {
+                line++;
+                column = 0;
+                continue;
+            }
+
+            KVector2f[] glyphUv = glyphs[i].uv();
+            xy[putChars * ELEMENTS_PER_GLYPH] = new KVector2i(
+                this.startPos.x() + column * this.font.glyphSize().width(),
+                this.startPos.y() + line * this.font.glyphSize().height()
             );
+            uv[putChars * ELEMENTS_PER_GLYPH] = glyphUv[0];
+            colors[putChars * ELEMENTS_PER_GLYPH] = this.color;
 
-            uv[i] = glyphUv[0];
-            colors[i] = KColor.WHITE;
-
-            xy[i + 1] = new KVector2i(
-                this.startPos.x() + (charIdx % 24 + 1) * this.font.glyphSize().width(),
-                this.startPos.y() + (col) * this.font.glyphSize().height()
+            xy[putChars * ELEMENTS_PER_GLYPH + 1] = new KVector2i(
+                this.startPos.x() + (column + 1) * this.font.glyphSize().width(),
+                this.startPos.y() + line * this.font.glyphSize().height()
             );
+            uv[putChars * ELEMENTS_PER_GLYPH+ 1] = glyphUv[1];
+            colors[putChars * ELEMENTS_PER_GLYPH + 1] = this.color;
 
-            uv[i + 1] = glyphUv[1];
-            colors[i + 1] = KColor.WHITE;
-
-            xy[i + 2] = new KVector2i(
-                this.startPos.x() + (charIdx % 24 + 1) * this.font.glyphSize().width(),
-                this.startPos.y() + (col + 1) * this.font.glyphSize().height()
+            xy[putChars * ELEMENTS_PER_GLYPH + 2] = new KVector2i(
+                this.startPos.x() + (column + 1) * this.font.glyphSize().width(),
+                this.startPos.y() + (line + 1) * this.font.glyphSize().height()
             );
+            uv[putChars * ELEMENTS_PER_GLYPH + 2] = glyphUv[2];
+            colors[putChars * ELEMENTS_PER_GLYPH + 2] = this.color;
 
-            uv[i + 2] = glyphUv[2];
-            colors[i + 2] = KColor.WHITE;
-
-            xy[i + 3] = new KVector2i(
-                this.startPos.x() + charIdx % 24 * this.font.glyphSize().width(),
-                this.startPos.y() + (col + 1) * this.font.glyphSize().height()
+            xy[putChars * ELEMENTS_PER_GLYPH + 3] = new KVector2i(
+                this.startPos.x() + column * this.font.glyphSize().width(),
+                this.startPos.y() + (line + 1) * this.font.glyphSize().height()
             );
+            uv[putChars * ELEMENTS_PER_GLYPH + 3] = glyphUv[3];
+            colors[putChars * ELEMENTS_PER_GLYPH + 3] = this.color;
 
-            uv[i + 3] = glyphUv[3];
-            colors[i + 3] = KColor.WHITE;
+            column++;
+            putChars++;
         }
 
         this.rendered = new KRenderableTexture(
