@@ -34,6 +34,7 @@ import org.jspecify.annotations.Nullable;
  * as a character from their own tilesheets (and then it creates a new line on rendered text).
  * In order to ignore it and render '\n' char as is, a ignoreNewline flag should be enabled
  * via {@link KTiledText#setIgnoreNewline(boolean)}.
+ * Attention: by default it uses 0-texture unit.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
@@ -48,6 +49,7 @@ public class KTiledText extends KAbstractShape {
     private boolean ignoreNewline;
     private String text;
     private KTiledFont font;
+    private int unit;
 
     private @Nullable KRenderableTexture rendered;
 
@@ -195,6 +197,22 @@ public class KTiledText extends KAbstractShape {
     }
 
     /**
+     * @return Texture unit for this renderable texture.
+     */
+    public int getUnit() {
+        return this.unit;
+    }
+
+    /**
+     * Sets texture unit for this renderable texture.
+     * @param unit New texture unit
+     */
+    public void setUnit(int unit) {
+        this.unit = unit;
+        this.rendered = null;
+    }
+
+    /**
      * @return Renderable texture representation for this tiled text object.
      */
     public KRenderableTexture getRendered() {
@@ -259,7 +277,8 @@ public class KTiledText extends KAbstractShape {
             uv,
             xy,
             colors,
-            this.font.face()
+            this.font.face(),
+            this.unit
         );
         return this.rendered;
     }
