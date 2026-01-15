@@ -34,6 +34,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.asset.KShaderCollection;
 import io.github.darthakiranihil.konna.graphics.asset.KShaderProgramCollection;
 import io.github.darthakiranihil.konna.graphics.asset.KTextureCollection;
+import io.github.darthakiranihil.konna.graphics.asset.KTiledFontCollection;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
@@ -75,7 +76,8 @@ public class KGraphicsComponent extends KComponent {
         return List.of(
             KShaderCollection.ASSET_SCHEMA,
             KShaderProgramCollection.ASSET_SCHEMA,
-            KTextureCollection.ASSET_SCHEMA
+            KTextureCollection.ASSET_SCHEMA,
+            KTiledFontCollection.ASSET_SCHEMA
         );
     }
 

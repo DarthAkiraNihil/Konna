@@ -1,0 +1,12 @@
+{
+  "cp437": {
+    "Graphics.tiledFont": {
+      "name": "CP437",
+      "face": "cp438_16x16",
+      "glyph_size": {
+        "width": 16,
+        "height": 16
+      }
+    }
+  }
+}

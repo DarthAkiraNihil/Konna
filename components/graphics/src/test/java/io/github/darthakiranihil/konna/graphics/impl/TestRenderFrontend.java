@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
+import io.github.darthakiranihil.konna.graphics.text.KTiledText;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -88,6 +89,11 @@ public class TestRenderFrontend implements KRenderFrontend {
 
     @Override
     public void disableActiveShader() {
+
+    }
+
+    @Override
+    public void render(KTiledText tiledText) {
 
     }
 }

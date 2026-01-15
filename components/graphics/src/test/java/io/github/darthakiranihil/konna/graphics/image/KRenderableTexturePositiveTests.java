@@ -55,7 +55,8 @@ public class KRenderableTexturePositiveTests extends KAssetCollectionTestClass {
 
         KRenderableTexture rtex = KRenderableTexture.wrapIntoRectangle(
             new KVector2i(10, 10),
-            tex
+            tex,
+            0
         );
 
         Assertions.assertEquals(tex, rtex.texture());

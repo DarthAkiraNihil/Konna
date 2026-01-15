@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
+import io.github.darthakiranihil.konna.graphics.text.KTiledText;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 
 /**
@@ -161,6 +162,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glEnable(KGl33.GL_BLEND);
         this.gl.glBlendFunc(KGl33.GL_SRC_ALPHA, KGl33.GL_ONE_MINUS_SRC_ALPHA);
+        this.gl.glEnable(KGl33.GL_TEXTURE_2D);
 
         this.initialized = true;
     }
@@ -250,8 +252,20 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
     @Override
     public void render(final KRenderableTexture texture) {
-        KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture);
+        this.render(texture, false);
+    }
+
+    @Override
+    public void render(final KTiledText tiledText) {
+        this.render(tiledText.getRendered(), true);
+    }
+
+    private void render(final KRenderableTexture texture, boolean doNotTriangulate) {
+        KTextureMaker.TextureInfo textureInfo = this.textureMaker.make(texture, doNotTriangulate);
         KTexture sourceTexture = texture.texture();
+
+        this.gl.glActiveTexture(KGl33.GL_TEXTURE0 + texture.getUnit());
+        this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, textureInfo.id());
 
         this.setActiveShader(sourceTexture.shader());
 
@@ -291,7 +305,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         );
         this.gl.glEnableVertexAttribArray(2);
 
-        sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, 0);
+        sourceTexture.shader().setUniform(KGl33ShaderCompiler.U_TEXTURE, texture.getUnit());
 
         sourceTexture.shader().setUniformMatrix(
             KGl33ShaderCompiler.U_TRANSFORM,
@@ -313,7 +327,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.disableActiveShader();
-
     }
 
     private void updateTtl() {

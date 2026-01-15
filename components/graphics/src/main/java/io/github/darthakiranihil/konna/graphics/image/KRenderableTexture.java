@@ -54,20 +54,24 @@ public class KRenderableTexture extends KAbstractShape {
     private final KColor[] colors;
     private final KTexture texture;
 
+    private int unit;
+
     /**
      * Does the same job as
-     * {@link KRenderableTexture#wrapIntoRectangle(KVector2i, KTexture, KColor[])},
+     * {@link KRenderableTexture#wrapIntoRectangle(KVector2i, KTexture, KColor[], int)},
      * but all vertices colors are {@link KColor#WHITE}.
      * @param leftTopCorner Left top corner coordinate of texture
      * @param texture Attached texture data
+     * @param unit Texture unit to be used for its rendering
      * @return Wrapped renderable texture of full image
      */
     public static KRenderableTexture wrapIntoRectangle(
         final KVector2i leftTopCorner,
-        final KTexture texture
+        final KTexture texture,
+        int unit
     ) {
 
-        return KRenderableTexture.wrapIntoRectangle(leftTopCorner, texture, ALL_WHITES);
+        return KRenderableTexture.wrapIntoRectangle(leftTopCorner, texture, ALL_WHITES, unit);
 
     }
 
@@ -77,12 +81,14 @@ public class KRenderableTexture extends KAbstractShape {
      * @param leftTopCorner Left top corner coordinate of texture
      * @param texture Attached texture data
      * @param colors Vertices colors
+     * @param unit Texture unit to be used for its rendering
      * @return Wrapped renderable texture of full image
      */
     public static KRenderableTexture wrapIntoRectangle(
         final KVector2i leftTopCorner,
         final KTexture texture,
-        final KColor[] colors
+        final KColor[] colors,
+        int unit
     ) {
 
         KImage sourceImage = texture.attachedImage();
@@ -109,7 +115,8 @@ public class KRenderableTexture extends KAbstractShape {
             DEFAULT_UV,
             xy,
             colors,
-            texture
+            texture,
+            unit
         );
 
     }
@@ -120,18 +127,21 @@ public class KRenderableTexture extends KAbstractShape {
      * @param xy Screen coordinates of texture vertices
      * @param colors Color of texture vertices
      * @param texture Attached texture data
+     * @param unit Texture unit to be used for its rendering
      */
     public KRenderableTexture(
         final KVector2f[] uv,
         final KVector2i[] xy,
         final KColor[] colors,
-        final KTexture texture
+        final KTexture texture,
+        int unit
     ) {
         super(KAbstractShape.centroidOfPoints(xy));
         this.uv = uv;
         this.xy = xy;
         this.colors = colors;
         this.texture = texture;
+        this.unit = unit;
     }
 
     /**
@@ -164,6 +174,21 @@ public class KRenderableTexture extends KAbstractShape {
      */
     public KTexture texture() {
         return this.texture;
+    }
+
+    /**
+     * @return Texture unit for this renderable texture.
+     */
+    public int getUnit() {
+        return this.unit;
+    }
+
+    /**
+     * Sets texture unit for this renderable texture.
+     * @param unit New texture unit
+     */
+    public void setUnit(int unit) {
+        this.unit = unit;
     }
 
     @Override
