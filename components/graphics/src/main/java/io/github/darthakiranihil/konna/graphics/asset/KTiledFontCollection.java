@@ -42,6 +42,12 @@ import io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontF
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Collection of texture assets of type {@link KTiledFontCollection#TILED_FONT_ASSET_TYPE}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public final class KTiledFontCollection extends KObject implements KAssetCollection<KTiledFont> {
 
     /**
@@ -137,6 +143,13 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
         this.loadedFonts = new HashMap<>();
     }
 
+    /**
+     * Returns built tiled font asset by its asset id.
+     * In order to build it, the collection looks for texture in {@link KTextureCollection}
+     * passed in tiled font settings and tries to instantiate passed {@link KTiledFontFormat}.
+     * @param assetId Asset id of tiled font
+     * @return Built tiled font
+     */
     @Override
     @SuppressWarnings("unchecked")
     public KTiledFont getAsset(final String assetId) {

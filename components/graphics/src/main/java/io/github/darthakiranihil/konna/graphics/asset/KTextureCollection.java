@@ -173,7 +173,7 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
     /**
      * Returns built texture asset by its asset id.
-     * In order to build it, the collection check for shader and image options
+     * In order to build it, the collection checks for shader and image options
      * of loading texture asset. Shader is taken from {@link KShaderProgramCollection}.
      * @param assetId Asset id of texture
      * @return Built texture
