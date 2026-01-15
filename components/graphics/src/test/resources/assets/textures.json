@@ -1,8 +1,13 @@
 {
-  "cute_image": {
-    "Graphics.texture": {
-      "image": "classpath:assets/textures/cute_image.png",
-      "shader": "default"
+    "cute_image": {
+        "Graphics.texture": {
+            "image": "classpath:assets/textures/cute_image.png",
+            "shader": "default"
+        }
+    },
+    "cp438_16x16": {
+        "Graphics.texture": {
+            "image": "classpath:assets/textures/cp437_16x16.png"
+        }
     }
-  }
 }

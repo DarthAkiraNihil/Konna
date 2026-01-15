@@ -42,6 +42,10 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
             ), "texture", new KJsonAssetLoader.AssetTypeData(
                 new String[] {KTextureCollection.TEXTURE_ASSET_TYPE},
                 new String[] {"classpath:assets/textures.json"}
+            ),
+            "tiledFont", new KJsonAssetLoader.AssetTypeData(
+                new String[] {KTiledFontCollection.TILED_FONT_ASSET_TYPE},
+                new String[] {"classpath:assets/tiled_fonts.json"}
             )),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
@@ -59,6 +63,11 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         this.assetLoader.addAssetTypeAlias(
             KTextureCollection.ASSET_SCHEMA.first(),
             KTextureCollection.ASSET_SCHEMA.second()
+        );
+
+        this.assetLoader.addAssetTypeAlias(
+            KTiledFontCollection.ASSET_SCHEMA.first(),
+            KTiledFontCollection.ASSET_SCHEMA.second()
         );
     }
 }
