@@ -50,7 +50,8 @@ import java.util.*;
 @KContainerModifier
 public class KEngineHypervisor extends KObject {
 
-    private static final float ONE_NANOSEC = 1000000000.0f;
+    public static final float ONE_SEC_IN_NANOS = 1000000000.0f;
+    public static final int ONE_SEC_IN_NANOS_INT = 1000000000;
 
     /**
      * Configuration of this hypervisor.
@@ -252,7 +253,7 @@ public class KEngineHypervisor extends KObject {
                 this.frame.pollEvents();
 
                 var deltaTime = Duration.between(beginTime, Instant.now());
-                KSystemLogger.debug("hypervisor", "FPS: %f", ONE_NANOSEC / deltaTime.getNano());
+                KSystemLogger.debug("hypervisor", "FPS: %f", ONE_SEC_IN_NANOS / deltaTime.getNano());
 
             } catch (KException kex) {
                 switch (kex.getSeverity()) {
