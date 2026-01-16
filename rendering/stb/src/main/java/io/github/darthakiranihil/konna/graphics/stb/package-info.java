@@ -1,6 +1,6 @@
 /**
  * Provides rendering classes implementations using
- * {@link io.github.darthakiranihil.konna.libfrontend.stbimage.KStbImage}.
+ * {@link io.github.darthakiranihil.konna.libfrontend.stb.KStbImage}.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil

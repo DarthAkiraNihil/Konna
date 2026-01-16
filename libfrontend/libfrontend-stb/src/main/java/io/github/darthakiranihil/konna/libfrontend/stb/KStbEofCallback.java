@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.stbimage;
+package io.github.darthakiranihil.konna.libfrontend.stb;
 
 /**
- * Wrapper interface of STBImage IO callbacks (readonly).
+ * Interface representing EOF callback of STBImage.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KStbIoCallbacks {
+@FunctionalInterface
+public interface KStbEofCallback {
 
-    /**
-     * Returns read callback.
-     * @return STB read callback
-     */
-    KStbReadCallback read();
-    /**
-     * Returns skip callback.
-     * @return STB skip callback
-     */
-    KStbSkipCallback skip();
-    /**
-     * Returns EOF callback.
-     * @return STB EOF callback
-     */
-    KStbEofCallback eof();
+    int invoke(long user);
 
 }

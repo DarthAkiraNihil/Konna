@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.stbimage;
+package io.github.darthakiranihil.konna.libfrontend.stb;
 
 /**
- * Interface representing EOF callback of STBImage.
+ * Interface representing skip callback of STBImage.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
 @FunctionalInterface
-public interface KStbEofCallback {
+public interface KStbSkipCallback {
 
-    int invoke(long user);
+    void invoke(long user, int n);
 
 }
