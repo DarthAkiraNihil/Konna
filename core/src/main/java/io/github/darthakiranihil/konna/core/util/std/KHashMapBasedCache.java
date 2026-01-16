@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.util.std;
 
-import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -25,7 +24,6 @@ import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.core.util.KDisposer;
 import org.jspecify.annotations.Nullable;
 
-import java.io.Closeable;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -38,7 +36,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
 
     private static class CacheRecord {
 
-        private final long maxTtl;
+        private long maxTtl;
         private long ttl;
         private final Object obj;
         private final Class<?> clazz;
@@ -99,7 +97,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public <T> void putToCache(String key, T obj, int ttl) {
+    public <T> void putToCache(String key, T obj, long ttl) {
         this.cache.put(
             key,
             new CacheRecord(
@@ -125,7 +123,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public <T> void putToCache(String key, T obj, KDisposer<T> disposer, int ttl) {
+    public <T> void putToCache(String key, T obj, KDisposer<T> disposer, long ttl) {
         this.cache.put(
             key,
             new CacheRecord(
@@ -199,7 +197,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
                     continue;
                 }
 
-                if (record.ttl <= 0) {
+                if (record.ttl <= 0 && record.maxTtl != KCache.TTL_EVERLASTING) {
                     this.evictFromCache(key);
                 } else {
                     record.decreaseTtl(deltaTime);
@@ -215,6 +213,17 @@ public class KHashMapBasedCache extends KObject implements KCache {
             deltaTime = Duration.between(beginTime, Instant.now()).getSeconds();
         }
 
+    }
+
+    @Override
+    public void setTtl(String key, long ttl) {
+        var record = this.cache.get(key);
+        if (record == null) {
+            return;
+        }
+
+        record.maxTtl = ttl;
+        record.ttl = ttl;
     }
 
     @Override

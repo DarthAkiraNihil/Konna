@@ -22,12 +22,15 @@ import java.io.Closeable;
 
 public interface KCache extends Closeable {
 
-    <T> void putToCache(String key, T obj, int ttl);
+    long TTL_EVERLASTING = -1;
+
+    <T> void putToCache(String key, T obj, long ttl);
     <T> void putToCache(String key, T obj);
-    <T> void putToCache(String key, T obj, KDisposer<T> disposer, int ttl);
+    <T> void putToCache(String key, T obj, KDisposer<T> disposer, long ttl);
     <T> void putToCache(String key, T obj, KDisposer<T> disposer);
     <T> @Nullable T getFromCache(String key, Class<T> clazz);
     void evictFromCache(String key);
     void clearCache();
+    void setTtl(String key, long ttl);
 
 }
