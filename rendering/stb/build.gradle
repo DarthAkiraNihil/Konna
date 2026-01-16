@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(":libfrontend:libfrontend-stbimage")
+    implementation project(":libfrontend:libfrontend-stb")
     implementation project(":components:graphics")
 
     testImplementation platform('org.junit:junit-bom:5.10.0')

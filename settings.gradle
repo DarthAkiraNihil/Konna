@@ -17,8 +17,8 @@ findProject(':libfrontend:libfrontend-opengl')?.name = 'libfrontend-opengl'
 include 'libfrontend:libfrontend-glfw'
 findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
 
-include 'libfrontend:libfrontend-stbimage'
-findProject(':libfrontend:libfrontend-stbimage')?.name = 'libfrontend-stbimage'
+include 'libfrontend:libfrontend-stb'
+findProject(':libfrontend:libfrontend-stb')?.name = 'libfrontend-stb'
 
 include 'rendering:opengl33'
 findProject(':rendering:opengl33')?.name = 'opengl33'
