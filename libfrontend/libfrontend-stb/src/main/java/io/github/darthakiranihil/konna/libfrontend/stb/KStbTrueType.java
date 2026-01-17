@@ -79,10 +79,25 @@ public interface KStbTrueType {
         STBTT_MAC_LANG_CHINESE_TRAD = 19;
 
     int stbtt_BakeFontBitmap(KStbTtBakedChar[] chardata);
-    void stbtt_GetBakedQuad(KStbTtBakedChar[] chardata, int pw, int ph, int char_index, FloatBuffer xpos, FloatBuffer ypos, KStbTtAlignedQuad q, boolean opengl_fillrule);
+    void stbtt_GetBakedQuad(
+        KStbTtBakedChar[] chardata,
+        int pw,
+        int ph,
+        int char_index,
+        FloatBuffer xpos,
+        FloatBuffer ypos,
+        KStbTtAlignedQuad q,
+        boolean opengl_fillrule
+    );
     void stbtt_GetScaledFontVMetrics(FloatBuffer lineGap);
     boolean stbtt_PackBegin(long alloc_context);
-    boolean stbtt_PackBegin(@Nullable ByteBuffer pixels, int width, int height, int stride_in_bytes, int padding);
+    boolean stbtt_PackBegin(
+        @Nullable ByteBuffer pixels,
+        int width,
+        int height,
+        int stride_in_bytes,
+        int padding
+    );
     void stbtt_PackEnd(KStbTtPackContext spc);
     int STBTT_POINT_SIZE(int font_size);
     boolean stbtt_PackFontRange(KStbTtPackedChar[] chardata_for_range);
@@ -180,10 +195,25 @@ public interface KStbTrueType {
     int stbtt_FindMatchingFont(ByteBuffer name, int flags);
     int stbtt_FindMatchingFont(CharSequence name, int flags);
     boolean stbtt_CompareUTF8toUTF16_bigendian(ByteBuffer s2);
-    @Nullable ByteBuffer stbtt_GetFontNameString(KStbTtFontInfo font, int platformID, int encodingID, int languageID, int nameID);
+    @Nullable ByteBuffer stbtt_GetFontNameString(
+        KStbTtFontInfo font,
+        int platformID,
+        int encodingID,
+        int languageID,
+        int nameID
+    );
     void stbtt_GetBakedQuad(boolean opengl_fillrule);
     void stbtt_GetScaledFontVMetrics(float[] lineGap);
-    void stbtt_GetPackedQuad(KStbTtBakedChar[] chardata, int pw, int ph, int char_index, float[] xpos, float[] ypos, KStbTtAlignedQuad q, boolean align_to_integer);
+    void stbtt_GetPackedQuad(
+        KStbTtBakedChar[] chardata,
+        int pw,
+        int ph,
+        int char_index,
+        float[] xpos,
+        float[] ypos,
+        KStbTtAlignedQuad q,
+        boolean align_to_integer
+    );
     void stbtt_GetFontVMetrics(int @Nullable [] lineGap);
     boolean stbtt_GetFontVMetricsOS2(int @Nullable [] typoLineGap);
     void stbtt_GetFontBoundingBox(int[] y1);
