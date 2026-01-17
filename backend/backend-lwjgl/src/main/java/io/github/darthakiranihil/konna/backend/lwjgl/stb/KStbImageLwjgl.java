@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.backend.lwjgl.stbimage;
+package io.github.darthakiranihil.konna.backend.lwjgl.stb;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;

@@ -6,6 +6,6 @@
  * @author Darth Akira Nihil
  */
 @NullMarked
-package io.github.darthakiranihil.konna.backend.lwjgl.stbimage;
+package io.github.darthakiranihil.konna.backend.lwjgl.stb;
 
 import org.jspecify.annotations.NullMarked;

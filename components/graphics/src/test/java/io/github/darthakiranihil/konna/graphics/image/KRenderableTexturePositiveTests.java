@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.image;
 
-import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
+import io.github.darthakiranihil.konna.backend.lwjgl.stb.KStbImageLwjgl;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;

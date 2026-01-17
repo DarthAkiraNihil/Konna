@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
+import io.github.darthakiranihil.konna.backend.lwjgl.stb.KStbImageLwjgl;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;

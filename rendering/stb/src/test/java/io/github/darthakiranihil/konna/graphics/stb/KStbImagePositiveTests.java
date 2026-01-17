@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.stb;
 
-import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
+import io.github.darthakiranihil.konna.backend.lwjgl.stb.KStbImageLwjgl;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -28,7 +28,6 @@ import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 public class KStbImagePositiveTests extends KStandardTestClass {
