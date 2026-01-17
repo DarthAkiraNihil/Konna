@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
-import io.github.darthakiranihil.konna.libfrontend.stbimage.KStbImage;
+import io.github.darthakiranihil.konna.libfrontend.stb.KStbImage;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

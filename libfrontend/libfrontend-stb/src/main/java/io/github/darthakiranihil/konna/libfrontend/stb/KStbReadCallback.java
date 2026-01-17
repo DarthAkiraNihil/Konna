@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.stbimage;
+package io.github.darthakiranihil.konna.libfrontend.stb;
 
 /**
  * Interface representing read callback of STBImage.

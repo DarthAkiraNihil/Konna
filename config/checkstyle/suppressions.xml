@@ -33,6 +33,17 @@
     <suppress checks="JavadocVariable" files="KStbImage.java"/>
     <suppress checks="ConstantName" files="KStbImage.java"/>
 
+    <suppress checks="ParameterName" files="KStbTrueType.java"/>
+    <suppress checks="MethodName" files="KStbTrueType.java"/>
+    <suppress checks="JavadocVariable" files="KStbTrueType.java"/>
+    <suppress checks="ConstantName" files="KStbTrueType.java"/>
+    <suppress checks="MultipleVariableDeclarations" files="KStbTrueType.java"/>
+
+
+    <suppress checks="MethodName" files="KStbRpContext.java"/>
+    <suppress checks="MethodName" files="KStbTtPackContext.java"/>
+    <suppress checks="MethodName" files="KStbTtPackRange.java"/>
+
     <suppress checks="MissingJavadocMethod" files="KStb[a-zA-Z0-9]*.java"/>
 
     <suppress checks="MagicNumber" files="KBufferMaker.java"/>

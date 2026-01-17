@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     testImplementation project(":backend:backend-lwjgl")
-    testImplementation project(":libfrontend:libfrontend-stbimage")
+    testImplementation project(":libfrontend:libfrontend-stb")
     testImplementation project(":rendering:stb")
     testImplementation project(":rendering:opengl33")
     testImplementation platform('org.junit:junit-bom:5.10.0')

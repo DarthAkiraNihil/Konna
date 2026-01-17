@@ -6,7 +6,7 @@
  */
 @KIndexedPackage
 @NullMarked
-package io.github.darthakiranihil.konna.libfrontend.stbimage;
+package io.github.darthakiranihil.konna.libfrontend.stb;
 
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 import org.jspecify.annotations.NullMarked;

@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.stbimage;
+package io.github.darthakiranihil.konna.libfrontend.stb;
+
+import org.jspecify.annotations.Nullable;
 
 /**
- * Wrapper interface of STBImage IO callbacks (readonly).
+ * Interface representing STBRPContext of STB.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KStbIoCallbacks {
+public interface KStbRpContext {
 
-    /**
-     * Returns read callback.
-     * @return STB read callback
-     */
-    KStbReadCallback read();
-    /**
-     * Returns skip callback.
-     * @return STB skip callback
-     */
-    KStbSkipCallback skip();
-    /**
-     * Returns EOF callback.
-     * @return STB EOF callback
-     */
-    KStbEofCallback eof();
+    int width();
+    int height();
+    int align();
+    int init_mode();
+    int heuristic();
+    int num_nodes();
+    @Nullable KStbRpNode active_head();
+    @Nullable KStbRpNode free_head();
+    KStbRpNode[] extra();
+    KStbRpNode extra(int index);
 
 }

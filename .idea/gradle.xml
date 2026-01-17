@@ -17,7 +17,7 @@
             <option value="$PROJECT_DIR$/libfrontend" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />
-            <option value="$PROJECT_DIR$/libfrontend/libfrontend-stbimage" />
+            <option value="$PROJECT_DIR$/libfrontend/libfrontend-stb" />
             <option value="$PROJECT_DIR$/rendering" />
             <option value="$PROJECT_DIR$/rendering/glfw" />
             <option value="$PROJECT_DIR$/rendering/opengl33" />

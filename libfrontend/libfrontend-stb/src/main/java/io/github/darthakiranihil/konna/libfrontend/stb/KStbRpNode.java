@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.stbimage;
+package io.github.darthakiranihil.konna.libfrontend.stb;
+
+import org.jspecify.annotations.Nullable;
 
 /**
- * Interface representing skip callback of STBImage.
+ * Interface representing STBRPNode of STB.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@FunctionalInterface
-public interface KStbSkipCallback {
+public interface KStbRpNode {
 
-    void invoke(long user, int n);
+    int x();
+    int y();
+    @Nullable KStbRpNode next();
 
 }
