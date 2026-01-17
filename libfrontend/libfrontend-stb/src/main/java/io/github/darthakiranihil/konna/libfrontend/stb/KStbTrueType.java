@@ -84,160 +84,95 @@ public interface KStbTrueType {
         STBTT_MAC_LANG_CHINESE_SIMPLIFIED = 33,
         STBTT_MAC_LANG_CHINESE_TRAD = 19;
 
-    int stbtt_BakeFontBitmap(KStbTtBakedChar[] chardata);
-    void stbtt_GetBakedQuad(
-        KStbTtBakedChar[] chardata,
-        int pw,
-        int ph,
-        int char_index,
-        FloatBuffer xpos,
-        FloatBuffer ypos,
-        KStbTtAlignedQuad q,
-        boolean opengl_fillrule
-    );
-    void stbtt_GetScaledFontVMetrics(FloatBuffer lineGap);
-    boolean stbtt_PackBegin(long alloc_context);
-    boolean stbtt_PackBegin(
-        @Nullable ByteBuffer pixels,
-        int width,
-        int height,
-        int stride_in_bytes,
-        int padding
-    );
+
+    int stbtt_BakeFontBitmap(ByteBuffer data, float pixel_height, ByteBuffer pixels, int pw, int ph, int first_char, KStbTtBakedChar[] chardata);
+    void stbtt_GetBakedQuad(KStbTtBakedChar[] chardata, int pw, int ph, int char_index, FloatBuffer xpos, FloatBuffer ypos, KStbTtAlignedQuad q, boolean opengl_fillrule);
+    void stbtt_GetScaledFontVMetrics(ByteBuffer fontdata, int index, float size, FloatBuffer ascent, FloatBuffer descent, FloatBuffer lineGap);
+    boolean stbtt_PackBegin(KStbTtPackContext spc, @Nullable ByteBuffer pixels, int width, int height, int stride_in_bytes, int padding, long alloc_context);
+    boolean stbtt_PackBegin(KStbTtPackContext spc, @Nullable ByteBuffer pixels, int width, int height, int stride_in_bytes, int padding);
     void stbtt_PackEnd(KStbTtPackContext spc);
     int STBTT_POINT_SIZE(int font_size);
-    boolean stbtt_PackFontRange(KStbTtPackedChar[] chardata_for_range);
-    boolean stbtt_PackFontRanges(KStbTtPackRange[] ranges);
-    void stbtt_PackSetOversampling(int v_oversample);
-    void stbtt_PackSetSkipMissingCodepoints(boolean skip);
-    void stbtt_GetPackedQuad(boolean align_to_integer);
-    int stbtt_PackFontRangesGatherRects(KStbRpRect[] rects);
-    void stbtt_PackFontRangesPackRects(KStbRpRect[] rects);
-    boolean stbtt_PackFontRangesRenderIntoRects(KStbRpRect[] rects);
+    boolean stbtt_PackFontRange(KStbTtPackContext spc, ByteBuffer fontdata, int font_index, float font_size, int first_unicode_char_in_range, KStbTtPackedChar[] chardata_for_range);
+    boolean stbtt_PackFontRanges(KStbTtPackContext spc, ByteBuffer fontdata, int font_index, KStbTtPackRange[] ranges);
+    void stbtt_PackSetOversampling(KStbTtPackContext spc, int h_oversample, int v_oversample);
+    void stbtt_PackSetSkipMissingCodepoints(KStbTtPackContext spc, boolean skip);
+    void stbtt_GetPackedQuad(KStbTtPackedChar[] chardata, int pw, int ph, int char_index, FloatBuffer xpos, FloatBuffer ypos, KStbTtAlignedQuad q, boolean align_to_integer);
+    int stbtt_PackFontRangesGatherRects(KStbTtPackContext spc, KStbTtFontInfo info, KStbTtPackRange[] ranges, KStbRpRect[] rects);
+    void stbtt_PackFontRangesPackRects(KStbTtPackContext spc, KStbRpRect[] rects);
+    boolean stbtt_PackFontRangesRenderIntoRects(KStbTtPackContext spc, KStbTtFontInfo info, KStbTtPackRange[] ranges, KStbRpRect[] rects);
     int stbtt_GetNumberOfFonts(ByteBuffer data);
     int stbtt_GetFontOffsetForIndex(ByteBuffer data, int index);
-    boolean stbtt_InitFont(ByteBuffer data, int offset);
-    boolean stbtt_InitFont(ByteBuffer data);
+    boolean stbtt_InitFont(KStbTtFontInfo info, ByteBuffer data, int offset);
+    boolean stbtt_InitFont(KStbTtFontInfo info, ByteBuffer data);
     int stbtt_FindGlyphIndex(KStbTtFontInfo info, int unicode_codepoint);
     float stbtt_ScaleForPixelHeight(KStbTtFontInfo info, float pixels);
     float stbtt_ScaleForMappingEmToPixels(KStbTtFontInfo info, float pixels);
-    void stbtt_GetFontVMetrics(@Nullable IntBuffer lineGap);
-    boolean stbtt_GetFontVMetricsOS2(@Nullable IntBuffer typoLineGap);
-    void stbtt_GetFontBoundingBox(IntBuffer y1);
-    void stbtt_GetCodepointHMetrics(@Nullable IntBuffer leftSideBearing);
+    void stbtt_GetFontVMetrics(KStbTtFontInfo info, @Nullable IntBuffer ascent, @Nullable IntBuffer descent, @Nullable IntBuffer lineGap);
+    boolean stbtt_GetFontVMetricsOS2(KStbTtFontInfo info, @Nullable IntBuffer typoAscent, @Nullable IntBuffer typoDescent, @Nullable IntBuffer typoLineGap);
+    void stbtt_GetFontBoundingBox(KStbTtFontInfo info, IntBuffer x0, IntBuffer y0, IntBuffer x1, IntBuffer y1);
+    void stbtt_GetCodepointHMetrics(KStbTtFontInfo info, int codepoint, @Nullable IntBuffer advanceWidth, @Nullable IntBuffer leftSideBearing);
     int stbtt_GetCodepointKernAdvance(KStbTtFontInfo info, int ch1, int ch2);
-    boolean stbtt_GetCodepointBox(@Nullable IntBuffer y1);
-    void stbtt_GetGlyphHMetrics(@Nullable IntBuffer leftSideBearing);
+    boolean stbtt_GetCodepointBox(KStbTtFontInfo info, int codepoint, @Nullable IntBuffer x0, @Nullable IntBuffer y0, @Nullable IntBuffer x1, @Nullable IntBuffer y1);
+    void stbtt_GetGlyphHMetrics(KStbTtFontInfo info, int glyph_index, @Nullable IntBuffer advanceWidth, @Nullable IntBuffer leftSideBearing);
     int stbtt_GetGlyphKernAdvance(KStbTtFontInfo info, int glyph1, int glyph2);
-    boolean stbtt_GetGlyphBox(@Nullable IntBuffer y1);
+    boolean stbtt_GetGlyphBox(KStbTtFontInfo info, int glyph_index, @Nullable IntBuffer x0, @Nullable IntBuffer y0, @Nullable IntBuffer x1, @Nullable IntBuffer y1);
     int stbtt_GetKerningTableLength(KStbTtFontInfo info);
-    int stbtt_GetKerningTable(KStbTtKerningEntry[] table);
+    int stbtt_GetKerningTable(KStbTtFontInfo info, KStbTtKerningEntry table);
     boolean stbtt_IsGlyphEmpty(KStbTtFontInfo info, int glyph_index);
-    int stbtt_GetCodepointShape(LongBuffer vertices);
+    int stbtt_GetCodepointShape(KStbTtFontInfo info, int unicode_codepoint, LongBuffer vertices);
     @Nullable KStbTtVertex[] stbtt_GetCodepointShape(KStbTtFontInfo info, int unicode_codepoint);
-    int stbtt_GetGlyphShape(LongBuffer vertices);
+    int stbtt_GetGlyphShape(KStbTtFontInfo info, int glyph_index, LongBuffer vertices);
     @Nullable KStbTtVertex[] stbtt_GetGlyphShape(KStbTtFontInfo info, int glyph_index);
-    void stbtt_FreeShape(KStbTtVertex[] vertices);
+    void stbtt_FreeShape(KStbTtFontInfo info, KStbTtVertex[] vertices);
     long stbtt_FindSVGDoc(KStbTtFontInfo info, int gl);
-    int stbtt_GetCodepointSVG(LongBuffer svg);
-    int stbtt_GetGlyphSVG(LongBuffer svg);
-    void stbtt_FreeBitmap(long userdata);
+    int stbtt_GetCodepointSVG(KStbTtFontInfo info, int unicode_codepoint, LongBuffer svg);
+    int stbtt_GetGlyphSVG(KStbTtFontInfo info, int gl, LongBuffer svg);
+    void stbtt_FreeBitmap(ByteBuffer bitmap, long userdata);
     void stbtt_FreeBitmap(ByteBuffer bitmap);
-    @Nullable ByteBuffer stbtt_GetCodepointBitmap(@Nullable IntBuffer yoff);
-    @Nullable ByteBuffer stbtt_GetCodepointBitmapSubpixel(@Nullable IntBuffer yoff);
-    void stbtt_MakeCodepointBitmap(
-        ByteBuffer output,
-        int out_w,
-        int out_h,
-        int out_stride,
-        float scale_x,
-        float scale_y,
-        int codepoint
-    );
-    void stbtt_MakeCodepointBitmapSubpixel(
-        ByteBuffer output,
-        int out_w,
-        int out_h,
-        int out_stride,
-        float scale_x,
-        float scale_y,
-        float shift_x,
-        float shift_y,
-        int codepoint
-    );
-    void stbtt_MakeCodepointBitmapSubpixelPrefilter(FloatBuffer sub_y, int codepoint);
-    void stbtt_GetCodepointBitmapBox(@Nullable IntBuffer iy1);
-    void stbtt_GetCodepointBitmapBoxSubpixel(@Nullable IntBuffer iy1);
-    @Nullable ByteBuffer stbtt_GetGlyphBitmap(@Nullable IntBuffer yoff);
-    @Nullable ByteBuffer stbtt_GetGlyphBitmapSubpixel(@Nullable IntBuffer yoff);
-    void stbtt_MakeGlyphBitmap(
-        ByteBuffer output,
-        int out_w,
-        int out_h,
-        int out_stride,
-        float scale_x,
-        float scale_y,
-        int glyph
-    );
-    void stbtt_MakeGlyphBitmapSubpixel(
-        ByteBuffer output,
-        int out_w,
-        int out_h,
-        int out_stride,
-        float scale_x,
-        float scale_y,
-        float shift_x,
-        float shift_y,
-        int glyph
-    );
-    void stbtt_MakeGlyphBitmapSubpixelPrefilter(FloatBuffer sub_y, int glyph);
-    void stbtt_GetGlyphBitmapBox(@Nullable IntBuffer iy1);
-    void stbtt_GetGlyphBitmapBoxSubpixel(@Nullable IntBuffer iy1);
-    void stbtt_Rasterize(boolean invert);
-    void stbtt_FreeSDF(long userdata);
+    @Nullable ByteBuffer stbtt_GetCodepointBitmap(KStbTtFontInfo info, float scale_x, float scale_y, int codepoint, IntBuffer width, IntBuffer height, @Nullable IntBuffer xoff, @Nullable IntBuffer yoff);
+    @Nullable ByteBuffer stbtt_GetCodepointBitmapSubpixel(KStbTtFontInfo info, float scale_x, float scale_y, float shift_x, float shift_y, int codepoint, IntBuffer width, IntBuffer height, @Nullable IntBuffer xoff, @Nullable IntBuffer yoff);
+    void stbtt_MakeCodepointBitmap(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, int codepoint);
+    void stbtt_MakeCodepointBitmapSubpixel(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int codepoint);
+    void stbtt_MakeCodepointBitmapSubpixelPrefilter(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int oversample_x, int oversample_y, FloatBuffer sub_x, FloatBuffer sub_y, int codepoint);
+    void stbtt_GetCodepointBitmapBox(KStbTtFontInfo font, int codepoint, float scale_x, float scale_y, @Nullable IntBuffer ix0, @Nullable IntBuffer iy0, @Nullable IntBuffer ix1, @Nullable IntBuffer iy1);
+    void stbtt_GetCodepointBitmapBoxSubpixel(KStbTtFontInfo font, int codepoint, float scale_x, float scale_y, float shift_x, float shift_y, @Nullable IntBuffer ix0, @Nullable IntBuffer iy0, @Nullable IntBuffer ix1, @Nullable IntBuffer iy1);
+    @Nullable ByteBuffer stbtt_GetGlyphBitmap(KStbTtFontInfo info, float scale_x, float scale_y, int glyph, IntBuffer width, IntBuffer height, @Nullable IntBuffer xoff, @Nullable IntBuffer yoff);
+    @Nullable ByteBuffer stbtt_GetGlyphBitmapSubpixel(KStbTtFontInfo info, float scale_x, float scale_y, float shift_x, float shift_y, int glyph, IntBuffer width, IntBuffer height, @Nullable IntBuffer xoff, @Nullable IntBuffer yoff);
+    void stbtt_MakeGlyphBitmap(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, int glyph);
+    void stbtt_MakeGlyphBitmapSubpixel(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int glyph);
+    void stbtt_MakeGlyphBitmapSubpixelPrefilter(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int oversample_x, int oversample_y, FloatBuffer sub_x, FloatBuffer sub_y, int glyph);
+    void stbtt_GetGlyphBitmapBox(KStbTtFontInfo font, int glyph, float scale_x, float scale_y, @Nullable IntBuffer ix0, @Nullable IntBuffer iy0, @Nullable IntBuffer ix1, @Nullable IntBuffer iy1);
+    void stbtt_GetGlyphBitmapBoxSubpixel(KStbTtFontInfo font, int glyph, float scale_x, float scale_y, float shift_x, float shift_y, @Nullable IntBuffer ix0, @Nullable IntBuffer iy0, @Nullable IntBuffer ix1, @Nullable IntBuffer iy1);
+    void stbtt_Rasterize(KStbTtBitmap result, float flatness_in_pixels, KStbTtVertex[] vertices, float scale_x, float scale_y, float shift_x, float shift_y, int x_off, int y_off, boolean invert);
+    void stbtt_FreeSDF(ByteBuffer bitmap, long userdata);
     void stbtt_FreeSDF(ByteBuffer bitmap);
-    @Nullable ByteBuffer stbtt_GetGlyphSDF(IntBuffer yoff);
-    @Nullable ByteBuffer stbtt_GetCodepointSDF(IntBuffer yoff);
-    int stbtt_FindMatchingFont(ByteBuffer name, int flags);
-    int stbtt_FindMatchingFont(CharSequence name, int flags);
-    boolean stbtt_CompareUTF8toUTF16_bigendian(ByteBuffer s2);
-    @Nullable ByteBuffer stbtt_GetFontNameString(
-        KStbTtFontInfo font,
-        int platformID,
-        int encodingID,
-        int languageID,
-        int nameID
-    );
-    void stbtt_GetBakedQuad(boolean opengl_fillrule);
-    void stbtt_GetScaledFontVMetrics(float[] lineGap);
-    void stbtt_GetPackedQuad(
-        KStbTtBakedChar[] chardata,
-        int pw,
-        int ph,
-        int char_index,
-        float[] xpos,
-        float[] ypos,
-        KStbTtAlignedQuad q,
-        boolean align_to_integer
-    );
-    void stbtt_GetFontVMetrics(int @Nullable [] lineGap);
-    boolean stbtt_GetFontVMetricsOS2(int @Nullable [] typoLineGap);
-    void stbtt_GetFontBoundingBox(int[] y1);
-    void stbtt_GetCodepointHMetrics(int @Nullable [] leftSideBearing);
-    boolean stbtt_GetCodepointBox(int @Nullable [] y1);
-    void stbtt_GetGlyphHMetrics(int @Nullable [] leftSideBearing);
-    boolean stbtt_GetGlyphBox(int @Nullable [] y1);
-    @Nullable ByteBuffer stbtt_GetCodepointBitmap(int @Nullable [] yoff);
-    @Nullable ByteBuffer stbtt_GetCodepointBitmapSubpixel(int @Nullable [] yoff);
-    void stbtt_MakeCodepointBitmapSubpixelPrefilter(float[] sub_y, int codepoint);
-    void stbtt_GetCodepointBitmapBox(int @Nullable [] iy1);
-    void stbtt_GetCodepointBitmapBoxSubpixel(int @Nullable [] iy1);
-    @Nullable ByteBuffer stbtt_GetGlyphBitmap(int @Nullable [] yoff);
-    @Nullable ByteBuffer stbtt_GetGlyphBitmapSubpixel(int @Nullable [] yoff);
-    void stbtt_MakeGlyphBitmapSubpixelPrefilter(float[] sub_y, int glyph);
-    void stbtt_GetGlyphBitmapBox(int @Nullable [] iy1);
-    void stbtt_GetGlyphBitmapBoxSubpixel(int @Nullable [] iy1);
-    @Nullable ByteBuffer stbtt_GetGlyphSDF(int[] yoff);
-    @Nullable ByteBuffer stbtt_GetCodepointSDF(int[] yoff);
+    @Nullable ByteBuffer stbtt_GetGlyphSDF(KStbTtFontInfo font, float scale, int glyph, int padding, byte onedge_value, float pixel_dist_scale, IntBuffer width, IntBuffer height, IntBuffer xoff, IntBuffer yoff);
+    @Nullable ByteBuffer stbtt_GetCodepointSDF(KStbTtFontInfo font, float scale, int codepoint, int padding, byte onedge_value, float pixel_dist_scale, IntBuffer width, IntBuffer height, IntBuffer xoff, IntBuffer yoff);
+    int stbtt_FindMatchingFont(ByteBuffer fontdata, ByteBuffer name, int flags);
+    int stbtt_FindMatchingFont(ByteBuffer fontdata, CharSequence name, int flags);
+    boolean stbtt_CompareUTF8toUTF16_bigendian(ByteBuffer s1, ByteBuffer s2);
+    @Nullable ByteBuffer stbtt_GetFontNameString(KStbTtFontInfo font, int platformID, int encodingID, int languageID, int nameID);
+    void stbtt_GetBakedQuad(KStbTtBakedChar[] chardata, int pw, int ph, int char_index, float[] xpos, float[] ypos, KStbTtAlignedQuad q, boolean opengl_fillrule);
+    void stbtt_GetScaledFontVMetrics(ByteBuffer fontdata, int index, float size, float[] ascent, float[] descent, float[] lineGap);
+    void stbtt_GetPackedQuad(KStbTtPackedChar[] chardata, int pw, int ph, int char_index, float[] xpos, float[] ypos, KStbTtAlignedQuad q, boolean align_to_integer);
+    void stbtt_GetFontVMetrics(KStbTtFontInfo info, int @Nullable [] ascent, int @Nullable [] descent, int @Nullable [] lineGap);
+    boolean stbtt_GetFontVMetricsOS2(KStbTtFontInfo info, int @Nullable [] typoAscent, int @Nullable [] typoDescent, int @Nullable [] typoLineGap);
+    void stbtt_GetFontBoundingBox(KStbTtFontInfo info, int[] x0, int[] y0, int[] x1, int[] y1);
+    void stbtt_GetCodepointHMetrics(KStbTtFontInfo info, int codepoint, int @Nullable [] advanceWidth, int @Nullable [] leftSideBearing);
+    boolean stbtt_GetCodepointBox(KStbTtFontInfo info, int codepoint, int @Nullable [] x0, int @Nullable [] y0, int @Nullable [] x1, int @Nullable [] y1);
+    void stbtt_GetGlyphHMetrics(KStbTtFontInfo info, int glyph_index, int @Nullable [] advanceWidth, int @Nullable [] leftSideBearing);
+    boolean stbtt_GetGlyphBox(KStbTtFontInfo info, int glyph_index, int @Nullable [] x0, int @Nullable [] y0, int @Nullable [] x1, int @Nullable [] y1);
+    @Nullable ByteBuffer stbtt_GetCodepointBitmap(KStbTtFontInfo info, float scale_x, float scale_y, int codepoint, int[] width, int[] height, int @Nullable [] xoff, int @Nullable [] yoff);
+    @Nullable ByteBuffer stbtt_GetCodepointBitmapSubpixel(KStbTtFontInfo info, float scale_x, float scale_y, float shift_x, float shift_y, int codepoint, int[] width, int[] height, int @Nullable [] xoff, int @Nullable [] yoff);
+    void stbtt_MakeCodepointBitmapSubpixelPrefilter(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int oversample_x, int oversample_y, float[] sub_x, float[] sub_y, int codepoint);
+    void stbtt_GetCodepointBitmapBox(KStbTtFontInfo font, int codepoint, float scale_x, float scale_y, int @Nullable [] ix0, int @Nullable [] iy0, int @Nullable [] ix1, int @Nullable [] iy1);
+    void stbtt_GetCodepointBitmapBoxSubpixel(KStbTtFontInfo font, int codepoint, float scale_x, float scale_y, float shift_x, float shift_y, int @Nullable [] ix0, int @Nullable [] iy0, int @Nullable [] ix1, int @Nullable [] iy1);
+    @Nullable ByteBuffer stbtt_GetGlyphBitmap(KStbTtFontInfo info, float scale_x, float scale_y, int glyph, int[] width, int[] height, int @Nullable [] xoff, int @Nullable [] yoff);
+    @Nullable ByteBuffer stbtt_GetGlyphBitmapSubpixel(KStbTtFontInfo info, float scale_x, float scale_y, float shift_x, float shift_y, int glyph, int[] width, int[] height, int @Nullable [] xoff, int @Nullable [] yoff);
+    void stbtt_MakeGlyphBitmapSubpixelPrefilter(KStbTtFontInfo info, ByteBuffer output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int oversample_x, int oversample_y, float[] sub_x, float[] sub_y, int glyph);
+    void stbtt_GetGlyphBitmapBox(KStbTtFontInfo font, int glyph, float scale_x, float scale_y, int @Nullable [] ix0, int @Nullable [] iy0, int @Nullable [] ix1, int @Nullable [] iy1);
+    void stbtt_GetGlyphBitmapBoxSubpixel(KStbTtFontInfo font, int glyph, float scale_x, float scale_y, float shift_x, float shift_y, int @Nullable [] ix0, int @Nullable [] iy0, int @Nullable [] ix1, int @Nullable [] iy1);
+    @Nullable ByteBuffer stbtt_GetGlyphSDF(KStbTtFontInfo font, float scale, int glyph, int padding, byte onedge_value, float pixel_dist_scale, int[] width, int[] height, int[] xoff, int[] yoff);
+    @Nullable ByteBuffer stbtt_GetCodepointSDF(KStbTtFontInfo font, float scale, int codepoint, int padding, byte onedge_value, float pixel_dist_scale, int[] width, int[] height, int[] xoff, int[] yoff);
 
 }
