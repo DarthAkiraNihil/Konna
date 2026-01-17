@@ -1,4 +1,13 @@
 package io.github.darthakiranihil.konna.libfrontend.stb;
 
-public class KStbTtVertex {
+public interface KStbTtVertex {
+
+    short x();
+    short y();
+    short cx();
+    short cy();
+    short cx1();
+    short cy1();
+    byte type();
+
 }
