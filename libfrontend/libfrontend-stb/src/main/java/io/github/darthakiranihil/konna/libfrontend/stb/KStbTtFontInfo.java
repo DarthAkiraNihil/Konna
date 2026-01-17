@@ -10,6 +10,6 @@ import java.nio.ByteBuffer;
  */
 public interface KStbTtFontInfo {
 
-    ByteBuffer data();
+    long handle();
 
 }

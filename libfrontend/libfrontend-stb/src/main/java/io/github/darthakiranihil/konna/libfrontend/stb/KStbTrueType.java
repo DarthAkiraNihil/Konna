@@ -84,6 +84,12 @@ public interface KStbTrueType {
         STBTT_MAC_LANG_CHINESE_SIMPLIFIED = 33,
         STBTT_MAC_LANG_CHINESE_TRAD = 19;
 
+    /**
+     * Non-standard method.
+     * @return Created font info instance.
+     */
+    KStbTtFontInfo createFontInfo();
+    KStbTtAlignedQuad createAlignedQuad();
 
     int stbtt_BakeFontBitmap(ByteBuffer data, float pixel_height, ByteBuffer pixels, int pw, int ph, int first_char, KStbTtBakedChar[] chardata);
     void stbtt_GetBakedQuad(KStbTtBakedChar[] chardata, int pw, int ph, int char_index, FloatBuffer xpos, FloatBuffer ypos, KStbTtAlignedQuad q, boolean opengl_fillrule);

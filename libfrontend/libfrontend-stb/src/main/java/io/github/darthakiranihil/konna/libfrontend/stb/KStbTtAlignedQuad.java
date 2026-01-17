@@ -17,4 +17,15 @@ public interface KStbTtAlignedQuad {
     float s1();
     float t1();
 
+    void set(
+        float x0,
+        float y0,
+        float s0,
+        float t0,
+        float x1,
+        float y1,
+        float s1,
+        float t1
+    );
+
 }
