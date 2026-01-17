@@ -17,8 +17,12 @@
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.*;
@@ -27,8 +31,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 @ApiStatus.Internal
 @KExcludeFromGeneratedCoverageReport
@@ -47,18 +50,15 @@ final class KBufferMaker {
 
     }
 
-    private final Map<KPair<Class<? extends KRenderable>, Integer>, KBufferMaker.BufferInfo> cache;
-    private final Map<KPair<Class<? extends KRenderable>, Integer>, Integer> ttl;
+    private final KCache cache;
 
     private final KGl33 gl;
     private KSize viewportSize;
 
-    KBufferMaker(final KGl33 gl) {
+    KBufferMaker(final KGl33 gl, final KCache cache) {
         this.gl = gl;
         this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
-
-        this.cache = new ConcurrentHashMap<>();
-        this.ttl = new ConcurrentHashMap<>();
+        this.cache = cache;
     }
 
     public void setViewportSize(final KSize newSize) {
@@ -67,10 +67,10 @@ final class KBufferMaker {
 
     public BufferInfo make(final KRenderable renderable) {
 
-        int hash = KRenderableHasher.hash(renderable);
-        KPair<Class<? extends KRenderable>, Integer> key = new KPair<>(renderable.getClass(), hash);
+        String hash = Integer.toString(KRenderableHasher.hash(renderable));
+        String key = String.format("%s.%s", renderable.getClass().getCanonicalName(), hash);
 
-        if (!this.cache.containsKey(key)) {
+        if (!this.cache.hasKey(key)) {
             BufferInfo bufferInfo = switch (renderable) {
                 case KArc a -> this.make(a);
                 case KLine l -> this.make(l);
@@ -86,35 +86,13 @@ final class KBufferMaker {
                 );
             };
 
-            this.cache.put(
+            this.cache.putToCache(
                 key,
                 bufferInfo
             );
         }
 
-        this.ttl.put(key, KInternals.DEFAULT_TTL);
-        return this.cache.get(key);
-    }
-
-    public void updateTtl() {
-
-        this.ttl.replaceAll((k, v) -> v - 1);
-
-        var entrySet = this.ttl.entrySet();
-        for (var entry: entrySet) {
-            if (entry.getValue() > 0) {
-                continue;
-            }
-
-            var key = entry.getKey();
-            KBufferMaker.BufferInfo info = this.cache.get(key);
-
-            info.free(this.gl);
-            this.cache.remove(key);
-            this.ttl.remove(key);
-
-        }
-
+        return Objects.requireNonNull(this.cache.getFromCache(key, BufferInfo.class));
     }
 
     private BufferInfo make(final KPolygon polygon) {

@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.*;
+import io.github.darthakiranihil.konna.core.util.KDisposer;
 import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -54,11 +55,47 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     private final KQueueBasedMessageSystem messageSystem;
     private final KResourceLoader resourceLoader;
     private final KAssetLoader assetLoader;
+    private final @Nullable KDisposer<KEngineContext> disposer;
 
     /**
      * Standard constructor.
      * @param activator Activator of the context
-     * @param containerResolver Container resolver of the context
+     * @param containerAccessor Container accessor of the context
+     * @param index Index of the context
+     * @param objectRegistry Object registry of the context
+     * @param eventSystem Event system of the context
+     * @param messageSystem Message system of the context
+     * @param resourceLoader Resource loader of the context
+     * @param assetLoader Asset loader of the context
+     * @param disposer Additional disposer for this context when it shuts down
+     */
+    public KProxiedEngineContext(
+        final KActivator activator,
+        final KContainerAccessor containerAccessor,
+        final KIndex index,
+        final KObjectRegistry objectRegistry,
+        final KQueueBasedEventSystem eventSystem,
+        final KQueueBasedMessageSystem messageSystem,
+        final KResourceLoader resourceLoader,
+        final KAssetLoader assetLoader,
+        final @Nullable KDisposer<KEngineContext> disposer
+        ) {
+        super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
+        this.activator = activator;
+        this.containerResolver = containerAccessor;
+        this.index = index;
+        this.objectRegistry = objectRegistry;
+        this.eventSystem = eventSystem;
+        this.messageSystem = messageSystem;
+        this.resourceLoader = resourceLoader;
+        this.assetLoader = assetLoader;
+        this.disposer = disposer;
+    }
+
+    /**
+     * Standard constructor, but without disposer.
+     * @param activator Activator of the context
+     * @param containerAccessor Container accessor of the context
      * @param index Index of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
@@ -68,23 +105,25 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      */
     public KProxiedEngineContext(
         final KActivator activator,
-        final KContainerAccessor containerResolver,
+        final KContainerAccessor containerAccessor,
         final KIndex index,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
         final KResourceLoader resourceLoader,
         final KAssetLoader assetLoader
-        ) {
-        super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
-        this.activator = activator;
-        this.containerResolver = containerResolver;
-        this.index = index;
-        this.objectRegistry = objectRegistry;
-        this.eventSystem = eventSystem;
-        this.messageSystem = messageSystem;
-        this.resourceLoader = resourceLoader;
-        this.assetLoader = assetLoader;
+    ) {
+        this(
+            activator,
+            containerAccessor,
+            index,
+            objectRegistry,
+            eventSystem,
+            messageSystem,
+            resourceLoader,
+            assetLoader,
+            null
+        );
     }
 
     @Override
@@ -234,5 +273,8 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     public void handleShutdown() {
         this.messageSystem.stopPolling();
         this.eventSystem.stopPolling();
+        if (this.disposer != null) {
+            this.disposer.dispose(this);
+        }
     }
 }

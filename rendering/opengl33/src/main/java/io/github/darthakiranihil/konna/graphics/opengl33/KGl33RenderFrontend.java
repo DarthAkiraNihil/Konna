@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
@@ -62,17 +63,19 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * @param gl OpenGL 3.3 frontend
      * @param shaderCompiler Shader compiler used for getting default shape shader
      * @param calculator Transform matrix calculator implemented in this module
+     * @param cache Cache service for storing buffer data, textures etc.
      */
     public KGl33RenderFrontend(
         @KInject final KGl33 gl,
         @KInject final KShaderCompiler shaderCompiler,
-        @KInject final KGl33TransformMatrixCalculator calculator
+        @KInject final KGl33TransformMatrixCalculator calculator,
+        @KInject final KCache cache
     ) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
-        this.textureMaker = new KTextureMaker(this.gl);
-        this.bufferMaker = new KBufferMaker(this.gl);
+        this.textureMaker = new KTextureMaker(this.gl, cache);
+        this.bufferMaker = new KBufferMaker(this.gl, cache);
         this.shaderCompiler = shaderCompiler;
         this.transformMatrixCalculator = calculator;
     }
@@ -202,7 +205,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
 
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.updateTtl();
         this.disableActiveShader();
     }
 
@@ -235,7 +237,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glDisableClientState(KGl33.GL_VERTEX_ARRAY);
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
-        this.updateTtl();
         this.disableActiveShader();
 
     }
@@ -327,11 +328,6 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
         this.disableActiveShader();
-    }
-
-    private void updateTtl() {
-        this.textureMaker.updateTtl();
-        this.bufferMaker.updateTtl();
     }
 
 }
