@@ -79,6 +79,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     private static final int DEFAULT_TTL = 60;
+    private static final int CLEAN_TIME_WARNING = 8;
 
     private @Nullable Thread cleaner;
     private volatile boolean running;
@@ -183,10 +184,33 @@ public class KHashMapBasedCache extends KObject implements KCache {
         }
     }
 
+    @Override
+    public void setTtl(String key, long ttl) {
+        var record = this.cache.get(key);
+        if (record == null) {
+            return;
+        }
+
+        record.maxTtl = ttl;
+        record.ttl = ttl;
+    }
+
+    @Override
+    public boolean hasKey(String key) {
+        return this.cache.containsKey(key);
+    }
+
     private void clean() {
 
         this.running = true;
         long deltaTime = 1;
+
+        KSystemLogger.info(
+            "cache_cleaner",
+            "Cache cleaner thread has been started [host = %s]",
+            this
+        );
+
         while (this.running) {
 
             Instant beginTime = Instant.now();
@@ -213,24 +237,23 @@ public class KHashMapBasedCache extends KObject implements KCache {
                 KSystemLogger.warning("cache_cleaner", e);
             }
             deltaTime = Duration.between(beginTime, Instant.now()).getSeconds();
+            if (deltaTime > CLEAN_TIME_WARNING) {
+                KSystemLogger.warning(
+                    "cache_cleaner",
+                    "Cache clean time tick duration is more than %ds. "
+                        +   "Actual: %s. Is cache overflowed?",
+                    CLEAN_TIME_WARNING,
+                    deltaTime
+                );
+            }
         }
 
-    }
+        KSystemLogger.info(
+            "cache_cleaner",
+            "Cache cleaner thread has been stopped [host=%s]",
+            this
+        );
 
-    @Override
-    public void setTtl(String key, long ttl) {
-        var record = this.cache.get(key);
-        if (record == null) {
-            return;
-        }
-
-        record.maxTtl = ttl;
-        record.ttl = ttl;
-    }
-
-    @Override
-    public boolean hasKey(String key) {
-        return this.cache.containsKey(key);
     }
 
     @Override
