@@ -141,7 +141,8 @@ public class KStandardTestClass extends KObject {
             eventSystem,
             messageSystem,
             resourceLoader,
-            assetLoader
+            assetLoader,
+            null
         );
         activator.addContext(KStandardTestClass.context);
         KStandardTestClass.msgSystem = messageSystem;

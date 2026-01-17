@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ApiStatus.Internal
@@ -67,19 +69,15 @@ final class KTextureMaker {
 
     }
 
-    private final Map<Integer, Integer> textureCache;
-    private final Map<Integer, TextureInfo> cache;
-    private final Map<Integer, Integer> ttl;
+    private final KCache cache;
     private final KGl33 gl;
     private KSize viewportSize;
 
-    KTextureMaker(final KGl33 gl) {
+    KTextureMaker(final KGl33 gl, final KCache cache) {
         this.gl = gl;
         this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
 
-        this.cache = new ConcurrentHashMap<>();
-        this.ttl = new ConcurrentHashMap<>();
-        this.textureCache = new ConcurrentHashMap<>();
+        this.cache = cache;
     }
 
     public void setViewportSize(final KSize newSize) {
@@ -89,38 +87,21 @@ final class KTextureMaker {
 
     public TextureInfo make(final KRenderableTexture texture, boolean doNotTriangulate) {
 
-        int hash = KRenderableHasher.hash(texture);
+        String hash = Integer.toString(KRenderableHasher.hash(texture));
 
-        if (!this.cache.containsKey(hash)) {
-            this.cache.put(
+        if (!this.cache.hasKey(hash)) {
+
+            this.cache.putToCache(
                 hash,
-                this.createTextureInfo(texture, doNotTriangulate)
+                this.createTextureInfo(texture, doNotTriangulate),
+                i -> i.free(this.gl),
+                KCache.TTL_EVERLASTING
             );
         }
 
-        this.ttl.put(hash, KInternals.DEFAULT_TTL);
-        return this.cache.get(hash);
-
-    }
-
-    public void updateTtl() {
-
-        this.ttl.replaceAll((k, v) -> v - 1);
-
-        var entrySet = this.ttl.entrySet();
-        for (var entry: entrySet) {
-            if (entry.getValue() > 0) {
-                continue;
-            }
-
-            var key = entry.getKey();
-            TextureInfo info = this.cache.get(key);
-
-            info.free(this.gl);
-            this.cache.remove(key);
-            this.ttl.remove(key);
-
-        }
+        return Objects.requireNonNull(
+            this.cache.getFromCache(hash, TextureInfo.class)
+        );
 
     }
 
@@ -132,15 +113,20 @@ final class KTextureMaker {
         KTexture sourceTexture = texture.texture();
 
         KImage attachedImage = sourceTexture.attachedImage();
-        int imageHash = attachedImage.hashCode();
+        String imageHash = Integer.toString(attachedImage.hashCode());
 
         int tex;
-        if (this.textureCache.containsKey(imageHash)) {
-            tex = this.textureCache.get(imageHash);
+        if (this.cache.hasKey(imageHash)) {
+            tex = Objects.requireNonNull(this.cache.getFromCache(imageHash, Integer.class));
             this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
         } else {
             tex = this.createTexture(attachedImage, sourceTexture);
-            this.textureCache.put(imageHash, tex);
+            this.cache.putToCache(
+                imageHash,
+                tex,
+                this.gl::glDeleteTextures,
+                KCache.TTL_EVERLASTING
+            );
         }
 
         KVector2i[] vertices = texture.xy(); // v * 4

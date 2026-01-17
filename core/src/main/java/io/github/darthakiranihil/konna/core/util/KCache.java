@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import org.jetbrains.annotations.Contract;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
@@ -29,6 +30,7 @@ public interface KCache extends Closeable {
     <T> void putToCache(String key, T obj, KDisposer<T> disposer, long ttl);
     <T> void putToCache(String key, T obj, KDisposer<T> disposer);
     <T> @Nullable T getFromCache(String key, Class<T> clazz);
+    boolean hasKey(String key);
     void evictFromCache(String key);
     void clearCache();
     void setTtl(String key, long ttl);
