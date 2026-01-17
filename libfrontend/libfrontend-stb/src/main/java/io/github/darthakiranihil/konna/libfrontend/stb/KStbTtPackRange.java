@@ -4,6 +4,12 @@ import org.jspecify.annotations.Nullable;
 
 import java.nio.IntBuffer;
 
+/**
+ * Interface representing STBTTPackRange of STBTrueType.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbTtPackRange {
 
     float getFont_size();

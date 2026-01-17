@@ -1,5 +1,11 @@
 package io.github.darthakiranihil.konna.libfrontend.stb;
 
+/**
+ * Interface representing STBRPRect of STB.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbRpRect {
 
     int getId();

@@ -18,6 +18,12 @@ package io.github.darthakiranihil.konna.libfrontend.stb;
 
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Interface representing STBRPNode of STB.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbRpNode {
 
     int x();

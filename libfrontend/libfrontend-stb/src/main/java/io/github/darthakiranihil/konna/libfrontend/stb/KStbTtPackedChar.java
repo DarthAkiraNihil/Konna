@@ -1,7 +1,12 @@
 package io.github.darthakiranihil.konna.libfrontend.stb;
 
+/**
+ * Interface representing STBTTPackedChar of STBTrueType.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbTtPackedChar {
-
 
     short getX0();
     short getY0();

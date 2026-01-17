@@ -2,6 +2,12 @@ package io.github.darthakiranihil.konna.libfrontend.stb;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Interface representing STBTTPackContext of STBTrueType.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KStbTtPackContext {
 
     long user_allocator_context();
