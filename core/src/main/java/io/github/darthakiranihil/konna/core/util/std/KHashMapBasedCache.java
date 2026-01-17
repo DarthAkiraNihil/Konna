@@ -32,6 +32,14 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * {@link KCache} implementation using {@link ConcurrentHashMap} with automatic
+ * cleaning with a cleaner thread on key expiring. It is a singleton to prevent
+ * huge thread usage overhead if it was transient.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @SuppressWarnings("unchecked")
 public class KHashMapBasedCache extends KObject implements KCache {
@@ -44,11 +52,11 @@ public class KHashMapBasedCache extends KObject implements KCache {
         private final Class<?> clazz;
         private final @Nullable Runnable disposer;
 
-        public <T> CacheRecord(
+        <T> CacheRecord(
             long maxTtl,
-            T obj,
-            Class<T> clazz,
-            @Nullable KDisposer<T> disposer
+            final T obj,
+            final Class<T> clazz,
+            @Nullable final KDisposer<T> disposer
         ) {
             this.maxTtl = maxTtl;
             this.ttl = maxTtl;
@@ -100,7 +108,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public <T> void putToCache(String key, T obj, long ttl) {
+    public <T> void putToCache(final String key, final T obj, long ttl) {
         this.cache.put(
             key,
             new CacheRecord(
@@ -113,7 +121,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public <T> void putToCache(String key, T obj) {
+    public <T> void putToCache(final String key, final T obj) {
         this.cache.put(
             key,
             new CacheRecord(
@@ -126,7 +134,12 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public <T> void putToCache(String key, T obj, KDisposer<T> disposer, long ttl) {
+    public <T> void putToCache(
+        final String key,
+        final T obj,
+        final KDisposer<T> disposer,
+        long ttl
+    ) {
         this.cache.put(
             key,
             new CacheRecord(
@@ -139,7 +152,11 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public <T> void putToCache(String key, T obj, KDisposer<T> disposer) {
+    public <T> void putToCache(
+        final String key,
+        final T obj,
+        final KDisposer<T> disposer
+    ) {
         this.cache.put(
             key,
             new CacheRecord(
@@ -153,7 +170,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> @Nullable T getFromCache(String key, Class<T> clazz) {
+    public <T> @Nullable T getFromCache(final String key, final Class<T> clazz) {
         if (!this.cache.containsKey(key)) {
             return null;
         }
@@ -168,7 +185,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public void evictFromCache(String key) {
+    public void evictFromCache(final String key) {
         var record = this.cache.get(key);
         if (record != null) {
             this.cache.remove(key);
@@ -185,7 +202,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public void setTtl(String key, long ttl) {
+    public void setTtl(final String key, long ttl) {
         var record = this.cache.get(key);
         if (record == null) {
             return;
@@ -196,7 +213,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
     }
 
     @Override
-    public boolean hasKey(String key) {
+    public boolean hasKey(final String key) {
         return this.cache.containsKey(key);
     }
 

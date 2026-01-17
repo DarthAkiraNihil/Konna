@@ -16,9 +16,21 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+/**
+ * Interface for an object that performs operations to dispose another object
+ * of specific type.
+ * @param <T> Type of specific disposable object.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KDisposer<T> {
 
+    /**
+     * Disposes passed object.
+     * @param obj Object to dispose
+     */
     void dispose(T obj);
 
 }

@@ -17,7 +17,10 @@
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
@@ -28,9 +31,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 @ApiStatus.Internal
 @KExcludeFromGeneratedCoverageReport

@@ -63,6 +63,7 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * @param gl OpenGL 3.3 frontend
      * @param shaderCompiler Shader compiler used for getting default shape shader
      * @param calculator Transform matrix calculator implemented in this module
+     * @param cache Cache service for storing buffer data, textures etc.
      */
     public KGl33RenderFrontend(
         @KInject final KGl33 gl,
