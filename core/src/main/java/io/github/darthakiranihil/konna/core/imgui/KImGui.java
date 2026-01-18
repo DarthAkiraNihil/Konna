@@ -1,21 +1,24 @@
 package io.github.darthakiranihil.konna.core.imgui;
 
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVector4f;
+
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public interface KImGui {
 
-    void setAssertCallback(ImAssertCallback callback);
+    void setAssertCallback(KImAssertCallback callback);
 
-    ImGuiContext createContext();
+    KImGuiContext createContext();
 
-    ImGuiContext createContext(final ImFontAtlas sharedFontAtlas);
+    KImGuiContext createContext(final ImFontAtlas sharedFontAtlas);
 
     void destroyContext();
 
-    void destroyContext(final ImGuiContext ctx);
+    void destroyContext(final KImGuiContext ctx);
 
-    ImGuiContext getCurrentContext();
+    KImGuiContext getCurrentContext();
 
-    void setCurrentContext(final ImGuiContext ctx);
+    void setCurrentContext(final KImGuiContext ctx);
 
     ImGuiIO getIO();
 
@@ -27,7 +30,7 @@ public interface KImGui {
 
     void render();
 
-    ImDrawData getDrawData();
+    KImDrawData getDrawData();
 
     void showDemoWindow();
 
@@ -85,15 +88,15 @@ public interface KImGui {
 
     boolean beginChild(final String strId);
 
-    boolean beginChild(final String strId, final ImVec2 size);
+    boolean beginChild(final String strId, final KVector2f size);
 
     boolean beginChild(final String strId, final float sizeX, final float sizeY);
 
-    boolean beginChild(final String strId, final ImVec2 size, final int childFlags);
+    boolean beginChild(final String strId, final KVector2f size, final int childFlags);
 
     boolean beginChild(final String strId, final float sizeX, final float sizeY, final int childFlags);
 
-    boolean beginChild(final String strId, final ImVec2 size, final int childFlags, final int windowFlags);
+    boolean beginChild(final String strId, final KVector2f size, final int childFlags, final int windowFlags);
 
     boolean beginChild(
         final String strId,
@@ -109,15 +112,15 @@ public interface KImGui {
 
     boolean beginChild(final int id);
 
-    boolean beginChild(final int id, final ImVec2 size);
+    boolean beginChild(final int id, final KVector2f size);
 
     boolean beginChild(final int id, final float sizeX, final float sizeY);
 
-    boolean beginChild(final int id, final ImVec2 size, final int childFlags);
+    boolean beginChild(final int id, final KVector2f size, final int childFlags);
 
     boolean beginChild(final int id, final float sizeX, final float sizeY, final int childFlags);
 
-    boolean beginChild(final int id, final ImVec2 size, final int childFlags, final int windowFlags);
+    boolean beginChild(final int id, final KVector2f size, final int childFlags, final int windowFlags);
 
     boolean beginChild(final int id, final float sizeX, final float sizeY, final int childFlags, final int windowFlags);
 
@@ -125,11 +128,11 @@ public interface KImGui {
 
     boolean beginChild(final int id, final int windowFlags);
 
-    boolean beginChild(final String strId, final ImVec2 size, final boolean border);
+    boolean beginChild(final String strId, final KVector2f size, final boolean border);
 
     boolean beginChild(final String strId, final float sizeX, final float sizeY, final boolean border);
 
-    boolean beginChild(final String strId, final ImVec2 size, final boolean border, final int windowFlags);
+    boolean beginChild(final String strId, final KVector2f size, final boolean border, final int windowFlags);
 
     boolean beginChild(
         final String strId,
@@ -155,61 +158,61 @@ public interface KImGui {
 
     boolean isWindowHovered(final int imGuiHoveredFlags);
 
-    ImDrawList getWindowDrawList();
+    KImDrawList getWindowDrawList();
 
     float getWindowDpiScale();
 
-    ImVec2 getWindowPos();
+    KVector2f getWindowPos();
 
-    void setWindowPos(final ImVec2 pos);
+    void setWindowPos(final KVector2f pos);
 
     float getWindowPosX();
 
     float getWindowPosY();
 
-    void getWindowPos(final ImVec2 dst);
+    void getWindowPos(final KVector2f dst);
 
-    ImVec2 getWindowSize();
+    KVector2f getWindowSize();
 
-    void setWindowSize(final ImVec2 size);
+    void setWindowSize(final KVector2f size);
 
     float getWindowSizeX();
 
     float getWindowSizeY();
 
-    void getWindowSize(final ImVec2 dst);
+    void getWindowSize(final KVector2f dst);
 
     float getWindowWidth();
 
     float getWindowHeight();
 
-    ImGuiViewport getWindowViewport();
+    KImGuiViewport getWindowViewport();
 
-    void setNextWindowPos(final ImVec2 pos);
+    void setNextWindowPos(final KVector2f pos);
 
     void setNextWindowPos(final float posX, final float posY);
 
-    void setNextWindowPos(final ImVec2 pos, final int cond);
+    void setNextWindowPos(final KVector2f pos, final int cond);
 
     void setNextWindowPos(final float posX, final float posY, final int cond);
 
-    void setNextWindowPos(final ImVec2 pos, final int cond, final ImVec2 pivot);
+    void setNextWindowPos(final KVector2f pos, final int cond, final KVector2f pivot);
 
     void setNextWindowPos(final float posX, final float posY, final int cond, final float pivotX, final float pivotY);
 
-    void setNextWindowPos(final ImVec2 pos, final ImVec2 pivot);
+    void setNextWindowPos(final KVector2f pos, final KVector2f pivot);
 
     void setNextWindowPos(final float posX, final float posY, final float pivotX, final float pivotY);
 
-    void setNextWindowSize(final ImVec2 size);
+    void setNextWindowSize(final KVector2f size);
 
     void setNextWindowSize(final float sizeX, final float sizeY);
 
-    void setNextWindowSize(final ImVec2 size, final int cond);
+    void setNextWindowSize(final KVector2f size, final int cond);
 
     void setNextWindowSize(final float sizeX, final float sizeY, final int cond);
 
-    void setNextWindowSizeConstraints(final ImVec2 sizeMin, final ImVec2 sizeMax);
+    void setNextWindowSizeConstraints(final KVector2f sizeMin, final KVector2f sizeMax);
 
     void setNextWindowSizeConstraints(
         final float sizeMinX,
@@ -218,7 +221,7 @@ public interface KImGui {
         final float sizeMaxY
     );
 
-    void setNextWindowContentSize(final ImVec2 size);
+    void setNextWindowContentSize(final KVector2f size);
 
     void setNextWindowContentSize(final float sizeX, final float sizeY);
 
@@ -228,7 +231,7 @@ public interface KImGui {
 
     void setNextWindowFocus();
 
-    void setNextWindowScroll(final ImVec2 scroll);
+    void setNextWindowScroll(final KVector2f scroll);
 
     void setNextWindowScroll(final float scrollX, final float scrollY);
 
@@ -238,13 +241,13 @@ public interface KImGui {
 
     void setWindowPos(final float posX, final float posY);
 
-    void setWindowPos(final ImVec2 pos, final int cond);
+    void setWindowPos(final KVector2f pos, final int cond);
 
     void setWindowPos(final float posX, final float posY, final int cond);
 
     void setWindowSize(final float sizeX, final float sizeY);
 
-    void setWindowSize(final ImVec2 size, final int cond);
+    void setWindowSize(final KVector2f size, final int cond);
 
     void setWindowSize(final float sizeX, final float sizeY, final int cond);
 
@@ -254,19 +257,19 @@ public interface KImGui {
 
     void setWindowFontScale(final float scale);
 
-    void setWindowPos(final String name, final ImVec2 pos);
+    void setWindowPos(final String name, final KVector2f pos);
 
     void setWindowPos(final String name, final float posX, final float posY);
 
-    void setWindowPos(final String name, final ImVec2 pos, final int cond);
+    void setWindowPos(final String name, final KVector2f pos, final int cond);
 
     void setWindowPos(final String name, final float posX, final float posY, final int cond);
 
-    void setWindowSize(final String name, final ImVec2 size);
+    void setWindowSize(final String name, final KVector2f size);
 
     void setWindowSize(final String name, final float sizeX, final float sizeY);
 
-    void setWindowSize(final String name, final ImVec2 size, final int cond);
+    void setWindowSize(final String name, final KVector2f size, final int cond);
 
     void setWindowSize(final String name, final float sizeX, final float sizeY, final int cond);
 
@@ -276,49 +279,37 @@ public interface KImGui {
 
     void setWindowFocus(final String name);
 
-    ImVec2 getContentRegionAvail();
+    KVector2f getContentRegionAvail();
 
     float getContentRegionAvailX();
 
     float getContentRegionAvailY();
 
-    void getContentRegionAvail(final ImVec2 dst);
+    void getContentRegionAvail(final KVector2f dst);
 
-    ImVec2 getContentRegionMax() {
-        final ImVec2 dst = new ImVec2();
-        nGetContentRegionMax(dst);
-        return dst;
-    }
+    KVector2f getContentRegionMax();
 
     float getContentRegionMaxX();
 
     float getContentRegionMaxY();
 
-    void getContentRegionMax(final ImVec2 dst);
+    void getContentRegionMax(final KVector2f dst);
 
-    ImVec2 getWindowContentRegionMin() {
-        final ImVec2 dst = new ImVec2();
-        nGetWindowContentRegionMin(dst);
-        return dst;
-    }
+    KVector2f getWindowContentRegionMin();
 
     float getWindowContentRegionMinX();
 
     float getWindowContentRegionMinY();
 
-    void getWindowContentRegionMin(final ImVec2 dst);
+    void getWindowContentRegionMin(final KVector2f dst);
 
-    ImVec2 getWindowContentRegionMax() {
-        final ImVec2 dst = new ImVec2();
-        nGetWindowContentRegionMax(dst);
-        return dst;
-    }
+    KVector2f getWindowContentRegionMax();
 
     float getWindowContentRegionMaxX();
 
     float getWindowContentRegionMaxY();
 
-    void getWindowContentRegionMax(final ImVec2 dst);
+    void getWindowContentRegionMax(final KVector2f dst);
 
     float getScrollX();
 
@@ -348,13 +339,13 @@ public interface KImGui {
 
     void setScrollFromPosY(final float localY, final float centerYRatio);
 
-    void pushFont(final ImFont font);
+    void pushFont(final KImFont font);
 
     void popFont();
 
-    native void pushStyleColor(int imGuiCol, int r, int g, int b, int a);
+    void pushStyleColor(int imGuiCol, int r, int g, int b, int a);
 
-    void pushStyleColor(final int imGuiCol, final ImVec4 col);
+    void pushStyleColor(final int imGuiCol, final KVector4f col);
 
     void pushStyleColor(final int imGuiCol, final float colX, final float colY, final float colZ, final float colW);
 
@@ -366,7 +357,7 @@ public interface KImGui {
 
     void pushStyleVar(final int imGuiStyleVar, final float val);
 
-    void pushStyleVar(final int imGuiStyleVar, final ImVec2 val);
+    void pushStyleVar(final int imGuiStyleVar, final KVector2f val);
 
     void pushStyleVar(final int imGuiStyleVar, final float valX, final float valY);
 
@@ -396,30 +387,23 @@ public interface KImGui {
 
     void popTextWrapPos();
 
-    ImFont getFont() {
-        _GETFONT_1.ptr = nGetFont();
-        return _GETFONT_1;
-    }
+    KImFont getFont();
 
     int getFontSize();
 
-    ImVec2 getFontTexUvWhitePixel() {
-        final ImVec2 dst = new ImVec2();
-        nGetFontTexUvWhitePixel(dst);
-        return dst;
-    }
+    KVector2f getFontTexUvWhitePixel();
 
     float getFontTexUvWhitePixelX();
 
     float getFontTexUvWhitePixelY();
 
-    void getFontTexUvWhitePixel(final ImVec2 dst);
+    void getFontTexUvWhitePixel(final KVector2f dst);
 
     int getColorU32(final int idx);
 
     int getColorU32(final int idx, final float alphaMul);
 
-    int getColorU32(final ImVec4 col);
+    int getColorU32(final KVector4f col);
 
     int getColorU32(final float colX, final float colY, final float colZ, final float colW);
 
@@ -427,11 +411,7 @@ public interface KImGui {
 
     int getColorU32i(final int col, final float alphaMul);
 
-    ImVec4 getStyleColorVec4(final int imGuiColIdx) {
-        final ImVec4 dst = new ImVec4();
-        nGetStyleColorVec4(dst, imGuiColIdx);
-        return dst;
-    }
+    KVector4f getStyleColorVec4(final int imGuiColIdx);
 
     float getStyleColorVec4X(final int imGuiColIdx);
 
@@ -441,31 +421,23 @@ public interface KImGui {
 
     float getStyleColorVec4W(final int imGuiColIdx);
 
-    void getStyleColorVec4(final ImVec4 dst, final int imGuiColIdx);
+    void getStyleColorVec4(final KVector4f dst, final int imGuiColIdx);
 
-    ImVec2 getCursorScreenPos() {
-        final ImVec2 dst = new ImVec2();
-        nGetCursorScreenPos(dst);
-        return dst;
-    }
+    KVector2f getCursorScreenPos();
 
-    void setCursorScreenPos(final ImVec2 pos);
+    void setCursorScreenPos(final KVector2f pos);
 
     float getCursorScreenPosX();
 
     float getCursorScreenPosY();
 
-    void getCursorScreenPos(final ImVec2 dst);
+    void getCursorScreenPos(final KVector2f dst);
 
     void setCursorScreenPos(final float posX, final float posY);
 
-    ImVec2 getCursorPos() {
-        final ImVec2 dst = new ImVec2();
-        nGetCursorPos(dst);
-        return dst;
-    }
+    KVector2f getCursorPos();
 
-    void setCursorPos(final ImVec2 localPos);
+    void setCursorPos(final KVector2f localPos);
 
     float getCursorPosX();
 
@@ -475,21 +447,17 @@ public interface KImGui {
 
     void setCursorPosY(final float localY);
 
-    void getCursorPos(final ImVec2 dst);
+    void getCursorPos(final KVector2f dst);
 
     void setCursorPos(final float localPosX, final float localPosY);
 
-    ImVec2 getCursorStartPos() {
-        final ImVec2 dst = new ImVec2();
-        nGetCursorStartPos(dst);
-        return dst;
-    }
+    KVector2f getCursorStartPos();
 
     float getCursorStartPosX();
 
     float getCursorStartPosY();
 
-    void getCursorStartPos(final ImVec2 dst);
+    void getCursorStartPos(final KVector2f dst);
 
     void separator();
 
@@ -503,7 +471,7 @@ public interface KImGui {
 
     void spacing();
 
-    void dummy(final ImVec2 size);
+    void dummy(final KVector2f size);
 
     void dummy(final float sizeX, final float sizeY);
 
@@ -551,13 +519,13 @@ public interface KImGui {
 
     void text(final String text);
 
-    void textColored(final ImVec4 col, final String text);
+    void textColored(final KVector4f col, final String text);
 
     void textColored(final float colX, final float colY, final float colZ, final float colW, final String text);
 
-    native void textColored(int r, int g, int b, int a, String text);
+    void textColored(int r, int g, int b, int a, String text);
 
-    native void textColored(int col, String text);
+    void textColored(int col, String text);
 
     void textDisabled(final String text);
 
@@ -571,17 +539,17 @@ public interface KImGui {
 
     boolean button(final String label);
 
-    boolean button(final String label, final ImVec2 size);
+    boolean button(final String label, final KVector2f size);
 
     boolean button(final String label, final float sizeX, final float sizeY);
 
     boolean smallButton(final String label);
 
-    boolean invisibleButton(final String strId, final ImVec2 size);
+    boolean invisibleButton(final String strId, final KVector2f size);
 
     boolean invisibleButton(final String strId, final float sizeX, final float sizeY);
 
-    boolean invisibleButton(final String strId, final ImVec2 size, final int imGuiButtonFlags);
+    boolean invisibleButton(final String strId, final KVector2f size, final int imGuiButtonFlags);
 
     boolean invisibleButton(final String strId, final float sizeX, final float sizeY, final int imGuiButtonFlags);
 
@@ -599,11 +567,11 @@ public interface KImGui {
 
     void progressBar(final float fraction);
 
-    void progressBar(final float fraction, final ImVec2 size);
+    void progressBar(final float fraction, final KVector2f size);
 
     void progressBar(final float fraction, final float sizeX, final float sizeY);
 
-    void progressBar(final float fraction, final ImVec2 size, final String overlay);
+    void progressBar(final float fraction, final KVector2f size, final String overlay);
 
     void progressBar(final float fraction, final float sizeX, final float sizeY, final String overlay);
 
@@ -611,11 +579,11 @@ public interface KImGui {
 
     void bullet();
 
-    void image(final long userTextureId, final ImVec2 imageSize);
+    void image(final long userTextureId, final KVector2f imageSize);
 
     void image(final long userTextureId, final float imageSizeX, final float imageSizeY);
 
-    void image(final long userTextureId, final ImVec2 imageSize, final ImVec2 uv0);
+    void image(final long userTextureId, final KVector2f imageSize, final KVector2f uv0);
 
     void image(
         final long userTextureId,
@@ -625,9 +593,7 @@ public interface KImGui {
         final float uv0Y
     );
 
-    void image(final long userTextureId, final ImVec2 imageSize, final ImVec2 uv0, final ImVec2 uv1) {`
-        nImage(userTextureId, imageSize.x, imageSize.y, uv0.x, uv0.y, uv1.x, uv1.y);
-    }
+    void image(final long userTextureId, final KVector2f imageSize, final KVector2f uv0, final KVector2f uv1);
 
     void image(
         final long userTextureId,
@@ -641,10 +607,10 @@ public interface KImGui {
 
     void image(
         final long userTextureId,
-        final ImVec2 imageSize,
-        final ImVec2 uv0,
-        final ImVec2 uv1,
-        final ImVec4 tintCol
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f tintCol
     );
 
     void image(
@@ -663,11 +629,11 @@ public interface KImGui {
 
     void image(
         final long userTextureId,
-        final ImVec2 imageSize,
-        final ImVec2 uv0,
-        final ImVec2 uv1,
-        final ImVec4 tintCol,
-        final ImVec4 borderCol
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f tintCol,
+        final KVector4f borderCol
     );
 
     void image(
@@ -688,11 +654,11 @@ public interface KImGui {
         final float borderColW
     );
 
-    boolean imageButton(final String strId, final long userTextureId, final ImVec2 imageSize);
+    boolean imageButton(final String strId, final long userTextureId, final KVector2f imageSize);
 
     boolean imageButton(final String strId, final long userTextureId, final float imageSizeX, final float imageSizeY);
 
-    boolean imageButton(final String strId, final long userTextureId, final ImVec2 imageSize, final ImVec2 uv0);
+    boolean imageButton(final String strId, final long userTextureId, final KVector2f imageSize, final KVector2f uv0);
 
     boolean imageButton(
         final String strId,
@@ -706,9 +672,9 @@ public interface KImGui {
     boolean imageButton(
         final String strId,
         final long userTextureId,
-        final ImVec2 imageSize,
-        final ImVec2 uv0,
-        final ImVec2 uv1
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1
     );
 
     boolean imageButton(
@@ -725,10 +691,10 @@ public interface KImGui {
     boolean imageButton(
         final String strId,
         final long userTextureId,
-        final ImVec2 imageSize,
-        final ImVec2 uv0,
-        final ImVec2 uv1,
-        final ImVec4 bgCol
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f bgCol
     );
 
     boolean imageButton(
@@ -749,11 +715,11 @@ public interface KImGui {
     boolean imageButton(
         final String strId,
         final long userTextureId,
-        final ImVec2 imageSize,
-        final ImVec2 uv0,
-        final ImVec2 uv1,
-        final ImVec4 bgCol,
-        final ImVec4 tintCol
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f bgCol,
+        final KVector4f tintCol
     );
 
     boolean imageButton(
@@ -1931,7 +1897,7 @@ public interface KImGui {
         final int imGuiSliderFlags
     );
 
-    boolean vSliderFloat(final String label, final ImVec2 size, final float[] v, final float vMin, final float vMax);
+    boolean vSliderFloat(final String label, final KVector2f size, final float[] v, final float vMin, final float vMax);
 
     boolean vSliderFloat(
         final String label,
@@ -1944,7 +1910,7 @@ public interface KImGui {
 
     boolean vSliderFloat(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final float[] v,
         final float vMin,
         final float vMax,
@@ -1963,7 +1929,7 @@ public interface KImGui {
 
     boolean vSliderFloat(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final float[] v,
         final float vMin,
         final float vMax,
@@ -1984,7 +1950,7 @@ public interface KImGui {
 
     boolean vSliderFloat(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final float[] v,
         final float vMin,
         final float vMax,
@@ -2001,7 +1967,7 @@ public interface KImGui {
         final int imGuiSliderFlags
     );
 
-    boolean vSliderInt(final String label, final ImVec2 size, final int[] v, final int vMin, final int vMax);
+    boolean vSliderInt(final String label, final KVector2f size, final int[] v, final int vMin, final int vMax);
 
     boolean vSliderInt(
         final String label,
@@ -2014,7 +1980,7 @@ public interface KImGui {
 
     boolean vSliderInt(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final int[] v,
         final int vMin,
         final int vMax,
@@ -2033,7 +1999,7 @@ public interface KImGui {
 
     boolean vSliderInt(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final int[] v,
         final int vMin,
         final int vMax,
@@ -2054,7 +2020,7 @@ public interface KImGui {
 
     boolean vSliderInt(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final int[] v,
         final int vMin,
         final int vMax,
@@ -2073,7 +2039,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final short[] pData,
         final short pMin,
         final short pMax
@@ -2090,7 +2056,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final short[] pData,
         final short pMin,
         final short pMax,
@@ -2109,7 +2075,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final short[] pData,
         final short pMin,
         final short pMax,
@@ -2128,7 +2094,7 @@ public interface KImGui {
         final int imGuiSliderFlags
     );
 
-    boolean vSliderScalar(final String label, final ImVec2 size, final int[] pData, final int pMin, final int pMax);
+    boolean vSliderScalar(final String label, final KVector2f size, final int[] pData, final int pMin, final int pMax);
 
     boolean vSliderScalar(
         final String label,
@@ -2141,7 +2107,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final int[] pData,
         final int pMin,
         final int pMax,
@@ -2160,7 +2126,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final int[] pData,
         final int pMin,
         final int pMax,
@@ -2179,7 +2145,7 @@ public interface KImGui {
         final int imGuiSliderFlags
     );
 
-    boolean vSliderScalar(final String label, final ImVec2 size, final long[] pData, final long pMin, final long pMax);
+    boolean vSliderScalar(final String label, final KVector2f size, final long[] pData, final long pMin, final long pMax);
 
     boolean vSliderScalar(
         final String label,
@@ -2192,7 +2158,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final long[] pData,
         final long pMin,
         final long pMax,
@@ -2211,7 +2177,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final long[] pData,
         final long pMin,
         final long pMax,
@@ -2232,7 +2198,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final float[] pData,
         final float pMin,
         final float pMax
@@ -2249,7 +2215,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final float[] pData,
         final float pMin,
         final float pMax,
@@ -2268,7 +2234,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final float[] pData,
         final float pMin,
         final float pMax,
@@ -2289,7 +2255,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final double[] pData,
         final double pMin,
         final double pMax
@@ -2306,7 +2272,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final double[] pData,
         final double pMin,
         final double pMax,
@@ -2325,7 +2291,7 @@ public interface KImGui {
 
     boolean vSliderScalar(
         final String label,
-        final ImVec2 size,
+        final KVector2f size,
         final double[] pData,
         final double pMin,
         final double pMax,
@@ -3159,11 +3125,11 @@ public interface KImGui {
 
     boolean colorPicker4(final String label, final float[] col, final float[] refCol);
 
-    boolean colorButton(final String descId, final ImVec4 col);
+    boolean colorButton(final String descId, final KVector4f col);
 
     boolean colorButton(final String descId, final float colX, final float colY, final float colZ, final float colW);
 
-    boolean colorButton(final String descId, final ImVec4 col, final int imGuiColorEditFlags);
+    boolean colorButton(final String descId, final KVector4f col, final int imGuiColorEditFlags);
 
     boolean colorButton(
         final String descId,
@@ -3174,7 +3140,7 @@ public interface KImGui {
         final int imGuiColorEditFlags
     );
 
-    boolean colorButton(final String descId, final ImVec4 col, final int imGuiColorEditFlags, final ImVec2 size);
+    boolean colorButton(final String descId, final KVector4f col, final int imGuiColorEditFlags, final KVector2f size);
 
     boolean colorButton(
         final String descId,
@@ -3187,7 +3153,7 @@ public interface KImGui {
         final float sizeY
     );
 
-    boolean colorButton(final String descId, final ImVec4 col, final ImVec2 size);
+    boolean colorButton(final String descId, final KVector4f col, final KVector2f size);
 
     boolean colorButton(
         final String descId,
@@ -3206,7 +3172,7 @@ public interface KImGui {
     boolean colorButton(final String descId, final float[] col, final int imGuiColorEditFlags);
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col, final int imGuiColorEditFlags, final ImVec2 size);
+    boolean colorButton(final String descId, final float[] col, final int imGuiColorEditFlags, final KVector2f size);
 
     @Deprecated
     boolean colorButton(
@@ -3218,7 +3184,7 @@ public interface KImGui {
     );
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col, final ImVec2 size);
+    boolean colorButton(final String descId, final float[] col, final KVector2f size);
 
     @Deprecated
     boolean colorButton(final String descId, final float[] col, final float sizeX, final float sizeY);
@@ -3265,7 +3231,7 @@ public interface KImGui {
 
     boolean selectable(final String label, final boolean selected, final int imGuiSelectableFlags);
 
-    boolean selectable(final String label, final boolean selected, final int imGuiSelectableFlags, final ImVec2 size);
+    boolean selectable(final String label, final boolean selected, final int imGuiSelectableFlags, final KVector2f size);
 
     boolean selectable(
         final String label,
@@ -3275,15 +3241,15 @@ public interface KImGui {
         final float sizeY
     );
 
-    boolean selectable(final String label, final int imGuiSelectableFlags, final ImVec2 size);
+    boolean selectable(final String label, final int imGuiSelectableFlags, final KVector2f size);
 
     boolean selectable(final String label, final int imGuiSelectableFlags, final float sizeX, final float sizeY);
 
-    boolean selectable(final String label, final ImVec2 size);
+    boolean selectable(final String label, final KVector2f size);
 
     boolean selectable(final String label, final float sizeX, final float sizeY);
 
-    boolean selectable(final String label, final boolean selected, final ImVec2 size);
+    boolean selectable(final String label, final boolean selected, final KVector2f size);
 
     boolean selectable(final String label, final boolean selected, final float sizeX, final float sizeY);
 
@@ -3295,7 +3261,7 @@ public interface KImGui {
         final String label,
         final ImBoolean pSelected,
         final int imGuiSelectableFlags,
-        final ImVec2 size
+        final KVector2f size
     );
 
     boolean selectable(
@@ -3306,13 +3272,13 @@ public interface KImGui {
         final float sizeY
     );
 
-    boolean selectable(final String label, final ImBoolean pSelected, final ImVec2 size);
+    boolean selectable(final String label, final ImBoolean pSelected, final KVector2f size);
 
     boolean selectable(final String label, final ImBoolean pSelected, final float sizeX, final float sizeY);
 
     boolean beginListBox(final String label);
 
-    boolean beginListBox(final String label, final ImVec2 size);
+    boolean beginListBox(final String label, final KVector2f size);
 
     boolean beginListBox(final String label, final float sizeX, final float sizeY);
 
@@ -3361,7 +3327,7 @@ public interface KImGui {
         final String overlayText,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize
+        final KVector2f graphSize
     );
 
     void plotLines(
@@ -3384,7 +3350,7 @@ public interface KImGui {
         final String overlayText,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3408,7 +3374,7 @@ public interface KImGui {
         final String overlayText,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3430,7 +3396,7 @@ public interface KImGui {
         final int valuesCount,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3452,7 +3418,7 @@ public interface KImGui {
         final int valuesOffset,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3518,7 +3484,7 @@ public interface KImGui {
         final String overlayText,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize
+        final KVector2f graphSize
     );
 
     void plotHistogram(
@@ -3541,7 +3507,7 @@ public interface KImGui {
         final String overlayText,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3565,7 +3531,7 @@ public interface KImGui {
         final String overlayText,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3587,7 +3553,7 @@ public interface KImGui {
         final int valuesCount,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3609,7 +3575,7 @@ public interface KImGui {
         final int valuesOffset,
         final float scaleMin,
         final float scaleMax,
-        final ImVec2 graphSize,
+        final KVector2f graphSize,
         final int stride
     );
 
@@ -3744,7 +3710,7 @@ public interface KImGui {
 
     boolean beginTable(final String id, final int columns, final int imGuiTableFlags);
 
-    boolean beginTable(final String id, final int columns, final int imGuiTableFlags, final ImVec2 outerSize);
+    boolean beginTable(final String id, final int columns, final int imGuiTableFlags, final KVector2f outerSize);
 
     boolean beginTable(
         final String id,
@@ -3758,7 +3724,7 @@ public interface KImGui {
         final String id,
         final int columns,
         final int imGuiTableFlags,
-        final ImVec2 outerSize,
+        final KVector2f outerSize,
         final float innerWidth
     );
 
@@ -3771,7 +3737,7 @@ public interface KImGui {
         final float innerWidth
     );
 
-    boolean beginTable(final String id, final int columns, final ImVec2 outerSize, final float innerWidth);
+    boolean beginTable(final String id, final int columns, final KVector2f outerSize, final float innerWidth);
 
     boolean beginTable(
         final String id,
@@ -3904,17 +3870,17 @@ public interface KImGui {
 
     int dockSpace(final int dockspaceId);
 
-    int dockSpace(final int dockspaceId, final ImVec2 size);
+    int dockSpace(final int dockspaceId, final KVector2f size);
 
     int dockSpace(final int dockspaceId, final float sizeX, final float sizeY);
 
-    int dockSpace(final int dockspaceId, final ImVec2 size, final int imGuiDockNodeFlags);
+    int dockSpace(final int dockspaceId, final KVector2f size, final int imGuiDockNodeFlags);
 
     int dockSpace(final int dockspaceId, final float sizeX, final float sizeY, final int imGuiDockNodeFlags);
 
     int dockSpace(
         final int dockspaceId,
-        final ImVec2 size,
+        final KVector2f size,
         final int imGuiDockNodeFlags,
         final ImGuiWindowClass windowClass
     );
@@ -3931,7 +3897,7 @@ public interface KImGui {
 
     int dockSpace(final int dockspaceId, final ImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final ImVec2 size, final ImGuiWindowClass windowClass);
+    int dockSpace(final int dockspaceId, final KVector2f size, final ImGuiWindowClass windowClass);
 
     int dockSpace(final int dockspaceId, final float sizeX, final float sizeY, final ImGuiWindowClass windowClass);
 
@@ -3939,24 +3905,24 @@ public interface KImGui {
 
     int dockSpaceOverViewport(final int dockspaceId);
 
-    int dockSpaceOverViewport(final int dockspaceId, final ImGuiViewport viewport);
+    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport);
 
-    int dockSpaceOverViewport(final int dockspaceId, final ImGuiViewport viewport, final int imGuiDockNodeFlags);
+    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport, final int imGuiDockNodeFlags);
 
     int dockSpaceOverViewport(
         final int dockspaceId,
-        final ImGuiViewport viewport,
+        final KImGuiViewport viewport,
         final int imGuiDockNodeFlags,
         final ImGuiWindowClass windowClass
     );
 
     int dockSpaceOverViewport(
-        final ImGuiViewport viewport,
+        final KImGuiViewport viewport,
         final int imGuiDockNodeFlags,
         final ImGuiWindowClass windowClass
     );
 
-    int dockSpaceOverViewport(final int dockspaceId, final ImGuiViewport viewport, final ImGuiWindowClass windowClass);
+    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport, final ImGuiWindowClass windowClass);
 
     void setNextWindowDockID(final int dockId);
 
@@ -3996,10 +3962,7 @@ public interface KImGui {
 
     boolean setDragDropPayload(final String dataType, final Object payload);
 
-    boolean setDragDropPayload(final String dataType, final Object payload, final int imGuiCond) {
-        if (payloadRef == null || payloadRef.get() != payload) ;
-        return nSetDragDropPayload(dataType, PAYLOAD_PLACEHOLDER_DATA, 1, imGuiCond);
-    }
+    boolean setDragDropPayload(final String dataType, final Object payload, final int imGuiCond);
 
     boolean setDragDropPayload(final Object payload);
 
@@ -4014,41 +3977,18 @@ public interface KImGui {
     <T> T acceptDragDropPayload(final String dataType, final Class<T> aClass);
 
     <T> T acceptDragDropPayload(final String dataType, final int imGuiDragDropFlags);
-
-    @SuppressWarnings("unchecked")
-    <T> T acceptDragDropPayload(final String dataType, final int imGuiDragDropFlags, final Class<T> aClass) {
-        if (payloadRef != null && nAcceptDragDropPayload(dataType, imGuiDragDropFlags)) {
-            final Object rawPayload = payloadRef.get();
-            if (rawPayload != null) {
-                if (aClass == null || rawPayload.getClass().isAssignableFrom(aClass)) ;
-            }
-        }
-        return null;
-    }
+    
+    <T> T acceptDragDropPayload(final String dataType, final int imGuiDragDropFlags, final Class<T> aClass);
 
     <T> T acceptDragDropPayload(final Class<T> aClass);
 
     <T> T acceptDragDropPayload(final Class<T> aClass, final int imGuiDragDropFlags);
 
     void endDragDropTarget();
-
-    @SuppressWarnings("unchecked")
-    <T> T getDragDropPayload() {
-        if (payloadRef != null && nHasDragDropPayload()) {
-            final Object rawPayload = payloadRef.get();
-            if (rawPayload != null) ;
-        }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    <T> T getDragDropPayload(final String dataType) {
-        if (payloadRef != null && nHasDragDropPayload(dataType)) {
-            final Object rawPayload = payloadRef.get();
-            if (rawPayload != null) ;
-        }
-        return null;
-    }
+    
+    <T> T getDragDropPayload();
+    
+    <T> T getDragDropPayload(final String dataType);
 
     <T> T getDragDropPayload(final Class<T> aClass);
 
@@ -4058,7 +3998,7 @@ public interface KImGui {
 
     void endDisabled();
 
-    void pushClipRect(final ImVec2 clipRectMin, final ImVec2 clipRectMax, final boolean intersectWithCurrentClipRect);
+    void pushClipRect(final KVector2f clipRectMin, final KVector2f clipRectMax, final boolean intersectWithCurrentClipRect);
 
     void pushClipRect(
         final float clipRectMinX,
@@ -4110,45 +4050,45 @@ public interface KImGui {
 
     int getItemID();
 
-    ImVec2 getItemRectMin();
+    KVector2f getItemRectMin();
 
     float getItemRectMinX();
 
     float getItemRectMinY();
 
-    void getItemRectMin(final ImVec2 dst);
+    void getItemRectMin(final KVector2f dst);
 
-    ImVec2 getItemRectMax();
+    KVector2f getItemRectMax();
 
     float getItemRectMaxX();
 
     float getItemRectMaxY();
 
-    void getItemRectMax(final ImVec2 dst);
+    void getItemRectMax(final KVector2f dst);
 
-    ImVec2 getItemRectSize();
+    KVector2f getItemRectSize();
 
     float getItemRectSizeX();
 
     float getItemRectSizeY();
 
-    void getItemRectSize(final ImVec2 dst);
+    void getItemRectSize(final KVector2f dst);
 
-    ImGuiViewport getMainViewport();
+    KImGuiViewport getMainViewport();
 
-    ImDrawList getBackgroundDrawList();
+    KImDrawList getBackgroundDrawList();
 
-    ImDrawList getBackgroundDrawList(final ImGuiViewport viewport);
+    KImDrawList getBackgroundDrawList(final KImGuiViewport viewport);
 
-    ImDrawList getForegroundDrawList();
+    KImDrawList getForegroundDrawList();
 
-    ImDrawList getForegroundDrawList(final ImGuiViewport viewport);
+    KImDrawList getForegroundDrawList(final KImGuiViewport viewport);
 
-    boolean isRectVisible(final ImVec2 size);
+    boolean isRectVisible(final KVector2f size);
 
     boolean isRectVisible(final float sizeX, final float sizeY);
 
-    boolean isRectVisible(final ImVec2 rectMin, final ImVec2 rectMax);
+    boolean isRectVisible(final KVector2f rectMin, final KVector2f rectMax);
 
     boolean isRectVisible(final float rectMinX, final float rectMinY, final float rectMaxX, final float rectMaxY);
 
@@ -4162,44 +4102,44 @@ public interface KImGui {
 
     void setStateStorage(final ImGuiStorage storage);
 
-    ImVec2 calcTextSize(final String text);
+    KVector2f calcTextSize(final String text);
 
     float calcTextSizeX(final String text);
 
     float calcTextSizeY(final String text);
 
-    void calcTextSize(final ImVec2 dst, final String text);
+    void calcTextSize(final KVector2f dst, final String text);
 
-    ImVec2 calcTextSize(final String text, final boolean hideTextAfterDoubleHash);
+    KVector2f calcTextSize(final String text, final boolean hideTextAfterDoubleHash);
 
     float calcTextSizeX(final String text, final boolean hideTextAfterDoubleHash);
 
     float calcTextSizeY(final String text, final boolean hideTextAfterDoubleHash);
 
-    void calcTextSize(final ImVec2 dst, final String text, final boolean hideTextAfterDoubleHash);
+    void calcTextSize(final KVector2f dst, final String text, final boolean hideTextAfterDoubleHash);
 
-    ImVec2 calcTextSize(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
+    KVector2f calcTextSize(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
 
     float calcTextSizeX(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
 
     float calcTextSizeY(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
 
     void calcTextSize(
-        final ImVec2 dst,
+        final KVector2f dst,
         final String text,
         final boolean hideTextAfterDoubleHash,
         final float wrapWidth
     );
 
-    ImVec2 calcTextSize(final String text, final float wrapWidth);
+    KVector2f calcTextSize(final String text, final float wrapWidth);
 
     float calcTextSizeX(final String text, final float wrapWidth);
 
     float calcTextSizeY(final String text, final float wrapWidth);
 
-    void calcTextSize(final ImVec2 dst, final String text, final float wrapWidth);
+    void calcTextSize(final KVector2f dst, final String text, final float wrapWidth);
 
-    ImVec4 colorConvertU32ToFloat4(final int in);
+    KVector4f colorConvertU32ToFloat4(final int in);
 
     float colorConvertU32ToFloat4X(final int in);
 
@@ -4209,9 +4149,9 @@ public interface KImGui {
 
     float colorConvertU32ToFloat4W(final int in);
 
-    void colorConvertU32ToFloat4(final ImVec4 dst, final int in);
+    void colorConvertU32ToFloat4(final KVector4f dst, final int in);
 
-    int colorConvertFloat4ToU32(final ImVec4 in);
+    int colorConvertFloat4ToU32(final KVector4f in);
 
     int colorConvertFloat4ToU32(final float inX, final float inY, final float inZ, final float inW);
 
@@ -4255,11 +4195,11 @@ public interface KImGui {
 
     int getMouseClickedCount(final int button);
 
-    boolean isMouseHoveringRect(final ImVec2 rMin, final ImVec2 rMax);
+    boolean isMouseHoveringRect(final KVector2f rMin, final KVector2f rMax);
 
     boolean isMouseHoveringRect(final float rMinX, final float rMinY, final float rMaxX, final float rMaxY);
 
-    boolean isMouseHoveringRect(final ImVec2 rMin, final ImVec2 rMax, final boolean clip);
+    boolean isMouseHoveringRect(final KVector2f rMin, final KVector2f rMax, final boolean clip);
 
     boolean isMouseHoveringRect(
         final float rMinX,
@@ -4271,55 +4211,55 @@ public interface KImGui {
 
     boolean isMousePosValid();
 
-    boolean isMousePosValid(final ImVec2 mousePos);
+    boolean isMousePosValid(final KVector2f mousePos);
 
     boolean isMousePosValid(final float mousePosX, final float mousePosY);
 
     boolean isAnyMouseDown();
 
-    ImVec2 getMousePos();
+    KVector2f getMousePos();
 
     float getMousePosX();
 
     float getMousePosY();
 
-    void getMousePos(final ImVec2 dst);
+    void getMousePos(final KVector2f dst);
 
-    ImVec2 getMousePosOnOpeningCurrentPopup();
+    KVector2f getMousePosOnOpeningCurrentPopup();
 
     float getMousePosOnOpeningCurrentPopupX();
 
     float getMousePosOnOpeningCurrentPopupY();
 
-    void getMousePosOnOpeningCurrentPopup(final ImVec2 dst);
+    void getMousePosOnOpeningCurrentPopup(final KVector2f dst);
 
     boolean isMouseDragging(final int button);
 
     boolean isMouseDragging(final int button, final float lockThreshold);
 
-    ImVec2 getMouseDragDelta();
+    KVector2f getMouseDragDelta();
 
     float getMouseDragDeltaX();
 
     float getMouseDragDeltaY();
 
-    void getMouseDragDelta(final ImVec2 dst);
+    void getMouseDragDelta(final KVector2f dst);
 
-    ImVec2 getMouseDragDelta(final int button);
+    KVector2f getMouseDragDelta(final int button);
 
     float getMouseDragDeltaX(final int button);
 
     float getMouseDragDeltaY(final int button);
 
-    void getMouseDragDelta(final ImVec2 dst, final int button);
+    void getMouseDragDelta(final KVector2f dst, final int button);
 
-    ImVec2 getMouseDragDelta(final int button, final float lockThreshold);
+    KVector2f getMouseDragDelta(final int button, final float lockThreshold);
 
     float getMouseDragDeltaX(final int button, final float lockThreshold);
 
     float getMouseDragDeltaY(final int button, final float lockThreshold);
 
-    void getMouseDragDelta(final ImVec2 dst, final int button, final float lockThreshold);
+    void getMouseDragDelta(final KVector2f dst, final int button, final float lockThreshold);
 
     void resetMouseDragDelta();
 
@@ -4371,9 +4311,9 @@ public interface KImGui {
 
     void destroyPlatformWindows();
 
-    ImGuiViewport findViewportByID(final int imGuiID);
+    KImGuiViewport findViewportByID(final int imGuiID);
 
-    ImGuiViewport findViewportByPlatformHandle(final long platformHandle);
+    KImGuiViewport findViewportByPlatformHandle(final long platformHandle);
 
 }
 
