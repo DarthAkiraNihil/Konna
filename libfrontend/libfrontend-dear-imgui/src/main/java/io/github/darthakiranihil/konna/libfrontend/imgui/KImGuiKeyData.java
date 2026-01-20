@@ -4,15 +4,15 @@ public interface KImGuiKeyData {
 
     boolean getDown();
 
-    void setDown(final boolean value);
+    void setDown(boolean value);
     float getDownDuration();
 
-    void setDownDuration(final float value);
+    void setDownDuration(float value);
     float getDownDurationPrev();
 
-    void setDownDurationPrev(final float value);
+    void setDownDurationPrev(float value);
     float getAnalogValue();
 
-    void setAnalogValue(final float value);
+    void setAnalogValue(float value);
 
 }

@@ -7,197 +7,197 @@ public interface KImGuiStyle {
     
 
     float getAlpha();
-    void setAlpha(final float value);
+    void setAlpha(float value);
 
     float getDisabledAlpha();
-    void setDisabledAlpha(final float value);
+    void setDisabledAlpha(float value);
     KVector2f getWindowPadding();
     float getWindowPaddingX();
     float getWindowPaddingY();
-    void getWindowPadding(final KVector2f dst);
-    void setWindowPadding(final KVector2f value);
-    void setWindowPadding(final float valueX, final float valueY);
+    void getWindowPadding(KVector2f dst);
+    void setWindowPadding(KVector2f value);
+    void setWindowPadding(float valueX, float valueY);
     
     float getWindowRounding();
-    void setWindowRounding(final float value);
+    void setWindowRounding(float value);
     
     float getWindowBorderSize();
-    void setWindowBorderSize(final float value);
+    void setWindowBorderSize(float value);
 
     KVector2f getWindowMinSize();
     float getWindowMinSizeX();
     float getWindowMinSizeY();
-    void getWindowMinSize(final KVector2f dst);
-    void setWindowMinSize(final KVector2f value);
-    void setWindowMinSize(final float valueX, final float valueY);
+    void getWindowMinSize(KVector2f dst);
+    void setWindowMinSize(KVector2f value);
+    void setWindowMinSize(float valueX, float valueY);
 
     KVector2f getWindowTitleAlign();
     float getWindowTitleAlignX();
     float getWindowTitleAlignY();
-    void getWindowTitleAlign(final KVector2f dst);
-    void setWindowTitleAlign(final KVector2f value);
-    void setWindowTitleAlign(final float valueX, final float valueY);
+    void getWindowTitleAlign(KVector2f dst);
+    void setWindowTitleAlign(KVector2f value);
+    void setWindowTitleAlign(float valueX, float valueY);
     
     int getWindowMenuButtonPosition();
-    void setWindowMenuButtonPosition(final int value);
+    void setWindowMenuButtonPosition(int value);
     
     float getChildRounding();
-    void setChildRounding(final float value);
+    void setChildRounding(float value);
 
 
     float getChildBorderSize();
 
-    void setChildBorderSize(final float value);
+    void setChildBorderSize(float value);
     
     float getPopupRounding();
 
-    void setPopupRounding(final float value);
+    void setPopupRounding(float value);
     
     float getPopupBorderSize();
 
-    void setPopupBorderSize(final float value);
+    void setPopupBorderSize(float value);
 
     KVector2f getFramePadding();
     float getFramePaddingX();
     float getFramePaddingY();
-    void getFramePadding(final KVector2f dst);
-    void setFramePadding(final KVector2f value);
-    void setFramePadding(final float valueX, final float valueY);
+    void getFramePadding(KVector2f dst);
+    void setFramePadding(KVector2f value);
+    void setFramePadding(float valueX, float valueY);
     float getFrameRounding();
 
-    void setFrameRounding(final float value);
+    void setFrameRounding(float value);
 
     float getFrameBorderSize();
-    void setFrameBorderSize(final float value);
+    void setFrameBorderSize(float value);
 
     KVector2f getItemSpacing();
     float getItemSpacingX();
     float getItemSpacingY();
-    void getItemSpacing(final KVector2f dst);
-    void setItemSpacing(final KVector2f value);
-    void setItemSpacing(final float valueX, final float valueY);
+    void getItemSpacing(KVector2f dst);
+    void setItemSpacing(KVector2f value);
+    void setItemSpacing(float valueX, float valueY);
 
     KVector2f getItemInnerSpacing();
     float getItemInnerSpacingX();
     float getItemInnerSpacingY();
-    void getItemInnerSpacing(final KVector2f dst);
-    void setItemInnerSpacing(final KVector2f value);
-    void setItemInnerSpacing(final float valueX, final float valueY);
+    void getItemInnerSpacing(KVector2f dst);
+    void setItemInnerSpacing(KVector2f value);
+    void setItemInnerSpacing(float valueX, float valueY);
 
     KVector2f getCellPadding();
     float getCellPaddingX();
     float getCellPaddingY();
-    void getCellPadding(final KVector2f dst);
-    void setCellPadding(final KVector2f value);
-    void setCellPadding(final float valueX, final float valueY);
+    void getCellPadding(KVector2f dst);
+    void setCellPadding(KVector2f value);
+    void setCellPadding(float valueX, float valueY);
 
     KVector2f getTouchExtraPadding();
     float getTouchExtraPaddingX();
     float getTouchExtraPaddingY();
-    void getTouchExtraPadding(final KVector2f dst);
-    void setTouchExtraPadding(final KVector2f value);
-    void setTouchExtraPadding(final float valueX, final float valueY);
+    void getTouchExtraPadding(KVector2f dst);
+    void setTouchExtraPadding(KVector2f value);
+    void setTouchExtraPadding(float valueX, float valueY);
 
     float getIndentSpacing();
-    void setIndentSpacing(final float value);
+    void setIndentSpacing(float value);
 
     float getColumnsMinSpacing();
-    void setColumnsMinSpacing(final float value);
+    void setColumnsMinSpacing(float value);
 
     float getScrollbarSize();
-    void setScrollbarSize(final float value);
+    void setScrollbarSize(float value);
 
     float getScrollbarRounding();
-    void setScrollbarRounding(final float value);
+    void setScrollbarRounding(float value);
 
     float getGrabMinSize();
-    void setGrabMinSize(final float value);
+    void setGrabMinSize(float value);
 
-    void setGrabRounding(final float value);
+    void setGrabRounding(float value);
     float getLogSliderDeadzone();
-    void setLogSliderDeadzone(final float value);
+    void setLogSliderDeadzone(float value);
     float getTabRounding();
-    void setTabRounding(final float value);
+    void setTabRounding(float value);
 
     float getTabBorderSize();
-    void setTabBorderSize(final float value);
+    void setTabBorderSize(float value);
     float getTabMinWidthForCloseButton();
-    void setTabMinWidthForCloseButton(final float value);
+    void setTabMinWidthForCloseButton(float value);
     int getColorButtonPosition();
-    void setColorButtonPosition(final int value);
+    void setColorButtonPosition(int value);
     KVector2f getButtonTextAlign();
     float getButtonTextAlignX();
     float getButtonTextAlignY();
-    void getButtonTextAlign(final KVector2f dst);
-    void setButtonTextAlign(final KVector2f value);
-    void setButtonTextAlign(final float valueX, final float valueY);
+    void getButtonTextAlign(KVector2f dst);
+    void setButtonTextAlign(KVector2f value);
+    void setButtonTextAlign(float valueX, float valueY);
     KVector2f getSelectableTextAlign();
     float getSelectableTextAlignX();
     float getSelectableTextAlignY();
-    void getSelectableTextAlign(final KVector2f dst);
-    void setSelectableTextAlign(final KVector2f value);
-    void setSelectableTextAlign(final float valueX, final float valueY);
+    void getSelectableTextAlign(KVector2f dst);
+    void setSelectableTextAlign(KVector2f value);
+    void setSelectableTextAlign(float valueX, float valueY);
 
     float getSeparatorTextBorderSize();
-    void setSeparatorTextBorderSize(final float value);
+    void setSeparatorTextBorderSize(float value);
 
     KVector2f getSeparatorTextAlign();
 
     float getSeparatorTextAlignX();
     float getSeparatorTextAlignY();
-    void getSeparatorTextAlign(final KVector2f dst);
-    void setSeparatorTextAlign(final KVector2f value);
-    void setSeparatorTextAlign(final float valueX, final float valueY);
+    void getSeparatorTextAlign(KVector2f dst);
+    void setSeparatorTextAlign(KVector2f value);
+    void setSeparatorTextAlign(float valueX, float valueY);
     
     KVector2f getSeparatorTextPadding();
     float getSeparatorTextPaddingX();
     float getSeparatorTextPaddingY();
-    void getSeparatorTextPadding(final KVector2f dst);
-    void setSeparatorTextPadding(final KVector2f value);
-    void setSeparatorTextPadding(final float valueX, final float valueY);
+    void getSeparatorTextPadding(KVector2f dst);
+    void setSeparatorTextPadding(KVector2f value);
+    void setSeparatorTextPadding(float valueX, float valueY);
     KVector2f getDisplayWindowPadding();
     float getDisplayWindowPaddingX();
     float getDisplayWindowPaddingY();
-    void getDisplayWindowPadding(final KVector2f dst);
-    void setDisplayWindowPadding(final KVector2f value);
-    void setDisplayWindowPadding(final float valueX, final float valueY);
+    void getDisplayWindowPadding(KVector2f dst);
+    void setDisplayWindowPadding(KVector2f value);
+    void setDisplayWindowPadding(float valueX, float valueY);
 
     KVector2f getDisplaySafeAreaPadding();
     float getDisplaySafeAreaPaddingX();
     float getDisplaySafeAreaPaddingY();
-    void getDisplaySafeAreaPadding(final KVector2f dst);
-    void setDisplaySafeAreaPadding(final KVector2f value);
-    void setDisplaySafeAreaPadding(final float valueX, final float valueY);
+    void getDisplaySafeAreaPadding(KVector2f dst);
+    void setDisplaySafeAreaPadding(KVector2f value);
+    void setDisplaySafeAreaPadding(float valueX, float valueY);
 
     float getDockingSeparatorSize();
-    void setDockingSeparatorSize(final float value);
+    void setDockingSeparatorSize(float value);
     float getMouseCursorScale();
-    void setMouseCursorScale(final float value);
+    void setMouseCursorScale(float value);
     boolean getAntiAliasedLines();
-    void setAntiAliasedLines(final boolean value);
+    void setAntiAliasedLines(boolean value);
     boolean getAntiAliasedLinesUseTex();
-    void setAntiAliasedLinesUseTex(final boolean value);
+    void setAntiAliasedLinesUseTex(boolean value);
     boolean getAntiAliasedFill();
-    void setAntiAliasedFill(final boolean value);
+    void setAntiAliasedFill(boolean value);
     float getCurveTessellationTol();
-    void setCurveTessellationTol(final float value);
+    void setCurveTessellationTol(float value);
     float getCircleTessellationMaxError();
-    void setCircleTessellationMaxError(final float value);
+    void setCircleTessellationMaxError(float value);
     KVector4f[] getColors();
-    void setColors(final KVector4f[] value);
-    KVector4f getColor(final int col);
+    void setColors(KVector4f[] value);
+    KVector4f getColor(int col);
     float getHoverStationaryDelay();
-    void setHoverStationaryDelay(final float value);
+    void setHoverStationaryDelay(float value);
     float getHoverDelayShort();
-    void setHoverDelayShort(final float value);
+    void setHoverDelayShort(float value);
     float getHoverDelayNormal();
-    void setHoverDelayNormal(final float value);
+    void setHoverDelayNormal(float value);
     int getHoverFlagsForTooltipMouse();
-    void setHoverFlagsForTooltipMouse(final int value);
+    void setHoverFlagsForTooltipMouse(int value);
     int getHoverFlagsForTooltipNav();
-    void setHoverFlagsForTooltipNav(final int value);
+    void setHoverFlagsForTooltipNav(int value);
 
-    void scaleAllSizes(final float scaleFactor);
+    void scaleAllSizes(float scaleFactor);
 
 
 }

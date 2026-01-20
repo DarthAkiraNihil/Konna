@@ -8,33 +8,33 @@ public interface KImGuiPlatformMonitor {
 
     float getMainPosX();
     float getMainPosY();
-    void getMainPos(final KVector2f dst);
-    void setMainPos(final KVector2f value);
-    void setMainPos(final float valueX, final float valueY);
+    void getMainPos(KVector2f dst);
+    void setMainPos(KVector2f value);
+    void setMainPos(float valueX, float valueY);
     KVector2f getMainSize();
 
     float getMainSizeX();
     float getMainSizeY();
-    void getMainSize(final KVector2f dst);
-    void setMainSize(final KVector2f value);
-    void setMainSize(final float valueX, final float valueY);
+    void getMainSize(KVector2f dst);
+    void setMainSize(KVector2f value);
+    void setMainSize(float valueX, float valueY);
     
     KVector2f getWorkPos();
 
     float getWorkPosX();
     float getWorkPosY();
-    void getWorkPos(final KVector2f dst);
-    void setWorkPos(final KVector2f value);
-    void setWorkPos(final float valueX, final float valueY);
+    void getWorkPos(KVector2f dst);
+    void setWorkPos(KVector2f value);
+    void setWorkPos(float valueX, float valueY);
     KVector2f getWorkSize();
 
     float getWorkSizeX();
     float getWorkSizeY();
-    void getWorkSize(final KVector2f dst);
-    void setWorkSize(final KVector2f value);
-    void setWorkSize(final float valueX, final float valueY);
+    void getWorkSize(KVector2f dst);
+    void setWorkSize(KVector2f value);
+    void setWorkSize(float valueX, float valueY);
     float getDpiScale();
-    void setDpiScale(final float value);
+    void setDpiScale(float value);
     void setPlatformHandle(long platformHandle);
     long getPlatformHandle();
 

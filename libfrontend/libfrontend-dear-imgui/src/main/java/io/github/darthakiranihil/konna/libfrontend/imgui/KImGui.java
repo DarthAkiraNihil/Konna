@@ -11,15 +11,15 @@ public interface KImGui {
 
     KImGuiContext createContext();
 
-    KImGuiContext createContext(final KImFontAtlas sharedFontAtlas);
+    KImGuiContext createContext(KImFontAtlas sharedFontAtlas);
 
     void destroyContext();
 
-    void destroyContext(final KImGuiContext ctx);
+    void destroyContext(KImGuiContext ctx);
 
     KImGuiContext getCurrentContext();
 
-    void setCurrentContext(final KImGuiContext ctx);
+    void setCurrentContext(KImGuiContext ctx);
 
     KImGuiIo getIO();
 
@@ -35,31 +35,31 @@ public interface KImGui {
 
     void showDemoWindow();
 
-    void showDemoWindow(final KBooleanReferenceValue pOpen);
+    void showDemoWindow(KBooleanReferenceValue pOpen);
 
     void showMetricsWindow();
 
-    void showMetricsWindow(final KBooleanReferenceValue pOpen);
+    void showMetricsWindow(KBooleanReferenceValue pOpen);
 
     void showDebugLogWindow();
 
-    void showDebugLogWindow(final KBooleanReferenceValue pOpen);
+    void showDebugLogWindow(KBooleanReferenceValue pOpen);
 
     void showIDStackToolWindow();
 
-    void showIDStackToolWindow(final KBooleanReferenceValue pOpen);
+    void showIDStackToolWindow(KBooleanReferenceValue pOpen);
 
     void showAboutWindow();
 
-    void showAboutWindow(final KBooleanReferenceValue pOpen);
+    void showAboutWindow(KBooleanReferenceValue pOpen);
 
     void showStyleEditor();
 
-    void showStyleEditor(final KImGuiStyle ref);
+    void showStyleEditor(KImGuiStyle ref);
 
-    boolean showStyleSelector(final String label);
+    boolean showStyleSelector(String label);
 
-    void showFontSelector(final String label);
+    void showFontSelector(String label);
 
     void showUserGuide();
 
@@ -67,80 +67,80 @@ public interface KImGui {
 
     void styleColorsDark();
 
-    void styleColorsDark(final KImGuiStyle style);
+    void styleColorsDark(KImGuiStyle style);
 
     void styleColorsLight();
 
-    void styleColorsLight(final KImGuiStyle style);
+    void styleColorsLight(KImGuiStyle style);
 
     void styleColorsClassic();
 
-    void styleColorsClassic(final KImGuiStyle style);
+    void styleColorsClassic(KImGuiStyle style);
 
-    boolean begin(final String title);
+    boolean begin(String title);
 
-    boolean begin(final String title, final KBooleanReferenceValue pOpen);
+    boolean begin(String title, KBooleanReferenceValue pOpen);
 
-    boolean begin(final String title, final KBooleanReferenceValue pOpen, final int imGuiWindowFlags);
+    boolean begin(String title, KBooleanReferenceValue pOpen, int imGuiWindowFlags);
 
-    boolean begin(final String title, final int imGuiWindowFlags);
+    boolean begin(String title, int imGuiWindowFlags);
 
     void end();
 
-    boolean beginChild(final String strId);
+    boolean beginChild(String strId);
 
-    boolean beginChild(final String strId, final KVector2f size);
+    boolean beginChild(String strId, KVector2f size);
 
-    boolean beginChild(final String strId, final float sizeX, final float sizeY);
+    boolean beginChild(String strId, float sizeX, float sizeY);
 
-    boolean beginChild(final String strId, final KVector2f size, final int childFlags);
+    boolean beginChild(String strId, KVector2f size, int childFlags);
 
-    boolean beginChild(final String strId, final float sizeX, final float sizeY, final int childFlags);
+    boolean beginChild(String strId, float sizeX, float sizeY, int childFlags);
 
-    boolean beginChild(final String strId, final KVector2f size, final int childFlags, final int windowFlags);
+    boolean beginChild(String strId, KVector2f size, int childFlags, int windowFlags);
 
     boolean beginChild(
-        final String strId,
-        final float sizeX,
-        final float sizeY,
-        final int childFlags,
-        final int windowFlags
+        String strId,
+        float sizeX,
+        float sizeY,
+        int childFlags,
+        int windowFlags
     );
 
-    boolean beginChild(final String strId, final int childFlags, final int windowFlags);
+    boolean beginChild(String strId, int childFlags, int windowFlags);
 
-    boolean beginChild(final String strId, final int windowFlags);
+    boolean beginChild(String strId, int windowFlags);
 
-    boolean beginChild(final int id);
+    boolean beginChild(int id);
 
-    boolean beginChild(final int id, final KVector2f size);
+    boolean beginChild(int id, KVector2f size);
 
-    boolean beginChild(final int id, final float sizeX, final float sizeY);
+    boolean beginChild(int id, float sizeX, float sizeY);
 
-    boolean beginChild(final int id, final KVector2f size, final int childFlags);
+    boolean beginChild(int id, KVector2f size, int childFlags);
 
-    boolean beginChild(final int id, final float sizeX, final float sizeY, final int childFlags);
+    boolean beginChild(int id, float sizeX, float sizeY, int childFlags);
 
-    boolean beginChild(final int id, final KVector2f size, final int childFlags, final int windowFlags);
+    boolean beginChild(int id, KVector2f size, int childFlags, int windowFlags);
 
-    boolean beginChild(final int id, final float sizeX, final float sizeY, final int childFlags, final int windowFlags);
+    boolean beginChild(int id, float sizeX, float sizeY, int childFlags, int windowFlags);
 
-    boolean beginChild(final int id, final int childFlags, final int windowFlags);
+    boolean beginChild(int id, int childFlags, int windowFlags);
 
-    boolean beginChild(final int id, final int windowFlags);
+    boolean beginChild(int id, int windowFlags);
 
-    boolean beginChild(final String strId, final KVector2f size, final boolean border);
+    boolean beginChild(String strId, KVector2f size, boolean border);
 
-    boolean beginChild(final String strId, final float sizeX, final float sizeY, final boolean border);
+    boolean beginChild(String strId, float sizeX, float sizeY, boolean border);
 
-    boolean beginChild(final String strId, final KVector2f size, final boolean border, final int windowFlags);
+    boolean beginChild(String strId, KVector2f size, boolean border, int windowFlags);
 
     boolean beginChild(
-        final String strId,
-        final float sizeX,
-        final float sizeY,
-        final boolean border,
-        final int windowFlags
+        String strId,
+        float sizeX,
+        float sizeY,
+        boolean border,
+        int windowFlags
     );
 
     void endChild();
@@ -149,15 +149,15 @@ public interface KImGui {
 
     boolean isWindowCollapsed();
 
-    void setWindowCollapsed(final boolean collapsed);
+    void setWindowCollapsed(boolean collapsed);
 
     boolean isWindowFocused();
 
-    boolean isWindowFocused(final int imGuiFocusedFlags);
+    boolean isWindowFocused(int imGuiFocusedFlags);
 
     boolean isWindowHovered();
 
-    boolean isWindowHovered(final int imGuiHoveredFlags);
+    boolean isWindowHovered(int imGuiHoveredFlags);
 
     KImDrawList getWindowDrawList();
 
@@ -165,23 +165,23 @@ public interface KImGui {
 
     KVector2f getWindowPos();
 
-    void setWindowPos(final KVector2f pos);
+    void setWindowPos(KVector2f pos);
 
     float getWindowPosX();
 
     float getWindowPosY();
 
-    void getWindowPos(final KVector2f dst);
+    void getWindowPos(KVector2f dst);
 
     KVector2f getWindowSize();
 
-    void setWindowSize(final KVector2f size);
+    void setWindowSize(KVector2f size);
 
     float getWindowSizeX();
 
     float getWindowSizeY();
 
-    void getWindowSize(final KVector2f dst);
+    void getWindowSize(KVector2f dst);
 
     float getWindowWidth();
 
@@ -189,96 +189,96 @@ public interface KImGui {
 
     KImGuiViewport getWindowViewport();
 
-    void setNextWindowPos(final KVector2f pos);
+    void setNextWindowPos(KVector2f pos);
 
-    void setNextWindowPos(final float posX, final float posY);
+    void setNextWindowPos(float posX, float posY);
 
-    void setNextWindowPos(final KVector2f pos, final int cond);
+    void setNextWindowPos(KVector2f pos, int cond);
 
-    void setNextWindowPos(final float posX, final float posY, final int cond);
+    void setNextWindowPos(float posX, float posY, int cond);
 
-    void setNextWindowPos(final KVector2f pos, final int cond, final KVector2f pivot);
+    void setNextWindowPos(KVector2f pos, int cond, KVector2f pivot);
 
-    void setNextWindowPos(final float posX, final float posY, final int cond, final float pivotX, final float pivotY);
+    void setNextWindowPos(float posX, float posY, int cond, float pivotX, float pivotY);
 
-    void setNextWindowPos(final KVector2f pos, final KVector2f pivot);
+    void setNextWindowPos(KVector2f pos, KVector2f pivot);
 
-    void setNextWindowPos(final float posX, final float posY, final float pivotX, final float pivotY);
+    void setNextWindowPos(float posX, float posY, float pivotX, float pivotY);
 
-    void setNextWindowSize(final KVector2f size);
+    void setNextWindowSize(KVector2f size);
 
-    void setNextWindowSize(final float sizeX, final float sizeY);
+    void setNextWindowSize(float sizeX, float sizeY);
 
-    void setNextWindowSize(final KVector2f size, final int cond);
+    void setNextWindowSize(KVector2f size, int cond);
 
-    void setNextWindowSize(final float sizeX, final float sizeY, final int cond);
+    void setNextWindowSize(float sizeX, float sizeY, int cond);
 
-    void setNextWindowSizeConstraints(final KVector2f sizeMin, final KVector2f sizeMax);
+    void setNextWindowSizeConstraints(KVector2f sizeMin, KVector2f sizeMax);
 
     void setNextWindowSizeConstraints(
-        final float sizeMinX,
-        final float sizeMinY,
-        final float sizeMaxX,
-        final float sizeMaxY
+        float sizeMinX,
+        float sizeMinY,
+        float sizeMaxX,
+        float sizeMaxY
     );
 
-    void setNextWindowContentSize(final KVector2f size);
+    void setNextWindowContentSize(KVector2f size);
 
-    void setNextWindowContentSize(final float sizeX, final float sizeY);
+    void setNextWindowContentSize(float sizeX, float sizeY);
 
-    void setNextWindowCollapsed(final boolean collapsed);
+    void setNextWindowCollapsed(boolean collapsed);
 
-    void setNextWindowCollapsed(final boolean collapsed, final int cond);
+    void setNextWindowCollapsed(boolean collapsed, int cond);
 
     void setNextWindowFocus();
 
-    void setNextWindowScroll(final KVector2f scroll);
+    void setNextWindowScroll(KVector2f scroll);
 
-    void setNextWindowScroll(final float scrollX, final float scrollY);
+    void setNextWindowScroll(float scrollX, float scrollY);
 
-    void setNextWindowBgAlpha(final float alpha);
+    void setNextWindowBgAlpha(float alpha);
 
-    void setNextWindowViewport(final int viewportId);
+    void setNextWindowViewport(int viewportId);
 
-    void setWindowPos(final float posX, final float posY);
+    void setWindowPos(float posX, float posY);
 
-    void setWindowPos(final KVector2f pos, final int cond);
+    void setWindowPos(KVector2f pos, int cond);
 
-    void setWindowPos(final float posX, final float posY, final int cond);
+    void setWindowPos(float posX, float posY, int cond);
 
-    void setWindowSize(final float sizeX, final float sizeY);
+    void setWindowSize(float sizeX, float sizeY);
 
-    void setWindowSize(final KVector2f size, final int cond);
+    void setWindowSize(KVector2f size, int cond);
 
-    void setWindowSize(final float sizeX, final float sizeY, final int cond);
+    void setWindowSize(float sizeX, float sizeY, int cond);
 
-    void setWindowCollapsed(final boolean collapsed, final int cond);
+    void setWindowCollapsed(boolean collapsed, int cond);
 
     void setWindowFocus();
 
-    void setWindowFontScale(final float scale);
+    void setWindowFontScale(float scale);
 
-    void setWindowPos(final String name, final KVector2f pos);
+    void setWindowPos(String name, KVector2f pos);
 
-    void setWindowPos(final String name, final float posX, final float posY);
+    void setWindowPos(String name, float posX, float posY);
 
-    void setWindowPos(final String name, final KVector2f pos, final int cond);
+    void setWindowPos(String name, KVector2f pos, int cond);
 
-    void setWindowPos(final String name, final float posX, final float posY, final int cond);
+    void setWindowPos(String name, float posX, float posY, int cond);
 
-    void setWindowSize(final String name, final KVector2f size);
+    void setWindowSize(String name, KVector2f size);
 
-    void setWindowSize(final String name, final float sizeX, final float sizeY);
+    void setWindowSize(String name, float sizeX, float sizeY);
 
-    void setWindowSize(final String name, final KVector2f size, final int cond);
+    void setWindowSize(String name, KVector2f size, int cond);
 
-    void setWindowSize(final String name, final float sizeX, final float sizeY, final int cond);
+    void setWindowSize(String name, float sizeX, float sizeY, int cond);
 
-    void setWindowCollapsed(final String name, final boolean collapsed);
+    void setWindowCollapsed(String name, boolean collapsed);
 
-    void setWindowCollapsed(final String name, final boolean collapsed, final int cond);
+    void setWindowCollapsed(String name, boolean collapsed, int cond);
 
-    void setWindowFocus(final String name);
+    void setWindowFocus(String name);
 
     KVector2f getContentRegionAvail();
 
@@ -286,7 +286,7 @@ public interface KImGui {
 
     float getContentRegionAvailY();
 
-    void getContentRegionAvail(final KVector2f dst);
+    void getContentRegionAvail(KVector2f dst);
 
     KVector2f getContentRegionMax();
 
@@ -294,7 +294,7 @@ public interface KImGui {
 
     float getContentRegionMaxY();
 
-    void getContentRegionMax(final KVector2f dst);
+    void getContentRegionMax(KVector2f dst);
 
     KVector2f getWindowContentRegionMin();
 
@@ -302,7 +302,7 @@ public interface KImGui {
 
     float getWindowContentRegionMinY();
 
-    void getWindowContentRegionMin(final KVector2f dst);
+    void getWindowContentRegionMin(KVector2f dst);
 
     KVector2f getWindowContentRegionMax();
 
@@ -310,15 +310,15 @@ public interface KImGui {
 
     float getWindowContentRegionMaxY();
 
-    void getWindowContentRegionMax(final KVector2f dst);
+    void getWindowContentRegionMax(KVector2f dst);
 
     float getScrollX();
 
-    void setScrollX(final float scrollX);
+    void setScrollX(float scrollX);
 
     float getScrollY();
 
-    void setScrollY(final float scrollY);
+    void setScrollY(float scrollY);
 
     float getScrollMaxX();
 
@@ -326,65 +326,65 @@ public interface KImGui {
 
     void setScrollHereX();
 
-    void setScrollHereX(final float centerXRatio);
+    void setScrollHereX(float centerXRatio);
 
     void setScrollHereY();
 
-    void setScrollHereY(final float centerYRatio);
+    void setScrollHereY(float centerYRatio);
 
-    void setScrollFromPosX(final float localX);
+    void setScrollFromPosX(float localX);
 
-    void setScrollFromPosX(final float localX, final float centerXRatio);
+    void setScrollFromPosX(float localX, float centerXRatio);
 
-    void setScrollFromPosY(final float localY);
+    void setScrollFromPosY(float localY);
 
-    void setScrollFromPosY(final float localY, final float centerYRatio);
+    void setScrollFromPosY(float localY, float centerYRatio);
 
-    void pushFont(final KImFont font);
+    void pushFont(KImFont font);
 
     void popFont();
 
     void pushStyleColor(int imGuiCol, int r, int g, int b, int a);
 
-    void pushStyleColor(final int imGuiCol, final KVector4f col);
+    void pushStyleColor(int imGuiCol, KVector4f col);
 
-    void pushStyleColor(final int imGuiCol, final float colX, final float colY, final float colZ, final float colW);
+    void pushStyleColor(int imGuiCol, float colX, float colY, float colZ, float colW);
 
-    void pushStyleColor(final int imGuiCol, final int col);
+    void pushStyleColor(int imGuiCol, int col);
 
     void popStyleColor();
 
-    void popStyleColor(final int count);
+    void popStyleColor(int count);
 
-    void pushStyleVar(final int imGuiStyleVar, final float val);
+    void pushStyleVar(int imGuiStyleVar, float val);
 
-    void pushStyleVar(final int imGuiStyleVar, final KVector2f val);
+    void pushStyleVar(int imGuiStyleVar, KVector2f val);
 
-    void pushStyleVar(final int imGuiStyleVar, final float valX, final float valY);
+    void pushStyleVar(int imGuiStyleVar, float valX, float valY);
 
     void popStyleVar();
 
-    void popStyleVar(final int count);
+    void popStyleVar(int count);
 
-    void pushTabStop(final boolean tabStop);
+    void pushTabStop(boolean tabStop);
 
     void popTabStop();
 
-    void pushButtonRepeat(final boolean repeat);
+    void pushButtonRepeat(boolean repeat);
 
     void popButtonRepeat();
 
-    void pushItemWidth(final float itemWidth);
+    void pushItemWidth(float itemWidth);
 
     void popItemWidth();
 
-    void setNextItemWidth(final float itemWidth);
+    void setNextItemWidth(float itemWidth);
 
     float calcItemWidth();
 
     void pushTextWrapPos();
 
-    void pushTextWrapPos(final float wrapLocalPosX);
+    void pushTextWrapPos(float wrapLocalPosX);
 
     void popTextWrapPos();
 
@@ -398,59 +398,59 @@ public interface KImGui {
 
     float getFontTexUvWhitePixelY();
 
-    void getFontTexUvWhitePixel(final KVector2f dst);
+    void getFontTexUvWhitePixel(KVector2f dst);
 
-    int getColorU32(final int idx);
+    int getColorU32(int idx);
 
-    int getColorU32(final int idx, final float alphaMul);
+    int getColorU32(int idx, float alphaMul);
 
-    int getColorU32(final KVector4f col);
+    int getColorU32(KVector4f col);
 
-    int getColorU32(final float colX, final float colY, final float colZ, final float colW);
+    int getColorU32(float colX, float colY, float colZ, float colW);
 
-    int getColorU32i(final int col);
+    int getColorU32i(int col);
 
-    int getColorU32i(final int col, final float alphaMul);
+    int getColorU32i(int col, float alphaMul);
 
-    KVector4f getStyleColorVec4(final int imGuiColIdx);
+    KVector4f getStyleColorVec4(int imGuiColIdx);
 
-    float getStyleColorVec4X(final int imGuiColIdx);
+    float getStyleColorVec4X(int imGuiColIdx);
 
-    float getStyleColorVec4Y(final int imGuiColIdx);
+    float getStyleColorVec4Y(int imGuiColIdx);
 
-    float getStyleColorVec4Z(final int imGuiColIdx);
+    float getStyleColorVec4Z(int imGuiColIdx);
 
-    float getStyleColorVec4W(final int imGuiColIdx);
+    float getStyleColorVec4W(int imGuiColIdx);
 
-    void getStyleColorVec4(final KVector4f dst, final int imGuiColIdx);
+    void getStyleColorVec4(KVector4f dst, int imGuiColIdx);
 
     KVector2f getCursorScreenPos();
 
-    void setCursorScreenPos(final KVector2f pos);
+    void setCursorScreenPos(KVector2f pos);
 
     float getCursorScreenPosX();
 
     float getCursorScreenPosY();
 
-    void getCursorScreenPos(final KVector2f dst);
+    void getCursorScreenPos(KVector2f dst);
 
-    void setCursorScreenPos(final float posX, final float posY);
+    void setCursorScreenPos(float posX, float posY);
 
     KVector2f getCursorPos();
 
-    void setCursorPos(final KVector2f localPos);
+    void setCursorPos(KVector2f localPos);
 
     float getCursorPosX();
 
-    void setCursorPosX(final float localX);
+    void setCursorPosX(float localX);
 
     float getCursorPosY();
 
-    void setCursorPosY(final float localY);
+    void setCursorPosY(float localY);
 
-    void getCursorPos(final KVector2f dst);
+    void getCursorPos(KVector2f dst);
 
-    void setCursorPos(final float localPosX, final float localPosY);
+    void setCursorPos(float localPosX, float localPosY);
 
     KVector2f getCursorStartPos();
 
@@ -458,31 +458,31 @@ public interface KImGui {
 
     float getCursorStartPosY();
 
-    void getCursorStartPos(final KVector2f dst);
+    void getCursorStartPos(KVector2f dst);
 
     void separator();
 
     void sameLine();
 
-    void sameLine(final float offsetFromStartX);
+    void sameLine(float offsetFromStartX);
 
-    void sameLine(final float offsetFromStartX, final float spacing);
+    void sameLine(float offsetFromStartX, float spacing);
 
     void newLine();
 
     void spacing();
 
-    void dummy(final KVector2f size);
+    void dummy(KVector2f size);
 
-    void dummy(final float sizeX, final float sizeY);
+    void dummy(float sizeX, float sizeY);
 
     void indent();
 
-    void indent(final float indentW);
+    void indent(float indentW);
 
     void unindent();
 
-    void unindent(final float indentW);
+    void unindent(float indentW);
 
     void beginGroup();
 
@@ -498,3114 +498,3114 @@ public interface KImGui {
 
     float getFrameHeightWithSpacing();
 
-    void pushID(final String strId);
+    void pushID(String strId);
 
-    void pushID(final String strIdBegin, final String strIdEnd);
+    void pushID(String strIdBegin, String strIdEnd);
 
-    void pushID(final long ptrId);
+    void pushID(long ptrId);
 
-    void pushID(final int intId);
+    void pushID(int intId);
 
     void popID();
 
-    int getID(final String strId);
+    int getID(String strId);
 
-    int getID(final String strIdBegin, final String strIdEnd);
+    int getID(String strIdBegin, String strIdEnd);
 
-    int getID(final long ptrId);
+    int getID(long ptrId);
 
-    void textUnformatted(final String text);
+    void textUnformatted(String text);
 
-    void textUnformatted(final String text, final String textEnd);
+    void textUnformatted(String text, String textEnd);
 
-    void text(final String text);
+    void text(String text);
 
-    void textColored(final KVector4f col, final String text);
+    void textColored(KVector4f col, String text);
 
-    void textColored(final float colX, final float colY, final float colZ, final float colW, final String text);
+    void textColored(float colX, float colY, float colZ, float colW, String text);
 
     void textColored(int r, int g, int b, int a, String text);
 
     void textColored(int col, String text);
 
-    void textDisabled(final String text);
+    void textDisabled(String text);
 
-    void textWrapped(final String text);
+    void textWrapped(String text);
 
-    void labelText(final String label, final String text);
+    void labelText(String label, String text);
 
-    void bulletText(final String text);
+    void bulletText(String text);
 
-    void separatorText(final String label);
+    void separatorText(String label);
 
-    boolean button(final String label);
+    boolean button(String label);
 
-    boolean button(final String label, final KVector2f size);
+    boolean button(String label, KVector2f size);
 
-    boolean button(final String label, final float sizeX, final float sizeY);
+    boolean button(String label, float sizeX, float sizeY);
 
-    boolean smallButton(final String label);
+    boolean smallButton(String label);
 
-    boolean invisibleButton(final String strId, final KVector2f size);
+    boolean invisibleButton(String strId, KVector2f size);
 
-    boolean invisibleButton(final String strId, final float sizeX, final float sizeY);
+    boolean invisibleButton(String strId, float sizeX, float sizeY);
 
-    boolean invisibleButton(final String strId, final KVector2f size, final int imGuiButtonFlags);
+    boolean invisibleButton(String strId, KVector2f size, int imGuiButtonFlags);
 
-    boolean invisibleButton(final String strId, final float sizeX, final float sizeY, final int imGuiButtonFlags);
+    boolean invisibleButton(String strId, float sizeX, float sizeY, int imGuiButtonFlags);
 
-    boolean arrowButton(final String strId, final int dir);
+    boolean arrowButton(String strId, int dir);
 
     boolean checkbox(String label, boolean active);
 
-    boolean checkbox(final String label, final KBooleanReferenceValue data);
+    boolean checkbox(String label, KBooleanReferenceValue data);
 
-    boolean checkboxFlags(final String label, final KIntReferenceValue flags, final int flagsValue);
+    boolean checkboxFlags(String label, KIntReferenceValue flags, int flagsValue);
 
-    boolean radioButton(final String label, final boolean active);
+    boolean radioButton(String label, boolean active);
 
-    boolean radioButton(final String label, final KIntReferenceValue v, final int vButton);
+    boolean radioButton(String label, KIntReferenceValue v, int vButton);
 
-    void progressBar(final float fraction);
+    void progressBar(float fraction);
 
-    void progressBar(final float fraction, final KVector2f size);
+    void progressBar(float fraction, KVector2f size);
 
-    void progressBar(final float fraction, final float sizeX, final float sizeY);
+    void progressBar(float fraction, float sizeX, float sizeY);
 
-    void progressBar(final float fraction, final KVector2f size, final String overlay);
+    void progressBar(float fraction, KVector2f size, String overlay);
 
-    void progressBar(final float fraction, final float sizeX, final float sizeY, final String overlay);
+    void progressBar(float fraction, float sizeX, float sizeY, String overlay);
 
-    void progressBar(final float fraction, final String overlay);
+    void progressBar(float fraction, String overlay);
 
     void bullet();
 
-    void image(final long userTextureId, final KVector2f imageSize);
+    void image(long userTextureId, KVector2f imageSize);
 
-    void image(final long userTextureId, final float imageSizeX, final float imageSizeY);
+    void image(long userTextureId, float imageSizeX, float imageSizeY);
 
-    void image(final long userTextureId, final KVector2f imageSize, final KVector2f uv0);
+    void image(long userTextureId, KVector2f imageSize, KVector2f uv0);
 
     void image(
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y
     );
 
-    void image(final long userTextureId, final KVector2f imageSize, final KVector2f uv0, final KVector2f uv1);
+    void image(long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1);
 
     void image(
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y,
-        final float uv1X,
-        final float uv1Y
-    );
-
-    void image(
-        final long userTextureId,
-        final KVector2f imageSize,
-        final KVector2f uv0,
-        final KVector2f uv1,
-        final KVector4f tintCol
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y
     );
 
     void image(
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y,
-        final float uv1X,
-        final float uv1Y,
-        final float tintColX,
-        final float tintColY,
-        final float tintColZ,
-        final float tintColW
+        long userTextureId,
+        KVector2f imageSize,
+        KVector2f uv0,
+        KVector2f uv1,
+        KVector4f tintCol
     );
 
     void image(
-        final long userTextureId,
-        final KVector2f imageSize,
-        final KVector2f uv0,
-        final KVector2f uv1,
-        final KVector4f tintCol,
-        final KVector4f borderCol
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float tintColX,
+        float tintColY,
+        float tintColZ,
+        float tintColW
     );
 
     void image(
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y,
-        final float uv1X,
-        final float uv1Y,
-        final float tintColX,
-        final float tintColY,
-        final float tintColZ,
-        final float tintColW,
-        final float borderColX,
-        final float borderColY,
-        final float borderColZ,
-        final float borderColW
+        long userTextureId,
+        KVector2f imageSize,
+        KVector2f uv0,
+        KVector2f uv1,
+        KVector4f tintCol,
+        KVector4f borderCol
     );
 
-    boolean imageButton(final String strId, final long userTextureId, final KVector2f imageSize);
-
-    boolean imageButton(final String strId, final long userTextureId, final float imageSizeX, final float imageSizeY);
-
-    boolean imageButton(final String strId, final long userTextureId, final KVector2f imageSize, final KVector2f uv0);
-
-    boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y
+    void image(
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float tintColX,
+        float tintColY,
+        float tintColZ,
+        float tintColW,
+        float borderColX,
+        float borderColY,
+        float borderColZ,
+        float borderColW
     );
 
-    boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final KVector2f imageSize,
-        final KVector2f uv0,
-        final KVector2f uv1
-    );
+    boolean imageButton(String strId, long userTextureId, KVector2f imageSize);
+
+    boolean imageButton(String strId, long userTextureId, float imageSizeX, float imageSizeY);
+
+    boolean imageButton(String strId, long userTextureId, KVector2f imageSize, KVector2f uv0);
 
     boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y,
-        final float uv1X,
-        final float uv1Y
+        String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y
     );
 
     boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final KVector2f imageSize,
-        final KVector2f uv0,
-        final KVector2f uv1,
-        final KVector4f bgCol
+        String strId,
+        long userTextureId,
+        KVector2f imageSize,
+        KVector2f uv0,
+        KVector2f uv1
     );
 
     boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y,
-        final float uv1X,
-        final float uv1Y,
-        final float bgColX,
-        final float bgColY,
-        final float bgColZ,
-        final float bgColW
+        String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y
     );
 
     boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final KVector2f imageSize,
-        final KVector2f uv0,
-        final KVector2f uv1,
-        final KVector4f bgCol,
-        final KVector4f tintCol
+        String strId,
+        long userTextureId,
+        KVector2f imageSize,
+        KVector2f uv0,
+        KVector2f uv1,
+        KVector4f bgCol
     );
 
     boolean imageButton(
-        final String strId,
-        final long userTextureId,
-        final float imageSizeX,
-        final float imageSizeY,
-        final float uv0X,
-        final float uv0Y,
-        final float uv1X,
-        final float uv1Y,
-        final float bgColX,
-        final float bgColY,
-        final float bgColZ,
-        final float bgColW,
-        final float tintColX,
-        final float tintColY,
-        final float tintColZ,
-        final float tintColW
+        String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float bgColX,
+        float bgColY,
+        float bgColZ,
+        float bgColW
     );
 
-    boolean beginCombo(final String label, final String previewValue);
+    boolean imageButton(
+        String strId,
+        long userTextureId,
+        KVector2f imageSize,
+        KVector2f uv0,
+        KVector2f uv1,
+        KVector4f bgCol,
+        KVector4f tintCol
+    );
 
-    boolean beginCombo(final String label, final String previewValue, final int imGuiComboFlags);
+    boolean imageButton(
+        String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float bgColX,
+        float bgColY,
+        float bgColZ,
+        float bgColW,
+        float tintColX,
+        float tintColY,
+        float tintColZ,
+        float tintColW
+    );
+
+    boolean beginCombo(String label, String previewValue);
+
+    boolean beginCombo(String label, String previewValue, int imGuiComboFlags);
 
     void endCombo();
 
-    boolean combo(final String label, final KIntReferenceValue currentItem, final String[] items);
+    boolean combo(String label, KIntReferenceValue currentItem, String[] items);
 
-    boolean combo(final String label, final KIntReferenceValue currentItem, final String[] items, final int popupMaxHeightInItems);
+    boolean combo(String label, KIntReferenceValue currentItem, String[] items, int popupMaxHeightInItems);
 
-    boolean combo(final String label, final KIntReferenceValue currentItem, final String itemsSeparatedByZeros);
+    boolean combo(String label, KIntReferenceValue currentItem, String itemsSeparatedByZeros);
 
     boolean combo(
-        final String label,
-        final KIntReferenceValue currentItem,
-        final String itemsSeparatedByZeros,
-        final int popupMaxHeightInItems
+        String label,
+        KIntReferenceValue currentItem,
+        String itemsSeparatedByZeros,
+        int popupMaxHeightInItems
     );
 
-    boolean dragFloat(final String label, final float[] v);
+    boolean dragFloat(String label, float[] v);
 
-    boolean dragFloat(final String label, final float[] v, final float vSpeed);
+    boolean dragFloat(String label, float[] v, float vSpeed);
 
-    boolean dragFloat(final String label, final float[] v, final float vSpeed, final float vMin);
+    boolean dragFloat(String label, float[] v, float vSpeed, float vMin);
 
-    boolean dragFloat(final String label, final float[] v, final float vSpeed, final float vMin, final float vMax);
-
-    boolean dragFloat(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format
-    );
+    boolean dragFloat(String label, float[] v, float vSpeed, float vMin, float vMax);
 
     boolean dragFloat(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format
     );
 
     boolean dragFloat(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragFloat2(final String label, final float[] v);
-
-    boolean dragFloat2(final String label, final float[] v, final float vSpeed);
-
-    boolean dragFloat2(final String label, final float[] v, final float vSpeed, final float vMin);
-
-    boolean dragFloat2(final String label, final float[] v, final float vSpeed, final float vMin, final float vMax);
-
-    boolean dragFloat2(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format
+    boolean dragFloat(
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragFloat2(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
+    boolean dragFloat2(String label, float[] v);
+
+    boolean dragFloat2(String label, float[] v, float vSpeed);
+
+    boolean dragFloat2(String label, float[] v, float vSpeed, float vMin);
+
+    boolean dragFloat2(String label, float[] v, float vSpeed, float vMin, float vMax);
 
     boolean dragFloat2(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format
     );
 
-    boolean dragFloat3(final String label, final float[] v);
+    boolean dragFloat2(
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
+    );
 
-    boolean dragFloat3(final String label, final float[] v, final float vSpeed);
+    boolean dragFloat2(
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    );
 
-    boolean dragFloat3(final String label, final float[] v, final float vSpeed, final float vMin);
+    boolean dragFloat3(String label, float[] v);
 
-    boolean dragFloat3(final String label, final float[] v, final float vSpeed, final float vMin, final float vMax);
+    boolean dragFloat3(String label, float[] v, float vSpeed);
+
+    boolean dragFloat3(String label, float[] v, float vSpeed, float vMin);
+
+    boolean dragFloat3(String label, float[] v, float vSpeed, float vMin, float vMax);
 
     boolean dragFloat3(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format
     );
 
     boolean dragFloat3(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean dragFloat3(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragFloat4(final String label, final float[] v);
+    boolean dragFloat4(String label, float[] v);
 
-    boolean dragFloat4(final String label, final float[] v, final float vSpeed);
+    boolean dragFloat4(String label, float[] v, float vSpeed);
 
-    boolean dragFloat4(final String label, final float[] v, final float vSpeed, final float vMin);
+    boolean dragFloat4(String label, float[] v, float vSpeed, float vMin);
 
-    boolean dragFloat4(final String label, final float[] v, final float vSpeed, final float vMin, final float vMax);
-
-    boolean dragFloat4(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format
-    );
+    boolean dragFloat4(String label, float[] v, float vSpeed, float vMin, float vMax);
 
     boolean dragFloat4(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format
     );
 
     boolean dragFloat4(
-        final String label,
-        final float[] v,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean dragFloat4(
+        String label,
+        float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
     boolean dragFloatRange2(
-        final String label,
-        final float[] vCurrentMin,
-        final float[] vCurrentMax,
-        final float vSpeed
+        String label,
+        float[] vCurrentMin,
+        float[] vCurrentMax,
+        float vSpeed
     );
 
     boolean dragFloatRange2(
-        final String label,
-        final float[] vCurrentMin,
-        final float[] vCurrentMax,
-        final float vSpeed,
-        final float vMin
+        String label,
+        float[] vCurrentMin,
+        float[] vCurrentMax,
+        float vSpeed,
+        float vMin
     );
 
     boolean dragFloatRange2(
-        final String label,
-        final float[] vCurrentMin,
-        final float[] vCurrentMax,
-        final float vSpeed,
-        final float vMin,
-        final float vMax
+        String label,
+        float[] vCurrentMin,
+        float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax
     );
 
     boolean dragFloatRange2(
-        final String label,
-        final float[] vCurrentMin,
-        final float[] vCurrentMax,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format
+        String label,
+        float[] vCurrentMin,
+        float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format
     );
 
     boolean dragFloatRange2(
-        final String label,
-        final float[] vCurrentMin,
-        final float[] vCurrentMax,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final String formatMax
+        String label,
+        float[] vCurrentMin,
+        float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format,
+        String formatMax
     );
 
     boolean dragFloatRange2(
-        final String label,
-        final float[] vCurrentMin,
-        final float[] vCurrentMax,
-        final float vSpeed,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final String formatMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] vCurrentMin,
+        float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        String format,
+        String formatMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragInt(final String label, final int[] v);
+    boolean dragInt(String label, int[] v);
 
-    boolean dragInt(final String label, final int[] v, final float vSpeed);
+    boolean dragInt(String label, int[] v, float vSpeed);
 
-    boolean dragInt(final String label, final int[] v, final float vSpeed, final int vMin);
+    boolean dragInt(String label, int[] v, float vSpeed, int vMin);
 
-    boolean dragInt(final String label, final int[] v, final float vSpeed, final int vMin, final int vMax);
+    boolean dragInt(String label, int[] v, float vSpeed, int vMin, int vMax);
 
     boolean dragInt(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format
     );
 
     boolean dragInt(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean dragInt(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragInt2(final String label, final int[] v);
+    boolean dragInt2(String label, int[] v);
 
-    boolean dragInt2(final String label, final int[] v, final float vSpeed);
+    boolean dragInt2(String label, int[] v, float vSpeed);
 
-    boolean dragInt2(final String label, final int[] v, final float vSpeed, final int vMin);
+    boolean dragInt2(String label, int[] v, float vSpeed, int vMin);
 
-    boolean dragInt2(final String label, final int[] v, final float vSpeed, final int vMin, final int vMax);
-
-    boolean dragInt2(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format
-    );
+    boolean dragInt2(String label, int[] v, float vSpeed, int vMin, int vMax);
 
     boolean dragInt2(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format
     );
 
     boolean dragInt2(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragInt3(final String label, final int[] v);
+    boolean dragInt2(
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    );
 
-    boolean dragInt3(final String label, final int[] v, final float vSpeed);
+    boolean dragInt3(String label, int[] v);
 
-    boolean dragInt3(final String label, final int[] v, final float vSpeed, final int vMin);
+    boolean dragInt3(String label, int[] v, float vSpeed);
 
-    boolean dragInt3(final String label, final int[] v, final float vSpeed, final int vMin, final int vMax);
+    boolean dragInt3(String label, int[] v, float vSpeed, int vMin);
+
+    boolean dragInt3(String label, int[] v, float vSpeed, int vMin, int vMax);
 
     boolean dragInt3(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format
     );
 
     boolean dragInt3(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean dragInt3(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragInt4(final String label, final int[] v);
+    boolean dragInt4(String label, int[] v);
 
-    boolean dragInt4(final String label, final int[] v, final float vSpeed);
+    boolean dragInt4(String label, int[] v, float vSpeed);
 
-    boolean dragInt4(final String label, final int[] v, final float vSpeed, final int vMin);
+    boolean dragInt4(String label, int[] v, float vSpeed, int vMin);
 
-    boolean dragInt4(final String label, final int[] v, final float vSpeed, final int vMin, final int vMax);
-
-    boolean dragInt4(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format
-    );
+    boolean dragInt4(String label, int[] v, float vSpeed, int vMin, int vMax);
 
     boolean dragInt4(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format
     );
 
     boolean dragInt4(
-        final String label,
-        final int[] v,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragIntRange2(final String label, final int[] vCurrentMin, final int[] vCurrentMax);
-
-    boolean dragIntRange2(final String label, final int[] vCurrentMin, final int[] vCurrentMax, final float vSpeed);
-
-    boolean dragIntRange2(
-        final String label,
-        final int[] vCurrentMin,
-        final int[] vCurrentMax,
-        final float vSpeed,
-        final int vMin
+    boolean dragInt4(
+        String label,
+        int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragIntRange2(
-        final String label,
-        final int[] vCurrentMin,
-        final int[] vCurrentMax,
-        final float vSpeed,
-        final int vMin,
-        final int vMax
-    );
+    boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax);
+
+    boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed);
 
     boolean dragIntRange2(
-        final String label,
-        final int[] vCurrentMin,
-        final int[] vCurrentMax,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format
+        String label,
+        int[] vCurrentMin,
+        int[] vCurrentMax,
+        float vSpeed,
+        int vMin
     );
 
     boolean dragIntRange2(
-        final String label,
-        final int[] vCurrentMin,
-        final int[] vCurrentMax,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final String formatMax
+        String label,
+        int[] vCurrentMin,
+        int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax
     );
 
     boolean dragIntRange2(
-        final String label,
-        final int[] vCurrentMin,
-        final int[] vCurrentMax,
-        final float vSpeed,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final String formatMax,
-        final int imGuiSliderFlags
+        String label,
+        int[] vCurrentMin,
+        int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format
     );
 
-    boolean dragScalar(final String label, final short[] pData);
-
-    boolean dragScalar(final String label, final short[] pData, final float vSpeed);
-
-    boolean dragScalar(final String label, final short[] pData, final float vSpeed, final short pMin);
-
-    boolean dragScalar(final String label, final short[] pData, final float vSpeed, final short pMin, final short pMax);
-
-    boolean dragScalar(
-        final String label,
-        final short[] pData,
-        final float vSpeed,
-        final short pMin,
-        final short pMax,
-        final String format
+    boolean dragIntRange2(
+        String label,
+        int[] vCurrentMin,
+        int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format,
+        String formatMax
     );
 
-    boolean dragScalar(
-        final String label,
-        final short[] pData,
-        final float vSpeed,
-        final short pMin,
-        final short pMax,
-        final String format,
-        final int imGuiSliderFlags
+    boolean dragIntRange2(
+        String label,
+        int[] vCurrentMin,
+        int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        String format,
+        String formatMax,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalar(final String label, final int[] pData);
+    boolean dragScalar(String label, short[] pData);
 
-    boolean dragScalar(final String label, final int[] pData, final float vSpeed);
+    boolean dragScalar(String label, short[] pData, float vSpeed);
 
-    boolean dragScalar(final String label, final int[] pData, final float vSpeed, final int pMin);
+    boolean dragScalar(String label, short[] pData, float vSpeed, short pMin);
 
-    boolean dragScalar(final String label, final int[] pData, final float vSpeed, final int pMin, final int pMax);
+    boolean dragScalar(String label, short[] pData, float vSpeed, short pMin, short pMax);
 
     boolean dragScalar(
-        final String label,
-        final int[] pData,
-        final float vSpeed,
-        final int pMin,
-        final int pMax,
-        final String format
+        String label,
+        short[] pData,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        String format
     );
 
     boolean dragScalar(
-        final String label,
-        final int[] pData,
-        final float vSpeed,
-        final int pMin,
-        final int pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        short[] pData,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalar(final String label, final long[] pData);
+    boolean dragScalar(String label, int[] pData);
 
-    boolean dragScalar(final String label, final long[] pData, final float vSpeed);
+    boolean dragScalar(String label, int[] pData, float vSpeed);
 
-    boolean dragScalar(final String label, final long[] pData, final float vSpeed, final long pMin);
+    boolean dragScalar(String label, int[] pData, float vSpeed, int pMin);
 
-    boolean dragScalar(final String label, final long[] pData, final float vSpeed, final long pMin, final long pMax);
-
-    boolean dragScalar(
-        final String label,
-        final long[] pData,
-        final float vSpeed,
-        final long pMin,
-        final long pMax,
-        final String format
-    );
+    boolean dragScalar(String label, int[] pData, float vSpeed, int pMin, int pMax);
 
     boolean dragScalar(
-        final String label,
-        final long[] pData,
-        final float vSpeed,
-        final long pMin,
-        final long pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean dragScalar(final String label, final float[] pData);
-
-    boolean dragScalar(final String label, final float[] pData, final float vSpeed);
-
-    boolean dragScalar(final String label, final float[] pData, final float vSpeed, final float pMin);
-
-    boolean dragScalar(final String label, final float[] pData, final float vSpeed, final float pMin, final float pMax);
-
-    boolean dragScalar(
-        final String label,
-        final float[] pData,
-        final float vSpeed,
-        final float pMin,
-        final float pMax,
-        final String format
+        String label,
+        int[] pData,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        String format
     );
 
     boolean dragScalar(
-        final String label,
-        final float[] pData,
-        final float vSpeed,
-        final float pMin,
-        final float pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] pData,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalar(final String label, final double[] pData);
+    boolean dragScalar(String label, long[] pData);
 
-    boolean dragScalar(final String label, final double[] pData, final float vSpeed);
+    boolean dragScalar(String label, long[] pData, float vSpeed);
 
-    boolean dragScalar(final String label, final double[] pData, final float vSpeed, final double pMin);
+    boolean dragScalar(String label, long[] pData, float vSpeed, long pMin);
 
-    boolean dragScalar(
-        final String label,
-        final double[] pData,
-        final float vSpeed,
-        final double pMin,
-        final double pMax
-    );
+    boolean dragScalar(String label, long[] pData, float vSpeed, long pMin, long pMax);
 
     boolean dragScalar(
-        final String label,
-        final double[] pData,
-        final float vSpeed,
-        final double pMin,
-        final double pMax,
-        final String format
+        String label,
+        long[] pData,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        String format
     );
 
     boolean dragScalar(
-        final String label,
-        final double[] pData,
-        final float vSpeed,
-        final double pMin,
-        final double pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        long[] pData,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalarN(final String label, final short[] pData, final int components);
+    boolean dragScalar(String label, float[] pData);
 
-    boolean dragScalarN(final String label, final short[] pData, final int components, final float vSpeed);
+    boolean dragScalar(String label, float[] pData, float vSpeed);
 
-    boolean dragScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final float vSpeed,
-        final short pMin
+    boolean dragScalar(String label, float[] pData, float vSpeed, float pMin);
+
+    boolean dragScalar(String label, float[] pData, float vSpeed, float pMin, float pMax);
+
+    boolean dragScalar(
+        String label,
+        float[] pData,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        String format
     );
 
-    boolean dragScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final float vSpeed,
-        final short pMin,
-        final short pMax
+    boolean dragScalar(
+        String label,
+        float[] pData,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final float vSpeed,
-        final short pMin,
-        final short pMax,
-        final String format
+    boolean dragScalar(String label, double[] pData);
+
+    boolean dragScalar(String label, double[] pData, float vSpeed);
+
+    boolean dragScalar(String label, double[] pData, float vSpeed, double pMin);
+
+    boolean dragScalar(
+        String label,
+        double[] pData,
+        float vSpeed,
+        double pMin,
+        double pMax
     );
 
-    boolean dragScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final float vSpeed,
-        final short pMin,
-        final short pMax,
-        final String format,
-        final int imGuiSliderFlags
+    boolean dragScalar(
+        String label,
+        double[] pData,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        String format
     );
 
-    boolean dragScalarN(final String label, final int[] pData, final int components);
-
-    boolean dragScalarN(final String label, final int[] pData, final int components, final float vSpeed);
-
-    boolean dragScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final float vSpeed,
-        final int pMin
+    boolean dragScalar(
+        String label,
+        double[] pData,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final float vSpeed,
-        final int pMin,
-        final int pMax
-    );
+    boolean dragScalarN(String label, short[] pData, int components);
+
+    boolean dragScalarN(String label, short[] pData, int components, float vSpeed);
 
     boolean dragScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final float vSpeed,
-        final int pMin,
-        final int pMax,
-        final String format
-    );
-
-    boolean dragScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final float vSpeed,
-        final int pMin,
-        final int pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean dragScalarN(final String label, final long[] pData, final int components);
-
-    boolean dragScalarN(final String label, final long[] pData, final int components, final float vSpeed);
-
-    boolean dragScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final float vSpeed,
-        final long pMin
+        String label,
+        short[] pData,
+        int components,
+        float vSpeed,
+        short pMin
     );
 
     boolean dragScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final float vSpeed,
-        final long pMin,
-        final long pMax
+        String label,
+        short[] pData,
+        int components,
+        float vSpeed,
+        short pMin,
+        short pMax
     );
 
     boolean dragScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final float vSpeed,
-        final long pMin,
-        final long pMax,
-        final String format
+        String label,
+        short[] pData,
+        int components,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        String format
     );
 
     boolean dragScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final float vSpeed,
-        final long pMin,
-        final long pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        short[] pData,
+        int components,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean dragScalarN(final String label, final float[] pData, final int components);
+    boolean dragScalarN(String label, int[] pData, int components);
 
-    boolean dragScalarN(final String label, final float[] pData, final int components, final float vSpeed);
-
-    boolean dragScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float vSpeed,
-        final float pMin
-    );
+    boolean dragScalarN(String label, int[] pData, int components, float vSpeed);
 
     boolean dragScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float vSpeed,
-        final float pMin,
-        final float pMax
+        String label,
+        int[] pData,
+        int components,
+        float vSpeed,
+        int pMin
     );
 
     boolean dragScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float vSpeed,
-        final float pMin,
-        final float pMax,
-        final String format
+        String label,
+        int[] pData,
+        int components,
+        float vSpeed,
+        int pMin,
+        int pMax
     );
 
     boolean dragScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float vSpeed,
-        final float pMin,
-        final float pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean dragScalarN(final String label, final double[] pData, final int components);
-
-    boolean dragScalarN(final String label, final double[] pData, final int components, final float vSpeed);
-
-    boolean dragScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final float vSpeed,
-        final double pMin
+        String label,
+        int[] pData,
+        int components,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        String format
     );
 
     boolean dragScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final float vSpeed,
-        final double pMin,
-        final double pMax
+        String label,
+        int[] pData,
+        int components,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean dragScalarN(String label, long[] pData, int components);
+
+    boolean dragScalarN(String label, long[] pData, int components, float vSpeed);
+
+    boolean dragScalarN(
+        String label,
+        long[] pData,
+        int components,
+        float vSpeed,
+        long pMin
     );
 
     boolean dragScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final float vSpeed,
-        final double pMin,
-        final double pMax,
-        final String format
+        String label,
+        long[] pData,
+        int components,
+        float vSpeed,
+        long pMin,
+        long pMax
     );
 
     boolean dragScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final float vSpeed,
-        final double pMin,
-        final double pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        long[] pData,
+        int components,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        String format
     );
 
-    boolean sliderFloat(final String label, final float[] v, final float vMin, final float vMax);
+    boolean dragScalarN(
+        String label,
+        long[] pData,
+        int components,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        String format,
+        int imGuiSliderFlags
+    );
 
-    boolean sliderFloat(final String label, final float[] v, final float vMin, final float vMax, final String format);
+    boolean dragScalarN(String label, float[] pData, int components);
+
+    boolean dragScalarN(String label, float[] pData, int components, float vSpeed);
+
+    boolean dragScalarN(
+        String label,
+        float[] pData,
+        int components,
+        float vSpeed,
+        float pMin
+    );
+
+    boolean dragScalarN(
+        String label,
+        float[] pData,
+        int components,
+        float vSpeed,
+        float pMin,
+        float pMax
+    );
+
+    boolean dragScalarN(
+        String label,
+        float[] pData,
+        int components,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        String format
+    );
+
+    boolean dragScalarN(
+        String label,
+        float[] pData,
+        int components,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean dragScalarN(String label, double[] pData, int components);
+
+    boolean dragScalarN(String label, double[] pData, int components, float vSpeed);
+
+    boolean dragScalarN(
+        String label,
+        double[] pData,
+        int components,
+        float vSpeed,
+        double pMin
+    );
+
+    boolean dragScalarN(
+        String label,
+        double[] pData,
+        int components,
+        float vSpeed,
+        double pMin,
+        double pMax
+    );
+
+    boolean dragScalarN(
+        String label,
+        double[] pData,
+        int components,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        String format
+    );
+
+    boolean dragScalarN(
+        String label,
+        double[] pData,
+        int components,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean sliderFloat(String label, float[] v, float vMin, float vMax);
+
+    boolean sliderFloat(String label, float[] v, float vMin, float vMax, String format);
 
     boolean sliderFloat(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderFloat(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean sliderFloat2(final String label, final float[] v, final float vMin, final float vMax);
+    boolean sliderFloat2(String label, float[] v, float vMin, float vMax);
 
-    boolean sliderFloat2(final String label, final float[] v, final float vMin, final float vMax, final String format);
+    boolean sliderFloat2(String label, float[] v, float vMin, float vMax, String format);
 
     boolean sliderFloat2(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderFloat2(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean sliderFloat3(final String label, final float[] v, final float vMin, final float vMax);
+    boolean sliderFloat3(String label, float[] v, float vMin, float vMax);
 
-    boolean sliderFloat3(final String label, final float[] v, final float vMin, final float vMax, final String format);
+    boolean sliderFloat3(String label, float[] v, float vMin, float vMax, String format);
 
     boolean sliderFloat3(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderFloat3(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean sliderFloat4(final String label, final float[] v, final float vMin, final float vMax);
+    boolean sliderFloat4(String label, float[] v, float vMin, float vMax);
 
-    boolean sliderFloat4(final String label, final float[] v, final float vMin, final float vMax, final String format);
+    boolean sliderFloat4(String label, float[] v, float vMin, float vMax, String format);
 
     boolean sliderFloat4(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderFloat4(
-        final String label,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean sliderAngle(final String label, final float[] vRad);
+    boolean sliderAngle(String label, float[] vRad);
 
-    boolean sliderAngle(final String label, final float[] vRad, final float vDegreesMin);
+    boolean sliderAngle(String label, float[] vRad, float vDegreesMin);
 
-    boolean sliderAngle(final String label, final float[] vRad, final float vDegreesMin, final float vDegreesMax);
-
-    boolean sliderAngle(
-        final String label,
-        final float[] vRad,
-        final float vDegreesMin,
-        final float vDegreesMax,
-        final String format
-    );
+    boolean sliderAngle(String label, float[] vRad, float vDegreesMin, float vDegreesMax);
 
     boolean sliderAngle(
-        final String label,
-        final float[] vRad,
-        final float vDegreesMin,
-        final float vDegreesMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax,
+        String format
     );
 
     boolean sliderAngle(
-        final String label,
-        final float[] vRad,
-        final float vDegreesMin,
-        final float vDegreesMax,
-        final int imGuiSliderFlags
+        String label,
+        float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderInt(final String label, final int[] v, final int vMin, final int vMax);
+    boolean sliderAngle(
+        String label,
+        float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax,
+        int imGuiSliderFlags
+    );
 
-    boolean sliderInt(final String label, final int[] v, final int vMin, final int vMax, final String format);
+    boolean sliderInt(String label, int[] v, int vMin, int vMax);
+
+    boolean sliderInt(String label, int[] v, int vMin, int vMax, String format);
 
     boolean sliderInt(
-        final String label,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderInt(final String label, final int[] v, final int vMin, final int vMax, final int imGuiSliderFlags);
+    boolean sliderInt(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags);
 
-    boolean sliderInt2(final String label, final int[] v, final int vMin, final int vMax);
+    boolean sliderInt2(String label, int[] v, int vMin, int vMax);
 
-    boolean sliderInt2(final String label, final int[] v, final int vMin, final int vMax, final String format);
+    boolean sliderInt2(String label, int[] v, int vMin, int vMax, String format);
 
     boolean sliderInt2(
-        final String label,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderInt2(final String label, final int[] v, final int vMin, final int vMax, final int imGuiSliderFlags);
+    boolean sliderInt2(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags);
 
-    boolean sliderInt3(final String label, final int[] v, final int vMin, final int vMax);
+    boolean sliderInt3(String label, int[] v, int vMin, int vMax);
 
-    boolean sliderInt3(final String label, final int[] v, final int vMin, final int vMax, final String format);
+    boolean sliderInt3(String label, int[] v, int vMin, int vMax, String format);
 
     boolean sliderInt3(
-        final String label,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderInt3(final String label, final int[] v, final int vMin, final int vMax, final int imGuiSliderFlags);
+    boolean sliderInt3(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags);
 
-    boolean sliderInt4(final String label, final int[] v, final int vMin, final int vMax);
+    boolean sliderInt4(String label, int[] v, int vMin, int vMax);
 
-    boolean sliderInt4(final String label, final int[] v, final int vMin, final int vMax, final String format);
+    boolean sliderInt4(String label, int[] v, int vMin, int vMax, String format);
 
     boolean sliderInt4(
-        final String label,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderInt4(final String label, final int[] v, final int vMin, final int vMax, final int imGuiSliderFlags);
+    boolean sliderInt4(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags);
 
-    boolean sliderScalar(final String label, final short[] pData, final short pMin, final short pMax);
-
-    boolean sliderScalar(
-        final String label,
-        final short[] pData,
-        final short pMin,
-        final short pMax,
-        final String format
-    );
+    boolean sliderScalar(String label, short[] pData, short pMin, short pMax);
 
     boolean sliderScalar(
-        final String label,
-        final short[] pData,
-        final short pMin,
-        final short pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean sliderScalar(final String label, final int[] pData, final int pMin, final int pMax);
-
-    boolean sliderScalar(final String label, final int[] pData, final int pMin, final int pMax, final String format);
-
-    boolean sliderScalar(
-        final String label,
-        final int[] pData,
-        final int pMin,
-        final int pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean sliderScalar(final String label, final long[] pData, final long pMin, final long pMax);
-
-    boolean sliderScalar(final String label, final long[] pData, final long pMin, final long pMax, final String format);
-
-    boolean sliderScalar(
-        final String label,
-        final long[] pData,
-        final long pMin,
-        final long pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean sliderScalar(final String label, final float[] pData, final float pMin, final float pMax);
-
-    boolean sliderScalar(
-        final String label,
-        final float[] pData,
-        final float pMin,
-        final float pMax,
-        final String format
+        String label,
+        short[] pData,
+        short pMin,
+        short pMax,
+        String format
     );
 
     boolean sliderScalar(
-        final String label,
-        final float[] pData,
-        final float pMin,
-        final float pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        short[] pData,
+        short pMin,
+        short pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderScalar(final String label, final double[] pData, final double pMin, final double pMax);
+    boolean sliderScalar(String label, int[] pData, int pMin, int pMax);
+
+    boolean sliderScalar(String label, int[] pData, int pMin, int pMax, String format);
 
     boolean sliderScalar(
-        final String label,
-        final double[] pData,
-        final double pMin,
-        final double pMax,
-        final String format
+        String label,
+        int[] pData,
+        int pMin,
+        int pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean sliderScalar(String label, long[] pData, long pMin, long pMax);
+
+    boolean sliderScalar(String label, long[] pData, long pMin, long pMax, String format);
+
+    boolean sliderScalar(
+        String label,
+        long[] pData,
+        long pMin,
+        long pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean sliderScalar(String label, float[] pData, float pMin, float pMax);
+
+    boolean sliderScalar(
+        String label,
+        float[] pData,
+        float pMin,
+        float pMax,
+        String format
     );
 
     boolean sliderScalar(
-        final String label,
-        final double[] pData,
-        final double pMin,
-        final double pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] pData,
+        float pMin,
+        float pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean sliderScalar(String label, double[] pData, double pMin, double pMax);
+
+    boolean sliderScalar(
+        String label,
+        double[] pData,
+        double pMin,
+        double pMax,
+        String format
+    );
+
+    boolean sliderScalar(
+        String label,
+        double[] pData,
+        double pMin,
+        double pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final short pMin,
-        final short pMax
+        String label,
+        short[] pData,
+        int components,
+        short pMin,
+        short pMax
     );
 
     boolean sliderScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final short pMin,
-        final short pMax,
-        final String format
+        String label,
+        short[] pData,
+        int components,
+        short pMin,
+        short pMax,
+        String format
     );
 
     boolean sliderScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final short pMin,
-        final short pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        short[] pData,
+        int components,
+        short pMin,
+        short pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean sliderScalarN(final String label, final int[] pData, final int components, final int pMin, final int pMax);
+    boolean sliderScalarN(String label, int[] pData, int components, int pMin, int pMax);
 
     boolean sliderScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final int pMin,
-        final int pMax,
-        final String format
-    );
-
-    boolean sliderScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final int pMin,
-        final int pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int[] pData,
+        int components,
+        int pMin,
+        int pMax,
+        String format
     );
 
     boolean sliderScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final long pMin,
-        final long pMax
+        String label,
+        int[] pData,
+        int components,
+        int pMin,
+        int pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final long pMin,
-        final long pMax,
-        final String format
+        String label,
+        long[] pData,
+        int components,
+        long pMin,
+        long pMax
     );
 
     boolean sliderScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final long pMin,
-        final long pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        long[] pData,
+        int components,
+        long pMin,
+        long pMax,
+        String format
     );
 
     boolean sliderScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float pMin,
-        final float pMax
+        String label,
+        long[] pData,
+        int components,
+        long pMin,
+        long pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float pMin,
-        final float pMax,
-        final String format
+        String label,
+        float[] pData,
+        int components,
+        float pMin,
+        float pMax
     );
 
     boolean sliderScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float pMin,
-        final float pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] pData,
+        int components,
+        float pMin,
+        float pMax,
+        String format
     );
 
     boolean sliderScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final double pMin,
-        final double pMax
+        String label,
+        float[] pData,
+        int components,
+        float pMin,
+        float pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean sliderScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final double pMin,
-        final double pMax,
-        final String format
+        String label,
+        double[] pData,
+        int components,
+        double pMin,
+        double pMax
     );
 
     boolean sliderScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final double pMin,
-        final double pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        double[] pData,
+        int components,
+        double pMin,
+        double pMax,
+        String format
     );
 
-    boolean vSliderFloat(final String label, final KVector2f size, final float[] v, final float vMin, final float vMax);
+    boolean sliderScalarN(
+        String label,
+        double[] pData,
+        int components,
+        double pMin,
+        double pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean vSliderFloat(String label, KVector2f size, float[] v, float vMin, float vMax);
 
     boolean vSliderFloat(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] v,
-        final float vMin,
-        final float vMax
-    );
-
-    boolean vSliderFloat(
-        final String label,
-        final KVector2f size,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] v,
+        float vMin,
+        float vMax
     );
 
     boolean vSliderFloat(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format
+        String label,
+        KVector2f size,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format
     );
 
     boolean vSliderFloat(
-        final String label,
-        final KVector2f size,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format
     );
 
     boolean vSliderFloat(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderFloat(
-        final String label,
-        final KVector2f size,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] v,
+        float vMin,
+        float vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderFloat(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] v,
-        final float vMin,
-        final float vMax,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean vSliderInt(final String label, final KVector2f size, final int[] v, final int vMin, final int vMax);
-
-    boolean vSliderInt(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] v,
-        final int vMin,
-        final int vMax
+    boolean vSliderFloat(
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
     );
 
-    boolean vSliderInt(
-        final String label,
-        final KVector2f size,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format
-    );
+    boolean vSliderInt(String label, KVector2f size, int[] v, int vMin, int vMax);
 
     boolean vSliderInt(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] v,
+        int vMin,
+        int vMax
     );
 
     boolean vSliderInt(
-        final String label,
-        final KVector2f size,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format
     );
 
     boolean vSliderInt(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format
     );
 
     boolean vSliderInt(
-        final String label,
-        final KVector2f size,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderInt(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] v,
-        final int vMin,
-        final int vMax,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] v,
+        int vMin,
+        int vMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean vSliderInt(
+        String label,
+        KVector2f size,
+        int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    );
+
+    boolean vSliderInt(
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final short[] pData,
-        final short pMin,
-        final short pMax
+        String label,
+        KVector2f size,
+        short[] pData,
+        short pMin,
+        short pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final short[] pData,
-        final short pMin,
-        final short pMax
+        String label,
+        float sizeX,
+        float sizeY,
+        short[] pData,
+        short pMin,
+        short pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final short[] pData,
-        final short pMin,
-        final short pMax,
-        final String format
+        String label,
+        KVector2f size,
+        short[] pData,
+        short pMin,
+        short pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final short[] pData,
-        final short pMin,
-        final short pMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        short[] pData,
+        short pMin,
+        short pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final short[] pData,
-        final short pMin,
-        final short pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        short[] pData,
+        short pMin,
+        short pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final short[] pData,
-        final short pMin,
-        final short pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        short[] pData,
+        short pMin,
+        short pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean vSliderScalar(final String label, final KVector2f size, final int[] pData, final int pMin, final int pMax);
+    boolean vSliderScalar(String label, KVector2f size, int[] pData, int pMin, int pMax);
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] pData,
-        final int pMin,
-        final int pMax
-    );
-
-    boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final int[] pData,
-        final int pMin,
-        final int pMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] pData,
+        int pMin,
+        int pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] pData,
-        final int pMin,
-        final int pMax,
-        final String format
+        String label,
+        KVector2f size,
+        int[] pData,
+        int pMin,
+        int pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final int[] pData,
-        final int pMin,
-        final int pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] pData,
+        int pMin,
+        int pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final int[] pData,
-        final int pMin,
-        final int pMax,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean vSliderScalar(final String label, final KVector2f size, final long[] pData, final long pMin, final long pMax);
-
-    boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final long[] pData,
-        final long pMin,
-        final long pMax
+        String label,
+        KVector2f size,
+        int[] pData,
+        int pMin,
+        int pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final long[] pData,
-        final long pMin,
-        final long pMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        int[] pData,
+        int pMin,
+        int pMax,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean vSliderScalar(String label, KVector2f size, long[] pData, long pMin, long pMax);
+
+    boolean vSliderScalar(
+        String label,
+        float sizeX,
+        float sizeY,
+        long[] pData,
+        long pMin,
+        long pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final long[] pData,
-        final long pMin,
-        final long pMax,
-        final String format
+        String label,
+        KVector2f size,
+        long[] pData,
+        long pMin,
+        long pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final long[] pData,
-        final long pMin,
-        final long pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        long[] pData,
+        long pMin,
+        long pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final long[] pData,
-        final long pMin,
-        final long pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        long[] pData,
+        long pMin,
+        long pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final float[] pData,
-        final float pMin,
-        final float pMax
+        String label,
+        float sizeX,
+        float sizeY,
+        long[] pData,
+        long pMin,
+        long pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] pData,
-        final float pMin,
-        final float pMax
+        String label,
+        KVector2f size,
+        float[] pData,
+        float pMin,
+        float pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final float[] pData,
-        final float pMin,
-        final float pMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] pData,
+        float pMin,
+        float pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] pData,
-        final float pMin,
-        final float pMax,
-        final String format
+        String label,
+        KVector2f size,
+        float[] pData,
+        float pMin,
+        float pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final float[] pData,
-        final float pMin,
-        final float pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] pData,
+        float pMin,
+        float pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final float[] pData,
-        final float pMin,
-        final float pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        float[] pData,
+        float pMin,
+        float pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final double[] pData,
-        final double pMin,
-        final double pMax
+        String label,
+        float sizeX,
+        float sizeY,
+        float[] pData,
+        float pMin,
+        float pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final double[] pData,
-        final double pMin,
-        final double pMax
+        String label,
+        KVector2f size,
+        double[] pData,
+        double pMin,
+        double pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final double[] pData,
-        final double pMin,
-        final double pMax,
-        final String format
+        String label,
+        float sizeX,
+        float sizeY,
+        double[] pData,
+        double pMin,
+        double pMax
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final double[] pData,
-        final double pMin,
-        final double pMax,
-        final String format
+        String label,
+        KVector2f size,
+        double[] pData,
+        double pMin,
+        double pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final KVector2f size,
-        final double[] pData,
-        final double pMin,
-        final double pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float sizeX,
+        float sizeY,
+        double[] pData,
+        double pMin,
+        double pMax,
+        String format
     );
 
     boolean vSliderScalar(
-        final String label,
-        final float sizeX,
-        final float sizeY,
-        final double[] pData,
-        final double pMin,
-        final double pMax,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KVector2f size,
+        double[] pData,
+        double pMin,
+        double pMax,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputText(final String label, final KStringReferenceValue text);
+    boolean vSliderScalar(
+        String label,
+        float sizeX,
+        float sizeY,
+        double[] pData,
+        double pMin,
+        double pMax,
+        String format,
+        int imGuiSliderFlags
+    );
 
-    boolean inputText(final String label, final KStringReferenceValue text, final int imGuiInputTextFlags);
+    boolean inputText(String label, KStringReferenceValue text);
+
+    boolean inputText(String label, KStringReferenceValue text, int imGuiInputTextFlags);
 
     boolean inputText(
-        final String label,
-        final KStringReferenceValue text,
-        final int imGuiInputTextFlags,
-        final KImGuiInputTextCallback callback
+        String label,
+        KStringReferenceValue text,
+        int imGuiInputTextFlags,
+        KImGuiInputTextCallback callback
     );
 
-    boolean inputTextMultiline(final String label, final KStringReferenceValue text);
+    boolean inputTextMultiline(String label, KStringReferenceValue text);
 
-    boolean inputTextMultiline(final String label, final KStringReferenceValue text, final float width, final float height);
+    boolean inputTextMultiline(String label, KStringReferenceValue text, float width, float height);
 
-    boolean inputTextMultiline(final String label, final KStringReferenceValue text, final int imGuiInputTextFlags);
-
-    boolean inputTextMultiline(
-        final String label,
-        final KStringReferenceValue text,
-        final int imGuiInputTextFlags,
-        final KImGuiInputTextCallback callback
-    );
+    boolean inputTextMultiline(String label, KStringReferenceValue text, int imGuiInputTextFlags);
 
     boolean inputTextMultiline(
-        final String label,
-        final KStringReferenceValue text,
-        final float width,
-        final float height,
-        final int imGuiInputTextFlags
+        String label,
+        KStringReferenceValue text,
+        int imGuiInputTextFlags,
+        KImGuiInputTextCallback callback
     );
 
     boolean inputTextMultiline(
-        final String label,
-        final KStringReferenceValue text,
-        final float width,
-        final float height,
-        final int imGuiInputTextFlags,
-        final KImGuiInputTextCallback callback
+        String label,
+        KStringReferenceValue text,
+        float width,
+        float height,
+        int imGuiInputTextFlags
     );
 
-    boolean inputTextWithHint(final String label, final String hint, final KStringReferenceValue text);
+    boolean inputTextMultiline(
+        String label,
+        KStringReferenceValue text,
+        float width,
+        float height,
+        int imGuiInputTextFlags,
+        KImGuiInputTextCallback callback
+    );
+
+    boolean inputTextWithHint(String label, String hint, KStringReferenceValue text);
 
     boolean inputTextWithHint(
-        final String label,
-        final String hint,
-        final KStringReferenceValue text,
-        final int imGuiInputTextFlags
+        String label,
+        String hint,
+        KStringReferenceValue text,
+        int imGuiInputTextFlags
     );
 
     boolean inputTextWithHint(
-        final String label,
-        final String hint,
-        final KStringReferenceValue text,
-        final int imGuiInputTextFlags,
-        final KImGuiInputTextCallback callback
+        String label,
+        String hint,
+        KStringReferenceValue text,
+        int imGuiInputTextFlags,
+        KImGuiInputTextCallback callback
     );
 
-    boolean inputFloat(final String label, final KFloatReferenceValue v);
+    boolean inputFloat(String label, KFloatReferenceValue v);
 
-    boolean inputFloat(final String label, final KFloatReferenceValue v, final float step);
+    boolean inputFloat(String label, KFloatReferenceValue v, float step);
 
-    boolean inputFloat(final String label, final KFloatReferenceValue v, final float step, final float stepFast);
-
-    boolean inputFloat(
-        final String label,
-        final KFloatReferenceValue v,
-        final float step,
-        final float stepFast,
-        final String format
-    );
+    boolean inputFloat(String label, KFloatReferenceValue v, float step, float stepFast);
 
     boolean inputFloat(
-        final String label,
-        final KFloatReferenceValue v,
-        final float step,
-        final float stepFast,
-        final String format,
-        final int imGuiInputTextFlags
+        String label,
+        KFloatReferenceValue v,
+        float step,
+        float stepFast,
+        String format
     );
 
     boolean inputFloat(
-        final String label,
-        final KFloatReferenceValue v,
-        final float step,
-        final float stepFast,
-        final int imGuiInputTextFlags
+        String label,
+        KFloatReferenceValue v,
+        float step,
+        float stepFast,
+        String format,
+        int imGuiInputTextFlags
     );
 
-    boolean inputFloat2(final String label, final float[] v);
+    boolean inputFloat(
+        String label,
+        KFloatReferenceValue v,
+        float step,
+        float stepFast,
+        int imGuiInputTextFlags
+    );
 
-    boolean inputFloat2(final String label, final float[] v, final String format);
+    boolean inputFloat2(String label, float[] v);
 
-    boolean inputFloat2(final String label, final float[] v, final String format, final int imGuiInputTextFlags);
+    boolean inputFloat2(String label, float[] v, String format);
 
-    boolean inputFloat2(final String label, final float[] v, final int imGuiInputTextFlags);
+    boolean inputFloat2(String label, float[] v, String format, int imGuiInputTextFlags);
 
-    boolean inputFloat3(final String label, final float[] v);
+    boolean inputFloat2(String label, float[] v, int imGuiInputTextFlags);
 
-    boolean inputFloat3(final String label, final float[] v, final String format);
+    boolean inputFloat3(String label, float[] v);
 
-    boolean inputFloat3(final String label, final float[] v, final String format, final int imGuiInputTextFlags);
+    boolean inputFloat3(String label, float[] v, String format);
 
-    boolean inputFloat3(final String label, final float[] v, final int imGuiInputTextFlags);
+    boolean inputFloat3(String label, float[] v, String format, int imGuiInputTextFlags);
 
-    boolean inputFloat4(final String label, final float[] v);
+    boolean inputFloat3(String label, float[] v, int imGuiInputTextFlags);
 
-    boolean inputFloat4(final String label, final float[] v, final String format);
+    boolean inputFloat4(String label, float[] v);
 
-    boolean inputFloat4(final String label, final float[] v, final String format, final int imGuiInputTextFlags);
+    boolean inputFloat4(String label, float[] v, String format);
 
-    boolean inputFloat4(final String label, final float[] v, final int imGuiInputTextFlags);
+    boolean inputFloat4(String label, float[] v, String format, int imGuiInputTextFlags);
 
-    boolean inputInt(final String label, final KIntReferenceValue v);
+    boolean inputFloat4(String label, float[] v, int imGuiInputTextFlags);
 
-    boolean inputInt(final String label, final KIntReferenceValue v, final int step);
+    boolean inputInt(String label, KIntReferenceValue v);
 
-    boolean inputInt(final String label, final KIntReferenceValue v, final int step, final int stepFast);
+    boolean inputInt(String label, KIntReferenceValue v, int step);
+
+    boolean inputInt(String label, KIntReferenceValue v, int step, int stepFast);
 
     boolean inputInt(
-        final String label,
-        final KIntReferenceValue v,
-        final int step,
-        final int stepFast,
-        final int imGuiInputTextFlags
+        String label,
+        KIntReferenceValue v,
+        int step,
+        int stepFast,
+        int imGuiInputTextFlags
     );
 
-    boolean inputInt2(final String label, final int[] v);
+    boolean inputInt2(String label, int[] v);
 
-    boolean inputInt2(final String label, final int[] v, final int imGuiInputTextFlags);
+    boolean inputInt2(String label, int[] v, int imGuiInputTextFlags);
 
-    boolean inputInt3(final String label, final int[] v);
+    boolean inputInt3(String label, int[] v);
 
-    boolean inputInt3(final String label, final int[] v, final int imGuiInputTextFlags);
+    boolean inputInt3(String label, int[] v, int imGuiInputTextFlags);
 
-    boolean inputInt4(final String label, final int[] v);
+    boolean inputInt4(String label, int[] v);
 
-    boolean inputInt4(final String label, final int[] v, final int imGuiInputTextFlags);
+    boolean inputInt4(String label, int[] v, int imGuiInputTextFlags);
 
-    boolean inputDouble(final String label, final KDoubleReferenceValue v);
+    boolean inputDouble(String label, KDoubleReferenceValue v);
 
-    boolean inputDouble(final String label, final KDoubleReferenceValue v, final double step);
+    boolean inputDouble(String label, KDoubleReferenceValue v, double step);
 
-    boolean inputDouble(final String label, final KDoubleReferenceValue v, final double step, final double stepFast);
-
-    boolean inputDouble(
-        final String label,
-        final KDoubleReferenceValue v,
-        final double step,
-        final double stepFast,
-        final String format
-    );
+    boolean inputDouble(String label, KDoubleReferenceValue v, double step, double stepFast);
 
     boolean inputDouble(
-        final String label,
-        final KDoubleReferenceValue v,
-        final double step,
-        final double stepFast,
-        final String format,
-        final int imGuiInputTextFlags
+        String label,
+        KDoubleReferenceValue v,
+        double step,
+        double stepFast,
+        String format
     );
 
     boolean inputDouble(
-        final String label,
-        final KDoubleReferenceValue v,
-        final double step,
-        final double stepFast,
-        final int imGuiInputTextFlags
+        String label,
+        KDoubleReferenceValue v,
+        double step,
+        double stepFast,
+        String format,
+        int imGuiInputTextFlags
     );
 
-    boolean inputScalar(final String label, final KShortReferenceValue pData);
-
-    boolean inputScalar(final String label, final KShortReferenceValue pData, final short pStep);
-
-    boolean inputScalar(final String label, final KShortReferenceValue pData, final short pStep, final short pStepFast);
-
-    boolean inputScalar(
-        final String label,
-        final KShortReferenceValue pData,
-        final short pStep,
-        final short pStepFast,
-        final String format
+    boolean inputDouble(
+        String label,
+        KDoubleReferenceValue v,
+        double step,
+        double stepFast,
+        int imGuiInputTextFlags
     );
 
-    boolean inputScalar(
-        final String label,
-        final KShortReferenceValue pData,
-        final short pStep,
-        final short pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
+    boolean inputScalar(String label, KShortReferenceValue pData);
 
-    boolean inputScalar(final String label, final KIntReferenceValue pData);
+    boolean inputScalar(String label, KShortReferenceValue pData, short pStep);
 
-    boolean inputScalar(final String label, final KIntReferenceValue pData, final int pStep);
-
-    boolean inputScalar(final String label, final KIntReferenceValue pData, final int pStep, final int pStepFast);
+    boolean inputScalar(String label, KShortReferenceValue pData, short pStep, short pStepFast);
 
     boolean inputScalar(
-        final String label,
-        final KIntReferenceValue pData,
-        final int pStep,
-        final int pStepFast,
-        final String format
+        String label,
+        KShortReferenceValue pData,
+        short pStep,
+        short pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final KIntReferenceValue pData,
-        final int pStep,
-        final int pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KShortReferenceValue pData,
+        short pStep,
+        short pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final KLongReferenceValue pData);
+    boolean inputScalar(String label, KIntReferenceValue pData);
 
-    boolean inputScalar(final String label, final KLongReferenceValue pData, final long pStep);
+    boolean inputScalar(String label, KIntReferenceValue pData, int pStep);
 
-    boolean inputScalar(final String label, final KLongReferenceValue pData, final long pStep, final long pStepFast);
-
-    boolean inputScalar(
-        final String label,
-        final KLongReferenceValue pData,
-        final long pStep,
-        final long pStepFast,
-        final String format
-    );
+    boolean inputScalar(String label, KIntReferenceValue pData, int pStep, int pStepFast);
 
     boolean inputScalar(
-        final String label,
-        final KLongReferenceValue pData,
-        final long pStep,
-        final long pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalar(final String label, final KFloatReferenceValue pData);
-
-    boolean inputScalar(final String label, final KFloatReferenceValue pData, final float pStep);
-
-    boolean inputScalar(final String label, final KFloatReferenceValue pData, final float pStep, final float pStepFast);
-
-    boolean inputScalar(
-        final String label,
-        final KFloatReferenceValue pData,
-        final float pStep,
-        final float pStepFast,
-        final String format
+        String label,
+        KIntReferenceValue pData,
+        int pStep,
+        int pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final KFloatReferenceValue pData,
-        final float pStep,
-        final float pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KIntReferenceValue pData,
+        int pStep,
+        int pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final KDoubleReferenceValue pData);
+    boolean inputScalar(String label, KLongReferenceValue pData);
 
-    boolean inputScalar(final String label, final KDoubleReferenceValue pData, final double pStep);
+    boolean inputScalar(String label, KLongReferenceValue pData, long pStep);
 
-    boolean inputScalar(final String label, final KDoubleReferenceValue pData, final double pStep, final double pStepFast);
-
-    boolean inputScalar(
-        final String label,
-        final KDoubleReferenceValue pData,
-        final double pStep,
-        final double pStepFast,
-        final String format
-    );
+    boolean inputScalar(String label, KLongReferenceValue pData, long pStep, long pStepFast);
 
     boolean inputScalar(
-        final String label,
-        final KDoubleReferenceValue pData,
-        final double pStep,
-        final double pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalar(final String label, final int dataType, final KShortReferenceValue pData);
-
-    boolean inputScalar(final String label, final int dataType, final KShortReferenceValue pData, final short pStep);
-
-    boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KShortReferenceValue pData,
-        final short pStep,
-        final short pStepFast
+        String label,
+        KLongReferenceValue pData,
+        long pStep,
+        long pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KShortReferenceValue pData,
-        final short pStep,
-        final short pStepFast,
-        final String format
+        String label,
+        KLongReferenceValue pData,
+        long pStep,
+        long pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean inputScalar(String label, KFloatReferenceValue pData);
+
+    boolean inputScalar(String label, KFloatReferenceValue pData, float pStep);
+
+    boolean inputScalar(String label, KFloatReferenceValue pData, float pStep, float pStepFast);
+
+    boolean inputScalar(
+        String label,
+        KFloatReferenceValue pData,
+        float pStep,
+        float pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KShortReferenceValue pData,
-        final short pStep,
-        final short pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KFloatReferenceValue pData,
+        float pStep,
+        float pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final KIntReferenceValue pData);
+    boolean inputScalar(String label, KDoubleReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final KIntReferenceValue pData, final int pStep);
+    boolean inputScalar(String label, KDoubleReferenceValue pData, double pStep);
 
-    boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KIntReferenceValue pData,
-        final int pStep,
-        final int pStepFast
-    );
+    boolean inputScalar(String label, KDoubleReferenceValue pData, double pStep, double pStepFast);
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KIntReferenceValue pData,
-        final int pStep,
-        final int pStepFast,
-        final String format
+        String label,
+        KDoubleReferenceValue pData,
+        double pStep,
+        double pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KIntReferenceValue pData,
-        final int pStep,
-        final int pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        KDoubleReferenceValue pData,
+        double pStep,
+        double pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final KLongReferenceValue pData);
+    boolean inputScalar(String label, int dataType, KShortReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final KLongReferenceValue pData, final long pStep);
-
-    boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KLongReferenceValue pData,
-        final long pStep,
-        final long pStepFast
-    );
+    boolean inputScalar(String label, int dataType, KShortReferenceValue pData, short pStep);
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KLongReferenceValue pData,
-        final long pStep,
-        final long pStepFast,
-        final String format
+        String label,
+        int dataType,
+        KShortReferenceValue pData,
+        short pStep,
+        short pStepFast
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KLongReferenceValue pData,
-        final long pStep,
-        final long pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalar(final String label, final int dataType, final KFloatReferenceValue pData);
-
-    boolean inputScalar(final String label, final int dataType, final KFloatReferenceValue pData, final float pStep);
-
-    boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KFloatReferenceValue pData,
-        final float pStep,
-        final float pStepFast
+        String label,
+        int dataType,
+        KShortReferenceValue pData,
+        short pStep,
+        short pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KFloatReferenceValue pData,
-        final float pStep,
-        final float pStepFast,
-        final String format
+        String label,
+        int dataType,
+        KShortReferenceValue pData,
+        short pStep,
+        short pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean inputScalar(String label, int dataType, KIntReferenceValue pData);
+
+    boolean inputScalar(String label, int dataType, KIntReferenceValue pData, int pStep);
+
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KIntReferenceValue pData,
+        int pStep,
+        int pStepFast
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KFloatReferenceValue pData,
-        final float pStep,
-        final float pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalar(final String label, final int dataType, final KDoubleReferenceValue pData);
-
-    boolean inputScalar(final String label, final int dataType, final KDoubleReferenceValue pData, final double pStep);
-
-    boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KDoubleReferenceValue pData,
-        final double pStep,
-        final double pStepFast
+        String label,
+        int dataType,
+        KIntReferenceValue pData,
+        int pStep,
+        int pStepFast,
+        String format
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KDoubleReferenceValue pData,
-        final double pStep,
-        final double pStepFast,
-        final String format
+        String label,
+        int dataType,
+        KIntReferenceValue pData,
+        int pStep,
+        int pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean inputScalar(String label, int dataType, KLongReferenceValue pData);
+
+    boolean inputScalar(String label, int dataType, KLongReferenceValue pData, long pStep);
+
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KLongReferenceValue pData,
+        long pStep,
+        long pStepFast
     );
 
     boolean inputScalar(
-        final String label,
-        final int dataType,
-        final KDoubleReferenceValue pData,
-        final double pStep,
-        final double pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int dataType,
+        KLongReferenceValue pData,
+        long pStep,
+        long pStepFast,
+        String format
     );
 
-    boolean inputScalarN(final String label, final short[] pData, final int components);
-
-    boolean inputScalarN(final String label, final short[] pData, final int components, final short pStep);
-
-    boolean inputScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final short pStep,
-        final short pStepFast
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KLongReferenceValue pData,
+        long pStep,
+        long pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final short pStep,
-        final short pStepFast,
-        final String format
+    boolean inputScalar(String label, int dataType, KFloatReferenceValue pData);
+
+    boolean inputScalar(String label, int dataType, KFloatReferenceValue pData, float pStep);
+
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KFloatReferenceValue pData,
+        float pStep,
+        float pStepFast
     );
 
-    boolean inputScalarN(
-        final String label,
-        final short[] pData,
-        final int components,
-        final short pStep,
-        final short pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KFloatReferenceValue pData,
+        float pStep,
+        float pStepFast,
+        String format
     );
 
-    boolean inputScalarN(final String label, final int[] pData, final int components);
-
-    boolean inputScalarN(final String label, final int[] pData, final int components, final int pStep);
-
-    boolean inputScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final int pStep,
-        final int pStepFast
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KFloatReferenceValue pData,
+        float pStep,
+        float pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final int pStep,
-        final int pStepFast,
-        final String format
+    boolean inputScalar(String label, int dataType, KDoubleReferenceValue pData);
+
+    boolean inputScalar(String label, int dataType, KDoubleReferenceValue pData, double pStep);
+
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KDoubleReferenceValue pData,
+        double pStep,
+        double pStepFast
     );
 
-    boolean inputScalarN(
-        final String label,
-        final int[] pData,
-        final int components,
-        final int pStep,
-        final int pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KDoubleReferenceValue pData,
+        double pStep,
+        double pStepFast,
+        String format
     );
 
-    boolean inputScalarN(final String label, final long[] pData, final int components);
-
-    boolean inputScalarN(final String label, final long[] pData, final int components, final long pStep);
-
-    boolean inputScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final long pStep,
-        final long pStepFast
+    boolean inputScalar(
+        String label,
+        int dataType,
+        KDoubleReferenceValue pData,
+        double pStep,
+        double pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final long pStep,
-        final long pStepFast,
-        final String format
-    );
+    boolean inputScalarN(String label, short[] pData, int components);
+
+    boolean inputScalarN(String label, short[] pData, int components, short pStep);
 
     boolean inputScalarN(
-        final String label,
-        final long[] pData,
-        final int components,
-        final long pStep,
-        final long pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalarN(final String label, final float[] pData, final int components);
-
-    boolean inputScalarN(final String label, final float[] pData, final int components, final float pStep);
-
-    boolean inputScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float pStep,
-        final float pStepFast
+        String label,
+        short[] pData,
+        int components,
+        short pStep,
+        short pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float pStep,
-        final float pStepFast,
-        final String format
+        String label,
+        short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        String format
     );
 
     boolean inputScalarN(
-        final String label,
-        final float[] pData,
-        final int components,
-        final float pStep,
-        final float pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(final String label, final double[] pData, final int components);
+    boolean inputScalarN(String label, int[] pData, int components);
 
-    boolean inputScalarN(final String label, final double[] pData, final int components, final double pStep);
-
-    boolean inputScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final double pStep,
-        final double pStepFast
-    );
+    boolean inputScalarN(String label, int[] pData, int components, int pStep);
 
     boolean inputScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final double pStep,
-        final double pStepFast,
-        final String format
+        String label,
+        int[] pData,
+        int components,
+        int pStep,
+        int pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final double[] pData,
-        final int components,
-        final double pStep,
-        final double pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalarN(final String label, final int dataType, final short[] pData, final int components);
-
-    boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final short[] pData,
-        final int components,
-        final short pStep
+        String label,
+        int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        String format
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final short[] pData,
-        final int components,
-        final short pStep,
-        final short pStepFast
+        String label,
+        int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean inputScalarN(String label, long[] pData, int components);
+
+    boolean inputScalarN(String label, long[] pData, int components, long pStep);
+
+    boolean inputScalarN(
+        String label,
+        long[] pData,
+        int components,
+        long pStep,
+        long pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final short[] pData,
-        final int components,
-        final short pStep,
-        final short pStepFast,
-        final String format
+        String label,
+        long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        String format
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final short[] pData,
-        final int components,
-        final short pStep,
-        final short pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(final String label, final int dataType, final int[] pData, final int components);
+    boolean inputScalarN(String label, float[] pData, int components);
+
+    boolean inputScalarN(String label, float[] pData, int components, float pStep);
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final int[] pData,
-        final int components,
-        final int pStep
-    );
-
-    boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final int[] pData,
-        final int components,
-        final int pStep,
-        final int pStepFast
+        String label,
+        float[] pData,
+        int components,
+        float pStep,
+        float pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final int[] pData,
-        final int components,
-        final int pStep,
-        final int pStepFast,
-        final String format
+        String label,
+        float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        String format
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final int[] pData,
-        final int components,
-        final int pStep,
-        final int pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(final String label, final int dataType, final long[] pData, final int components);
+    boolean inputScalarN(String label, double[] pData, int components);
+
+    boolean inputScalarN(String label, double[] pData, int components, double pStep);
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final long[] pData,
-        final int components,
-        final long pStep
-    );
-
-    boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final long[] pData,
-        final int components,
-        final long pStep,
-        final long pStepFast
+        String label,
+        double[] pData,
+        int components,
+        double pStep,
+        double pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final long[] pData,
-        final int components,
-        final long pStep,
-        final long pStepFast,
-        final String format
+        String label,
+        double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        String format
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final long[] pData,
-        final int components,
-        final long pStep,
-        final long pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        String format,
+        int imGuiSliderFlags
     );
 
-    boolean inputScalarN(final String label, final int dataType, final float[] pData, final int components);
+    boolean inputScalarN(String label, int dataType, short[] pData, int components);
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final float[] pData,
-        final int components,
-        final float pStep
-    );
-
-    boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final float[] pData,
-        final int components,
-        final float pStep,
-        final float pStepFast
+        String label,
+        int dataType,
+        short[] pData,
+        int components,
+        short pStep
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final float[] pData,
-        final int components,
-        final float pStep,
-        final float pStepFast,
-        final String format
+        String label,
+        int dataType,
+        short[] pData,
+        int components,
+        short pStep,
+        short pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final float[] pData,
-        final int components,
-        final float pStep,
-        final float pStepFast,
-        final String format,
-        final int imGuiSliderFlags
-    );
-
-    boolean inputScalarN(final String label, final int dataType, final double[] pData, final int components);
-
-    boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final double[] pData,
-        final int components,
-        final double pStep
+        String label,
+        int dataType,
+        short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        String format
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final double[] pData,
-        final int components,
-        final double pStep,
-        final double pStepFast
+        String label,
+        int dataType,
+        short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean inputScalarN(String label, int dataType, int[] pData, int components);
+
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        int[] pData,
+        int components,
+        int pStep
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final double[] pData,
-        final int components,
-        final double pStep,
-        final double pStepFast,
-        final String format
+        String label,
+        int dataType,
+        int[] pData,
+        int components,
+        int pStep,
+        int pStepFast
     );
 
     boolean inputScalarN(
-        final String label,
-        final int dataType,
-        final double[] pData,
-        final int components,
-        final double pStep,
-        final double pStepFast,
-        final String format,
-        final int imGuiSliderFlags
+        String label,
+        int dataType,
+        int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        String format
     );
 
-    boolean colorEdit3(final String label, final float[] col);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
 
-    boolean colorEdit3(final String label, final float[] col, final int imGuiColorEditFlags);
+    boolean inputScalarN(String label, int dataType, long[] pData, int components);
 
-    boolean colorEdit4(final String label, final float[] col);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        long[] pData,
+        int components,
+        long pStep
+    );
 
-    boolean colorEdit4(final String label, final float[] col, final int imGuiColorEditFlags);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        long[] pData,
+        int components,
+        long pStep,
+        long pStepFast
+    );
 
-    boolean colorPicker3(final String label, final float[] col);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        String format
+    );
 
-    boolean colorPicker3(final String label, final float[] col, final int imGuiColorEditFlags);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
 
-    boolean colorPicker4(final String label, final float[] col);
+    boolean inputScalarN(String label, int dataType, float[] pData, int components);
 
-    boolean colorPicker4(final String label, final float[] col, final int imGuiColorEditFlags);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        float[] pData,
+        int components,
+        float pStep
+    );
 
-    boolean colorPicker4(final String label, final float[] col, final int imGuiColorEditFlags, final float[] refCol);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        float[] pData,
+        int components,
+        float pStep,
+        float pStepFast
+    );
 
-    boolean colorPicker4(final String label, final float[] col, final float[] refCol);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        String format
+    );
 
-    boolean colorButton(final String descId, final KVector4f col);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
 
-    boolean colorButton(final String descId, final float colX, final float colY, final float colZ, final float colW);
+    boolean inputScalarN(String label, int dataType, double[] pData, int components);
 
-    boolean colorButton(final String descId, final KVector4f col, final int imGuiColorEditFlags);
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        double[] pData,
+        int components,
+        double pStep
+    );
+
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        double[] pData,
+        int components,
+        double pStep,
+        double pStepFast
+    );
+
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        String format
+    );
+
+    boolean inputScalarN(
+        String label,
+        int dataType,
+        double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        String format,
+        int imGuiSliderFlags
+    );
+
+    boolean colorEdit3(String label, float[] col);
+
+    boolean colorEdit3(String label, float[] col, int imGuiColorEditFlags);
+
+    boolean colorEdit4(String label, float[] col);
+
+    boolean colorEdit4(String label, float[] col, int imGuiColorEditFlags);
+
+    boolean colorPicker3(String label, float[] col);
+
+    boolean colorPicker3(String label, float[] col, int imGuiColorEditFlags);
+
+    boolean colorPicker4(String label, float[] col);
+
+    boolean colorPicker4(String label, float[] col, int imGuiColorEditFlags);
+
+    boolean colorPicker4(String label, float[] col, int imGuiColorEditFlags, float[] refCol);
+
+    boolean colorPicker4(String label, float[] col, float[] refCol);
+
+    boolean colorButton(String descId, KVector4f col);
+
+    boolean colorButton(String descId, float colX, float colY, float colZ, float colW);
+
+    boolean colorButton(String descId, KVector4f col, int imGuiColorEditFlags);
 
     boolean colorButton(
-        final String descId,
-        final float colX,
-        final float colY,
-        final float colZ,
-        final float colW,
-        final int imGuiColorEditFlags
+        String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW,
+        int imGuiColorEditFlags
     );
 
-    boolean colorButton(final String descId, final KVector4f col, final int imGuiColorEditFlags, final KVector2f size);
+    boolean colorButton(String descId, KVector4f col, int imGuiColorEditFlags, KVector2f size);
 
     boolean colorButton(
-        final String descId,
-        final float colX,
-        final float colY,
-        final float colZ,
-        final float colW,
-        final int imGuiColorEditFlags,
-        final float sizeX,
-        final float sizeY
+        String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW,
+        int imGuiColorEditFlags,
+        float sizeX,
+        float sizeY
     );
 
-    boolean colorButton(final String descId, final KVector4f col, final KVector2f size);
+    boolean colorButton(String descId, KVector4f col, KVector2f size);
 
     boolean colorButton(
-        final String descId,
-        final float colX,
-        final float colY,
-        final float colZ,
-        final float colW,
-        final float sizeX,
-        final float sizeY
+        String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW,
+        float sizeX,
+        float sizeY
     );
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col);
+    boolean colorButton(String descId, float[] col);
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col, final int imGuiColorEditFlags);
+    boolean colorButton(String descId, float[] col, int imGuiColorEditFlags);
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col, final int imGuiColorEditFlags, final KVector2f size);
+    boolean colorButton(String descId, float[] col, int imGuiColorEditFlags, KVector2f size);
 
     @Deprecated
     boolean colorButton(
-        final String descId,
-        final float[] col,
-        final int imGuiColorEditFlags,
-        final float sizeX,
-        final float sizeY
+        String descId,
+        float[] col,
+        int imGuiColorEditFlags,
+        float sizeX,
+        float sizeY
     );
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col, final KVector2f size);
+    boolean colorButton(String descId, float[] col, KVector2f size);
 
     @Deprecated
-    boolean colorButton(final String descId, final float[] col, final float sizeX, final float sizeY);
+    boolean colorButton(String descId, float[] col, float sizeX, float sizeY);
 
-    void setColorEditOptions(final int imGuiColorEditFlags);
+    void setColorEditOptions(int imGuiColorEditFlags);
 
-    boolean treeNode(final String label);
+    boolean treeNode(String label);
 
-    boolean treeNode(final String strId, final String label);
+    boolean treeNode(String strId, String label);
 
-    boolean treeNode(final long ptrId, final String label);
+    boolean treeNode(long ptrId, String label);
 
-    boolean treeNodeEx(final String label);
+    boolean treeNodeEx(String label);
 
-    boolean treeNodeEx(final String label, final int flags);
+    boolean treeNodeEx(String label, int flags);
 
-    boolean treeNodeEx(final String strId, final int flags, final String label);
+    boolean treeNodeEx(String strId, int flags, String label);
 
-    boolean treeNodeEx(final long ptrId, final int flags, final String label);
+    boolean treeNodeEx(long ptrId, int flags, String label);
 
-    void treePush(final String strId);
+    void treePush(String strId);
 
-    void treePush(final long ptrId);
+    void treePush(long ptrId);
 
     void treePop();
 
     float getTreeNodeToLabelSpacing();
 
-    boolean collapsingHeader(final String label);
+    boolean collapsingHeader(String label);
 
-    boolean collapsingHeader(final String label, final int imGuiTreeNodeFlags);
+    boolean collapsingHeader(String label, int imGuiTreeNodeFlags);
 
-    boolean collapsingHeader(final String label, final KBooleanReferenceValue pVisible);
+    boolean collapsingHeader(String label, KBooleanReferenceValue pVisible);
 
-    boolean collapsingHeader(final String label, final KBooleanReferenceValue pVisible, final int imGuiTreeNodeFlags);
+    boolean collapsingHeader(String label, KBooleanReferenceValue pVisible, int imGuiTreeNodeFlags);
 
-    void setNextItemOpen(final boolean isOpen);
+    void setNextItemOpen(boolean isOpen);
 
-    void setNextItemOpen(final boolean isOpen, final int cond);
+    void setNextItemOpen(boolean isOpen, int cond);
 
-    boolean selectable(final String label);
+    boolean selectable(String label);
 
-    boolean selectable(final String label, final boolean selected);
+    boolean selectable(String label, boolean selected);
 
-    boolean selectable(final String label, final boolean selected, final int imGuiSelectableFlags);
+    boolean selectable(String label, boolean selected, int imGuiSelectableFlags);
 
-    boolean selectable(final String label, final boolean selected, final int imGuiSelectableFlags, final KVector2f size);
-
-    boolean selectable(
-        final String label,
-        final boolean selected,
-        final int imGuiSelectableFlags,
-        final float sizeX,
-        final float sizeY
-    );
-
-    boolean selectable(final String label, final int imGuiSelectableFlags, final KVector2f size);
-
-    boolean selectable(final String label, final int imGuiSelectableFlags, final float sizeX, final float sizeY);
-
-    boolean selectable(final String label, final KVector2f size);
-
-    boolean selectable(final String label, final float sizeX, final float sizeY);
-
-    boolean selectable(final String label, final boolean selected, final KVector2f size);
-
-    boolean selectable(final String label, final boolean selected, final float sizeX, final float sizeY);
-
-    boolean selectable(final String label, final KBooleanReferenceValue pSelected);
-
-    boolean selectable(final String label, final KBooleanReferenceValue pSelected, final int imGuiSelectableFlags);
+    boolean selectable(String label, boolean selected, int imGuiSelectableFlags, KVector2f size);
 
     boolean selectable(
-        final String label,
-        final KBooleanReferenceValue pSelected,
-        final int imGuiSelectableFlags,
-        final KVector2f size
+        String label,
+        boolean selected,
+        int imGuiSelectableFlags,
+        float sizeX,
+        float sizeY
+    );
+
+    boolean selectable(String label, int imGuiSelectableFlags, KVector2f size);
+
+    boolean selectable(String label, int imGuiSelectableFlags, float sizeX, float sizeY);
+
+    boolean selectable(String label, KVector2f size);
+
+    boolean selectable(String label, float sizeX, float sizeY);
+
+    boolean selectable(String label, boolean selected, KVector2f size);
+
+    boolean selectable(String label, boolean selected, float sizeX, float sizeY);
+
+    boolean selectable(String label, KBooleanReferenceValue pSelected);
+
+    boolean selectable(String label, KBooleanReferenceValue pSelected, int imGuiSelectableFlags);
+
+    boolean selectable(
+        String label,
+        KBooleanReferenceValue pSelected,
+        int imGuiSelectableFlags,
+        KVector2f size
     );
 
     boolean selectable(
-        final String label,
-        final KBooleanReferenceValue pSelected,
-        final int imGuiSelectableFlags,
-        final float sizeX,
-        final float sizeY
+        String label,
+        KBooleanReferenceValue pSelected,
+        int imGuiSelectableFlags,
+        float sizeX,
+        float sizeY
     );
 
-    boolean selectable(final String label, final KBooleanReferenceValue pSelected, final KVector2f size);
+    boolean selectable(String label, KBooleanReferenceValue pSelected, KVector2f size);
 
-    boolean selectable(final String label, final KBooleanReferenceValue pSelected, final float sizeX, final float sizeY);
+    boolean selectable(String label, KBooleanReferenceValue pSelected, float sizeX, float sizeY);
 
-    boolean beginListBox(final String label);
+    boolean beginListBox(String label);
 
-    boolean beginListBox(final String label, final KVector2f size);
+    boolean beginListBox(String label, KVector2f size);
 
-    boolean beginListBox(final String label, final float sizeX, final float sizeY);
+    boolean beginListBox(String label, float sizeX, float sizeY);
 
     void endListBox();
 
-    void listBox(final String label, final KIntReferenceValue currentItem, final String[] items);
+    void listBox(String label, KIntReferenceValue currentItem, String[] items);
 
-    void listBox(final String label, final KIntReferenceValue currentItem, final String[] items, final int heightInItems);
+    void listBox(String label, KIntReferenceValue currentItem, String[] items, int heightInItems);
 
-    void plotLines(final String label, final float[] values, final int valuesCount);
+    void plotLines(String label, float[] values, int valuesCount);
 
-    void plotLines(final String label, final float[] values, final int valuesCount, final int valuesOffset);
-
-    void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText
-    );
+    void plotLines(String label, float[] values, int valuesCount, int valuesOffset);
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotLines(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
-    void plotHistogram(final String label, final float[] values, final int valuesCount);
-
-    void plotHistogram(final String label, final float[] values, final int valuesCount, final int valuesOffset);
-
-    void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText
+    void plotLines(
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        int stride
     );
 
-    void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin
-    );
+    void plotHistogram(String label, float[] values, int valuesCount);
+
+    void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset);
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final float scaleMin,
-        final float scaleMax,
-        final KVector2f graphSize,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final float scaleMin,
-        final float scaleMax,
-        final float graphSizeX,
-        final float graphSizeY,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
     );
 
     void plotHistogram(
-        final String label,
-        final float[] values,
-        final int valuesCount,
-        final int valuesOffset,
-        final String overlayText,
-        final float scaleMin,
-        final float scaleMax,
-        final int stride
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        KVector2f graphSize,
+        int stride
     );
 
-    void value(final String prefix, final Number value);
+    void plotHistogram(
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    );
 
-    void value(final String prefix, final float value, String floatFormat);
+    void plotHistogram(
+        String label,
+        float[] values,
+        int valuesCount,
+        int valuesOffset,
+        String overlayText,
+        float scaleMin,
+        float scaleMax,
+        int stride
+    );
+
+    void value(String prefix, Number value);
+
+    void value(String prefix, float value, String floatFormat);
 
     boolean beginMenuBar();
 
@@ -3615,177 +3615,177 @@ public interface KImGui {
 
     void endMainMenuBar();
 
-    boolean beginMenu(final String label);
+    boolean beginMenu(String label);
 
-    boolean beginMenu(final String label, final boolean enabled);
+    boolean beginMenu(String label, boolean enabled);
 
     void endMenu();
 
-    boolean menuItem(final String label);
+    boolean menuItem(String label);
 
-    boolean menuItem(final String label, final boolean selected);
+    boolean menuItem(String label, boolean selected);
 
-    boolean menuItem(final String label, final boolean selected, final boolean enabled);
+    boolean menuItem(String label, boolean selected, boolean enabled);
 
-    boolean menuItem(final String label, final String shortcut);
+    boolean menuItem(String label, String shortcut);
 
-    boolean menuItem(final String label, final String shortcut, final boolean selected);
+    boolean menuItem(String label, String shortcut, boolean selected);
 
-    boolean menuItem(final String label, final String shortcut, final boolean selected, final boolean enabled);
+    boolean menuItem(String label, String shortcut, boolean selected, boolean enabled);
 
-    boolean menuItem(final String label, final String shortcut, final KBooleanReferenceValue pSelected);
+    boolean menuItem(String label, String shortcut, KBooleanReferenceValue pSelected);
 
-    boolean menuItem(final String label, final String shortcut, final KBooleanReferenceValue pSelected, final boolean enabled);
+    boolean menuItem(String label, String shortcut, KBooleanReferenceValue pSelected, boolean enabled);
 
     void beginTooltip();
 
     void endTooltip();
 
-    void setTooltip(final String text);
+    void setTooltip(String text);
 
     boolean beginItemTooltip();
 
-    void setItemTooltip(final String text);
+    void setItemTooltip(String text);
 
-    boolean beginPopup(final String strId);
+    boolean beginPopup(String strId);
 
-    boolean beginPopup(final String strId, final int imGuiWindowFlags);
+    boolean beginPopup(String strId, int imGuiWindowFlags);
 
-    boolean beginPopupModal(final String name);
+    boolean beginPopupModal(String name);
 
-    boolean beginPopupModal(final String name, final KBooleanReferenceValue pOpen);
+    boolean beginPopupModal(String name, KBooleanReferenceValue pOpen);
 
-    boolean beginPopupModal(final String name, final KBooleanReferenceValue pOpen, final int imGuiWindowFlags);
+    boolean beginPopupModal(String name, KBooleanReferenceValue pOpen, int imGuiWindowFlags);
 
-    boolean beginPopupModal(final String name, final int imGuiWindowFlags);
+    boolean beginPopupModal(String name, int imGuiWindowFlags);
 
     void endPopup();
 
-    void openPopup(final String strId);
+    void openPopup(String strId);
 
-    void openPopup(final String strId, final int imGuiPopupFlags);
+    void openPopup(String strId, int imGuiPopupFlags);
 
-    void openPopup(final int id);
+    void openPopup(int id);
 
-    void openPopup(final int id, final int imGuiPopupFlags);
+    void openPopup(int id, int imGuiPopupFlags);
 
     void openPopupOnItemClick();
 
-    void openPopupOnItemClick(final String strId);
+    void openPopupOnItemClick(String strId);
 
-    void openPopupOnItemClick(final String strId, final int imGuiPopupFlags);
+    void openPopupOnItemClick(String strId, int imGuiPopupFlags);
 
-    void openPopupOnItemClick(final int imGuiPopupFlags);
+    void openPopupOnItemClick(int imGuiPopupFlags);
 
     void closeCurrentPopup();
 
     boolean beginPopupContextItem();
 
-    boolean beginPopupContextItem(final String strId);
+    boolean beginPopupContextItem(String strId);
 
-    boolean beginPopupContextItem(final String strId, final int imGuiPopupFlags);
+    boolean beginPopupContextItem(String strId, int imGuiPopupFlags);
 
-    boolean beginPopupContextItem(final int imGuiPopupFlags);
+    boolean beginPopupContextItem(int imGuiPopupFlags);
 
     boolean beginPopupContextWindow();
 
-    boolean beginPopupContextWindow(final String strId);
+    boolean beginPopupContextWindow(String strId);
 
-    boolean beginPopupContextWindow(final String strId, final int imGuiPopupFlags);
+    boolean beginPopupContextWindow(String strId, int imGuiPopupFlags);
 
-    boolean beginPopupContextWindow(final int imGuiPopupFlags);
+    boolean beginPopupContextWindow(int imGuiPopupFlags);
 
     boolean beginPopupContextVoid();
 
-    boolean beginPopupContextVoid(final String strId);
+    boolean beginPopupContextVoid(String strId);
 
-    boolean beginPopupContextVoid(final String strId, final int imGuiPopupFlags);
+    boolean beginPopupContextVoid(String strId, int imGuiPopupFlags);
 
-    boolean beginPopupContextVoid(final int imGuiPopupFlags);
+    boolean beginPopupContextVoid(int imGuiPopupFlags);
 
-    boolean isPopupOpen(final String strId);
+    boolean isPopupOpen(String strId);
 
-    boolean isPopupOpen(final String strId, final int imGuiPopupFlags);
+    boolean isPopupOpen(String strId, int imGuiPopupFlags);
 
-    boolean beginTable(final String id, final int columns);
+    boolean beginTable(String id, int columns);
 
-    boolean beginTable(final String id, final int columns, final int imGuiTableFlags);
+    boolean beginTable(String id, int columns, int imGuiTableFlags);
 
-    boolean beginTable(final String id, final int columns, final int imGuiTableFlags, final KVector2f outerSize);
+    boolean beginTable(String id, int columns, int imGuiTableFlags, KVector2f outerSize);
 
     boolean beginTable(
-        final String id,
-        final int columns,
-        final int imGuiTableFlags,
-        final float outerSizeX,
-        final float outerSizeY
+        String id,
+        int columns,
+        int imGuiTableFlags,
+        float outerSizeX,
+        float outerSizeY
     );
 
     boolean beginTable(
-        final String id,
-        final int columns,
-        final int imGuiTableFlags,
-        final KVector2f outerSize,
-        final float innerWidth
+        String id,
+        int columns,
+        int imGuiTableFlags,
+        KVector2f outerSize,
+        float innerWidth
     );
 
     boolean beginTable(
-        final String id,
-        final int columns,
-        final int imGuiTableFlags,
-        final float outerSizeX,
-        final float outerSizeY,
-        final float innerWidth
+        String id,
+        int columns,
+        int imGuiTableFlags,
+        float outerSizeX,
+        float outerSizeY,
+        float innerWidth
     );
 
-    boolean beginTable(final String id, final int columns, final KVector2f outerSize, final float innerWidth);
+    boolean beginTable(String id, int columns, KVector2f outerSize, float innerWidth);
 
     boolean beginTable(
-        final String id,
-        final int columns,
-        final float outerSizeX,
-        final float outerSizeY,
-        final float innerWidth
+        String id,
+        int columns,
+        float outerSizeX,
+        float outerSizeY,
+        float innerWidth
     );
 
-    boolean beginTable(final String id, final int columns, final float innerWidth);
+    boolean beginTable(String id, int columns, float innerWidth);
 
-    boolean beginTable(final String id, final int columns, final int imGuiTableFlags, final float innerWidth);
+    boolean beginTable(String id, int columns, int imGuiTableFlags, float innerWidth);
 
     void endTable();
 
     void tableNextRow();
 
-    void tableNextRow(final int imGuiTableRowFlags);
+    void tableNextRow(int imGuiTableRowFlags);
 
-    void tableNextRow(final int imGuiTableRowFlags, final float minRowHeight);
+    void tableNextRow(int imGuiTableRowFlags, float minRowHeight);
 
-    void tableNextRow(final float minRowHeight);
+    void tableNextRow(float minRowHeight);
 
     boolean tableNextColumn();
 
-    boolean tableSetColumnIndex(final int columnN);
+    boolean tableSetColumnIndex(int columnN);
 
-    void tableSetupColumn(final String label);
+    void tableSetupColumn(String label);
 
-    void tableSetupColumn(final String label, final int imGuiTableColumnFlags);
+    void tableSetupColumn(String label, int imGuiTableColumnFlags);
 
-    void tableSetupColumn(final String label, final int imGuiTableColumnFlags, final float initWidthOrWeight);
+    void tableSetupColumn(String label, int imGuiTableColumnFlags, float initWidthOrWeight);
 
     void tableSetupColumn(
-        final String label,
-        final int imGuiTableColumnFlags,
-        final float initWidthOrWeight,
-        final int userId
+        String label,
+        int imGuiTableColumnFlags,
+        float initWidthOrWeight,
+        int userId
     );
 
-    void tableSetupColumn(final String label, final float initWidthOrWeight, final int userId);
+    void tableSetupColumn(String label, float initWidthOrWeight, int userId);
 
-    void tableSetupColumn(final String label, final int imGuiTableColumnFlags, final int userId);
+    void tableSetupColumn(String label, int imGuiTableColumnFlags, int userId);
 
-    void tableSetupScrollFreeze(final int cols, final int rows);
+    void tableSetupScrollFreeze(int cols, int rows);
 
-    void tableHeader(final String label);
+    void tableHeader(String label);
 
     void tableHeadersRow();
 
@@ -3801,33 +3801,33 @@ public interface KImGui {
 
     String tableGetColumnName();
 
-    String tableGetColumnName(final int columnN);
+    String tableGetColumnName(int columnN);
 
     int tableGetColumnFlags();
 
-    int tableGetColumnFlags(final int columnN);
+    int tableGetColumnFlags(int columnN);
 
-    void tableSetColumnEnabled(final int columnN, final boolean value);
+    void tableSetColumnEnabled(int columnN, boolean value);
 
     int tableGetHoveredColumn();
 
-    void tableSetBgColor(final int imGuiTableBgTarget, final int color);
+    void tableSetBgColor(int imGuiTableBgTarget, int color);
 
-    void tableSetBgColor(final int imGuiTableBgTarget, final int color, final int columnN);
+    void tableSetBgColor(int imGuiTableBgTarget, int color, int columnN);
 
     void columns();
 
-    void columns(final int count);
+    void columns(int count);
 
-    void columns(final int count, final String id);
+    void columns(int count, String id);
 
-    void columns(final int count, final String id, final boolean border);
+    void columns(int count, String id, boolean border);
 
-    void columns(final String id, final boolean border);
+    void columns(String id, boolean border);
 
-    void columns(final boolean border);
+    void columns(boolean border);
 
-    void columns(final int count, final boolean border);
+    void columns(int count, boolean border);
 
     void nextColumn();
 
@@ -3835,101 +3835,101 @@ public interface KImGui {
 
     float getColumnWidth();
 
-    float getColumnWidth(final int columnIndex);
+    float getColumnWidth(int columnIndex);
 
-    void setColumnWidth(final int columnIndex, final float width);
+    void setColumnWidth(int columnIndex, float width);
 
     float getColumnOffset();
 
-    float getColumnOffset(final int columnIndex);
+    float getColumnOffset(int columnIndex);
 
-    void setColumnOffset(final int columnIndex, final float offsetX);
+    void setColumnOffset(int columnIndex, float offsetX);
 
     int getColumnsCount();
 
-    boolean beginTabBar(final String strId);
+    boolean beginTabBar(String strId);
 
-    boolean beginTabBar(final String strId, final int imGuiTabBarFlags);
+    boolean beginTabBar(String strId, int imGuiTabBarFlags);
 
     void endTabBar();
 
-    boolean beginTabItem(final String label);
+    boolean beginTabItem(String label);
 
-    boolean beginTabItem(final String label, final KBooleanReferenceValue pOpen);
+    boolean beginTabItem(String label, KBooleanReferenceValue pOpen);
 
-    boolean beginTabItem(final String label, final KBooleanReferenceValue pOpen, final int imGuiTabItemFlags);
+    boolean beginTabItem(String label, KBooleanReferenceValue pOpen, int imGuiTabItemFlags);
 
-    boolean beginTabItem(final String label, final int imGuiTabItemFlags);
+    boolean beginTabItem(String label, int imGuiTabItemFlags);
 
     void endTabItem();
 
-    boolean tabItemButton(final String label);
+    boolean tabItemButton(String label);
 
-    boolean tabItemButton(final String label, final int imGuiTabItemFlags);
+    boolean tabItemButton(String label, int imGuiTabItemFlags);
 
-    void setTabItemClosed(final String tabOrDockedWindowLabel);
+    void setTabItemClosed(String tabOrDockedWindowLabel);
 
-    int dockSpace(final int dockspaceId);
+    int dockSpace(int dockspaceId);
 
-    int dockSpace(final int dockspaceId, final KVector2f size);
+    int dockSpace(int dockspaceId, KVector2f size);
 
-    int dockSpace(final int dockspaceId, final float sizeX, final float sizeY);
+    int dockSpace(int dockspaceId, float sizeX, float sizeY);
 
-    int dockSpace(final int dockspaceId, final KVector2f size, final int imGuiDockNodeFlags);
+    int dockSpace(int dockspaceId, KVector2f size, int imGuiDockNodeFlags);
 
-    int dockSpace(final int dockspaceId, final float sizeX, final float sizeY, final int imGuiDockNodeFlags);
+    int dockSpace(int dockspaceId, float sizeX, float sizeY, int imGuiDockNodeFlags);
 
     int dockSpace(
-        final int dockspaceId,
-        final KVector2f size,
-        final int imGuiDockNodeFlags,
-        final KImGuiWindowClass windowClass
+        int dockspaceId,
+        KVector2f size,
+        int imGuiDockNodeFlags,
+        KImGuiWindowClass windowClass
     );
 
     int dockSpace(
-        final int dockspaceId,
-        final float sizeX,
-        final float sizeY,
-        final int imGuiDockNodeFlags,
-        final KImGuiWindowClass windowClass
+        int dockspaceId,
+        float sizeX,
+        float sizeY,
+        int imGuiDockNodeFlags,
+        KImGuiWindowClass windowClass
     );
 
-    int dockSpace(final int dockspaceId, final int imGuiDockNodeFlags, final KImGuiWindowClass windowClass);
+    int dockSpace(int dockspaceId, int imGuiDockNodeFlags, KImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final KImGuiWindowClass windowClass);
+    int dockSpace(int dockspaceId, KImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final KVector2f size, final KImGuiWindowClass windowClass);
+    int dockSpace(int dockspaceId, KVector2f size, KImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final float sizeX, final float sizeY, final KImGuiWindowClass windowClass);
+    int dockSpace(int dockspaceId, float sizeX, float sizeY, KImGuiWindowClass windowClass);
 
     int dockSpaceOverViewport();
 
-    int dockSpaceOverViewport(final int dockspaceId);
+    int dockSpaceOverViewport(int dockspaceId);
 
-    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport);
+    int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport);
 
-    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport, final int imGuiDockNodeFlags);
+    int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport, int imGuiDockNodeFlags);
 
     int dockSpaceOverViewport(
-        final int dockspaceId,
-        final KImGuiViewport viewport,
-        final int imGuiDockNodeFlags,
-        final KImGuiWindowClass windowClass
+        int dockspaceId,
+        KImGuiViewport viewport,
+        int imGuiDockNodeFlags,
+        KImGuiWindowClass windowClass
     );
 
     int dockSpaceOverViewport(
-        final KImGuiViewport viewport,
-        final int imGuiDockNodeFlags,
-        final KImGuiWindowClass windowClass
+        KImGuiViewport viewport,
+        int imGuiDockNodeFlags,
+        KImGuiWindowClass windowClass
     );
 
-    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport, final KImGuiWindowClass windowClass);
+    int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport, KImGuiWindowClass windowClass);
 
-    void setNextWindowDockID(final int dockId);
+    void setNextWindowDockID(int dockId);
 
-    void setNextWindowDockID(final int dockId, final int imGuiCond);
+    void setNextWindowDockID(int dockId, int imGuiCond);
 
-    void setNextWindowClass(final KImGuiWindowClass windowClass);
+    void setNextWindowClass(KImGuiWindowClass windowClass);
 
     int getWindowDockID();
 
@@ -3937,76 +3937,76 @@ public interface KImGui {
 
     void logToTTY();
 
-    void logToTTY(final int autoOpenDepth);
+    void logToTTY(int autoOpenDepth);
 
     void logToFile();
 
-    void logToFile(final int autoOpenDepth);
+    void logToFile(int autoOpenDepth);
 
-    void logToFile(final int autoOpenDepth, final String filename);
+    void logToFile(int autoOpenDepth, String filename);
 
-    void logToFile(final String filename);
+    void logToFile(String filename);
 
     void logToClipboard();
 
-    void logToClipboard(final int autoOpenDepth);
+    void logToClipboard(int autoOpenDepth);
 
     void logFinish();
 
     void logButtons();
 
-    void logText(final String text);
+    void logText(String text);
 
     boolean beginDragDropSource();
 
-    boolean beginDragDropSource(final int imGuiDragDropFlags);
+    boolean beginDragDropSource(int imGuiDragDropFlags);
 
-    boolean setDragDropPayload(final String dataType, final Object payload);
+    boolean setDragDropPayload(String dataType, Object payload);
 
-    boolean setDragDropPayload(final String dataType, final Object payload, final int imGuiCond);
+    boolean setDragDropPayload(String dataType, Object payload, int imGuiCond);
 
-    boolean setDragDropPayload(final Object payload);
+    boolean setDragDropPayload(Object payload);
 
-    boolean setDragDropPayload(final Object payload, final int imGuiCond);
+    boolean setDragDropPayload(Object payload, int imGuiCond);
 
     void endDragDropSource();
 
     boolean beginDragDropTarget();
 
-    <T> T acceptDragDropPayload(final String dataType);
+    <T> T acceptDragDropPayload(String dataType);
 
-    <T> T acceptDragDropPayload(final String dataType, final Class<T> aClass);
+    <T> T acceptDragDropPayload(String dataType, Class<T> aClass);
 
-    <T> T acceptDragDropPayload(final String dataType, final int imGuiDragDropFlags);
+    <T> T acceptDragDropPayload(String dataType, int imGuiDragDropFlags);
     
-    <T> T acceptDragDropPayload(final String dataType, final int imGuiDragDropFlags, final Class<T> aClass);
+    <T> T acceptDragDropPayload(String dataType, int imGuiDragDropFlags, Class<T> aClass);
 
-    <T> T acceptDragDropPayload(final Class<T> aClass);
+    <T> T acceptDragDropPayload(Class<T> aClass);
 
-    <T> T acceptDragDropPayload(final Class<T> aClass, final int imGuiDragDropFlags);
+    <T> T acceptDragDropPayload(Class<T> aClass, int imGuiDragDropFlags);
 
     void endDragDropTarget();
     
     <T> T getDragDropPayload();
     
-    <T> T getDragDropPayload(final String dataType);
+    <T> T getDragDropPayload(String dataType);
 
-    <T> T getDragDropPayload(final Class<T> aClass);
+    <T> T getDragDropPayload(Class<T> aClass);
 
     void beginDisabled();
 
-    void beginDisabled(final boolean disabled);
+    void beginDisabled(boolean disabled);
 
     void endDisabled();
 
-    void pushClipRect(final KVector2f clipRectMin, final KVector2f clipRectMax, final boolean intersectWithCurrentClipRect);
+    void pushClipRect(KVector2f clipRectMin, KVector2f clipRectMax, boolean intersectWithCurrentClipRect);
 
     void pushClipRect(
-        final float clipRectMinX,
-        final float clipRectMinY,
-        final float clipRectMaxX,
-        final float clipRectMaxY,
-        final boolean intersectWithCurrentClipRect
+        float clipRectMinX,
+        float clipRectMinY,
+        float clipRectMaxX,
+        float clipRectMaxY,
+        boolean intersectWithCurrentClipRect
     );
 
     void popClipRect();
@@ -4015,13 +4015,13 @@ public interface KImGui {
 
     void setKeyboardFocusHere();
 
-    void setKeyboardFocusHere(final int offset);
+    void setKeyboardFocusHere(int offset);
 
     void setNextItemAllowOverlap();
 
     boolean isItemHovered();
 
-    boolean isItemHovered(final int imGuiHoveredFlags);
+    boolean isItemHovered(int imGuiHoveredFlags);
 
     boolean isItemActive();
 
@@ -4029,7 +4029,7 @@ public interface KImGui {
 
     boolean isItemClicked();
 
-    boolean isItemClicked(final int mouseButton);
+    boolean isItemClicked(int mouseButton);
 
     boolean isItemVisible();
 
@@ -4057,7 +4057,7 @@ public interface KImGui {
 
     float getItemRectMinY();
 
-    void getItemRectMin(final KVector2f dst);
+    void getItemRectMin(KVector2f dst);
 
     KVector2f getItemRectMax();
 
@@ -4065,7 +4065,7 @@ public interface KImGui {
 
     float getItemRectMaxY();
 
-    void getItemRectMax(final KVector2f dst);
+    void getItemRectMax(KVector2f dst);
 
     KVector2f getItemRectSize();
 
@@ -4073,148 +4073,148 @@ public interface KImGui {
 
     float getItemRectSizeY();
 
-    void getItemRectSize(final KVector2f dst);
+    void getItemRectSize(KVector2f dst);
 
     KImGuiViewport getMainViewport();
 
     KImDrawList getBackgroundDrawList();
 
-    KImDrawList getBackgroundDrawList(final KImGuiViewport viewport);
+    KImDrawList getBackgroundDrawList(KImGuiViewport viewport);
 
     KImDrawList getForegroundDrawList();
 
-    KImDrawList getForegroundDrawList(final KImGuiViewport viewport);
+    KImDrawList getForegroundDrawList(KImGuiViewport viewport);
 
-    boolean isRectVisible(final KVector2f size);
+    boolean isRectVisible(KVector2f size);
 
-    boolean isRectVisible(final float sizeX, final float sizeY);
+    boolean isRectVisible(float sizeX, float sizeY);
 
-    boolean isRectVisible(final KVector2f rectMin, final KVector2f rectMax);
+    boolean isRectVisible(KVector2f rectMin, KVector2f rectMax);
 
-    boolean isRectVisible(final float rectMinX, final float rectMinY, final float rectMaxX, final float rectMaxY);
+    boolean isRectVisible(float rectMinX, float rectMinY, float rectMaxX, float rectMaxY);
 
     double getTime();
 
     int getFrameCount();
 
-    String getStyleColorName(final int imGuiColIdx);
+    String getStyleColorName(int imGuiColIdx);
 
     KImGuiStorage getStateStorage();
 
-    void setStateStorage(final KImGuiStorage storage);
+    void setStateStorage(KImGuiStorage storage);
 
-    KVector2f calcTextSize(final String text);
+    KVector2f calcTextSize(String text);
 
-    float calcTextSizeX(final String text);
+    float calcTextSizeX(String text);
 
-    float calcTextSizeY(final String text);
+    float calcTextSizeY(String text);
 
-    void calcTextSize(final KVector2f dst, final String text);
+    void calcTextSize(KVector2f dst, String text);
 
-    KVector2f calcTextSize(final String text, final boolean hideTextAfterDoubleHash);
+    KVector2f calcTextSize(String text, boolean hideTextAfterDoubleHash);
 
-    float calcTextSizeX(final String text, final boolean hideTextAfterDoubleHash);
+    float calcTextSizeX(String text, boolean hideTextAfterDoubleHash);
 
-    float calcTextSizeY(final String text, final boolean hideTextAfterDoubleHash);
+    float calcTextSizeY(String text, boolean hideTextAfterDoubleHash);
 
-    void calcTextSize(final KVector2f dst, final String text, final boolean hideTextAfterDoubleHash);
+    void calcTextSize(KVector2f dst, String text, boolean hideTextAfterDoubleHash);
 
-    KVector2f calcTextSize(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
+    KVector2f calcTextSize(String text, boolean hideTextAfterDoubleHash, float wrapWidth);
 
-    float calcTextSizeX(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
+    float calcTextSizeX(String text, boolean hideTextAfterDoubleHash, float wrapWidth);
 
-    float calcTextSizeY(final String text, final boolean hideTextAfterDoubleHash, final float wrapWidth);
+    float calcTextSizeY(String text, boolean hideTextAfterDoubleHash, float wrapWidth);
 
     void calcTextSize(
-        final KVector2f dst,
-        final String text,
-        final boolean hideTextAfterDoubleHash,
-        final float wrapWidth
+        KVector2f dst,
+        String text,
+        boolean hideTextAfterDoubleHash,
+        float wrapWidth
     );
 
-    KVector2f calcTextSize(final String text, final float wrapWidth);
+    KVector2f calcTextSize(String text, float wrapWidth);
 
-    float calcTextSizeX(final String text, final float wrapWidth);
+    float calcTextSizeX(String text, float wrapWidth);
 
-    float calcTextSizeY(final String text, final float wrapWidth);
+    float calcTextSizeY(String text, float wrapWidth);
 
-    void calcTextSize(final KVector2f dst, final String text, final float wrapWidth);
+    void calcTextSize(KVector2f dst, String text, float wrapWidth);
 
-    KVector4f colorConvertU32ToFloat4(final int in);
+    KVector4f colorConvertU32ToFloat4(int in);
 
-    float colorConvertU32ToFloat4X(final int in);
+    float colorConvertU32ToFloat4X(int in);
 
-    float colorConvertU32ToFloat4Y(final int in);
+    float colorConvertU32ToFloat4Y(int in);
 
-    float colorConvertU32ToFloat4Z(final int in);
+    float colorConvertU32ToFloat4Z(int in);
 
-    float colorConvertU32ToFloat4W(final int in);
+    float colorConvertU32ToFloat4W(int in);
 
-    void colorConvertU32ToFloat4(final KVector4f dst, final int in);
+    void colorConvertU32ToFloat4(KVector4f dst, int in);
 
-    int colorConvertFloat4ToU32(final KVector4f in);
+    int colorConvertFloat4ToU32(KVector4f in);
 
-    int colorConvertFloat4ToU32(final float inX, final float inY, final float inZ, final float inW);
+    int colorConvertFloat4ToU32(float inX, float inY, float inZ, float inW);
 
     void colorConvertRGBtoHSV(float[] rgb, float[] hsv);
 
     void colorConvertHSVtoRGB(float[] hsv, float[] rgb);
 
-    boolean isKeyDown(final int key);
+    boolean isKeyDown(int key);
 
-    boolean isKeyPressed(final int key);
+    boolean isKeyPressed(int key);
 
-    boolean isKeyPressed(final int key, final boolean repeat);
+    boolean isKeyPressed(int key, boolean repeat);
 
-    boolean isKeyReleased(final int key);
+    boolean isKeyReleased(int key);
 
-    boolean isKeyChordPressed(final int keyChord);
+    boolean isKeyChordPressed(int keyChord);
 
-    boolean getKeyPressedAmount(final int key, final float repeatDelay, final float rate);
+    boolean getKeyPressedAmount(int key, float repeatDelay, float rate);
 
-    String getKeyName(final int key);
+    String getKeyName(int key);
 
-    void setNextFrameWantCaptureKeyboard(final boolean wantCaptureKeyboard);
+    void setNextFrameWantCaptureKeyboard(boolean wantCaptureKeyboard);
 
-    boolean shortcut(final int keyChord);
+    boolean shortcut(int keyChord);
 
-    boolean shortcut(final int keyChord, final int flags);
+    boolean shortcut(int keyChord, int flags);
 
-    void setNextItemShortcut(final int keyChord);
+    void setNextItemShortcut(int keyChord);
 
-    void setNextItemShortcut(final int keyChord, final int flags);
+    void setNextItemShortcut(int keyChord, int flags);
 
-    boolean isMouseDown(final int button);
+    boolean isMouseDown(int button);
 
-    boolean isMouseClicked(final int button);
+    boolean isMouseClicked(int button);
 
-    boolean isMouseClicked(final int button, final boolean repeat);
+    boolean isMouseClicked(int button, boolean repeat);
 
-    boolean isMouseReleased(final int button);
+    boolean isMouseReleased(int button);
 
-    boolean isMouseDoubleClicked(final int button);
+    boolean isMouseDoubleClicked(int button);
 
-    int getMouseClickedCount(final int button);
+    int getMouseClickedCount(int button);
 
-    boolean isMouseHoveringRect(final KVector2f rMin, final KVector2f rMax);
+    boolean isMouseHoveringRect(KVector2f rMin, KVector2f rMax);
 
-    boolean isMouseHoveringRect(final float rMinX, final float rMinY, final float rMaxX, final float rMaxY);
+    boolean isMouseHoveringRect(float rMinX, float rMinY, float rMaxX, float rMaxY);
 
-    boolean isMouseHoveringRect(final KVector2f rMin, final KVector2f rMax, final boolean clip);
+    boolean isMouseHoveringRect(KVector2f rMin, KVector2f rMax, boolean clip);
 
     boolean isMouseHoveringRect(
-        final float rMinX,
-        final float rMinY,
-        final float rMaxX,
-        final float rMaxY,
-        final boolean clip
+        float rMinX,
+        float rMinY,
+        float rMaxX,
+        float rMaxY,
+        boolean clip
     );
 
     boolean isMousePosValid();
 
-    boolean isMousePosValid(final KVector2f mousePos);
+    boolean isMousePosValid(KVector2f mousePos);
 
-    boolean isMousePosValid(final float mousePosX, final float mousePosY);
+    boolean isMousePosValid(float mousePosX, float mousePosY);
 
     boolean isAnyMouseDown();
 
@@ -4224,7 +4224,7 @@ public interface KImGui {
 
     float getMousePosY();
 
-    void getMousePos(final KVector2f dst);
+    void getMousePos(KVector2f dst);
 
     KVector2f getMousePosOnOpeningCurrentPopup();
 
@@ -4232,11 +4232,11 @@ public interface KImGui {
 
     float getMousePosOnOpeningCurrentPopupY();
 
-    void getMousePosOnOpeningCurrentPopup(final KVector2f dst);
+    void getMousePosOnOpeningCurrentPopup(KVector2f dst);
 
-    boolean isMouseDragging(final int button);
+    boolean isMouseDragging(int button);
 
-    boolean isMouseDragging(final int button, final float lockThreshold);
+    boolean isMouseDragging(int button, float lockThreshold);
 
     KVector2f getMouseDragDelta();
 
@@ -4244,64 +4244,64 @@ public interface KImGui {
 
     float getMouseDragDeltaY();
 
-    void getMouseDragDelta(final KVector2f dst);
+    void getMouseDragDelta(KVector2f dst);
 
-    KVector2f getMouseDragDelta(final int button);
+    KVector2f getMouseDragDelta(int button);
 
-    float getMouseDragDeltaX(final int button);
+    float getMouseDragDeltaX(int button);
 
-    float getMouseDragDeltaY(final int button);
+    float getMouseDragDeltaY(int button);
 
-    void getMouseDragDelta(final KVector2f dst, final int button);
+    void getMouseDragDelta(KVector2f dst, int button);
 
-    KVector2f getMouseDragDelta(final int button, final float lockThreshold);
+    KVector2f getMouseDragDelta(int button, float lockThreshold);
 
-    float getMouseDragDeltaX(final int button, final float lockThreshold);
+    float getMouseDragDeltaX(int button, float lockThreshold);
 
-    float getMouseDragDeltaY(final int button, final float lockThreshold);
+    float getMouseDragDeltaY(int button, float lockThreshold);
 
-    void getMouseDragDelta(final KVector2f dst, final int button, final float lockThreshold);
+    void getMouseDragDelta(KVector2f dst, int button, float lockThreshold);
 
     void resetMouseDragDelta();
 
-    void resetMouseDragDelta(final int button);
+    void resetMouseDragDelta(int button);
 
     int getMouseCursor();
 
-    void setMouseCursor(final int type);
+    void setMouseCursor(int type);
 
-    void setNextFrameWantCaptureMouse(final boolean wantCaptureMouse);
+    void setNextFrameWantCaptureMouse(boolean wantCaptureMouse);
 
     String getClipboardText();
 
-    void setClipboardText(final String text);
+    void setClipboardText(String text);
 
-    void loadIniSettingsFromDisk(final String iniFilename);
+    void loadIniSettingsFromDisk(String iniFilename);
 
-    void loadIniSettingsFromMemory(final String iniData);
+    void loadIniSettingsFromMemory(String iniData);
 
-    void loadIniSettingsFromMemory(final String iniData, final int iniSize);
+    void loadIniSettingsFromMemory(String iniData, int iniSize);
 
-    void saveIniSettingsToDisk(final String iniFilename);
+    void saveIniSettingsToDisk(String iniFilename);
 
     String saveIniSettingsToMemory();
 
-    String saveIniSettingsToMemory(final long outIniSize);
+    String saveIniSettingsToMemory(long outIniSize);
 
-    void debugTextEncoding(final String text);
+    void debugTextEncoding(String text);
 
-    void debugFlashStyleColor(final int idx);
+    void debugFlashStyleColor(int idx);
 
     void debugStartItemPicker();
 
     boolean debugCheckVersionAndDataLayout(
-        final String versionStr,
-        final int szIo,
-        final int szStyle,
-        final int szVec2,
-        final int szVec4,
-        final int szDrawVert,
-        final int szDrawIdx
+        String versionStr,
+        int szIo,
+        int szStyle,
+        int szVec2,
+        int szVec4,
+        int szDrawVert,
+        int szDrawIdx
     );
 
     KImGuiPlatformIo getPlatformIO();
@@ -4312,9 +4312,9 @@ public interface KImGui {
 
     void destroyPlatformWindows();
 
-    KImGuiViewport findViewportByID(final int imGuiID);
+    KImGuiViewport findViewportByID(int imGuiID);
 
-    KImGuiViewport findViewportByPlatformHandle(final long platformHandle);
+    KImGuiViewport findViewportByPlatformHandle(long platformHandle);
 
 }
 

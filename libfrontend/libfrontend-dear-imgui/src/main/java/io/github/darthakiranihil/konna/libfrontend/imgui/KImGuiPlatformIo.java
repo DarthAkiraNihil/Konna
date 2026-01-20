@@ -39,7 +39,7 @@ public interface KImGuiPlatformIo {
         float dpiScale
     );
 
-    public KImGuiPlatformMonitor getMonitors(final int idx);
-    public KImGuiViewport getViewports(final int idx);
+    public KImGuiPlatformMonitor getMonitors(int idx);
+    public KImGuiViewport getViewports(int idx);
 
 }

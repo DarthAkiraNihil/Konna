@@ -6,6 +6,6 @@ public interface KImGuiTableSortSpecs {
     int getSpecsCount();
 
     boolean getSpecsDirty();
-    void setSpecsDirty(final boolean value);
+    void setSpecsDirty(boolean value);
 
 }

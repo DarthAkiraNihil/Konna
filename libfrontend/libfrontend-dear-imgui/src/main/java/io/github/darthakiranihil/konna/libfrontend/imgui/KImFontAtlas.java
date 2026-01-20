@@ -9,29 +9,29 @@ public interface KImFontAtlas {
     
     KImFont addFontDefault();
 
-    KImFont addFontDefault(final KImFontConfig KImFontConfig);
-    KImFont addFontFromFileTTF(final String filename, final float sizePixels);
-    KImFont addFontFromFileTTF(final String filename, final float sizePixels, final KImFontConfig fontConfig);
-    KImFont addFontFromFileTTF(final String filename, final float sizePixels, final KImFontConfig fontConfig, final short[] glyphRanges);
-    KImFont addFontFromFileTTF(final String filename, final float sizePixels, final short[] glyphRanges);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final float sizePixels);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final float sizePixels, final KImFontConfig fontConfig);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final float sizePixels, final KImFontConfig fontConfig, final short[] glyphRanges);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final float sizePixels, final short[] glyphRanges);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final int fontDataSize, final float sizePixels);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final int fontDataSize, final float sizePixels, final KImFontConfig fontConfig);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final int fontDataSize, final float sizePixels, final KImFontConfig fontConfig, final short[] glyphRanges);
-    KImFont addFontFromMemoryTTF(final byte[] fontData, final int fontDataSize, final float sizePixels, final short[] glyphRanges);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final float sizePixels);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final float sizePixels, final KImFontConfig KImFontConfig);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final float sizePixels, final KImFontConfig KImFontConfig, final short[] glyphRanges);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final float sizePixels, final short[] glyphRanges);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final int compressedFontDataSize, final float sizePixels);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final int compressedFontDataSize, final float sizePixels, final KImFontConfig KImFontConfig);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final int compressedFontDataSize, final float sizePixels, final KImFontConfig KImFontConfig, final short[] glyphRanges);
-    KImFont addFontFromMemoryCompressedTTF(final byte[] compressedFontData, final int compressedFontDataSize, final float sizePixels, final short[] glyphRanges);
-    KImFont addFontFromMemoryCompressedBase85TTF(final String compressedFontDataBase85, final float sizePixels, final KImFontConfig fontConfig);
-    KImFont addFontFromMemoryCompressedBase85TTF(final String compressedFontDataBase85, final float sizePixels, final KImFontConfig fontConfig, final short[] glyphRanges);
+    KImFont addFontDefault(KImFontConfig KImFontConfig);
+    KImFont addFontFromFileTTF(String filename, float sizePixels);
+    KImFont addFontFromFileTTF(String filename, float sizePixels, KImFontConfig fontConfig);
+    KImFont addFontFromFileTTF(String filename, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges);
+    KImFont addFontFromFileTTF(String filename, float sizePixels, short[] glyphRanges);
+    KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels);
+    KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels, KImFontConfig fontConfig);
+    KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges);
+    KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels, short[] glyphRanges);
+    KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels);
+    KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels, KImFontConfig fontConfig);
+    KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges);
+    KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels, short[] glyphRanges);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels, KImFontConfig KImFontConfig);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels, KImFontConfig KImFontConfig, short[] glyphRanges);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels, short[] glyphRanges);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels, KImFontConfig KImFontConfig);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels, KImFontConfig KImFontConfig, short[] glyphRanges);
+    KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels, short[] glyphRanges);
+    KImFont addFontFromMemoryCompressedBase85TTF(String compressedFontDataBase85, float sizePixels, KImFontConfig fontConfig);
+    KImFont addFontFromMemoryCompressedBase85TTF(String compressedFontDataBase85, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges);
     void clearInputData();
     void clearTexData();
     void clearFonts();
@@ -39,13 +39,13 @@ public interface KImFontAtlas {
     void setFreeTypeRenderer(boolean enabled);
 
     boolean build();
-    ByteBuffer getTexDataAsAlpha8(final KIntReferenceValue outWidth, final KIntReferenceValue outHeight);
-    ByteBuffer getTexDataAsAlpha8(final KIntReferenceValue outWidth, final KIntReferenceValue outHeight, final KIntReferenceValue outBytesPerPixel);
-    ByteBuffer getTexDataAsRGBA32(final KIntReferenceValue outWidth, final KIntReferenceValue outHeight);
-    ByteBuffer getTexDataAsRGBA32(final KIntReferenceValue outWidth, final KIntReferenceValue outHeight, final KIntReferenceValue outBytesPerPixel);
+    ByteBuffer getTexDataAsAlpha8(KIntReferenceValue outWidth, KIntReferenceValue outHeight);
+    ByteBuffer getTexDataAsAlpha8(KIntReferenceValue outWidth, KIntReferenceValue outHeight, KIntReferenceValue outBytesPerPixel);
+    ByteBuffer getTexDataAsRGBA32(KIntReferenceValue outWidth, KIntReferenceValue outHeight);
+    ByteBuffer getTexDataAsRGBA32(KIntReferenceValue outWidth, KIntReferenceValue outHeight, KIntReferenceValue outBytesPerPixel);
     boolean isBuilt();
 
-    void setTexID(final long textureID);
+    void setTexID(long textureID);
     short[] getGlyphRangesDefault();
     short[] getGlyphRangesGreek();
     short[] getGlyphRangesKorean();
@@ -56,25 +56,25 @@ public interface KImFontAtlas {
     short[] getGlyphRangesThai();
     short[] getGlyphRangesVietnamese();
 
-    int addCustomRectRegular(final int width, final int height);
+    int addCustomRectRegular(int width, int height);
 
-    int addCustomRectFontGlyph(final KImFont KImFont, final short id, final int width, final int height, final float advanceX);
+    int addCustomRectFontGlyph(KImFont KImFont, short id, int width, int height, float advanceX);
 
-    int addCustomRectFontGlyph(final KImFont KImFont, final short id, final int width, final int height, final float advanceX, final KVector2f offset);
-    int addCustomRectFontGlyph(final KImFont KImFont, final short id, final int width, final int height, final float advanceX, final float offsetX, final float offsetY);
+    int addCustomRectFontGlyph(KImFont KImFont, short id, int width, int height, float advanceX, KVector2f offset);
+    int addCustomRectFontGlyph(KImFont KImFont, short id, int width, int height, float advanceX, float offsetX, float offsetY);
 
     int getFlags();
-    void setFlags(final int value);
-    void addFlags(final int flags);
-    void removeFlags(final int flags);
-    boolean hasFlags(final int flags);
+    void setFlags(int value);
+    void addFlags(int flags);
+    void removeFlags(int flags);
+    boolean hasFlags(int flags);
 
     int getTexDesiredWidth();
-    void setTexDesiredWidth(final int value);
+    void setTexDesiredWidth(int value);
 
     int getTexGlyphPadding();
-    void setTexGlyphPadding(final int value);
+    void setTexGlyphPadding(int value);
     boolean getLocked();
-    void setLocked(final boolean value);
+    void setLocked(boolean value);
 
 }

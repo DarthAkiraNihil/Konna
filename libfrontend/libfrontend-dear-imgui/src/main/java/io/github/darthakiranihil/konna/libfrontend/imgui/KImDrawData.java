@@ -9,17 +9,17 @@ public interface KImDrawData {
 
     int getCmdListCmdBufferSize(int cmdListIdx);
     int getCmdListCmdBufferElemCount(int cmdListIdx, int cmdBufferIdx);
-    KVector4f getCmdListCmdBufferClipRect(final int cmdListIdx, final int cmdBufferIdx);
+    KVector4f getCmdListCmdBufferClipRect(int cmdListIdx, int cmdBufferIdx);
     void getCmdListCmdBufferClipRect(KVector4f dst, int cmdListIdx, int cmdBufferIdx);
     long getCmdListCmdBufferTextureId(int cmdListIdx, int cmdBufferIdx);
     int getCmdListCmdBufferVtxOffset(int cmdListIdx, int cmdBufferIdx);
     int getCmdListCmdBufferIdxOffset(int cmdListIdx, int cmdBufferIdx);
     int getCmdListIdxBufferSize(int cmdListIdx);
 
-    ByteBuffer getCmdListIdxBufferData(final int cmdListIdx);
+    ByteBuffer getCmdListIdxBufferData(int cmdListIdx);
     int getCmdListVtxBufferSize(int cmdListIdx);
 
-    ByteBuffer getCmdListVtxBufferData(final int cmdListIdx);
+    ByteBuffer getCmdListVtxBufferData(int cmdListIdx);
     int sizeOfImDrawVert();
     int sizeOfImDrawIdx();
     
