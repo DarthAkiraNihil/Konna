@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.std.KStandardApplicationFeatures
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.engine.impl.TestDebugger;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
@@ -77,7 +78,6 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
         Assertions.assertNotNull(loadedConfig);
         KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
         hypervisor.launch(new KStandardApplicationFeatures(new HashMap<>()));
-        ;
         try {
             Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
 
@@ -85,6 +85,69 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
             Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
             Assertions.assertTrue(mapOfComponents.containsKey("TestComponent"));
+
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testInstantiateHypervisorSuccessWithDebuggers() {
+
+        String config = """
+            {\
+            "context_loader": "io.github.darthakiranihil.konna.core.test.KTestContextLoader"\
+            "component_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader",\
+            "service_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader",\
+            "route_configurers": [],\
+            "event_registerers": [],\
+            "event_queue": "io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue",\
+            "components": [\
+            "io.github.darthakiranihil.konna.core.engine.TestComponent"\
+            ],"frame_loader": "io.github.darthakiranihil.konna.core.test.KTestFrameLoader",
+                  "frame_options": {
+                    "size": {
+                        "width": 1000,
+                        "height": 800
+                    },
+                    "title": "Hello, world!"
+                  }}""";
+
+        KJsonValue parsed;
+        try {
+            parsed = this.jsonParser.parse(config);
+        } catch (KJsonParseException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        KEngineHypervisorConfig loadedConfig;
+        try {
+            loadedConfig = this.jsonDeserializer.deserialize(
+                parsed,
+                KEngineHypervisorConfig.class
+            );
+        } catch (KJsonSerializationException e) {
+            Assertions.fail(e);
+            return;
+        }
+
+        Assertions.assertNotNull(loadedConfig);
+        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
+        hypervisor.launch(new KStandardApplicationFeatures(Map.of("debug", "true")));
+        try {
+            Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
+            Field loadedDebuggers = KEngineHypervisor.class.getDeclaredField("loadedDebuggers");
+
+            engineComponents.setAccessible(true);
+            loadedDebuggers.setAccessible(true);
+
+            Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
+            Map<String, Object> mapOfDebuggers = (Map<String, Object>) loadedDebuggers.get(hypervisor);
+            Assertions.assertTrue(mapOfComponents.containsKey("TestComponent"));
+            Assertions.assertTrue(mapOfDebuggers.containsKey(TestDebugger.class.getCanonicalName()));
 
         } catch (Throwable e) {
             Assertions.fail(e);

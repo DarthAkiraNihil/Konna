@@ -66,6 +66,9 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine components.
      */
     protected final Map<String, KComponent> engineComponents;
+    /**
+     * Loaded engine debuggers.
+     */
     protected final Map<String, Object> loadedDebuggers;
     /**
      * Loaded engine context.
@@ -211,7 +214,6 @@ public class KEngineHypervisor extends KObject {
             }
 
         });
-
         KSystemLogger.info(
             this.name,
             "Registered %d components in the message system",
@@ -223,7 +225,6 @@ public class KEngineHypervisor extends KObject {
             KMessageRoutesConfigurer configurer = ctx.createObject(routeConfigurer);
             configurer.setupRoutes(ctx);
         }
-
         KSystemLogger.info(
             this.name,
             "%d message route configurers have been executed",
@@ -231,7 +232,6 @@ public class KEngineHypervisor extends KObject {
         );
 
         engineComponents.values().forEach(KComponent::postInit);
-
         KSystemLogger.info(
             this.name,
             "Components' post-init is completed"
