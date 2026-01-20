@@ -75,6 +75,11 @@ public class KEngineHypervisor extends KObject {
     protected @Nullable KFrame frame;
 
     private final KSimpleEvent tick;
+    private final KSimpleEvent newFrame;
+    private final KSimpleEvent frameFinished;
+    private final KSimpleEvent debugTick;
+
+    private boolean debug;
 
     /**
      * Constructs hypervisor with provided config.
@@ -92,7 +97,11 @@ public class KEngineHypervisor extends KObject {
 
         this.engineComponents = new HashMap<>();
         this.ctx = null;
+
         this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
+        this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
+        this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
+        this.debugTick = new KSimpleEvent(KFrame.DEBUG_TICK_EVENT_NAME);
     }
 
     /**
@@ -103,6 +112,11 @@ public class KEngineHypervisor extends KObject {
      *                 after parsing arguments
      */
     public void launch(final KApplicationFeatures features) {
+
+        String debugFeature = features.getFeature("debug");
+        if (debugFeature != null && debugFeature.equals("true")) {
+            this.debug = true;
+        }
 
         KEngineContextLoader contextLoader;
         try {
@@ -118,6 +132,9 @@ public class KEngineHypervisor extends KObject {
         this.ctx = contextLoader.load(features);
 
         this.ctx.registerEvent(this.tick);
+        this.ctx.registerEvent(this.newFrame);
+        this.ctx.registerEvent(this.frameFinished);
+        this.ctx.registerEvent(this.debugTick);
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -212,6 +229,7 @@ public class KEngineHypervisor extends KObject {
             this.name,
             "Components' post-init is completed"
         );
+
     }
 
     /**
@@ -247,8 +265,12 @@ public class KEngineHypervisor extends KObject {
             try {
 
                 Instant beginTime = Instant.now();
+                this.newFrame.invokeSync();
 
                 this.tick.invokeSync();
+                if (this.debug) {
+                    this.debugTick.invokeSync();
+                }
 
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
@@ -256,6 +278,7 @@ public class KEngineHypervisor extends KObject {
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
+                this.frameFinished.invokeSync();
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 KSystemLogger.debug(
                     "hypervisor", "FPS: %f",

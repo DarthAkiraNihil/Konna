@@ -35,6 +35,24 @@ public interface KFrame {
      * to be executed in the frame loop (since it is invoked in it).
      */
     String TICK_EVENT_NAME = "tick";
+    /**
+     * Debug tick event name. It is used by
+     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to
+     * create the debug tick event that is supposed to be used by
+     * {@link io.github.darthakiranihil.konna.core.debug.KDebugger}s. It won't be invoked
+     * if debug mode is disabled.
+     */
+    String DEBUG_TICK_EVENT_NAME = "debug_tick";
+    /**
+     * Name of the event that is invoked on the beginning of a new frame.
+     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
+     */
+    String NEW_FRAME_EVENT_NAME = "new_frame";
+    /**
+     * Name of the event that is invoked at the end of the current frame.
+     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
+     */
+    String FRAME_FINISHED_EVENT_NAME = "frame_finished";
 
     /**
      * Sets frame's title.
