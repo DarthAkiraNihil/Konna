@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.debug.KDebugger;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
@@ -66,6 +67,10 @@ public class KEngineHypervisor extends KObject {
      */
     protected final Map<String, KComponent> engineComponents;
     /**
+     * Loaded engine debuggers.
+     */
+    protected final Map<String, Object> loadedDebuggers;
+    /**
      * Loaded engine context.
      */
     protected @Nullable KEngineContext ctx;
@@ -75,6 +80,11 @@ public class KEngineHypervisor extends KObject {
     protected @Nullable KFrame frame;
 
     private final KSimpleEvent tick;
+    private final KSimpleEvent newFrame;
+    private final KSimpleEvent frameFinished;
+    private final KSimpleEvent debugTick;
+
+    private boolean debug;
 
     /**
      * Constructs hypervisor with provided config.
@@ -91,8 +101,13 @@ public class KEngineHypervisor extends KObject {
         this.config = config;
 
         this.engineComponents = new HashMap<>();
+        this.loadedDebuggers = new HashMap<>();
         this.ctx = null;
+
         this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
+        this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
+        this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
+        this.debugTick = new KSimpleEvent(KFrame.DEBUG_TICK_EVENT_NAME);
     }
 
     /**
@@ -103,6 +118,15 @@ public class KEngineHypervisor extends KObject {
      *                 after parsing arguments
      */
     public void launch(final KApplicationFeatures features) {
+
+        String debugFeature = features.getFeature("debug");
+        if (debugFeature != null && debugFeature.equals("true")) {
+            this.debug = true;
+            KSystemLogger.info(
+                this.name,
+                "Debug mode is enabled"
+            );
+        }
 
         KEngineContextLoader contextLoader;
         try {
@@ -118,6 +142,9 @@ public class KEngineHypervisor extends KObject {
         this.ctx = contextLoader.load(features);
 
         this.ctx.registerEvent(this.tick);
+        this.ctx.registerEvent(this.newFrame);
+        this.ctx.registerEvent(this.frameFinished);
+        this.ctx.registerEvent(this.debugTick);
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -187,7 +214,6 @@ public class KEngineHypervisor extends KObject {
             }
 
         });
-
         KSystemLogger.info(
             this.name,
             "Registered %d components in the message system",
@@ -199,7 +225,6 @@ public class KEngineHypervisor extends KObject {
             KMessageRoutesConfigurer configurer = ctx.createObject(routeConfigurer);
             configurer.setupRoutes(ctx);
         }
-
         KSystemLogger.info(
             this.name,
             "%d message route configurers have been executed",
@@ -207,11 +232,39 @@ public class KEngineHypervisor extends KObject {
         );
 
         engineComponents.values().forEach(KComponent::postInit);
-
         KSystemLogger.info(
             this.name,
             "Components' post-init is completed"
         );
+
+        if (this.debug) {
+            var debuggers = this
+                .ctx
+                .getClassIndex()
+                .stream()
+                .filter(c -> c.isAnnotationPresent(KDebugger.class))
+                .toList();
+
+            KSystemLogger.info(
+                this.name,
+                "Found %d debuggers",
+                debuggers.size()
+            );
+
+            for (var debugger: debuggers) {
+                KSystemLogger.info(
+                    this.name,
+                    "Loading debugger %s",
+                    debugger.getCanonicalName()
+                );
+                this.loadedDebuggers.put(
+                    debugger.getCanonicalName(),
+                    this.ctx.createObject(debugger)
+                );
+            }
+
+        }
+
     }
 
     /**
@@ -247,8 +300,12 @@ public class KEngineHypervisor extends KObject {
             try {
 
                 Instant beginTime = Instant.now();
+                this.newFrame.invokeSync();
 
                 this.tick.invokeSync();
+                if (this.debug) {
+                    this.debugTick.invokeSync();
+                }
 
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
@@ -256,6 +313,7 @@ public class KEngineHypervisor extends KObject {
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
+                this.frameFinished.invokeSync();
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 KSystemLogger.debug(
                     "hypervisor", "FPS: %f",
