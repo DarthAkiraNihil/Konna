@@ -1,5 +1,11 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+/**
+ * Interface representing ImGuiKeyData of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImGuiKeyData {
 
     boolean getDown();

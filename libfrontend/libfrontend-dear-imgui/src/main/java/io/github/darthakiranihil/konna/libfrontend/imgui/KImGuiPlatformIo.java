@@ -2,6 +2,12 @@ package io.github.darthakiranihil.konna.libfrontend.imgui;
 
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.*;
 
+/**
+ * Interface representing ImGuiPlatformIO of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImGuiPlatformIo {
 
 
@@ -39,7 +45,7 @@ public interface KImGuiPlatformIo {
         float dpiScale
     );
 
-    public KImGuiPlatformMonitor getMonitors(int idx);
-    public KImGuiViewport getViewports(int idx);
+    KImGuiPlatformMonitor getMonitors(int idx);
+    KImGuiViewport getViewports(int idx);
 
 }

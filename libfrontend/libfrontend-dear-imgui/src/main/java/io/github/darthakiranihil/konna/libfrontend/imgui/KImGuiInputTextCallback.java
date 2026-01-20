@@ -16,8 +16,20 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+/**
+ * Interface representing ImGuiInputTextCallback of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImGuiInputTextCallback {
 
+    /**
+     * Interface for callback data.
+     *
+     * @since 0.1.0
+     * @author Darth Akira Nihil
+     */
     interface Data {
 
         KImGuiContext getCtx();

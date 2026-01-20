@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui.func;
 
+/**
+ * Interface representing ImStrConsumer of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KImStrConsumer {
 

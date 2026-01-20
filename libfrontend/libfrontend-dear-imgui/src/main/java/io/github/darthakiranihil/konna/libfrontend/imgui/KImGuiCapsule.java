@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -26,12 +25,29 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
+/**
+ * Helper class. Represents controller of Dear ImGui rendering process that
+ * starts it on a new frame and finishes on frame finishing. Should be implemented
+ * by a backend.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
 public abstract class KImGuiCapsule extends KObject {
 
+    /**
+     * Dear ImGui reference.
+     */
     protected final KImGui imGui;
 
+    /**
+     * Standard constructor. Also subscribes to {@link KFrame#NEW_FRAME_EVENT_NAME} and
+     * {@link KFrame#FRAME_FINISHED_EVENT_NAME} events.
+     * @param imGui Dear ImGui
+     * @param eventSystem Event system
+     */
     public KImGuiCapsule(
         final KImGui imGui,
         final KEventSystem eventSystem
@@ -50,7 +66,14 @@ public abstract class KImGuiCapsule extends KObject {
         }
     }
 
+    /**
+     * Starts Dear ImGui for using it in this frame.
+     */
     protected abstract void onNewFrame();
+
+    /**
+     * Finalizes Dear ImGui in this frame.
+     */
     protected abstract void onFrameFinished();
 
 }

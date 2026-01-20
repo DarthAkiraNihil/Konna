@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+/**
+ * Interface representing ImFontGlyph of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImFontGlyph {
 
     int getColored();

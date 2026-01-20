@@ -19,6 +19,12 @@ package io.github.darthakiranihil.konna.libfrontend.imgui;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 
+/**
+ * Interface representing ImFont of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImFont {
 
     float getFallbackAdvanceX();
@@ -60,15 +66,31 @@ public interface KImFont {
     int getMetricsTotalSurface();
     void setMetricsTotalSurface(int value);
 
-    KImFontGlyph FindGlyph(int c);
-    KImFontGlyph FindGlyphNoFallback(int c);
-    float GetCharAdvance(int c);
-    boolean IsLoaded();
-    String GetDebugName();
-    KVector2f CalcTextSizeA(float size, float maxWidth, float wrapWidth, String textBegin, String textEnd);
-    String CalcWordWrapPositionA(float scale, String text, String textEnd, float wrapWidth);
-    void RenderChar(KImDrawList drawList, float size, KVector2f pos, int col, int c);
-    void RenderText(KImDrawList drawList, float size, KVector2f pos, int col, KVector4f clipRect, String textBegin, String textEnd, float wrapWidth, boolean cpuFineClip);
+    KImFontGlyph findGlyph(int c);
+    KImFontGlyph findGlyphNoFallback(int c);
+    float getCharAdvance(int c);
+    boolean isLoaded();
+    String getDebugName();
+    KVector2f calcTextSizeA(
+        float size,
+        float maxWidth,
+        float wrapWidth,
+        String textBegin,
+        String textEnd
+    );
+    String calcWordWrapPositionA(float scale, String text, String textEnd, float wrapWidth);
+    void renderChar(KImDrawList drawList, float size, KVector2f pos, int col, int c);
+    void renderText(
+        KImDrawList drawList,
+        float size,
+        KVector2f pos,
+        int col,
+        KVector4f clipRect,
+        String textBegin,
+        String textEnd,
+        float wrapWidth,
+        boolean cpuFineClip
+    );
 
 
 }

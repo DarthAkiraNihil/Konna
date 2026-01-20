@@ -16,23 +16,29 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+/**
+ * Interface representing ImGuiStorage of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImGuiStorage {
     
-    void clear() ;
+    void clear();
 
-    int getInt(int key) ;
-    int getInt(int key, int defaultVal) ;
-    void setInt(int key, int val) ;
+    int getInt(int key);
+    int getInt(int key, int defaultVal);
+    void setInt(int key, int val);
 
-    boolean getBool(int key) ;
-    boolean getBool(int key, boolean defaultVal) ;
-    void setBool(int key, boolean val) ;
+    boolean getBool(int key);
+    boolean getBool(int key, boolean defaultVal);
+    void setBool(int key, boolean val);
     
-    float getFloat(int key) ;
-    float getFloat(int key, float defaultVal) ;
-    void setFloat(int key, float val) ;
+    float getFloat(int key);
+    float getFloat(int key, float defaultVal);
+    void setFloat(int key, float val);
     
-    void buildSortByKey() ;
-    void setAllInt(int val) ;
+    void buildSortByKey();
+    void setAllInt(int val);
     
 }

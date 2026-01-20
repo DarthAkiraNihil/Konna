@@ -5,6 +5,12 @@ import io.github.darthakiranihil.konna.core.struct.KVector4f;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Interface representing ImDrawData of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImDrawData {
 
     int getCmdListCmdBufferSize(int cmdListIdx);

@@ -4,461 +4,467 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrConsumer;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrSupplier;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 
+/**
+ * Interface representing ImGuiIO of Dear ImGui.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 public interface KImGuiIo {
 
-    public int getConfigFlags();
-    public void setConfigFlags(int value);
-    public void addConfigFlags(int flags);
-    public void removeConfigFlags(int flags);
-    public boolean hasConfigFlags(int flags);
-    public int getBackendFlags();
-    public void setBackendFlags(int value);
-    public void addBackendFlags(int flags);
-    public void removeBackendFlags(int flags);
-    public boolean hasBackendFlags(int flags);
-    public KVector2f getDisplaySize();
-    public void setDisplaySize(KVector2f value);
-    public float getDisplaySizeX();
-    public float getDisplaySizeY();
-    public void getDisplaySize(KVector2f dst);
-    public void setDisplaySize(float valueX, float valueY);
-    public float getDeltaTime();
-    public void setDeltaTime(float value);
-    public float getIniSavingRate();
-    public void setIniSavingRate(float value);
-    public String getIniFilename();
-    public void setIniFilename(String value);
-    public String getLogFilename();
-    public void setLogFilename(String value);
-    public KImFontAtlas getFonts();
-    public void setFonts(KImFontAtlas value);
-    public float getFontGlobalScale();
-    public void setFontGlobalScale(float value);
-    public boolean getFontAllowUserScaling();
-    public void setFontAllowUserScaling(boolean value);
-    public KImFont getFontDefault();
-    public void setFontDefault(KImFont value);
-    public KVector2f getDisplayFramebufferScale();
-    public void setDisplayFramebufferScale(KVector2f value);
-    public float getDisplayFramebufferScaleX();
-    public float getDisplayFramebufferScaleY();
-    public void getDisplayFramebufferScale(KVector2f dst);
-    public void setDisplayFramebufferScale(float valueX, float valueY);
-    public boolean getConfigDockingNoSplit();
-    public void setConfigDockingNoSplit(boolean value);
-    public boolean getConfigDockingWithShift();
-    public void setConfigDockingWithShift(boolean value);
-    public boolean getConfigDockingAlwaysTabBar();
-    public void setConfigDockingAlwaysTabBar(boolean value);
-    public boolean getConfigDockingTransparentPayload();
-    public void setConfigDockingTransparentPayload(boolean value);
-    public boolean getConfigViewportsNoAutoMerge();
-    public void setConfigViewportsNoAutoMerge(boolean value);
-    public boolean getConfigViewportsNoTaskBarIcon();
-    public void setConfigViewportsNoTaskBarIcon(boolean value);
-    public boolean getConfigViewportsNoDecoration();
-    public void setConfigViewportsNoDecoration(boolean value);
-    public boolean getConfigViewportsNoDefaultParent();
-    public void setConfigViewportsNoDefaultParent(boolean value);
-    public boolean getMouseDrawCursor();
-    public void setMouseDrawCursor(boolean value);
-    public boolean getConfigMacOSXBehaviors();
-    public void setConfigMacOSXBehaviors(boolean value);
-    public boolean getConfigInputTrickleEventQueue();
-    public void setConfigInputTrickleEventQueue(boolean value);
+    int getConfigFlags();
+    void setConfigFlags(int value);
+    void addConfigFlags(int flags);
+    void removeConfigFlags(int flags);
+    boolean hasConfigFlags(int flags);
+    int getBackendFlags();
+    void setBackendFlags(int value);
+    void addBackendFlags(int flags);
+    void removeBackendFlags(int flags);
+    boolean hasBackendFlags(int flags);
+    KVector2f getDisplaySize();
+    void setDisplaySize(KVector2f value);
+    float getDisplaySizeX();
+    float getDisplaySizeY();
+    void getDisplaySize(KVector2f dst);
+    void setDisplaySize(float valueX, float valueY);
+    float getDeltaTime();
+    void setDeltaTime(float value);
+    float getIniSavingRate();
+    void setIniSavingRate(float value);
+    String getIniFilename();
+    void setIniFilename(String value);
+    String getLogFilename();
+    void setLogFilename(String value);
+    KImFontAtlas getFonts();
+    void setFonts(KImFontAtlas value);
+    float getFontGlobalScale();
+    void setFontGlobalScale(float value);
+    boolean getFontAllowUserScaling();
+    void setFontAllowUserScaling(boolean value);
+    KImFont getFontDefault();
+    void setFontDefault(KImFont value);
+    KVector2f getDisplayFramebufferScale();
+    void setDisplayFramebufferScale(KVector2f value);
+    float getDisplayFramebufferScaleX();
+    float getDisplayFramebufferScaleY();
+    void getDisplayFramebufferScale(KVector2f dst);
+    void setDisplayFramebufferScale(float valueX, float valueY);
+    boolean getConfigDockingNoSplit();
+    void setConfigDockingNoSplit(boolean value);
+    boolean getConfigDockingWithShift();
+    void setConfigDockingWithShift(boolean value);
+    boolean getConfigDockingAlwaysTabBar();
+    void setConfigDockingAlwaysTabBar(boolean value);
+    boolean getConfigDockingTransparentPayload();
+    void setConfigDockingTransparentPayload(boolean value);
+    boolean getConfigViewportsNoAutoMerge();
+    void setConfigViewportsNoAutoMerge(boolean value);
+    boolean getConfigViewportsNoTaskBarIcon();
+    void setConfigViewportsNoTaskBarIcon(boolean value);
+    boolean getConfigViewportsNoDecoration();
+    void setConfigViewportsNoDecoration(boolean value);
+    boolean getConfigViewportsNoDefaultParent();
+    void setConfigViewportsNoDefaultParent(boolean value);
+    boolean getMouseDrawCursor();
+    void setMouseDrawCursor(boolean value);
+    boolean getConfigMacOSXBehaviors();
+    void setConfigMacOSXBehaviors(boolean value);
+    boolean getConfigInputTrickleEventQueue();
+    void setConfigInputTrickleEventQueue(boolean value);
 
-    public boolean getConfigInputTextCursorBlink();
+    boolean getConfigInputTextCursorBlink();
 
-    public void setConfigInputTextCursorBlink(boolean value);
+    void setConfigInputTextCursorBlink(boolean value);
 
-    public boolean getConfigInputTextEnterKeepActive();
+    boolean getConfigInputTextEnterKeepActive();
 
-    public void setConfigInputTextEnterKeepActive(boolean value);
+    void setConfigInputTextEnterKeepActive(boolean value);
 
-    public boolean getConfigDragClickToInputText();
+    boolean getConfigDragClickToInputText();
 
-    public void setConfigDragClickToInputText(boolean value);
+    void setConfigDragClickToInputText(boolean value);
 
-    public boolean getConfigWindowsResizeFromEdges();
+    boolean getConfigWindowsResizeFromEdges();
 
-    public void setConfigWindowsResizeFromEdges(boolean value);
+    void setConfigWindowsResizeFromEdges(boolean value);
 
-    public boolean getConfigWindowsMoveFromTitleBarOnly();
+    boolean getConfigWindowsMoveFromTitleBarOnly();
 
-    public void setConfigWindowsMoveFromTitleBarOnly(boolean value);
+    void setConfigWindowsMoveFromTitleBarOnly(boolean value);
 
-    public boolean getConfigMemoryCompactTimer();
+    boolean getConfigMemoryCompactTimer();
 
-    public void setConfigMemoryCompactTimer(boolean value);
+    void setConfigMemoryCompactTimer(boolean value);
 
-    public float getMouseDoubleClickTime();
+    float getMouseDoubleClickTime();
 
-    public void setMouseDoubleClickTime(float value);
+    void setMouseDoubleClickTime(float value);
 
-    public float getMouseDoubleClickMaxDist();
+    float getMouseDoubleClickMaxDist();
 
-    public void setMouseDoubleClickMaxDist(float value);
+    void setMouseDoubleClickMaxDist(float value);
 
-    public float getMouseDragThreshold();
+    float getMouseDragThreshold();
 
-    public void setMouseDragThreshold(float value);
+    void setMouseDragThreshold(float value);
 
-    public float getKeyRepeatDelay();
+    float getKeyRepeatDelay();
 
-    public void setKeyRepeatDelay(float value);
+    void setKeyRepeatDelay(float value);
 
-    public float getKeyRepeatRate();
+    float getKeyRepeatRate();
 
-    public void setKeyRepeatRate(float value);
+    void setKeyRepeatRate(float value);
 
-    public boolean getConfigDebugIsDebuggerPresent();
+    boolean getConfigDebugIsDebuggerPresent();
 
-    public void setConfigDebugIsDebuggerPresent(boolean value);
+    void setConfigDebugIsDebuggerPresent(boolean value);
 
-    public boolean getConfigDebugBeginReturnValueOnce();
+    boolean getConfigDebugBeginReturnValueOnce();
 
-    public void setConfigDebugBeginReturnValueOnce(boolean value);
+    void setConfigDebugBeginReturnValueOnce(boolean value);
 
-    public boolean getConfigDebugBeginReturnValueLoop();
+    boolean getConfigDebugBeginReturnValueLoop();
 
-    public void setConfigDebugBeginReturnValueLoop(boolean value);
+    void setConfigDebugBeginReturnValueLoop(boolean value);
 
-    public boolean getConfigDebugIgnoreFocusLoss();
+    boolean getConfigDebugIgnoreFocusLoss();
 
-    public void setConfigDebugIgnoreFocusLoss(boolean value);
+    void setConfigDebugIgnoreFocusLoss(boolean value);
 
-    public boolean getConfigDebugIniSettings();
+    boolean getConfigDebugIniSettings();
 
-    public void setConfigDebugIniSettings(boolean value);
+    void setConfigDebugIniSettings(boolean value);
 
-    public String getBackendPlatformName();
+    String getBackendPlatformName();
 
-    public void setBackendPlatformName(String value);
+    void setBackendPlatformName(String value);
 
-    public String getBackendRendererName();
+    String getBackendRendererName();
 
-    public void setBackendRendererName(String value);
+    void setBackendRendererName(String value);
 
-    public void setSetClipboardTextFn(KImStrConsumer setClipboardTextCallback);
+    void setSetClipboardTextFn(KImStrConsumer setClipboardTextCallback);
 
-    public void setGetClipboardTextFn(KImStrSupplier getClipboardTextCallback);
+    void setGetClipboardTextFn(KImStrSupplier getClipboardTextCallback);
 
-    public short getPlatformLocaleDecimalPoint();
+    short getPlatformLocaleDecimalPoint();
 
-    public void setPlatformLocaleDecimalPoint(short value);
+    void setPlatformLocaleDecimalPoint(short value);
 
-    public void addKeyEvent(int key, boolean down);
+    void addKeyEvent(int key, boolean down);
 
-    public void addKeyAnalogEvent(int key, boolean down, float v);
+    void addKeyAnalogEvent(int key, boolean down, float v);
 
-    public void addMousePosEvent(float x, float y);
+    void addMousePosEvent(float x, float y);
 
-    public void addMouseButtonEvent(int button, boolean down);
+    void addMouseButtonEvent(int button, boolean down);
 
-    public void addMouseWheelEvent(float whX, float whY);
+    void addMouseWheelEvent(float whX, float whY);
 
-    public void addMouseSourceEvent(int source);
+    void addMouseSourceEvent(int source);
 
-    public void addMouseViewportEvent(int id);
+    void addMouseViewportEvent(int id);
 
-    public void addFocusEvent(boolean focused);
+    void addFocusEvent(boolean focused);
 
-    public void addInputCharacter(int c);
+    void addInputCharacter(int c);
 
-    public void addInputCharacterUTF16(short c);
+    void addInputCharacterUTF16(short c);
 
-    public void addInputCharactersUTF8(String str);
+    void addInputCharactersUTF8(String str);
 
-    public void setKeyEventNativeData(int key, int nativeKeycode, int nativeScancode);
+    void setKeyEventNativeData(int key, int nativeKeycode, int nativeScancode);
 
-    public void setKeyEventNativeData(
+    void setKeyEventNativeData(
         int key,
         int nativeKeycode,
         int nativeScancode,
         int nativeLegacyIndex
     );
 
-    public void clearEventsQueue();
+    void clearEventsQueue();
 
 
-    public void clearInputKeys();
+    void clearInputKeys();
 
 
-    public void clearInputMouse();
+    void clearInputMouse();
 
 
-    public boolean getWantCaptureMouse();
+    boolean getWantCaptureMouse();
 
-    public void setWantCaptureMouse(boolean value);
+    void setWantCaptureMouse(boolean value);
 
 
-    public boolean getWantCaptureKeyboard();
+    boolean getWantCaptureKeyboard();
 
-    public void setWantCaptureKeyboard(boolean value);
+    void setWantCaptureKeyboard(boolean value);
 
 
-    public boolean getWantTextInput();
+    boolean getWantTextInput();
 
-    public void setWantTextInput(boolean value);
+    void setWantTextInput(boolean value);
 
 
-    public boolean getWantSetMousePos();
+    boolean getWantSetMousePos();
 
-    public void setWantSetMousePos(boolean value);
+    void setWantSetMousePos(boolean value);
 
 
-    public boolean getWantSaveIniSettings();
+    boolean getWantSaveIniSettings();
 
-    public void setWantSaveIniSettings(boolean value);
+    void setWantSaveIniSettings(boolean value);
 
 
-    public boolean getNavActive();
+    boolean getNavActive();
 
-    public void setNavActive(boolean value);
+    void setNavActive(boolean value);
 
 
-    public boolean getNavVisible();
+    boolean getNavVisible();
 
-    public void setNavVisible(boolean value);
+    void setNavVisible(boolean value);
 
 
-    public float getFramerate();
+    float getFramerate();
 
-    public void setFramerate(float value);
+    void setFramerate(float value);
 
 
-    public int getMetricsRenderVertices();
+    int getMetricsRenderVertices();
 
-    public void setMetricsRenderVertices(int value);
+    void setMetricsRenderVertices(int value);
 
 
-    public int getMetricsRenderIndices();
+    int getMetricsRenderIndices();
 
-    public void setMetricsRenderIndices(int value);
+    void setMetricsRenderIndices(int value);
 
 
-    public int getMetricsRenderWindows();
+    int getMetricsRenderWindows();
 
-    public void setMetricsRenderWindows(int value);
+    void setMetricsRenderWindows(int value);
 
 
-    public int getMetricsActiveWindows();
+    int getMetricsActiveWindows();
 
-    public void setMetricsActiveWindows(int value);
+    void setMetricsActiveWindows(int value);
 
 
-    public KVector2f getMouseDelta();
+    KVector2f getMouseDelta();
 
-    public void setMouseDelta(KVector2f value);
+    void setMouseDelta(KVector2f value);
 
-    public float getMouseDeltaX();
+    float getMouseDeltaX();
 
-    public float getMouseDeltaY();
+    float getMouseDeltaY();
 
-    public void getMouseDelta(KVector2f dst);
+    void getMouseDelta(KVector2f dst);
 
-    public void setMouseDelta(float valueX, float valueY);
+    void setMouseDelta(float valueX, float valueY);
 
-    public KImGuiContext getCtx() ;
+    KImGuiContext getCtx();
 
-    public void setCtx(KImGuiContext value);
+    void setCtx(KImGuiContext value);
 
-    public KVector2f getMousePos();
+    KVector2f getMousePos();
 
-    public void setMousePos(KVector2f value);
+    void setMousePos(KVector2f value);
 
-    public float getMousePosX();
+    float getMousePosX();
 
-    public float getMousePosY();
+    float getMousePosY();
 
-    public void getMousePos(KVector2f dst);
+    void getMousePos(KVector2f dst);
 
-    public void setMousePos(float valueX, float valueY);
+    void setMousePos(float valueX, float valueY);
 
-    public boolean[] getMouseDown();
+    boolean[] getMouseDown();
 
-    public void setMouseDown(boolean[] value);
+    void setMouseDown(boolean[] value);
 
-    public boolean getMouseDown(int idx);
+    boolean getMouseDown(int idx);
 
-    public void setMouseDown(int idx, boolean value);
+    void setMouseDown(int idx, boolean value);
 
-    public float getMouseWheel();
+    float getMouseWheel();
 
-    public void setMouseWheel(float value);
+    void setMouseWheel(float value);
 
-    public float getMouseWheelH();
+    float getMouseWheelH();
 
-    public void setMouseWheelH(float value);
+    void setMouseWheelH(float value);
 
-    public int getMouseHoveredViewport();
+    int getMouseHoveredViewport();
 
-    public void setMouseHoveredViewport(int value);
+    void setMouseHoveredViewport(int value);
 
-    public boolean getKeyCtrl();
+    boolean getKeyCtrl();
 
-    public void setKeyCtrl(boolean value);
+    void setKeyCtrl(boolean value);
 
-    public boolean getKeyShift();
+    boolean getKeyShift();
 
-    public void setKeyShift(boolean value);
+    void setKeyShift(boolean value);
 
-    public boolean getKeyAlt();
+    boolean getKeyAlt();
 
-    public void setKeyAlt(boolean value);
+    void setKeyAlt(boolean value);
 
-    public boolean getKeySuper();
+    boolean getKeySuper();
 
-    public void setKeySuper(boolean value);
+    void setKeySuper(boolean value);
 
-    public int getKeyMods();
+    int getKeyMods();
 
-    public void setKeyMods(int value);
+    void setKeyMods(int value);
 
-    public KImGuiKeyData[] getKeysData();
+    KImGuiKeyData[] getKeysData();
 
-    public void setKeysData(KImGuiKeyData[] value);
+    void setKeysData(KImGuiKeyData[] value);
 
-    public boolean getWantCaptureMouseUnlessPopupClose();
+    boolean getWantCaptureMouseUnlessPopupClose();
 
-    public void setWantCaptureMouseUnlessPopupClose(boolean value);
+    void setWantCaptureMouseUnlessPopupClose(boolean value);
 
-    public KVector2f getMousePosPrev();
+    KVector2f getMousePosPrev();
 
-    public void setMousePosPrev(KVector2f value);
+    void setMousePosPrev(KVector2f value);
 
-    public float getMousePosPrevX();
+    float getMousePosPrevX();
 
-    public float getMousePosPrevY();
+    float getMousePosPrevY();
 
-    public void getMousePosPrev(KVector2f dst);
+    void getMousePosPrev(KVector2f dst);
 
-    public void setMousePosPrev(float valueX, float valueY);
+    void setMousePosPrev(float valueX, float valueY);
 
-    public KVector2f[] getMouseClickedPos();
+    KVector2f[] getMouseClickedPos();
 
-    public void setMouseClickedPos(KVector2f[] value);
+    void setMouseClickedPos(KVector2f[] value);
 
-    public double[] getMouseClickedTime();
+    double[] getMouseClickedTime();
 
-    public void setMouseClickedTime(double[] value);
+    void setMouseClickedTime(double[] value);
 
-    public double getMouseClickedTime(int idx);
+    double getMouseClickedTime(int idx);
 
-    public void setMouseClickedTime(int idx, double value);
+    void setMouseClickedTime(int idx, double value);
 
-    public boolean[] getMouseClicked();
+    boolean[] getMouseClicked();
 
-    public void setMouseClicked(boolean[] value);
+    void setMouseClicked(boolean[] value);
 
-    public boolean getMouseClicked(int idx);
+    boolean getMouseClicked(int idx);
 
-    public void setMouseClicked(int idx, boolean value);
+    void setMouseClicked(int idx, boolean value);
 
-    public boolean[] getMouseDoubleClicked();
+    boolean[] getMouseDoubleClicked();
 
-    public void setMouseDoubleClicked(boolean[] value);
+    void setMouseDoubleClicked(boolean[] value);
 
-    public boolean getMouseDoubleClicked(int idx);
+    boolean getMouseDoubleClicked(int idx);
 
-    public void setMouseDoubleClicked(int idx, boolean value);
+    void setMouseDoubleClicked(int idx, boolean value);
 
-    public int[] getMouseClickedCount();
+    int[] getMouseClickedCount();
 
-    public void setMouseClickedCount(int[] value);
+    void setMouseClickedCount(int[] value);
 
-    public int getMouseClickedCount(int idx);
+    int getMouseClickedCount(int idx);
 
-    public void setMouseClickedCount(int idx, int value);
+    void setMouseClickedCount(int idx, int value);
 
-    public int[] getMouseClickedLastCount();
+    int[] getMouseClickedLastCount();
 
-    public void setMouseClickedLastCount(int[] value);
+    void setMouseClickedLastCount(int[] value);
 
-    public int getMouseClickedLastCount(int idx);
+    int getMouseClickedLastCount(int idx);
 
-    public void setMouseClickedLastCount(int idx, int value);
+    void setMouseClickedLastCount(int idx, int value);
 
-    public boolean[] getMouseReleased();
+    boolean[] getMouseReleased();
 
-    public void setMouseReleased(boolean[] value);
+    void setMouseReleased(boolean[] value);
 
-    public boolean getMouseReleased(int idx);
+    boolean getMouseReleased(int idx);
 
-    public void setMouseReleased(int idx, boolean value);
+    void setMouseReleased(int idx, boolean value);
 
-    public boolean[] getMouseDownOwned();
+    boolean[] getMouseDownOwned();
 
-    public void setMouseDownOwned(boolean[] value);
+    void setMouseDownOwned(boolean[] value);
 
-    public boolean getMouseDownOwned(int idx);
+    boolean getMouseDownOwned(int idx);
 
-    public void setMouseDownOwned(int idx, boolean value);
+    void setMouseDownOwned(int idx, boolean value);
 
-    public boolean[] getMouseDownOwnedUnlessPopupClose();
+    boolean[] getMouseDownOwnedUnlessPopupClose();
 
-    public void setMouseDownOwnedUnlessPopupClose(boolean[] value);
+    void setMouseDownOwnedUnlessPopupClose(boolean[] value);
 
-    public boolean getMouseDownOwnedUnlessPopupClose(int idx);
+    boolean getMouseDownOwnedUnlessPopupClose(int idx);
 
-    public void setMouseDownOwnedUnlessPopupClose(int idx, boolean value);
+    void setMouseDownOwnedUnlessPopupClose(int idx, boolean value);
 
-    public boolean getMouseWheelRequestAxisSwap();
+    boolean getMouseWheelRequestAxisSwap();
 
-    public void setMouseWheelRequestAxisSwap(boolean value);
+    void setMouseWheelRequestAxisSwap(boolean value);
 
-    public boolean getMouseCtrlLeftAsRightClick();
+    boolean getMouseCtrlLeftAsRightClick();
 
-    public void setMouseCtrlLeftAsRightClick(boolean value);
+    void setMouseCtrlLeftAsRightClick(boolean value);
 
-    public float[] getMouseDownDuration();
+    float[] getMouseDownDuration();
 
-    public void setMouseDownDuration(float[] value);
+    void setMouseDownDuration(float[] value);
 
-    public float getMouseDownDuration(int idx);
+    float getMouseDownDuration(int idx);
 
-    public void setMouseDownDuration(int idx, float value);
+    void setMouseDownDuration(int idx, float value);
 
-    public float[] getMouseDownDurationPrev();
+    float[] getMouseDownDurationPrev();
 
-    public void setMouseDownDurationPrev(float[] value);
+    void setMouseDownDurationPrev(float[] value);
 
-    public float getMouseDownDurationPrev(int idx);
+    float getMouseDownDurationPrev(int idx);
 
-    public void setMouseDownDurationPrev(int idx, float value);
+    void setMouseDownDurationPrev(int idx, float value);
 
-    public KVector2f[] getMouseDragMaxDistanceAbs();
+    KVector2f[] getMouseDragMaxDistanceAbs();
 
-    public void setMouseDragMaxDistanceAbs(KVector2f[] value);
+    void setMouseDragMaxDistanceAbs(KVector2f[] value);
 
-    public float[] getMouseDragMaxDistanceSqr();
+    float[] getMouseDragMaxDistanceSqr();
 
-    public void setMouseDragMaxDistanceSqr(float[] value);
+    void setMouseDragMaxDistanceSqr(float[] value);
 
-    public float getMouseDragMaxDistanceSqr(int idx);
+    float getMouseDragMaxDistanceSqr(int idx);
 
-    public void setMouseDragMaxDistanceSqr(int idx, float value);
+    void setMouseDragMaxDistanceSqr(int idx, float value);
 
-    public float getPenPressure();
+    float getPenPressure();
 
-    public void setPenPressure(float value);
+    void setPenPressure(float value);
 
-    public boolean getAppFocusLost();
+    boolean getAppFocusLost();
 
-    public boolean getAppAcceptingEvents();
+    boolean getAppAcceptingEvents();
 
-    public void setAppAcceptingEvents(boolean acceptingEvents);
+    void setAppAcceptingEvents(boolean acceptingEvents);
 
-    public short getBackendUsingLegacyKeyArrays();
+    short getBackendUsingLegacyKeyArrays();
 
-    public void setBackendUsingLegacyKeyArrays(short value);
+    void setBackendUsingLegacyKeyArrays(short value);
 
-    public boolean getBackendUsingLegacyNavInputArray();
+    boolean getBackendUsingLegacyNavInputArray();
 
-    public void setBackendUsingLegacyNavInputArray(boolean value);
+    void setBackendUsingLegacyNavInputArray(boolean value);
 
-    public short getInputQueueSurrogate();
+    short getInputQueueSurrogate();
 
-    public void setInputQueueSurrogate(short value);
+    void setInputQueueSurrogate(short value);
 
 }

@@ -4,6 +4,12 @@ import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 import io.github.darthakiranihil.konna.core.struct.ref.*;
 
+/**
+ * Dear ImGui library frontend.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public interface KImGui {
 
@@ -750,7 +756,12 @@ public interface KImGui {
 
     boolean combo(String label, KIntReference currentItem, String[] items);
 
-    boolean combo(String label, KIntReference currentItem, String[] items, int popupMaxHeightInItems);
+    boolean combo(
+        String label,
+        KIntReference currentItem,
+        String[] items,
+        int popupMaxHeightInItems
+    );
 
     boolean combo(String label, KIntReference currentItem, String itemsSeparatedByZeros);
 
@@ -3923,7 +3934,11 @@ public interface KImGui {
         KImGuiWindowClass windowClass
     );
 
-    int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport, KImGuiWindowClass windowClass);
+    int dockSpaceOverViewport(
+        int dockspaceId,
+        KImGuiViewport viewport,
+        KImGuiWindowClass windowClass
+    );
 
     void setNextWindowDockID(int dockId);
 
@@ -3999,7 +4014,11 @@ public interface KImGui {
 
     void endDisabled();
 
-    void pushClipRect(KVector2f clipRectMin, KVector2f clipRectMax, boolean intersectWithCurrentClipRect);
+    void pushClipRect(
+        KVector2f clipRectMin,
+        KVector2f clipRectMax,
+        boolean intersectWithCurrentClipRect
+    );
 
     void pushClipRect(
         float clipRectMinX,
