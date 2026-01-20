@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/components/graphics" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/libfrontend" />
+            <option value="$PROJECT_DIR$/libfrontend/libfrontend-dear-imgui" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-stb" />

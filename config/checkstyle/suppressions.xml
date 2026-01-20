@@ -45,6 +45,9 @@
     <suppress checks="MethodName" files="KStbTtPackRange.java"/>
 
     <suppress checks="MissingJavadocMethod" files="KStb[a-zA-Z0-9]*.java"/>
+    <suppress checks="MissingJavadocMethod" files="KIm[a-zA-Z0-9]*.java"/>
+    <suppress checks="ParameterNumber" files="KImGui.java"/>
+    <suppress checks="FileLength" files="KImGui.java"/>
 
     <suppress checks="MagicNumber" files="KBufferMaker.java"/>
     <suppress checks="MagicNumber" files="KGl33RenderFrontend.java"/>
