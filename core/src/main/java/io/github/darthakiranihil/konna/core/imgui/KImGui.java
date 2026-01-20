@@ -2,6 +2,7 @@ package io.github.darthakiranihil.konna.core.imgui;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
+import io.github.darthakiranihil.konna.core.struct.ref.*;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public interface KImGui {
@@ -10,7 +11,7 @@ public interface KImGui {
 
     KImGuiContext createContext();
 
-    KImGuiContext createContext(final ImFontAtlas sharedFontAtlas);
+    KImGuiContext createContext(final KImFontAtlas sharedFontAtlas);
 
     void destroyContext();
 
@@ -20,9 +21,9 @@ public interface KImGui {
 
     void setCurrentContext(final KImGuiContext ctx);
 
-    ImGuiIO getIO();
+    KImGuiIo getIO();
 
-    ImGuiStyle getStyle();
+    KImGuiStyle getStyle();
 
     void newFrame();
 
@@ -34,27 +35,27 @@ public interface KImGui {
 
     void showDemoWindow();
 
-    void showDemoWindow(final ImBoolean pOpen);
+    void showDemoWindow(final KBooleanReferenceValue pOpen);
 
     void showMetricsWindow();
 
-    void showMetricsWindow(final ImBoolean pOpen);
+    void showMetricsWindow(final KBooleanReferenceValue pOpen);
 
     void showDebugLogWindow();
 
-    void showDebugLogWindow(final ImBoolean pOpen);
+    void showDebugLogWindow(final KBooleanReferenceValue pOpen);
 
     void showIDStackToolWindow();
 
-    void showIDStackToolWindow(final ImBoolean pOpen);
+    void showIDStackToolWindow(final KBooleanReferenceValue pOpen);
 
     void showAboutWindow();
 
-    void showAboutWindow(final ImBoolean pOpen);
+    void showAboutWindow(final KBooleanReferenceValue pOpen);
 
     void showStyleEditor();
 
-    void showStyleEditor(final ImGuiStyle ref);
+    void showStyleEditor(final KImGuiStyle ref);
 
     boolean showStyleSelector(final String label);
 
@@ -66,21 +67,21 @@ public interface KImGui {
 
     void styleColorsDark();
 
-    void styleColorsDark(final ImGuiStyle style);
+    void styleColorsDark(final KImGuiStyle style);
 
     void styleColorsLight();
 
-    void styleColorsLight(final ImGuiStyle style);
+    void styleColorsLight(final KImGuiStyle style);
 
     void styleColorsClassic();
 
-    void styleColorsClassic(final ImGuiStyle style);
+    void styleColorsClassic(final KImGuiStyle style);
 
     boolean begin(final String title);
 
-    boolean begin(final String title, final ImBoolean pOpen);
+    boolean begin(final String title, final KBooleanReferenceValue pOpen);
 
-    boolean begin(final String title, final ImBoolean pOpen, final int imGuiWindowFlags);
+    boolean begin(final String title, final KBooleanReferenceValue pOpen, final int imGuiWindowFlags);
 
     boolean begin(final String title, final int imGuiWindowFlags);
 
@@ -557,13 +558,13 @@ public interface KImGui {
 
     boolean checkbox(String label, boolean active);
 
-    boolean checkbox(final String label, final ImBoolean data);
+    boolean checkbox(final String label, final KBooleanReferenceValue data);
 
-    boolean checkboxFlags(final String label, final ImInt flags, final int flagsValue);
+    boolean checkboxFlags(final String label, final KIntReferenceValue flags, final int flagsValue);
 
     boolean radioButton(final String label, final boolean active);
 
-    boolean radioButton(final String label, final ImInt v, final int vButton);
+    boolean radioButton(final String label, final KIntReferenceValue v, final int vButton);
 
     void progressBar(final float fraction);
 
@@ -747,15 +748,15 @@ public interface KImGui {
 
     void endCombo();
 
-    boolean combo(final String label, final ImInt currentItem, final String[] items);
+    boolean combo(final String label, final KIntReferenceValue currentItem, final String[] items);
 
-    boolean combo(final String label, final ImInt currentItem, final String[] items, final int popupMaxHeightInItems);
+    boolean combo(final String label, final KIntReferenceValue currentItem, final String[] items, final int popupMaxHeightInItems);
 
-    boolean combo(final String label, final ImInt currentItem, final String itemsSeparatedByZeros);
+    boolean combo(final String label, final KIntReferenceValue currentItem, final String itemsSeparatedByZeros);
 
     boolean combo(
         final String label,
-        final ImInt currentItem,
+        final KIntReferenceValue currentItem,
         final String itemsSeparatedByZeros,
         final int popupMaxHeightInItems
     );
@@ -2310,33 +2311,33 @@ public interface KImGui {
         final int imGuiSliderFlags
     );
 
-    boolean inputText(final String label, final ImString text);
+    boolean inputText(final String label, final KStringReferenceValue text);
 
-    boolean inputText(final String label, final ImString text, final int imGuiInputTextFlags);
+    boolean inputText(final String label, final KStringReferenceValue text, final int imGuiInputTextFlags);
 
     boolean inputText(
         final String label,
-        final ImString text,
+        final KStringReferenceValue text,
         final int imGuiInputTextFlags,
-        final ImGuiInputTextCallback callback
+        final KImGuiInputTextCallback callback
     );
 
-    boolean inputTextMultiline(final String label, final ImString text);
+    boolean inputTextMultiline(final String label, final KStringReferenceValue text);
 
-    boolean inputTextMultiline(final String label, final ImString text, final float width, final float height);
+    boolean inputTextMultiline(final String label, final KStringReferenceValue text, final float width, final float height);
 
-    boolean inputTextMultiline(final String label, final ImString text, final int imGuiInputTextFlags);
+    boolean inputTextMultiline(final String label, final KStringReferenceValue text, final int imGuiInputTextFlags);
 
     boolean inputTextMultiline(
         final String label,
-        final ImString text,
+        final KStringReferenceValue text,
         final int imGuiInputTextFlags,
-        final ImGuiInputTextCallback callback
+        final KImGuiInputTextCallback callback
     );
 
     boolean inputTextMultiline(
         final String label,
-        final ImString text,
+        final KStringReferenceValue text,
         final float width,
         final float height,
         final int imGuiInputTextFlags
@@ -2344,39 +2345,39 @@ public interface KImGui {
 
     boolean inputTextMultiline(
         final String label,
-        final ImString text,
+        final KStringReferenceValue text,
         final float width,
         final float height,
         final int imGuiInputTextFlags,
-        final ImGuiInputTextCallback callback
+        final KImGuiInputTextCallback callback
     );
 
-    boolean inputTextWithHint(final String label, final String hint, final ImString text);
+    boolean inputTextWithHint(final String label, final String hint, final KStringReferenceValue text);
 
     boolean inputTextWithHint(
         final String label,
         final String hint,
-        final ImString text,
+        final KStringReferenceValue text,
         final int imGuiInputTextFlags
     );
 
     boolean inputTextWithHint(
         final String label,
         final String hint,
-        final ImString text,
+        final KStringReferenceValue text,
         final int imGuiInputTextFlags,
-        final ImGuiInputTextCallback callback
+        final KImGuiInputTextCallback callback
     );
 
-    boolean inputFloat(final String label, final ImFloat v);
+    boolean inputFloat(final String label, final KFloatReferenceValue v);
 
-    boolean inputFloat(final String label, final ImFloat v, final float step);
+    boolean inputFloat(final String label, final KFloatReferenceValue v, final float step);
 
-    boolean inputFloat(final String label, final ImFloat v, final float step, final float stepFast);
+    boolean inputFloat(final String label, final KFloatReferenceValue v, final float step, final float stepFast);
 
     boolean inputFloat(
         final String label,
-        final ImFloat v,
+        final KFloatReferenceValue v,
         final float step,
         final float stepFast,
         final String format
@@ -2384,7 +2385,7 @@ public interface KImGui {
 
     boolean inputFloat(
         final String label,
-        final ImFloat v,
+        final KFloatReferenceValue v,
         final float step,
         final float stepFast,
         final String format,
@@ -2393,7 +2394,7 @@ public interface KImGui {
 
     boolean inputFloat(
         final String label,
-        final ImFloat v,
+        final KFloatReferenceValue v,
         final float step,
         final float stepFast,
         final int imGuiInputTextFlags
@@ -2423,15 +2424,15 @@ public interface KImGui {
 
     boolean inputFloat4(final String label, final float[] v, final int imGuiInputTextFlags);
 
-    boolean inputInt(final String label, final ImInt v);
+    boolean inputInt(final String label, final KIntReferenceValue v);
 
-    boolean inputInt(final String label, final ImInt v, final int step);
+    boolean inputInt(final String label, final KIntReferenceValue v, final int step);
 
-    boolean inputInt(final String label, final ImInt v, final int step, final int stepFast);
+    boolean inputInt(final String label, final KIntReferenceValue v, final int step, final int stepFast);
 
     boolean inputInt(
         final String label,
-        final ImInt v,
+        final KIntReferenceValue v,
         final int step,
         final int stepFast,
         final int imGuiInputTextFlags
@@ -2449,15 +2450,15 @@ public interface KImGui {
 
     boolean inputInt4(final String label, final int[] v, final int imGuiInputTextFlags);
 
-    boolean inputDouble(final String label, final ImDouble v);
+    boolean inputDouble(final String label, final KDoubleReferenceValue v);
 
-    boolean inputDouble(final String label, final ImDouble v, final double step);
+    boolean inputDouble(final String label, final KDoubleReferenceValue v, final double step);
 
-    boolean inputDouble(final String label, final ImDouble v, final double step, final double stepFast);
+    boolean inputDouble(final String label, final KDoubleReferenceValue v, final double step, final double stepFast);
 
     boolean inputDouble(
         final String label,
-        final ImDouble v,
+        final KDoubleReferenceValue v,
         final double step,
         final double stepFast,
         final String format
@@ -2465,7 +2466,7 @@ public interface KImGui {
 
     boolean inputDouble(
         final String label,
-        final ImDouble v,
+        final KDoubleReferenceValue v,
         final double step,
         final double stepFast,
         final String format,
@@ -2474,21 +2475,21 @@ public interface KImGui {
 
     boolean inputDouble(
         final String label,
-        final ImDouble v,
+        final KDoubleReferenceValue v,
         final double step,
         final double stepFast,
         final int imGuiInputTextFlags
     );
 
-    boolean inputScalar(final String label, final ImShort pData);
+    boolean inputScalar(final String label, final KShortReferenceValue pData);
 
-    boolean inputScalar(final String label, final ImShort pData, final short pStep);
+    boolean inputScalar(final String label, final KShortReferenceValue pData, final short pStep);
 
-    boolean inputScalar(final String label, final ImShort pData, final short pStep, final short pStepFast);
+    boolean inputScalar(final String label, final KShortReferenceValue pData, final short pStep, final short pStepFast);
 
     boolean inputScalar(
         final String label,
-        final ImShort pData,
+        final KShortReferenceValue pData,
         final short pStep,
         final short pStepFast,
         final String format
@@ -2496,22 +2497,22 @@ public interface KImGui {
 
     boolean inputScalar(
         final String label,
-        final ImShort pData,
+        final KShortReferenceValue pData,
         final short pStep,
         final short pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final ImInt pData);
+    boolean inputScalar(final String label, final KIntReferenceValue pData);
 
-    boolean inputScalar(final String label, final ImInt pData, final int pStep);
+    boolean inputScalar(final String label, final KIntReferenceValue pData, final int pStep);
 
-    boolean inputScalar(final String label, final ImInt pData, final int pStep, final int pStepFast);
+    boolean inputScalar(final String label, final KIntReferenceValue pData, final int pStep, final int pStepFast);
 
     boolean inputScalar(
         final String label,
-        final ImInt pData,
+        final KIntReferenceValue pData,
         final int pStep,
         final int pStepFast,
         final String format
@@ -2519,22 +2520,22 @@ public interface KImGui {
 
     boolean inputScalar(
         final String label,
-        final ImInt pData,
+        final KIntReferenceValue pData,
         final int pStep,
         final int pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final ImLong pData);
+    boolean inputScalar(final String label, final KLongReferenceValue pData);
 
-    boolean inputScalar(final String label, final ImLong pData, final long pStep);
+    boolean inputScalar(final String label, final KLongReferenceValue pData, final long pStep);
 
-    boolean inputScalar(final String label, final ImLong pData, final long pStep, final long pStepFast);
+    boolean inputScalar(final String label, final KLongReferenceValue pData, final long pStep, final long pStepFast);
 
     boolean inputScalar(
         final String label,
-        final ImLong pData,
+        final KLongReferenceValue pData,
         final long pStep,
         final long pStepFast,
         final String format
@@ -2542,22 +2543,22 @@ public interface KImGui {
 
     boolean inputScalar(
         final String label,
-        final ImLong pData,
+        final KLongReferenceValue pData,
         final long pStep,
         final long pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final ImFloat pData);
+    boolean inputScalar(final String label, final KFloatReferenceValue pData);
 
-    boolean inputScalar(final String label, final ImFloat pData, final float pStep);
+    boolean inputScalar(final String label, final KFloatReferenceValue pData, final float pStep);
 
-    boolean inputScalar(final String label, final ImFloat pData, final float pStep, final float pStepFast);
+    boolean inputScalar(final String label, final KFloatReferenceValue pData, final float pStep, final float pStepFast);
 
     boolean inputScalar(
         final String label,
-        final ImFloat pData,
+        final KFloatReferenceValue pData,
         final float pStep,
         final float pStepFast,
         final String format
@@ -2565,22 +2566,22 @@ public interface KImGui {
 
     boolean inputScalar(
         final String label,
-        final ImFloat pData,
+        final KFloatReferenceValue pData,
         final float pStep,
         final float pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final ImDouble pData);
+    boolean inputScalar(final String label, final KDoubleReferenceValue pData);
 
-    boolean inputScalar(final String label, final ImDouble pData, final double pStep);
+    boolean inputScalar(final String label, final KDoubleReferenceValue pData, final double pStep);
 
-    boolean inputScalar(final String label, final ImDouble pData, final double pStep, final double pStepFast);
+    boolean inputScalar(final String label, final KDoubleReferenceValue pData, final double pStep, final double pStepFast);
 
     boolean inputScalar(
         final String label,
-        final ImDouble pData,
+        final KDoubleReferenceValue pData,
         final double pStep,
         final double pStepFast,
         final String format
@@ -2588,21 +2589,21 @@ public interface KImGui {
 
     boolean inputScalar(
         final String label,
-        final ImDouble pData,
+        final KDoubleReferenceValue pData,
         final double pStep,
         final double pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final ImShort pData);
+    boolean inputScalar(final String label, final int dataType, final KShortReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final ImShort pData, final short pStep);
+    boolean inputScalar(final String label, final int dataType, final KShortReferenceValue pData, final short pStep);
 
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImShort pData,
+        final KShortReferenceValue pData,
         final short pStep,
         final short pStepFast
     );
@@ -2610,7 +2611,7 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImShort pData,
+        final KShortReferenceValue pData,
         final short pStep,
         final short pStepFast,
         final String format
@@ -2619,21 +2620,21 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImShort pData,
+        final KShortReferenceValue pData,
         final short pStep,
         final short pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final ImInt pData);
+    boolean inputScalar(final String label, final int dataType, final KIntReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final ImInt pData, final int pStep);
+    boolean inputScalar(final String label, final int dataType, final KIntReferenceValue pData, final int pStep);
 
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImInt pData,
+        final KIntReferenceValue pData,
         final int pStep,
         final int pStepFast
     );
@@ -2641,7 +2642,7 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImInt pData,
+        final KIntReferenceValue pData,
         final int pStep,
         final int pStepFast,
         final String format
@@ -2650,21 +2651,21 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImInt pData,
+        final KIntReferenceValue pData,
         final int pStep,
         final int pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final ImLong pData);
+    boolean inputScalar(final String label, final int dataType, final KLongReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final ImLong pData, final long pStep);
+    boolean inputScalar(final String label, final int dataType, final KLongReferenceValue pData, final long pStep);
 
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImLong pData,
+        final KLongReferenceValue pData,
         final long pStep,
         final long pStepFast
     );
@@ -2672,7 +2673,7 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImLong pData,
+        final KLongReferenceValue pData,
         final long pStep,
         final long pStepFast,
         final String format
@@ -2681,21 +2682,21 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImLong pData,
+        final KLongReferenceValue pData,
         final long pStep,
         final long pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final ImFloat pData);
+    boolean inputScalar(final String label, final int dataType, final KFloatReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final ImFloat pData, final float pStep);
+    boolean inputScalar(final String label, final int dataType, final KFloatReferenceValue pData, final float pStep);
 
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImFloat pData,
+        final KFloatReferenceValue pData,
         final float pStep,
         final float pStepFast
     );
@@ -2703,7 +2704,7 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImFloat pData,
+        final KFloatReferenceValue pData,
         final float pStep,
         final float pStepFast,
         final String format
@@ -2712,21 +2713,21 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImFloat pData,
+        final KFloatReferenceValue pData,
         final float pStep,
         final float pStepFast,
         final String format,
         final int imGuiSliderFlags
     );
 
-    boolean inputScalar(final String label, final int dataType, final ImDouble pData);
+    boolean inputScalar(final String label, final int dataType, final KDoubleReferenceValue pData);
 
-    boolean inputScalar(final String label, final int dataType, final ImDouble pData, final double pStep);
+    boolean inputScalar(final String label, final int dataType, final KDoubleReferenceValue pData, final double pStep);
 
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImDouble pData,
+        final KDoubleReferenceValue pData,
         final double pStep,
         final double pStepFast
     );
@@ -2734,7 +2735,7 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImDouble pData,
+        final KDoubleReferenceValue pData,
         final double pStep,
         final double pStepFast,
         final String format
@@ -2743,7 +2744,7 @@ public interface KImGui {
     boolean inputScalar(
         final String label,
         final int dataType,
-        final ImDouble pData,
+        final KDoubleReferenceValue pData,
         final double pStep,
         final double pStepFast,
         final String format,
@@ -3217,9 +3218,9 @@ public interface KImGui {
 
     boolean collapsingHeader(final String label, final int imGuiTreeNodeFlags);
 
-    boolean collapsingHeader(final String label, final ImBoolean pVisible);
+    boolean collapsingHeader(final String label, final KBooleanReferenceValue pVisible);
 
-    boolean collapsingHeader(final String label, final ImBoolean pVisible, final int imGuiTreeNodeFlags);
+    boolean collapsingHeader(final String label, final KBooleanReferenceValue pVisible, final int imGuiTreeNodeFlags);
 
     void setNextItemOpen(final boolean isOpen);
 
@@ -3253,28 +3254,28 @@ public interface KImGui {
 
     boolean selectable(final String label, final boolean selected, final float sizeX, final float sizeY);
 
-    boolean selectable(final String label, final ImBoolean pSelected);
+    boolean selectable(final String label, final KBooleanReferenceValue pSelected);
 
-    boolean selectable(final String label, final ImBoolean pSelected, final int imGuiSelectableFlags);
+    boolean selectable(final String label, final KBooleanReferenceValue pSelected, final int imGuiSelectableFlags);
 
     boolean selectable(
         final String label,
-        final ImBoolean pSelected,
+        final KBooleanReferenceValue pSelected,
         final int imGuiSelectableFlags,
         final KVector2f size
     );
 
     boolean selectable(
         final String label,
-        final ImBoolean pSelected,
+        final KBooleanReferenceValue pSelected,
         final int imGuiSelectableFlags,
         final float sizeX,
         final float sizeY
     );
 
-    boolean selectable(final String label, final ImBoolean pSelected, final KVector2f size);
+    boolean selectable(final String label, final KBooleanReferenceValue pSelected, final KVector2f size);
 
-    boolean selectable(final String label, final ImBoolean pSelected, final float sizeX, final float sizeY);
+    boolean selectable(final String label, final KBooleanReferenceValue pSelected, final float sizeX, final float sizeY);
 
     boolean beginListBox(final String label);
 
@@ -3284,9 +3285,9 @@ public interface KImGui {
 
     void endListBox();
 
-    void listBox(final String label, final ImInt currentItem, final String[] items);
+    void listBox(final String label, final KIntReferenceValue currentItem, final String[] items);
 
-    void listBox(final String label, final ImInt currentItem, final String[] items, final int heightInItems);
+    void listBox(final String label, final KIntReferenceValue currentItem, final String[] items, final int heightInItems);
 
     void plotLines(final String label, final float[] values, final int valuesCount);
 
@@ -3632,9 +3633,9 @@ public interface KImGui {
 
     boolean menuItem(final String label, final String shortcut, final boolean selected, final boolean enabled);
 
-    boolean menuItem(final String label, final String shortcut, final ImBoolean pSelected);
+    boolean menuItem(final String label, final String shortcut, final KBooleanReferenceValue pSelected);
 
-    boolean menuItem(final String label, final String shortcut, final ImBoolean pSelected, final boolean enabled);
+    boolean menuItem(final String label, final String shortcut, final KBooleanReferenceValue pSelected, final boolean enabled);
 
     void beginTooltip();
 
@@ -3652,9 +3653,9 @@ public interface KImGui {
 
     boolean beginPopupModal(final String name);
 
-    boolean beginPopupModal(final String name, final ImBoolean pOpen);
+    boolean beginPopupModal(final String name, final KBooleanReferenceValue pOpen);
 
-    boolean beginPopupModal(final String name, final ImBoolean pOpen, final int imGuiWindowFlags);
+    boolean beginPopupModal(final String name, final KBooleanReferenceValue pOpen, final int imGuiWindowFlags);
 
     boolean beginPopupModal(final String name, final int imGuiWindowFlags);
 
@@ -3790,7 +3791,7 @@ public interface KImGui {
 
     void tableAngledHeadersRow();
 
-    ImGuiTableSortSpecs tableGetSortSpecs();
+    KImGuiTableSortSpecs tableGetSortSpecs();
 
     int tableGetColumnCount();
 
@@ -3854,9 +3855,9 @@ public interface KImGui {
 
     boolean beginTabItem(final String label);
 
-    boolean beginTabItem(final String label, final ImBoolean pOpen);
+    boolean beginTabItem(final String label, final KBooleanReferenceValue pOpen);
 
-    boolean beginTabItem(final String label, final ImBoolean pOpen, final int imGuiTabItemFlags);
+    boolean beginTabItem(final String label, final KBooleanReferenceValue pOpen, final int imGuiTabItemFlags);
 
     boolean beginTabItem(final String label, final int imGuiTabItemFlags);
 
@@ -3882,7 +3883,7 @@ public interface KImGui {
         final int dockspaceId,
         final KVector2f size,
         final int imGuiDockNodeFlags,
-        final ImGuiWindowClass windowClass
+        final KImGuiWindowClass windowClass
     );
 
     int dockSpace(
@@ -3890,16 +3891,16 @@ public interface KImGui {
         final float sizeX,
         final float sizeY,
         final int imGuiDockNodeFlags,
-        final ImGuiWindowClass windowClass
+        final KImGuiWindowClass windowClass
     );
 
-    int dockSpace(final int dockspaceId, final int imGuiDockNodeFlags, final ImGuiWindowClass windowClass);
+    int dockSpace(final int dockspaceId, final int imGuiDockNodeFlags, final KImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final ImGuiWindowClass windowClass);
+    int dockSpace(final int dockspaceId, final KImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final KVector2f size, final ImGuiWindowClass windowClass);
+    int dockSpace(final int dockspaceId, final KVector2f size, final KImGuiWindowClass windowClass);
 
-    int dockSpace(final int dockspaceId, final float sizeX, final float sizeY, final ImGuiWindowClass windowClass);
+    int dockSpace(final int dockspaceId, final float sizeX, final float sizeY, final KImGuiWindowClass windowClass);
 
     int dockSpaceOverViewport();
 
@@ -3913,22 +3914,22 @@ public interface KImGui {
         final int dockspaceId,
         final KImGuiViewport viewport,
         final int imGuiDockNodeFlags,
-        final ImGuiWindowClass windowClass
+        final KImGuiWindowClass windowClass
     );
 
     int dockSpaceOverViewport(
         final KImGuiViewport viewport,
         final int imGuiDockNodeFlags,
-        final ImGuiWindowClass windowClass
+        final KImGuiWindowClass windowClass
     );
 
-    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport, final ImGuiWindowClass windowClass);
+    int dockSpaceOverViewport(final int dockspaceId, final KImGuiViewport viewport, final KImGuiWindowClass windowClass);
 
     void setNextWindowDockID(final int dockId);
 
     void setNextWindowDockID(final int dockId, final int imGuiCond);
 
-    void setNextWindowClass(final ImGuiWindowClass windowClass);
+    void setNextWindowClass(final KImGuiWindowClass windowClass);
 
     int getWindowDockID();
 
@@ -4098,9 +4099,9 @@ public interface KImGui {
 
     String getStyleColorName(final int imGuiColIdx);
 
-    ImGuiStorage getStateStorage();
+    KImGuiStorage getStateStorage();
 
-    void setStateStorage(final ImGuiStorage storage);
+    void setStateStorage(final KImGuiStorage storage);
 
     KVector2f calcTextSize(final String text);
 
@@ -4303,7 +4304,7 @@ public interface KImGui {
         final int szDrawIdx
     );
 
-    ImGuiPlatformIO getPlatformIO();
+    KImGuiPlatformIo getPlatformIO();
 
     void updatePlatformWindows();
 
