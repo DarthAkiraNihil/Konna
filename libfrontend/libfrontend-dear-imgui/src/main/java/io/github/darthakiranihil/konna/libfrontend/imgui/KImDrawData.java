@@ -33,7 +33,7 @@ public interface KImDrawData {
     KImGuiViewport getOwnerViewport();
     
     void clear();
-    void addDrawList(ImDrawList drawList);
+    void addDrawList(KImDrawList drawList);
     void deIndexAllBuffers();
     void scaleClipRects(KVector2f fbScale);
 

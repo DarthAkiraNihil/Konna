@@ -59,8 +59,8 @@ public interface KImGuiViewport {
     int getParentViewportId();
     void setParentViewportId(int value);
 
-    ImDrawData getDrawData();
-    void setDrawData(ImDrawData value);
+    KImDrawData getDrawData();
+    void setDrawData(KImDrawData value);
 
     void setRendererUserData(Object data);
     Object getRendererUserData();

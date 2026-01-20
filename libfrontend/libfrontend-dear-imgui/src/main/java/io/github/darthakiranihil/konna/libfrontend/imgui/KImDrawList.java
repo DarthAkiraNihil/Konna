@@ -46,7 +46,7 @@ public interface KImDrawList {
     void addEllipse(KVector2f center, KVector2f radius, int col, float rot, float numSegments, float thickness);
     void addEllipseFilled(KVector2f center, KVector2f radius, int col, float rot, float numSegments);
     void addText(KVector2f pos, int col, String textBegin, String textEnd);
-    void addText(ImFont font, int fontSize, KVector2f pos, int col, String textBegin, String textEnd, float wrapWidth, KVector4f cpuFineClipRect);
+    void addText(KImFont font, int fontSize, KVector2f pos, int col, String textBegin, String textEnd, float wrapWidth, KVector4f cpuFineClipRect);
     void addBezierCubic(KVector2f p1, KVector2f p2, KVector2f p3, KVector2f p4, int col, float thickness, int numSegments);
     void addBezierQuadratic(KVector2f p1, KVector2f p2, KVector2f p3, int col, float thickness, int numSegments);
     void addPolyline(KVector2f[] points, int numPoints, int col, int imDrawFlags, float thickness);
