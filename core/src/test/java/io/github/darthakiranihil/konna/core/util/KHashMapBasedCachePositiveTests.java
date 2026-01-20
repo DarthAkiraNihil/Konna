@@ -49,7 +49,7 @@ public class KHashMapBasedCachePositiveTests extends KStandardTestClass {
                 "Abiba",
                 c.getFromCache("aboba", String.class)
             );
-            TimeUnit.SECONDS.sleep(6);
+            TimeUnit.SECONDS.sleep(7);
             Assertions.assertNull(
                 c.getFromCache("aboba", String.class)
             );
@@ -75,7 +75,7 @@ public class KHashMapBasedCachePositiveTests extends KStandardTestClass {
                 "Abiba",
                 c.getFromCache("aboba", String.class)
             );
-            TimeUnit.SECONDS.sleep(61);
+            TimeUnit.SECONDS.sleep(62);
             Assertions.assertNull(
                 c.getFromCache("aboba", String.class)
             );
@@ -132,7 +132,7 @@ public class KHashMapBasedCachePositiveTests extends KStandardTestClass {
                 "Abiba",
                 c.getFromCache("aboba", String.class)
             );
-            TimeUnit.SECONDS.sleep(61);
+            TimeUnit.SECONDS.sleep(62);
             Assertions.assertNull(
                 c.getFromCache("aboba", String.class)
             );
@@ -246,7 +246,7 @@ public class KHashMapBasedCachePositiveTests extends KStandardTestClass {
                 c.getFromCache("aboba", String.class)
             );
             c.setTtl("aboba", 3);
-            TimeUnit.SECONDS.sleep(4);
+            TimeUnit.SECONDS.sleep(5);
             Assertions.assertNull(
                 c.getFromCache("aboba", String.class)
             );

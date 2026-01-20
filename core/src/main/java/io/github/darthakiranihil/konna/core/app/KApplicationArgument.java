@@ -47,7 +47,15 @@ public record KApplicationArgument(
      * Default Konna arguments options that will be used no matter
      * if custom options are provided to {@link io.github.darthakiranihil.konna.core.Konna}.
      */
-    public static final List<KApplicationArgument> DEFAULT_ARGS = List.of();
+    public static final List<KApplicationArgument> DEFAULT_ARGS = List.of(
+        new KApplicationArgument(
+            "D",
+            "debug",
+            true,
+            "false",
+            KArgumentValidator.BOOLEAN
+        )
+    );
 
     public KApplicationArgument(
         final String shortKey,
