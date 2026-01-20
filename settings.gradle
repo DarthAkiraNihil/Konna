@@ -20,6 +20,9 @@ findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
 include 'libfrontend:libfrontend-stb'
 findProject(':libfrontend:libfrontend-stb')?.name = 'libfrontend-stb'
 
+include 'libfrontend:libfrontend-dear-imgui'
+findProject(':libfrontend:libfrontend-dear-imgui')?.name = 'libfrontend-dear-imgui'
+
 include 'rendering:opengl33'
 findProject(':rendering:opengl33')?.name = 'opengl33'
 
