@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.debug.KDebugger;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
@@ -65,6 +66,7 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine components.
      */
     protected final Map<String, KComponent> engineComponents;
+    protected final Map<String, Object> loadedDebuggers;
     /**
      * Loaded engine context.
      */
@@ -96,6 +98,7 @@ public class KEngineHypervisor extends KObject {
         this.config = config;
 
         this.engineComponents = new HashMap<>();
+        this.loadedDebuggers = new HashMap<>();
         this.ctx = null;
 
         this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
@@ -233,6 +236,34 @@ public class KEngineHypervisor extends KObject {
             this.name,
             "Components' post-init is completed"
         );
+
+        if (this.debug) {
+            var debuggers = this
+                .ctx
+                .getClassIndex()
+                .stream()
+                .filter(c -> c.isAnnotationPresent(KDebugger.class))
+                .toList();
+
+            KSystemLogger.info(
+                this.name,
+                "Found %d debuggers",
+                debuggers.size()
+            );
+
+            for (var debugger: debuggers) {
+                KSystemLogger.info(
+                    this.name,
+                    "Loading debugger %s",
+                    debugger.getCanonicalName()
+                );
+                this.loadedDebuggers.put(
+                    debugger.getCanonicalName(),
+                    this.ctx.createObject(debugger)
+                );
+            }
+
+        }
 
     }
 
