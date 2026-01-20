@@ -16,30 +16,47 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-public final class KStringReferenceValue implements Cloneable {
+/**
+ * Represents a passed-by-reference string value.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+public final class KStringReference implements Cloneable {
     private String data;
 
-    public KStringReferenceValue() {
+    public KStringReference() {
         this.data = "";
     }
 
-    public KStringReferenceValue(final KStringReferenceValue reference) {
+    public KStringReference(final KStringReference reference) {
         this.data = reference.data;
     }
 
-    public KStringReferenceValue(final String value) {
+    public KStringReference(final String value) {
         this.data = value;
     }
 
+    /**
+     * @return Value contained by this reference
+     */
     public String get() {
         return this.data;
     }
 
+    /**
+     * Sets a value to be hold by this reference.
+     * @param value New reference value
+     */
     public void set(final String value) {
         this.data = value;
     }
 
-    public void set(final KStringReferenceValue value) {
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KStringReference value) {
         this.set(value.get());
     }
 
@@ -56,7 +73,7 @@ public final class KStringReferenceValue implements Cloneable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final KStringReferenceValue ref = (KStringReferenceValue) o;
+        final KStringReference ref = (KStringReference) o;
         return this.data.equals(ref.data);
     }
 
@@ -67,8 +84,8 @@ public final class KStringReferenceValue implements Cloneable {
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public KStringReferenceValue clone() {
-        return new KStringReferenceValue(this);
+    public KStringReference clone() {
+        return new KStringReference(this);
     }
 
 }

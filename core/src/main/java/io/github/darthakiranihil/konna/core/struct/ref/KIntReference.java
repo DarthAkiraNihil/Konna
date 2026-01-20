@@ -16,37 +16,50 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-public final class KIntReferenceValue extends Number implements Cloneable, Comparable<KIntReferenceValue> {
+/**
+ * Represents a passed-by-reference int value.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+public final class KIntReference extends Number implements Cloneable, Comparable<KIntReference> {
 
-    private final int[] data;
+    private int data;
 
-    public KIntReferenceValue() {
-        this.data = new int[0];
+    public KIntReference() {
+        this.data = 0;
     }
 
-    public KIntReferenceValue(final KIntReferenceValue reference) {
+    public KIntReference(final KIntReference reference) {
         this();
-        this.data[0] = reference.data[0];
+        this.data = reference.data;
     }
 
-    public KIntReferenceValue(int value) {
+    public KIntReference(int value) {
         this();
         this.set(value);
     }
 
+    /**
+     * @return Value contained by this reference
+     */
     public int get() {
-        return this.data[0];
-    }
-
-    public int[] getData() {
         return this.data;
     }
 
-    public void set(final int value) {
-        this.data[0] = value;
+    /**
+     * Sets a value to be hold by this reference.
+     * @param value New reference value
+     */
+    public void set(int value) {
+        this.data = value;
     }
 
-    public void set(final KIntReferenceValue value) {
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KIntReference value) {
         this.set(value.get());
     }
 
@@ -63,23 +76,23 @@ public final class KIntReferenceValue extends Number implements Cloneable, Compa
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        final KIntReferenceValue ref = (KIntReferenceValue) o;
-        return this.data[0] == ref.data[0];
+        final KIntReference ref = (KIntReference) o;
+        return this.data == ref.data;
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(this.data[0]);
+        return Integer.hashCode(this.data);
     }
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public KIntReferenceValue clone() {
-        return new KIntReferenceValue(this);
+    public KIntReference clone() {
+        return new KIntReference(this);
     }
 
     @Override
-    public int compareTo(final KIntReferenceValue o) {
+    public int compareTo(final KIntReference o) {
         return Integer.compare(this.get(), o.get());
     }
 

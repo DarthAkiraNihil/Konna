@@ -18,6 +18,10 @@ package io.github.darthakiranihil.konna.core.struct.ref;
 
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represent a passed-by-reference value of desired type.
+ * @param <T> Type of value hold by reference
+ */
 public final class KReference<T> implements Cloneable {
 
     private @Nullable T data;
@@ -30,12 +34,27 @@ public final class KReference<T> implements Cloneable {
         this.data = data;
     }
 
+    /**
+     * @return Value contained by this reference
+     */
     public @Nullable T get() {
         return this.data;
     }
 
-    public void set(final T obj) {
+    /**
+     * Sets a value to be hold by this reference.
+     * @param obj New reference value
+     */
+    public void set(final @Nullable T obj) {
         this.data = obj;
+    }
+
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KReference<T> value) {
+        this.set(value.get());
     }
 
     @Override

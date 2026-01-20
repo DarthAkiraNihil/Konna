@@ -16,37 +16,52 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-public final class KShortReferenceValue extends Number implements Cloneable, Comparable<KShortReferenceValue>  {
+/**
+ * Represents a passed-by-reference float value.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+public final class KFloatReference
+    extends Number
+    implements Cloneable, Comparable<KFloatReference> {
 
-    private final short[] data;
+    private float data;
 
-    public KShortReferenceValue() {
-        this.data = new short[0];
+    public KFloatReference() {
+        this.data = 0.0f;
     }
 
-    public KShortReferenceValue(final KShortReferenceValue reference) {
+    public KFloatReference(final KFloatReference reference) {
         this();
-        this.data[0] = reference.data[0];
+        this.data = reference.data;
     }
 
-    public KShortReferenceValue(short value) {
+    public KFloatReference(float value) {
         this();
         this.set(value);
     }
 
-    public short get() {
-        return this.data[0];
-    }
-
-    public short[] getData() {
+    /**
+     * @return Value contained by this reference
+     */
+    public float get() {
         return this.data;
     }
 
-    public void set(final short value) {
-        this.data[0] = value;
+    /**
+     * Sets a value to be hold by this reference.
+     * @param value New reference value
+     */
+    public void set(float value) {
+        this.data = value;
     }
 
-    public void set(final KShortReferenceValue value) {
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KFloatReference value) {
         this.set(value.get());
     }
 
@@ -63,34 +78,34 @@ public final class KShortReferenceValue extends Number implements Cloneable, Com
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        final KShortReferenceValue ref = (KShortReferenceValue) o;
-        return this.data[0] == ref.data[0];
+        final KFloatReference ref = (KFloatReference) o;
+        return this.data == ref.data;
     }
 
     @Override
     public int hashCode() {
-        return Short.hashCode(this.data[0]);
+        return Float.hashCode(this.data);
     }
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public KShortReferenceValue clone() {
-        return new KShortReferenceValue(this);
+    public KFloatReference clone() {
+        return new KFloatReference(this);
     }
 
     @Override
-    public int compareTo(final KShortReferenceValue o) {
-        return Long.compare(this.get(), o.get());
+    public int compareTo(final KFloatReference o) {
+        return Float.compare(this.get(), o.get());
     }
 
     @Override
     public int intValue() {
-        return this.get();
+        return (int) this.get();
     }
 
     @Override
     public long longValue() {
-        return this.get();
+        return (long) this.get();
     }
 
     @Override

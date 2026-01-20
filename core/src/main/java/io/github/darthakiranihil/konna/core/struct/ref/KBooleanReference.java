@@ -16,42 +16,55 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-public final class KBooleanReferenceValue implements Cloneable, Comparable<KBooleanReferenceValue> {
-    private final boolean[] data;
+/**
+ * Represents a passed-by-reference boolean value.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+public final class KBooleanReference implements Cloneable, Comparable<KBooleanReference> {
+    private boolean data;
 
-    public KBooleanReferenceValue() {
-        this.data = new boolean[0];
+    public KBooleanReference() {
+        this.data = false;
     }
 
-    public KBooleanReferenceValue(final KBooleanReferenceValue reference) {
+    public KBooleanReference(final KBooleanReference reference) {
         this();
-        this.data[0] = reference.data[0];
+        this.data = reference.data;
     }
 
-    public KBooleanReferenceValue(final boolean value) {
+    public KBooleanReference(boolean value) {
         this();
-        this.data[0] = value;
+        this.data = value;
     }
 
+    /**
+     * @return Value contained by this reference
+     */
     public boolean get() {
-        return this.data[0];
-    }
-
-    public boolean[] getData() {
         return this.data;
     }
 
+    /**
+     * Sets a value to be hold by this reference.
+     * @param value New reference value
+     */
     public void set(final boolean value) {
-        this.data[0] = value;
+        this.data = value;
     }
 
-    public void set(final KBooleanReferenceValue value) {
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KBooleanReference value) {
         this.set(value.get());
     }
 
     @Override
     public String toString() {
-        return String.valueOf(this.data[0]);
+        return String.valueOf(this.data);
     }
 
     @Override
@@ -62,23 +75,23 @@ public final class KBooleanReferenceValue implements Cloneable, Comparable<KBool
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final KBooleanReferenceValue ref = (KBooleanReferenceValue) o;
-        return this.data[0] == ref.data[0];
+        final KBooleanReference ref = (KBooleanReference) o;
+        return this.data == ref.data;
     }
 
     @Override
     public int hashCode() {
-        return Boolean.hashCode(this.data[0]);
+        return Boolean.hashCode(this.data);
     }
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public KBooleanReferenceValue clone() {
-        return new KBooleanReferenceValue(this);
+    public KBooleanReference clone() {
+        return new KBooleanReference(this);
     }
 
     @Override
-    public int compareTo(final KBooleanReferenceValue o) {
+    public int compareTo(final KBooleanReference o) {
         return Boolean.compare(this.get(), o.get());
     }
 }

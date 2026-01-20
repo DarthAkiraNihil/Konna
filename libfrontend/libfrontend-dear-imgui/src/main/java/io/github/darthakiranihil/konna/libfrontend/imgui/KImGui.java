@@ -35,23 +35,23 @@ public interface KImGui {
 
     void showDemoWindow();
 
-    void showDemoWindow(KBooleanReferenceValue pOpen);
+    void showDemoWindow(KBooleanReference pOpen);
 
     void showMetricsWindow();
 
-    void showMetricsWindow(KBooleanReferenceValue pOpen);
+    void showMetricsWindow(KBooleanReference pOpen);
 
     void showDebugLogWindow();
 
-    void showDebugLogWindow(KBooleanReferenceValue pOpen);
+    void showDebugLogWindow(KBooleanReference pOpen);
 
     void showIDStackToolWindow();
 
-    void showIDStackToolWindow(KBooleanReferenceValue pOpen);
+    void showIDStackToolWindow(KBooleanReference pOpen);
 
     void showAboutWindow();
 
-    void showAboutWindow(KBooleanReferenceValue pOpen);
+    void showAboutWindow(KBooleanReference pOpen);
 
     void showStyleEditor();
 
@@ -79,9 +79,9 @@ public interface KImGui {
 
     boolean begin(String title);
 
-    boolean begin(String title, KBooleanReferenceValue pOpen);
+    boolean begin(String title, KBooleanReference pOpen);
 
-    boolean begin(String title, KBooleanReferenceValue pOpen, int imGuiWindowFlags);
+    boolean begin(String title, KBooleanReference pOpen, int imGuiWindowFlags);
 
     boolean begin(String title, int imGuiWindowFlags);
 
@@ -558,13 +558,13 @@ public interface KImGui {
 
     boolean checkbox(String label, boolean active);
 
-    boolean checkbox(String label, KBooleanReferenceValue data);
+    boolean checkbox(String label, KBooleanReference data);
 
-    boolean checkboxFlags(String label, KIntReferenceValue flags, int flagsValue);
+    boolean checkboxFlags(String label, KIntReference flags, int flagsValue);
 
     boolean radioButton(String label, boolean active);
 
-    boolean radioButton(String label, KIntReferenceValue v, int vButton);
+    boolean radioButton(String label, KIntReference v, int vButton);
 
     void progressBar(float fraction);
 
@@ -748,15 +748,15 @@ public interface KImGui {
 
     void endCombo();
 
-    boolean combo(String label, KIntReferenceValue currentItem, String[] items);
+    boolean combo(String label, KIntReference currentItem, String[] items);
 
-    boolean combo(String label, KIntReferenceValue currentItem, String[] items, int popupMaxHeightInItems);
+    boolean combo(String label, KIntReference currentItem, String[] items, int popupMaxHeightInItems);
 
-    boolean combo(String label, KIntReferenceValue currentItem, String itemsSeparatedByZeros);
+    boolean combo(String label, KIntReference currentItem, String itemsSeparatedByZeros);
 
     boolean combo(
         String label,
-        KIntReferenceValue currentItem,
+        KIntReference currentItem,
         String itemsSeparatedByZeros,
         int popupMaxHeightInItems
     );
@@ -2311,33 +2311,33 @@ public interface KImGui {
         int imGuiSliderFlags
     );
 
-    boolean inputText(String label, KStringReferenceValue text);
+    boolean inputText(String label, KStringReference text);
 
-    boolean inputText(String label, KStringReferenceValue text, int imGuiInputTextFlags);
+    boolean inputText(String label, KStringReference text, int imGuiInputTextFlags);
 
     boolean inputText(
         String label,
-        KStringReferenceValue text,
+        KStringReference text,
         int imGuiInputTextFlags,
         KImGuiInputTextCallback callback
     );
 
-    boolean inputTextMultiline(String label, KStringReferenceValue text);
+    boolean inputTextMultiline(String label, KStringReference text);
 
-    boolean inputTextMultiline(String label, KStringReferenceValue text, float width, float height);
+    boolean inputTextMultiline(String label, KStringReference text, float width, float height);
 
-    boolean inputTextMultiline(String label, KStringReferenceValue text, int imGuiInputTextFlags);
+    boolean inputTextMultiline(String label, KStringReference text, int imGuiInputTextFlags);
 
     boolean inputTextMultiline(
         String label,
-        KStringReferenceValue text,
+        KStringReference text,
         int imGuiInputTextFlags,
         KImGuiInputTextCallback callback
     );
 
     boolean inputTextMultiline(
         String label,
-        KStringReferenceValue text,
+        KStringReference text,
         float width,
         float height,
         int imGuiInputTextFlags
@@ -2345,39 +2345,39 @@ public interface KImGui {
 
     boolean inputTextMultiline(
         String label,
-        KStringReferenceValue text,
+        KStringReference text,
         float width,
         float height,
         int imGuiInputTextFlags,
         KImGuiInputTextCallback callback
     );
 
-    boolean inputTextWithHint(String label, String hint, KStringReferenceValue text);
+    boolean inputTextWithHint(String label, String hint, KStringReference text);
 
     boolean inputTextWithHint(
         String label,
         String hint,
-        KStringReferenceValue text,
+        KStringReference text,
         int imGuiInputTextFlags
     );
 
     boolean inputTextWithHint(
         String label,
         String hint,
-        KStringReferenceValue text,
+        KStringReference text,
         int imGuiInputTextFlags,
         KImGuiInputTextCallback callback
     );
 
-    boolean inputFloat(String label, KFloatReferenceValue v);
+    boolean inputFloat(String label, KFloatReference v);
 
-    boolean inputFloat(String label, KFloatReferenceValue v, float step);
+    boolean inputFloat(String label, KFloatReference v, float step);
 
-    boolean inputFloat(String label, KFloatReferenceValue v, float step, float stepFast);
+    boolean inputFloat(String label, KFloatReference v, float step, float stepFast);
 
     boolean inputFloat(
         String label,
-        KFloatReferenceValue v,
+        KFloatReference v,
         float step,
         float stepFast,
         String format
@@ -2385,7 +2385,7 @@ public interface KImGui {
 
     boolean inputFloat(
         String label,
-        KFloatReferenceValue v,
+        KFloatReference v,
         float step,
         float stepFast,
         String format,
@@ -2394,7 +2394,7 @@ public interface KImGui {
 
     boolean inputFloat(
         String label,
-        KFloatReferenceValue v,
+        KFloatReference v,
         float step,
         float stepFast,
         int imGuiInputTextFlags
@@ -2424,15 +2424,15 @@ public interface KImGui {
 
     boolean inputFloat4(String label, float[] v, int imGuiInputTextFlags);
 
-    boolean inputInt(String label, KIntReferenceValue v);
+    boolean inputInt(String label, KIntReference v);
 
-    boolean inputInt(String label, KIntReferenceValue v, int step);
+    boolean inputInt(String label, KIntReference v, int step);
 
-    boolean inputInt(String label, KIntReferenceValue v, int step, int stepFast);
+    boolean inputInt(String label, KIntReference v, int step, int stepFast);
 
     boolean inputInt(
         String label,
-        KIntReferenceValue v,
+        KIntReference v,
         int step,
         int stepFast,
         int imGuiInputTextFlags
@@ -2450,15 +2450,15 @@ public interface KImGui {
 
     boolean inputInt4(String label, int[] v, int imGuiInputTextFlags);
 
-    boolean inputDouble(String label, KDoubleReferenceValue v);
+    boolean inputDouble(String label, KDoubleReference v);
 
-    boolean inputDouble(String label, KDoubleReferenceValue v, double step);
+    boolean inputDouble(String label, KDoubleReference v, double step);
 
-    boolean inputDouble(String label, KDoubleReferenceValue v, double step, double stepFast);
+    boolean inputDouble(String label, KDoubleReference v, double step, double stepFast);
 
     boolean inputDouble(
         String label,
-        KDoubleReferenceValue v,
+        KDoubleReference v,
         double step,
         double stepFast,
         String format
@@ -2466,7 +2466,7 @@ public interface KImGui {
 
     boolean inputDouble(
         String label,
-        KDoubleReferenceValue v,
+        KDoubleReference v,
         double step,
         double stepFast,
         String format,
@@ -2475,21 +2475,21 @@ public interface KImGui {
 
     boolean inputDouble(
         String label,
-        KDoubleReferenceValue v,
+        KDoubleReference v,
         double step,
         double stepFast,
         int imGuiInputTextFlags
     );
 
-    boolean inputScalar(String label, KShortReferenceValue pData);
+    boolean inputScalar(String label, KShortReference pData);
 
-    boolean inputScalar(String label, KShortReferenceValue pData, short pStep);
+    boolean inputScalar(String label, KShortReference pData, short pStep);
 
-    boolean inputScalar(String label, KShortReferenceValue pData, short pStep, short pStepFast);
+    boolean inputScalar(String label, KShortReference pData, short pStep, short pStepFast);
 
     boolean inputScalar(
         String label,
-        KShortReferenceValue pData,
+        KShortReference pData,
         short pStep,
         short pStepFast,
         String format
@@ -2497,22 +2497,22 @@ public interface KImGui {
 
     boolean inputScalar(
         String label,
-        KShortReferenceValue pData,
+        KShortReference pData,
         short pStep,
         short pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, KIntReferenceValue pData);
+    boolean inputScalar(String label, KIntReference pData);
 
-    boolean inputScalar(String label, KIntReferenceValue pData, int pStep);
+    boolean inputScalar(String label, KIntReference pData, int pStep);
 
-    boolean inputScalar(String label, KIntReferenceValue pData, int pStep, int pStepFast);
+    boolean inputScalar(String label, KIntReference pData, int pStep, int pStepFast);
 
     boolean inputScalar(
         String label,
-        KIntReferenceValue pData,
+        KIntReference pData,
         int pStep,
         int pStepFast,
         String format
@@ -2520,22 +2520,22 @@ public interface KImGui {
 
     boolean inputScalar(
         String label,
-        KIntReferenceValue pData,
+        KIntReference pData,
         int pStep,
         int pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, KLongReferenceValue pData);
+    boolean inputScalar(String label, KLongReference pData);
 
-    boolean inputScalar(String label, KLongReferenceValue pData, long pStep);
+    boolean inputScalar(String label, KLongReference pData, long pStep);
 
-    boolean inputScalar(String label, KLongReferenceValue pData, long pStep, long pStepFast);
+    boolean inputScalar(String label, KLongReference pData, long pStep, long pStepFast);
 
     boolean inputScalar(
         String label,
-        KLongReferenceValue pData,
+        KLongReference pData,
         long pStep,
         long pStepFast,
         String format
@@ -2543,22 +2543,22 @@ public interface KImGui {
 
     boolean inputScalar(
         String label,
-        KLongReferenceValue pData,
+        KLongReference pData,
         long pStep,
         long pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, KFloatReferenceValue pData);
+    boolean inputScalar(String label, KFloatReference pData);
 
-    boolean inputScalar(String label, KFloatReferenceValue pData, float pStep);
+    boolean inputScalar(String label, KFloatReference pData, float pStep);
 
-    boolean inputScalar(String label, KFloatReferenceValue pData, float pStep, float pStepFast);
+    boolean inputScalar(String label, KFloatReference pData, float pStep, float pStepFast);
 
     boolean inputScalar(
         String label,
-        KFloatReferenceValue pData,
+        KFloatReference pData,
         float pStep,
         float pStepFast,
         String format
@@ -2566,22 +2566,22 @@ public interface KImGui {
 
     boolean inputScalar(
         String label,
-        KFloatReferenceValue pData,
+        KFloatReference pData,
         float pStep,
         float pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, KDoubleReferenceValue pData);
+    boolean inputScalar(String label, KDoubleReference pData);
 
-    boolean inputScalar(String label, KDoubleReferenceValue pData, double pStep);
+    boolean inputScalar(String label, KDoubleReference pData, double pStep);
 
-    boolean inputScalar(String label, KDoubleReferenceValue pData, double pStep, double pStepFast);
+    boolean inputScalar(String label, KDoubleReference pData, double pStep, double pStepFast);
 
     boolean inputScalar(
         String label,
-        KDoubleReferenceValue pData,
+        KDoubleReference pData,
         double pStep,
         double pStepFast,
         String format
@@ -2589,21 +2589,21 @@ public interface KImGui {
 
     boolean inputScalar(
         String label,
-        KDoubleReferenceValue pData,
+        KDoubleReference pData,
         double pStep,
         double pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, int dataType, KShortReferenceValue pData);
+    boolean inputScalar(String label, int dataType, KShortReference pData);
 
-    boolean inputScalar(String label, int dataType, KShortReferenceValue pData, short pStep);
+    boolean inputScalar(String label, int dataType, KShortReference pData, short pStep);
 
     boolean inputScalar(
         String label,
         int dataType,
-        KShortReferenceValue pData,
+        KShortReference pData,
         short pStep,
         short pStepFast
     );
@@ -2611,7 +2611,7 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KShortReferenceValue pData,
+        KShortReference pData,
         short pStep,
         short pStepFast,
         String format
@@ -2620,21 +2620,21 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KShortReferenceValue pData,
+        KShortReference pData,
         short pStep,
         short pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, int dataType, KIntReferenceValue pData);
+    boolean inputScalar(String label, int dataType, KIntReference pData);
 
-    boolean inputScalar(String label, int dataType, KIntReferenceValue pData, int pStep);
+    boolean inputScalar(String label, int dataType, KIntReference pData, int pStep);
 
     boolean inputScalar(
         String label,
         int dataType,
-        KIntReferenceValue pData,
+        KIntReference pData,
         int pStep,
         int pStepFast
     );
@@ -2642,7 +2642,7 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KIntReferenceValue pData,
+        KIntReference pData,
         int pStep,
         int pStepFast,
         String format
@@ -2651,21 +2651,21 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KIntReferenceValue pData,
+        KIntReference pData,
         int pStep,
         int pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, int dataType, KLongReferenceValue pData);
+    boolean inputScalar(String label, int dataType, KLongReference pData);
 
-    boolean inputScalar(String label, int dataType, KLongReferenceValue pData, long pStep);
+    boolean inputScalar(String label, int dataType, KLongReference pData, long pStep);
 
     boolean inputScalar(
         String label,
         int dataType,
-        KLongReferenceValue pData,
+        KLongReference pData,
         long pStep,
         long pStepFast
     );
@@ -2673,7 +2673,7 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KLongReferenceValue pData,
+        KLongReference pData,
         long pStep,
         long pStepFast,
         String format
@@ -2682,21 +2682,21 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KLongReferenceValue pData,
+        KLongReference pData,
         long pStep,
         long pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, int dataType, KFloatReferenceValue pData);
+    boolean inputScalar(String label, int dataType, KFloatReference pData);
 
-    boolean inputScalar(String label, int dataType, KFloatReferenceValue pData, float pStep);
+    boolean inputScalar(String label, int dataType, KFloatReference pData, float pStep);
 
     boolean inputScalar(
         String label,
         int dataType,
-        KFloatReferenceValue pData,
+        KFloatReference pData,
         float pStep,
         float pStepFast
     );
@@ -2704,7 +2704,7 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KFloatReferenceValue pData,
+        KFloatReference pData,
         float pStep,
         float pStepFast,
         String format
@@ -2713,21 +2713,21 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KFloatReferenceValue pData,
+        KFloatReference pData,
         float pStep,
         float pStepFast,
         String format,
         int imGuiSliderFlags
     );
 
-    boolean inputScalar(String label, int dataType, KDoubleReferenceValue pData);
+    boolean inputScalar(String label, int dataType, KDoubleReference pData);
 
-    boolean inputScalar(String label, int dataType, KDoubleReferenceValue pData, double pStep);
+    boolean inputScalar(String label, int dataType, KDoubleReference pData, double pStep);
 
     boolean inputScalar(
         String label,
         int dataType,
-        KDoubleReferenceValue pData,
+        KDoubleReference pData,
         double pStep,
         double pStepFast
     );
@@ -2735,7 +2735,7 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KDoubleReferenceValue pData,
+        KDoubleReference pData,
         double pStep,
         double pStepFast,
         String format
@@ -2744,7 +2744,7 @@ public interface KImGui {
     boolean inputScalar(
         String label,
         int dataType,
-        KDoubleReferenceValue pData,
+        KDoubleReference pData,
         double pStep,
         double pStepFast,
         String format,
@@ -3218,9 +3218,9 @@ public interface KImGui {
 
     boolean collapsingHeader(String label, int imGuiTreeNodeFlags);
 
-    boolean collapsingHeader(String label, KBooleanReferenceValue pVisible);
+    boolean collapsingHeader(String label, KBooleanReference pVisible);
 
-    boolean collapsingHeader(String label, KBooleanReferenceValue pVisible, int imGuiTreeNodeFlags);
+    boolean collapsingHeader(String label, KBooleanReference pVisible, int imGuiTreeNodeFlags);
 
     void setNextItemOpen(boolean isOpen);
 
@@ -3254,28 +3254,28 @@ public interface KImGui {
 
     boolean selectable(String label, boolean selected, float sizeX, float sizeY);
 
-    boolean selectable(String label, KBooleanReferenceValue pSelected);
+    boolean selectable(String label, KBooleanReference pSelected);
 
-    boolean selectable(String label, KBooleanReferenceValue pSelected, int imGuiSelectableFlags);
+    boolean selectable(String label, KBooleanReference pSelected, int imGuiSelectableFlags);
 
     boolean selectable(
         String label,
-        KBooleanReferenceValue pSelected,
+        KBooleanReference pSelected,
         int imGuiSelectableFlags,
         KVector2f size
     );
 
     boolean selectable(
         String label,
-        KBooleanReferenceValue pSelected,
+        KBooleanReference pSelected,
         int imGuiSelectableFlags,
         float sizeX,
         float sizeY
     );
 
-    boolean selectable(String label, KBooleanReferenceValue pSelected, KVector2f size);
+    boolean selectable(String label, KBooleanReference pSelected, KVector2f size);
 
-    boolean selectable(String label, KBooleanReferenceValue pSelected, float sizeX, float sizeY);
+    boolean selectable(String label, KBooleanReference pSelected, float sizeX, float sizeY);
 
     boolean beginListBox(String label);
 
@@ -3285,9 +3285,9 @@ public interface KImGui {
 
     void endListBox();
 
-    void listBox(String label, KIntReferenceValue currentItem, String[] items);
+    void listBox(String label, KIntReference currentItem, String[] items);
 
-    void listBox(String label, KIntReferenceValue currentItem, String[] items, int heightInItems);
+    void listBox(String label, KIntReference currentItem, String[] items, int heightInItems);
 
     void plotLines(String label, float[] values, int valuesCount);
 
@@ -3633,9 +3633,9 @@ public interface KImGui {
 
     boolean menuItem(String label, String shortcut, boolean selected, boolean enabled);
 
-    boolean menuItem(String label, String shortcut, KBooleanReferenceValue pSelected);
+    boolean menuItem(String label, String shortcut, KBooleanReference pSelected);
 
-    boolean menuItem(String label, String shortcut, KBooleanReferenceValue pSelected, boolean enabled);
+    boolean menuItem(String label, String shortcut, KBooleanReference pSelected, boolean enabled);
 
     void beginTooltip();
 
@@ -3653,9 +3653,9 @@ public interface KImGui {
 
     boolean beginPopupModal(String name);
 
-    boolean beginPopupModal(String name, KBooleanReferenceValue pOpen);
+    boolean beginPopupModal(String name, KBooleanReference pOpen);
 
-    boolean beginPopupModal(String name, KBooleanReferenceValue pOpen, int imGuiWindowFlags);
+    boolean beginPopupModal(String name, KBooleanReference pOpen, int imGuiWindowFlags);
 
     boolean beginPopupModal(String name, int imGuiWindowFlags);
 
@@ -3855,9 +3855,9 @@ public interface KImGui {
 
     boolean beginTabItem(String label);
 
-    boolean beginTabItem(String label, KBooleanReferenceValue pOpen);
+    boolean beginTabItem(String label, KBooleanReference pOpen);
 
-    boolean beginTabItem(String label, KBooleanReferenceValue pOpen, int imGuiTabItemFlags);
+    boolean beginTabItem(String label, KBooleanReference pOpen, int imGuiTabItemFlags);
 
     boolean beginTabItem(String label, int imGuiTabItemFlags);
 

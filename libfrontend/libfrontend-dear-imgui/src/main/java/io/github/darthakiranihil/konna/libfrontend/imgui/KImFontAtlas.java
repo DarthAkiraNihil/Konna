@@ -1,7 +1,7 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.ref.KIntReferenceValue;
+import io.github.darthakiranihil.konna.core.struct.ref.KIntReference;
 
 import java.nio.ByteBuffer;
 
@@ -39,10 +39,10 @@ public interface KImFontAtlas {
     void setFreeTypeRenderer(boolean enabled);
 
     boolean build();
-    ByteBuffer getTexDataAsAlpha8(KIntReferenceValue outWidth, KIntReferenceValue outHeight);
-    ByteBuffer getTexDataAsAlpha8(KIntReferenceValue outWidth, KIntReferenceValue outHeight, KIntReferenceValue outBytesPerPixel);
-    ByteBuffer getTexDataAsRGBA32(KIntReferenceValue outWidth, KIntReferenceValue outHeight);
-    ByteBuffer getTexDataAsRGBA32(KIntReferenceValue outWidth, KIntReferenceValue outHeight, KIntReferenceValue outBytesPerPixel);
+    ByteBuffer getTexDataAsAlpha8(KIntReference outWidth, KIntReference outHeight);
+    ByteBuffer getTexDataAsAlpha8(KIntReference outWidth, KIntReference outHeight, KIntReference outBytesPerPixel);
+    ByteBuffer getTexDataAsRGBA32(KIntReference outWidth, KIntReference outHeight);
+    ByteBuffer getTexDataAsRGBA32(KIntReference outWidth, KIntReference outHeight, KIntReference outBytesPerPixel);
     boolean isBuilt();
 
     void setTexID(long textureID);

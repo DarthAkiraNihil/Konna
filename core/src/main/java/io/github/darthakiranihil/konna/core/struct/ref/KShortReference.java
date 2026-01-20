@@ -16,37 +16,52 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-public final class KLongReferenceValue extends Number implements Cloneable, Comparable<KLongReferenceValue> {
+/**
+ * Represents a passed-by-reference short value.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+public final class KShortReference
+    extends Number
+    implements Cloneable, Comparable<KShortReference>  {
 
-    private final long[] data;
+    private short data;
 
-    public KLongReferenceValue() {
-        this.data = new long[0];
+    public KShortReference() {
+        this.data = 0;
     }
 
-    public KLongReferenceValue(final KLongReferenceValue reference) {
+    public KShortReference(final KShortReference reference) {
         this();
-        this.data[0] = reference.data[0];
+        this.data = reference.data;
     }
 
-    public KLongReferenceValue(long value) {
+    public KShortReference(short value) {
         this();
         this.set(value);
     }
 
-    public long get() {
-        return this.data[0];
-    }
-
-    public long[] getData() {
+    /**
+     * @return Value contained by this reference
+     */
+    public short get() {
         return this.data;
     }
 
-    public void set(final long value) {
-        this.data[0] = value;
+    /**
+     * Sets a value to be hold by this reference.
+     * @param value New reference value
+     */
+    public void set(short value) {
+        this.data = value;
     }
 
-    public void set(final KLongReferenceValue value) {
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KShortReference value) {
         this.set(value.get());
     }
 
@@ -63,29 +78,29 @@ public final class KLongReferenceValue extends Number implements Cloneable, Comp
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        final KLongReferenceValue ref = (KLongReferenceValue) o;
-        return this.data[0] == ref.data[0];
+        final KShortReference ref = (KShortReference) o;
+        return this.data == ref.data;
     }
 
     @Override
     public int hashCode() {
-        return Long.hashCode(this.data[0]);
+        return Short.hashCode(this.data);
     }
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public KLongReferenceValue clone() {
-        return new KLongReferenceValue(this);
+    public KShortReference clone() {
+        return new KShortReference(this);
     }
 
     @Override
-    public int compareTo(final KLongReferenceValue o) {
+    public int compareTo(final KShortReference o) {
         return Long.compare(this.get(), o.get());
     }
 
     @Override
     public int intValue() {
-        return (int) this.get();
+        return this.get();
     }
 
     @Override
@@ -95,11 +110,12 @@ public final class KLongReferenceValue extends Number implements Cloneable, Comp
 
     @Override
     public float floatValue() {
-        return (float) this.get();
+        return this.get();
     }
 
     @Override
     public double doubleValue() {
-        return (double) this.get();
+        return this.get();
     }
+    
 }

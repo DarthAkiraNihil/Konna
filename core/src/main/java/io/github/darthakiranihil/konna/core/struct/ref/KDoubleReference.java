@@ -16,37 +16,52 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-public final class KFloatReferenceValue extends Number implements Cloneable, Comparable<KFloatReferenceValue> {
+/**
+ * Represents a passed-by-reference double value.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
+public final class KDoubleReference
+    extends Number
+    implements Cloneable, Comparable<KDoubleReference> {
 
-    private final float[] data;
+    private double data;
 
-    public KFloatReferenceValue() {
-        this.data = new float[0];
+    public KDoubleReference() {
+        this.data = 0.0d;
     }
 
-    public KFloatReferenceValue(final KFloatReferenceValue reference) {
+    public KDoubleReference(final KDoubleReference reference) {
         this();
-        this.data[0] = reference.data[0];
+        this.data = reference.data;
     }
 
-    public KFloatReferenceValue(float value) {
+    public KDoubleReference(double value) {
         this();
         this.set(value);
     }
 
-    public float get() {
-        return this.data[0];
-    }
-
-    public float[] getData() {
+    /**
+     * @return Value contained by this reference
+     */
+    public double get() {
         return this.data;
     }
 
-    public void set(final float value) {
-        this.data[0] = value;
+    /**
+     * Sets a value to be hold by this reference.
+     * @param value New reference value
+     */
+    public void set(double value) {
+        this.data = value;
     }
 
-    public void set(final KFloatReferenceValue value) {
+    /**
+     * Sets a value to be hold by this reference from another reference.
+     * @param value Reference to set new value from
+     */
+    public void set(final KDoubleReference value) {
         this.set(value.get());
     }
 
@@ -63,24 +78,24 @@ public final class KFloatReferenceValue extends Number implements Cloneable, Com
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        final KFloatReferenceValue ref = (KFloatReferenceValue) o;
-        return this.data[0] == ref.data[0];
+        final KDoubleReference ref = (KDoubleReference) o;
+        return this.data == ref.data;
     }
 
     @Override
     public int hashCode() {
-        return Float.hashCode(this.data[0]);
+        return Double.hashCode(this.data);
     }
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public KFloatReferenceValue clone() {
-        return new KFloatReferenceValue(this);
+    public KDoubleReference clone() {
+        return new KDoubleReference(this);
     }
 
     @Override
-    public int compareTo(final KFloatReferenceValue o) {
-        return Float.compare(this.get(), o.get());
+    public int compareTo(final KDoubleReference o) {
+        return Double.compare(this.get(), o.get());
     }
 
     @Override
@@ -95,12 +110,11 @@ public final class KFloatReferenceValue extends Number implements Cloneable, Com
 
     @Override
     public float floatValue() {
-        return this.get();
+        return (float) this.get();
     }
 
     @Override
     public double doubleValue() {
         return this.get();
     }
-    
 }
