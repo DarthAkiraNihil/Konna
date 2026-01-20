@@ -116,6 +116,10 @@ public class KEngineHypervisor extends KObject {
         String debugFeature = features.getFeature("debug");
         if (debugFeature != null && debugFeature.equals("true")) {
             this.debug = true;
+            KSystemLogger.info(
+                this.name,
+                "Debug mode is enabled"
+            );
         }
 
         KEngineContextLoader contextLoader;

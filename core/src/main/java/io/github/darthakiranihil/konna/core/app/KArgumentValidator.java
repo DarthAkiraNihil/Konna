@@ -44,6 +44,15 @@ public interface KArgumentValidator {
         }
 
     };
+    /**
+     * Default validator that checks of value is a boolean.
+     */
+    KArgumentValidator BOOLEAN = (String arg) -> {
+
+        String lower = arg.toLowerCase();
+        return lower.equals("true") || lower.equals("false");
+
+    };
 
     /**
      * Validates passed argument.
