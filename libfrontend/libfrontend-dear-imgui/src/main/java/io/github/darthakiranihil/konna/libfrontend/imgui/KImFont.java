@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector4f;
 public interface KImFont {
 
     float getFallbackAdvanceX();
-    float setFallbackAdvanceX(float value);
+    void setFallbackAdvanceX(float value);
     
     float getFontSize();
     void setFontSize(float value);
@@ -45,11 +45,11 @@ public interface KImFont {
     short getEllipsisCharCount();
     void setEllipsisCharCount(short value);
 
-    short getEllipsisWidth();
-    void setEllipsisWidth(short value);
+    float getEllipsisWidth();
+    void setEllipsisWidth(float value);
 
-    short getEllipsisCharStep();
-    void setEllipsisCharStep(short value);
+    float getEllipsisCharStep();
+    void setEllipsisCharStep(float value);
 
     boolean getDirtyLookupTables();
     void setDirtyLookupTables(boolean value);

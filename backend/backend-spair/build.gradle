@@ -1,0 +1,141 @@
+import org.gradle.internal.os.OperatingSystem
+import org.jreleaser.model.Active
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project(":libfrontend:libfrontend-dear-imgui")
+
+    implementation "io.github.spair:imgui-java-binding:1.90.0"
+    implementation "io.github.spair:imgui-java-lwjgl3:1.90.0"
+    implementation "io.github.spair:imgui-java-natives-linux:1.90.0"
+    implementation "io.github.spair:imgui-java-natives-macos:1.90.0"
+    implementation "io.github.spair:imgui-java-natives-windows:1.90.0"
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('copyJar') {
+    doLast {
+        copy {
+            from 'build/libs'
+            into "../build/libs"
+            include '**/*.jar'
+        }
+    }
+}
+
+tasks.named("build") {
+    finalizedBy('copyJar')
+}
+
+publishing {
+    repositories {
+        maven {
+            setUrl(layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+    publications {
+        create("release", MavenPublication) {
+            from(components.java)
+            groupId = component_group_id
+            artifactId = component_artifact_id
+            version = component_version
+
+            pom {
+
+                name.set(component_name.toString())
+                description.set("Library frontend implementations using LWJGL for Konna Engine")
+
+                url.set("https://github.com/DarthAkiraNihil/Konna")
+                issueManagement {
+                    url.set("https://github.com/DarthAkiraNihil/Konna/issues")
+                }
+
+                scm {
+                    url.set("https://github.com/DarthAkiraNihil/Konna")
+                    connection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                    developerConnection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("AkiraNihil")
+                        name.set("Egor Zverev")
+                        email.set("egorzverev666@gmail.com")
+                    }
+                }
+            }
+        }
+    }
+}
+
+jreleaser {
+    gitRootSearch = true
+    project {
+        inceptionYear = "2025"
+        author("@AkiraNihil")
+
+        version=component_version
+        languages {
+            java {
+                groupId=component_group_id.toString()
+                artifactId=component_artifact_id.toString()
+            }
+        }
+    }
+    release {
+        github {
+            skipRelease = true
+            skipTag = true
+            sign = true
+            branch = "master"
+            branchPush = "master"
+            overwrite = true
+        }
+    }
+    signing {
+        active = Active.ALWAYS
+        armored = true
+        verify = true
+    }
+    deploy {
+        maven {
+            mavenCentral.create("sonatype") {
+                active = Active.ALWAYS
+                url = "https://central.sonatype.com/api/v1/publisher"
+                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+                setAuthorization("Basic")
+                retryDelay = 60
+            }
+        }
+    }
+}

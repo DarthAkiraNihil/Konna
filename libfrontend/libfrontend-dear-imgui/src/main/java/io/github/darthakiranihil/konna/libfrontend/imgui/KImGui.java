@@ -177,7 +177,7 @@ public interface KImGui {
 
     float getWindowPosY();
 
-    void getWindowPos(KVector2f dst);
+    // void getWindowPos(KVector2f dst);
 
     KVector2f getWindowSize();
 
@@ -187,7 +187,7 @@ public interface KImGui {
 
     float getWindowSizeY();
 
-    void getWindowSize(KVector2f dst);
+    // void getWindowSize(KVector2f dst);
 
     float getWindowWidth();
 
@@ -292,7 +292,7 @@ public interface KImGui {
 
     float getContentRegionAvailY();
 
-    void getContentRegionAvail(KVector2f dst);
+    // void getContentRegionAvail(KVector2f dst);
 
     KVector2f getContentRegionMax();
 
@@ -300,7 +300,7 @@ public interface KImGui {
 
     float getContentRegionMaxY();
 
-    void getContentRegionMax(KVector2f dst);
+    // void getContentRegionMax(KVector2f dst);
 
     KVector2f getWindowContentRegionMin();
 
@@ -308,7 +308,7 @@ public interface KImGui {
 
     float getWindowContentRegionMinY();
 
-    void getWindowContentRegionMin(KVector2f dst);
+    // void getWindowContentRegionMin(KVector2f dst);
 
     KVector2f getWindowContentRegionMax();
 
@@ -316,7 +316,7 @@ public interface KImGui {
 
     float getWindowContentRegionMaxY();
 
-    void getWindowContentRegionMax(KVector2f dst);
+    // void getWindowContentRegionMax(KVector2f dst);
 
     float getScrollX();
 
@@ -404,7 +404,7 @@ public interface KImGui {
 
     float getFontTexUvWhitePixelY();
 
-    void getFontTexUvWhitePixel(KVector2f dst);
+    // void getFontTexUvWhitePixel(KVector2f dst);
 
     int getColorU32(int idx);
 
@@ -428,7 +428,7 @@ public interface KImGui {
 
     float getStyleColorVec4W(int imGuiColIdx);
 
-    void getStyleColorVec4(KVector4f dst, int imGuiColIdx);
+    // void getStyleColorVec4(KVector4f dst, int imGuiColIdx);
 
     KVector2f getCursorScreenPos();
 
@@ -438,7 +438,7 @@ public interface KImGui {
 
     float getCursorScreenPosY();
 
-    void getCursorScreenPos(KVector2f dst);
+    // void getCursorScreenPos(KVector2f dst);
 
     void setCursorScreenPos(float posX, float posY);
 
@@ -454,7 +454,7 @@ public interface KImGui {
 
     void setCursorPosY(float localY);
 
-    void getCursorPos(KVector2f dst);
+    // void getCursorPos(KVector2f dst);
 
     void setCursorPos(float localPosX, float localPosY);
 
@@ -464,7 +464,7 @@ public interface KImGui {
 
     float getCursorStartPosY();
 
-    void getCursorStartPos(KVector2f dst);
+    // void getCursorStartPos(KVector2f dst);
 
     void separator();
 
@@ -3177,30 +3177,6 @@ public interface KImGui {
         float sizeY
     );
 
-    @Deprecated
-    boolean colorButton(String descId, float[] col);
-
-    @Deprecated
-    boolean colorButton(String descId, float[] col, int imGuiColorEditFlags);
-
-    @Deprecated
-    boolean colorButton(String descId, float[] col, int imGuiColorEditFlags, KVector2f size);
-
-    @Deprecated
-    boolean colorButton(
-        String descId,
-        float[] col,
-        int imGuiColorEditFlags,
-        float sizeX,
-        float sizeY
-    );
-
-    @Deprecated
-    boolean colorButton(String descId, float[] col, KVector2f size);
-
-    @Deprecated
-    boolean colorButton(String descId, float[] col, float sizeX, float sizeY);
-
     void setColorEditOptions(int imGuiColorEditFlags);
 
     boolean treeNode(String label);
@@ -4076,7 +4052,7 @@ public interface KImGui {
 
     float getItemRectMinY();
 
-    void getItemRectMin(KVector2f dst);
+    // void getItemRectMin(KVector2f dst);
 
     KVector2f getItemRectMax();
 
@@ -4084,7 +4060,7 @@ public interface KImGui {
 
     float getItemRectMaxY();
 
-    void getItemRectMax(KVector2f dst);
+    // void getItemRectMax(KVector2f dst);
 
     KVector2f getItemRectSize();
 
@@ -4092,7 +4068,7 @@ public interface KImGui {
 
     float getItemRectSizeY();
 
-    void getItemRectSize(KVector2f dst);
+    // void getItemRectSize(KVector2f dst);
 
     KImGuiViewport getMainViewport();
 
@@ -4128,7 +4104,7 @@ public interface KImGui {
 
     float calcTextSizeY(String text);
 
-    void calcTextSize(KVector2f dst, String text);
+    // void calcTextSize(KVector2f dst, String text);
 
     KVector2f calcTextSize(String text, boolean hideTextAfterDoubleHash);
 
@@ -4136,7 +4112,7 @@ public interface KImGui {
 
     float calcTextSizeY(String text, boolean hideTextAfterDoubleHash);
 
-    void calcTextSize(KVector2f dst, String text, boolean hideTextAfterDoubleHash);
+    // void calcTextSize(KVector2f dst, String text, boolean hideTextAfterDoubleHash);
 
     KVector2f calcTextSize(String text, boolean hideTextAfterDoubleHash, float wrapWidth);
 
@@ -4144,12 +4120,14 @@ public interface KImGui {
 
     float calcTextSizeY(String text, boolean hideTextAfterDoubleHash, float wrapWidth);
 
-    void calcTextSize(
-        KVector2f dst,
-        String text,
-        boolean hideTextAfterDoubleHash,
-        float wrapWidth
-    );
+    /*
+        void calcTextSize(
+            KVector2f dst,
+            String text,
+            boolean hideTextAfterDoubleHash,
+            float wrapWidth
+        );
+    */
 
     KVector2f calcTextSize(String text, float wrapWidth);
 
@@ -4157,7 +4135,7 @@ public interface KImGui {
 
     float calcTextSizeY(String text, float wrapWidth);
 
-    void calcTextSize(KVector2f dst, String text, float wrapWidth);
+    // void calcTextSize(KVector2f dst, String text, float wrapWidth);
 
     KVector4f colorConvertU32ToFloat4(int in);
 
@@ -4169,7 +4147,7 @@ public interface KImGui {
 
     float colorConvertU32ToFloat4W(int in);
 
-    void colorConvertU32ToFloat4(KVector4f dst, int in);
+    // void colorConvertU32ToFloat4(KVector4f dst, int in);
 
     int colorConvertFloat4ToU32(KVector4f in);
 
@@ -4243,7 +4221,7 @@ public interface KImGui {
 
     float getMousePosY();
 
-    void getMousePos(KVector2f dst);
+    // void getMousePos(KVector2f dst);
 
     KVector2f getMousePosOnOpeningCurrentPopup();
 
@@ -4251,7 +4229,7 @@ public interface KImGui {
 
     float getMousePosOnOpeningCurrentPopupY();
 
-    void getMousePosOnOpeningCurrentPopup(KVector2f dst);
+    // void getMousePosOnOpeningCurrentPopup(KVector2f dst);
 
     boolean isMouseDragging(int button);
 
@@ -4263,7 +4241,7 @@ public interface KImGui {
 
     float getMouseDragDeltaY();
 
-    void getMouseDragDelta(KVector2f dst);
+    // void getMouseDragDelta(KVector2f dst);
 
     KVector2f getMouseDragDelta(int button);
 
@@ -4271,7 +4249,7 @@ public interface KImGui {
 
     float getMouseDragDeltaY(int button);
 
-    void getMouseDragDelta(KVector2f dst, int button);
+    // void getMouseDragDelta(KVector2f dst, int button);
 
     KVector2f getMouseDragDelta(int button, float lockThreshold);
 
@@ -4279,7 +4257,7 @@ public interface KImGui {
 
     float getMouseDragDeltaY(int button, float lockThreshold);
 
-    void getMouseDragDelta(KVector2f dst, int button, float lockThreshold);
+    // void getMouseDragDelta(KVector2f dst, int button, float lockThreshold);
 
     void resetMouseDragDelta();
 

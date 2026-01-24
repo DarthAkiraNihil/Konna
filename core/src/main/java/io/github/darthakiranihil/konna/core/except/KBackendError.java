@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.libfrontend.imgui.func;
+package io.github.darthakiranihil.konna.core.except;
 
-import io.github.darthakiranihil.konna.core.struct.ref.KReference;
-import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
+public class KBackendError extends KException {
 
-/**
- * Interface representing ImPlatformFuncViewportSuppImVec2 of Dear ImGui.
- *
- * @since 0.1.0
- * @author Darth Akira Nihil
- */
-@FunctionalInterface
-public interface KImPlatformFuncViewportSuppImVec2 {
-
-    void get(KImGuiViewport vp, KReference<KVector2f> dstVec);
+    public KBackendError(String message) {
+        super(message);
+    }
 
 }

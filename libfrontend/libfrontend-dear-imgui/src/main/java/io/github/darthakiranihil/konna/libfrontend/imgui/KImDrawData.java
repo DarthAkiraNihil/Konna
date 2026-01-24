@@ -26,10 +26,7 @@ public interface KImDrawData {
     int getCmdListVtxBufferSize(int cmdListIdx);
 
     ByteBuffer getCmdListVtxBufferData(int cmdListIdx);
-    int sizeOfImDrawVert();
-    int sizeOfImDrawIdx();
-    
-    boolean isValid();
+
     int getCmdListsCount();
     int getTotalIdxCount();
     int getTotalVtxCount();

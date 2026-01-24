@@ -34,3 +34,6 @@ findProject(':rendering:stb')?.name = 'stb'
 
 include 'backend:backend-lwjgl'
 findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
+
+include 'backend:backend-spair'
+findProject(':backend:backend-spair')?.name = 'backend-spair'

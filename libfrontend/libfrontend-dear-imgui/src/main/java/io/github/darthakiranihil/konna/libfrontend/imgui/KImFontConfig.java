@@ -31,7 +31,7 @@ public interface KImFontConfig {
 
     float getGlyphExtraSpacingX();
     float getGlyphExtraSpacingY();
-    void getGlyphExtraSpacing(KVector2f dst);
+    // void getGlyphExtraSpacing(KVector2f dst);
     void setGlyphExtraSpacing(KVector2f value);
 
     void setGlyphExtraSpacing(float valueX, float valueY);
@@ -39,7 +39,7 @@ public interface KImFontConfig {
 
     float getGlyphOffsetX();
     float getGlyphOffsetY();
-    void getGlyphOffset(KVector2f dst);
+    // void getGlyphOffset(KVector2f dst);
     void setGlyphOffset(KVector2f value);
     void setGlyphOffset(float valueX, float valueY);
     short[] getGlyphRanges();
