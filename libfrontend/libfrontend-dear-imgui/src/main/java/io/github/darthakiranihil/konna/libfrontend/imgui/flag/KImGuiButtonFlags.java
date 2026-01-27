@@ -1,0 +1,45 @@
+package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
+
+/**
+ * Flags for ImGui button.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
+public final class KImGuiButtonFlags {
+    private KImGuiButtonFlags() {
+    }
+
+    /**
+     * Definition: {@code 0}
+     */
+    public static final int None = 0;
+
+    /**
+     * React on left mouse button (default)
+     *
+     * <p>Definition: {@code 1 << 0}
+     */
+    public static final int MouseButtonLeft = 1;
+
+    /**
+     * React on right mouse button
+     *
+     * <p>Definition: {@code 1 << 1}
+     */
+    public static final int MouseButtonRight = 2;
+
+    /**
+     * React on center mouse button
+     *
+     * <p>Definition: {@code 1 << 2}
+     */
+    public static final int MouseButtonMiddle = 4;
+
+    /**
+     * [Internal]
+     *
+     * <p>Definition: {@code ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight | ImGuiButtonFlags_MouseButtonMiddle}
+     */
+    public static final int MouseButtonMask_ = 7;
+}
