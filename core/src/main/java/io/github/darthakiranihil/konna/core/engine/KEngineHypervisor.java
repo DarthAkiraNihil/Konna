@@ -310,10 +310,10 @@ public class KEngineHypervisor extends KObject {
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
                 }
+                this.frameFinished.invokeSync();
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
-                this.frameFinished.invokeSync();
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 KSystemLogger.debug(
                     "hypervisor", "FPS: %f",

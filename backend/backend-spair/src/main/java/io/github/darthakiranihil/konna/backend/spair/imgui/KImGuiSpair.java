@@ -21,11 +21,14 @@ import imgui.ImGuiInputTextCallbackData;
 import imgui.assertion.ImAssertCallback;
 import imgui.callback.ImGuiInputTextCallback;
 import imgui.type.*;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.struct.ref.*;
 
-public final class KImGuiSpair implements KImGui {
+@KSingleton
+public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public void setAssertCallback(KImAssertCallback callback) {

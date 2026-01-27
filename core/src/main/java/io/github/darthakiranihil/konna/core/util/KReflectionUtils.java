@@ -35,6 +35,7 @@ public final class KReflectionUtils extends KUninstantiable {
 
         try {
             Field f = ofClass.getDeclaredField(fieldName);
+            f.setAccessible(true);
             Object obj = f.get(classInstance);
             return fieldClass.cast(obj);
         } catch (Throwable e) {
