@@ -29,12 +29,12 @@ final class KImGuiStyleSpair implements KImGuiStyle {
     
     private final ImGuiStyle box;
     
-    public KImGuiStyleSpair(final ImGuiStyle original) {
+    KImGuiStyleSpair(final ImGuiStyle original) {
         this.box = original;
     }
 
     @KInjectedConstructor
-    public KImGuiStyleSpair() {
+    KImGuiStyleSpair() {
         this.box = new ImGuiStyle();
     }
 

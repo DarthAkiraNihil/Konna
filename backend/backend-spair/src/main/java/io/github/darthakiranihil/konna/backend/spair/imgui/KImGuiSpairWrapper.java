@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
-import imgui.ImGuiStyle;
 import imgui.ImVec2;
 import imgui.ImVec4;
 import imgui.assertion.ImAssertCallback;
@@ -26,11 +25,9 @@ import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImAssertCallback;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiContext;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiInputTextCallback;
-import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStyle;
 
 @KExcludeFromGeneratedCoverageReport
 final class KImGuiSpairWrapper extends KUninstantiable {

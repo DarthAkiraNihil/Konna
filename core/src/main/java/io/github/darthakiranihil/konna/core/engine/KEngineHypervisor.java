@@ -387,6 +387,10 @@ public class KEngineHypervisor extends KObject {
         }
     }
 
+    /**
+     * Registers system events for this hypervisor.
+     * @since 0.3.0
+     */
     protected void registerSystemEvents() {
         if (this.ctx == null) {
             return; // will be checked on entering frame loop

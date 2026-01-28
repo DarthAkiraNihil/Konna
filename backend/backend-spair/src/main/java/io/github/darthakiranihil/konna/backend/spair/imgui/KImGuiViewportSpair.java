@@ -27,7 +27,7 @@ final class KImGuiViewportSpair implements KImGuiViewport {
 
     private final ImGuiViewport boxed;
 
-    public KImGuiViewportSpair(final ImGuiViewport original) {
+    KImGuiViewportSpair(final ImGuiViewport original) {
         this.boxed = original;
     }
 

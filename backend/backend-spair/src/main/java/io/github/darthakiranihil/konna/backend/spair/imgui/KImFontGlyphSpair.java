@@ -26,12 +26,12 @@ final class KImFontGlyphSpair implements KImFontGlyph {
     
     private final ImFontGlyph boxed;
 
-    public KImFontGlyphSpair(final ImFontGlyph boxed) {
+    KImFontGlyphSpair(final ImFontGlyph boxed) {
         this.boxed = boxed;
     }
 
     @KInjectedConstructor
-    public KImFontGlyphSpair() {
+    KImFontGlyphSpair() {
         this.boxed = new ImFontGlyph();
     }
 
