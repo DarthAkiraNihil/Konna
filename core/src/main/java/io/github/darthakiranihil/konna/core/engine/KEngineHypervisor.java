@@ -91,6 +91,7 @@ public class KEngineHypervisor extends KObject {
     private final KSimpleEvent loopEnter;
     private final KSimpleEvent preSwap;
     private final KSimpleEvent ready;
+    private final KSimpleEvent loopLeaving;
 
     private boolean debug;
 
@@ -119,6 +120,7 @@ public class KEngineHypervisor extends KObject {
         this.loopEnter = new KSimpleEvent(KFrame.LOOP_ENTER_EVENT_NAME);
         this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
+    this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
     }
 
     /**
@@ -274,6 +276,7 @@ public class KEngineHypervisor extends KObject {
 
         // ready
         this.ready.invokeSync();
+        contextLoader.postLoad(this.ctx, features);
 
     }
 
@@ -358,6 +361,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
+        this.loopLeaving.invokeSync();
         this.shutdown();
 
     }
@@ -395,6 +399,7 @@ public class KEngineHypervisor extends KObject {
         this.ctx.registerEvent(this.preSwap);
         this.ctx.registerEvent(this.loopEnter);
         this.ctx.registerEvent(this.ready);
+        this.ctx.registerEvent(this.loopLeaving);
 
     }
 

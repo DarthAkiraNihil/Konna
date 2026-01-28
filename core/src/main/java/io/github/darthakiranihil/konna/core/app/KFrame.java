@@ -63,6 +63,7 @@ public interface KFrame {
      * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
      */
     String PRE_SWAP_EVENT_NAME = "pre_swap";
+    String LOOP_LEAVING_EVENT_NAME = "loop_leaving";
 
     /**
      * @return Handle of this frame
