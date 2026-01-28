@@ -18,9 +18,11 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiViewport;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawData;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
 
+@KExcludeFromGeneratedCoverageReport
 public final class KImGuiViewportSpair implements KImGuiViewport {
 
     private final ImGuiViewport boxed;

@@ -22,11 +22,43 @@ import imgui.ImVec2;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrConsumer;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrSupplier;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImGuiIoSpair implements KImGuiIo {
+
+    @KExcludeFromGeneratedCoverageReport
+    private static final class KImStrConsumerSpair extends ImStrConsumer {
+
+        private final KImStrConsumer consumer;
+
+        KImStrConsumerSpair(final KImStrConsumer consumer) {
+            this.consumer = consumer;
+        }
+
+        @Override
+        public void accept(final String str) {
+            this.consumer.accept(str);
+        }
+    }
+
+    @KExcludeFromGeneratedCoverageReport
+    private static final class KImStrSupplierSpair extends ImStrSupplier {
+
+        private final KImStrSupplier supplier;
+
+        KImStrSupplierSpair(final KImStrSupplier supplier) {
+            this.supplier = supplier;
+        }
+
+        @Override
+        public String get() {
+            return this.supplier.get();
+        }
+    }
 
     private final ImGuiIO boxed;
 
@@ -506,22 +538,12 @@ final class KImGuiIoSpair implements KImGuiIo {
 
     @Override
     public void setSetClipboardTextFn(final KImStrConsumer setClipboardTextCallback) {
-        this.boxed.setSetClipboardTextFn(new ImStrConsumer() {
-            @Override
-            public void accept(final String str) {
-                setClipboardTextCallback.accept(str);
-            }
-        });
+        this.boxed.setSetClipboardTextFn(new KImStrConsumerSpair(setClipboardTextCallback));
     }
 
     @Override
     public void setGetClipboardTextFn(final KImStrSupplier getClipboardTextCallback) {
-        this.boxed.setGetClipboardTextFn(new ImStrSupplier() {
-            @Override
-            public String get() {
-                return getClipboardTextCallback.get();
-            }
-        });
+        this.boxed.setGetClipboardTextFn(new KImStrSupplierSpair(getClipboardTextCallback));
     }
 
     @Override

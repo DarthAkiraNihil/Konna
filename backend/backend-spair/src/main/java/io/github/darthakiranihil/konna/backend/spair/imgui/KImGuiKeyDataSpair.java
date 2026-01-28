@@ -17,8 +17,10 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiKeyData;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiKeyData;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImGuiKeyDataSpair implements KImGuiKeyData {
 
     private final ImGuiKeyData boxed;

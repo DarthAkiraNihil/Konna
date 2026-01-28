@@ -17,28 +17,24 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGui;
-import imgui.ImGuiInputTextCallbackData;
-import imgui.assertion.ImAssertCallback;
-import imgui.callback.ImGuiInputTextCallback;
 import imgui.type.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 import io.github.darthakiranihil.konna.core.struct.ref.*;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
 @KSingleton
+@KExcludeFromGeneratedCoverageReport
 public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public void setAssertCallback(final KImAssertCallback callback) {
-        ImGui.setAssertCallback(new ImAssertCallback() {
-            @Override
-            public void imAssertCallback(final String s, int i, final String s1) {
-                callback.imAssert(s, i, s1);
-            }
-        });
+        ImGui.setAssertCallback(
+            KImGuiSpairWrapper.wrap(callback)
+        );
     }
 
     @Override
@@ -4561,12 +4557,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputText(
-            label, str, imGuiInputTextFlags, new ImGuiInputTextCallback() {
-                @Override
-                public void accept(final ImGuiInputTextCallbackData data) {
-                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
-                }
-            }
+            label, str, imGuiInputTextFlags, KImGuiSpairWrapper.wrap(callback)
         );
         text.set(str.get());
         return result;
@@ -4614,12 +4605,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(
-            label, str, imGuiInputTextFlags, new ImGuiInputTextCallback() {
-                @Override
-                public void accept(final ImGuiInputTextCallbackData data) {
-                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
-                }
-            }
+            label, str, imGuiInputTextFlags, KImGuiSpairWrapper.wrap(callback)
         );
         text.set(str.get());
         return result;
@@ -4650,12 +4636,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(
-            label, str, width, height, imGuiInputTextFlags, new ImGuiInputTextCallback() {
-                @Override
-                public void accept(final ImGuiInputTextCallbackData data) {
-                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
-                }
-            }
+            label, str, width, height, imGuiInputTextFlags, KImGuiSpairWrapper.wrap(callback)
         );
         text.set(str.get());
         return result;
@@ -4696,12 +4677,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextWithHint(
-            label, hint, str, imGuiInputTextFlags, new ImGuiInputTextCallback() {
-                @Override
-                public void accept(final ImGuiInputTextCallbackData data) {
-                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
-                }
-            }
+            label, hint, str, imGuiInputTextFlags, KImGuiSpairWrapper.wrap(callback)
         );
         text.set(str.get());
         return result;

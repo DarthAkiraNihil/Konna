@@ -17,8 +17,10 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiWindowClass;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiWindowClass;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImGuiWindowClassSpair implements KImGuiWindowClass {
     
     private final ImGuiWindowClass boxed;

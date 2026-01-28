@@ -19,10 +19,12 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.ImFont;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawList;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontGlyph;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImFontSpair implements KImFont {
 
     private final ImFont boxed;

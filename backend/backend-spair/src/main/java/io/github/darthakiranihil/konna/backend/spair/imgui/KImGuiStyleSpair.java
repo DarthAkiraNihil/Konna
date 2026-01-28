@@ -20,8 +20,10 @@ import imgui.ImGuiStyle;
 import imgui.ImVec4;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStyle;
 
+@KExcludeFromGeneratedCoverageReport
 public final class KImGuiStyleSpair implements KImGuiStyle {
     
     private final ImGuiStyle box;

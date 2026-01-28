@@ -22,11 +22,13 @@ import imgui.ImVec2;
 import imgui.callback.*;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.ref.KReference;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiPlatformIo;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiPlatformMonitor;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.*;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
 
     private final ImGuiPlatformIO boxed;
@@ -192,6 +194,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         return KImGuiSpairUnwrapper.wrap(this.boxed.getViewports(idx));
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportSpair
         extends ImPlatformFuncViewport {
 
@@ -207,6 +210,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportStringSpair
         extends ImPlatformFuncViewportString {
 
@@ -222,6 +226,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportVec2Spair
         extends ImPlatformFuncViewportImVec2 {
 
@@ -237,6 +242,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportFloatSpair
         extends ImPlatformFuncViewportFloat {
 
@@ -252,6 +258,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportSuppFloat
         extends ImPlatformFuncViewportSuppFloat {
 
@@ -267,6 +274,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportSuppVec2
         extends ImPlatformFuncViewportSuppImVec2 {
 
@@ -287,6 +295,7 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         }
     }
 
+    @KExcludeFromGeneratedCoverageReport
     private static final class PlatformFuncViewportSuppBoolean
         extends ImPlatformFuncViewportSuppBoolean {
 

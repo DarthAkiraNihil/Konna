@@ -19,9 +19,11 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.*;
 import io.github.darthakiranihil.konna.core.except.KBackendError;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImGuiSpairUnboxer extends KUninstantiable {
 
     public static ImFont unbox(final KImFont original) {

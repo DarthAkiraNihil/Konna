@@ -17,8 +17,10 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiStorage;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStorage;
 
+@KExcludeFromGeneratedCoverageReport
 final class KImGuiStorageSpair implements KImGuiStorage {
 
     private final ImGuiStorage boxed;

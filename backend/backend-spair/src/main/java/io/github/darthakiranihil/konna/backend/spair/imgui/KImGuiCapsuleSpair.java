@@ -22,11 +22,13 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGui;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiCapsule;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiIo;
 
 @KSingleton
+@KExcludeFromGeneratedCoverageReport
 public final class KImGuiCapsuleSpair extends KImGuiCapsule {
 
     private final ImGuiImplGl3 imGuiImplGl3;
