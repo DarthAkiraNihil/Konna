@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
 @KContainerModifier
-public final class KImGuiCapsuleSpair extends KImGuiCapsule {
+public final class KImGuiCapsuleSpair extends KImGuiController {
 
     private final ImGuiImplGl3 imGuiImplGl3;
     private final ImGuiImplGlfw imGuiImplGlfw;

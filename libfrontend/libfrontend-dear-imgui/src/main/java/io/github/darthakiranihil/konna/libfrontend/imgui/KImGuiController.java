@@ -35,7 +35,7 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
  */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
-public abstract class KImGuiCapsule extends KObject {
+public abstract class KImGuiController extends KObject {
 
     /**
      * Dear ImGui reference.
@@ -48,7 +48,7 @@ public abstract class KImGuiCapsule extends KObject {
      * @param imGui Dear ImGui
      * @param eventSystem Event system
      */
-    public KImGuiCapsule(
+    public KImGuiController(
         final KImGui imGui,
         final KEventSystem eventSystem
     ) {
