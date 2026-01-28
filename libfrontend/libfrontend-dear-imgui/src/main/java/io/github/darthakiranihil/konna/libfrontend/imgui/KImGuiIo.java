@@ -3,6 +3,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrConsumer;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrSupplier;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Interface representing ImGuiIO of Dear ImGui.
@@ -33,7 +34,7 @@ public interface KImGuiIo {
     float getIniSavingRate();
     void setIniSavingRate(float value);
     String getIniFilename();
-    void setIniFilename(String value);
+    void setIniFilename(@Nullable String value);
     String getLogFilename();
     void setLogFilename(String value);
     KImFontAtlas getFonts();

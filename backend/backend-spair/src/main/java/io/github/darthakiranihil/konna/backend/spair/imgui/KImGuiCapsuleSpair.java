@@ -19,16 +19,17 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
-import io.github.darthakiranihil.konna.libfrontend.imgui.KImGui;
-import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiCapsule;
-import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiIo;
+import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
+@KContainerModifier
 public final class KImGuiCapsuleSpair extends KImGuiCapsule {
 
     private final ImGuiImplGl3 imGuiImplGl3;
@@ -37,8 +38,9 @@ public final class KImGuiCapsuleSpair extends KImGuiCapsule {
     public KImGuiCapsuleSpair(
         @KInject final KImGui imGui,
         @KInject final KEventSystem eventSystem,
-        @KInject final KFrame frame
-    ) {
+        @KInject final KFrame frame,
+        @KInject final KContainerAccessor containerAccessor
+        ) {
         super(imGui, eventSystem);
 
         this.imGuiImplGl3 = new ImGuiImplGl3();
@@ -51,6 +53,16 @@ public final class KImGuiCapsuleSpair extends KImGuiCapsule {
         io.getFonts().build();
         this.imGuiImplGlfw.init(frame.handle(), true);
         this.imGuiImplGl3.init("#version 330 core");
+
+        // maybe there are more of them but idk
+        containerAccessor
+            .getContainer()
+            .add(KImFontConfig.class, KImFontConfigSpair.class)
+            .add(KImFontGlyph.class, KImFontGlyphSpair.class)
+            .add(KImGuiIo.class, KImGuiIoSpair.class)
+            .add(KImGuiStorage.class, KImGuiStorageSpair.class)
+            .add(KImGuiStyle.class, KImGuiStyleSpair.class);
+
     }
 
     @Override

@@ -165,7 +165,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public void showStyleEditor(final KImGuiStyle ref) {
-        ImGui.showStyleEditor(KImGuiSpairWrapper.wrap(ref));
+        ImGui.showStyleEditor(KImGuiSpairUnboxer.unbox(ref));
     }
 
     @Override
@@ -195,7 +195,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public void styleColorsDark(final KImGuiStyle style) {
-        ImGui.styleColorsDark(KImGuiSpairWrapper.wrap(style));
+        ImGui.styleColorsDark(KImGuiSpairUnboxer.unbox(style));
     }
 
     @Override
@@ -205,7 +205,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public void styleColorsLight(final KImGuiStyle style) {
-        ImGui.styleColorsLight(KImGuiSpairWrapper.wrap(style));
+        ImGui.styleColorsLight(KImGuiSpairUnboxer.unbox(style));
     }
 
     @Override
@@ -215,7 +215,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public void styleColorsClassic(final KImGuiStyle style) {
-        ImGui.styleColorsClassic(KImGuiSpairWrapper.wrap(style));
+        ImGui.styleColorsClassic(KImGuiSpairUnboxer.unbox(style));
     }
 
     @Override

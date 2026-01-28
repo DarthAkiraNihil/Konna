@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawData;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
 
 @KExcludeFromGeneratedCoverageReport
-public final class KImGuiViewportSpair implements KImGuiViewport {
+final class KImGuiViewportSpair implements KImGuiViewport {
 
     private final ImGuiViewport boxed;
 

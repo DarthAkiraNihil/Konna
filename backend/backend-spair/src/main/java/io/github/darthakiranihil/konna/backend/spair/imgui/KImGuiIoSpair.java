@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrConsumer;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrSupplier;
+import org.jspecify.annotations.Nullable;
 
 @KExcludeFromGeneratedCoverageReport
 final class KImGuiIoSpair implements KImGuiIo {
@@ -167,7 +168,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setIniFilename(final String value) {
+    public void setIniFilename(final @Nullable String value) {
         this.boxed.setIniFilename(value);
     }
 

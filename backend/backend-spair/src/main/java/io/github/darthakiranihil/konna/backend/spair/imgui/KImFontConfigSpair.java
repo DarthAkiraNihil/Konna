@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImFontConfig;
+import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
@@ -27,8 +28,9 @@ final class KImFontConfigSpair implements KImFontConfig {
 
     private final ImFontConfig boxed;
 
-    KImFontConfigSpair(final ImFontConfig boxed) {
-        this.boxed = boxed;
+    @KInjectedConstructor
+    KImFontConfigSpair() {
+        this.boxed = new ImFontConfig();
     }
 
     @Override

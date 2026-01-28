@@ -208,4 +208,22 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
         );
     }
 
+    public static ImGuiStyle unbox(final KImGuiStyle original) {
+        ImGuiStyle s = KReflectionUtils.getField(
+            KImGuiStyleSpair.class,
+            original,
+            "boxed",
+            ImGuiStyle.class
+        );
+
+        if (s != null) {
+            return s;
+        }
+
+        throw new KBackendError(
+                "Could not unbox ImGuiStyle from passed wrapper. "
+            +   "Maybe it does not belong to the backend?"
+        );
+    }
+
 }
