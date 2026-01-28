@@ -34,6 +34,11 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
+    public void destroy() {
+        this.boxed.destroy();
+    }
+
+    @Override
     public byte[] getFontData() {
         return this.boxed.getFontData();
     }

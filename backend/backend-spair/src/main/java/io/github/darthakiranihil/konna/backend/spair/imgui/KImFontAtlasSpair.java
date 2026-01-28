@@ -37,6 +37,11 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
+    public void destroy() {
+        this.boxed.destroy();
+    }
+
+    @Override
     public KImFont addFontDefault() {
         return KImGuiSpairUnwrapper.wrap(this.boxed.addFontDefault());
     }

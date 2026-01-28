@@ -34,6 +34,11 @@ final class KImFontSpair implements KImFont {
     }
 
     @Override
+    public void destroy() {
+        this.boxed.destroy();
+    }
+
+    @Override
     public float getFallbackAdvanceX() {
         return this.boxed.getFallbackAdvanceX();
     }

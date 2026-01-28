@@ -29,6 +29,15 @@ final class KImGuiKeyDataSpair implements KImGuiKeyData {
         this.boxed = boxed;
     }
 
+    KImGuiKeyDataSpair() {
+        this.boxed = new ImGuiKeyData();
+    }
+
+    @Override
+    public void destroy() {
+        this.boxed.destroy();
+    }
+
     @Override
     public boolean getDown() {
         return this.boxed.getDown();

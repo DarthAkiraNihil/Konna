@@ -30,6 +30,11 @@ final class KImGuiWindowClassSpair implements KImGuiWindowClass {
     }
 
     @Override
+    public void destroy() {
+        this.boxed.destroy();
+    }
+
+    @Override
     public int getClassId() {
         return this.boxed.getClassId();
     }

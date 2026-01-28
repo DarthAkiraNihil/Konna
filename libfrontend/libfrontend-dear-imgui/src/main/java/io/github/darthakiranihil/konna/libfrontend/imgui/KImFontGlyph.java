@@ -16,13 +16,15 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+import io.github.darthakiranihil.konna.core.struct.KDestroyable;
+
 /**
  * Interface representing ImFontGlyph of Dear ImGui.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KImFontGlyph {
+public interface KImFontGlyph extends KDestroyable {
 
     int getColored();
     void setColored(int value);

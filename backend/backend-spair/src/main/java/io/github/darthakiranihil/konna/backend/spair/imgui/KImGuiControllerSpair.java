@@ -30,17 +30,17 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
 @KContainerModifier
-public final class KImGuiCapsuleSpair extends KImGuiController {
+public class KImGuiControllerSpair extends KImGuiController {
 
     private final ImGuiImplGl3 imGuiImplGl3;
     private final ImGuiImplGlfw imGuiImplGlfw;
 
-    public KImGuiCapsuleSpair(
+    public KImGuiControllerSpair(
         @KInject final KImGui imGui,
         @KInject final KEventSystem eventSystem,
         @KInject final KFrame frame,
         @KInject final KContainerAccessor containerAccessor
-        ) {
+    ) {
         super(imGui, eventSystem);
 
         this.imGuiImplGl3 = new ImGuiImplGl3();
@@ -48,9 +48,12 @@ public final class KImGuiCapsuleSpair extends KImGuiController {
 
         this.imGui.createContext();
         KImGuiIo io = this.imGui.getIO();
-        io.setIniFilename(null); // todo: nullable
+
+        io.setIniFilename(null);
+
         io.getFonts().addFontDefault();
         io.getFonts().build();
+
         this.imGuiImplGlfw.init(frame.handle(), true);
         this.imGuiImplGl3.init("#version 330 core");
 
@@ -61,7 +64,8 @@ public final class KImGuiCapsuleSpair extends KImGuiController {
             .add(KImFontGlyph.class, KImFontGlyphSpair.class)
             .add(KImGuiIo.class, KImGuiIoSpair.class)
             .add(KImGuiStorage.class, KImGuiStorageSpair.class)
-            .add(KImGuiStyle.class, KImGuiStyleSpair.class);
+            .add(KImGuiStyle.class, KImGuiStyleSpair.class)
+            .add(KImGuiKeyData.class, KImGuiKeyDataSpair.class);
 
     }
 
@@ -78,5 +82,10 @@ public final class KImGuiCapsuleSpair extends KImGuiController {
         this.imGuiImplGl3.renderDrawData(
             KImGuiSpairUnboxer.unbox(this.imGui.getDrawData())
         );
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.imGui.destroyContext();
     }
 }

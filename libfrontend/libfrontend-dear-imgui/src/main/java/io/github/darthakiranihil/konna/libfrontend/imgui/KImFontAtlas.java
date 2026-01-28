@@ -1,5 +1,6 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+import io.github.darthakiranihil.konna.core.struct.KDestroyable;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.ref.KIntReference;
 
@@ -11,7 +12,7 @@ import java.nio.ByteBuffer;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KImFontAtlas {
+public interface KImFontAtlas extends KDestroyable {
     
     KImFont addFontDefault();
 

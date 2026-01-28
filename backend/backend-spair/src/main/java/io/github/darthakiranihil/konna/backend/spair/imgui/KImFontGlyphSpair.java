@@ -36,6 +36,11 @@ final class KImFontGlyphSpair implements KImFontGlyph {
     }
 
     @Override
+    public void destroy() {
+        this.boxed.destroy();
+    }
+
+    @Override
     public int getColored() {
         return this.boxed.getColored();
     }
