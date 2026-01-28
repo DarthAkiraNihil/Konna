@@ -16,9 +16,16 @@
 
 package io.github.darthakiranihil.konna.core.except;
 
+/**
+ * Exception that is supposed to be thrown by a libfrontend implementation
+ * in case it faced unexpected errors.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public class KBackendError extends KException {
 
-    public KBackendError(String message) {
+    public KBackendError(final String message) {
         super(message);
     }
 

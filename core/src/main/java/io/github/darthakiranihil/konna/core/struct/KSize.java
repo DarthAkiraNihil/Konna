@@ -44,12 +44,15 @@ public record KSize(
     }
 
     /**
-     * Returns size as {@link KVector2i} instance.
-     * @return Vector representation of the size
+     * @return Int vector representation of the size
      */
     public KVector2i asIntVector() {
         return new KVector2i(this.width, this.height);
     }
+
+    /**
+     * @return Float vector representation of the size
+     */
     public KVector2f asFloatVector() {
         return new KVector2f(this.width, this.height);
     }

@@ -54,6 +54,9 @@ public interface KFrame {
      */
     String FRAME_FINISHED_EVENT_NAME = "frame_finished";
 
+    /**
+     * @return Handle of this frame
+     */
     long handle();
     /**
      * Sets frame's title.

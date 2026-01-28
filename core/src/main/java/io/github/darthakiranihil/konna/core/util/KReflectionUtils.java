@@ -21,13 +21,34 @@ import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
+/**
+ * Utility class providing different useful reflection utils.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 public final class KReflectionUtils extends KUninstantiable {
 
     private KReflectionUtils() {
         super();
     }
 
-    public static <T> @Nullable T getField(Class<?> ofClass, Object classInstance, String fieldName, Class<T> fieldClass) {
+    /**
+     * Gets field of a class with automatic cast.
+     * @param ofClass Class where to get field from
+     * @param classInstance Instance of class that is being accessed
+     * @param fieldName Field name
+     * @param fieldClass Field class
+     * @return Field value or {@code null} if field is not presented,
+     * field and target or class and instance types do not match.
+     * @param <T> Type of accessed field.
+     */
+    public static <T> @Nullable T getField(
+        final Class<?> ofClass,
+        final Object classInstance,
+        final String fieldName,
+        final Class<T> fieldClass
+    ) {
 
         if (classInstance.getClass() != ofClass) {
             return null;
