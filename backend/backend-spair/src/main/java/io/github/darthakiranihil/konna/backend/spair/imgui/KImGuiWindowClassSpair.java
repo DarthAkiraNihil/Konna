@@ -23,7 +23,7 @@ final class KImGuiWindowClassSpair implements KImGuiWindowClass {
     
     private final ImGuiWindowClass boxed;
 
-    public KImGuiWindowClassSpair(ImGuiWindowClass boxed) {
+    KImGuiWindowClassSpair(final ImGuiWindowClass boxed) {
         this.boxed = boxed;
     }
 

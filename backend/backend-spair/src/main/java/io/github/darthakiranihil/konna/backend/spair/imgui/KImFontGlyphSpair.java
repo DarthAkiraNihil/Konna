@@ -23,7 +23,7 @@ public final class KImFontGlyphSpair implements KImFontGlyph {
     
     private final ImFontGlyph boxed;
 
-    public KImFontGlyphSpair(ImFontGlyph boxed) {
+    public KImFontGlyphSpair(final ImFontGlyph boxed) {
         this.boxed = boxed;
     }
 

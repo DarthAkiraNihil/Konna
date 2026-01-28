@@ -29,7 +29,7 @@ final class KImDrawDataSpair implements KImDrawData {
     
     private final ImDrawData boxed;
 
-    public KImDrawDataSpair(ImDrawData boxed) {
+    KImDrawDataSpair(final ImDrawData boxed) {
         this.boxed = boxed;
     }
 
@@ -51,7 +51,7 @@ final class KImDrawDataSpair implements KImDrawData {
     }
 
     @Override
-    public void getCmdListCmdBufferClipRect(KVector4f dst, int cmdListIdx, int cmdBufferIdx) {
+    public void getCmdListCmdBufferClipRect(final KVector4f dst, int cmdListIdx, int cmdBufferIdx) {
         this.boxed.getCmdListCmdBufferClipRect(
             KImGuiSpairWrapper.wrap(dst),
             cmdListIdx,
@@ -134,7 +134,7 @@ final class KImDrawDataSpair implements KImDrawData {
         this.boxed.clear();
     }
     @Override
-    public void addDrawList(KImDrawList drawList) {
+    public void addDrawList(final KImDrawList drawList) {
         this.boxed.addDrawList(KImGuiSpairUnboxer.unbox(drawList));
     }
 
@@ -144,7 +144,7 @@ final class KImDrawDataSpair implements KImDrawData {
     }
 
     @Override
-    public void scaleClipRects(KVector2f fbScale) {
+    public void scaleClipRects(final KVector2f fbScale) {
         this.boxed.scaleClipRects(KImGuiSpairWrapper.wrap(fbScale));
     }
     

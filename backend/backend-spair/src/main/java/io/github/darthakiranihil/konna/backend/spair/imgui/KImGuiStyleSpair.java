@@ -29,7 +29,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     public KImGuiStyleSpair(final ImGuiStyle original) {
         this.box = original;
     }
-    
+
     public KImGuiStyleSpair() {
         this.box = new ImGuiStyle();
     }
@@ -70,7 +70,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setWindowPadding(KVector2f value) {
+    public void setWindowPadding(final KVector2f value) {
         this.box.setWindowPadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -115,7 +115,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setWindowMinSize(KVector2f value) {
+    public void setWindowMinSize(final KVector2f value) {
         this.box.setWindowMinSize(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -140,7 +140,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setWindowTitleAlign(KVector2f value) {
+    public void setWindowTitleAlign(final KVector2f value) {
         this.box.setWindowTitleAlign(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -215,7 +215,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setFramePadding(KVector2f value) {
+    public void setFramePadding(final KVector2f value) {
         this.box.setFramePadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -260,7 +260,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setItemSpacing(KVector2f value) {
+    public void setItemSpacing(final KVector2f value) {
         this.box.setItemSpacing(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -285,7 +285,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setItemInnerSpacing(KVector2f value) {
+    public void setItemInnerSpacing(final KVector2f value) {
         this.box.setItemInnerSpacing(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -310,7 +310,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setCellPadding(KVector2f value) {
+    public void setCellPadding(final KVector2f value) {
         this.box.setCellPadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -335,7 +335,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setTouchExtraPadding(KVector2f value) {
+    public void setTouchExtraPadding(final KVector2f value) {
         this.box.setTouchExtraPadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -470,7 +470,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setButtonTextAlign(KVector2f value) {
+    public void setButtonTextAlign(final KVector2f value) {
         this.box.setButtonTextAlign(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -495,7 +495,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setSelectableTextAlign(KVector2f value) {
+    public void setSelectableTextAlign(final KVector2f value) {
         this.box.setSelectableTextAlign(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -530,7 +530,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setSeparatorTextAlign(KVector2f value) {
+    public void setSeparatorTextAlign(final KVector2f value) {
         this.box.setSeparatorTextAlign(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -555,7 +555,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setSeparatorTextPadding(KVector2f value) {
+    public void setSeparatorTextPadding(final KVector2f value) {
         this.box.setSeparatorTextPadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -580,7 +580,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setDisplayWindowPadding(KVector2f value) {
+    public void setDisplayWindowPadding(final KVector2f value) {
         this.box.setDisplayWindowPadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -605,7 +605,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setDisplaySafeAreaPadding(KVector2f value) {
+    public void setDisplaySafeAreaPadding(final KVector2f value) {
         this.box.setDisplaySafeAreaPadding(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -695,7 +695,7 @@ public final class KImGuiStyleSpair implements KImGuiStyle {
     }
 
     @Override
-    public void setColors(KVector4f[] value) {
+    public void setColors(final KVector4f[] value) {
         ImVec4[] vecs = new ImVec4[value.length];
         for (int i = 0; i < vecs.length; i++) {
             vecs[i] = KImGuiSpairWrapper.wrap(value[i]);

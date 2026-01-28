@@ -23,18 +23,19 @@ import imgui.callback.ImGuiInputTextCallback;
 import imgui.type.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.libfrontend.imgui.*;
-import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVector4f;
 import io.github.darthakiranihil.konna.core.struct.ref.*;
+import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
 @KSingleton
 public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
-    public void setAssertCallback(KImAssertCallback callback) {
+    public void setAssertCallback(final KImAssertCallback callback) {
         ImGui.setAssertCallback(new ImAssertCallback() {
             @Override
-            public void imAssertCallback(String s, int i, String s1) {
+            public void imAssertCallback(final String s, int i, final String s1) {
                 callback.imAssert(s, i, s1);
             }
         });
@@ -42,16 +43,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public KImGuiContext createContext() {
-        return KImGuiSpairUnwrapper.wrap(
-            ImGui.createContext()
-        );
+        return KImGuiSpairUnwrapper.wrap(ImGui.createContext());
     }
 
     @Override
-    public KImGuiContext createContext(KImFontAtlas sharedFontAtlas) {
-        return KImGuiSpairUnwrapper.wrap(
-            ImGui.createContext(KImGuiSpairUnboxer.unbox(sharedFontAtlas))
-        );
+    public KImGuiContext createContext(final KImFontAtlas sharedFontAtlas) {
+        return KImGuiSpairUnwrapper.wrap(ImGui.createContext(KImGuiSpairUnboxer.unbox(
+            sharedFontAtlas)));
     }
 
     @Override
@@ -60,19 +58,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void destroyContext(KImGuiContext ctx) {
+    public void destroyContext(final KImGuiContext ctx) {
         ImGui.destroyContext(KImGuiSpairWrapper.wrap(ctx));
     }
 
     @Override
     public KImGuiContext getCurrentContext() {
-        return KImGuiSpairUnwrapper.wrap(
-            ImGui.getCurrentContext()
-        );
+        return KImGuiSpairUnwrapper.wrap(ImGui.getCurrentContext());
     }
 
     @Override
-    public void setCurrentContext(KImGuiContext ctx) {
+    public void setCurrentContext(final KImGuiContext ctx) {
         ImGui.setCurrentContext(KImGuiSpairWrapper.wrap(ctx));
     }
 
@@ -112,7 +108,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void showDemoWindow(KBooleanReference pOpen) {
+    public void showDemoWindow(final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         ImGui.showDemoWindow(b);
         pOpen.set(b.get());
@@ -124,7 +120,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void showMetricsWindow(KBooleanReference pOpen) {
+    public void showMetricsWindow(final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         ImGui.showMetricsWindow(b);
         pOpen.set(b.get());
@@ -136,7 +132,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void showDebugLogWindow(KBooleanReference pOpen) {
+    public void showDebugLogWindow(final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         ImGui.showDebugLogWindow(b);
         pOpen.set(b.get());
@@ -148,7 +144,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void showIDStackToolWindow(KBooleanReference pOpen) {
+    public void showIDStackToolWindow(final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         ImGui.showIDStackToolWindow(b);
         pOpen.set(b.get());
@@ -160,7 +156,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void showAboutWindow(KBooleanReference pOpen) {
+    public void showAboutWindow(final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         ImGui.showAboutWindow(b);
         pOpen.set(b.get());
@@ -172,17 +168,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void showStyleEditor(KImGuiStyle ref) {
+    public void showStyleEditor(final KImGuiStyle ref) {
         ImGui.showStyleEditor(KImGuiSpairWrapper.wrap(ref));
     }
 
     @Override
-    public boolean showStyleSelector(String label) {
+    public boolean showStyleSelector(final String label) {
         return ImGui.showStyleSelector(label);
     }
 
     @Override
-    public void showFontSelector(String label) {
+    public void showFontSelector(final String label) {
         ImGui.showFontSelector(label);
     }
 
@@ -202,7 +198,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void styleColorsDark(KImGuiStyle style) {
+    public void styleColorsDark(final KImGuiStyle style) {
         ImGui.styleColorsDark(KImGuiSpairWrapper.wrap(style));
     }
 
@@ -212,7 +208,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void styleColorsLight(KImGuiStyle style) {
+    public void styleColorsLight(final KImGuiStyle style) {
         ImGui.styleColorsLight(KImGuiSpairWrapper.wrap(style));
     }
 
@@ -222,17 +218,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void styleColorsClassic(KImGuiStyle style) {
+    public void styleColorsClassic(final KImGuiStyle style) {
         ImGui.styleColorsClassic(KImGuiSpairWrapper.wrap(style));
     }
 
     @Override
-    public boolean begin(String title) {
+    public boolean begin(final String title) {
         return ImGui.begin(title);
     }
 
     @Override
-    public boolean begin(String title, KBooleanReference pOpen) {
+    public boolean begin(final String title, final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         boolean result = ImGui.begin(title, b);
         pOpen.set(b.get());
@@ -240,7 +236,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean begin(String title, KBooleanReference pOpen, int imGuiWindowFlags) {
+    public boolean begin(final String title, final KBooleanReference pOpen, int imGuiWindowFlags) {
         ImBoolean b = new ImBoolean(pOpen.get());
         boolean result = ImGui.begin(title, b, imGuiWindowFlags);
         pOpen.set(b.get());
@@ -248,7 +244,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean begin(String title, int imGuiWindowFlags) {
+    public boolean begin(final String title, int imGuiWindowFlags) {
         return ImGui.begin(title, imGuiWindowFlags);
     }
 
@@ -258,47 +254,58 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginChild(String strId) {
+    public boolean beginChild(final String strId) {
         return ImGui.beginChild(strId);
     }
 
     @Override
-    public boolean beginChild(String strId, KVector2f size) {
+    public boolean beginChild(final String strId, final KVector2f size) {
         return ImGui.beginChild(strId, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean beginChild(String strId, float sizeX, float sizeY) {
+    public boolean beginChild(final String strId, float sizeX, float sizeY) {
         return ImGui.beginChild(strId, sizeX, sizeY);
     }
 
     @Override
-    public boolean beginChild(String strId, KVector2f size, int childFlags) {
+    public boolean beginChild(final String strId, final KVector2f size, int childFlags) {
         return ImGui.beginChild(strId, KImGuiSpairWrapper.wrap(size), childFlags);
     }
 
     @Override
-    public boolean beginChild(String strId, float sizeX, float sizeY, int childFlags) {
+    public boolean beginChild(final String strId, float sizeX, float sizeY, int childFlags) {
         return ImGui.beginChild(strId, sizeX, sizeY, childFlags);
     }
 
     @Override
-    public boolean beginChild(String strId, KVector2f size, int childFlags, int windowFlags) {
+    public boolean beginChild(
+        final String strId,
+        final KVector2f size,
+        int childFlags,
+        int windowFlags
+    ) {
         return ImGui.beginChild(strId, KImGuiSpairWrapper.wrap(size), childFlags, windowFlags);
     }
 
     @Override
-    public boolean beginChild(String strId, float sizeX, float sizeY, int childFlags, int windowFlags) {
+    public boolean beginChild(
+        final String strId,
+        float sizeX,
+        float sizeY,
+        int childFlags,
+        int windowFlags
+    ) {
         return ImGui.beginChild(strId, sizeX, sizeY, childFlags, windowFlags);
     }
 
     @Override
-    public boolean beginChild(String strId, int childFlags, int windowFlags) {
+    public boolean beginChild(final String strId, int childFlags, int windowFlags) {
         return ImGui.beginChild(strId, childFlags, windowFlags);
     }
 
     @Override
-    public boolean beginChild(String strId, int windowFlags) {
+    public boolean beginChild(final String strId, int windowFlags) {
         return ImGui.beginChild(strId, windowFlags);
     }
 
@@ -308,7 +315,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginChild(int id, KVector2f size) {
+    public boolean beginChild(int id, final KVector2f size) {
         return ImGui.beginChild(id, KImGuiSpairWrapper.wrap(size));
     }
 
@@ -318,7 +325,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginChild(int id, KVector2f size, int childFlags) {
+    public boolean beginChild(int id, final KVector2f size, int childFlags) {
         return ImGui.beginChild(id, KImGuiSpairWrapper.wrap(size), childFlags);
     }
 
@@ -328,7 +335,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginChild(int id, KVector2f size, int childFlags, int windowFlags) {
+    public boolean beginChild(int id, final KVector2f size, int childFlags, int windowFlags) {
         return ImGui.beginChild(id, KImGuiSpairWrapper.wrap(size), childFlags, windowFlags);
     }
 
@@ -348,22 +355,33 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginChild(String strId, KVector2f size, boolean border) {
+    public boolean beginChild(final String strId, final KVector2f size, boolean border) {
         return ImGui.beginChild(strId, KImGuiSpairWrapper.wrap(size), border);
     }
 
     @Override
-    public boolean beginChild(String strId, float sizeX, float sizeY, boolean border) {
+    public boolean beginChild(final String strId, float sizeX, float sizeY, boolean border) {
         return ImGui.beginChild(strId, sizeX, sizeY, border);
     }
 
     @Override
-    public boolean beginChild(String strId, KVector2f size, boolean border, int windowFlags) {
+    public boolean beginChild(
+        final String strId,
+        final KVector2f size,
+        boolean border,
+        int windowFlags
+    ) {
         return ImGui.beginChild(strId, KImGuiSpairWrapper.wrap(size), border, windowFlags);
     }
 
     @Override
-    public boolean beginChild(String strId, float sizeX, float sizeY, boolean border, int windowFlags) {
+    public boolean beginChild(
+        final String strId,
+        float sizeX,
+        float sizeY,
+        boolean border,
+        int windowFlags
+    ) {
         return ImGui.beginChild(strId, sizeX, sizeY, border, windowFlags);
     }
 
@@ -409,9 +427,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public KImDrawList getWindowDrawList() {
-        return KImGuiSpairUnwrapper.wrap(
-            ImGui.getWindowDrawList()
-        );
+        return KImGuiSpairUnwrapper.wrap(ImGui.getWindowDrawList());
     }
 
     @Override
@@ -425,7 +441,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setWindowPos(KVector2f pos) {
+    public void setWindowPos(final KVector2f pos) {
         ImGui.setWindowPos(KImGuiSpairWrapper.wrap(pos));
     }
 
@@ -445,7 +461,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setWindowSize(KVector2f size) {
+    public void setWindowSize(final KVector2f size) {
         ImGui.setWindowSize(KImGuiSpairWrapper.wrap(size));
     }
 
@@ -475,7 +491,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowPos(KVector2f pos) {
+    public void setNextWindowPos(final KVector2f pos) {
         ImGui.setNextWindowPos(KImGuiSpairWrapper.wrap(pos));
     }
 
@@ -485,7 +501,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowPos(KVector2f pos, int cond) {
+    public void setNextWindowPos(final KVector2f pos, int cond) {
         ImGui.setNextWindowPos(KImGuiSpairWrapper.wrap(pos), cond);
     }
 
@@ -495,7 +511,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowPos(KVector2f pos, int cond, KVector2f pivot) {
+    public void setNextWindowPos(final KVector2f pos, int cond, final KVector2f pivot) {
         ImGui.setNextWindowPos(KImGuiSpairWrapper.wrap(pos), cond, KImGuiSpairWrapper.wrap(pivot));
     }
 
@@ -505,7 +521,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowPos(KVector2f pos, KVector2f pivot) {
+    public void setNextWindowPos(final KVector2f pos, final KVector2f pivot) {
         ImGui.setNextWindowPos(KImGuiSpairWrapper.wrap(pos), KImGuiSpairWrapper.wrap(pivot));
     }
 
@@ -515,7 +531,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowSize(KVector2f size) {
+    public void setNextWindowSize(final KVector2f size) {
         ImGui.setNextWindowSize(KImGuiSpairWrapper.wrap(size));
     }
 
@@ -525,7 +541,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowSize(KVector2f size, int cond) {
+    public void setNextWindowSize(final KVector2f size, int cond) {
         ImGui.setNextWindowSize(KImGuiSpairWrapper.wrap(size), cond);
     }
 
@@ -535,17 +551,25 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowSizeConstraints(KVector2f sizeMin, KVector2f sizeMax) {
-        ImGui.setNextWindowSizeConstraints(KImGuiSpairWrapper.wrap(sizeMin), KImGuiSpairWrapper.wrap(sizeMax));
+    public void setNextWindowSizeConstraints(final KVector2f sizeMin, final KVector2f sizeMax) {
+        ImGui.setNextWindowSizeConstraints(
+            KImGuiSpairWrapper.wrap(sizeMin),
+            KImGuiSpairWrapper.wrap(sizeMax)
+        );
     }
 
     @Override
-    public void setNextWindowSizeConstraints(float sizeMinX, float sizeMinY, float sizeMaxX, float sizeMaxY) {
+    public void setNextWindowSizeConstraints(
+        float sizeMinX,
+        float sizeMinY,
+        float sizeMaxX,
+        float sizeMaxY
+    ) {
         ImGui.setNextWindowSizeConstraints(sizeMinX, sizeMinY, sizeMaxX, sizeMaxY);
     }
 
     @Override
-    public void setNextWindowContentSize(KVector2f size) {
+    public void setNextWindowContentSize(final KVector2f size) {
         ImGui.setNextWindowContentSize(KImGuiSpairWrapper.wrap(size));
     }
 
@@ -570,7 +594,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowScroll(KVector2f scroll) {
+    public void setNextWindowScroll(final KVector2f scroll) {
         ImGui.setNextWindowScroll(KImGuiSpairWrapper.wrap(scroll));
     }
 
@@ -595,7 +619,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setWindowPos(KVector2f pos, int cond) {
+    public void setWindowPos(final KVector2f pos, int cond) {
         ImGui.setWindowPos(KImGuiSpairWrapper.wrap(pos), cond);
     }
 
@@ -610,7 +634,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setWindowSize(KVector2f size, int cond) {
+    public void setWindowSize(final KVector2f size, int cond) {
         ImGui.setWindowSize(KImGuiSpairWrapper.wrap(size), cond);
     }
 
@@ -635,57 +659,57 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setWindowPos(String name, KVector2f pos) {
+    public void setWindowPos(final String name, final KVector2f pos) {
         ImGui.setWindowPos(name, KImGuiSpairWrapper.wrap(pos));
     }
 
     @Override
-    public void setWindowPos(String name, float posX, float posY) {
+    public void setWindowPos(final String name, float posX, float posY) {
         ImGui.setWindowPos(name, posX, posY);
     }
 
     @Override
-    public void setWindowPos(String name, KVector2f pos, int cond) {
+    public void setWindowPos(final String name, final KVector2f pos, int cond) {
         ImGui.setWindowPos(name, KImGuiSpairWrapper.wrap(pos), cond);
     }
 
     @Override
-    public void setWindowPos(String name, float posX, float posY, int cond) {
+    public void setWindowPos(final String name, float posX, float posY, int cond) {
         ImGui.setWindowPos(name, posX, posY, cond);
     }
 
     @Override
-    public void setWindowSize(String name, KVector2f size) {
+    public void setWindowSize(final String name, final KVector2f size) {
         ImGui.setWindowSize(name, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public void setWindowSize(String name, float sizeX, float sizeY) {
+    public void setWindowSize(final String name, float sizeX, float sizeY) {
         ImGui.setWindowSize(name, sizeX, sizeY);
     }
 
     @Override
-    public void setWindowSize(String name, KVector2f size, int cond) {
+    public void setWindowSize(final String name, final KVector2f size, int cond) {
         ImGui.setWindowSize(name, KImGuiSpairWrapper.wrap(size), cond);
     }
 
     @Override
-    public void setWindowSize(String name, float sizeX, float sizeY, int cond) {
+    public void setWindowSize(final String name, float sizeX, float sizeY, int cond) {
         ImGui.setWindowSize(name, sizeX, sizeY, cond);
     }
 
     @Override
-    public void setWindowCollapsed(String name, boolean collapsed) {
+    public void setWindowCollapsed(final String name, boolean collapsed) {
         ImGui.setWindowCollapsed(name, collapsed);
     }
 
     @Override
-    public void setWindowCollapsed(String name, boolean collapsed, int cond) {
+    public void setWindowCollapsed(final String name, boolean collapsed, int cond) {
         ImGui.setWindowCollapsed(name, collapsed, cond);
     }
 
     @Override
-    public void setWindowFocus(String name) {
+    public void setWindowFocus(final String name) {
         ImGui.setWindowFocus(name);
     }
 
@@ -820,10 +844,8 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void pushFont(KImFont font) {
-        ImGui.pushFont(
-            KImGuiSpairUnboxer.unbox(font)
-        );
+    public void pushFont(final KImFont font) {
+        ImGui.pushFont(KImGuiSpairUnboxer.unbox(font));
     }
 
     @Override
@@ -837,7 +859,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void pushStyleColor(int imGuiCol, KVector4f col) {
+    public void pushStyleColor(int imGuiCol, final KVector4f col) {
         ImGui.pushStyleColor(imGuiCol, KImGuiSpairWrapper.wrap(col));
     }
 
@@ -867,7 +889,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void pushStyleVar(int imGuiStyleVar, KVector2f val) {
+    public void pushStyleVar(int imGuiStyleVar, final KVector2f val) {
         ImGui.pushStyleVar(imGuiStyleVar, KImGuiSpairWrapper.wrap(val));
     }
 
@@ -977,7 +999,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int getColorU32(KVector4f col) {
+    public int getColorU32(final KVector4f col) {
         return ImGui.getColorU32(KImGuiSpairWrapper.wrap(col));
     }
 
@@ -1027,7 +1049,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setCursorScreenPos(KVector2f pos) {
+    public void setCursorScreenPos(final KVector2f pos) {
         ImGui.setCursorScreenPos(KImGuiSpairWrapper.wrap(pos));
     }
 
@@ -1052,7 +1074,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setCursorPos(KVector2f localPos) {
+    public void setCursorPos(final KVector2f localPos) {
         ImGui.setCursorPos(KImGuiSpairWrapper.wrap(localPos));
     }
 
@@ -1127,7 +1149,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void dummy(KVector2f size) {
+    public void dummy(final KVector2f size) {
         ImGui.dummy(KImGuiSpairWrapper.wrap(size));
     }
 
@@ -1192,12 +1214,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void pushID(String strId) {
+    public void pushID(final String strId) {
         ImGui.pushID(strId);
     }
 
     @Override
-    public void pushID(String strIdBegin, String strIdEnd) {
+    public void pushID(final String strIdBegin, final String strIdEnd) {
         ImGui.pushID(strIdBegin, strIdEnd);
     }
 
@@ -1217,12 +1239,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int getID(String strId) {
+    public int getID(final String strId) {
         return ImGui.getID(strId);
     }
 
     @Override
-    public int getID(String strIdBegin, String strIdEnd) {
+    public int getID(final String strIdBegin, final String strIdEnd) {
         return ImGui.getID(strIdBegin, strIdEnd);
     }
 
@@ -1232,117 +1254,122 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void textUnformatted(String text) {
+    public void textUnformatted(final String text) {
         ImGui.textUnformatted(text);
     }
 
     @Override
-    public void textUnformatted(String text, String textEnd) {
+    public void textUnformatted(final String text, final String textEnd) {
         ImGui.textUnformatted(text, textEnd);
     }
 
     @Override
-    public void text(String text) {
+    public void text(final String text) {
         ImGui.text(text);
     }
 
     @Override
-    public void textColored(KVector4f col, String text) {
+    public void textColored(final KVector4f col, final String text) {
         ImGui.textColored(KImGuiSpairWrapper.wrap(col), text);
     }
 
     @Override
-    public void textColored(float colX, float colY, float colZ, float colW, String text) {
+    public void textColored(float colX, float colY, float colZ, float colW, final String text) {
         ImGui.textColored(colX, colY, colZ, colW, text);
     }
 
     @Override
-    public void textColored(int r, int g, int b, int a, String text) {
+    public void textColored(int r, int g, int b, int a, final String text) {
         ImGui.textColored(r, g, b, a, text);
     }
 
     @Override
-    public void textColored(int col, String text) {
+    public void textColored(int col, final String text) {
         ImGui.textColored(col, text);
     }
 
     @Override
-    public void textDisabled(String text) {
+    public void textDisabled(final String text) {
         ImGui.textDisabled(text);
     }
 
     @Override
-    public void textWrapped(String text) {
+    public void textWrapped(final String text) {
         ImGui.textWrapped(text);
     }
 
     @Override
-    public void labelText(String label, String text) {
+    public void labelText(final String label, final String text) {
         ImGui.labelText(label, text);
     }
 
     @Override
-    public void bulletText(String text) {
+    public void bulletText(final String text) {
         ImGui.bulletText(text);
     }
 
     @Override
-    public void separatorText(String label) {
+    public void separatorText(final String label) {
         ImGui.separatorText(label);
     }
 
     @Override
-    public boolean button(String label) {
+    public boolean button(final String label) {
         return ImGui.button(label);
     }
 
     @Override
-    public boolean button(String label, KVector2f size) {
+    public boolean button(final String label, final KVector2f size) {
         return ImGui.button(label, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean button(String label, float sizeX, float sizeY) {
+    public boolean button(final String label, float sizeX, float sizeY) {
         return ImGui.button(label, sizeX, sizeY);
     }
 
     @Override
-    public boolean smallButton(String label) {
+    public boolean smallButton(final String label) {
         return ImGui.smallButton(label);
     }
 
     @Override
-    public boolean invisibleButton(String strId, KVector2f size) {
+    public boolean invisibleButton(final String strId, final KVector2f size) {
         return ImGui.invisibleButton(strId, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean invisibleButton(String strId, float sizeX, float sizeY) {
+    public boolean invisibleButton(final String strId, float sizeX, float sizeY) {
         return ImGui.invisibleButton(strId, sizeX, sizeY);
     }
 
     @Override
-    public boolean invisibleButton(String strId, KVector2f size, int imGuiButtonFlags) {
+    public boolean invisibleButton(final String strId, final KVector2f size, int imGuiButtonFlags) {
         return ImGui.invisibleButton(strId, KImGuiSpairWrapper.wrap(size), imGuiButtonFlags);
     }
 
     @Override
-    public boolean invisibleButton(String strId, float sizeX, float sizeY, int imGuiButtonFlags) {
+    public boolean invisibleButton(
+        final String strId,
+        float sizeX,
+        float sizeY,
+        int imGuiButtonFlags
+    ) {
         return ImGui.invisibleButton(strId, sizeX, sizeY, imGuiButtonFlags);
     }
 
     @Override
-    public boolean arrowButton(String strId, int dir) {
+    public boolean arrowButton(final String strId, int dir) {
         return ImGui.arrowButton(strId, dir);
     }
 
     @Override
-    public boolean checkbox(String label, boolean active) {
+    public boolean checkbox(final String label, boolean active) {
         return ImGui.checkbox(label, active);
     }
 
     @Override
-    public boolean checkbox(String label, KBooleanReference data) {
+    public boolean checkbox(final String label, final KBooleanReference data) {
         ImBoolean b = new ImBoolean(data.get());
         boolean result = ImGui.checkbox(label, b);
         data.set(b.get());
@@ -1350,7 +1377,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean checkboxFlags(String label, KIntReference flags, int flagsValue) {
+    public boolean checkboxFlags(final String label, final KIntReference flags, int flagsValue) {
         ImInt i = new ImInt(flags.get());
         boolean result = ImGui.checkboxFlags(label, i, flagsValue);
         flags.set(i.get());
@@ -1358,12 +1385,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean radioButton(String label, boolean active) {
+    public boolean radioButton(final String label, boolean active) {
         return ImGui.radioButton(label, active);
     }
 
     @Override
-    public boolean radioButton(String label, KIntReference v, int vButton) {
+    public boolean radioButton(final String label, final KIntReference v, int vButton) {
         ImInt i = new ImInt(v.get());
         boolean result = ImGui.radioButton(label, i, vButton);
         v.set(i.get());
@@ -1376,7 +1403,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void progressBar(float fraction, KVector2f size) {
+    public void progressBar(float fraction, final KVector2f size) {
         ImGui.progressBar(fraction, KImGuiSpairWrapper.wrap(size));
     }
 
@@ -1386,17 +1413,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void progressBar(float fraction, KVector2f size, String overlay) {
+    public void progressBar(float fraction, final KVector2f size, final String overlay) {
         ImGui.progressBar(fraction, KImGuiSpairWrapper.wrap(size), overlay);
     }
 
     @Override
-    public void progressBar(float fraction, float sizeX, float sizeY, String overlay) {
+    public void progressBar(float fraction, float sizeX, float sizeY, final String overlay) {
         ImGui.progressBar(fraction, sizeX, sizeY, overlay);
     }
 
     @Override
-    public void progressBar(float fraction, String overlay) {
+    public void progressBar(float fraction, final String overlay) {
         ImGui.progressBar(fraction, overlay);
     }
 
@@ -1406,7 +1433,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void image(long userTextureId, KVector2f imageSize) {
+    public void image(long userTextureId, final KVector2f imageSize) {
         ImGui.image(userTextureId, KImGuiSpairWrapper.wrap(imageSize));
     }
 
@@ -1416,102 +1443,354 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void image(long userTextureId, KVector2f imageSize, KVector2f uv0) {
-        ImGui.image(userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0));
+    public void image(long userTextureId, final KVector2f imageSize, final KVector2f uv0) {
+        ImGui.image(
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0)
+        );
     }
 
     @Override
-    public void image(long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y) {
+    public void image(
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y
+    ) {
         ImGui.image(userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y);
     }
 
     @Override
-    public void image(long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1) {
-        ImGui.image(userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0), KImGuiSpairWrapper.wrap(uv1));
+    public void image(
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1
+    ) {
+        ImGui.image(
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0),
+            KImGuiSpairWrapper.wrap(uv1)
+        );
     }
 
     @Override
-    public void image(long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y, float uv1X, float uv1Y) {
+    public void image(
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y
+    ) {
         ImGui.image(userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y, uv1X, uv1Y);
     }
 
     @Override
-    public void image(long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1, KVector4f tintCol) {
-        ImGui.image(userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0), KImGuiSpairWrapper.wrap(uv1), KImGuiSpairWrapper.wrap(tintCol));
+    public void image(
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f tintCol
+    ) {
+        ImGui.image(
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0),
+            KImGuiSpairWrapper.wrap(uv1),
+            KImGuiSpairWrapper.wrap(tintCol)
+        );
     }
 
     @Override
-    public void image(long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y, float uv1X, float uv1Y, float tintColX, float tintColY, float tintColZ, float tintColW) {
-        ImGui.image(userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y, uv1X, uv1Y, tintColX, tintColY, tintColZ, tintColW);
+    public void image(
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float tintColX,
+        float tintColY,
+        float tintColZ,
+        float tintColW
+    ) {
+        ImGui.image(
+            userTextureId,
+            imageSizeX,
+            imageSizeY,
+            uv0X,
+            uv0Y,
+            uv1X,
+            uv1Y,
+            tintColX,
+            tintColY,
+            tintColZ,
+            tintColW
+        );
     }
 
     @Override
-    public void image(long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1, KVector4f tintCol, KVector4f borderCol) {
-        ImGui.image(userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0), KImGuiSpairWrapper.wrap(uv1), KImGuiSpairWrapper.wrap(tintCol), KImGuiSpairWrapper.wrap(borderCol));
+    public void image(
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f tintCol,
+        final KVector4f borderCol
+    ) {
+        ImGui.image(
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0),
+            KImGuiSpairWrapper.wrap(uv1),
+            KImGuiSpairWrapper.wrap(tintCol),
+            KImGuiSpairWrapper.wrap(borderCol)
+        );
     }
 
     @Override
-    public void image(long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y, float uv1X, float uv1Y, float tintColX, float tintColY, float tintColZ, float tintColW, float borderColX, float borderColY, float borderColZ, float borderColW) {
-        ImGui.image(userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y, uv1X, uv1Y, tintColX, tintColY, tintColZ, tintColW, borderColX, borderColY, borderColZ, borderColW);
+    public void image(
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float tintColX,
+        float tintColY,
+        float tintColZ,
+        float tintColW,
+        float borderColX,
+        float borderColY,
+        float borderColZ,
+        float borderColW
+    ) {
+        ImGui.image(
+            userTextureId,
+            imageSizeX,
+            imageSizeY,
+            uv0X,
+            uv0Y,
+            uv1X,
+            uv1Y,
+            tintColX,
+            tintColY,
+            tintColZ,
+            tintColW,
+            borderColX,
+            borderColY,
+            borderColZ,
+            borderColW
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, KVector2f imageSize) {
+    public boolean imageButton(final String strId, long userTextureId, final KVector2f imageSize) {
         return ImGui.imageButton(strId, userTextureId, KImGuiSpairWrapper.wrap(imageSize));
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, float imageSizeX, float imageSizeY) {
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY
+    ) {
         return ImGui.imageButton(strId, userTextureId, imageSizeX, imageSizeY);
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, KVector2f imageSize, KVector2f uv0) {
-        return ImGui.imageButton(strId, userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0));
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0)
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y) {
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y
+    ) {
         return ImGui.imageButton(strId, userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y);
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1) {
-        return ImGui.imageButton(strId, userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0), KImGuiSpairWrapper.wrap(uv1));
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0),
+            KImGuiSpairWrapper.wrap(uv1)
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y, float uv1X, float uv1Y) {
-        return ImGui.imageButton(strId, userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y, uv1X, uv1Y);
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            imageSizeX,
+            imageSizeY,
+            uv0X,
+            uv0Y,
+            uv1X,
+            uv1Y
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1, KVector4f bgCol) {
-        return ImGui.imageButton(strId, userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0), KImGuiSpairWrapper.wrap(uv1), KImGuiSpairWrapper.wrap(bgCol));
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f bgCol
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0),
+            KImGuiSpairWrapper.wrap(uv1),
+            KImGuiSpairWrapper.wrap(bgCol)
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y, float uv1X, float uv1Y, float bgColX, float bgColY, float bgColZ, float bgColW) {
-        return ImGui.imageButton(strId, userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y, uv1X, uv1Y, bgColX, bgColY, bgColZ, bgColW);
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float bgColX,
+        float bgColY,
+        float bgColZ,
+        float bgColW
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            imageSizeX,
+            imageSizeY,
+            uv0X,
+            uv0Y,
+            uv1X,
+            uv1Y,
+            bgColX,
+            bgColY,
+            bgColZ,
+            bgColW
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, KVector2f imageSize, KVector2f uv0, KVector2f uv1, KVector4f bgCol, KVector4f tintCol) {
-        return ImGui.imageButton(strId, userTextureId, KImGuiSpairWrapper.wrap(imageSize), KImGuiSpairWrapper.wrap(uv0), KImGuiSpairWrapper.wrap(uv1), KImGuiSpairWrapper.wrap(bgCol), KImGuiSpairWrapper.wrap(tintCol));
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        final KVector2f imageSize,
+        final KVector2f uv0,
+        final KVector2f uv1,
+        final KVector4f bgCol,
+        final KVector4f tintCol
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            KImGuiSpairWrapper.wrap(imageSize),
+            KImGuiSpairWrapper.wrap(uv0),
+            KImGuiSpairWrapper.wrap(uv1),
+            KImGuiSpairWrapper.wrap(bgCol),
+            KImGuiSpairWrapper.wrap(tintCol)
+        );
     }
 
     @Override
-    public boolean imageButton(String strId, long userTextureId, float imageSizeX, float imageSizeY, float uv0X, float uv0Y, float uv1X, float uv1Y, float bgColX, float bgColY, float bgColZ, float bgColW, float tintColX, float tintColY, float tintColZ, float tintColW) {
-        return ImGui.imageButton(strId, userTextureId, imageSizeX, imageSizeY, uv0X, uv0Y, uv1X, uv1Y, bgColX, bgColY, bgColZ, bgColW, tintColX, tintColY, tintColZ, tintColW);
+    public boolean imageButton(
+        final String strId,
+        long userTextureId,
+        float imageSizeX,
+        float imageSizeY,
+        float uv0X,
+        float uv0Y,
+        float uv1X,
+        float uv1Y,
+        float bgColX,
+        float bgColY,
+        float bgColZ,
+        float bgColW,
+        float tintColX,
+        float tintColY,
+        float tintColZ,
+        float tintColW
+    ) {
+        return ImGui.imageButton(
+            strId,
+            userTextureId,
+            imageSizeX,
+            imageSizeY,
+            uv0X,
+            uv0Y,
+            uv1X,
+            uv1Y,
+            bgColX,
+            bgColY,
+            bgColZ,
+            bgColW,
+            tintColX,
+            tintColY,
+            tintColZ,
+            tintColW
+        );
     }
 
     @Override
-    public boolean beginCombo(String label, String previewValue) {
+    public boolean beginCombo(final String label, final String previewValue) {
         return ImGui.beginCombo(label, previewValue);
     }
 
     @Override
-    public boolean beginCombo(String label, String previewValue, int imGuiComboFlags) {
+    public boolean beginCombo(final String label, final String previewValue, int imGuiComboFlags) {
         return ImGui.beginCombo(label, previewValue, imGuiComboFlags);
     }
 
@@ -1521,7 +1800,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean combo(String label, KIntReference currentItem, String[] items) {
+    public boolean combo(
+        final String label,
+        final KIntReference currentItem,
+        final String[] items
+    ) {
         ImInt i = new ImInt(currentItem.get());
         boolean result = ImGui.combo(label, i, items);
         currentItem.set(i.get());
@@ -1529,7 +1812,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean combo(String label, KIntReference currentItem, String[] items, int popupMaxHeightInItems) {
+    public boolean combo(
+        final String label,
+        final KIntReference currentItem,
+        final String[] items,
+        int popupMaxHeightInItems
+    ) {
         ImInt i = new ImInt(currentItem.get());
         boolean result = ImGui.combo(label, i, items, popupMaxHeightInItems);
         currentItem.set(i.get());
@@ -1537,7 +1825,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean combo(String label, KIntReference currentItem, String itemsSeparatedByZeros) {
+    public boolean combo(
+        final String label,
+        final KIntReference currentItem,
+        final String itemsSeparatedByZeros
+    ) {
         ImInt i = new ImInt(currentItem.get());
         boolean result = ImGui.combo(label, i, itemsSeparatedByZeros);
         currentItem.set(i.get());
@@ -1545,7 +1837,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean combo(String label, KIntReference currentItem, String itemsSeparatedByZeros, int popupMaxHeightInItems) {
+    public boolean combo(
+        final String label,
+        final KIntReference currentItem,
+        final String itemsSeparatedByZeros,
+        int popupMaxHeightInItems
+    ) {
         ImInt i = new ImInt(currentItem.get());
         boolean result = ImGui.combo(label, i, itemsSeparatedByZeros, popupMaxHeightInItems);
         currentItem.set(i.get());
@@ -1553,1222 +1850,2690 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v) {
+    public boolean dragFloat(final String label, final float[] v) {
         return ImGui.dragFloat(label, v);
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v, float vSpeed) {
+    public boolean dragFloat(final String label, final float[] v, float vSpeed) {
         return ImGui.dragFloat(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v, float vSpeed, float vMin) {
+    public boolean dragFloat(final String label, final float[] v, float vSpeed, float vMin) {
         return ImGui.dragFloat(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v, float vSpeed, float vMin, float vMax) {
+    public boolean dragFloat(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.dragFloat(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v, float vSpeed, float vMin, float vMax, String format) {
+    public boolean dragFloat(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.dragFloat(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v, float vSpeed, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean dragFloat(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat(String label, float[] v, float vSpeed, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean dragFloat(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v) {
+    public boolean dragFloat2(final String label, final float[] v) {
         return ImGui.dragFloat2(label, v);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v, float vSpeed) {
+    public boolean dragFloat2(final String label, final float[] v, float vSpeed) {
         return ImGui.dragFloat2(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v, float vSpeed, float vMin) {
+    public boolean dragFloat2(final String label, final float[] v, float vSpeed, float vMin) {
         return ImGui.dragFloat2(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v, float vSpeed, float vMin, float vMax) {
+    public boolean dragFloat2(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.dragFloat2(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v, float vSpeed, float vMin, float vMax, String format) {
+    public boolean dragFloat2(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.dragFloat2(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v, float vSpeed, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean dragFloat2(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat2(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat2(String label, float[] v, float vSpeed, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean dragFloat2(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat2(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v) {
+    public boolean dragFloat3(final String label, final float[] v) {
         return ImGui.dragFloat3(label, v);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v, float vSpeed) {
+    public boolean dragFloat3(final String label, final float[] v, float vSpeed) {
         return ImGui.dragFloat3(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v, float vSpeed, float vMin) {
+    public boolean dragFloat3(final String label, final float[] v, float vSpeed, float vMin) {
         return ImGui.dragFloat3(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v, float vSpeed, float vMin, float vMax) {
+    public boolean dragFloat3(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.dragFloat3(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v, float vSpeed, float vMin, float vMax, String format) {
+    public boolean dragFloat3(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.dragFloat3(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v, float vSpeed, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean dragFloat3(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat3(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat3(String label, float[] v, float vSpeed, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean dragFloat3(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat3(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v) {
+    public boolean dragFloat4(final String label, final float[] v) {
         return ImGui.dragFloat4(label, v);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v, float vSpeed) {
+    public boolean dragFloat4(final String label, final float[] v, float vSpeed) {
         return ImGui.dragFloat4(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v, float vSpeed, float vMin) {
+    public boolean dragFloat4(final String label, final float[] v, float vSpeed, float vMin) {
         return ImGui.dragFloat4(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v, float vSpeed, float vMin, float vMax) {
+    public boolean dragFloat4(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.dragFloat4(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v, float vSpeed, float vMin, float vMax, String format) {
+    public boolean dragFloat4(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.dragFloat4(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v, float vSpeed, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean dragFloat4(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat4(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloat4(String label, float[] v, float vSpeed, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean dragFloat4(
+        final String label,
+        final float[] v,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragFloat4(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragFloatRange2(String label, float[] vCurrentMin, float[] vCurrentMax, float vSpeed) {
+    public boolean dragFloatRange2(
+        final String label,
+        final float[] vCurrentMin,
+        final float[] vCurrentMax,
+        float vSpeed
+    ) {
         return ImGui.dragFloatRange2(label, vCurrentMin, vCurrentMax, vSpeed);
     }
 
     @Override
-    public boolean dragFloatRange2(String label, float[] vCurrentMin, float[] vCurrentMax, float vSpeed, float vMin) {
+    public boolean dragFloatRange2(
+        final String label,
+        final float[] vCurrentMin,
+        final float[] vCurrentMax,
+        float vSpeed,
+        float vMin
+    ) {
         return ImGui.dragFloatRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragFloatRange2(String label, float[] vCurrentMin, float[] vCurrentMax, float vSpeed, float vMin, float vMax) {
+    public boolean dragFloatRange2(
+        final String label,
+        final float[] vCurrentMin,
+        final float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.dragFloatRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragFloatRange2(String label, float[] vCurrentMin, float[] vCurrentMax, float vSpeed, float vMin, float vMax, String format) {
+    public boolean dragFloatRange2(
+        final String label,
+        final float[] vCurrentMin,
+        final float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.dragFloatRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragFloatRange2(String label, float[] vCurrentMin, float[] vCurrentMax, float vSpeed, float vMin, float vMax, String format, String formatMax) {
-        return ImGui.dragFloatRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax, format, formatMax);
+    public boolean dragFloatRange2(
+        final String label,
+        final float[] vCurrentMin,
+        final float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format,
+        final String formatMax
+    ) {
+        return ImGui.dragFloatRange2(
+            label,
+            vCurrentMin,
+            vCurrentMax,
+            vSpeed,
+            vMin,
+            vMax,
+            format,
+            formatMax
+        );
     }
 
     @Override
-    public boolean dragFloatRange2(String label, float[] vCurrentMin, float[] vCurrentMax, float vSpeed, float vMin, float vMax, String format, String formatMax, int imGuiSliderFlags) {
-        return ImGui.dragFloatRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax, format, formatMax, imGuiSliderFlags);
+    public boolean dragFloatRange2(
+        final String label,
+        final float[] vCurrentMin,
+        final float[] vCurrentMax,
+        float vSpeed,
+        float vMin,
+        float vMax,
+        final String format,
+        final String formatMax,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragFloatRange2(
+            label,
+            vCurrentMin,
+            vCurrentMax,
+            vSpeed,
+            vMin,
+            vMax,
+            format,
+            formatMax,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean dragInt(String label, int[] v) {
+    public boolean dragInt(final String label, final int[] v) {
         return ImGui.dragInt(label, v);
     }
 
     @Override
-    public boolean dragInt(String label, int[] v, float vSpeed) {
+    public boolean dragInt(final String label, final int[] v, float vSpeed) {
         return ImGui.dragInt(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragInt(String label, int[] v, float vSpeed, int vMin) {
+    public boolean dragInt(final String label, final int[] v, float vSpeed, int vMin) {
         return ImGui.dragInt(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragInt(String label, int[] v, float vSpeed, int vMin, int vMax) {
+    public boolean dragInt(final String label, final int[] v, float vSpeed, int vMin, int vMax) {
         return ImGui.dragInt(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragInt(String label, int[] v, float vSpeed, int vMin, int vMax, String format) {
+    public boolean dragInt(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.dragInt(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragInt(String label, int[] v, float vSpeed, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean dragInt(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt(String label, int[] v, float vSpeed, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean dragInt(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v) {
+    public boolean dragInt2(final String label, final int[] v) {
         return ImGui.dragInt2(label, v);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v, float vSpeed) {
+    public boolean dragInt2(final String label, final int[] v, float vSpeed) {
         return ImGui.dragInt2(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v, float vSpeed, int vMin) {
+    public boolean dragInt2(final String label, final int[] v, float vSpeed, int vMin) {
         return ImGui.dragInt2(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v, float vSpeed, int vMin, int vMax) {
+    public boolean dragInt2(final String label, final int[] v, float vSpeed, int vMin, int vMax) {
         return ImGui.dragInt2(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v, float vSpeed, int vMin, int vMax, String format) {
+    public boolean dragInt2(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.dragInt2(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v, float vSpeed, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean dragInt2(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt2(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt2(String label, int[] v, float vSpeed, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean dragInt2(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt2(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v) {
+    public boolean dragInt3(final String label, final int[] v) {
         return ImGui.dragInt3(label, v);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v, float vSpeed) {
+    public boolean dragInt3(final String label, final int[] v, float vSpeed) {
         return ImGui.dragInt3(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v, float vSpeed, int vMin) {
+    public boolean dragInt3(final String label, final int[] v, float vSpeed, int vMin) {
         return ImGui.dragInt3(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v, float vSpeed, int vMin, int vMax) {
+    public boolean dragInt3(final String label, final int[] v, float vSpeed, int vMin, int vMax) {
         return ImGui.dragInt3(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v, float vSpeed, int vMin, int vMax, String format) {
+    public boolean dragInt3(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.dragInt3(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v, float vSpeed, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean dragInt3(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt3(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt3(String label, int[] v, float vSpeed, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean dragInt3(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt3(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v) {
+    public boolean dragInt4(final String label, final int[] v) {
         return ImGui.dragInt4(label, v);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v, float vSpeed) {
+    public boolean dragInt4(final String label, final int[] v, float vSpeed) {
         return ImGui.dragInt4(label, v, vSpeed);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v, float vSpeed, int vMin) {
+    public boolean dragInt4(final String label, final int[] v, float vSpeed, int vMin) {
         return ImGui.dragInt4(label, v, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v, float vSpeed, int vMin, int vMax) {
+    public boolean dragInt4(final String label, final int[] v, float vSpeed, int vMin, int vMax) {
         return ImGui.dragInt4(label, v, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v, float vSpeed, int vMin, int vMax, String format) {
+    public boolean dragInt4(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.dragInt4(label, v, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v, float vSpeed, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean dragInt4(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt4(label, v, vSpeed, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragInt4(String label, int[] v, float vSpeed, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean dragInt4(
+        final String label,
+        final int[] v,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragInt4(label, v, vSpeed, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax) {
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax
+    ) {
         return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax);
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed) {
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax,
+        float vSpeed
+    ) {
         return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax, vSpeed);
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed, int vMin) {
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax,
+        float vSpeed,
+        int vMin
+    ) {
         return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin);
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed, int vMin, int vMax) {
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax
+    ) {
         return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax);
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed, int vMin, int vMax, String format) {
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax, format);
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed, int vMin, int vMax, String format, String formatMax) {
-        return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax, format, formatMax);
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format,
+        final String formatMax
+    ) {
+        return ImGui.dragIntRange2(
+            label,
+            vCurrentMin,
+            vCurrentMax,
+            vSpeed,
+            vMin,
+            vMax,
+            format,
+            formatMax
+        );
     }
 
     @Override
-    public boolean dragIntRange2(String label, int[] vCurrentMin, int[] vCurrentMax, float vSpeed, int vMin, int vMax, String format, String formatMax, int imGuiSliderFlags) {
-        return ImGui.dragIntRange2(label, vCurrentMin, vCurrentMax, vSpeed, vMin, vMax, format, formatMax, imGuiSliderFlags);
+    public boolean dragIntRange2(
+        final String label,
+        final int[] vCurrentMin,
+        final int[] vCurrentMax,
+        float vSpeed,
+        int vMin,
+        int vMax,
+        final String format,
+        final String formatMax,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragIntRange2(
+            label,
+            vCurrentMin,
+            vCurrentMax,
+            vSpeed,
+            vMin,
+            vMax,
+            format,
+            formatMax,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean dragScalar(String label, short[] pData) {
+    public boolean dragScalar(final String label, final short[] pData) {
         return ImGui.dragScalar(label, pData);
     }
 
     @Override
-    public boolean dragScalar(String label, short[] pData, float vSpeed) {
+    public boolean dragScalar(final String label, final short[] pData, float vSpeed) {
         return ImGui.dragScalar(label, pData, vSpeed);
     }
 
     @Override
-    public boolean dragScalar(String label, short[] pData, float vSpeed, short pMin) {
+    public boolean dragScalar(final String label, final short[] pData, float vSpeed, short pMin) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalar(String label, short[] pData, float vSpeed, short pMin, short pMax) {
+    public boolean dragScalar(
+        final String label,
+        final short[] pData,
+        float vSpeed,
+        short pMin,
+        short pMax
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalar(String label, short[] pData, float vSpeed, short pMin, short pMax, String format) {
+    public boolean dragScalar(
+        final String label,
+        final short[] pData,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        final String format
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalar(String label, short[] pData, float vSpeed, short pMin, short pMax, String format, int imGuiSliderFlags) {
+    public boolean dragScalar(
+        final String label,
+        final short[] pData,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragScalar(String label, int[] pData) {
+    public boolean dragScalar(final String label, final int[] pData) {
         return ImGui.dragScalar(label, pData);
     }
 
     @Override
-    public boolean dragScalar(String label, int[] pData, float vSpeed) {
+    public boolean dragScalar(final String label, final int[] pData, float vSpeed) {
         return ImGui.dragScalar(label, pData, vSpeed);
     }
 
     @Override
-    public boolean dragScalar(String label, int[] pData, float vSpeed, int pMin) {
+    public boolean dragScalar(final String label, final int[] pData, float vSpeed, int pMin) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalar(String label, int[] pData, float vSpeed, int pMin, int pMax) {
+    public boolean dragScalar(
+        final String label,
+        final int[] pData,
+        float vSpeed,
+        int pMin,
+        int pMax
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalar(String label, int[] pData, float vSpeed, int pMin, int pMax, String format) {
+    public boolean dragScalar(
+        final String label,
+        final int[] pData,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        final String format
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalar(String label, int[] pData, float vSpeed, int pMin, int pMax, String format, int imGuiSliderFlags) {
+    public boolean dragScalar(
+        final String label,
+        final int[] pData,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragScalar(String label, long[] pData) {
+    public boolean dragScalar(final String label, final long[] pData) {
         return ImGui.dragScalar(label, pData);
     }
 
     @Override
-    public boolean dragScalar(String label, long[] pData, float vSpeed) {
+    public boolean dragScalar(final String label, final long[] pData, float vSpeed) {
         return ImGui.dragScalar(label, pData, vSpeed);
     }
 
     @Override
-    public boolean dragScalar(String label, long[] pData, float vSpeed, long pMin) {
+    public boolean dragScalar(final String label, final long[] pData, float vSpeed, long pMin) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalar(String label, long[] pData, float vSpeed, long pMin, long pMax) {
+    public boolean dragScalar(
+        final String label,
+        final long[] pData,
+        float vSpeed,
+        long pMin,
+        long pMax
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalar(String label, long[] pData, float vSpeed, long pMin, long pMax, String format) {
+    public boolean dragScalar(
+        final String label,
+        final long[] pData,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        final String format
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalar(String label, long[] pData, float vSpeed, long pMin, long pMax, String format, int imGuiSliderFlags) {
+    public boolean dragScalar(
+        final String label,
+        final long[] pData,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragScalar(String label, float[] pData) {
+    public boolean dragScalar(final String label, final float[] pData) {
         return ImGui.dragScalar(label, pData);
     }
 
     @Override
-    public boolean dragScalar(String label, float[] pData, float vSpeed) {
+    public boolean dragScalar(final String label, final float[] pData, float vSpeed) {
         return ImGui.dragScalar(label, pData, vSpeed);
     }
 
     @Override
-    public boolean dragScalar(String label, float[] pData, float vSpeed, float pMin) {
+    public boolean dragScalar(final String label, final float[] pData, float vSpeed, float pMin) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalar(String label, float[] pData, float vSpeed, float pMin, float pMax) {
+    public boolean dragScalar(
+        final String label,
+        final float[] pData,
+        float vSpeed,
+        float pMin,
+        float pMax
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalar(String label, float[] pData, float vSpeed, float pMin, float pMax, String format) {
+    public boolean dragScalar(
+        final String label,
+        final float[] pData,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        final String format
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalar(String label, float[] pData, float vSpeed, float pMin, float pMax, String format, int imGuiSliderFlags) {
+    public boolean dragScalar(
+        final String label,
+        final float[] pData,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragScalar(String label, double[] pData) {
+    public boolean dragScalar(final String label, final double[] pData) {
         return ImGui.dragScalar(label, pData);
     }
 
     @Override
-    public boolean dragScalar(String label, double[] pData, float vSpeed) {
+    public boolean dragScalar(final String label, final double[] pData, float vSpeed) {
         return ImGui.dragScalar(label, pData, vSpeed);
     }
 
     @Override
-    public boolean dragScalar(String label, double[] pData, float vSpeed, double pMin) {
+    public boolean dragScalar(final String label, final double[] pData, float vSpeed, double pMin) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalar(String label, double[] pData, float vSpeed, double pMin, double pMax) {
+    public boolean dragScalar(
+        final String label,
+        final double[] pData,
+        float vSpeed,
+        double pMin,
+        double pMax
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalar(String label, double[] pData, float vSpeed, double pMin, double pMax, String format) {
+    public boolean dragScalar(
+        final String label,
+        final double[] pData,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        final String format
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalar(String label, double[] pData, float vSpeed, double pMin, double pMax, String format, int imGuiSliderFlags) {
+    public boolean dragScalar(
+        final String label,
+        final double[] pData,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.dragScalar(label, pData, vSpeed, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean dragScalarN(String label, short[] pData, int components) {
+    public boolean dragScalarN(final String label, final short[] pData, int components) {
         return ImGui.dragScalarN(label, pData, components);
     }
 
     @Override
-    public boolean dragScalarN(String label, short[] pData, int components, float vSpeed) {
+    public boolean dragScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        float vSpeed
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed);
     }
 
     @Override
-    public boolean dragScalarN(String label, short[] pData, int components, float vSpeed, short pMin) {
+    public boolean dragScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        float vSpeed,
+        short pMin
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalarN(String label, short[] pData, int components, float vSpeed, short pMin, short pMax) {
+    public boolean dragScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        float vSpeed,
+        short pMin,
+        short pMax
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalarN(String label, short[] pData, int components, float vSpeed, short pMin, short pMax, String format) {
+    public boolean dragScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        final String format
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalarN(String label, short[] pData, int components, float vSpeed, short pMin, short pMax, String format, int imGuiSliderFlags) {
-        return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format, imGuiSliderFlags);
+    public boolean dragScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        float vSpeed,
+        short pMin,
+        short pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragScalarN(
+            label,
+            pData,
+            components,
+            vSpeed,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean dragScalarN(String label, int[] pData, int components) {
+    public boolean dragScalarN(final String label, final int[] pData, int components) {
         return ImGui.dragScalarN(label, pData, components);
     }
 
     @Override
-    public boolean dragScalarN(String label, int[] pData, int components, float vSpeed) {
+    public boolean dragScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        float vSpeed
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed);
     }
 
     @Override
-    public boolean dragScalarN(String label, int[] pData, int components, float vSpeed, int pMin) {
+    public boolean dragScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        float vSpeed,
+        int pMin
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalarN(String label, int[] pData, int components, float vSpeed, int pMin, int pMax) {
+    public boolean dragScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        float vSpeed,
+        int pMin,
+        int pMax
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalarN(String label, int[] pData, int components, float vSpeed, int pMin, int pMax, String format) {
+    public boolean dragScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        final String format
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalarN(String label, int[] pData, int components, float vSpeed, int pMin, int pMax, String format, int imGuiSliderFlags) {
-        return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format, imGuiSliderFlags);
+    public boolean dragScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        float vSpeed,
+        int pMin,
+        int pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragScalarN(
+            label,
+            pData,
+            components,
+            vSpeed,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean dragScalarN(String label, long[] pData, int components) {
+    public boolean dragScalarN(final String label, final long[] pData, int components) {
         return ImGui.dragScalarN(label, pData, components);
     }
 
     @Override
-    public boolean dragScalarN(String label, long[] pData, int components, float vSpeed) {
+    public boolean dragScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        float vSpeed
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed);
     }
 
     @Override
-    public boolean dragScalarN(String label, long[] pData, int components, float vSpeed, long pMin) {
+    public boolean dragScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        float vSpeed,
+        long pMin
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalarN(String label, long[] pData, int components, float vSpeed, long pMin, long pMax) {
+    public boolean dragScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        float vSpeed,
+        long pMin,
+        long pMax
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalarN(String label, long[] pData, int components, float vSpeed, long pMin, long pMax, String format) {
+    public boolean dragScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        final String format
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalarN(String label, long[] pData, int components, float vSpeed, long pMin, long pMax, String format, int imGuiSliderFlags) {
-        return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format, imGuiSliderFlags);
+    public boolean dragScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        float vSpeed,
+        long pMin,
+        long pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragScalarN(
+            label,
+            pData,
+            components,
+            vSpeed,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean dragScalarN(String label, float[] pData, int components) {
+    public boolean dragScalarN(final String label, final float[] pData, int components) {
         return ImGui.dragScalarN(label, pData, components);
     }
 
     @Override
-    public boolean dragScalarN(String label, float[] pData, int components, float vSpeed) {
+    public boolean dragScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float vSpeed
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed);
     }
 
     @Override
-    public boolean dragScalarN(String label, float[] pData, int components, float vSpeed, float pMin) {
+    public boolean dragScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float vSpeed,
+        float pMin
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalarN(String label, float[] pData, int components, float vSpeed, float pMin, float pMax) {
+    public boolean dragScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float vSpeed,
+        float pMin,
+        float pMax
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalarN(String label, float[] pData, int components, float vSpeed, float pMin, float pMax, String format) {
+    public boolean dragScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        final String format
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalarN(String label, float[] pData, int components, float vSpeed, float pMin, float pMax, String format, int imGuiSliderFlags) {
-        return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format, imGuiSliderFlags);
+    public boolean dragScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float vSpeed,
+        float pMin,
+        float pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragScalarN(
+            label,
+            pData,
+            components,
+            vSpeed,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean dragScalarN(String label, double[] pData, int components) {
+    public boolean dragScalarN(final String label, final double[] pData, int components) {
         return ImGui.dragScalarN(label, pData, components);
     }
 
     @Override
-    public boolean dragScalarN(String label, double[] pData, int components, float vSpeed) {
+    public boolean dragScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        float vSpeed
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed);
     }
 
     @Override
-    public boolean dragScalarN(String label, double[] pData, int components, float vSpeed, double pMin) {
+    public boolean dragScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        float vSpeed,
+        double pMin
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin);
     }
 
     @Override
-    public boolean dragScalarN(String label, double[] pData, int components, float vSpeed, double pMin, double pMax) {
+    public boolean dragScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        float vSpeed,
+        double pMin,
+        double pMax
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax);
     }
 
     @Override
-    public boolean dragScalarN(String label, double[] pData, int components, float vSpeed, double pMin, double pMax, String format) {
+    public boolean dragScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        final String format
+    ) {
         return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format);
     }
 
     @Override
-    public boolean dragScalarN(String label, double[] pData, int components, float vSpeed, double pMin, double pMax, String format, int imGuiSliderFlags) {
-        return ImGui.dragScalarN(label, pData, components, vSpeed, pMin, pMax, format, imGuiSliderFlags);
+    public boolean dragScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        float vSpeed,
+        double pMin,
+        double pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.dragScalarN(
+            label,
+            pData,
+            components,
+            vSpeed,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean sliderFloat(String label, float[] v, float vMin, float vMax) {
+    public boolean sliderFloat(final String label, final float[] v, float vMin, float vMax) {
         return ImGui.sliderFloat(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderFloat(String label, float[] v, float vMin, float vMax, String format) {
+    public boolean sliderFloat(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.sliderFloat(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderFloat(String label, float[] v, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderFloat(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat(String label, float[] v, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean sliderFloat(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat2(String label, float[] v, float vMin, float vMax) {
+    public boolean sliderFloat2(final String label, final float[] v, float vMin, float vMax) {
         return ImGui.sliderFloat2(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderFloat2(String label, float[] v, float vMin, float vMax, String format) {
+    public boolean sliderFloat2(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.sliderFloat2(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderFloat2(String label, float[] v, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderFloat2(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat2(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat2(String label, float[] v, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean sliderFloat2(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat2(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat3(String label, float[] v, float vMin, float vMax) {
+    public boolean sliderFloat3(final String label, final float[] v, float vMin, float vMax) {
         return ImGui.sliderFloat3(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderFloat3(String label, float[] v, float vMin, float vMax, String format) {
+    public boolean sliderFloat3(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.sliderFloat3(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderFloat3(String label, float[] v, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderFloat3(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat3(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat3(String label, float[] v, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean sliderFloat3(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat3(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat4(String label, float[] v, float vMin, float vMax) {
+    public boolean sliderFloat4(final String label, final float[] v, float vMin, float vMax) {
         return ImGui.sliderFloat4(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderFloat4(String label, float[] v, float vMin, float vMax, String format) {
+    public boolean sliderFloat4(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.sliderFloat4(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderFloat4(String label, float[] v, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderFloat4(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat4(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderFloat4(String label, float[] v, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean sliderFloat4(
+        final String label,
+        final float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderFloat4(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderAngle(String label, float[] vRad) {
+    public boolean sliderAngle(final String label, final float[] vRad) {
         return ImGui.sliderAngle(label, vRad);
     }
 
     @Override
-    public boolean sliderAngle(String label, float[] vRad, float vDegreesMin) {
+    public boolean sliderAngle(final String label, final float[] vRad, float vDegreesMin) {
         return ImGui.sliderAngle(label, vRad, vDegreesMin);
     }
 
     @Override
-    public boolean sliderAngle(String label, float[] vRad, float vDegreesMin, float vDegreesMax) {
+    public boolean sliderAngle(
+        final String label,
+        final float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax
+    ) {
         return ImGui.sliderAngle(label, vRad, vDegreesMin, vDegreesMax);
     }
 
     @Override
-    public boolean sliderAngle(String label, float[] vRad, float vDegreesMin, float vDegreesMax, String format) {
+    public boolean sliderAngle(
+        final String label,
+        final float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax,
+        final String format
+    ) {
         return ImGui.sliderAngle(label, vRad, vDegreesMin, vDegreesMax, format);
     }
 
     @Override
-    public boolean sliderAngle(String label, float[] vRad, float vDegreesMin, float vDegreesMax, String format, int imGuiSliderFlags) {
+    public boolean sliderAngle(
+        final String label,
+        final float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderAngle(label, vRad, vDegreesMin, vDegreesMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderAngle(String label, float[] vRad, float vDegreesMin, float vDegreesMax, int imGuiSliderFlags) {
+    public boolean sliderAngle(
+        final String label,
+        final float[] vRad,
+        float vDegreesMin,
+        float vDegreesMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderAngle(label, vRad, vDegreesMin, vDegreesMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt(String label, int[] v, int vMin, int vMax) {
+    public boolean sliderInt(final String label, final int[] v, int vMin, int vMax) {
         return ImGui.sliderInt(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderInt(String label, int[] v, int vMin, int vMax, String format) {
+    public boolean sliderInt(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.sliderInt(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderInt(String label, int[] v, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderInt(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean sliderInt(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt2(String label, int[] v, int vMin, int vMax) {
+    public boolean sliderInt2(final String label, final int[] v, int vMin, int vMax) {
         return ImGui.sliderInt2(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderInt2(String label, int[] v, int vMin, int vMax, String format) {
+    public boolean sliderInt2(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.sliderInt2(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderInt2(String label, int[] v, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderInt2(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt2(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt2(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean sliderInt2(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt2(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt3(String label, int[] v, int vMin, int vMax) {
+    public boolean sliderInt3(final String label, final int[] v, int vMin, int vMax) {
         return ImGui.sliderInt3(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderInt3(String label, int[] v, int vMin, int vMax, String format) {
+    public boolean sliderInt3(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.sliderInt3(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderInt3(String label, int[] v, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderInt3(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt3(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt3(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean sliderInt3(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt3(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt4(String label, int[] v, int vMin, int vMax) {
+    public boolean sliderInt4(final String label, final int[] v, int vMin, int vMax) {
         return ImGui.sliderInt4(label, v, vMin, vMax);
     }
 
     @Override
-    public boolean sliderInt4(String label, int[] v, int vMin, int vMax, String format) {
+    public boolean sliderInt4(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.sliderInt4(label, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean sliderInt4(String label, int[] v, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean sliderInt4(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt4(label, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderInt4(String label, int[] v, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean sliderInt4(
+        final String label,
+        final int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderInt4(label, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalar(String label, short[] pData, short pMin, short pMax) {
+    public boolean sliderScalar(final String label, final short[] pData, short pMin, short pMax) {
         return ImGui.sliderScalar(label, pData, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalar(String label, short[] pData, short pMin, short pMax, String format) {
+    public boolean sliderScalar(
+        final String label,
+        final short[] pData,
+        short pMin,
+        short pMax,
+        final String format
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalar(String label, short[] pData, short pMin, short pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalar(
+        final String label,
+        final short[] pData,
+        short pMin,
+        short pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalar(String label, int[] pData, int pMin, int pMax) {
+    public boolean sliderScalar(final String label, final int[] pData, int pMin, int pMax) {
         return ImGui.sliderScalar(label, pData, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalar(String label, int[] pData, int pMin, int pMax, String format) {
+    public boolean sliderScalar(
+        final String label,
+        final int[] pData,
+        int pMin,
+        int pMax,
+        final String format
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalar(String label, int[] pData, int pMin, int pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalar(
+        final String label,
+        final int[] pData,
+        int pMin,
+        int pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalar(String label, long[] pData, long pMin, long pMax) {
+    public boolean sliderScalar(final String label, final long[] pData, long pMin, long pMax) {
         return ImGui.sliderScalar(label, pData, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalar(String label, long[] pData, long pMin, long pMax, String format) {
+    public boolean sliderScalar(
+        final String label,
+        final long[] pData,
+        long pMin,
+        long pMax,
+        final String format
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalar(String label, long[] pData, long pMin, long pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalar(
+        final String label,
+        final long[] pData,
+        long pMin,
+        long pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalar(String label, float[] pData, float pMin, float pMax) {
+    public boolean sliderScalar(final String label, final float[] pData, float pMin, float pMax) {
         return ImGui.sliderScalar(label, pData, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalar(String label, float[] pData, float pMin, float pMax, String format) {
+    public boolean sliderScalar(
+        final String label,
+        final float[] pData,
+        float pMin,
+        float pMax,
+        final String format
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalar(String label, float[] pData, float pMin, float pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalar(
+        final String label,
+        final float[] pData,
+        float pMin,
+        float pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalar(String label, double[] pData, double pMin, double pMax) {
+    public boolean sliderScalar(
+        final String label,
+        final double[] pData,
+        double pMin,
+        double pMax
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalar(String label, double[] pData, double pMin, double pMax, String format) {
+    public boolean sliderScalar(
+        final String label,
+        final double[] pData,
+        double pMin,
+        double pMax,
+        final String format
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalar(String label, double[] pData, double pMin, double pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalar(
+        final String label,
+        final double[] pData,
+        double pMin,
+        double pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalar(label, pData, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalarN(String label, short[] pData, int components, short pMin, short pMax) {
+    public boolean sliderScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pMin,
+        short pMax
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalarN(String label, short[] pData, int components, short pMin, short pMax, String format) {
+    public boolean sliderScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pMin,
+        short pMax,
+        final String format
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalarN(String label, short[] pData, int components, short pMin, short pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pMin,
+        short pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalarN(String label, int[] pData, int components, int pMin, int pMax) {
+    public boolean sliderScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        int pMin,
+        int pMax
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalarN(String label, int[] pData, int components, int pMin, int pMax, String format) {
+    public boolean sliderScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        int pMin,
+        int pMax,
+        final String format
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalarN(String label, int[] pData, int components, int pMin, int pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        int pMin,
+        int pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalarN(String label, long[] pData, int components, long pMin, long pMax) {
+    public boolean sliderScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pMin,
+        long pMax
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalarN(String label, long[] pData, int components, long pMin, long pMax, String format) {
+    public boolean sliderScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pMin,
+        long pMax,
+        final String format
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalarN(String label, long[] pData, int components, long pMin, long pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pMin,
+        long pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalarN(String label, float[] pData, int components, float pMin, float pMax) {
+    public boolean sliderScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pMin,
+        float pMax
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalarN(String label, float[] pData, int components, float pMin, float pMax, String format) {
+    public boolean sliderScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pMin,
+        float pMax,
+        final String format
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalarN(String label, float[] pData, int components, float pMin, float pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pMin,
+        float pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean sliderScalarN(String label, double[] pData, int components, double pMin, double pMax) {
+    public boolean sliderScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pMin,
+        double pMax
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax);
     }
 
     @Override
-    public boolean sliderScalarN(String label, double[] pData, int components, double pMin, double pMax, String format) {
+    public boolean sliderScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pMin,
+        double pMax,
+        final String format
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format);
     }
 
     @Override
-    public boolean sliderScalarN(String label, double[] pData, int components, double pMin, double pMax, String format, int imGuiSliderFlags) {
+    public boolean sliderScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pMin,
+        double pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.sliderScalarN(label, pData, components, pMin, pMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean vSliderFloat(String label, KVector2f size, float[] v, float vMin, float vMax) {
+    public boolean vSliderFloat(
+        final String label,
+        final KVector2f size,
+        final float[] v,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.vSliderFloat(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax);
     }
 
     @Override
-    public boolean vSliderFloat(String label, float sizeX, float sizeY, float[] v, float vMin, float vMax) {
+    public boolean vSliderFloat(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] v,
+        float vMin,
+        float vMax
+    ) {
         return ImGui.vSliderFloat(label, sizeX, sizeY, v, vMin, vMax);
     }
 
     @Override
-    public boolean vSliderFloat(String label, KVector2f size, float[] v, float vMin, float vMax, String format) {
+    public boolean vSliderFloat(
+        final String label,
+        final KVector2f size,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.vSliderFloat(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax, format);
     }
 
     @Override
-    public boolean vSliderFloat(String label, float sizeX, float sizeY, float[] v, float vMin, float vMax, String format) {
+    public boolean vSliderFloat(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format
+    ) {
         return ImGui.vSliderFloat(label, sizeX, sizeY, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean vSliderFloat(String label, KVector2f size, float[] v, float vMin, float vMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderFloat(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax, format, imGuiSliderFlags);
+    public boolean vSliderFloat(
+        final String label,
+        final KVector2f size,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderFloat(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            v,
+            vMin,
+            vMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderFloat(String label, float sizeX, float sizeY, float[] v, float vMin, float vMax, String format, int imGuiSliderFlags) {
+    public boolean vSliderFloat(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] v,
+        float vMin,
+        float vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.vSliderFloat(label, sizeX, sizeY, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean vSliderFloat(String label, KVector2f size, float[] v, float vMin, float vMax, int imGuiSliderFlags) {
-        return ImGui.vSliderFloat(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax, imGuiSliderFlags);
+    public boolean vSliderFloat(
+        final String label,
+        final KVector2f size,
+        final float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderFloat(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            v,
+            vMin,
+            vMax,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderFloat(String label, float sizeX, float sizeY, float[] v, float vMin, float vMax, int imGuiSliderFlags) {
+    public boolean vSliderFloat(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] v,
+        float vMin,
+        float vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.vSliderFloat(label, sizeX, sizeY, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean vSliderInt(String label, KVector2f size, int[] v, int vMin, int vMax) {
+    public boolean vSliderInt(
+        final String label,
+        final KVector2f size,
+        final int[] v,
+        int vMin,
+        int vMax
+    ) {
         return ImGui.vSliderInt(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax);
     }
 
     @Override
-    public boolean vSliderInt(String label, float sizeX, float sizeY, int[] v, int vMin, int vMax) {
+    public boolean vSliderInt(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] v,
+        int vMin,
+        int vMax
+    ) {
         return ImGui.vSliderInt(label, sizeX, sizeY, v, vMin, vMax);
     }
 
     @Override
-    public boolean vSliderInt(String label, KVector2f size, int[] v, int vMin, int vMax, String format) {
+    public boolean vSliderInt(
+        final String label,
+        final KVector2f size,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.vSliderInt(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax, format);
     }
 
     @Override
-    public boolean vSliderInt(String label, float sizeX, float sizeY, int[] v, int vMin, int vMax, String format) {
+    public boolean vSliderInt(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format
+    ) {
         return ImGui.vSliderInt(label, sizeX, sizeY, v, vMin, vMax, format);
     }
 
     @Override
-    public boolean vSliderInt(String label, KVector2f size, int[] v, int vMin, int vMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderInt(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax, format, imGuiSliderFlags);
+    public boolean vSliderInt(
+        final String label,
+        final KVector2f size,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderInt(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            v,
+            vMin,
+            vMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderInt(String label, float sizeX, float sizeY, int[] v, int vMin, int vMax, String format, int imGuiSliderFlags) {
+    public boolean vSliderInt(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] v,
+        int vMin,
+        int vMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         return ImGui.vSliderInt(label, sizeX, sizeY, v, vMin, vMax, format, imGuiSliderFlags);
     }
 
     @Override
-    public boolean vSliderInt(String label, KVector2f size, int[] v, int vMin, int vMax, int imGuiSliderFlags) {
-        return ImGui.vSliderInt(label, KImGuiSpairWrapper.wrap(size), v, vMin, vMax, imGuiSliderFlags);
+    public boolean vSliderInt(
+        final String label,
+        final KVector2f size,
+        final int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderInt(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            v,
+            vMin,
+            vMax,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderInt(String label, float sizeX, float sizeY, int[] v, int vMin, int vMax, int imGuiSliderFlags) {
+    public boolean vSliderInt(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] v,
+        int vMin,
+        int vMax,
+        int imGuiSliderFlags
+    ) {
         return ImGui.vSliderInt(label, sizeX, sizeY, v, vMin, vMax, imGuiSliderFlags);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, short[] pData, short pMin, short pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final short[] pData,
+        short pMin,
+        short pMax
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, short[] pData, short pMin, short pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final short[] pData,
+        short pMin,
+        short pMax
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, short[] pData, short pMin, short pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final short[] pData,
+        short pMin,
+        short pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, short[] pData, short pMin, short pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final short[] pData,
+        short pMin,
+        short pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, short[] pData, short pMin, short pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final short[] pData,
+        short pMin,
+        short pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, short[] pData, short pMin, short pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final short[] pData,
+        short pMin,
+        short pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            sizeX,
+            sizeY,
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, int[] pData, int pMin, int pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final int[] pData,
+        int pMin,
+        int pMax
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, int[] pData, int pMin, int pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] pData,
+        int pMin,
+        int pMax
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, int[] pData, int pMin, int pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final int[] pData,
+        int pMin,
+        int pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, int[] pData, int pMin, int pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] pData,
+        int pMin,
+        int pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, int[] pData, int pMin, int pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final int[] pData,
+        int pMin,
+        int pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, int[] pData, int pMin, int pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final int[] pData,
+        int pMin,
+        int pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            sizeX,
+            sizeY,
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, long[] pData, long pMin, long pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final long[] pData,
+        long pMin,
+        long pMax
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, long[] pData, long pMin, long pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final long[] pData,
+        long pMin,
+        long pMax
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, long[] pData, long pMin, long pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final long[] pData,
+        long pMin,
+        long pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, long[] pData, long pMin, long pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final long[] pData,
+        long pMin,
+        long pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, long[] pData, long pMin, long pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final long[] pData,
+        long pMin,
+        long pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, long[] pData, long pMin, long pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final long[] pData,
+        long pMin,
+        long pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            sizeX,
+            sizeY,
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, float[] pData, float pMin, float pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final float[] pData,
+        float pMin,
+        float pMax
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, float[] pData, float pMin, float pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] pData,
+        float pMin,
+        float pMax
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, float[] pData, float pMin, float pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final float[] pData,
+        float pMin,
+        float pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, float[] pData, float pMin, float pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] pData,
+        float pMin,
+        float pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, float[] pData, float pMin, float pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final float[] pData,
+        float pMin,
+        float pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, float[] pData, float pMin, float pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final float[] pData,
+        float pMin,
+        float pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            sizeX,
+            sizeY,
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, double[] pData, double pMin, double pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final double[] pData,
+        double pMin,
+        double pMax
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, double[] pData, double pMin, double pMax) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final double[] pData,
+        double pMin,
+        double pMax
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, double[] pData, double pMin, double pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final double[] pData,
+        double pMin,
+        double pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, double[] pData, double pMin, double pMax, String format) {
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final double[] pData,
+        double pMin,
+        double pMax,
+        final String format
+    ) {
         return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format);
     }
 
     @Override
-    public boolean vSliderScalar(String label, KVector2f size, double[] pData, double pMin, double pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, KImGuiSpairWrapper.wrap(size), pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        final KVector2f size,
+        final double[] pData,
+        double pMin,
+        double pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            KImGuiSpairWrapper.wrap(size),
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean vSliderScalar(String label, float sizeX, float sizeY, double[] pData, double pMin, double pMax, String format, int imGuiSliderFlags) {
-        return ImGui.vSliderScalar(label, sizeX, sizeY, pData, pMin, pMax, format, imGuiSliderFlags);
+    public boolean vSliderScalar(
+        final String label,
+        float sizeX,
+        float sizeY,
+        final double[] pData,
+        double pMin,
+        double pMax,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.vSliderScalar(
+            label,
+            sizeX,
+            sizeY,
+            pData,
+            pMin,
+            pMax,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputText(String label, KStringReference text) {
+    public boolean inputText(final String label, final KStringReference text) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputText(label, str);
         text.set(str.get());
@@ -2776,7 +4541,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputText(String label, KStringReference text, int imGuiInputTextFlags) {
+    public boolean inputText(
+        final String label,
+        final KStringReference text,
+        int imGuiInputTextFlags
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputText(label, str, imGuiInputTextFlags);
         text.set(str.get());
@@ -2784,18 +4553,18 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputText(String label, KStringReference text, int imGuiInputTextFlags, KImGuiInputTextCallback callback) {
+    public boolean inputText(
+        final String label,
+        final KStringReference text,
+        int imGuiInputTextFlags,
+        final KImGuiInputTextCallback callback
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputText(
-            label,
-            str,
-            imGuiInputTextFlags,
-            new ImGuiInputTextCallback() {
+            label, str, imGuiInputTextFlags, new ImGuiInputTextCallback() {
                 @Override
-                public void accept(ImGuiInputTextCallbackData data) {
-                    callback.accept(
-                        KImGuiSpairUnwrapper.wrap(data)
-                    );
+                public void accept(final ImGuiInputTextCallbackData data) {
+                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
                 }
             }
         );
@@ -2804,7 +4573,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextMultiline(String label, KStringReference text) {
+    public boolean inputTextMultiline(final String label, final KStringReference text) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(label, str);
         text.set(str.get());
@@ -2812,7 +4581,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextMultiline(String label, KStringReference text, float width, float height) {
+    public boolean inputTextMultiline(
+        final String label,
+        final KStringReference text,
+        float width,
+        float height
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(label, str, width, height);
         text.set(str.get());
@@ -2820,7 +4594,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextMultiline(String label, KStringReference text, int imGuiInputTextFlags) {
+    public boolean inputTextMultiline(
+        final String label,
+        final KStringReference text,
+        int imGuiInputTextFlags
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(label, str, imGuiInputTextFlags);
         text.set(str.get());
@@ -2828,18 +4606,18 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextMultiline(String label, KStringReference text, int imGuiInputTextFlags, KImGuiInputTextCallback callback) {
+    public boolean inputTextMultiline(
+        final String label,
+        final KStringReference text,
+        int imGuiInputTextFlags,
+        final KImGuiInputTextCallback callback
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(
-            label,
-            str,
-            imGuiInputTextFlags,
-            new ImGuiInputTextCallback() {
+            label, str, imGuiInputTextFlags, new ImGuiInputTextCallback() {
                 @Override
-                public void accept(ImGuiInputTextCallbackData data) {
-                    callback.accept(
-                        KImGuiSpairUnwrapper.wrap(data)
-                    );
+                public void accept(final ImGuiInputTextCallbackData data) {
+                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
                 }
             }
         );
@@ -2848,7 +4626,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextMultiline(String label, KStringReference text, float width, float height, int imGuiInputTextFlags) {
+    public boolean inputTextMultiline(
+        final String label,
+        final KStringReference text,
+        float width,
+        float height,
+        int imGuiInputTextFlags
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(label, str, width, height, imGuiInputTextFlags);
         text.set(str.get());
@@ -2856,20 +4640,20 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextMultiline(String label, KStringReference text, float width, float height, int imGuiInputTextFlags, KImGuiInputTextCallback callback) {
+    public boolean inputTextMultiline(
+        final String label,
+        final KStringReference text,
+        float width,
+        float height,
+        int imGuiInputTextFlags,
+        final KImGuiInputTextCallback callback
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextMultiline(
-            label,
-            str,
-            width,
-            height,
-            imGuiInputTextFlags,
-            new ImGuiInputTextCallback() {
+            label, str, width, height, imGuiInputTextFlags, new ImGuiInputTextCallback() {
                 @Override
-                public void accept(ImGuiInputTextCallbackData data) {
-                    callback.accept(
-                        KImGuiSpairUnwrapper.wrap(data)
-                    );
+                public void accept(final ImGuiInputTextCallbackData data) {
+                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
                 }
             }
         );
@@ -2878,7 +4662,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextWithHint(String label, String hint, KStringReference text) {
+    public boolean inputTextWithHint(
+        final String label,
+        final String hint,
+        final KStringReference text
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextWithHint(label, hint, str);
         text.set(str.get());
@@ -2886,7 +4674,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextWithHint(String label, String hint, KStringReference text, int imGuiInputTextFlags) {
+    public boolean inputTextWithHint(
+        final String label,
+        final String hint,
+        final KStringReference text,
+        int imGuiInputTextFlags
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextWithHint(label, hint, str, imGuiInputTextFlags);
         text.set(str.get());
@@ -2894,19 +4687,19 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputTextWithHint(String label, String hint, KStringReference text, int imGuiInputTextFlags, KImGuiInputTextCallback callback) {
+    public boolean inputTextWithHint(
+        final String label,
+        final String hint,
+        final KStringReference text,
+        int imGuiInputTextFlags,
+        final KImGuiInputTextCallback callback
+    ) {
         ImString str = new ImString(text.toString());
         boolean result = ImGui.inputTextWithHint(
-            label,
-            hint,
-            str,
-            imGuiInputTextFlags,
-            new ImGuiInputTextCallback() {
+            label, hint, str, imGuiInputTextFlags, new ImGuiInputTextCallback() {
                 @Override
-                public void accept(ImGuiInputTextCallbackData data) {
-                    callback.accept(
-                        KImGuiSpairUnwrapper.wrap(data)
-                    );
+                public void accept(final ImGuiInputTextCallbackData data) {
+                    callback.accept(KImGuiSpairUnwrapper.wrap(data));
                 }
             }
         );
@@ -2915,7 +4708,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat(String label, KFloatReference v) {
+    public boolean inputFloat(final String label, final KFloatReference v) {
         ImFloat f = new ImFloat(v.get());
         boolean result = ImGui.inputFloat(label, f);
         v.set(f.get());
@@ -2923,7 +4716,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat(String label, KFloatReference v, float step) {
+    public boolean inputFloat(final String label, final KFloatReference v, float step) {
         ImFloat f = new ImFloat(v.get());
         boolean result = ImGui.inputFloat(label, f, step);
         v.set(f.get());
@@ -2931,7 +4724,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat(String label, KFloatReference v, float step, float stepFast) {
+    public boolean inputFloat(
+        final String label,
+        final KFloatReference v,
+        float step,
+        float stepFast
+    ) {
         ImFloat f = new ImFloat(v.get());
         boolean result = ImGui.inputFloat(label, f, step, stepFast);
         v.set(f.get());
@@ -2939,7 +4737,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat(String label, KFloatReference v, float step, float stepFast, String format) {
+    public boolean inputFloat(
+        final String label,
+        final KFloatReference v,
+        float step,
+        float stepFast,
+        final String format
+    ) {
         ImFloat f = new ImFloat(v.get());
         boolean result = ImGui.inputFloat(label, f, step, stepFast, format);
         v.set(f.get());
@@ -2947,7 +4751,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat(String label, KFloatReference v, float step, float stepFast, String format, int imGuiInputTextFlags) {
+    public boolean inputFloat(
+        final String label,
+        final KFloatReference v,
+        float step,
+        float stepFast,
+        final String format,
+        int imGuiInputTextFlags
+    ) {
         ImFloat f = new ImFloat(v.get());
         boolean result = ImGui.inputFloat(label, f, step, stepFast, format, imGuiInputTextFlags);
         v.set(f.get());
@@ -2955,7 +4766,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat(String label, KFloatReference v, float step, float stepFast, int imGuiInputTextFlags) {
+    public boolean inputFloat(
+        final String label,
+        final KFloatReference v,
+        float step,
+        float stepFast,
+        int imGuiInputTextFlags
+    ) {
         ImFloat f = new ImFloat(v.get());
         boolean result = ImGui.inputFloat(label, f, step, stepFast, imGuiInputTextFlags);
         v.set(f.get());
@@ -2963,67 +4780,82 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputFloat2(String label, float[] v) {
+    public boolean inputFloat2(final String label, final float[] v) {
         return ImGui.inputFloat2(label, v);
     }
 
     @Override
-    public boolean inputFloat2(String label, float[] v, String format) {
+    public boolean inputFloat2(final String label, final float[] v, final String format) {
         return ImGui.inputFloat2(label, v, format);
     }
 
     @Override
-    public boolean inputFloat2(String label, float[] v, String format, int imGuiInputTextFlags) {
+    public boolean inputFloat2(
+        final String label,
+        final float[] v,
+        final String format,
+        int imGuiInputTextFlags
+    ) {
         return ImGui.inputFloat2(label, v, format, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputFloat2(String label, float[] v, int imGuiInputTextFlags) {
+    public boolean inputFloat2(final String label, final float[] v, int imGuiInputTextFlags) {
         return ImGui.inputFloat2(label, v, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputFloat3(String label, float[] v) {
+    public boolean inputFloat3(final String label, final float[] v) {
         return ImGui.inputFloat3(label, v);
     }
 
     @Override
-    public boolean inputFloat3(String label, float[] v, String format) {
+    public boolean inputFloat3(final String label, final float[] v, final String format) {
         return ImGui.inputFloat3(label, v, format);
     }
 
     @Override
-    public boolean inputFloat3(String label, float[] v, String format, int imGuiInputTextFlags) {
+    public boolean inputFloat3(
+        final String label,
+        final float[] v,
+        final String format,
+        int imGuiInputTextFlags
+    ) {
         return ImGui.inputFloat3(label, v, format, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputFloat3(String label, float[] v, int imGuiInputTextFlags) {
+    public boolean inputFloat3(final String label, final float[] v, int imGuiInputTextFlags) {
         return ImGui.inputFloat3(label, v, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputFloat4(String label, float[] v) {
+    public boolean inputFloat4(final String label, final float[] v) {
         return ImGui.inputFloat4(label, v);
     }
 
     @Override
-    public boolean inputFloat4(String label, float[] v, String format) {
+    public boolean inputFloat4(final String label, final float[] v, final String format) {
         return ImGui.inputFloat4(label, v, format);
     }
 
     @Override
-    public boolean inputFloat4(String label, float[] v, String format, int imGuiInputTextFlags) {
+    public boolean inputFloat4(
+        final String label,
+        final float[] v,
+        final String format,
+        int imGuiInputTextFlags
+    ) {
         return ImGui.inputFloat4(label, v, format, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputFloat4(String label, float[] v, int imGuiInputTextFlags) {
+    public boolean inputFloat4(final String label, final float[] v, int imGuiInputTextFlags) {
         return ImGui.inputFloat4(label, v, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputInt(String label, KIntReference v) {
+    public boolean inputInt(final String label, final KIntReference v) {
         ImInt i = new ImInt(v.get());
         boolean result = ImGui.inputInt(label, i);
         v.set(i.get());
@@ -3031,7 +4863,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputInt(String label, KIntReference v, int step) {
+    public boolean inputInt(final String label, final KIntReference v, int step) {
         ImInt i = new ImInt(v.get());
         boolean result = ImGui.inputInt(label, i, step);
         v.set(i.get());
@@ -3039,7 +4871,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputInt(String label, KIntReference v, int step, int stepFast) {
+    public boolean inputInt(final String label, final KIntReference v, int step, int stepFast) {
         ImInt i = new ImInt(v.get());
         boolean result = ImGui.inputInt(label, i, step, stepFast);
         v.set(i.get());
@@ -3047,7 +4879,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputInt(String label, KIntReference v, int step, int stepFast, int imGuiInputTextFlags) {
+    public boolean inputInt(
+        final String label,
+        final KIntReference v,
+        int step,
+        int stepFast,
+        int imGuiInputTextFlags
+    ) {
         ImInt i = new ImInt(v.get());
         boolean result = ImGui.inputInt(label, i, step, stepFast, imGuiInputTextFlags);
         v.set(i.get());
@@ -3055,37 +4893,37 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputInt2(String label, int[] v) {
+    public boolean inputInt2(final String label, final int[] v) {
         return ImGui.inputInt2(label, v);
     }
 
     @Override
-    public boolean inputInt2(String label, int[] v, int imGuiInputTextFlags) {
+    public boolean inputInt2(final String label, final int[] v, int imGuiInputTextFlags) {
         return ImGui.inputInt2(label, v, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputInt3(String label, int[] v) {
+    public boolean inputInt3(final String label, final int[] v) {
         return ImGui.inputInt3(label, v);
     }
 
     @Override
-    public boolean inputInt3(String label, int[] v, int imGuiInputTextFlags) {
+    public boolean inputInt3(final String label, final int[] v, int imGuiInputTextFlags) {
         return ImGui.inputInt3(label, v, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputInt4(String label, int[] v) {
+    public boolean inputInt4(final String label, final int[] v) {
         return ImGui.inputInt4(label, v);
     }
 
     @Override
-    public boolean inputInt4(String label, int[] v, int imGuiInputTextFlags) {
+    public boolean inputInt4(final String label, final int[] v, int imGuiInputTextFlags) {
         return ImGui.inputInt4(label, v, imGuiInputTextFlags);
     }
 
     @Override
-    public boolean inputDouble(String label, KDoubleReference v) {
+    public boolean inputDouble(final String label, final KDoubleReference v) {
         ImDouble d = new ImDouble(v.get());
         boolean result = ImGui.inputDouble(label, d);
         v.set(d.get());
@@ -3093,7 +4931,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputDouble(String label, KDoubleReference v, double step) {
+    public boolean inputDouble(final String label, final KDoubleReference v, double step) {
         ImDouble d = new ImDouble(v.get());
         boolean result = ImGui.inputDouble(label, d, step);
         v.set(d.get());
@@ -3101,7 +4939,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputDouble(String label, KDoubleReference v, double step, double stepFast) {
+    public boolean inputDouble(
+        final String label,
+        final KDoubleReference v,
+        double step,
+        double stepFast
+    ) {
         ImDouble d = new ImDouble(v.get());
         boolean result = ImGui.inputDouble(label, d, step, stepFast);
         v.set(d.get());
@@ -3109,7 +4952,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputDouble(String label, KDoubleReference v, double step, double stepFast, String format) {
+    public boolean inputDouble(
+        final String label,
+        final KDoubleReference v,
+        double step,
+        double stepFast,
+        final String format
+    ) {
         ImDouble d = new ImDouble(v.get());
         boolean result = ImGui.inputDouble(label, d, step, stepFast, format);
         v.set(d.get());
@@ -3117,7 +4966,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputDouble(String label, KDoubleReference v, double step, double stepFast, String format, int imGuiInputTextFlags) {
+    public boolean inputDouble(
+        final String label,
+        final KDoubleReference v,
+        double step,
+        double stepFast,
+        final String format,
+        int imGuiInputTextFlags
+    ) {
         ImDouble d = new ImDouble(v.get());
         boolean result = ImGui.inputDouble(label, d, step, stepFast, format, imGuiInputTextFlags);
         v.set(d.get());
@@ -3125,7 +4981,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputDouble(String label, KDoubleReference v, double step, double stepFast, int imGuiInputTextFlags) {
+    public boolean inputDouble(
+        final String label,
+        final KDoubleReference v,
+        double step,
+        double stepFast,
+        int imGuiInputTextFlags
+    ) {
         ImDouble d = new ImDouble(v.get());
         boolean result = ImGui.inputDouble(label, d, step, stepFast, imGuiInputTextFlags);
         v.set(d.get());
@@ -3133,7 +4995,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KShortReference pData) {
+    public boolean inputScalar(final String label, final KShortReference pData) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, s);
         pData.set(s.get());
@@ -3141,7 +5003,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KShortReference pData, short pStep) {
+    public boolean inputScalar(final String label, final KShortReference pData, short pStep) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, s, pStep);
         pData.set(s.get());
@@ -3149,7 +5011,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KShortReference pData, short pStep, short pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        final KShortReference pData,
+        short pStep,
+        short pStepFast
+    ) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, s, pStep, pStepFast);
         pData.set(s.get());
@@ -3157,7 +5024,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KShortReference pData, short pStep, short pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        final KShortReference pData,
+        short pStep,
+        short pStepFast,
+        final String format
+    ) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, s, pStep, pStepFast, format);
         pData.set(s.get());
@@ -3165,7 +5038,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KShortReference pData, short pStep, short pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        final KShortReference pData,
+        short pStep,
+        short pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, s, pStep, pStepFast, format, imGuiSliderFlags);
         pData.set(s.get());
@@ -3173,7 +5053,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KIntReference pData) {
+    public boolean inputScalar(final String label, final KIntReference pData) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, i);
         pData.set(i.get());
@@ -3181,7 +5061,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KIntReference pData, int pStep) {
+    public boolean inputScalar(final String label, final KIntReference pData, int pStep) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, i, pStep);
         pData.set(i.get());
@@ -3189,7 +5069,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KIntReference pData, int pStep, int pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        final KIntReference pData,
+        int pStep,
+        int pStepFast
+    ) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, i, pStep, pStepFast);
         pData.set(i.get());
@@ -3197,7 +5082,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KIntReference pData, int pStep, int pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        final KIntReference pData,
+        int pStep,
+        int pStepFast,
+        final String format
+    ) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, i, pStep, pStepFast, format);
         pData.set(i.get());
@@ -3205,7 +5096,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KIntReference pData, int pStep, int pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        final KIntReference pData,
+        int pStep,
+        int pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, i, pStep, pStepFast, format, imGuiSliderFlags);
         pData.set(i.get());
@@ -3213,7 +5111,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KLongReference pData) {
+    public boolean inputScalar(final String label, final KLongReference pData) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, l);
         pData.set(l.get());
@@ -3221,7 +5119,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KLongReference pData, long pStep) {
+    public boolean inputScalar(final String label, final KLongReference pData, long pStep) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, l, pStep);
         pData.set(l.get());
@@ -3229,7 +5127,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KLongReference pData, long pStep, long pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        final KLongReference pData,
+        long pStep,
+        long pStepFast
+    ) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, l, pStep, pStepFast);
         pData.set(l.get());
@@ -3237,7 +5140,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KLongReference pData, long pStep, long pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        final KLongReference pData,
+        long pStep,
+        long pStepFast,
+        final String format
+    ) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, l, pStep, pStepFast, format);
         pData.set(l.get());
@@ -3245,7 +5154,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KLongReference pData, long pStep, long pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        final KLongReference pData,
+        long pStep,
+        long pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, l, pStep, pStepFast, format, imGuiSliderFlags);
         pData.set(l.get());
@@ -3253,7 +5169,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KFloatReference pData) {
+    public boolean inputScalar(final String label, final KFloatReference pData) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, f);
         pData.set(f.get());
@@ -3261,7 +5177,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KFloatReference pData, float pStep) {
+    public boolean inputScalar(final String label, final KFloatReference pData, float pStep) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, f, pStep);
         pData.set(f.get());
@@ -3269,7 +5185,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KFloatReference pData, float pStep, float pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        final KFloatReference pData,
+        float pStep,
+        float pStepFast
+    ) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, f, pStep, pStepFast);
         pData.set(f.get());
@@ -3277,7 +5198,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KFloatReference pData, float pStep, float pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        final KFloatReference pData,
+        float pStep,
+        float pStepFast,
+        final String format
+    ) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, f, pStep, pStepFast, format);
         pData.set(f.get());
@@ -3285,7 +5212,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KFloatReference pData, float pStep, float pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        final KFloatReference pData,
+        float pStep,
+        float pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, f, pStep, pStepFast, format, imGuiSliderFlags);
         pData.set(f.get());
@@ -3293,7 +5227,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KDoubleReference pData) {
+    public boolean inputScalar(final String label, final KDoubleReference pData) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, d);
         pData.set(d.get());
@@ -3301,7 +5235,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KDoubleReference pData, double pStep) {
+    public boolean inputScalar(final String label, final KDoubleReference pData, double pStep) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, d, pStep);
         pData.set(d.get());
@@ -3309,7 +5243,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KDoubleReference pData, double pStep, double pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        final KDoubleReference pData,
+        double pStep,
+        double pStepFast
+    ) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, d, pStep, pStepFast);
         pData.set(d.get());
@@ -3317,7 +5256,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KDoubleReference pData, double pStep, double pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        final KDoubleReference pData,
+        double pStep,
+        double pStepFast,
+        final String format
+    ) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, d, pStep, pStepFast, format);
         pData.set(d.get());
@@ -3325,7 +5270,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, KDoubleReference pData, double pStep, double pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        final KDoubleReference pData,
+        double pStep,
+        double pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, d, pStep, pStepFast, format, imGuiSliderFlags);
         pData.set(d.get());
@@ -3333,7 +5285,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KShortReference pData) {
+    public boolean inputScalar(final String label, int dataType, final KShortReference pData) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, s);
         pData.set(s.get());
@@ -3341,7 +5293,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KShortReference pData, short pStep) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KShortReference pData,
+        short pStep
+    ) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, s, pStep);
         pData.set(s.get());
@@ -3349,7 +5306,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KShortReference pData, short pStep, short pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KShortReference pData,
+        short pStep,
+        short pStepFast
+    ) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, s, pStep, pStepFast);
         pData.set(s.get());
@@ -3357,7 +5320,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KShortReference pData, short pStep, short pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KShortReference pData,
+        short pStep,
+        short pStepFast,
+        final String format
+    ) {
         ImShort s = new ImShort(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, s, pStep, pStepFast, format);
         pData.set(s.get());
@@ -3365,15 +5335,31 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KShortReference pData, short pStep, short pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KShortReference pData,
+        short pStep,
+        short pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImShort s = new ImShort(pData.get());
-        boolean result = ImGui.inputScalar(label, dataType, s, pStep, pStepFast, format, imGuiSliderFlags);
+        boolean result = ImGui.inputScalar(
+            label,
+            dataType,
+            s,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
         pData.set(s.get());
         return result;
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KIntReference pData) {
+    public boolean inputScalar(final String label, int dataType, final KIntReference pData) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, i);
         pData.set(i.get());
@@ -3381,7 +5367,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KIntReference pData, int pStep) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KIntReference pData,
+        int pStep
+    ) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, i, pStep);
         pData.set(i.get());
@@ -3389,7 +5380,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KIntReference pData, int pStep, int pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KIntReference pData,
+        int pStep,
+        int pStepFast
+    ) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, i, pStep, pStepFast);
         pData.set(i.get());
@@ -3397,7 +5394,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KIntReference pData, int pStep, int pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KIntReference pData,
+        int pStep,
+        int pStepFast,
+        final String format
+    ) {
         ImInt i = new ImInt(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, i, pStep, pStepFast, format);
         pData.set(i.get());
@@ -3405,15 +5409,31 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KIntReference pData, int pStep, int pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KIntReference pData,
+        int pStep,
+        int pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImInt i = new ImInt(pData.get());
-        boolean result = ImGui.inputScalar(label, dataType, i, pStep, pStepFast, format, imGuiSliderFlags);
+        boolean result = ImGui.inputScalar(
+            label,
+            dataType,
+            i,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
         pData.set(i.get());
         return result;
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KLongReference pData) {
+    public boolean inputScalar(final String label, int dataType, final KLongReference pData) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, l);
         pData.set(l.get());
@@ -3421,7 +5441,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KLongReference pData, long pStep) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KLongReference pData,
+        long pStep
+    ) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, l, pStep);
         pData.set(l.get());
@@ -3429,7 +5454,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KLongReference pData, long pStep, long pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KLongReference pData,
+        long pStep,
+        long pStepFast
+    ) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, l, pStep, pStepFast);
         pData.set(l.get());
@@ -3437,7 +5468,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KLongReference pData, long pStep, long pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KLongReference pData,
+        long pStep,
+        long pStepFast,
+        final String format
+    ) {
         ImLong l = new ImLong(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, l, pStep, pStepFast, format);
         pData.set(l.get());
@@ -3445,15 +5483,31 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KLongReference pData, long pStep, long pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KLongReference pData,
+        long pStep,
+        long pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImLong l = new ImLong(pData.get());
-        boolean result = ImGui.inputScalar(label, dataType, l, pStep, pStepFast, format, imGuiSliderFlags);
+        boolean result = ImGui.inputScalar(
+            label,
+            dataType,
+            l,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
         pData.set(l.get());
         return result;
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KFloatReference pData) {
+    public boolean inputScalar(final String label, int dataType, final KFloatReference pData) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, f);
         pData.set(f.get());
@@ -3461,7 +5515,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KFloatReference pData, float pStep) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KFloatReference pData,
+        float pStep
+    ) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, f, pStep);
         pData.set(f.get());
@@ -3469,7 +5528,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KFloatReference pData, float pStep, float pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KFloatReference pData,
+        float pStep,
+        float pStepFast
+    ) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, f, pStep, pStepFast);
         pData.set(f.get());
@@ -3477,7 +5542,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KFloatReference pData, float pStep, float pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KFloatReference pData,
+        float pStep,
+        float pStepFast,
+        final String format
+    ) {
         ImFloat f = new ImFloat(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, f, pStep, pStepFast, format);
         pData.set(f.get());
@@ -3485,15 +5557,31 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KFloatReference pData, float pStep, float pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KFloatReference pData,
+        float pStep,
+        float pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImFloat f = new ImFloat(pData.get());
-        boolean result = ImGui.inputScalar(label, dataType, f, pStep, pStepFast, format, imGuiSliderFlags);
+        boolean result = ImGui.inputScalar(
+            label,
+            dataType,
+            f,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
         pData.set(f.get());
         return result;
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KDoubleReference pData) {
+    public boolean inputScalar(final String label, int dataType, final KDoubleReference pData) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, d);
         pData.set(d.get());
@@ -3501,7 +5589,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KDoubleReference pData, double pStep) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KDoubleReference pData,
+        double pStep
+    ) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, d, pStep);
         pData.set(d.get());
@@ -3509,7 +5602,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KDoubleReference pData, double pStep, double pStepFast) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KDoubleReference pData,
+        double pStep,
+        double pStepFast
+    ) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, d, pStep, pStepFast);
         pData.set(d.get());
@@ -3517,7 +5616,14 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KDoubleReference pData, double pStep, double pStepFast, String format) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KDoubleReference pData,
+        double pStep,
+        double pStepFast,
+        final String format
+    ) {
         ImDouble d = new ImDouble(pData.get());
         boolean result = ImGui.inputScalar(label, dataType, d, pStep, pStepFast, format);
         pData.set(d.get());
@@ -3525,350 +5631,800 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean inputScalar(String label, int dataType, KDoubleReference pData, double pStep, double pStepFast, String format, int imGuiSliderFlags) {
+    public boolean inputScalar(
+        final String label,
+        int dataType,
+        final KDoubleReference pData,
+        double pStep,
+        double pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
         ImDouble d = new ImDouble(pData.get());
-        boolean result = ImGui.inputScalar(label, dataType, d, pStep, pStepFast, format, imGuiSliderFlags);
+        boolean result = ImGui.inputScalar(
+            label,
+            dataType,
+            d,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
         pData.set(d.get());
         return result;
     }
 
     @Override
-    public boolean inputScalarN(String label, short[] pData, int components) {
+    public boolean inputScalarN(final String label, final short[] pData, int components) {
         return ImGui.inputScalarN(label, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, short[] pData, int components, short pStep) {
+    public boolean inputScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pStep
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, short[] pData, int components, short pStep, short pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pStep,
+        short pStepFast
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, short[] pData, int components, short pStep, short pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, short[] pData, int components, short pStep, short pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        final short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, int[] pData, int components) {
+    public boolean inputScalarN(final String label, final int[] pData, int components) {
         return ImGui.inputScalarN(label, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, int[] pData, int components, int pStep) {
+    public boolean inputScalarN(final String label, final int[] pData, int components, int pStep) {
         return ImGui.inputScalarN(label, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, int[] pData, int components, int pStep, int pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        int pStep,
+        int pStepFast
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, int[] pData, int components, int pStep, int pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, int[] pData, int components, int pStep, int pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        final int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, long[] pData, int components) {
+    public boolean inputScalarN(final String label, final long[] pData, int components) {
         return ImGui.inputScalarN(label, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, long[] pData, int components, long pStep) {
+    public boolean inputScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pStep
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, long[] pData, int components, long pStep, long pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pStep,
+        long pStepFast
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, long[] pData, int components, long pStep, long pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, long[] pData, int components, long pStep, long pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        final long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, float[] pData, int components) {
+    public boolean inputScalarN(final String label, final float[] pData, int components) {
         return ImGui.inputScalarN(label, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, float[] pData, int components, float pStep) {
+    public boolean inputScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pStep
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, float[] pData, int components, float pStep, float pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pStep,
+        float pStepFast
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, float[] pData, int components, float pStep, float pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, float[] pData, int components, float pStep, float pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        final float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, double[] pData, int components) {
+    public boolean inputScalarN(final String label, final double[] pData, int components) {
         return ImGui.inputScalarN(label, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, double[] pData, int components, double pStep) {
+    public boolean inputScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pStep
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, double[] pData, int components, double pStep, double pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pStep,
+        double pStepFast
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, double[] pData, int components, double pStep, double pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, double[] pData, int components, double pStep, double pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        final double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, short[] pData, int components) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final short[] pData,
+        int components
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, short[] pData, int components, short pStep) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final short[] pData,
+        int components,
+        short pStep
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, short[] pData, int components, short pStep, short pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final short[] pData,
+        int components,
+        short pStep,
+        short pStepFast
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, short[] pData, int components, short pStep, short pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, short[] pData, int components, short pStep, short pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final short[] pData,
+        int components,
+        short pStep,
+        short pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            dataType,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, int[] pData, int components) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final int[] pData,
+        int components
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, int[] pData, int components, int pStep) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final int[] pData,
+        int components,
+        int pStep
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, int[] pData, int components, int pStep, int pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final int[] pData,
+        int components,
+        int pStep,
+        int pStepFast
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, int[] pData, int components, int pStep, int pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, int[] pData, int components, int pStep, int pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final int[] pData,
+        int components,
+        int pStep,
+        int pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            dataType,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, long[] pData, int components) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final long[] pData,
+        int components
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, long[] pData, int components, long pStep) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final long[] pData,
+        int components,
+        long pStep
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, long[] pData, int components, long pStep, long pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final long[] pData,
+        int components,
+        long pStep,
+        long pStepFast
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, long[] pData, int components, long pStep, long pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, long[] pData, int components, long pStep, long pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final long[] pData,
+        int components,
+        long pStep,
+        long pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            dataType,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, float[] pData, int components) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final float[] pData,
+        int components
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, float[] pData, int components, float pStep) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final float[] pData,
+        int components,
+        float pStep
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, float[] pData, int components, float pStep, float pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final float[] pData,
+        int components,
+        float pStep,
+        float pStepFast
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, float[] pData, int components, float pStep, float pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, float[] pData, int components, float pStep, float pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final float[] pData,
+        int components,
+        float pStep,
+        float pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            dataType,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, double[] pData, int components) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final double[] pData,
+        int components
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, double[] pData, int components, double pStep) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final double[] pData,
+        int components,
+        double pStep
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, double[] pData, int components, double pStep, double pStepFast) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final double[] pData,
+        int components,
+        double pStep,
+        double pStepFast
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, double[] pData, int components, double pStep, double pStepFast, String format) {
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        final String format
+    ) {
         return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format);
     }
 
     @Override
-    public boolean inputScalarN(String label, int dataType, double[] pData, int components, double pStep, double pStepFast, String format, int imGuiSliderFlags) {
-        return ImGui.inputScalarN(label, dataType, pData, components, pStep, pStepFast, format, imGuiSliderFlags);
+    public boolean inputScalarN(
+        final String label,
+        int dataType,
+        final double[] pData,
+        int components,
+        double pStep,
+        double pStepFast,
+        final String format,
+        int imGuiSliderFlags
+    ) {
+        return ImGui.inputScalarN(
+            label,
+            dataType,
+            pData,
+            components,
+            pStep,
+            pStepFast,
+            format,
+            imGuiSliderFlags
+        );
     }
 
     @Override
-    public boolean colorEdit3(String label, float[] col) {
+    public boolean colorEdit3(final String label, final float[] col) {
         return ImGui.colorEdit3(label, col);
     }
 
     @Override
-    public boolean colorEdit3(String label, float[] col, int imGuiColorEditFlags) {
+    public boolean colorEdit3(final String label, final float[] col, int imGuiColorEditFlags) {
         return ImGui.colorEdit3(label, col, imGuiColorEditFlags);
     }
 
     @Override
-    public boolean colorEdit4(String label, float[] col) {
+    public boolean colorEdit4(final String label, final float[] col) {
         return ImGui.colorEdit4(label, col);
     }
 
     @Override
-    public boolean colorEdit4(String label, float[] col, int imGuiColorEditFlags) {
+    public boolean colorEdit4(final String label, final float[] col, int imGuiColorEditFlags) {
         return ImGui.colorEdit4(label, col, imGuiColorEditFlags);
     }
 
     @Override
-    public boolean colorPicker3(String label, float[] col) {
+    public boolean colorPicker3(final String label, final float[] col) {
         return ImGui.colorPicker3(label, col);
     }
 
     @Override
-    public boolean colorPicker3(String label, float[] col, int imGuiColorEditFlags) {
+    public boolean colorPicker3(final String label, final float[] col, int imGuiColorEditFlags) {
         return ImGui.colorPicker3(label, col, imGuiColorEditFlags);
     }
 
     @Override
-    public boolean colorPicker4(String label, float[] col) {
+    public boolean colorPicker4(final String label, final float[] col) {
         return ImGui.colorPicker4(label, col);
     }
 
     @Override
-    public boolean colorPicker4(String label, float[] col, int imGuiColorEditFlags) {
+    public boolean colorPicker4(final String label, final float[] col, int imGuiColorEditFlags) {
         return ImGui.colorPicker4(label, col, imGuiColorEditFlags);
     }
 
     @Override
-    public boolean colorPicker4(String label, float[] col, int imGuiColorEditFlags, float[] refCol) {
+    public boolean colorPicker4(
+        final String label,
+        final float[] col,
+        int imGuiColorEditFlags,
+        final float[] refCol
+    ) {
         return ImGui.colorPicker4(label, col, imGuiColorEditFlags, refCol);
     }
 
     @Override
-    public boolean colorPicker4(String label, float[] col, float[] refCol) {
+    public boolean colorPicker4(final String label, final float[] col, final float[] refCol) {
         return ImGui.colorPicker4(label, col, refCol);
     }
 
     @Override
-    public boolean colorButton(String descId, KVector4f col) {
+    public boolean colorButton(final String descId, final KVector4f col) {
         return ImGui.colorButton(descId, KImGuiSpairWrapper.wrap(col));
     }
 
     @Override
-    public boolean colorButton(String descId, float colX, float colY, float colZ, float colW) {
+    public boolean colorButton(
+        final String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW
+    ) {
         return ImGui.colorButton(descId, colX, colY, colZ, colW);
     }
 
     @Override
-    public boolean colorButton(String descId, KVector4f col, int imGuiColorEditFlags) {
+    public boolean colorButton(final String descId, final KVector4f col, int imGuiColorEditFlags) {
         return ImGui.colorButton(descId, KImGuiSpairWrapper.wrap(col), imGuiColorEditFlags);
     }
 
     @Override
-    public boolean colorButton(String descId, float colX, float colY, float colZ, float colW, int imGuiColorEditFlags) {
+    public boolean colorButton(
+        final String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW,
+        int imGuiColorEditFlags
+    ) {
         return ImGui.colorButton(descId, colX, colY, colZ, colW, imGuiColorEditFlags);
     }
 
     @Override
-    public boolean colorButton(String descId, KVector4f col, int imGuiColorEditFlags, KVector2f size) {
-        return ImGui.colorButton(descId, KImGuiSpairWrapper.wrap(col), imGuiColorEditFlags, KImGuiSpairWrapper.wrap(size));
+    public boolean colorButton(
+        final String descId,
+        final KVector4f col,
+        int imGuiColorEditFlags,
+        final KVector2f size
+    ) {
+        return ImGui.colorButton(
+            descId,
+            KImGuiSpairWrapper.wrap(col),
+            imGuiColorEditFlags,
+            KImGuiSpairWrapper.wrap(size)
+        );
     }
 
     @Override
-    public boolean colorButton(String descId, float colX, float colY, float colZ, float colW, int imGuiColorEditFlags, float sizeX, float sizeY) {
+    public boolean colorButton(
+        final String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW,
+        int imGuiColorEditFlags,
+        float sizeX,
+        float sizeY
+    ) {
         return ImGui.colorButton(descId, colX, colY, colZ, colW, imGuiColorEditFlags, sizeX, sizeY);
     }
 
     @Override
-    public boolean colorButton(String descId, KVector4f col, KVector2f size) {
-        return ImGui.colorButton(descId, KImGuiSpairWrapper.wrap(col), KImGuiSpairWrapper.wrap(size));
+    public boolean colorButton(final String descId, final KVector4f col, final KVector2f size) {
+        return ImGui.colorButton(
+            descId,
+            KImGuiSpairWrapper.wrap(col),
+            KImGuiSpairWrapper.wrap(size)
+        );
     }
 
     @Override
-    public boolean colorButton(String descId, float colX, float colY, float colZ, float colW, float sizeX, float sizeY) {
+    public boolean colorButton(
+        final String descId,
+        float colX,
+        float colY,
+        float colZ,
+        float colW,
+        float sizeX,
+        float sizeY
+    ) {
         return ImGui.colorButton(descId, colX, colY, colZ, colW, sizeX, sizeY);
     }
 
@@ -3878,42 +6434,42 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean treeNode(String label) {
+    public boolean treeNode(final String label) {
         return ImGui.treeNode(label);
     }
 
     @Override
-    public boolean treeNode(String strId, String label) {
+    public boolean treeNode(final String strId, final String label) {
         return ImGui.treeNode(strId, label);
     }
 
     @Override
-    public boolean treeNode(long ptrId, String label) {
+    public boolean treeNode(long ptrId, final String label) {
         return ImGui.treeNode(ptrId, label);
     }
 
     @Override
-    public boolean treeNodeEx(String label) {
+    public boolean treeNodeEx(final String label) {
         return ImGui.treeNodeEx(label);
     }
 
     @Override
-    public boolean treeNodeEx(String label, int flags) {
+    public boolean treeNodeEx(final String label, int flags) {
         return ImGui.treeNodeEx(label, flags);
     }
 
     @Override
-    public boolean treeNodeEx(String strId, int flags, String label) {
+    public boolean treeNodeEx(final String strId, int flags, final String label) {
         return ImGui.treeNodeEx(strId, flags, label);
     }
 
     @Override
-    public boolean treeNodeEx(long ptrId, int flags, String label) {
+    public boolean treeNodeEx(long ptrId, int flags, final String label) {
         return ImGui.treeNodeEx(ptrId, flags, label);
     }
 
     @Override
-    public void treePush(String strId) {
+    public void treePush(final String strId) {
         ImGui.treePush(strId);
     }
 
@@ -3933,17 +6489,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean collapsingHeader(String label) {
+    public boolean collapsingHeader(final String label) {
         return ImGui.collapsingHeader(label);
     }
 
     @Override
-    public boolean collapsingHeader(String label, int imGuiTreeNodeFlags) {
+    public boolean collapsingHeader(final String label, int imGuiTreeNodeFlags) {
         return ImGui.collapsingHeader(label, imGuiTreeNodeFlags);
     }
 
     @Override
-    public boolean collapsingHeader(String label, KBooleanReference pVisible) {
+    public boolean collapsingHeader(final String label, final KBooleanReference pVisible) {
         ImBoolean b = new ImBoolean(pVisible.get());
         boolean result = ImGui.collapsingHeader(label, b);
         pVisible.set(b.get());
@@ -3951,7 +6507,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean collapsingHeader(String label, KBooleanReference pVisible, int imGuiTreeNodeFlags) {
+    public boolean collapsingHeader(
+        final String label,
+        final KBooleanReference pVisible,
+        int imGuiTreeNodeFlags
+    ) {
         ImBoolean b = new ImBoolean(pVisible.get());
         boolean result = ImGui.collapsingHeader(label, b, imGuiTreeNodeFlags);
         pVisible.set(b.get());
@@ -3969,62 +6529,83 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean selectable(String label) {
+    public boolean selectable(final String label) {
         return ImGui.selectable(label);
     }
 
     @Override
-    public boolean selectable(String label, boolean selected) {
+    public boolean selectable(final String label, boolean selected) {
         return ImGui.selectable(label, selected);
     }
 
     @Override
-    public boolean selectable(String label, boolean selected, int imGuiSelectableFlags) {
+    public boolean selectable(final String label, boolean selected, int imGuiSelectableFlags) {
         return ImGui.selectable(label, selected, imGuiSelectableFlags);
     }
 
     @Override
-    public boolean selectable(String label, boolean selected, int imGuiSelectableFlags, KVector2f size) {
-        return ImGui.selectable(label, selected, imGuiSelectableFlags, KImGuiSpairWrapper.wrap(size));
+    public boolean selectable(
+        final String label,
+        boolean selected,
+        int imGuiSelectableFlags,
+        final KVector2f size
+    ) {
+        return ImGui.selectable(
+            label,
+            selected,
+            imGuiSelectableFlags,
+            KImGuiSpairWrapper.wrap(size)
+        );
     }
 
     @Override
-    public boolean selectable(String label, boolean selected, int imGuiSelectableFlags, float sizeX, float sizeY) {
+    public boolean selectable(
+        final String label,
+        boolean selected,
+        int imGuiSelectableFlags,
+        float sizeX,
+        float sizeY
+    ) {
         return ImGui.selectable(label, selected, imGuiSelectableFlags, sizeX, sizeY);
     }
 
     @Override
-    public boolean selectable(String label, int imGuiSelectableFlags, KVector2f size) {
+    public boolean selectable(final String label, int imGuiSelectableFlags, final KVector2f size) {
         return ImGui.selectable(label, imGuiSelectableFlags, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean selectable(String label, int imGuiSelectableFlags, float sizeX, float sizeY) {
+    public boolean selectable(
+        final String label,
+        int imGuiSelectableFlags,
+        float sizeX,
+        float sizeY
+    ) {
         return ImGui.selectable(label, imGuiSelectableFlags, sizeX, sizeY);
     }
 
     @Override
-    public boolean selectable(String label, KVector2f size) {
+    public boolean selectable(final String label, final KVector2f size) {
         return ImGui.selectable(label, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean selectable(String label, float sizeX, float sizeY) {
+    public boolean selectable(final String label, float sizeX, float sizeY) {
         return ImGui.selectable(label, sizeX, sizeY);
     }
 
     @Override
-    public boolean selectable(String label, boolean selected, KVector2f size) {
+    public boolean selectable(final String label, boolean selected, final KVector2f size) {
         return ImGui.selectable(label, selected, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean selectable(String label, boolean selected, float sizeX, float sizeY) {
+    public boolean selectable(final String label, boolean selected, float sizeX, float sizeY) {
         return ImGui.selectable(label, selected, sizeX, sizeY);
     }
 
     @Override
-    public boolean selectable(String label, KBooleanReference pSelected) {
+    public boolean selectable(final String label, final KBooleanReference pSelected) {
         ImBoolean b = new ImBoolean(pSelected.get());
         boolean result = ImGui.selectable(label, b);
         pSelected.set(b.get());
@@ -4032,23 +6613,43 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean selectable(String label, KBooleanReference pSelected, int imGuiSelectableFlags) {
+    public boolean selectable(
+        final String label,
+        final KBooleanReference pSelected,
+        int imGuiSelectableFlags
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
-        boolean result =  ImGui.selectable(label, b, imGuiSelectableFlags);
+        boolean result = ImGui.selectable(label, b, imGuiSelectableFlags);
         pSelected.set(b.get());
         return result;
     }
 
     @Override
-    public boolean selectable(String label, KBooleanReference pSelected, int imGuiSelectableFlags, KVector2f size) {
+    public boolean selectable(
+        final String label,
+        final KBooleanReference pSelected,
+        int imGuiSelectableFlags,
+        final KVector2f size
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
-        boolean result = ImGui.selectable(label, b, imGuiSelectableFlags, KImGuiSpairWrapper.wrap(size));
+        boolean result = ImGui.selectable(
+            label,
+            b,
+            imGuiSelectableFlags,
+            KImGuiSpairWrapper.wrap(size)
+        );
         pSelected.set(b.get());
         return result;
     }
 
     @Override
-    public boolean selectable(String label, KBooleanReference pSelected, int imGuiSelectableFlags, float sizeX, float sizeY) {
+    public boolean selectable(
+        final String label,
+        final KBooleanReference pSelected,
+        int imGuiSelectableFlags,
+        float sizeX,
+        float sizeY
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
         boolean result = ImGui.selectable(label, b, imGuiSelectableFlags, sizeX, sizeY);
         pSelected.set(b.get());
@@ -4056,7 +6657,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean selectable(String label, KBooleanReference pSelected, KVector2f size) {
+    public boolean selectable(
+        final String label,
+        final KBooleanReference pSelected,
+        final KVector2f size
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
         boolean result = ImGui.selectable(label, b, KImGuiSpairWrapper.wrap(size));
         pSelected.set(b.get());
@@ -4064,7 +6669,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean selectable(String label, KBooleanReference pSelected, float sizeX, float sizeY) {
+    public boolean selectable(
+        final String label,
+        final KBooleanReference pSelected,
+        float sizeX,
+        float sizeY
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
         boolean result = ImGui.selectable(label, b, sizeX, sizeY);
         pSelected.set(b.get());
@@ -4072,17 +6682,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginListBox(String label) {
+    public boolean beginListBox(final String label) {
         return ImGui.beginListBox(label);
     }
 
     @Override
-    public boolean beginListBox(String label, KVector2f size) {
+    public boolean beginListBox(final String label, final KVector2f size) {
         return ImGui.beginListBox(label, KImGuiSpairWrapper.wrap(size));
     }
 
     @Override
-    public boolean beginListBox(String label, float sizeX, float sizeY) {
+    public boolean beginListBox(final String label, float sizeX, float sizeY) {
         return ImGui.beginListBox(label, sizeX, sizeY);
     }
 
@@ -4092,186 +6702,667 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void listBox(String label, KIntReference currentItem, String[] items) {
+    public void listBox(final String label, final KIntReference currentItem, final String[] items) {
         ImInt i = new ImInt(currentItem.get());
         ImGui.listBox(label, i, items);
         currentItem.set(i.get());
     }
 
     @Override
-    public void listBox(String label, KIntReference currentItem, String[] items, int heightInItems) {
+    public void listBox(
+        final String label,
+        final KIntReference currentItem,
+        final String[] items,
+        int heightInItems
+    ) {
         ImInt i = new ImInt(currentItem.get());
         ImGui.listBox(label, i, items, heightInItems);
         currentItem.set(i.get());
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount) {
+    public void plotLines(final String label, final float[] values, int valuesCount) {
         ImGui.plotLines(label, values, valuesCount);
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset) {
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset
+    ) {
         ImGui.plotLines(label, values, valuesCount, valuesOffset);
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText) {
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText
+    ) {
         ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText);
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin) {
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin
+    ) {
         ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin);
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax) {
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax
+    ) {
         ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax);
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, KVector2f graphSize) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize));
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize)
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, graphSizeX, graphSizeY);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, String overlayText, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotLines(label, values, valuesCount, overlayText, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, String overlayText, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotLines(label, values, valuesCount, overlayText, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotLines(label, values, valuesCount, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotLines(label, values, valuesCount, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotLines(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, int stride) {
-        ImGui.plotLines(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, stride);
+    public void plotLines(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        int stride
+    ) {
+        ImGui.plotLines(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount) {
+    public void plotHistogram(final String label, final float[] values, int valuesCount) {
         ImGui.plotHistogram(label, values, valuesCount);
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset) {
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset
+    ) {
         ImGui.plotHistogram(label, values, valuesCount, valuesOffset);
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText) {
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText
+    ) {
         ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText);
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin) {
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin
+    ) {
         ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin);
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, KVector2f graphSize) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize));
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize)
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, graphSizeX, graphSizeY);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, String overlayText, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, overlayText, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, String overlayText, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, overlayText, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, float scaleMin, float scaleMax, KVector2f graphSize, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, scaleMin, scaleMax, KImGuiSpairWrapper.wrap(graphSize), stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        final KVector2f graphSize,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            scaleMin,
+            scaleMax,
+            KImGuiSpairWrapper.wrap(graphSize),
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, float scaleMin, float scaleMax, float graphSizeX, float graphSizeY, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, scaleMin, scaleMax, graphSizeX, graphSizeY, stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        float scaleMin,
+        float scaleMax,
+        float graphSizeX,
+        float graphSizeY,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            scaleMin,
+            scaleMax,
+            graphSizeX,
+            graphSizeY,
+            stride
+        );
     }
 
     @Override
-    public void plotHistogram(String label, float[] values, int valuesCount, int valuesOffset, String overlayText, float scaleMin, float scaleMax, int stride) {
-        ImGui.plotHistogram(label, values, valuesCount, valuesOffset, overlayText, scaleMin, scaleMax, stride);
+    public void plotHistogram(
+        final String label,
+        final float[] values,
+        int valuesCount,
+        int valuesOffset,
+        final String overlayText,
+        float scaleMin,
+        float scaleMax,
+        int stride
+    ) {
+        ImGui.plotHistogram(
+            label,
+            values,
+            valuesCount,
+            valuesOffset,
+            overlayText,
+            scaleMin,
+            scaleMax,
+            stride
+        );
     }
 
     @Override
-    public void value(String prefix, Number value) {
+    public void value(final String prefix, final Number value) {
         ImGui.value(prefix, value);
     }
 
     @Override
-    public void value(String prefix, float value, String floatFormat) {
+    public void value(final String prefix, float value, final String floatFormat) {
         ImGui.value(prefix, value, floatFormat);
     }
 
@@ -4296,12 +7387,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginMenu(String label) {
+    public boolean beginMenu(final String label) {
         return ImGui.beginMenu(label);
     }
 
     @Override
-    public boolean beginMenu(String label, boolean enabled) {
+    public boolean beginMenu(final String label, boolean enabled) {
         return ImGui.beginMenu(label, enabled);
     }
 
@@ -4311,45 +7402,59 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean menuItem(String label) {
+    public boolean menuItem(final String label) {
         return ImGui.menuItem(label);
     }
 
     @Override
-    public boolean menuItem(String label, boolean selected) {
+    public boolean menuItem(final String label, boolean selected) {
         return ImGui.menuItem(label, selected);
     }
 
     @Override
-    public boolean menuItem(String label, boolean selected, boolean enabled) {
+    public boolean menuItem(final String label, boolean selected, boolean enabled) {
         return ImGui.menuItem(label, selected, enabled);
     }
 
     @Override
-    public boolean menuItem(String label, String shortcut) {
+    public boolean menuItem(final String label, final String shortcut) {
         return ImGui.menuItem(label, shortcut);
     }
 
     @Override
-    public boolean menuItem(String label, String shortcut, boolean selected) {
+    public boolean menuItem(final String label, final String shortcut, boolean selected) {
         return ImGui.menuItem(label, shortcut, selected);
     }
 
     @Override
-    public boolean menuItem(String label, String shortcut, boolean selected, boolean enabled) {
+    public boolean menuItem(
+        final String label,
+        final String shortcut,
+        boolean selected,
+        boolean enabled
+    ) {
         return ImGui.menuItem(label, shortcut, selected, enabled);
     }
 
     @Override
-    public boolean menuItem(String label, String shortcut, KBooleanReference pSelected) {
+    public boolean menuItem(
+        final String label,
+        final String shortcut,
+        final KBooleanReference pSelected
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
-        boolean result =  ImGui.menuItem(label, shortcut, b);
+        boolean result = ImGui.menuItem(label, shortcut, b);
         pSelected.set(b.get());
         return result;
     }
 
     @Override
-    public boolean menuItem(String label, String shortcut, KBooleanReference pSelected, boolean enabled) {
+    public boolean menuItem(
+        final String label,
+        final String shortcut,
+        final KBooleanReference pSelected,
+        boolean enabled
+    ) {
         ImBoolean b = new ImBoolean(pSelected.get());
         boolean result = ImGui.menuItem(label, shortcut, b, enabled);
         pSelected.set(b.get());
@@ -4367,7 +7472,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setTooltip(String text) {
+    public void setTooltip(final String text) {
         ImGui.setTooltip(text);
     }
 
@@ -4377,27 +7482,27 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setItemTooltip(String text) {
+    public void setItemTooltip(final String text) {
         ImGui.setItemTooltip(text);
     }
 
     @Override
-    public boolean beginPopup(String strId) {
+    public boolean beginPopup(final String strId) {
         return ImGui.beginPopup(strId);
     }
 
     @Override
-    public boolean beginPopup(String strId, int imGuiWindowFlags) {
+    public boolean beginPopup(final String strId, int imGuiWindowFlags) {
         return ImGui.beginPopup(strId, imGuiWindowFlags);
     }
 
     @Override
-    public boolean beginPopupModal(String name) {
+    public boolean beginPopupModal(final String name) {
         return ImGui.beginPopupModal(name);
     }
 
     @Override
-    public boolean beginPopupModal(String name, KBooleanReference pOpen) {
+    public boolean beginPopupModal(final String name, final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         boolean result = ImGui.beginPopupModal(name, b);
         pOpen.set(b.get());
@@ -4405,7 +7510,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginPopupModal(String name, KBooleanReference pOpen, int imGuiWindowFlags) {
+    public boolean beginPopupModal(
+        final String name,
+        final KBooleanReference pOpen,
+        int imGuiWindowFlags
+    ) {
         ImBoolean b = new ImBoolean(pOpen.get());
         boolean result = ImGui.beginPopupModal(name, b, imGuiWindowFlags);
         pOpen.set(b.get());
@@ -4413,7 +7522,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginPopupModal(String name, int imGuiWindowFlags) {
+    public boolean beginPopupModal(final String name, int imGuiWindowFlags) {
         return ImGui.beginPopupModal(name, imGuiWindowFlags);
     }
 
@@ -4423,12 +7532,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void openPopup(String strId) {
+    public void openPopup(final String strId) {
         ImGui.openPopup(strId);
     }
 
     @Override
-    public void openPopup(String strId, int imGuiPopupFlags) {
+    public void openPopup(final String strId, int imGuiPopupFlags) {
         ImGui.openPopup(strId, imGuiPopupFlags);
     }
 
@@ -4448,12 +7557,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void openPopupOnItemClick(String strId) {
+    public void openPopupOnItemClick(final String strId) {
         ImGui.openPopupOnItemClick(strId);
     }
 
     @Override
-    public void openPopupOnItemClick(String strId, int imGuiPopupFlags) {
+    public void openPopupOnItemClick(final String strId, int imGuiPopupFlags) {
         ImGui.openPopupOnItemClick(strId, imGuiPopupFlags);
     }
 
@@ -4473,12 +7582,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginPopupContextItem(String strId) {
+    public boolean beginPopupContextItem(final String strId) {
         return ImGui.beginPopupContextItem(strId);
     }
 
     @Override
-    public boolean beginPopupContextItem(String strId, int imGuiPopupFlags) {
+    public boolean beginPopupContextItem(final String strId, int imGuiPopupFlags) {
         return ImGui.beginPopupContextItem(strId, imGuiPopupFlags);
     }
 
@@ -4493,12 +7602,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginPopupContextWindow(String strId) {
+    public boolean beginPopupContextWindow(final String strId) {
         return ImGui.beginPopupContextWindow(strId);
     }
 
     @Override
-    public boolean beginPopupContextWindow(String strId, int imGuiPopupFlags) {
+    public boolean beginPopupContextWindow(final String strId, int imGuiPopupFlags) {
         return ImGui.beginPopupContextWindow(strId, imGuiPopupFlags);
     }
 
@@ -4513,12 +7622,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginPopupContextVoid(String strId) {
+    public boolean beginPopupContextVoid(final String strId) {
         return ImGui.beginPopupContextVoid(strId);
     }
 
     @Override
-    public boolean beginPopupContextVoid(String strId, int imGuiPopupFlags) {
+    public boolean beginPopupContextVoid(final String strId, int imGuiPopupFlags) {
         return ImGui.beginPopupContextVoid(strId, imGuiPopupFlags);
     }
 
@@ -4528,62 +7637,103 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean isPopupOpen(String strId) {
+    public boolean isPopupOpen(final String strId) {
         return ImGui.isPopupOpen(strId);
     }
 
     @Override
-    public boolean isPopupOpen(String strId, int imGuiPopupFlags) {
+    public boolean isPopupOpen(final String strId, int imGuiPopupFlags) {
         return ImGui.isPopupOpen(strId, imGuiPopupFlags);
     }
 
     @Override
-    public boolean beginTable(String id, int columns) {
+    public boolean beginTable(final String id, int columns) {
         return ImGui.beginTable(id, columns);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, int imGuiTableFlags) {
+    public boolean beginTable(final String id, int columns, int imGuiTableFlags) {
         return ImGui.beginTable(id, columns, imGuiTableFlags);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, int imGuiTableFlags, KVector2f outerSize) {
+    public boolean beginTable(
+        final String id,
+        int columns,
+        int imGuiTableFlags,
+        final KVector2f outerSize
+    ) {
         return ImGui.beginTable(id, columns, imGuiTableFlags, KImGuiSpairWrapper.wrap(outerSize));
     }
 
     @Override
-    public boolean beginTable(String id, int columns, int imGuiTableFlags, float outerSizeX, float outerSizeY) {
+    public boolean beginTable(
+        final String id,
+        int columns,
+        int imGuiTableFlags,
+        float outerSizeX,
+        float outerSizeY
+    ) {
         return ImGui.beginTable(id, columns, imGuiTableFlags, outerSizeX, outerSizeY);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, int imGuiTableFlags, KVector2f outerSize, float innerWidth) {
-        return ImGui.beginTable(id, columns, imGuiTableFlags, KImGuiSpairWrapper.wrap(outerSize), innerWidth);
+    public boolean beginTable(
+        final String id,
+        int columns,
+        int imGuiTableFlags,
+        final KVector2f outerSize,
+        float innerWidth
+    ) {
+        return ImGui.beginTable(
+            id,
+            columns,
+            imGuiTableFlags,
+            KImGuiSpairWrapper.wrap(outerSize),
+            innerWidth
+        );
     }
 
     @Override
-    public boolean beginTable(String id, int columns, int imGuiTableFlags, float outerSizeX, float outerSizeY, float innerWidth) {
+    public boolean beginTable(
+        final String id,
+        int columns,
+        int imGuiTableFlags,
+        float outerSizeX,
+        float outerSizeY,
+        float innerWidth
+    ) {
         return ImGui.beginTable(id, columns, imGuiTableFlags, outerSizeX, outerSizeY, innerWidth);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, KVector2f outerSize, float innerWidth) {
+    public boolean beginTable(
+        final String id,
+        int columns,
+        final KVector2f outerSize,
+        float innerWidth
+    ) {
         return ImGui.beginTable(id, columns, KImGuiSpairWrapper.wrap(outerSize), innerWidth);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, float outerSizeX, float outerSizeY, float innerWidth) {
+    public boolean beginTable(
+        final String id,
+        int columns,
+        float outerSizeX,
+        float outerSizeY,
+        float innerWidth
+    ) {
         return ImGui.beginTable(id, columns, outerSizeX, outerSizeY, innerWidth);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, float innerWidth) {
+    public boolean beginTable(final String id, int columns, float innerWidth) {
         return ImGui.beginTable(id, columns, innerWidth);
     }
 
     @Override
-    public boolean beginTable(String id, int columns, int imGuiTableFlags, float innerWidth) {
+    public boolean beginTable(final String id, int columns, int imGuiTableFlags, float innerWidth) {
         return ImGui.beginTable(id, columns, imGuiTableFlags, innerWidth);
     }
 
@@ -4623,32 +7773,41 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void tableSetupColumn(String label) {
+    public void tableSetupColumn(final String label) {
         ImGui.tableSetupColumn(label);
     }
 
     @Override
-    public void tableSetupColumn(String label, int imGuiTableColumnFlags) {
+    public void tableSetupColumn(final String label, int imGuiTableColumnFlags) {
         ImGui.tableSetupColumn(label, imGuiTableColumnFlags);
     }
 
     @Override
-    public void tableSetupColumn(String label, int imGuiTableColumnFlags, float initWidthOrWeight) {
+    public void tableSetupColumn(
+        final String label,
+        int imGuiTableColumnFlags,
+        float initWidthOrWeight
+    ) {
         ImGui.tableSetupColumn(label, imGuiTableColumnFlags, initWidthOrWeight);
     }
 
     @Override
-    public void tableSetupColumn(String label, int imGuiTableColumnFlags, float initWidthOrWeight, int userId) {
+    public void tableSetupColumn(
+        final String label,
+        int imGuiTableColumnFlags,
+        float initWidthOrWeight,
+        int userId
+    ) {
         ImGui.tableSetupColumn(label, imGuiTableColumnFlags, initWidthOrWeight, userId);
     }
 
     @Override
-    public void tableSetupColumn(String label, float initWidthOrWeight, int userId) {
+    public void tableSetupColumn(final String label, float initWidthOrWeight, int userId) {
         ImGui.tableSetupColumn(label, initWidthOrWeight, userId);
     }
 
     @Override
-    public void tableSetupColumn(String label, int imGuiTableColumnFlags, int userId) {
+    public void tableSetupColumn(final String label, int imGuiTableColumnFlags, int userId) {
         ImGui.tableSetupColumn(label, imGuiTableColumnFlags, userId);
     }
 
@@ -4658,7 +7817,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void tableHeader(String label) {
+    public void tableHeader(final String label) {
         ImGui.tableHeader(label);
     }
 
@@ -4674,9 +7833,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public KImGuiTableSortSpecs tableGetSortSpecs() {
-        return KImGuiSpairUnwrapper.wrap(
-            ImGui.tableGetSortSpecs()
-        );
+        return KImGuiSpairUnwrapper.wrap(ImGui.tableGetSortSpecs());
     }
 
     @Override
@@ -4745,17 +7902,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void columns(int count, String id) {
+    public void columns(int count, final String id) {
         ImGui.columns(count, id);
     }
 
     @Override
-    public void columns(int count, String id, boolean border) {
+    public void columns(int count, final String id, boolean border) {
         ImGui.columns(count, id, border);
     }
 
     @Override
-    public void columns(String id, boolean border) {
+    public void columns(final String id, boolean border) {
         ImGui.columns(id, border);
     }
 
@@ -4815,12 +7972,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginTabBar(String strId) {
+    public boolean beginTabBar(final String strId) {
         return ImGui.beginTabBar(strId);
     }
 
     @Override
-    public boolean beginTabBar(String strId, int imGuiTabBarFlags) {
+    public boolean beginTabBar(final String strId, int imGuiTabBarFlags) {
         return ImGui.beginTabBar(strId, imGuiTabBarFlags);
     }
 
@@ -4830,12 +7987,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginTabItem(String label) {
+    public boolean beginTabItem(final String label) {
         return ImGui.beginTabItem(label);
     }
 
     @Override
-    public boolean beginTabItem(String label, KBooleanReference pOpen) {
+    public boolean beginTabItem(final String label, final KBooleanReference pOpen) {
         ImBoolean b = new ImBoolean(pOpen.get());
         boolean result = ImGui.beginTabItem(label, b);
         pOpen.set(b.get());
@@ -4843,7 +8000,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginTabItem(String label, KBooleanReference pOpen, int imGuiTabItemFlags) {
+    public boolean beginTabItem(
+        final String label,
+        final KBooleanReference pOpen,
+        int imGuiTabItemFlags
+    ) {
         ImBoolean b = new ImBoolean(pOpen.get());
         boolean result = ImGui.beginTabItem(label, b, imGuiTabItemFlags);
         pOpen.set(b.get());
@@ -4851,7 +8012,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean beginTabItem(String label, int imGuiTabItemFlags) {
+    public boolean beginTabItem(final String label, int imGuiTabItemFlags) {
         return ImGui.beginTabItem(label, imGuiTabItemFlags);
     }
 
@@ -4861,17 +8022,17 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean tabItemButton(String label) {
+    public boolean tabItemButton(final String label) {
         return ImGui.tabItemButton(label);
     }
 
     @Override
-    public boolean tabItemButton(String label, int imGuiTabItemFlags) {
+    public boolean tabItemButton(final String label, int imGuiTabItemFlags) {
         return ImGui.tabItemButton(label, imGuiTabItemFlags);
     }
 
     @Override
-    public void setTabItemClosed(String tabOrDockedWindowLabel) {
+    public void setTabItemClosed(final String tabOrDockedWindowLabel) {
         ImGui.setTabItemClosed(tabOrDockedWindowLabel);
     }
 
@@ -4881,7 +8042,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int dockSpace(int dockspaceId, KVector2f size) {
+    public int dockSpace(int dockspaceId, final KVector2f size) {
         return ImGui.dockSpace(dockspaceId, KImGuiSpairWrapper.wrap(size));
     }
 
@@ -4891,7 +8052,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int dockSpace(int dockspaceId, KVector2f size, int imGuiDockNodeFlags) {
+    public int dockSpace(int dockspaceId, final KVector2f size, int imGuiDockNodeFlags) {
         return ImGui.dockSpace(dockspaceId, KImGuiSpairWrapper.wrap(size), imGuiDockNodeFlags);
     }
 
@@ -4901,32 +8062,75 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int dockSpace(int dockspaceId, KVector2f size, int imGuiDockNodeFlags, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpace(dockspaceId, KImGuiSpairWrapper.wrap(size), imGuiDockNodeFlags, KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpace(
+        int dockspaceId,
+        final KVector2f size,
+        int imGuiDockNodeFlags,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpace(
+            dockspaceId,
+            KImGuiSpairWrapper.wrap(size),
+            imGuiDockNodeFlags,
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
-    public int dockSpace(int dockspaceId, float sizeX, float sizeY, int imGuiDockNodeFlags, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpace(dockspaceId, sizeX, sizeY, imGuiDockNodeFlags, KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpace(
+        int dockspaceId,
+        float sizeX,
+        float sizeY,
+        int imGuiDockNodeFlags,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpace(
+            dockspaceId,
+            sizeX,
+            sizeY,
+            imGuiDockNodeFlags,
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
-    public int dockSpace(int dockspaceId, int imGuiDockNodeFlags, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpace(dockspaceId, imGuiDockNodeFlags, KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpace(
+        int dockspaceId,
+        int imGuiDockNodeFlags,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpace(
+            dockspaceId,
+            imGuiDockNodeFlags,
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
-    public int dockSpace(int dockspaceId, KImGuiWindowClass windowClass) {
+    public int dockSpace(int dockspaceId, final KImGuiWindowClass windowClass) {
         return ImGui.dockSpace(dockspaceId, KImGuiSpairUnboxer.unbox(windowClass));
     }
 
     @Override
-    public int dockSpace(int dockspaceId, KVector2f size, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpace(dockspaceId, KImGuiSpairWrapper.wrap(size), KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpace(
+        int dockspaceId,
+        final KVector2f size,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpace(
+            dockspaceId,
+            KImGuiSpairWrapper.wrap(size),
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
-    public int dockSpace(int dockspaceId, float sizeX, float sizeY, KImGuiWindowClass windowClass) {
+    public int dockSpace(
+        int dockspaceId,
+        float sizeX,
+        float sizeY,
+        final KImGuiWindowClass windowClass
+    ) {
         return ImGui.dockSpace(dockspaceId, sizeX, sizeY, KImGuiSpairUnboxer.unbox(windowClass));
     }
 
@@ -4941,28 +8145,62 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport) {
+    public int dockSpaceOverViewport(int dockspaceId, final KImGuiViewport viewport) {
         return ImGui.dockSpaceOverViewport(dockspaceId, KImGuiSpairUnboxer.unbox(viewport));
     }
 
     @Override
-    public int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport, int imGuiDockNodeFlags) {
-        return ImGui.dockSpaceOverViewport(dockspaceId, KImGuiSpairUnboxer.unbox(viewport), imGuiDockNodeFlags);
+    public int dockSpaceOverViewport(
+        int dockspaceId,
+        final KImGuiViewport viewport,
+        int imGuiDockNodeFlags
+    ) {
+        return ImGui.dockSpaceOverViewport(
+            dockspaceId,
+            KImGuiSpairUnboxer.unbox(viewport),
+            imGuiDockNodeFlags
+        );
     }
 
     @Override
-    public int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport, int imGuiDockNodeFlags, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpaceOverViewport(dockspaceId, KImGuiSpairUnboxer.unbox(viewport), imGuiDockNodeFlags, KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpaceOverViewport(
+        int dockspaceId,
+        final KImGuiViewport viewport,
+        int imGuiDockNodeFlags,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpaceOverViewport(
+            dockspaceId,
+            KImGuiSpairUnboxer.unbox(viewport),
+            imGuiDockNodeFlags,
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
-    public int dockSpaceOverViewport(KImGuiViewport viewport, int imGuiDockNodeFlags, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpaceOverViewport(KImGuiSpairUnboxer.unbox(viewport), imGuiDockNodeFlags, KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpaceOverViewport(
+        final KImGuiViewport viewport,
+        int imGuiDockNodeFlags,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpaceOverViewport(
+            KImGuiSpairUnboxer.unbox(viewport),
+            imGuiDockNodeFlags,
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
-    public int dockSpaceOverViewport(int dockspaceId, KImGuiViewport viewport, KImGuiWindowClass windowClass) {
-        return ImGui.dockSpaceOverViewport(dockspaceId, KImGuiSpairUnboxer.unbox(viewport), KImGuiSpairUnboxer.unbox(windowClass));
+    public int dockSpaceOverViewport(
+        int dockspaceId,
+        final KImGuiViewport viewport,
+        final KImGuiWindowClass windowClass
+    ) {
+        return ImGui.dockSpaceOverViewport(
+            dockspaceId,
+            KImGuiSpairUnboxer.unbox(viewport),
+            KImGuiSpairUnboxer.unbox(windowClass)
+        );
     }
 
     @Override
@@ -4976,7 +8214,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setNextWindowClass(KImGuiWindowClass windowClass) {
+    public void setNextWindowClass(final KImGuiWindowClass windowClass) {
         ImGui.setNextWindowClass(KImGuiSpairUnboxer.unbox(windowClass));
     }
 
@@ -5011,12 +8249,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void logToFile(int autoOpenDepth, String filename) {
+    public void logToFile(int autoOpenDepth, final String filename) {
         ImGui.logToFile(autoOpenDepth, filename);
     }
 
     @Override
-    public void logToFile(String filename) {
+    public void logToFile(final String filename) {
         ImGui.logToFile(filename);
     }
 
@@ -5041,7 +8279,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void logText(String text) {
+    public void logText(final String text) {
         ImGui.logText(text);
     }
 
@@ -5056,22 +8294,22 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean setDragDropPayload(String dataType, Object payload) {
+    public boolean setDragDropPayload(final String dataType, final Object payload) {
         return ImGui.setDragDropPayload(dataType, payload);
     }
 
     @Override
-    public boolean setDragDropPayload(String dataType, Object payload, int imGuiCond) {
+    public boolean setDragDropPayload(final String dataType, final Object payload, int imGuiCond) {
         return ImGui.setDragDropPayload(dataType, payload, imGuiCond);
     }
 
     @Override
-    public boolean setDragDropPayload(Object payload) {
+    public boolean setDragDropPayload(final Object payload) {
         return ImGui.setDragDropPayload(payload);
     }
 
     @Override
-    public boolean setDragDropPayload(Object payload, int imGuiCond) {
+    public boolean setDragDropPayload(final Object payload, int imGuiCond) {
         return ImGui.setDragDropPayload(payload, imGuiCond);
     }
 
@@ -5086,32 +8324,36 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public <T> T acceptDragDropPayload(String dataType) {
+    public <T> T acceptDragDropPayload(final String dataType) {
         return ImGui.acceptDragDropPayload(dataType);
     }
 
     @Override
-    public <T> T acceptDragDropPayload(String dataType, Class<T> aClass) {
+    public <T> T acceptDragDropPayload(final String dataType, final Class<T> aClass) {
         return ImGui.acceptDragDropPayload(dataType, aClass);
     }
 
     @Override
-    public <T> T acceptDragDropPayload(String dataType, int imGuiDragDropFlags) {
+    public <T> T acceptDragDropPayload(final String dataType, int imGuiDragDropFlags) {
         return ImGui.acceptDragDropPayload(dataType, imGuiDragDropFlags);
     }
 
     @Override
-    public <T> T acceptDragDropPayload(String dataType, int imGuiDragDropFlags, Class<T> aClass) {
+    public <T> T acceptDragDropPayload(
+        final String dataType,
+        int imGuiDragDropFlags,
+        final Class<T> aClass
+    ) {
         return ImGui.acceptDragDropPayload(dataType, imGuiDragDropFlags, aClass);
     }
 
     @Override
-    public <T> T acceptDragDropPayload(Class<T> aClass) {
+    public <T> T acceptDragDropPayload(final Class<T> aClass) {
         return ImGui.acceptDragDropPayload(aClass);
     }
 
     @Override
-    public <T> T acceptDragDropPayload(Class<T> aClass, int imGuiDragDropFlags) {
+    public <T> T acceptDragDropPayload(final Class<T> aClass, int imGuiDragDropFlags) {
         return ImGui.acceptDragDropPayload(aClass, imGuiDragDropFlags);
     }
 
@@ -5126,12 +8368,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public <T> T getDragDropPayload(String dataType) {
+    public <T> T getDragDropPayload(final String dataType) {
         return ImGui.getDragDropPayload(dataType);
     }
 
     @Override
-    public <T> T getDragDropPayload(Class<T> aClass) {
+    public <T> T getDragDropPayload(final Class<T> aClass) {
         return ImGui.getDragDropPayload(aClass);
     }
 
@@ -5151,13 +8393,33 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void pushClipRect(KVector2f clipRectMin, KVector2f clipRectMax, boolean intersectWithCurrentClipRect) {
-        ImGui.pushClipRect(KImGuiSpairWrapper.wrap(clipRectMin), KImGuiSpairWrapper.wrap(clipRectMax), intersectWithCurrentClipRect);
+    public void pushClipRect(
+        final KVector2f clipRectMin,
+        final KVector2f clipRectMax,
+        boolean intersectWithCurrentClipRect
+    ) {
+        ImGui.pushClipRect(
+            KImGuiSpairWrapper.wrap(clipRectMin),
+            KImGuiSpairWrapper.wrap(clipRectMax),
+            intersectWithCurrentClipRect
+        );
     }
 
     @Override
-    public void pushClipRect(float clipRectMinX, float clipRectMinY, float clipRectMaxX, float clipRectMaxY, boolean intersectWithCurrentClipRect) {
-        ImGui.pushClipRect(clipRectMinX, clipRectMinY, clipRectMaxX, clipRectMaxY, intersectWithCurrentClipRect);
+    public void pushClipRect(
+        float clipRectMinX,
+        float clipRectMinY,
+        float clipRectMaxX,
+        float clipRectMaxY,
+        boolean intersectWithCurrentClipRect
+    ) {
+        ImGui.pushClipRect(
+            clipRectMinX,
+            clipRectMinY,
+            clipRectMaxX,
+            clipRectMaxY,
+            intersectWithCurrentClipRect
+        );
     }
 
     @Override
@@ -5321,8 +8583,9 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public KImDrawList getBackgroundDrawList(KImGuiViewport viewport) {
-        return KImGuiSpairUnwrapper.wrap(ImGui.getBackgroundDrawList(KImGuiSpairUnboxer.unbox(viewport)));
+    public KImDrawList getBackgroundDrawList(final KImGuiViewport viewport) {
+        return KImGuiSpairUnwrapper.wrap(ImGui.getBackgroundDrawList(KImGuiSpairUnboxer.unbox(
+            viewport)));
     }
 
     @Override
@@ -5331,12 +8594,13 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public KImDrawList getForegroundDrawList(KImGuiViewport viewport) {
-        return KImGuiSpairUnwrapper.wrap(ImGui.getForegroundDrawList(KImGuiSpairUnboxer.unbox(viewport)));
+    public KImDrawList getForegroundDrawList(final KImGuiViewport viewport) {
+        return KImGuiSpairUnwrapper.wrap(ImGui.getForegroundDrawList(KImGuiSpairUnboxer.unbox(
+            viewport)));
     }
 
     @Override
-    public boolean isRectVisible(KVector2f size) {
+    public boolean isRectVisible(final KVector2f size) {
         return ImGui.isRectVisible(KImGuiSpairWrapper.wrap(size));
     }
 
@@ -5346,8 +8610,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean isRectVisible(KVector2f rectMin, KVector2f rectMax) {
-        return ImGui.isRectVisible(KImGuiSpairWrapper.wrap(rectMin), KImGuiSpairWrapper.wrap(rectMax));
+    public boolean isRectVisible(final KVector2f rectMin, final KVector2f rectMax) {
+        return ImGui.isRectVisible(
+            KImGuiSpairWrapper.wrap(rectMin),
+            KImGuiSpairWrapper.wrap(rectMax)
+        );
     }
 
     @Override
@@ -5376,67 +8643,83 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setStateStorage(KImGuiStorage storage) {
+    public void setStateStorage(final KImGuiStorage storage) {
         ImGui.setStateStorage(KImGuiSpairUnboxer.unbox(storage));
     }
 
     @Override
-    public KVector2f calcTextSize(String text) {
+    public KVector2f calcTextSize(final String text) {
         return KImGuiSpairUnwrapper.wrap(ImGui.calcTextSize(text));
     }
 
     @Override
-    public float calcTextSizeX(String text) {
+    public float calcTextSizeX(final String text) {
         return ImGui.calcTextSizeX(text);
     }
 
     @Override
-    public float calcTextSizeY(String text) {
+    public float calcTextSizeY(final String text) {
         return ImGui.calcTextSizeY(text);
     }
 
     @Override
-    public KVector2f calcTextSize(String text, boolean hideTextAfterDoubleHash) {
+    public KVector2f calcTextSize(final String text, boolean hideTextAfterDoubleHash) {
         return KImGuiSpairUnwrapper.wrap(ImGui.calcTextSize(text, hideTextAfterDoubleHash));
     }
 
     @Override
-    public float calcTextSizeX(String text, boolean hideTextAfterDoubleHash) {
+    public float calcTextSizeX(final String text, boolean hideTextAfterDoubleHash) {
         return ImGui.calcTextSizeX(text, hideTextAfterDoubleHash);
     }
 
     @Override
-    public float calcTextSizeY(String text, boolean hideTextAfterDoubleHash) {
+    public float calcTextSizeY(final String text, boolean hideTextAfterDoubleHash) {
         return ImGui.calcTextSizeY(text, hideTextAfterDoubleHash);
     }
 
     @Override
-    public KVector2f calcTextSize(String text, boolean hideTextAfterDoubleHash, float wrapWidth) {
-        return KImGuiSpairUnwrapper.wrap(ImGui.calcTextSize(text, hideTextAfterDoubleHash, wrapWidth));
+    public KVector2f calcTextSize(
+        final String text,
+        boolean hideTextAfterDoubleHash,
+        float wrapWidth
+    ) {
+        return KImGuiSpairUnwrapper.wrap(ImGui.calcTextSize(
+            text,
+            hideTextAfterDoubleHash,
+            wrapWidth
+        ));
     }
 
     @Override
-    public float calcTextSizeX(String text, boolean hideTextAfterDoubleHash, float wrapWidth) {
+    public float calcTextSizeX(
+        final String text,
+        boolean hideTextAfterDoubleHash,
+        float wrapWidth
+    ) {
         return ImGui.calcTextSizeX(text, hideTextAfterDoubleHash, wrapWidth);
     }
 
     @Override
-    public float calcTextSizeY(String text, boolean hideTextAfterDoubleHash, float wrapWidth) {
+    public float calcTextSizeY(
+        final String text,
+        boolean hideTextAfterDoubleHash,
+        float wrapWidth
+    ) {
         return ImGui.calcTextSizeY(text, hideTextAfterDoubleHash, wrapWidth);
     }
 
     @Override
-    public KVector2f calcTextSize(String text, float wrapWidth) {
+    public KVector2f calcTextSize(final String text, float wrapWidth) {
         return KImGuiSpairUnwrapper.wrap(ImGui.calcTextSize(text, wrapWidth));
     }
 
     @Override
-    public float calcTextSizeX(String text, float wrapWidth) {
+    public float calcTextSizeX(final String text, float wrapWidth) {
         return ImGui.calcTextSizeX(text, wrapWidth);
     }
 
     @Override
-    public float calcTextSizeY(String text, float wrapWidth) {
+    public float calcTextSizeY(final String text, float wrapWidth) {
         return ImGui.calcTextSizeY(text, wrapWidth);
     }
 
@@ -5466,7 +8749,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public int colorConvertFloat4ToU32(KVector4f in) {
+    public int colorConvertFloat4ToU32(final KVector4f in) {
         return ImGui.colorConvertFloat4ToU32(KImGuiSpairWrapper.wrap(in));
     }
 
@@ -5476,12 +8759,12 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void colorConvertRGBtoHSV(float[] rgb, float[] hsv) {
+    public void colorConvertRGBtoHSV(final float[] rgb, final float[] hsv) {
         ImGui.colorConvertRGBtoHSV(rgb, hsv);
     }
 
     @Override
-    public void colorConvertHSVtoRGB(float[] hsv, float[] rgb) {
+    public void colorConvertHSVtoRGB(final float[] hsv, final float[] rgb) {
         ImGui.colorConvertHSVtoRGB(hsv, rgb);
     }
 
@@ -5576,8 +8859,11 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean isMouseHoveringRect(KVector2f rMin, KVector2f rMax) {
-        return ImGui.isMouseHoveringRect(KImGuiSpairWrapper.wrap(rMin), KImGuiSpairWrapper.wrap(rMax));
+    public boolean isMouseHoveringRect(final KVector2f rMin, final KVector2f rMax) {
+        return ImGui.isMouseHoveringRect(
+            KImGuiSpairWrapper.wrap(rMin),
+            KImGuiSpairWrapper.wrap(rMax)
+        );
     }
 
     @Override
@@ -5586,12 +8872,22 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean isMouseHoveringRect(KVector2f rMin, KVector2f rMax, boolean clip) {
-        return ImGui.isMouseHoveringRect(KImGuiSpairWrapper.wrap(rMin), KImGuiSpairWrapper.wrap(rMax), clip);
+    public boolean isMouseHoveringRect(final KVector2f rMin, final KVector2f rMax, boolean clip) {
+        return ImGui.isMouseHoveringRect(
+            KImGuiSpairWrapper.wrap(rMin),
+            KImGuiSpairWrapper.wrap(rMax),
+            clip
+        );
     }
 
     @Override
-    public boolean isMouseHoveringRect(float rMinX, float rMinY, float rMaxX, float rMaxY, boolean clip) {
+    public boolean isMouseHoveringRect(
+        float rMinX,
+        float rMinY,
+        float rMaxX,
+        float rMaxY,
+        boolean clip
+    ) {
         return ImGui.isMouseHoveringRect(rMinX, rMinY, rMaxX, rMaxY, clip);
     }
 
@@ -5601,7 +8897,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean isMousePosValid(KVector2f mousePos) {
+    public boolean isMousePosValid(final KVector2f mousePos) {
         return ImGui.isMousePosValid(KImGuiSpairWrapper.wrap(mousePos));
     }
 
@@ -5687,9 +8983,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
 
     @Override
     public KVector2f getMouseDragDelta(int button, float lockThreshold) {
-        return KImGuiSpairUnwrapper.wrap(
-            ImGui.getMouseDragDelta(button, lockThreshold)
-        );
+        return KImGuiSpairUnwrapper.wrap(ImGui.getMouseDragDelta(button, lockThreshold));
     }
 
     @Override
@@ -5733,27 +9027,27 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void setClipboardText(String text) {
+    public void setClipboardText(final String text) {
         ImGui.setClipboardText(text);
     }
 
     @Override
-    public void loadIniSettingsFromDisk(String iniFilename) {
+    public void loadIniSettingsFromDisk(final String iniFilename) {
         ImGui.loadIniSettingsFromDisk(iniFilename);
     }
 
     @Override
-    public void loadIniSettingsFromMemory(String iniData) {
+    public void loadIniSettingsFromMemory(final String iniData) {
         ImGui.loadIniSettingsFromMemory(iniData);
     }
 
     @Override
-    public void loadIniSettingsFromMemory(String iniData, int iniSize) {
+    public void loadIniSettingsFromMemory(final String iniData, int iniSize) {
         ImGui.loadIniSettingsFromMemory(iniData, iniSize);
     }
 
     @Override
-    public void saveIniSettingsToDisk(String iniFilename) {
+    public void saveIniSettingsToDisk(final String iniFilename) {
         ImGui.saveIniSettingsToDisk(iniFilename);
     }
 
@@ -5768,7 +9062,7 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public void debugTextEncoding(String text) {
+    public void debugTextEncoding(final String text) {
         ImGui.debugTextEncoding(text);
     }
 
@@ -5783,8 +9077,24 @@ public final class KImGuiSpair extends KObject implements KImGui {
     }
 
     @Override
-    public boolean debugCheckVersionAndDataLayout(String versionStr, int szIo, int szStyle, int szVec2, int szVec4, int szDrawVert, int szDrawIdx) {
-        return ImGui.debugCheckVersionAndDataLayout(versionStr, szIo, szStyle, szVec2, szVec4, szDrawVert, szDrawIdx);
+    public boolean debugCheckVersionAndDataLayout(
+        final String versionStr,
+        int szIo,
+        int szStyle,
+        int szVec2,
+        int szVec4,
+        int szDrawVert,
+        int szDrawIdx
+    ) {
+        return ImGui.debugCheckVersionAndDataLayout(
+            versionStr,
+            szIo,
+            szStyle,
+            szVec2,
+            szVec4,
+            szDrawVert,
+            szDrawIdx
+        );
     }
 
     @Override

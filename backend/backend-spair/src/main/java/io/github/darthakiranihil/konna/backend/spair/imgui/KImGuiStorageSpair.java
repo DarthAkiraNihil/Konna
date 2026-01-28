@@ -23,11 +23,11 @@ final class KImGuiStorageSpair implements KImGuiStorage {
 
     private final ImGuiStorage boxed;
 
-    public KImGuiStorageSpair(ImGuiStorage boxed) {
+    KImGuiStorageSpair(final ImGuiStorage boxed) {
         this.boxed = boxed;
     }
 
-    public KImGuiStorageSpair() {
+    KImGuiStorageSpair() {
         this.boxed = new ImGuiStorage();
     }
 

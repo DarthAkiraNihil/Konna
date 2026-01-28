@@ -24,15 +24,11 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontGlyph;
 
 final class KImFontSpair implements KImFont {
-    
+
     private final ImFont boxed;
-    
-    public KImFontSpair(final ImFont original) {
+
+    KImFontSpair(final ImFont original) {
         this.boxed = original;
-    }
-    
-    public KImFontSpair() {
-        this.boxed = new ImFont();
     }
 
     @Override
@@ -61,10 +57,8 @@ final class KImFontSpair implements KImFont {
     }
 
     @Override
-    public void setFallbackGlyph(KImFontGlyph value) {
-        this.boxed.setFallbackGlyph(
-            KImGuiSpairUnboxer.unbox(value)
-        );
+    public void setFallbackGlyph(final KImFontGlyph value) {
+        this.boxed.setFallbackGlyph(KImGuiSpairUnboxer.unbox(value));
     }
 
     @Override
@@ -169,16 +163,12 @@ final class KImFontSpair implements KImFont {
 
     @Override
     public KImFontGlyph findGlyph(int c) {
-        return KImGuiSpairUnwrapper.wrap(
-            this.boxed.findGlyph(c)
-        );
+        return KImGuiSpairUnwrapper.wrap(this.boxed.findGlyph(c));
     }
 
     @Override
     public KImFontGlyph findGlyphNoFallback(int c) {
-        return KImGuiSpairUnwrapper.wrap(
-            this.boxed.findGlyphNoFallback(c)
-        );
+        return KImGuiSpairUnwrapper.wrap(this.boxed.findGlyphNoFallback(c));
     }
 
     @Override
@@ -197,17 +187,40 @@ final class KImFontSpair implements KImFont {
     }
 
     @Override
-    public KVector2f calcTextSizeA(float size, float maxWidth, float wrapWidth, String textBegin, String textEnd) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.calcTextSizeA(size, maxWidth, wrapWidth, textBegin, textEnd));
+    public KVector2f calcTextSizeA(
+        float size,
+        float maxWidth,
+        float wrapWidth,
+        final String textBegin,
+        final String textEnd
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.calcTextSizeA(
+            size,
+            maxWidth,
+            wrapWidth,
+            textBegin,
+            textEnd
+        ));
     }
 
     @Override
-    public String calcWordWrapPositionA(float scale, String text, String textEnd, float wrapWidth) {
+    public String calcWordWrapPositionA(
+        float scale,
+        final String text,
+        final String textEnd,
+        float wrapWidth
+    ) {
         return this.boxed.calcWordWrapPositionA(scale, text, textEnd, wrapWidth);
     }
 
     @Override
-    public void renderChar(KImDrawList drawList, float size, KVector2f pos, int col, int c) {
+    public void renderChar(
+        final KImDrawList drawList,
+        float size,
+        final KVector2f pos,
+        int col,
+        int c
+    ) {
         this.boxed.renderChar(
             KImGuiSpairUnboxer.unbox(drawList),
             size,
@@ -219,13 +232,13 @@ final class KImFontSpair implements KImFont {
 
     @Override
     public void renderText(
-        KImDrawList drawList,
+        final KImDrawList drawList,
         float size,
-        KVector2f pos,
+        final KVector2f pos,
         int col,
-        KVector4f clipRect,
-        String textBegin,
-        String textEnd,
+        final KVector4f clipRect,
+        final String textBegin,
+        final String textEnd,
         float wrapWidth,
         boolean cpuFineClip
     ) {

@@ -49,6 +49,9 @@
     <suppress checks="ParameterNumber" files="KImGui.java"/>
     <suppress checks="FileLength" files="KImGui.java"/>
 
+    <suppress checks="FileLength" files="KImGuiSpair.java"/>
+    <suppress checks="ParameterNumber" files="KImGuiSpair.java"/>
+
     <suppress checks="MagicNumber" files="KBufferMaker.java"/>
     <suppress checks="MagicNumber" files="KGl33RenderFrontend.java"/>
     <suppress checks="MagicNumber" files="KGeometryUtils.java"/>

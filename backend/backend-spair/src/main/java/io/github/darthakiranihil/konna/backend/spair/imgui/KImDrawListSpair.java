@@ -24,10 +24,10 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawList;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 
 final class KImDrawListSpair implements KImDrawList {
-    
+
     private final ImDrawList boxed;
-    
-    public KImDrawListSpair(final ImDrawList original) {
+
+    KImDrawListSpair(final ImDrawList original) {
         this.boxed = original;
     }
 
@@ -37,7 +37,11 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void pushClipRect(KVector2f clipRectMin, KVector2f clipRectMax, boolean intersectWithCurrentClipRect) {
+    public void pushClipRect(
+        final KVector2f clipRectMin,
+        final KVector2f clipRectMax,
+        boolean intersectWithCurrentClipRect
+    ) {
         this.boxed.pushClipRect(
             KImGuiSpairWrapper.wrap(clipRectMin),
             KImGuiSpairWrapper.wrap(clipRectMax),
@@ -76,7 +80,7 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addLine(KVector2f p1, KVector2f p2, int col, float thickness) {
+    public void addLine(final KVector2f p1, final KVector2f p2, int col, float thickness) {
         this.boxed.addLine(
             KImGuiSpairWrapper.wrap(p1),
             KImGuiSpairWrapper.wrap(p2),
@@ -86,7 +90,14 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addRect(KVector2f pMin, KVector2f pMax, int col, float rounding, int flags, float thickness) {
+    public void addRect(
+        final KVector2f pMin,
+        final KVector2f pMax,
+        int col,
+        float rounding,
+        int flags,
+        float thickness
+    ) {
         this.boxed.addRect(
             KImGuiSpairWrapper.wrap(pMin),
             KImGuiSpairWrapper.wrap(pMax),
@@ -98,7 +109,13 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addRectFilled(KVector2f pMin, KVector2f pMax, int col, float rounding, int flags) {
+    public void addRectFilled(
+        final KVector2f pMin,
+        final KVector2f pMax,
+        int col,
+        float rounding,
+        int flags
+    ) {
         this.boxed.addRectFilled(
             KImGuiSpairWrapper.wrap(pMin),
             KImGuiSpairWrapper.wrap(pMax),
@@ -110,8 +127,8 @@ final class KImDrawListSpair implements KImDrawList {
 
     @Override
     public void addRectFilledMultiColor(
-        KVector2f pMin,
-        KVector2f pMax,
+        final KVector2f pMin,
+        final KVector2f pMax,
         int colUprLeft,
         int colUprRight,
         int colBotRight,
@@ -128,7 +145,14 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addQuad(KVector2f p1, KVector2f p2, KVector2f p3, KVector2f p4, int col, float thickness) {
+    public void addQuad(
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
+        final KVector2f p4,
+        int col,
+        float thickness
+    ) {
         this.boxed.addQuad(
             KImGuiSpairWrapper.wrap(p1),
             KImGuiSpairWrapper.wrap(p2),
@@ -140,7 +164,13 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addQuadFilled(KVector2f p1, KVector2f p2, KVector2f p3, KVector2f p4, int col) {
+    public void addQuadFilled(
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
+        final KVector2f p4,
+        int col
+    ) {
         this.boxed.addQuadFilled(
             KImGuiSpairWrapper.wrap(p1),
             KImGuiSpairWrapper.wrap(p2),
@@ -151,7 +181,13 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addTriangle(KVector2f p1, KVector2f p2, KVector2f p3, int col, float thickness) {
+    public void addTriangle(
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
+        int col,
+        float thickness
+    ) {
         this.boxed.addTriangle(
             KImGuiSpairWrapper.wrap(p1),
             KImGuiSpairWrapper.wrap(p2),
@@ -162,7 +198,12 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addTriangleFilled(KVector2f p1, KVector2f p2, KVector2f p3, int col) {
+    public void addTriangleFilled(
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
+        int col
+    ) {
         this.boxed.addTriangleFilled(
             KImGuiSpairWrapper.wrap(p1),
             KImGuiSpairWrapper.wrap(p2),
@@ -172,44 +213,46 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addCircle(KVector2f center, float radius, int col, int numSegments, float thickness) {
-        this.boxed.addCircle(
-            KImGuiSpairWrapper.wrap(center),
-            radius,
-            col,
-            numSegments,
-            thickness
-        );
+    public void addCircle(
+        final KVector2f center,
+        float radius,
+        int col,
+        int numSegments,
+        float thickness
+    ) {
+        this.boxed.addCircle(KImGuiSpairWrapper.wrap(center), radius, col, numSegments, thickness);
     }
 
     @Override
-    public void addCircleFilled(KVector2f center, float radius, int col, int numSegments) {
-        this.boxed.addCircleFilled(
-            KImGuiSpairWrapper.wrap(center),
-            radius,
-            col,
-            numSegments
-        );
+    public void addCircleFilled(final KVector2f center, float radius, int col, int numSegments) {
+        this.boxed.addCircleFilled(KImGuiSpairWrapper.wrap(center), radius, col, numSegments);
     }
 
     @Override
-    public void addNgon(KVector2f center, float radius, int col, int numSegments, float thickness) {
-        this.boxed.addNgon(
-            KImGuiSpairWrapper.wrap(center),
-            radius,
-            col,
-            numSegments,
-            thickness
-        );
+    public void addNgon(
+        final KVector2f center,
+        float radius,
+        int col,
+        int numSegments,
+        float thickness
+    ) {
+        this.boxed.addNgon(KImGuiSpairWrapper.wrap(center), radius, col, numSegments, thickness);
     }
 
     @Override
-    public void addNgonFilled(KVector2f center, float radius, int col, int numSegments) {
+    public void addNgonFilled(final KVector2f center, float radius, int col, int numSegments) {
         this.boxed.addNgonFilled(KImGuiSpairWrapper.wrap(center), radius, col, numSegments);
     }
 
     @Override
-    public void addEllipse(KVector2f center, KVector2f radius, int col, float rot, float numSegments, float thickness) {
+    public void addEllipse(
+        final KVector2f center,
+        final KVector2f radius,
+        int col,
+        float rot,
+        float numSegments,
+        float thickness
+    ) {
         this.boxed.addEllipse(
             KImGuiSpairWrapper.wrap(center),
             KImGuiSpairWrapper.wrap(radius),
@@ -221,7 +264,13 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addEllipseFilled(KVector2f center, KVector2f radius, int col, float rot, float numSegments) {
+    public void addEllipseFilled(
+        final KVector2f center,
+        final KVector2f radius,
+        int col,
+        float rot,
+        float numSegments
+    ) {
         this.boxed.addEllipseFilled(
             KImGuiSpairWrapper.wrap(center),
             KImGuiSpairWrapper.wrap(radius),
@@ -232,25 +281,25 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addText(KVector2f pos, int col, String textBegin, String textEnd) {
-        this.boxed.addText(
-            KImGuiSpairWrapper.wrap(pos),
-            col,
-            textBegin,
-            textEnd
-        );
+    public void addText(
+        final KVector2f pos,
+        int col,
+        final String textBegin,
+        final String textEnd
+    ) {
+        this.boxed.addText(KImGuiSpairWrapper.wrap(pos), col, textBegin, textEnd);
     }
 
     @Override
     public void addText(
-        KImFont font,
+        final KImFont font,
         int fontSize,
-        KVector2f pos,
+        final KVector2f pos,
         int col,
-        String textBegin,
-        String textEnd,
+        final String textBegin,
+        final String textEnd,
         float wrapWidth,
-        KVector4f cpuFineClipRect
+        final KVector4f cpuFineClipRect
     ) {
         this.boxed.addText(
             KImGuiSpairUnboxer.unbox(font),
@@ -266,10 +315,10 @@ final class KImDrawListSpair implements KImDrawList {
 
     @Override
     public void addBezierCubic(
-        KVector2f p1,
-        KVector2f p2,
-        KVector2f p3,
-        KVector2f p4,
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
+        final KVector2f p4,
         int col,
         float thickness,
         int numSegments
@@ -287,9 +336,9 @@ final class KImDrawListSpair implements KImDrawList {
 
     @Override
     public void addBezierQuadratic(
-        KVector2f p1,
-        KVector2f p2,
-        KVector2f p3,
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
         int col,
         float thickness,
         int numSegments
@@ -305,7 +354,13 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addPolyline(KVector2f[] points, int numPoints, int col, int imDrawFlags, float thickness) {
+    public void addPolyline(
+        final KVector2f[] points,
+        int numPoints,
+        int col,
+        int imDrawFlags,
+        float thickness
+    ) {
         ImVec2[] ps = new ImVec2[points.length];
         for (int i = 0; i < ps.length; i++) {
             ps[i] = KImGuiSpairWrapper.wrap(points[i]);
@@ -314,7 +369,7 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addConvexPolyFilled(KVector2f[] points, int numPoints, int col) {
+    public void addConvexPolyFilled(final KVector2f[] points, int numPoints, int col) {
         ImVec2[] ps = new ImVec2[points.length];
         for (int i = 0; i < ps.length; i++) {
             ps[i] = KImGuiSpairWrapper.wrap(points[i]);
@@ -323,7 +378,7 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addConcavePolyFilled(KVector2f[] points, int numPoints, int col) {
+    public void addConcavePolyFilled(final KVector2f[] points, int numPoints, int col) {
         ImVec2[] ps = new ImVec2[points.length];
         for (int i = 0; i < ps.length; i++) {
             ps[i] = KImGuiSpairWrapper.wrap(points[i]);
@@ -332,7 +387,14 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void addImage(long textureID, KVector2f pMin, KVector2f pMax, KVector2f uvMin, KVector2f uvMax, int col) {
+    public void addImage(
+        long textureID,
+        final KVector2f pMin,
+        final KVector2f pMax,
+        final KVector2f uvMin,
+        final KVector2f uvMax,
+        int col
+    ) {
         this.boxed.addImage(
             textureID,
             KImGuiSpairWrapper.wrap(pMin),
@@ -346,14 +408,14 @@ final class KImDrawListSpair implements KImDrawList {
     @Override
     public void addImageQuad(
         long textureID,
-        KVector2f p1,
-        KVector2f p2,
-        KVector2f p3,
-        KVector2f p4,
-        KVector2f uv1,
-        KVector2f uv2,
-        KVector2f uv3,
-        KVector2f uv4,
+        final KVector2f p1,
+        final KVector2f p2,
+        final KVector2f p3,
+        final KVector2f p4,
+        final KVector2f uv1,
+        final KVector2f uv2,
+        final KVector2f uv3,
+        final KVector2f uv4,
         int col
     ) {
         this.boxed.addImageQuad(
@@ -373,10 +435,10 @@ final class KImDrawListSpair implements KImDrawList {
     @Override
     public void addImageRounded(
         long textureID,
-        KVector2f pMin,
-        KVector2f pMax,
-        KVector2f uvMin,
-        KVector2f uvMax,
+        final KVector2f pMin,
+        final KVector2f pMax,
+        final KVector2f uvMin,
+        final KVector2f uvMax,
         int col,
         float rounding,
         int imDrawFlags
@@ -399,12 +461,12 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void pathLineTo(KVector2f pos) {
+    public void pathLineTo(final KVector2f pos) {
         this.boxed.pathLineTo(KImGuiSpairWrapper.wrap(pos));
     }
 
     @Override
-    public void pathLineToMergeDuplicate(KVector2f pos) {
+    public void pathLineToMergeDuplicate(final KVector2f pos) {
         this.boxed.pathLineToMergeDuplicate(KImGuiSpairWrapper.wrap(pos));
     }
 
@@ -424,30 +486,25 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void pathArcTo(KVector2f center, float radius, float aMin, float aMax, int numSegments) {
-        this.boxed.pathArcTo(
-            KImGuiSpairWrapper.wrap(center),
-            radius,
-            aMin,
-            aMax,
-            numSegments
-        );
+    public void pathArcTo(
+        final KVector2f center,
+        float radius,
+        float aMin,
+        float aMax,
+        int numSegments
+    ) {
+        this.boxed.pathArcTo(KImGuiSpairWrapper.wrap(center), radius, aMin, aMax, numSegments);
     }
 
     @Override
-    public void pathArcToFast(KVector2f center, float radius, int aMinOf12, int aMaxOf12) {
-        this.boxed.pathArcToFast(
-            KImGuiSpairWrapper.wrap(center),
-            radius,
-            aMinOf12,
-            aMaxOf12
-        );
+    public void pathArcToFast(final KVector2f center, float radius, int aMinOf12, int aMaxOf12) {
+        this.boxed.pathArcToFast(KImGuiSpairWrapper.wrap(center), radius, aMinOf12, aMaxOf12);
     }
 
     @Override
     public void pathEllipticalArcTo(
-        KVector2f center,
-        KVector2f radius,
+        final KVector2f center,
+        final KVector2f radius,
         float rot,
         float aMin,
         float aMax,
@@ -464,7 +521,12 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void pathBezierCubicCurveTo(KVector2f p2, KVector2f p3, KVector2f p4, int numSegments) {
+    public void pathBezierCubicCurveTo(
+        final KVector2f p2,
+        final KVector2f p3,
+        final KVector2f p4,
+        int numSegments
+    ) {
         this.boxed.pathBezierCubicCurveTo(
             KImGuiSpairWrapper.wrap(p2),
             KImGuiSpairWrapper.wrap(p3),
@@ -474,7 +536,11 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void pathBezierQuadraticCurveTo(KVector2f p2, KVector2f p3, int numSegments) {
+    public void pathBezierQuadraticCurveTo(
+        final KVector2f p2,
+        final KVector2f p3,
+        int numSegments
+    ) {
         this.boxed.pathBezierQuadraticCurveTo(
             KImGuiSpairWrapper.wrap(p2),
             KImGuiSpairWrapper.wrap(p3),
@@ -483,7 +549,12 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void pathRect(KVector2f rectMin, KVector2f rectMax, float rounding, int imDrawFlags) {
+    public void pathRect(
+        final KVector2f rectMin,
+        final KVector2f rectMax,
+        float rounding,
+        int imDrawFlags
+    ) {
         this.boxed.pathRect(
             KImGuiSpairWrapper.wrap(rectMin),
             KImGuiSpairWrapper.wrap(rectMax),
@@ -518,16 +589,18 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void primRect(KVector2f a, KVector2f b, int col) {
-        this.boxed.primRect(
-            KImGuiSpairWrapper.wrap(a),
-            KImGuiSpairWrapper.wrap(b),
-            col
-        );
+    public void primRect(final KVector2f a, final KVector2f b, int col) {
+        this.boxed.primRect(KImGuiSpairWrapper.wrap(a), KImGuiSpairWrapper.wrap(b), col);
     }
 
     @Override
-    public void primRectUV(KVector2f a, KVector2f b, KVector2f uvA, KVector2f uvB, int col) {
+    public void primRectUV(
+        final KVector2f a,
+        final KVector2f b,
+        final KVector2f uvA,
+        final KVector2f uvB,
+        int col
+    ) {
         this.boxed.primRectUV(
             KImGuiSpairWrapper.wrap(a),
             KImGuiSpairWrapper.wrap(b),
@@ -539,14 +612,14 @@ final class KImDrawListSpair implements KImDrawList {
 
     @Override
     public void primQuadUV(
-        KVector2f a,
-        KVector2f b,
-        KVector2f c,
-        KVector2f d,
-        KVector2f uvA,
-        KVector2f uvB,
-        KVector2f uvC,
-        KVector2f uvD,
+        final KVector2f a,
+        final KVector2f b,
+        final KVector2f c,
+        final KVector2f d,
+        final KVector2f uvA,
+        final KVector2f uvB,
+        final KVector2f uvC,
+        final KVector2f uvD,
         int col
     ) {
         this.boxed.primQuadUV(
@@ -563,12 +636,8 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void primWriteVtx(KVector2f pos, KVector2f uv, int col) {
-        this.boxed.primWriteVtx(
-            KImGuiSpairWrapper.wrap(pos),
-            KImGuiSpairWrapper.wrap(uv),
-            col
-        );
+    public void primWriteVtx(final KVector2f pos, final KVector2f uv, int col) {
+        this.boxed.primWriteVtx(KImGuiSpairWrapper.wrap(pos), KImGuiSpairWrapper.wrap(uv), col);
     }
 
     @Override
@@ -577,11 +646,7 @@ final class KImDrawListSpair implements KImDrawList {
     }
 
     @Override
-    public void primVtx(KVector2f pos, KVector2f uv, int col) {
-        this.boxed.primVtx(
-            KImGuiSpairWrapper.wrap(pos),
-            KImGuiSpairWrapper.wrap(uv),
-            col
-        );
+    public void primVtx(final KVector2f pos, final KVector2f uv, int col) {
+        this.boxed.primVtx(KImGuiSpairWrapper.wrap(pos), KImGuiSpairWrapper.wrap(uv), col);
     }
 }

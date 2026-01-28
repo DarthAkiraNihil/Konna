@@ -80,7 +80,7 @@ public final class KImGuiViewportSpair implements KImGuiViewport {
     }
 
     @Override
-    public void setPos(KVector2f value) {
+    public void setPos(final KVector2f value) {
         this.boxed.setPos(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -105,7 +105,7 @@ public final class KImGuiViewportSpair implements KImGuiViewport {
     }
 
     @Override
-    public void setSize(KVector2f value) {
+    public void setSize(final KVector2f value) {
         this.boxed.setSize(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -130,7 +130,7 @@ public final class KImGuiViewportSpair implements KImGuiViewport {
     }
 
     @Override
-    public void setWorkPos(KVector2f value) {
+    public void setWorkPos(final KVector2f value) {
         this.boxed.setWorkPos(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -155,7 +155,7 @@ public final class KImGuiViewportSpair implements KImGuiViewport {
     }
 
     @Override
-    public void setWorkSize(KVector2f value) {
+    public void setWorkSize(final KVector2f value) {
         this.boxed.setWorkSize(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -190,12 +190,12 @@ public final class KImGuiViewportSpair implements KImGuiViewport {
     }
 
     @Override
-    public void setDrawData(KImDrawData value) {
+    public void setDrawData(final KImDrawData value) {
         this.boxed.setDrawData(KImGuiSpairUnboxer.unbox(value));
     }
 
     @Override
-    public void setRendererUserData(Object data) {
+    public void setRendererUserData(final Object data) {
         this.boxed.setRendererUserData(data);
     }
 
@@ -205,7 +205,7 @@ public final class KImGuiViewportSpair implements KImGuiViewport {
     }
 
     @Override
-    public void setPlatformUserData(Object data) {
+    public void setPlatformUserData(final Object data) {
         this.boxed.setPlatformUserData(data);
     }
 

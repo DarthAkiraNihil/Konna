@@ -29,222 +29,119 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.func.*;
 
 final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
 
-    private static final class PlatformFuncViewportSpair extends ImPlatformFuncViewport {
-
-        private final KImPlatformFuncViewport func;
-
-        public PlatformFuncViewportSpair(final KImPlatformFuncViewport func) {
-            this.func = func;
-        }
-
-        @Override
-        public void accept(final ImGuiViewport vp) {
-            this.func.accept(KImGuiSpairUnwrapper.wrap(vp));
-        }
-    }
-
-    private static final class PlatformFuncViewportStringSpair extends ImPlatformFuncViewportString {
-
-        private final KImPlatformFuncViewportString func;
-
-        public PlatformFuncViewportStringSpair(final KImPlatformFuncViewportString func) {
-            this.func = func;
-        }
-
-        @Override
-        public void accept(final ImGuiViewport vp, final String str) {
-            this.func.accept(KImGuiSpairUnwrapper.wrap(vp), str);
-        }
-    }
-
-    private static final class PlatformFuncViewportVec2Spair extends ImPlatformFuncViewportImVec2 {
-
-        private final KImPlatformFuncViewportImVec2 func;
-
-        public PlatformFuncViewportVec2Spair(final KImPlatformFuncViewportImVec2 func) {
-            this.func = func;
-        }
-
-        @Override
-        public void accept(final ImGuiViewport vp, final ImVec2 imVec2) {
-            this.func.accept(KImGuiSpairUnwrapper.wrap(vp), KImGuiSpairUnwrapper.wrap(imVec2));
-        }
-    }
-
-    private static final class PlatformFuncViewportFloatSpair extends ImPlatformFuncViewportFloat {
-
-        private final KImPlatformFuncViewportFloat func;
-
-        public PlatformFuncViewportFloatSpair(final KImPlatformFuncViewportFloat func) {
-            this.func = func;
-        }
-
-        @Override
-        public void accept(final ImGuiViewport vp, float f) {
-            this.func.accept(KImGuiSpairUnwrapper.wrap(vp), f);
-        }
-    }
-
-    private static final class PlatformFuncViewportSuppFloat extends ImPlatformFuncViewportSuppFloat {
-
-        private final KImPlatformFuncViewportSuppFloat func;
-
-        public PlatformFuncViewportSuppFloat(final KImPlatformFuncViewportSuppFloat func) {
-            this.func = func;
-        }
-
-        @Override
-        public float get(final ImGuiViewport vp) {
-            return this.func.get(KImGuiSpairUnwrapper.wrap(vp));
-        }
-    }
-
-    private static final class PlatformFuncViewportSuppVec2 extends ImPlatformFuncViewportSuppImVec2 {
-
-        private final KImPlatformFuncViewportSuppImVec2 func;
-
-        public PlatformFuncViewportSuppVec2(final KImPlatformFuncViewportSuppImVec2 func) {
-            this.func = func;
-        }
-
-        @Override
-        public void get(final ImGuiViewport vp, final ImVec2 dstImVec2) {
-            KReference<KVector2f> v = new KReference<>();
-            this.func.get(KImGuiSpairUnwrapper.wrap(vp), v);
-            KVector2f res = v.get();
-            if (res != null) {
-                dstImVec2.set(res.x(), res.y());
-            }
-        }
-    }
-
-    private static final class PlatformFuncViewportSuppBoolean extends ImPlatformFuncViewportSuppBoolean {
-
-        private final KImPlatformFuncViewportSuppBoolean func;
-
-        public PlatformFuncViewportSuppBoolean(final KImPlatformFuncViewportSuppBoolean func) {
-            this.func = func;
-        }
-
-        @Override
-        public boolean get(final ImGuiViewport vp) {
-            return this.func.get(KImGuiSpairUnwrapper.wrap(vp));
-        }
-    }
-
     private final ImGuiPlatformIO boxed;
 
-    public KImGuiPlatformIoSpair(final ImGuiPlatformIO boxed) {
+    KImGuiPlatformIoSpair(final ImGuiPlatformIO boxed) {
         this.boxed = boxed;
     }
 
     @Override
-    public void setPlatformCreateWindow(KImPlatformFuncViewport func) {
+    public void setPlatformCreateWindow(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformCreateWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformDestroyWindow(KImPlatformFuncViewport func) {
+    public void setPlatformDestroyWindow(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformDestroyWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformShowWindow(KImPlatformFuncViewport func) {
+    public void setPlatformShowWindow(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformShowWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformSetWindowPos(KImPlatformFuncViewportImVec2 func) {
+    public void setPlatformSetWindowPos(final KImPlatformFuncViewportImVec2 func) {
         this.boxed.setPlatformSetWindowPos(new PlatformFuncViewportVec2Spair(func));
     }
 
     @Override
-    public void setPlatformGetWindowPos(KImPlatformFuncViewportSuppImVec2 func) {
+    public void setPlatformGetWindowPos(final KImPlatformFuncViewportSuppImVec2 func) {
         this.boxed.setPlatformGetWindowPos(new PlatformFuncViewportSuppVec2(func));
     }
 
     @Override
-    public void setPlatformSetWindowSize(KImPlatformFuncViewportImVec2 func) {
+    public void setPlatformSetWindowSize(final KImPlatformFuncViewportImVec2 func) {
         this.boxed.setPlatformSetWindowSize(new PlatformFuncViewportVec2Spair(func));
     }
 
     @Override
-    public void setPlatformGetWindowSize(KImPlatformFuncViewportSuppImVec2 func) {
+    public void setPlatformGetWindowSize(final KImPlatformFuncViewportSuppImVec2 func) {
         this.boxed.setPlatformGetWindowSize(new PlatformFuncViewportSuppVec2(func));
     }
 
     @Override
-    public void setPlatformSetWindowFocus(KImPlatformFuncViewport func) {
+    public void setPlatformSetWindowFocus(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformSetWindowFocus(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformGetWindowFocus(KImPlatformFuncViewportSuppBoolean func) {
+    public void setPlatformGetWindowFocus(final KImPlatformFuncViewportSuppBoolean func) {
         this.boxed.setPlatformGetWindowFocus(new PlatformFuncViewportSuppBoolean(func));
     }
 
     @Override
-    public void setPlatformGetWindowMinimized(KImPlatformFuncViewportSuppBoolean func) {
+    public void setPlatformGetWindowMinimized(final KImPlatformFuncViewportSuppBoolean func) {
         this.boxed.setPlatformGetWindowMinimized(new PlatformFuncViewportSuppBoolean(func));
     }
 
     @Override
-    public void setPlatformSetWindowTitle(KImPlatformFuncViewportString func) {
+    public void setPlatformSetWindowTitle(final KImPlatformFuncViewportString func) {
         this.boxed.setPlatformSetWindowTitle(new PlatformFuncViewportStringSpair(func));
     }
 
     @Override
-    public void setPlatformSetWindowAlpha(KImPlatformFuncViewportFloat func) {
+    public void setPlatformSetWindowAlpha(final KImPlatformFuncViewportFloat func) {
         this.boxed.setPlatformSetWindowAlpha(new PlatformFuncViewportFloatSpair(func));
     }
 
     @Override
-    public void setPlatformUpdateWindow(KImPlatformFuncViewport func) {
+    public void setPlatformUpdateWindow(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformUpdateWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformRenderWindow(KImPlatformFuncViewport func) {
+    public void setPlatformRenderWindow(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformRenderWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformSwapBuffers(KImPlatformFuncViewport func) {
+    public void setPlatformSwapBuffers(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformSwapBuffers(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setPlatformGetWindowDpiScale(KImPlatformFuncViewportSuppFloat func) {
+    public void setPlatformGetWindowDpiScale(final KImPlatformFuncViewportSuppFloat func) {
         this.boxed.setPlatformGetWindowDpiScale(new PlatformFuncViewportSuppFloat(func));
     }
 
     @Override
-    public void setPlatformOnChangedViewport(KImPlatformFuncViewport func) {
+    public void setPlatformOnChangedViewport(final KImPlatformFuncViewport func) {
         this.boxed.setPlatformOnChangedViewport(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setRendererCreateWindow(KImPlatformFuncViewport func) {
+    public void setRendererCreateWindow(final KImPlatformFuncViewport func) {
         this.boxed.setRendererCreateWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setRendererDestroyWindow(KImPlatformFuncViewport func) {
+    public void setRendererDestroyWindow(final KImPlatformFuncViewport func) {
         this.boxed.setRendererDestroyWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setRendererSetWindowPos(KImPlatformFuncViewportImVec2 func) {
+    public void setRendererSetWindowPos(final KImPlatformFuncViewportImVec2 func) {
         this.boxed.setRendererSetWindowPos(new PlatformFuncViewportVec2Spair(func));
     }
 
     @Override
-    public void setRendererRenderWindow(KImPlatformFuncViewport func) {
+    public void setRendererRenderWindow(final KImPlatformFuncViewport func) {
         this.boxed.setRendererRenderWindow(new PlatformFuncViewportSpair(func));
     }
 
     @Override
-    public void setRendererSwapBuffers(KImPlatformFuncViewport func) {
+    public void setRendererSwapBuffers(final KImPlatformFuncViewport func) {
         this.boxed.setRendererSwapBuffers(new PlatformFuncViewportSpair(func));
     }
 
@@ -271,29 +168,137 @@ final class KImGuiPlatformIoSpair implements KImGuiPlatformIo {
         float workSizeY,
         float dpiScale
     ) {
-        this
-            .boxed
-            .pushMonitors(
-                platformHandle,
-                mainPosX,
-                mainPosY,
-                mainSizeX,
-                mainSizeY,
-                workPosX,
-                workPosY,
-                workSizeX,
-                workSizeY,
-                dpiScale
-            );
+        this.boxed.pushMonitors(
+            platformHandle,
+            mainPosX,
+            mainPosY,
+            mainSizeX,
+            mainSizeY,
+            workPosX,
+            workPosY,
+            workSizeX,
+            workSizeY,
+            dpiScale
+        );
     }
 
     @Override
     public KImGuiPlatformMonitor getMonitors(int idx) {
-        return null;
+        return KImGuiSpairUnwrapper.wrap(this.boxed.getMonitors(idx));
     }
 
     @Override
     public KImGuiViewport getViewports(int idx) {
-        return null;
+        return KImGuiSpairUnwrapper.wrap(this.boxed.getViewports(idx));
+    }
+
+    private static final class PlatformFuncViewportSpair
+        extends ImPlatformFuncViewport {
+
+        private final KImPlatformFuncViewport func;
+
+        PlatformFuncViewportSpair(final KImPlatformFuncViewport func) {
+            this.func = func;
+        }
+
+        @Override
+        public void accept(final ImGuiViewport vp) {
+            this.func.accept(KImGuiSpairUnwrapper.wrap(vp));
+        }
+    }
+
+    private static final class PlatformFuncViewportStringSpair
+        extends ImPlatformFuncViewportString {
+
+        private final KImPlatformFuncViewportString func;
+
+        PlatformFuncViewportStringSpair(final KImPlatformFuncViewportString func) {
+            this.func = func;
+        }
+
+        @Override
+        public void accept(final ImGuiViewport vp, final String str) {
+            this.func.accept(KImGuiSpairUnwrapper.wrap(vp), str);
+        }
+    }
+
+    private static final class PlatformFuncViewportVec2Spair
+        extends ImPlatformFuncViewportImVec2 {
+
+        private final KImPlatformFuncViewportImVec2 func;
+
+        PlatformFuncViewportVec2Spair(final KImPlatformFuncViewportImVec2 func) {
+            this.func = func;
+        }
+
+        @Override
+        public void accept(final ImGuiViewport vp, final ImVec2 imVec2) {
+            this.func.accept(KImGuiSpairUnwrapper.wrap(vp), KImGuiSpairUnwrapper.wrap(imVec2));
+        }
+    }
+
+    private static final class PlatformFuncViewportFloatSpair
+        extends ImPlatformFuncViewportFloat {
+
+        private final KImPlatformFuncViewportFloat func;
+
+        PlatformFuncViewportFloatSpair(final KImPlatformFuncViewportFloat func) {
+            this.func = func;
+        }
+
+        @Override
+        public void accept(final ImGuiViewport vp, float f) {
+            this.func.accept(KImGuiSpairUnwrapper.wrap(vp), f);
+        }
+    }
+
+    private static final class PlatformFuncViewportSuppFloat
+        extends ImPlatformFuncViewportSuppFloat {
+
+        private final KImPlatformFuncViewportSuppFloat func;
+
+        PlatformFuncViewportSuppFloat(final KImPlatformFuncViewportSuppFloat func) {
+            this.func = func;
+        }
+
+        @Override
+        public float get(final ImGuiViewport vp) {
+            return this.func.get(KImGuiSpairUnwrapper.wrap(vp));
+        }
+    }
+
+    private static final class PlatformFuncViewportSuppVec2
+        extends ImPlatformFuncViewportSuppImVec2 {
+
+        private final KImPlatformFuncViewportSuppImVec2 func;
+
+        PlatformFuncViewportSuppVec2(final KImPlatformFuncViewportSuppImVec2 func) {
+            this.func = func;
+        }
+
+        @Override
+        public void get(final ImGuiViewport vp, final ImVec2 dstImVec2) {
+            KReference<KVector2f> v = new KReference<>();
+            this.func.get(KImGuiSpairUnwrapper.wrap(vp), v);
+            KVector2f res = v.get();
+            if (res != null) {
+                dstImVec2.set(res.x(), res.y());
+            }
+        }
+    }
+
+    private static final class PlatformFuncViewportSuppBoolean
+        extends ImPlatformFuncViewportSuppBoolean {
+
+        private final KImPlatformFuncViewportSuppBoolean func;
+
+        PlatformFuncViewportSuppBoolean(final KImPlatformFuncViewportSuppBoolean func) {
+            this.func = func;
+        }
+
+        @Override
+        public boolean get(final ImGuiViewport vp) {
+            return this.func.get(KImGuiSpairUnwrapper.wrap(vp));
+        }
     }
 }

@@ -16,13 +16,16 @@
 
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
-import imgui.*;
+import imgui.ImGuiStyle;
+import imgui.ImVec2;
+import imgui.ImVec4;
 import imgui.internal.ImGuiContext;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.libfrontend.imgui.*;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiContext;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStyle;
 
 final class KImGuiSpairWrapper extends KUninstantiable {
 
@@ -89,9 +92,15 @@ final class KImGuiSpairWrapper extends KUninstantiable {
         internal.setSelectableTextAlign(KImGuiSpairWrapper.wrap(original.getSelectableTextAlign()));
         internal.setSeparatorTextBorderSize(original.getSeparatorTextBorderSize());
         internal.setSeparatorTextAlign(KImGuiSpairWrapper.wrap(original.getSeparatorTextAlign()));
-        internal.setSeparatorTextPadding(KImGuiSpairWrapper.wrap(original.getSeparatorTextPadding()));
-        internal.setDisplayWindowPadding(KImGuiSpairWrapper.wrap(original.getDisplayWindowPadding()));
-        internal.setDisplaySafeAreaPadding(KImGuiSpairWrapper.wrap(original.getDisplaySafeAreaPadding()));
+        internal.setSeparatorTextPadding(
+            KImGuiSpairWrapper.wrap(original.getSeparatorTextPadding())
+        );
+        internal.setDisplayWindowPadding(
+            KImGuiSpairWrapper.wrap(original.getDisplayWindowPadding())
+        );
+        internal.setDisplaySafeAreaPadding(
+            KImGuiSpairWrapper.wrap(original.getDisplaySafeAreaPadding())
+        );
         internal.setDockingSeparatorSize(original.getDockingSeparatorSize());
         internal.setMouseCursorScale(original.getMouseCursorScale());
         internal.setAntiAliasedLines(original.getAntiAliasedLines());

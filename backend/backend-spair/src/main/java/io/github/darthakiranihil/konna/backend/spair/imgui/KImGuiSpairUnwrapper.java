@@ -23,8 +23,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
-import java.nio.ByteBuffer;
-
 final class KImGuiSpairUnwrapper extends KUninstantiable {
 
     private KImGuiSpairUnwrapper() {
@@ -51,7 +49,7 @@ final class KImGuiSpairUnwrapper extends KUninstantiable {
             }
 
             @Override
-            public void setCtx(KImGuiContext value) {
+            public void setCtx(final KImGuiContext value) {
                 original.setCtx(
                     KImGuiSpairWrapper.wrap(value)
                 );
@@ -98,7 +96,7 @@ final class KImGuiSpairUnwrapper extends KUninstantiable {
             }
 
             @Override
-            public void setBuf(String value) {
+            public void setBuf(final String value) {
                 original.setBuf(value);
             }
 
@@ -158,7 +156,7 @@ final class KImGuiSpairUnwrapper extends KUninstantiable {
             }
 
             @Override
-            public void insertChars(int pos, String str) {
+            public void insertChars(int pos, final String str) {
                 original.insertChars(pos, str);
             }
 
@@ -283,6 +281,10 @@ final class KImGuiSpairUnwrapper extends KUninstantiable {
 
     public static KImGuiStorage wrap(final ImGuiStorage original) {
         return new KImGuiStorageSpair(original);
+    }
+
+    public static KImGuiPlatformMonitor wrap(final ImGuiPlatformMonitor original) {
+        return new KImGuiPlatformMonitorSpair(original);
     }
 
 }

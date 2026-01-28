@@ -25,7 +25,7 @@ final class KImFontConfigSpair implements KImFontConfig {
 
     private final ImFontConfig boxed;
 
-    public KImFontConfigSpair(ImFontConfig boxed) {
+    KImFontConfigSpair(final ImFontConfig boxed) {
         this.boxed = boxed;
     }
 
@@ -35,7 +35,7 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
-    public void setFontData(byte[] fontData) {
+    public void setFontData(final byte[] fontData) {
         this.boxed.setFontData(fontData);
     }
 
@@ -125,7 +125,7 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
-    public void setGlyphExtraSpacing(KVector2f value) {
+    public void setGlyphExtraSpacing(final KVector2f value) {
         this.boxed.setGlyphExtraSpacing(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -150,7 +150,7 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
-    public void setGlyphOffset(KVector2f value) {
+    public void setGlyphOffset(final KVector2f value) {
         this.boxed.setGlyphOffset(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -165,7 +165,7 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
-    public void setGlyphRanges(short[] glyphRanges) {
+    public void setGlyphRanges(final short[] glyphRanges) {
         this.boxed.setGlyphRanges(glyphRanges);
     }
 
@@ -255,7 +255,7 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
-    public void setName(String name) {
+    public void setName(final String name) {
         this.boxed.setName(name);
     }
 
@@ -265,7 +265,7 @@ final class KImFontConfigSpair implements KImFontConfig {
     }
 
     @Override
-    public void setDstFont(KImFont value) {
+    public void setDstFont(final KImFont value) {
         this.boxed.setDstFont(KImGuiSpairUnboxer.unbox(value));
     }
 

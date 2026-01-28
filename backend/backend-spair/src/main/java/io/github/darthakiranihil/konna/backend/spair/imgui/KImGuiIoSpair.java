@@ -30,7 +30,7 @@ final class KImGuiIoSpair implements KImGuiIo {
 
     private final ImGuiIO boxed;
 
-    public KImGuiIoSpair(ImGuiIO boxed) {
+    KImGuiIoSpair(final ImGuiIO boxed) {
         this.boxed = boxed;
     }
 
@@ -90,7 +90,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setDisplaySize(KVector2f value) {
+    public void setDisplaySize(final KVector2f value) {
         this.boxed.setDisplaySize(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -135,7 +135,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setIniFilename(String value) {
+    public void setIniFilename(final String value) {
         this.boxed.setIniFilename(value);
     }
 
@@ -145,7 +145,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setLogFilename(String value) {
+    public void setLogFilename(final String value) {
         this.boxed.setLogFilename(value);
     }
 
@@ -155,7 +155,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setFonts(KImFontAtlas value) {
+    public void setFonts(final KImFontAtlas value) {
         this.boxed.setFonts(KImGuiSpairUnboxer.unbox(value));
     }
 
@@ -185,7 +185,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setFontDefault(KImFont value) {
+    public void setFontDefault(final KImFont value) {
         this.boxed.setFontDefault(KImGuiSpairUnboxer.unbox(value));
     }
 
@@ -195,7 +195,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setDisplayFramebufferScale(KVector2f value) {
+    public void setDisplayFramebufferScale(final KVector2f value) {
         this.boxed.setDisplayFramebufferScale(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -490,7 +490,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setBackendPlatformName(String value) {
+    public void setBackendPlatformName(final String value) {
         this.boxed.setBackendPlatformName(value);
     }
 
@@ -500,22 +500,22 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setBackendRendererName(String value) {
+    public void setBackendRendererName(final String value) {
         this.boxed.setBackendRendererName(value);
     }
 
     @Override
-    public void setSetClipboardTextFn(KImStrConsumer setClipboardTextCallback) {
+    public void setSetClipboardTextFn(final KImStrConsumer setClipboardTextCallback) {
         this.boxed.setSetClipboardTextFn(new ImStrConsumer() {
             @Override
-            public void accept(String str) {
+            public void accept(final String str) {
                 setClipboardTextCallback.accept(str);
             }
         });
     }
 
     @Override
-    public void setGetClipboardTextFn(KImStrSupplier getClipboardTextCallback) {
+    public void setGetClipboardTextFn(final KImStrSupplier getClipboardTextCallback) {
         this.boxed.setGetClipboardTextFn(new ImStrSupplier() {
             @Override
             public String get() {
@@ -585,7 +585,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void addInputCharactersUTF8(String str) {
+    public void addInputCharactersUTF8(final String str) {
         this.boxed.addInputCharactersUTF8(str);
     }
 
@@ -595,7 +595,12 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setKeyEventNativeData(int key, int nativeKeycode, int nativeScancode, int nativeLegacyIndex) {
+    public void setKeyEventNativeData(
+        int key,
+        int nativeKeycode,
+        int nativeScancode,
+        int nativeLegacyIndex
+    ) {
         this.boxed.setKeyEventNativeData(key, nativeKeycode, nativeScancode, nativeLegacyIndex);
     }
 
@@ -740,7 +745,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDelta(KVector2f value) {
+    public void setMouseDelta(final KVector2f value) {
         this.boxed.setMouseDelta(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -765,7 +770,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setCtx(KImGuiContext value) {
+    public void setCtx(final KImGuiContext value) {
         this.boxed.setCtx(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -775,7 +780,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMousePos(KVector2f value) {
+    public void setMousePos(final KVector2f value) {
         this.boxed.setMousePos(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -800,7 +805,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDown(boolean[] value) {
+    public void setMouseDown(final boolean[] value) {
         this.boxed.setMouseDown(value);
     }
 
@@ -905,7 +910,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setKeysData(KImGuiKeyData[] value) {
+    public void setKeysData(final KImGuiKeyData[] value) {
         ImGuiKeyData[] data = new ImGuiKeyData[value.length];
         for (int i = 0; i < data.length; i++) {
             data[i] = KImGuiSpairUnboxer.unbox(value[i]);
@@ -929,7 +934,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMousePosPrev(KVector2f value) {
+    public void setMousePosPrev(final KVector2f value) {
         this.boxed.setMousePosPrev(KImGuiSpairWrapper.wrap(value));
     }
 
@@ -955,12 +960,12 @@ final class KImGuiIoSpair implements KImGuiIo {
         for (int i = 0; i < result.length; i++) {
             result[i] = KImGuiSpairUnwrapper.wrap(imv2s[i]);
         }
-        return result;   }
-
+        return result;
+    }
 
 
     @Override
-    public void setMouseClickedPos(KVector2f[] value) {
+    public void setMouseClickedPos(final KVector2f[] value) {
         ImVec2[] imVec2s = new ImVec2[value.length];
         for (int i = 0; i < imVec2s.length; i++) {
             imVec2s[i] = KImGuiSpairWrapper.wrap(value[i]);
@@ -974,7 +979,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseClickedTime(double[] value) {
+    public void setMouseClickedTime(final double[] value) {
         this.boxed.setMouseClickedTime(value);
     }
 
@@ -994,7 +999,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseClicked(boolean[] value) {
+    public void setMouseClicked(final boolean[] value) {
         this.boxed.setMouseClicked(value);
     }
 
@@ -1014,7 +1019,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDoubleClicked(boolean[] value) {
+    public void setMouseDoubleClicked(final boolean[] value) {
         this.boxed.setMouseDoubleClicked(value);
     }
 
@@ -1034,7 +1039,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseClickedCount(int[] value) {
+    public void setMouseClickedCount(final int[] value) {
         this.boxed.setMouseClickedCount(value);
     }
 
@@ -1054,7 +1059,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseClickedLastCount(int[] value) {
+    public void setMouseClickedLastCount(final int[] value) {
         this.boxed.setMouseClickedLastCount(value);
     }
 
@@ -1074,7 +1079,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseReleased(boolean[] value) {
+    public void setMouseReleased(final boolean[] value) {
         this.boxed.setMouseReleased(value);
     }
 
@@ -1094,7 +1099,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDownOwned(boolean[] value) {
+    public void setMouseDownOwned(final boolean[] value) {
         this.boxed.setMouseDownOwned(value);
     }
 
@@ -1114,7 +1119,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDownOwnedUnlessPopupClose(boolean[] value) {
+    public void setMouseDownOwnedUnlessPopupClose(final boolean[] value) {
         this.boxed.setMouseDownOwnedUnlessPopupClose(value);
     }
 
@@ -1154,7 +1159,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDownDuration(float[] value) {
+    public void setMouseDownDuration(final float[] value) {
         this.boxed.setMouseDownDuration(value);
     }
 
@@ -1174,7 +1179,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDownDurationPrev(float[] value) {
+    public void setMouseDownDurationPrev(final float[] value) {
         this.boxed.setMouseDownDurationPrev(value);
     }
 
@@ -1199,7 +1204,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDragMaxDistanceAbs(KVector2f[] value) {
+    public void setMouseDragMaxDistanceAbs(final KVector2f[] value) {
         ImVec2[] imVec2s = new ImVec2[value.length];
         for (int i = 0; i < imVec2s.length; i++) {
             imVec2s[i] = KImGuiSpairWrapper.wrap(value[i]);
@@ -1213,7 +1218,7 @@ final class KImGuiIoSpair implements KImGuiIo {
     }
 
     @Override
-    public void setMouseDragMaxDistanceSqr(float[] value) {
+    public void setMouseDragMaxDistanceSqr(final float[] value) {
         this.boxed.setMouseDragMaxDistanceSqr(value);
     }
 
@@ -1281,7 +1286,4 @@ final class KImGuiIoSpair implements KImGuiIo {
     public void setInputQueueSurrogate(short value) {
         this.boxed.setInputQueueSurrogate(value);
     }
-
-
-
 }

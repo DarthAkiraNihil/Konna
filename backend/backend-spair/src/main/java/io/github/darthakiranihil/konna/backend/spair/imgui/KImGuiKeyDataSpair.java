@@ -23,7 +23,7 @@ final class KImGuiKeyDataSpair implements KImGuiKeyData {
 
     private final ImGuiKeyData boxed;
 
-    public KImGuiKeyDataSpair(ImGuiKeyData boxed) {
+    KImGuiKeyDataSpair(final ImGuiKeyData boxed) {
         this.boxed = boxed;
     }
 

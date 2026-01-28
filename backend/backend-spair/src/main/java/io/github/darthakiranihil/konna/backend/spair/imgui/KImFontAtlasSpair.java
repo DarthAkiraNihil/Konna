@@ -20,7 +20,9 @@ import imgui.ImFontAtlas;
 import imgui.type.ImInt;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.ref.KIntReference;
-import io.github.darthakiranihil.konna.libfrontend.imgui.*;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontAtlas;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontConfig;
 
 import java.nio.ByteBuffer;
 
@@ -28,7 +30,7 @@ final class KImFontAtlasSpair implements KImFontAtlas {
 
     private final ImFontAtlas boxed;
 
-    public KImFontAtlasSpair(ImFontAtlas boxed) {
+    KImFontAtlasSpair(final ImFontAtlas boxed) {
         this.boxed = boxed;
     }
 
@@ -38,118 +40,297 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public KImFont addFontDefault(KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontDefault(KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontDefault(final KImFontConfig fontConfig) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontDefault(KImGuiSpairUnboxer.unbox(
+            fontConfig)));
     }
 
     @Override
-    public KImFont addFontFromFileTTF(String filename, float sizePixels) {
+    public KImFont addFontFromFileTTF(final String filename, float sizePixels) {
         return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(filename, sizePixels));
     }
 
     @Override
-    public KImFont addFontFromFileTTF(String filename, float sizePixels, KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(filename, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontFromFileTTF(
+        final String filename,
+        float sizePixels,
+        final KImFontConfig fontConfig
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(
+            filename,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig)
+        ));
     }
 
     @Override
-    public KImFont addFontFromFileTTF(String filename, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(filename, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig), glyphRanges));
+    public KImFont addFontFromFileTTF(
+        final String filename,
+        float sizePixels,
+        final KImFontConfig fontConfig,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(
+            filename,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig),
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromFileTTF(String filename, float sizePixels, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(filename, sizePixels, glyphRanges));
+    public KImFont addFontFromFileTTF(
+        final String filename,
+        float sizePixels,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromFileTTF(
+            filename,
+            sizePixels,
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels) {
+    public KImFont addFontFromMemoryTTF(final byte[] fontData, float sizePixels) {
         return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, sizePixels));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels, KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontFromMemoryTTF(
+        final byte[] fontData,
+        float sizePixels,
+        final KImFontConfig fontConfig
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig)
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig), glyphRanges));
+    public KImFont addFontFromMemoryTTF(
+        final byte[] fontData,
+        float sizePixels,
+        final KImFontConfig fontConfig,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig),
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, float sizePixels, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, sizePixels, glyphRanges));
+    public KImFont addFontFromMemoryTTF(
+        final byte[] fontData,
+        float sizePixels,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            sizePixels,
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, fontDataSize, sizePixels));
+    public KImFont addFontFromMemoryTTF(final byte[] fontData, int fontDataSize, float sizePixels) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            fontDataSize,
+            sizePixels
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels, KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, fontDataSize, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontFromMemoryTTF(
+        final byte[] fontData,
+        int fontDataSize,
+        float sizePixels,
+        final KImFontConfig fontConfig
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            fontDataSize,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig)
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, fontDataSize, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig), glyphRanges));
+    public KImFont addFontFromMemoryTTF(
+        final byte[] fontData,
+        int fontDataSize,
+        float sizePixels,
+        final KImFontConfig fontConfig,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            fontDataSize,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig),
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryTTF(byte[] fontData, int fontDataSize, float sizePixels, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(fontData, fontDataSize, sizePixels, glyphRanges));
+    public KImFont addFontFromMemoryTTF(
+        final byte[] fontData,
+        int fontDataSize,
+        float sizePixels,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryTTF(
+            fontData,
+            fontDataSize,
+            sizePixels,
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, sizePixels));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        float sizePixels
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            sizePixels
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels, KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        float sizePixels,
+        final KImFontConfig fontConfig
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig)
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig), glyphRanges));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        float sizePixels,
+        final KImFontConfig fontConfig,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig),
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, float sizePixels, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, sizePixels, glyphRanges));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        float sizePixels,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            sizePixels,
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, compressedFontDataSize, sizePixels));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        int compressedFontDataSize,
+        float sizePixels
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            compressedFontDataSize,
+            sizePixels
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels, KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, compressedFontDataSize, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        int compressedFontDataSize,
+        float sizePixels,
+        final KImFontConfig fontConfig
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            compressedFontDataSize,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig)
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, compressedFontDataSize, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig), glyphRanges));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        int compressedFontDataSize,
+        float sizePixels,
+        final KImFontConfig fontConfig,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            compressedFontDataSize,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig),
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedTTF(byte[] compressedFontData, int compressedFontDataSize, float sizePixels, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(compressedFontData, compressedFontDataSize, sizePixels, glyphRanges));
+    public KImFont addFontFromMemoryCompressedTTF(
+        final byte[] compressedFontData,
+        int compressedFontDataSize,
+        float sizePixels,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedTTF(
+            compressedFontData,
+            compressedFontDataSize,
+            sizePixels,
+            glyphRanges
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedBase85TTF(String compressedFontDataBase85, float sizePixels, KImFontConfig fontConfig) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedBase85TTF(compressedFontDataBase85, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig)));
+    public KImFont addFontFromMemoryCompressedBase85TTF(
+        final String compressedFontDataBase85,
+        float sizePixels,
+        final KImFontConfig fontConfig
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedBase85TTF(
+            compressedFontDataBase85,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig)
+        ));
     }
 
     @Override
-    public KImFont addFontFromMemoryCompressedBase85TTF(String compressedFontDataBase85, float sizePixels, KImFontConfig fontConfig, short[] glyphRanges) {
-        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedBase85TTF(compressedFontDataBase85, sizePixels, KImGuiSpairUnboxer.unbox(fontConfig), glyphRanges));
+    public KImFont addFontFromMemoryCompressedBase85TTF(
+        final String compressedFontDataBase85,
+        float sizePixels,
+        final KImFontConfig fontConfig,
+        final short[] glyphRanges
+    ) {
+        return KImGuiSpairUnwrapper.wrap(this.boxed.addFontFromMemoryCompressedBase85TTF(
+            compressedFontDataBase85,
+            sizePixels,
+            KImGuiSpairUnboxer.unbox(fontConfig),
+            glyphRanges
+        ));
     }
 
     @Override
@@ -183,7 +364,10 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public ByteBuffer getTexDataAsAlpha8(KIntReference outWidth, KIntReference outHeight) {
+    public ByteBuffer getTexDataAsAlpha8(
+        final KIntReference outWidth,
+        final KIntReference outHeight
+    ) {
         ImInt w = new ImInt(outWidth.get());
         ImInt h = new ImInt(outHeight.get());
         ByteBuffer result = this.boxed.getTexDataAsAlpha8(w, h);
@@ -193,7 +377,11 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public ByteBuffer getTexDataAsAlpha8(KIntReference outWidth, KIntReference outHeight, KIntReference outBytesPerPixel) {
+    public ByteBuffer getTexDataAsAlpha8(
+        final KIntReference outWidth,
+        final KIntReference outHeight,
+        final KIntReference outBytesPerPixel
+    ) {
         ImInt w = new ImInt(outWidth.get());
         ImInt h = new ImInt(outHeight.get());
         ImInt bpp = new ImInt(outBytesPerPixel.get());
@@ -205,7 +393,10 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public ByteBuffer getTexDataAsRGBA32(KIntReference outWidth, KIntReference outHeight) {
+    public ByteBuffer getTexDataAsRGBA32(
+        final KIntReference outWidth,
+        final KIntReference outHeight
+    ) {
         ImInt w = new ImInt(outWidth.get());
         ImInt h = new ImInt(outHeight.get());
         ByteBuffer result = this.boxed.getTexDataAsRGBA32(w, h);
@@ -215,7 +406,11 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public ByteBuffer getTexDataAsRGBA32(KIntReference outWidth, KIntReference outHeight, KIntReference outBytesPerPixel) {
+    public ByteBuffer getTexDataAsRGBA32(
+        final KIntReference outWidth,
+        final KIntReference outHeight,
+        final KIntReference outBytesPerPixel
+    ) {
         ImInt w = new ImInt(outWidth.get());
         ImInt h = new ImInt(outHeight.get());
         ImInt bpp = new ImInt(outBytesPerPixel.get());
@@ -287,18 +482,60 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public int addCustomRectFontGlyph(KImFont font, short id, int width, int height, float advanceX) {
-        return this.boxed.addCustomRectFontGlyph(KImGuiSpairUnboxer.unbox(font), id, width, height, advanceX);
+    public int addCustomRectFontGlyph(
+        final KImFont font,
+        short id,
+        int width,
+        int height,
+        float advanceX
+    ) {
+        return this.boxed.addCustomRectFontGlyph(
+            KImGuiSpairUnboxer.unbox(font),
+            id,
+            width,
+            height,
+            advanceX
+        );
     }
 
     @Override
-    public int addCustomRectFontGlyph(KImFont font, short id, int width, int height, float advanceX, KVector2f offset) {
-        return this.boxed.addCustomRectFontGlyph(KImGuiSpairUnboxer.unbox(font), id, width, height, advanceX, KImGuiSpairWrapper.wrap(offset));
+    public int addCustomRectFontGlyph(
+        final KImFont font,
+        short id,
+        int width,
+        int height,
+        float advanceX,
+        final KVector2f offset
+    ) {
+        return this.boxed.addCustomRectFontGlyph(
+            KImGuiSpairUnboxer.unbox(font),
+            id,
+            width,
+            height,
+            advanceX,
+            KImGuiSpairWrapper.wrap(offset)
+        );
     }
 
     @Override
-    public int addCustomRectFontGlyph(KImFont font, short id, int width, int height, float advanceX, float offsetX, float offsetY) {
-        return this.boxed.addCustomRectFontGlyph(KImGuiSpairUnboxer.unbox(font), id, width, height, advanceX, offsetX, offsetY);
+    public int addCustomRectFontGlyph(
+        final KImFont font,
+        short id,
+        int width,
+        int height,
+        float advanceX,
+        float offsetX,
+        float offsetY
+    ) {
+        return this.boxed.addCustomRectFontGlyph(
+            KImGuiSpairUnboxer.unbox(font),
+            id,
+            width,
+            height,
+            advanceX,
+            offsetX,
+            offsetY
+        );
     }
 
     @Override
@@ -355,7 +592,6 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     public void setLocked(boolean value) {
         this.boxed.setLocked(value);
     }
-
 
 
 }
