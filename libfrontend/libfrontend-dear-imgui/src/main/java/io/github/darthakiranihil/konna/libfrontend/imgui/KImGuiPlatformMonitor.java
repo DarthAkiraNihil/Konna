@@ -14,14 +14,12 @@ public interface KImGuiPlatformMonitor {
 
     float getMainPosX();
     float getMainPosY();
-    void getMainPos(KVector2f dst);
     void setMainPos(KVector2f value);
     void setMainPos(float valueX, float valueY);
     KVector2f getMainSize();
 
     float getMainSizeX();
     float getMainSizeY();
-    void getMainSize(KVector2f dst);
     void setMainSize(KVector2f value);
     void setMainSize(float valueX, float valueY);
     
@@ -29,14 +27,12 @@ public interface KImGuiPlatformMonitor {
 
     float getWorkPosX();
     float getWorkPosY();
-    void getWorkPos(KVector2f dst);
     void setWorkPos(KVector2f value);
     void setWorkPos(float valueX, float valueY);
     KVector2f getWorkSize();
 
     float getWorkSizeX();
     float getWorkSizeY();
-    void getWorkSize(KVector2f dst);
     void setWorkSize(KVector2f value);
     void setWorkSize(float valueX, float valueY);
     float getDpiScale();

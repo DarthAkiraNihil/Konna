@@ -49,6 +49,48 @@
     <suppress checks="ParameterNumber" files="KImGui.java"/>
     <suppress checks="FileLength" files="KImGui.java"/>
 
+    <suppress checks="ConstantName" files="KIm[a-zA-Z0-9]*Flags.java"/>
+    <suppress checks="ConstantName" files="KImGuiCol.java"/>
+    <suppress checks="ConstantName" files="KImGuiCond.java"/>
+    <suppress checks="ConstantName" files="KImGuiDataType.java"/>
+    <suppress checks="ConstantName" files="KImGuiDir.java"/>
+    <suppress checks="ConstantName" files="KImGuiKey.java"/>
+    <suppress checks="ConstantName" files="KImGuiMouseCursor.java"/>
+    <suppress checks="ConstantName" files="KImGuiTableBgTarget.java"/>
+    <suppress checks="ConstantName" files="KImGuiStyleVar.java"/>
+    <suppress checks="ConstantName" files="KImGuiSortDirection.java"/>
+    <suppress checks="ConstantName" files="KImGuiMouseSource.java"/>
+    <suppress checks="ConstantName" files="KImGuiMouseButton.java"/>
+
+    <suppress checks="JavadocVariable" files="KIm[a-zA-Z0-9]*Flags.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiCol.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiCond.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiDataType.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiDir.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiKey.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiMouseCursor.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiTableBgTarget.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiStyleVar.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiSortDirection.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiMouseSource.java"/>
+    <suppress checks="JavadocVariable" files="KImGuiMouseButton.java"/>
+
+    <suppress checks="JavadocStyle" files="KIm[a-zA-Z0-9]*Flags.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiCol.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiCond.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiDataType.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiDir.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiKey.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiMouseCursor.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiTableBgTarget.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiStyleVar.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiSortDirection.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiMouseSource.java"/>
+    <suppress checks="JavadocStyle" files="KImGuiMouseButton.java"/>
+
+    <suppress checks="FileLength" files="KImGuiSpair.java"/>
+    <suppress checks="ParameterNumber" files="KImGuiSpair.java"/>
+
     <suppress checks="MagicNumber" files="KBufferMaker.java"/>
     <suppress checks="MagicNumber" files="KGl33RenderFrontend.java"/>
     <suppress checks="MagicNumber" files="KGeometryUtils.java"/>

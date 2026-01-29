@@ -29,6 +29,11 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 public interface KFrame {
 
     /**
+     * Name of the event that is invoked on entering the frame loop.
+     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
+     */
+    String LOOP_ENTER_EVENT_NAME = "loop_enter";
+    /**
      * Tick event name. It is used by
      * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to
      * create the tick event that one should subscribe if its action is required
@@ -53,7 +58,21 @@ public interface KFrame {
      * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
      */
     String FRAME_FINISHED_EVENT_NAME = "frame_finished";
+    /**
+     * Name of the event that is invoked before swapping frame buffers.
+     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
+     */
+    String PRE_SWAP_EVENT_NAME = "pre_swap";
+    /**
+     * Name of the event that is invoked on frame loop leaving.
+     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
+     */
+    String LOOP_LEAVING_EVENT_NAME = "loop_leaving";
 
+    /**
+     * @return Handle of this frame
+     */
+    long handle();
     /**
      * Sets frame's title.
      * @param newTitle Title of the frame

@@ -1,5 +1,6 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+import io.github.darthakiranihil.konna.core.struct.KDestroyable;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 
 /**
@@ -8,7 +9,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2f;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KImFontConfig {
+public interface KImFontConfig extends KDestroyable {
     
     byte[] getFontData();
     void setFontData(byte[] fontData);
@@ -31,7 +32,7 @@ public interface KImFontConfig {
 
     float getGlyphExtraSpacingX();
     float getGlyphExtraSpacingY();
-    void getGlyphExtraSpacing(KVector2f dst);
+    // void getGlyphExtraSpacing(KVector2f dst);
     void setGlyphExtraSpacing(KVector2f value);
 
     void setGlyphExtraSpacing(float valueX, float valueY);
@@ -39,7 +40,7 @@ public interface KImFontConfig {
 
     float getGlyphOffsetX();
     float getGlyphOffsetY();
-    void getGlyphOffset(KVector2f dst);
+    // void getGlyphOffset(KVector2f dst);
     void setGlyphOffset(KVector2f value);
     void setGlyphOffset(float valueX, float valueY);
     short[] getGlyphRanges();

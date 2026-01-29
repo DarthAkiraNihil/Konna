@@ -45,6 +45,11 @@ public final class KTestFrame implements KFrame {
     }
 
     @Override
+    public long handle() {
+        return 0;
+    }
+
+    @Override
     public KSize getSize() {
         return KSize.squared(0);
     }

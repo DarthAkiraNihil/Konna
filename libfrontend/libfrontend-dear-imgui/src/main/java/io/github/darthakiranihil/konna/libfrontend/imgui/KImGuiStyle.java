@@ -20,7 +20,7 @@ public interface KImGuiStyle {
     KVector2f getWindowPadding();
     float getWindowPaddingX();
     float getWindowPaddingY();
-    void getWindowPadding(KVector2f dst);
+    // void getWindowPadding(KVector2f dst);
     void setWindowPadding(KVector2f value);
     void setWindowPadding(float valueX, float valueY);
     
@@ -33,14 +33,14 @@ public interface KImGuiStyle {
     KVector2f getWindowMinSize();
     float getWindowMinSizeX();
     float getWindowMinSizeY();
-    void getWindowMinSize(KVector2f dst);
+    // void getWindowMinSize(KVector2f dst);
     void setWindowMinSize(KVector2f value);
     void setWindowMinSize(float valueX, float valueY);
 
     KVector2f getWindowTitleAlign();
     float getWindowTitleAlignX();
     float getWindowTitleAlignY();
-    void getWindowTitleAlign(KVector2f dst);
+    // void getWindowTitleAlign(KVector2f dst);
     void setWindowTitleAlign(KVector2f value);
     void setWindowTitleAlign(float valueX, float valueY);
     
@@ -66,7 +66,7 @@ public interface KImGuiStyle {
     KVector2f getFramePadding();
     float getFramePaddingX();
     float getFramePaddingY();
-    void getFramePadding(KVector2f dst);
+    // void getFramePadding(KVector2f dst);
     void setFramePadding(KVector2f value);
     void setFramePadding(float valueX, float valueY);
     float getFrameRounding();
@@ -79,28 +79,28 @@ public interface KImGuiStyle {
     KVector2f getItemSpacing();
     float getItemSpacingX();
     float getItemSpacingY();
-    void getItemSpacing(KVector2f dst);
+    // void getItemSpacing(KVector2f dst);
     void setItemSpacing(KVector2f value);
     void setItemSpacing(float valueX, float valueY);
 
     KVector2f getItemInnerSpacing();
     float getItemInnerSpacingX();
     float getItemInnerSpacingY();
-    void getItemInnerSpacing(KVector2f dst);
+    // void getItemInnerSpacing(KVector2f dst);
     void setItemInnerSpacing(KVector2f value);
     void setItemInnerSpacing(float valueX, float valueY);
 
     KVector2f getCellPadding();
     float getCellPaddingX();
     float getCellPaddingY();
-    void getCellPadding(KVector2f dst);
+    // void getCellPadding(KVector2f dst);
     void setCellPadding(KVector2f value);
     void setCellPadding(float valueX, float valueY);
 
     KVector2f getTouchExtraPadding();
     float getTouchExtraPaddingX();
     float getTouchExtraPaddingY();
-    void getTouchExtraPadding(KVector2f dst);
+    // void getTouchExtraPadding(KVector2f dst);
     void setTouchExtraPadding(KVector2f value);
     void setTouchExtraPadding(float valueX, float valueY);
 
@@ -119,6 +119,7 @@ public interface KImGuiStyle {
     float getGrabMinSize();
     void setGrabMinSize(float value);
 
+    float getGrabRounding();
     void setGrabRounding(float value);
     float getLogSliderDeadzone();
     void setLogSliderDeadzone(float value);
@@ -134,13 +135,13 @@ public interface KImGuiStyle {
     KVector2f getButtonTextAlign();
     float getButtonTextAlignX();
     float getButtonTextAlignY();
-    void getButtonTextAlign(KVector2f dst);
+    // void getButtonTextAlign(KVector2f dst);
     void setButtonTextAlign(KVector2f value);
     void setButtonTextAlign(float valueX, float valueY);
     KVector2f getSelectableTextAlign();
     float getSelectableTextAlignX();
     float getSelectableTextAlignY();
-    void getSelectableTextAlign(KVector2f dst);
+    // void getSelectableTextAlign(KVector2f dst);
     void setSelectableTextAlign(KVector2f value);
     void setSelectableTextAlign(float valueX, float valueY);
 
@@ -151,27 +152,27 @@ public interface KImGuiStyle {
 
     float getSeparatorTextAlignX();
     float getSeparatorTextAlignY();
-    void getSeparatorTextAlign(KVector2f dst);
+    // void getSeparatorTextAlign(KVector2f dst);
     void setSeparatorTextAlign(KVector2f value);
     void setSeparatorTextAlign(float valueX, float valueY);
     
     KVector2f getSeparatorTextPadding();
     float getSeparatorTextPaddingX();
     float getSeparatorTextPaddingY();
-    void getSeparatorTextPadding(KVector2f dst);
+    // void getSeparatorTextPadding(KVector2f dst);
     void setSeparatorTextPadding(KVector2f value);
     void setSeparatorTextPadding(float valueX, float valueY);
     KVector2f getDisplayWindowPadding();
     float getDisplayWindowPaddingX();
     float getDisplayWindowPaddingY();
-    void getDisplayWindowPadding(KVector2f dst);
+    // void getDisplayWindowPadding(KVector2f dst);
     void setDisplayWindowPadding(KVector2f value);
     void setDisplayWindowPadding(float valueX, float valueY);
 
     KVector2f getDisplaySafeAreaPadding();
     float getDisplaySafeAreaPaddingX();
     float getDisplaySafeAreaPaddingY();
-    void getDisplaySafeAreaPadding(KVector2f dst);
+    // void getDisplaySafeAreaPadding(KVector2f dst);
     void setDisplaySafeAreaPadding(KVector2f value);
     void setDisplaySafeAreaPadding(float valueX, float valueY);
 

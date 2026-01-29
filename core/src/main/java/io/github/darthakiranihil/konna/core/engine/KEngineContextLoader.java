@@ -35,4 +35,14 @@ public interface KEngineContextLoader {
      * @return Loaded context
      */
     KEngineContext load(KApplicationFeatures features);
+
+    /**
+     * Executes post-load for previously loaded context.
+     * @param context Loaded context
+     * @param features Current application features
+     * @since 0.3.0
+     */
+    default void postLoad(final KEngineContext context, final KApplicationFeatures features) {
+
+    }
 }

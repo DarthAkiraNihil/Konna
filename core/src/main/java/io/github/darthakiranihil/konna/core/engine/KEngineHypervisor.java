@@ -54,6 +54,11 @@ import java.util.Map;
 public class KEngineHypervisor extends KObject {
 
     /**
+     * Name of the event that is invoked when the hypervisor is ready.
+     */
+    public static final String HYPERVISOR_READY_EVENT_NAME = "ready";
+
+    /**
      * Constant for one second in nanoseconds in float type.
      */
     public static final float ONE_SEC_IN_NANOS = 1000000000.0f;
@@ -83,6 +88,10 @@ public class KEngineHypervisor extends KObject {
     private final KSimpleEvent newFrame;
     private final KSimpleEvent frameFinished;
     private final KSimpleEvent debugTick;
+    private final KSimpleEvent loopEnter;
+    private final KSimpleEvent preSwap;
+    private final KSimpleEvent ready;
+    private final KSimpleEvent loopLeaving;
 
     private boolean debug;
 
@@ -108,6 +117,10 @@ public class KEngineHypervisor extends KObject {
         this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
         this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
         this.debugTick = new KSimpleEvent(KFrame.DEBUG_TICK_EVENT_NAME);
+        this.loopEnter = new KSimpleEvent(KFrame.LOOP_ENTER_EVENT_NAME);
+        this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
+        this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
+    this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
     }
 
     /**
@@ -140,11 +153,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx = contextLoader.load(features);
-
-        this.ctx.registerEvent(this.tick);
-        this.ctx.registerEvent(this.newFrame);
-        this.ctx.registerEvent(this.frameFinished);
-        this.ctx.registerEvent(this.debugTick);
+        this.registerSystemEvents();
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
         KSystemLogger.info(
@@ -265,6 +274,10 @@ public class KEngineHypervisor extends KObject {
 
         }
 
+        // ready
+        this.ready.invokeSync();
+        contextLoader.postLoad(this.ctx, features);
+
     }
 
     /**
@@ -295,11 +308,13 @@ public class KEngineHypervisor extends KObject {
             this.frame.getClass().getCanonicalName()
         );
 
+        this.loopEnter.invokeSync();
         while (!this.frame.shouldClose()) {
 
             try {
 
                 Instant beginTime = Instant.now();
+                // new_frame
                 this.newFrame.invokeSync();
 
                 this.tick.invokeSync();
@@ -310,15 +325,20 @@ public class KEngineHypervisor extends KObject {
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
                 }
+
+                // pre_swap
+                this.preSwap.invokeSync();
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
-                this.frameFinished.invokeSync();
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 KSystemLogger.debug(
                     "hypervisor", "FPS: %f",
                     ONE_SEC_IN_NANOS / deltaTime.getNano()
                 );
+
+                this.frameFinished.invokeSync();
+                // frame_finished
 
             } catch (KException kex) {
                 switch (kex.getSeverity()) {
@@ -341,6 +361,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
+        this.loopLeaving.invokeSync();
         this.shutdown();
 
     }
@@ -364,6 +385,26 @@ public class KEngineHypervisor extends KObject {
             this.frame.setShouldClose(true);
             this.frame = null;
         }
+    }
+
+    /**
+     * Registers system events for this hypervisor.
+     * @since 0.3.0
+     */
+    protected void registerSystemEvents() {
+        if (this.ctx == null) {
+            return; // will be checked on entering frame loop
+        }
+
+        this.ctx.registerEvent(this.tick);
+        this.ctx.registerEvent(this.newFrame);
+        this.ctx.registerEvent(this.frameFinished);
+        this.ctx.registerEvent(this.debugTick);
+        this.ctx.registerEvent(this.preSwap);
+        this.ctx.registerEvent(this.loopEnter);
+        this.ctx.registerEvent(this.ready);
+        this.ctx.registerEvent(this.loopLeaving);
+
     }
 
 }

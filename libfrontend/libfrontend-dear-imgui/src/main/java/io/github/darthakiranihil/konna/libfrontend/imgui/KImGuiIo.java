@@ -3,6 +3,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrConsumer;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrSupplier;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Interface representing ImGuiIO of Dear ImGui.
@@ -26,14 +27,14 @@ public interface KImGuiIo {
     void setDisplaySize(KVector2f value);
     float getDisplaySizeX();
     float getDisplaySizeY();
-    void getDisplaySize(KVector2f dst);
+    // void getDisplaySize(KVector2f dst);
     void setDisplaySize(float valueX, float valueY);
     float getDeltaTime();
     void setDeltaTime(float value);
     float getIniSavingRate();
     void setIniSavingRate(float value);
     String getIniFilename();
-    void setIniFilename(String value);
+    void setIniFilename(@Nullable String value);
     String getLogFilename();
     void setLogFilename(String value);
     KImFontAtlas getFonts();
@@ -48,7 +49,7 @@ public interface KImGuiIo {
     void setDisplayFramebufferScale(KVector2f value);
     float getDisplayFramebufferScaleX();
     float getDisplayFramebufferScaleY();
-    void getDisplayFramebufferScale(KVector2f dst);
+    // void getDisplayFramebufferScale(KVector2f dst);
     void setDisplayFramebufferScale(float valueX, float valueY);
     boolean getConfigDockingNoSplit();
     void setConfigDockingNoSplit(boolean value);
@@ -261,7 +262,7 @@ public interface KImGuiIo {
 
     float getMouseDeltaY();
 
-    void getMouseDelta(KVector2f dst);
+    // void getMouseDelta(KVector2f dst);
 
     void setMouseDelta(float valueX, float valueY);
 
@@ -277,7 +278,7 @@ public interface KImGuiIo {
 
     float getMousePosY();
 
-    void getMousePos(KVector2f dst);
+    // void getMousePos(KVector2f dst);
 
     void setMousePos(float valueX, float valueY);
 
@@ -337,7 +338,7 @@ public interface KImGuiIo {
 
     float getMousePosPrevY();
 
-    void getMousePosPrev(KVector2f dst);
+    // void getMousePosPrev(KVector2f dst);
 
     void setMousePosPrev(float valueX, float valueY);
 

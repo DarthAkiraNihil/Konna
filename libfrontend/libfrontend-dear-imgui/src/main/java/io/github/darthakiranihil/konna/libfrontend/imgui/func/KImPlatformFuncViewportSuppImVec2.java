@@ -16,10 +16,9 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui.func;
 
+import io.github.darthakiranihil.konna.core.struct.ref.KReference;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
-
-import java.lang.ref.Reference;
 
 /**
  * Interface representing ImPlatformFuncViewportSuppImVec2 of Dear ImGui.
@@ -30,6 +29,6 @@ import java.lang.ref.Reference;
 @FunctionalInterface
 public interface KImPlatformFuncViewportSuppImVec2 {
 
-    void get(KImGuiViewport vp, Reference<KVector2f> dstVec);
+    void get(KImGuiViewport vp, KReference<KVector2f> dstVec);
 
 }

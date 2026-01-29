@@ -16,48 +16,50 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+import io.github.darthakiranihil.konna.core.struct.KDestroyable;
+
 /**
  * Interface representing ImFontGlyph of Dear ImGui.
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KImFontGlyph {
+public interface KImFontGlyph extends KDestroyable {
 
     int getColored();
-    int setColored(int value);
+    void setColored(int value);
 
     int getVisible();
-    int setVisible(int value);
+    void setVisible(int value);
 
     int getCodepoint();
-    int setCodepoint(int value);
+    void setCodepoint(int value);
 
     float getAdvanceX();
-    float setAdvanceX(float value);
+    void setAdvanceX(float value);
 
     float getX0();
-    float setX0(float value);
+    void setX0(float value);
 
     float getY0();
-    float setY0(float value);
+    void setY0(float value);
 
     float getX1();
-    float setX1(float value);
+    void setX1(float value);
 
     float getY1();
-    float setY1(float value);
+    void setY1(float value);
 
     float getU0();
-    float setU0(float value);
+    void setU0(float value);
 
     float getV0();
-    float setV0(float value);
+    void setV0(float value);
 
     float getU1();
-    float setU1(float value);
+    void setU1(float value);
 
     float getV1();
-    float setV1(float value);
+    void setV1(float value);
 
 }

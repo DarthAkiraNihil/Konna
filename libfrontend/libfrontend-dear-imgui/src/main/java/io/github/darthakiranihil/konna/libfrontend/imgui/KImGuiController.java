@@ -35,7 +35,7 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
  */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
-public abstract class KImGuiCapsule extends KObject {
+public abstract class KImGuiController extends KObject {
 
     /**
      * Dear ImGui reference.
@@ -48,7 +48,7 @@ public abstract class KImGuiCapsule extends KObject {
      * @param imGui Dear ImGui
      * @param eventSystem Event system
      */
-    public KImGuiCapsule(
+    public KImGuiController(
         final KImGui imGui,
         final KEventSystem eventSystem
     ) {
@@ -60,9 +60,14 @@ public abstract class KImGuiCapsule extends KObject {
             newFrame.subscribe(this::onNewFrame);
         }
 
-        KSimpleEvent frameFinished = eventSystem.getSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
-        if (frameFinished != null) {
-            frameFinished.subscribe(this::onFrameFinished);
+        KSimpleEvent preSwap = eventSystem.getSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
+        if (preSwap != null) {
+            preSwap.subscribe(this::onFrameFinished);
+        }
+
+        KSimpleEvent loopLeaving = eventSystem.getSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
+        if (loopLeaving != null) {
+            loopLeaving.subscribe(this::onDestroy);
         }
     }
 
@@ -75,5 +80,10 @@ public abstract class KImGuiCapsule extends KObject {
      * Finalizes Dear ImGui in this frame.
      */
     protected abstract void onFrameFinished();
+
+    /**
+     * Finalized Dear ImGui in this application.
+     */
+    protected abstract void onDestroy();
 
 }

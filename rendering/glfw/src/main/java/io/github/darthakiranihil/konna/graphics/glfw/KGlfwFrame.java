@@ -175,7 +175,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     private final IntBuffer pHeight;
     private final List<KFrameLock> frameLocks;
 
-    private long handle;
+    private final long handle;
     private KSize currentSize;
 
 
@@ -217,6 +217,11 @@ public class KGlfwFrame extends KObject implements KFrame {
         this.pWidth = IntBuffer.allocate(1);
         this.updateSize();
         this.frameLocks = new LinkedList<>();
+    }
+
+    @Override
+    public long handle() {
+        return this.handle;
     }
 
     @Override

@@ -153,7 +153,7 @@ class KShapeTestClass extends KStandardTestClass {
 
         Assertions.assertEquals(coordinates, rectanglePoints[0]);
         Assertions.assertEquals(coordinates.add(new KVector2i(size.width(), 0)), rectanglePoints[1]);
-        Assertions.assertEquals(coordinates.add(size.vector()), rectanglePoints[2]);
+        Assertions.assertEquals(coordinates.add(size.asIntVector()), rectanglePoints[2]);
         Assertions.assertEquals(coordinates.add(new KVector2i(0, size.height())), rectanglePoints[3]);
 
         Assertions.assertEquals(size.width(), rectangle.width());

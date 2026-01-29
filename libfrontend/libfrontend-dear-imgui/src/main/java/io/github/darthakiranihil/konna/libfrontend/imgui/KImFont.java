@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
+import io.github.darthakiranihil.konna.core.struct.KDestroyable;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 
@@ -25,10 +26,10 @@ import io.github.darthakiranihil.konna.core.struct.KVector4f;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-public interface KImFont {
+public interface KImFont extends KDestroyable {
 
     float getFallbackAdvanceX();
-    float setFallbackAdvanceX(float value);
+    void setFallbackAdvanceX(float value);
     
     float getFontSize();
     void setFontSize(float value);
@@ -45,11 +46,11 @@ public interface KImFont {
     short getEllipsisCharCount();
     void setEllipsisCharCount(short value);
 
-    short getEllipsisWidth();
-    void setEllipsisWidth(short value);
+    float getEllipsisWidth();
+    void setEllipsisWidth(float value);
 
-    short getEllipsisCharStep();
-    void setEllipsisCharStep(short value);
+    float getEllipsisCharStep();
+    void setEllipsisCharStep(float value);
 
     boolean getDirtyLookupTables();
     void setDirtyLookupTables(boolean value);
