@@ -26,6 +26,12 @@ import io.github.darthakiranihil.konna.core.struct.ref.*;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
+/**
+ * Dear ImGui libfrontend implementation using SpaiR bindings.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
 public final class KImGuiSpair extends KObject implements KImGui {

@@ -27,6 +27,12 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
+/**
+ * ImGui controller implementation using SpaiR bindings.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
 @KContainerModifier
