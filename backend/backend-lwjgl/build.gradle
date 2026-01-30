@@ -1,6 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-import org.jreleaser.model.Active
-
 plugins {
     id 'java'
     id 'maven-publish'
@@ -9,30 +6,18 @@ plugins {
 
 ext {
     artifactId = "konna.backend-lwjgl"
-    lwjglVersion = "3.3.6"
+    lwjglVersion = "3.4.0"
+    natives = List.of(
+        "natives-freebsd",
+        "natives-linux",
+        "natives-macos",
+        "natives-windows",
+        "natives-windows-arm64",
+        "natives-windows-x86",
+    )
 }
 
 description = "Library frontend implementations using LWJGL for Konna Engine"
-
-switch (OperatingSystem.current()) {
-    case OperatingSystem.LINUX:
-        project.ext.lwjglNatives = "natives-linux"
-        def osArch = System.getProperty("os.arch")
-        if (osArch.startsWith("arm") || osArch.startsWith("aarch64")) {
-            project.ext.lwjglNatives += osArch.contains("64") || osArch.startsWith("armv8") ? "-arm64" : "-arm32"
-        } else if  (osArch.startsWith("ppc")) {
-            project.ext.lwjglNatives += "-ppc64le"
-        } else if  (osArch.startsWith("riscv")) {
-            project.ext.lwjglNatives += "-riscv64"
-        }
-        break
-    case OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "natives-macos"
-        break
-    case OperatingSystem.WINDOWS:
-        project.ext.lwjglNatives = "natives-windows"
-        break
-}
 
 dependencies {
 
@@ -50,13 +35,16 @@ dependencies {
     implementation "org.lwjgl:lwjgl-opengl"
     implementation "org.lwjgl:lwjgl-opengles"
     implementation "org.lwjgl:lwjgl-stb"
-    implementation "org.lwjgl:lwjgl::$lwjglNatives"
-    implementation "org.lwjgl:lwjgl-assimp::$lwjglNatives"
-    implementation "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-    implementation "org.lwjgl:lwjgl-openal::$lwjglNatives"
-    implementation "org.lwjgl:lwjgl-opengl::$lwjglNatives"
-    implementation "org.lwjgl:lwjgl-opengles::$lwjglNatives"
-    implementation "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    project.ext.natives.forEach {
+        implementation "org.lwjgl:lwjgl::$it"
+        implementation "org.lwjgl:lwjgl-assimp::$it"
+        implementation "org.lwjgl:lwjgl-glfw::$it"
+        implementation "org.lwjgl:lwjgl-openal::$it"
+        implementation "org.lwjgl:lwjgl-opengl::$it"
+        implementation "org.lwjgl:lwjgl-opengles::$it"
+        implementation "org.lwjgl:lwjgl-stb::$it"
+    }
 
 
 }
