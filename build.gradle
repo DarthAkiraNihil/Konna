@@ -1,28 +1,39 @@
-import org.jreleaser.model.Active
-
 plugins {
     id 'java'
 
     id 'distribution'
 
     id 'jacoco'
+    id 'jacoco-report-aggregation'
     id 'maven-publish'
 
     id 'org.jreleaser' version '1.19.0'
     id 'checkstyle'
-
 }
 
-group = 'io.github.darthakiranihil.konna'
-version = '0.3.0'
+ext {
+    konnaModules = subprojects.findAll {
+            it.name.startsWith("component-") // Konna std components
+        ||  it.name.startsWith("libfrontend-") // Konna libfrontends
+        ||  it.name.startsWith("backend-") // Konna std backends
+        ||  it.name.startsWith("implementations-") // Konna std implementations
+        ||  it.name == "core" // Konna core
+    }
+    allKonnaProjects = konnaModules + project(":konna-bom")
+}
+
+group = 'io.github.darthakiranihil'
 
 subprojects {
+    if (it.name == "konna-bom") {
+        return;
+    }
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'org.jreleaser'
     apply plugin: 'checkstyle'
 
-    archivesBaseName = "Konna.${it.name}"
+    //archivesBaseName = "Konna.${it.name}"
     checkstyle {
         toolVersion = "11.0.0"
         checkstyleTest.enabled = false
@@ -47,18 +58,9 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    implementation(project(":core"))
-
-    implementation(project(":components:graphics"))
-
-    implementation(project(":libfrontend:libfrontend-opengl"))
-    implementation(project(":libfrontend:libfrontend-glfw"))
-    implementation(project(":libfrontend:libfrontend-stb"))
-
-    implementation(project(":rendering:opengl33"))
-    implementation(project(":rendering:glfw"))
-
-    implementation(project(":backend:backend-lwjgl"))
+    konnaModules.each {
+        module -> jacocoAggregation(module.toString())
+    }
 }
 
 distributions {
@@ -69,40 +71,59 @@ distributions {
     }
 }
 
-def exportedProjects = [
-    ":",
-    ":core",
-    ":components:graphics",
-    ":libfrontend:libfrontend-opengl",
-    ":libfrontend:libfrontend-glfw",
-    ":libfrontend:libfrontend-stbimage",
-    ":rendering:opengl33",
-    ":rendering:glfw",
-    ":backend:backend-lwjgl",
-]
+tasks.register('createJarBundle', Zip) {
+    dependsOn build
 
-tasks.withType(Javadoc).configureEach {
-    options {
-        addStringOption('Xdoclint:none', '-quiet')
+    from("${rootDir}/build/libs/") {
+        exclude "*-sources.jar"
+        exclude "*-javadoc.jar"
     }
-    options.author = true
-    options.tags = [ "apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:" ]
+
+    destinationDirectory = file("$rootDir/build/distributions")
+    archiveFileName = "Konna.bundle-jar-${version}.zip"
 }
 
-tasks.register('allJavadoc', Javadoc) {
-    source exportedProjects.collect { project(it).sourceSets.main.allJava }
-    classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = layout.buildDirectory.dir("/docs/javadoc-all").get().asFile
+tasks.register('createJavadocBundle', Zip) {
+    dependsOn build
+
+    from("${rootDir}/build/libs/") {
+        include "*-javadoc.jar"
+    }
+    destinationDirectory = file("$rootDir/build/distributions")
+    archiveFileName = "Konna.bundle-javadoc-${version}.zip"
 }
+
+tasks.register('createSourceBundle', Zip) {
+    dependsOn build
+
+    from("${rootDir}/build/libs/") {
+        include "*-sources.jar"
+    }
+    destinationDirectory = file("$rootDir/build/distributions")
+    archiveFileName = "Konna.bundle-sources-${version}.zip"
+}
+
+tasks.register('createBundle') {
+    dependsOn(
+        createJarBundle,
+        createJavadocBundle,
+        createSourceBundle,
+    )
+}
+
+build {
+    finalizedBy createBundle
+}
+
 
 tasks.register('jacocoRootReport', JacocoReport) {
     description = 'Generates an aggregate report from all subprojects'
-    dependsOn(subprojects.test)
+    dependsOn(konnaModules.test)
 
     additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
     classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
+    executionData = files(konnaModules.jacocoTestReport.executionData)
 
     reports {
         html.required = true
@@ -114,6 +135,8 @@ test {
     useJUnitPlatform()
     finalizedBy jacocoRootReport
 }
+
+
 
 jreleaser {
     gitRootSearch = true
@@ -128,11 +151,23 @@ jreleaser {
         }
     }
     signing {
-        active = Active.ALWAYS
+        active = 'ALWAYS'
         armored = true
         verify = true
     }
+    deploy {
+        maven {
+            mavenCentral.create("sonatype") {
+                active = 'ALWAYS'
+                url = "https://central.sonatype.com/api/v1/publisher"
+                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+                setAuthorization("Basic")
+                retryDelay = 60
+            }
+        }
+    }
 }
+
 
 jacocoTestReport {
     dependsOn test
@@ -151,7 +186,17 @@ jacocoTestReport {
         html.required = true
         html.destination file("${layout.buildDirectory}/jacocoHtml")
     }
-//    sourceSets
-    sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
-    // jacocoReportPath = "${layout.buildDirectory}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+
+   // sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
 }
+
+configure(allKonnaProjects) { project -> {
+    apply plugin: "org.jreleaser"
+    group = groupId
+}}
+
+configure(konnaModules) { project -> {
+    apply from: "${rootDir}/gradle/module.gradle"
+}}
+
+

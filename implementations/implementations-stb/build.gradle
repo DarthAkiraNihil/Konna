@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.implementations-stb"
+}
+
+description = "Konna interfaces implementations using stb libfrontend"
+
+dependencies {
+    implementation project(":libfrontend-stb")
+    implementation project(":component-graphics")
+
+    testImplementation project(":backend-lwjgl")
+}

@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2f;
 /**
  * Interface representing ImPlatformFuncViewportImVec2 of Dear ImGui.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @FunctionalInterface

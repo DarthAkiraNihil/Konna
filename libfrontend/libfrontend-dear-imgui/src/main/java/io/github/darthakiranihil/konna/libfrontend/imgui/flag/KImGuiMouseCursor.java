@@ -6,7 +6,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * SetMouseCursor(), which is why we have some cursors that are marked unused here.
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImGuiMouseCursor {
     /**

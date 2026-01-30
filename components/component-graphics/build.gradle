@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.graphics"
+}
+
+description = "Graphics component of Konna engine"
+
+dependencies {
+
+    testImplementation project(":backend-lwjgl")
+    testImplementation project(":libfrontend-stb")
+    testImplementation project(":implementations-stb")
+    testImplementation project(":implementations-opengl33")
+
+}

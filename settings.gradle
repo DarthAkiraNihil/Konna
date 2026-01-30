@@ -8,32 +8,29 @@ pluginManagement {
 rootProject.name = 'Konna'
 include 'core'
 
-include 'components:graphics'
-findProject(':components:graphics')?.name = 'graphics'
+include 'component-graphics'
 
-include 'libfrontend:libfrontend-opengl'
-findProject(':libfrontend:libfrontend-opengl')?.name = 'libfrontend-opengl'
+include 'libfrontend-opengl'
+include 'libfrontend-glfw'
+include 'libfrontend-stb'
+include 'libfrontend-dear-imgui'
 
-include 'libfrontend:libfrontend-glfw'
-findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
+include 'implementations-opengl33'
+include 'implementations-glfw'
+include 'implementations-stb'
 
-include 'libfrontend:libfrontend-stb'
-findProject(':libfrontend:libfrontend-stb')?.name = 'libfrontend-stb'
+include 'backend-spair'
+include 'backend-lwjgl'
 
-include 'libfrontend:libfrontend-dear-imgui'
-findProject(':libfrontend:libfrontend-dear-imgui')?.name = 'libfrontend-dear-imgui'
+findProject(':component-graphics').projectDir = new File("components/component-graphics")
+findProject(':libfrontend-opengl').projectDir = new File("libfrontend/libfrontend-opengl")
+findProject(':libfrontend-glfw').projectDir = new File("libfrontend/libfrontend-glfw")
+findProject(':libfrontend-stb').projectDir = new File("libfrontend/libfrontend-stb")
+findProject(':libfrontend-dear-imgui').projectDir = new File("libfrontend/libfrontend-dear-imgui")
+findProject(':implementations-opengl33').projectDir = new File("implementations/implementations-opengl33")
+findProject(':implementations-glfw').projectDir = new File("implementations/implementations-glfw")
+findProject(':implementations-stb').projectDir = new File("implementations/implementations-stb")
+findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
+findProject(':backend-spair').projectDir = new File("backend/backend-spair")
 
-include 'rendering:opengl33'
-findProject(':rendering:opengl33')?.name = 'opengl33'
-
-include 'rendering:glfw'
-findProject(':rendering:glfw')?.name = 'glfw'
-
-include 'rendering:stb'
-findProject(':rendering:stb')?.name = 'stb'
-
-include 'backend:backend-lwjgl'
-findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
-
-include 'backend:backend-spair'
-findProject(':backend:backend-spair')?.name = 'backend-spair'
+include 'konna-bom'

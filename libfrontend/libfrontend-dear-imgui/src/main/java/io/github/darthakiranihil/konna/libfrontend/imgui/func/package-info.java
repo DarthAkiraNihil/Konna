@@ -1,7 +1,7 @@
 /**
  * Provides functional interfaces for Dear ImGui functions used by it.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @NullMarked

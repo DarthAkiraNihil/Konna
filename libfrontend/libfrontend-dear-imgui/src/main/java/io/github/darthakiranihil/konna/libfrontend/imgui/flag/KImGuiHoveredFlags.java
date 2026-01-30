@@ -8,7 +8,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHovered() calls.
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImGuiHoveredFlags {
     /**

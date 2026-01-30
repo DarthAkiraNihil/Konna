@@ -5,7 +5,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * Backend capabilities flags stored in io.BackendFlags. Set by imgui_impl_xxx or custom backend.
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImGuiBackendFlags {
     /**

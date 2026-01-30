@@ -26,7 +26,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * meaningful again. - Read on documentation at the top of imgui_tables.cpp for details.
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImGuiTableFlags {
     /**

@@ -37,7 +37,7 @@ import java.nio.*;
  * using corresponding bindings from {@link GLFW}.
  *
  * @author Darth Akira Nihil
- * @version 0.1.0
+ * @version 0.3.0
  */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport

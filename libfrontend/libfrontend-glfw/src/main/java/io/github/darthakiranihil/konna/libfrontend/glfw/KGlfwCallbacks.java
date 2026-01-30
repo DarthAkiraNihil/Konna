@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
 /**
  * Accessor interface, providing general methods of GLFW callbacks.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KGlfwCallbacks {

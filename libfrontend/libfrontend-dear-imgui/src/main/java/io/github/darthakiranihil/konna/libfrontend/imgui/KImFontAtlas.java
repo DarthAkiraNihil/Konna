@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 /**
  * Interface representing ImFontAtlas    of Dear ImGui.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KImFontAtlas extends KDestroyable {

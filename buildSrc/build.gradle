@@ -1,0 +1,13 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    mavenCentral()
+}
+
+//dependencies {
+//    implementation "org.jspecify:jspecify:1.0.0"
+//    compileOnly 'org.jetbrains:annotations:26.0.2-1'
+//    implementation project(":core")
+//}

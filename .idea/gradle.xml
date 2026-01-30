@@ -4,26 +4,35 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/backend" />
             <option value="$PROJECT_DIR$/backend/backend-lwjgl" />
             <option value="$PROJECT_DIR$/backend/backend-spair" />
-            <option value="$PROJECT_DIR$/components" />
-            <option value="$PROJECT_DIR$/components/graphics" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/components/component-graphics" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/libfrontend" />
+            <option value="$PROJECT_DIR$/implementations/implementations-glfw" />
+            <option value="$PROJECT_DIR$/implementations/implementations-opengl33" />
+            <option value="$PROJECT_DIR$/implementations/implementations-stb" />
+            <option value="$PROJECT_DIR$/konna-bom" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-dear-imgui" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-stb" />
-            <option value="$PROJECT_DIR$/rendering" />
-            <option value="$PROJECT_DIR$/rendering/glfw" />
-            <option value="$PROJECT_DIR$/rendering/opengl33" />
-            <option value="$PROJECT_DIR$/rendering/stb" />
           </set>
         </option>
       </GradleProjectSettings>

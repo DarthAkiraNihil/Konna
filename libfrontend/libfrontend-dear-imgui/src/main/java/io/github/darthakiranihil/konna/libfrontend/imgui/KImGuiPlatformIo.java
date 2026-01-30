@@ -5,7 +5,7 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.func.*;
 /**
  * Interface representing ImGuiPlatformIO of Dear ImGui.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KImGuiPlatformIo {

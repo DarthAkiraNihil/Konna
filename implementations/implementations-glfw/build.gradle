@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.implementations-glfw"
+}
+
+description = "Konna interfaces implementations using GLFW libfrontend"
+
+dependencies {
+    implementation project(":libfrontend-glfw")
+}

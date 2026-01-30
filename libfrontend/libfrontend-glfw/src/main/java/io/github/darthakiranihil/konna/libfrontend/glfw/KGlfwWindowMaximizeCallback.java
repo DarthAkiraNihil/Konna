@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.libfrontend.glfw;
 /**
  * Wrapper interface for GLFW window maximization callback.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @FunctionalInterface

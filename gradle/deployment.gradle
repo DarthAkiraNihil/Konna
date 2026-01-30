@@ -1,0 +1,54 @@
+apply plugin: "maven-publish"
+apply plugin: "signing"
+
+publishing {
+    repositories {
+        maven {
+            setUrl(layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+    publications {
+        create("release", MavenPublication) {
+            from(components.java)
+
+            pom {
+                name = project.name
+                description = project.description
+
+                groupId = 'io.github.darthakiranihil'
+                version = findProperty("konna.version")
+                afterEvaluate {
+                    artifactId = project.ext.artifactId
+                }
+
+                url.set("https://github.com/DarthAkiraNihil/Konna")
+
+                issueManagement {
+                    url.set("https://github.com/DarthAkiraNihil/Konna/issues")
+                }
+
+                scm {
+                    url.set("https://github.com/DarthAkiraNihil/Konna")
+                    connection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                    developerConnection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("AkiraNihil")
+                        name.set("Egor Zverev")
+                        email.set("egorzverev666@gmail.com")
+                    }
+                }
+            }
+        }
+    }
+}
