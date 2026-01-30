@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/implementations/implementations-glfw" />
             <option value="$PROJECT_DIR$/implementations/implementations-opengl33" />
             <option value="$PROJECT_DIR$/implementations/implementations-stb" />
+            <option value="$PROJECT_DIR$/konna-bom" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-dear-imgui" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />

@@ -19,11 +19,15 @@ ext {
         ||  it.name.startsWith("implementations-") // Konna std implementations
         ||  it.name == "core" // Konna core
     }
+    allKonnaProjects = konnaModules + project(":konna-bom")
 }
 
 group = 'io.github.darthakiranihil'
 
 subprojects {
+    if (it.name == "konna-bom") {
+        return;
+    }
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'org.jreleaser'
@@ -114,12 +118,12 @@ build {
 
 tasks.register('jacocoRootReport', JacocoReport) {
     description = 'Generates an aggregate report from all subprojects'
-    dependsOn(subprojects.test)
+    dependsOn(konnaModules.test)
 
     additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
     classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
+    executionData = files(konnaModules.jacocoTestReport.executionData)
 
     reports {
         html.required = true
@@ -186,8 +190,13 @@ jacocoTestReport {
    // sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
 }
 
-configure(konnaModules) { project -> {
+configure(allKonnaProjects) { project -> {
     apply plugin: "org.jreleaser"
-    apply from: "${rootDir}/gradle/module.gradle"
     group = groupId
 }}
+
+configure(konnaModules) { project -> {
+    apply from: "${rootDir}/gradle/module.gradle"
+}}
+
+

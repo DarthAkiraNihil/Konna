@@ -32,3 +32,5 @@ findProject(':implementations-glfw').projectDir = new File("implementations/impl
 findProject(':implementations-stb').projectDir = new File("implementations/implementations-stb")
 findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
 findProject(':backend-spair').projectDir = new File("backend/backend-spair")
+
+include 'konna-bom'
