@@ -19,7 +19,7 @@ ext {
             it.name.startsWith("component-") // Konna std components
         ||  it.name.startsWith("libfrontend-") // Konna libfrontends
         ||  it.name.startsWith("backend-") // Konna std backends
-        ||  it.path.startsWith(":rendering:") // Konna std implementations
+        ||  it.path.startsWith("implementations-") // Konna std implementations
         ||  it.name == "core" // Konna core
     }
 
@@ -64,14 +64,14 @@ dependencies {
 
     implementation(project(":component-graphics"))
 
-    implementation(project("libfrontend-opengl"))
-    implementation(project("libfrontend-glfw"))
-    implementation(project("libfrontend-stb"))
+    implementation(project(":libfrontend-opengl"))
+    implementation(project(":libfrontend-glfw"))
+    implementation(project(":libfrontend-stb"))
 
-    implementation(project("opengl33"))
-    implementation(project("glfw"))
+    implementation(project(":implementations-opengl33"))
+    implementation(project(":implementations-glfw"))
 
-    implementation(project("backend-lwjgl"))
+    implementation(project(":backend-lwjgl"))
 }
 
 distributions {
@@ -94,18 +94,20 @@ def exportedProjects = [
     ":backend:backend-lwjgl",
 ]
 
-tasks.withType(Javadoc).configureEach {
-    options {
-        addStringOption('Xdoclint:none', '-quiet')
-    }
-    options.author = true
-    options.tags = [ "apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:" ]
-}
-
 tasks.register('allJavadoc', Javadoc) {
     source exportedProjects.collect { project(it).sourceSets.main.allJava }
     classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
     destinationDir = layout.buildDirectory.dir("/docs/javadoc-all").get().asFile
+}
+
+tasks.register('createBundle', Zip) {
+    dependsOn build
+
+    from "${rootDir}/build/libs"
+    destinationDirectory = file("$rootDir/build/distributions")
+
+    // Optional: specify the name of the zip file
+    archiveFileName = "Konna.bundle-${version}.zip"
 }
 
 tasks.register('jacocoRootReport', JacocoReport) {

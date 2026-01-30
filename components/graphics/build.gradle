@@ -17,8 +17,8 @@ ext {
 dependencies {
     testImplementation project(":backend-lwjgl")
     testImplementation project(":libfrontend-stb")
-    testImplementation project(":stb")
-    testImplementation project(":opengl33")
+    testImplementation project(":implementations-stb")
+    testImplementation project(":implementations-opengl33")
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }

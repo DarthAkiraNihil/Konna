@@ -8,34 +8,25 @@ pluginManagement {
 rootProject.name = 'Konna'
 include 'core'
 
-// TODO: rename all projects so they have a prefix
-
 include ':component-graphics'
+include ':libfrontend-opengl'
+include ':libfrontend-glfw'
+include ':libfrontend-stb'
+include ':libfrontend-dear-imgui'
+include ':implementations-opengl33'
+include ':implementations-glfw'
+include ':implementations-stb'
+
+include ':backend-spair'
+include ':backend-lwjgl'
+
 findProject(':component-graphics').projectDir = new File("components/graphics")
-
-include 'libfrontend/libfrontend-opengl'
-findProject(':libfrontend/libfrontend-opengl')?.name = 'libfrontend-opengl'
-
-include 'libfrontend/libfrontend-glfw'
-findProject(':libfrontend/libfrontend-glfw')?.name = 'libfrontend-glfw'
-
-include 'libfrontend/libfrontend-stb'
-findProject(':libfrontend/libfrontend-stb')?.name = 'libfrontend-stb'
-
-include 'libfrontend/libfrontend-dear-imgui'
-findProject(':libfrontend/libfrontend-dear-imgui')?.name = 'libfrontend-dear-imgui'
-
-include 'rendering/opengl33'
-findProject(':rendering/opengl33')?.name = 'opengl33'
-
-include 'rendering/glfw'
-findProject(':rendering/glfw')?.name = 'glfw'
-
-include 'rendering/stb'
-findProject(':rendering/stb')?.name = 'stb'
-
-include 'backend/backend-lwjgl'
-findProject(':backend/backend-lwjgl')?.name = 'backend-lwjgl'
-
-include 'backend/backend-spair'
-findProject(':backend/backend-spair')?.name = 'backend-spair'
+findProject(':libfrontend-opengl').projectDir = new File("libfrontend/libfrontend-opengl")
+findProject(':libfrontend-glfw').projectDir = new File("libfrontend/libfrontend-glfw")
+findProject(':libfrontend-stb').projectDir = new File("libfrontend/libfrontend-stb")
+findProject(':libfrontend-dear-imgui').projectDir = new File("libfrontend/libfrontend-dear-imgui")
+findProject(':implementations-opengl33').projectDir = new File("rendering/opengl33")
+findProject(':implementations-glfw').projectDir = new File("rendering/glfw")
+findProject(':implementations-stb').projectDir = new File("rendering/stb")
+findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
+findProject(':backend-spair').projectDir = new File("backend/backend-spair")
