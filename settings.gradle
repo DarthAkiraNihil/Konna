@@ -8,17 +8,19 @@ pluginManagement {
 rootProject.name = 'Konna'
 include 'core'
 
-include ':component-graphics'
-include ':libfrontend-opengl'
-include ':libfrontend-glfw'
-include ':libfrontend-stb'
-include ':libfrontend-dear-imgui'
-include ':implementations-opengl33'
-include ':implementations-glfw'
-include ':implementations-stb'
+include 'component-graphics'
 
-include ':backend-spair'
-include ':backend-lwjgl'
+include 'libfrontend-opengl'
+include 'libfrontend-glfw'
+include 'libfrontend-stb'
+include 'libfrontend-dear-imgui'
+
+include 'implementations-opengl33'
+include 'implementations-glfw'
+include 'implementations-stb'
+
+include 'backend-spair'
+include 'backend-lwjgl'
 
 findProject(':component-graphics').projectDir = new File("components/graphics")
 findProject(':libfrontend-opengl').projectDir = new File("libfrontend/libfrontend-opengl")

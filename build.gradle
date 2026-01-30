@@ -19,7 +19,7 @@ ext {
             it.name.startsWith("component-") // Konna std components
         ||  it.name.startsWith("libfrontend-") // Konna libfrontends
         ||  it.name.startsWith("backend-") // Konna std backends
-        ||  it.path.startsWith("implementations-") // Konna std implementations
+        ||  it.name.startsWith("implementations-") // Konna std implementations
         ||  it.name == "core" // Konna core
     }
 
@@ -35,7 +35,7 @@ subprojects {
     apply plugin: 'org.jreleaser'
     apply plugin: 'checkstyle'
 
-    archivesBaseName = "Konna.${it.name}"
+    //archivesBaseName = "Konna.${it.name}"
     checkstyle {
         toolVersion = "11.0.0"
         checkstyleTest.enabled = false
