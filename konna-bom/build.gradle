@@ -1,0 +1,80 @@
+plugins {
+    id 'java-platform'
+    id 'maven-publish'
+}
+
+group = 'io.github.darthakiranihil'
+version = '0.3.0'
+description = "Konna BOM"
+
+dependencies {
+    constraints {
+        api project(':core')
+
+        api project(':component-graphics')
+
+        api project(':libfrontend-opengl')
+        api project(':libfrontend-glfw')
+        api project(':libfrontend-stb')
+        api project(':libfrontend-dear-imgui')
+
+        api project(':implementations-opengl33')
+        api project(':implementations-glfw')
+        api project(':implementations-stb')
+
+        api project(':backend-spair')
+        api project(':backend-lwjgl')
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            setUrl(layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+    publications {
+        create("release", MavenPublication) {
+            from(components.javaPlatform)
+
+            pom {
+                name = project.name
+                description = project.description
+
+                groupId = 'io.github.darthakiranihil'
+                version = findProperty("konna.version")
+                afterEvaluate {
+                    artifactId = 'konna-bom'
+                }
+
+                url.set("https://github.com/DarthAkiraNihil/Konna")
+
+                issueManagement {
+                    url.set("https://github.com/DarthAkiraNihil/Konna/issues")
+                }
+
+                scm {
+                    url.set("https://github.com/DarthAkiraNihil/Konna")
+                    connection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                    developerConnection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("AkiraNihil")
+                        name.set("Egor Zverev")
+                        email.set("egorzverev666@gmail.com")
+                    }
+                }
+            }
+        }
+    }
+}
