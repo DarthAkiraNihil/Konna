@@ -1,20 +1,17 @@
-import org.jreleaser.model.Active
-
 plugins {
     id 'java'
 
     id 'distribution'
 
     id 'jacoco'
+    id 'jacoco-report-aggregation'
     id 'maven-publish'
 
     id 'org.jreleaser' version '1.19.0'
     id 'checkstyle'
-
 }
 
 ext {
-    System.out.println(subprojects.collect {it.buildTreePath});
     konnaModules = subprojects.findAll {
             it.name.startsWith("component-") // Konna std components
         ||  it.name.startsWith("libfrontend-") // Konna libfrontends
@@ -22,12 +19,9 @@ ext {
         ||  it.name.startsWith("implementations-") // Konna std implementations
         ||  it.name == "core" // Konna core
     }
-
-    System.out.println(konnaModules);
 }
 
-group = 'io.github.darthakiranihil.konna'
-version = '0.3.0'
+group = 'io.github.darthakiranihil'
 
 subprojects {
     apply plugin: 'java'
@@ -60,18 +54,9 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    implementation(project(":core"))
-
-    implementation(project(":component-graphics"))
-
-    implementation(project(":libfrontend-opengl"))
-    implementation(project(":libfrontend-glfw"))
-    implementation(project(":libfrontend-stb"))
-
-    implementation(project(":implementations-opengl33"))
-    implementation(project(":implementations-glfw"))
-
-    implementation(project(":backend-lwjgl"))
+    konnaModules.each {
+        module -> jacocoAggregation(module.toString())
+    }
 }
 
 distributions {
@@ -82,33 +67,50 @@ distributions {
     }
 }
 
-def exportedProjects = [
-    ":",
-    ":core",
-    ":components:graphics",
-    ":libfrontend:libfrontend-opengl",
-    ":libfrontend:libfrontend-glfw",
-    ":libfrontend:libfrontend-stbimage",
-    ":rendering:opengl33",
-    ":rendering:glfw",
-    ":backend:backend-lwjgl",
-]
-
-tasks.register('allJavadoc', Javadoc) {
-    source exportedProjects.collect { project(it).sourceSets.main.allJava }
-    classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = layout.buildDirectory.dir("/docs/javadoc-all").get().asFile
-}
-
-tasks.register('createBundle', Zip) {
+tasks.register('createJarBundle', Zip) {
     dependsOn build
 
-    from "${rootDir}/build/libs"
-    destinationDirectory = file("$rootDir/build/distributions")
+    from("${rootDir}/build/libs/") {
+        exclude "*-sources.jar"
+        exclude "*-javadoc.jar"
+    }
 
-    // Optional: specify the name of the zip file
-    archiveFileName = "Konna.bundle-${version}.zip"
+    destinationDirectory = file("$rootDir/build/distributions")
+    archiveFileName = "Konna.bundle-jar-${version}.zip"
 }
+
+tasks.register('createJavadocBundle', Zip) {
+    dependsOn build
+
+    from("${rootDir}/build/libs/") {
+        include "*-javadoc.jar"
+    }
+    destinationDirectory = file("$rootDir/build/distributions")
+    archiveFileName = "Konna.bundle-javadoc-${version}.zip"
+}
+
+tasks.register('createSourceBundle', Zip) {
+    dependsOn build
+
+    from("${rootDir}/build/libs/") {
+        include "*-sources.jar"
+    }
+    destinationDirectory = file("$rootDir/build/distributions")
+    archiveFileName = "Konna.bundle-sources-${version}.zip"
+}
+
+tasks.register('createBundle') {
+    dependsOn(
+        createJarBundle,
+        createJavadocBundle,
+        createSourceBundle,
+    )
+}
+
+build {
+    finalizedBy createBundle
+}
+
 
 tasks.register('jacocoRootReport', JacocoReport) {
     description = 'Generates an aggregate report from all subprojects'
@@ -134,11 +136,6 @@ test {
 
 jreleaser {
     gitRootSearch = true
-//    project {
-//        inceptionYear = "2025"
-//        author("@AkiraNihil")
-//        version=project.version
-//    }
     release {
         github {
             skipRelease = true
@@ -167,6 +164,7 @@ jreleaser {
     }
 }
 
+
 jacocoTestReport {
     dependsOn test
 
@@ -184,9 +182,8 @@ jacocoTestReport {
         html.required = true
         html.destination file("${layout.buildDirectory}/jacocoHtml")
     }
-//    sourceSets
-    sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
-    // jacocoReportPath = "${layout.buildDirectory}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+
+   // sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
 }
 
 configure(konnaModules) { project -> {

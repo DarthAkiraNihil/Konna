@@ -64,12 +64,3 @@ javadoc {
     logging.captureStandardOutput LogLevel.INFO  // suppress "## warnings" message
 }
 
-//publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            from components.java
-//            artifact sourcesJar
-//            artifact javadocJar
-//        }
-//    }
-//}
