@@ -7,7 +7,7 @@
  */
 @NullMarked
 @KIndexedPackage
-package io.github.darthakiranihil.konna.graphics.glfw;
+package io.github.darthakiranihil.konna.core.app.glfw;
 
 import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 import org.jspecify.annotations.NullMarked;
