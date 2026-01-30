@@ -19,7 +19,7 @@ jobs:
             -   name: Build and publish with Gradle
                 uses: gradle/actions/setup-gradle@v3
                 with:
-                    arguments: --no-daemon -i jreleaserConfig build test publish
+                    arguments: --no-daemon -i jreleaserConfig build test publish createBundle
                 env:
                     JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
                     JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
@@ -39,3 +39,13 @@ jobs:
                     JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME }}
                     JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN }}
                     JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+            -   name: Create Github Release
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # The default token provided by GitHub Actions
+                    TAG: ${{ github.ref_name }} # The name of the tag (e.g., v1.0.0)
+                run: |
+                    gh release create "$TAG" \
+                        ./build/libs/Konna.bundle-*.jar
+                        --repo="$GITHUB_REPOSITORY" \
+                        --title="${GITHUB_REPOSITORY#*/} $TAG" \
+                        --generate-notes # Automatically generates release notes
