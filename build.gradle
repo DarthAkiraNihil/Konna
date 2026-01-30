@@ -13,6 +13,19 @@ plugins {
 
 }
 
+ext {
+    System.out.println(subprojects.collect {it.buildTreePath});
+    konnaModules = subprojects.findAll {
+            it.name.startsWith("component-") // Konna std components
+        ||  it.name.startsWith("libfrontend-") // Konna libfrontends
+        ||  it.name.startsWith("backend-") // Konna std backends
+        ||  it.path.startsWith(":rendering:") // Konna std implementations
+        ||  it.name == "core" // Konna core
+    }
+
+    System.out.println(konnaModules);
+}
+
 group = 'io.github.darthakiranihil.konna'
 version = '0.3.0'
 
@@ -49,16 +62,16 @@ dependencies {
 
     implementation(project(":core"))
 
-    implementation(project(":components:graphics"))
+    implementation(project(":component-graphics"))
 
-    implementation(project(":libfrontend:libfrontend-opengl"))
-    implementation(project(":libfrontend:libfrontend-glfw"))
-    implementation(project(":libfrontend:libfrontend-stb"))
+    implementation(project("libfrontend-opengl"))
+    implementation(project("libfrontend-glfw"))
+    implementation(project("libfrontend-stb"))
 
-    implementation(project(":rendering:opengl33"))
-    implementation(project(":rendering:glfw"))
+    implementation(project("opengl33"))
+    implementation(project("glfw"))
 
-    implementation(project(":backend:backend-lwjgl"))
+    implementation(project("backend-lwjgl"))
 }
 
 distributions {
@@ -115,8 +128,15 @@ test {
     finalizedBy jacocoRootReport
 }
 
+
+
 jreleaser {
     gitRootSearch = true
+//    project {
+//        inceptionYear = "2025"
+//        author("@AkiraNihil")
+//        version=project.version
+//    }
     release {
         github {
             skipRelease = true
@@ -128,9 +148,20 @@ jreleaser {
         }
     }
     signing {
-        active = Active.ALWAYS
+        active = 'ALWAYS'
         armored = true
         verify = true
+    }
+    deploy {
+        maven {
+            mavenCentral.create("sonatype") {
+                active = 'ALWAYS'
+                url = "https://central.sonatype.com/api/v1/publisher"
+                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+                setAuthorization("Basic")
+                retryDelay = 60
+            }
+        }
     }
 }
 
@@ -155,3 +186,9 @@ jacocoTestReport {
     sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs.flatten()
     // jacocoReportPath = "${layout.buildDirectory}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
+
+configure(konnaModules) { project -> {
+    apply plugin: "org.jreleaser"
+    apply from: "${rootDir}/gradle/module.gradle"
+    group = groupId
+}}

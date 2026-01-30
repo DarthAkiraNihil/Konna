@@ -1,0 +1,98 @@
+// apply plugin: 'org.jreleaser'
+apply plugin: "maven-publish"
+apply plugin: "signing"
+
+publishing {
+    repositories {
+        maven {
+            setUrl(layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+    publications {
+        create("release", MavenPublication) {
+            from(components.java)
+
+            pom {
+
+                System.out.println(project);
+
+                System.out.println(project);
+                name = project.name
+                description = project.description
+
+                groupId = 'io.github.darthakiranihil'//findProperty("konna.groupId").toString()
+                System.out.println(groupId)
+                version = findProperty("konna.version")
+                afterEvaluate {
+                    System.out.println(project.ext.artifactId);
+                    artifactId = project.ext.artifactId
+                }
+
+                System.out.println(artifactId)
+
+                url.set("https://github.com/DarthAkiraNihil/Konna")
+
+                issueManagement {
+                    url.set("https://github.com/DarthAkiraNihil/Konna/issues")
+                }
+
+                scm {
+                    url.set("https://github.com/DarthAkiraNihil/Konna")
+                    connection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                    developerConnection.set("scm:git://github.com/DarthAkiraNihil/Konna.git")
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("AkiraNihil")
+                        name.set("Egor Zverev")
+                        email.set("egorzverev666@gmail.com")
+                    }
+                }
+            }
+        }
+    }
+}
+
+//jreleaser {
+//    // gitRootSearch = true
+//    project {
+//        inceptionYear = "2025"
+//        author("@AkiraNihil")
+//        version=project.version
+//    }
+//    release {
+//        github {
+//            skipRelease = true
+//            skipTag = true
+//            sign = true
+//            branch = "master"
+//            branchPush = "master"
+//            overwrite = true
+//        }
+//    }
+//    signing {
+//        active = 'ALWAYS'
+//        armored = true
+//        verify = true
+//    }
+//    deploy {
+//        maven {
+//            mavenCentral.create("sonatype") {
+//                active = 'ALWAYS'
+//                url = "https://central.sonatype.com/api/v1/publisher"
+//                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+//                setAuthorization("Basic")
+//                retryDelay = 60
+//            }
+//        }
+//    }
+//}

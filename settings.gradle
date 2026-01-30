@@ -8,32 +8,34 @@ pluginManagement {
 rootProject.name = 'Konna'
 include 'core'
 
-include 'components:graphics'
-findProject(':components:graphics')?.name = 'graphics'
+// TODO: rename all projects so they have a prefix
 
-include 'libfrontend:libfrontend-opengl'
-findProject(':libfrontend:libfrontend-opengl')?.name = 'libfrontend-opengl'
+include ':component-graphics'
+findProject(':component-graphics').projectDir = new File("components/graphics")
 
-include 'libfrontend:libfrontend-glfw'
-findProject(':libfrontend:libfrontend-glfw')?.name = 'libfrontend-glfw'
+include 'libfrontend/libfrontend-opengl'
+findProject(':libfrontend/libfrontend-opengl')?.name = 'libfrontend-opengl'
 
-include 'libfrontend:libfrontend-stb'
-findProject(':libfrontend:libfrontend-stb')?.name = 'libfrontend-stb'
+include 'libfrontend/libfrontend-glfw'
+findProject(':libfrontend/libfrontend-glfw')?.name = 'libfrontend-glfw'
 
-include 'libfrontend:libfrontend-dear-imgui'
-findProject(':libfrontend:libfrontend-dear-imgui')?.name = 'libfrontend-dear-imgui'
+include 'libfrontend/libfrontend-stb'
+findProject(':libfrontend/libfrontend-stb')?.name = 'libfrontend-stb'
 
-include 'rendering:opengl33'
-findProject(':rendering:opengl33')?.name = 'opengl33'
+include 'libfrontend/libfrontend-dear-imgui'
+findProject(':libfrontend/libfrontend-dear-imgui')?.name = 'libfrontend-dear-imgui'
 
-include 'rendering:glfw'
-findProject(':rendering:glfw')?.name = 'glfw'
+include 'rendering/opengl33'
+findProject(':rendering/opengl33')?.name = 'opengl33'
 
-include 'rendering:stb'
-findProject(':rendering:stb')?.name = 'stb'
+include 'rendering/glfw'
+findProject(':rendering/glfw')?.name = 'glfw'
 
-include 'backend:backend-lwjgl'
-findProject(':backend:backend-lwjgl')?.name = 'backend-lwjgl'
+include 'rendering/stb'
+findProject(':rendering/stb')?.name = 'stb'
 
-include 'backend:backend-spair'
-findProject(':backend:backend-spair')?.name = 'backend-spair'
+include 'backend/backend-lwjgl'
+findProject(':backend/backend-lwjgl')?.name = 'backend-lwjgl'
+
+include 'backend/backend-spair'
+findProject(':backend/backend-spair')?.name = 'backend-spair'
