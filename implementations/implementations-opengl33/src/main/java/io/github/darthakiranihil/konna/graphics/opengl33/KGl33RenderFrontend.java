@@ -36,7 +36,7 @@ import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
  * Uses buffers for storing object render data (at least for primitives)
  * that are cached. Cache expires after 512 render calls.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KExcludeFromGeneratedCoverageReport

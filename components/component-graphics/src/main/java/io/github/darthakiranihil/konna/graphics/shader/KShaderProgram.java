@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.graphics.shader;
 /**
  * Interface for a shader program that does not depend on used graphics framework.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KShaderProgram {

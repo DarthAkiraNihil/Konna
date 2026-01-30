@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
  * @param uWrapping Texture wrapping for u coordinate
  * @param vWrapping Texture wrapping for v coordinate
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public record KTexture(

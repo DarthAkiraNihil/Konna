@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 /**
  * Exception thrown when a shader or shader program compilation has failed.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Niihl
  */
 public class KShaderCompilationException extends KException {

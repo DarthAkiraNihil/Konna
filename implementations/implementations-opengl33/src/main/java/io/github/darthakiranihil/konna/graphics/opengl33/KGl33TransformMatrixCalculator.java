@@ -29,7 +29,7 @@ import org.joml.Matrix4f;
  * Transform matrix calculator implementation using JOML and fixes
  * according to OpenGL NDC's.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton

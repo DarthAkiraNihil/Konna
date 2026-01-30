@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * Representation of a color with RGBA model.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public final class KColor {

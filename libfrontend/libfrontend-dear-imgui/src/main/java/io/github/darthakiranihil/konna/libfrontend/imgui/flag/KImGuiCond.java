@@ -7,7 +7,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * operators! All the functions above treat 0 as a shortcut to ImGuiCond_Always.
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImGuiCond {
     /**

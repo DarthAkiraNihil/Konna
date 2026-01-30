@@ -25,6 +25,9 @@ import io.github.darthakiranihil.konna.graphics.image.KTexture;
  * @param face Font tilesheet texture to get characters from
  * @param format Tile font format
  * @param glyphSize Size of a character inside its tilesheet
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
  */
 public record KTiledFont(
     String name,

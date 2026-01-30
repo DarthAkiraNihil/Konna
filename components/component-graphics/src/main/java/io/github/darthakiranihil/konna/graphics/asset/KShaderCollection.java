@@ -41,7 +41,7 @@ import java.util.Map;
 /**
  * Collection of shader assets of type {@link KShaderCollection#SHADER_ASSET_TYPE}.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton

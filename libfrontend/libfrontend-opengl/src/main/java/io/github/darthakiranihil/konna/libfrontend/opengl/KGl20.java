@@ -23,7 +23,7 @@ import java.nio.*;
 /**
  * Library frontend for OpenGL 2.0.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KGl20 {

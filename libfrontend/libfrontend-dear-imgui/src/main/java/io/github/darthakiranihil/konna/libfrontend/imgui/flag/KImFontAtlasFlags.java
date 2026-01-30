@@ -5,7 +5,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * Flags for ImFontAtlas build.
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImFontAtlasFlags {
     /**

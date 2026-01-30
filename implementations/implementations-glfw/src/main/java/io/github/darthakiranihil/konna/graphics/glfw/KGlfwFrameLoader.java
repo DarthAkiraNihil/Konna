@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
 /**
  * GLFW Frame loader.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KTransient(temporal = true)

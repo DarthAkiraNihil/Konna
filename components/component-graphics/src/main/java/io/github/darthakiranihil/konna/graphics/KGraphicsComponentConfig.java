@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
  * @param imageLoaderClass Class of image loader
  * @param transformMatrixCalculatorClass Class of transform matrix calculator
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public record KGraphicsComponentConfig(

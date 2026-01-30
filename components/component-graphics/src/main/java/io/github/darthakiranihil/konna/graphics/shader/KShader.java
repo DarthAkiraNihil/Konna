@@ -21,7 +21,7 @@ package io.github.darthakiranihil.konna.graphics.shader;
  * @param id Shader ID
  * @param type Shader type
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public record KShader(

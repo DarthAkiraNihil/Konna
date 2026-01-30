@@ -35,7 +35,7 @@ import java.nio.IntBuffer;
  * Implementation of {@link KShaderCompiler} that requires OpenGL 3.3 in
  * order to compile sharers and link shader programs.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KExcludeFromGeneratedCoverageReport

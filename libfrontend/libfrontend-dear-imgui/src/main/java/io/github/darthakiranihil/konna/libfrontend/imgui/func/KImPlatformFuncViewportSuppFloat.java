@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
 /**
  * Interface representing ImPlatformFuncViewportSuppFloat of Dear ImGui.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @FunctionalInterface

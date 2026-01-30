@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.except.KException;
  * Exception thrown if graphics are in invalid state caused, usually,
  * by failed initialization, backend errors etc.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth AKira Nihil
  */
 public class KInvalidGraphicsStateException extends KException {

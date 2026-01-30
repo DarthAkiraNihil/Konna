@@ -3,7 +3,7 @@ package io.github.darthakiranihil.konna.libfrontend.stb;
 /**
  * Interface representing STBTTVertex of STBTrueType.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KStbTtVertex {

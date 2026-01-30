@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * Implementation of {@link KFrame} that uses GLFW for its functionality.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton(immortal = true)

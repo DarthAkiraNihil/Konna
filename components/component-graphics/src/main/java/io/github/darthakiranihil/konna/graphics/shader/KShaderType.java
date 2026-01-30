@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationErro
 /**
  * Enumeration for all supported shader types.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public enum KShaderType {

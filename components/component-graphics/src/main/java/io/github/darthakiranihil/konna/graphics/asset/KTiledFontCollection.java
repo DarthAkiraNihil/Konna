@@ -45,7 +45,7 @@ import java.util.Map;
 /**
  * Collection of texture assets of type {@link KTiledFontCollection#TILED_FONT_ASSET_TYPE}.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public final class KTiledFontCollection extends KObject implements KAssetCollection<KTiledFont> {

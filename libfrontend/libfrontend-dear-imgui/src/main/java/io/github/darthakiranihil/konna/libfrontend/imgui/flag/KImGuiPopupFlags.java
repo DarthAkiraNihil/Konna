@@ -11,7 +11,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui.flag;
  * combined/or-ed in those functions (we could allow it later).
  *
  * @author Darth Akira Nihil
- * @since 0.1.0
+ * @since 0.3.0
  */
 public final class KImGuiPopupFlags {
     /**

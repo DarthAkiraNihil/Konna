@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationErro
  * {@link io.github.darthakiranihil.konna.graphics.render.KRenderFrontend}
  * implementation.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public enum KTextureFiltering {

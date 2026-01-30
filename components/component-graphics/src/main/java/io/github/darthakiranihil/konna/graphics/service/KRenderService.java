@@ -36,7 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Service for rendering different objects using {@link KRenderFrontend}.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton

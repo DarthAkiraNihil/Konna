@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.graphics.text.KTiledFontGlyph;
  * Implementation of {@link KTiledFontFormat} representing a 16x16 characters
  * tilesheet of all ASCII symbols that are all have squared size.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton

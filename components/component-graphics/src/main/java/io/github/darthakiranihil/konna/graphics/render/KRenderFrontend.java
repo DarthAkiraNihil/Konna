@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.graphics.text.KTiledText;
  * Interface for a render frontend that renders object using implementation-defined
  * tools and classes.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KRenderFrontend {

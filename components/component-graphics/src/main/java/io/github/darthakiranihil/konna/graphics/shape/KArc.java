@@ -27,7 +27,7 @@ import java.util.Objects;
 /**
  * Representation of an arc (of an oval).
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public class KArc extends KAbstractShape {

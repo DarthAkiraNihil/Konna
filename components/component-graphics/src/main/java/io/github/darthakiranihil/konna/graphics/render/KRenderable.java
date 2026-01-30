@@ -23,7 +23,7 @@ import org.jspecify.annotations.Nullable;
  * Interface for an object that can be rendered with
  * {@link KRenderFrontend}.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public interface KRenderable {

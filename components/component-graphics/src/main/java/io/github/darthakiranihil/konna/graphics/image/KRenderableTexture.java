@@ -30,7 +30,7 @@ import java.util.Objects;
  * Representation of a texture that can be rendered on screen that does
  * not depend on used graphics library.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public class KRenderableTexture extends KAbstractShape {

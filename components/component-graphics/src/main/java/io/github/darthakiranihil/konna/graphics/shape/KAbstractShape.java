@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * Abstract base for all standard shapes.
  *
- * @since 0.1.0
+ * @since 0.3.0
  * @author Darth Akira Nihil
  */
 // since transformable methods are wrappers to KTransform methods
