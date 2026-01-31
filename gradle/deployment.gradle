@@ -12,13 +12,13 @@ publishing {
             from(components.java)
 
             pom {
-                name = project.name
-                description = project.description
 
-                groupId = 'io.github.darthakiranihil'
-                version = findProperty("konna.version")
                 afterEvaluate {
                     artifactId = project.ext.artifactId
+                    name = project.ext.artifactId
+                    description = project.description
+                    groupId = 'io.github.darthakiranihil'
+                    version = findProperty("konna.version")
                 }
 
                 url.set("https://github.com/DarthAkiraNihil/Konna")

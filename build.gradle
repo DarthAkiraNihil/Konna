@@ -22,7 +22,7 @@ ext {
     allKonnaProjects = konnaModules + project(":konna-bom")
 }
 
-group = 'io.github.darthakiranihil'
+group = 'io.github.darthakiranihil.konna'
 
 subprojects {
     if (it.name == "konna-bom") {
