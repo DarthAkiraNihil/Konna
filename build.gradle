@@ -7,7 +7,7 @@ plugins {
     id 'jacoco-report-aggregation'
     id 'maven-publish'
 
-    id 'org.jreleaser' version '1.19.0'
+    id 'org.jreleaser' version '1.19.0' apply false
     id 'checkstyle'
 }
 
@@ -30,7 +30,7 @@ subprojects {
     }
     apply plugin: 'java'
     apply plugin: 'jacoco'
-    apply plugin: 'org.jreleaser'
+    // apply plugin: 'org.jreleaser'
     apply plugin: 'checkstyle'
 
     //archivesBaseName = "Konna.${it.name}"
@@ -135,39 +135,6 @@ test {
     useJUnitPlatform()
     finalizedBy jacocoRootReport
 }
-
-
-
-jreleaser {
-    gitRootSearch = true
-    release {
-        github {
-            skipRelease = true
-            skipTag = true
-            sign = true
-            branch = "master"
-            branchPush = "master"
-            overwrite = true
-        }
-    }
-    signing {
-        active = 'ALWAYS'
-        armored = true
-        verify = true
-    }
-    deploy {
-        maven {
-            mavenCentral.create("sonatype") {
-                active = 'ALWAYS'
-                url = "https://central.sonatype.com/api/v1/publisher"
-                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
-                setAuthorization("Basic")
-                retryDelay = 60
-            }
-        }
-    }
-}
-
 
 jacocoTestReport {
     dependsOn test
