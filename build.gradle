@@ -30,13 +30,43 @@ subprojects {
     }
     apply plugin: 'java'
     apply plugin: 'jacoco'
-    // apply plugin: 'org.jreleaser'
+    apply plugin: 'org.jreleaser'
     apply plugin: 'checkstyle'
 
     //archivesBaseName = "Konna.${it.name}"
     checkstyle {
         toolVersion = "11.0.0"
         checkstyleTest.enabled = false
+    }
+
+    jreleaser {
+        gitRootSearch = true
+        release {
+            github {
+                skipRelease = true
+                skipTag = true
+                sign = true
+                branch = "master"
+                branchPush = "master"
+                overwrite = true
+            }
+        }
+        signing {
+            active = 'ALWAYS'
+            armored = true
+            verify = true
+        }
+        deploy {
+            maven {
+                mavenCentral.create("sonatype") {
+                    active = 'ALWAYS'
+                    url = "https://central.sonatype.com/api/v1/publisher"
+                    stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+                    setAuthorization("Basic")
+                    retryDelay = 60
+                }
+            }
+        }
     }
 }
 
