@@ -44,7 +44,7 @@ publishing {
                 groupId = 'io.github.darthakiranihil'
                 version = findProperty("konna.version")
                 afterEvaluate {
-                    artifactId = 'konna-bom'
+                    artifactId = 'konna.bom'
                 }
 
                 url.set("https://github.com/DarthAkiraNihil/Konna")
