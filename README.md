@@ -21,6 +21,20 @@ The engine is not for all types of games. It is not universal in that aspect. Ho
 
 No Engine component should know about other components. They should communicate with events, tunnels and messages
 
+## Module structure
+```
+Konna/
+├── core/ // Konna core module
+├── konna-bom/ // Konna BOM
+├── libfrontend/ // Libfrontend modules (often native library interfaces)
+│   └── ...
+├── backend/ // Backends - libfrontend implementations
+│   └── ...
+├── components/ // Standard Konna components
+│   └── ...
+└── ... // other source code
+```
+
 ## Getting started
 
 1. Install JDK 21. Adoptium (Temurin) is preferred but you can use another one that you like.
@@ -66,7 +80,7 @@ No Engine component should know about other components. They should communicate 
    As its result you will get three zip archives with jars, sources and docs for each module inside this project
 P.S. You also can clone the project and open it with IntellijIDEA and it will do its initialization automatically
 so you only have to run the build command (also IDEA is the preferred IDE to develop for Konna)
-6. 
+
 ## Project status
 
 ![Repobeats analytics](https://repobeats.axiom.co/api/embed/e94e0d2b3510ebb7c4ce253f4a245d58039e9519.svg "Repobeats analytics image")
