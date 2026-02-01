@@ -56,32 +56,33 @@ The foundation that is essential for the whole engine
 - [x] Crash logging by adding mandatory tag for log messages
 - [ ] Add modules that represent frontends to different native libraries (libfrontend)
   - [x] Add libfrontend for OpenGL 2.0 and 3.3
-  - [ ] Add libfrontend for Dear ImGui
+  - [x] Add libfrontend for Dear ImGui
   - [x] Add libfrontend for GLFW
   - [x] Add libfrontend for STBImage
-  - [ ] Maybe add all other required libfrontends
-- [ ] Add modules that provide implementations of libfrontends (backend)
+  - [x] Maybe add all other required libfrontends
+- [x] Add modules that provide implementations of libfrontends (backend)
   - [x] Add backend for OpenGL 2.0 and 3.3 using LWJGL
-  - [ ] Add backend for Dear ImGui using LWJGL
+  - [x] Add backend for Dear ImGui using LWJGL
   - [x] Add backend for GLFW using LWJGL
   - [x] Add backend for STBImage using LWJGL
-  - [ ] Maybe add all other required backends using LWJGL and the like
-- [ ] Implement Graphics component
-  - [ ] Implement services to render different objects
-  - [ ] Add abstractions for render primitives like shapes, textures, text etc.
-  - [ ] Implement rendering...
-    - [ ] ...of shapes
-    - [ ] ...of textures
-    - [ ] ...of text
-    - [ ] ...of tiled text
-  - [ ] Add support for rendering custom object, defined by user
-  - [ ] Implement Graphics component's render frontend (that actually renders) using OpenGL 3.3
-- [ ] Add support for ImGUI for everyone
-  - [ ] Add interface for ImGUI that is independent of any existing ImGUI library and add it to engine context
-  - [ ] Add implementation of the interface using Dear ImGui
+  - [x] Maybe add all other required backends using LWJGL and the like
+- [x] Implement Graphics component
+  - [x] Implement services to render different objects
+  - [x] Add abstractions for render primitives like shapes, textures, text etc.
+  - [x] Implement rendering...
+    - [x] ...of shapes
+    - [x] ...of textures
+    - [x] ...of tiled text
+  - [x] Add support for rendering custom object, defined by user
+  - [x] Implement Graphics component's render frontend (that actually renders) using OpenGL 3.3
 
 ### v. 0.4.0 - The beginning of Entity
 
+- [ ] More proper repo appearance (logo etc.) and repo docs
+- [ ] Add support for setting an input processor for the application
+- [ ] Add another way of defining asset types for components instead of JSON
+- [ ] Maybe another way of store asset definitions?
+- [ ] More convenient JSON object validator prop info builder
 - [ ] Implement entity component that contains methods to work with different entities, including the Player itself
     - [ ] Add base class for all entities
     - [ ] Add classes that holds different values that represent entity properties
@@ -89,8 +90,16 @@ The foundation that is essential for the whole engine
     - [ ] Add feature to treat entity descriptors (aka definitions) as assets
     - [ ] Add support for entity behaviours - it will be just like script system
     - [ ] Add entity model - entity class with list of properties to concrete class with concrete fields (?)
+    - [ ] Add support for user-defined entity properties (or something like that)
 
 ### v. 0.5.0 - The beginning of Level
+
+- [ ] Implement Level component
+  - [ ] Add abstractions for representing a game level
+  - [ ] Add support for getting pre-defined levels from assets
+  - [ ] Add level generators
+  - [ ] Add support for moving from a pre-defined level to generated and vice versa
+  - [ ] Add abstractions for tiles, map entities etc.
 
 ### v. 0.6.0 - Monsters and Combat
 
@@ -101,3 +110,9 @@ The foundation that is essential for the whole engine
 ### v. 0.9.0 - Saving
 
 ### v. 1.0.0 - To be continued...
+
+### Not prioritized
+
+- [ ] Annotation processing at compile-time instead of run-time
+- [ ] More flexible object pools
+- [ ] Add support for TTF text rendering
