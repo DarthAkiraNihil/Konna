@@ -25,10 +25,10 @@ ext {
 group = 'io.github.darthakiranihil.konna'
 
 subprojects {
-    if (it.name == "konna-bom") {
-        return;
+    if (it.name != "konna-bom") {
+        apply plugin: 'java'
     }
-    apply plugin: 'java'
+
     apply plugin: 'jacoco'
     apply plugin: 'org.jreleaser'
     apply plugin: 'checkstyle'
