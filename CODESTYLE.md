@@ -70,6 +70,8 @@ class KFooApi { // correct!
 * Variables, fields and method parameters use camelCase
 * Constants SCREAMING_CASE. Especially if it is a static final field. However, regular field names use camelCase instead.
 * Static fields use camelCase if they are not final
+* Setters should start their name with *set*. Getters, on the other hand, should not start with *get* if the property is readonly, but it is not mandatory. Else it should.
+* The setter naming rule may not cover libfrontends in order to keep compatibility
 
 ## Indentation, braces and line breaks
 

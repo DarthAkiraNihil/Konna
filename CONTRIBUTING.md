@@ -46,6 +46,7 @@ but it may save a lot of time on the PR discussion
 However, if a getter or setter does some additional stuff (i.g. reopening a resource), then it should be documented
 * Always specify author and version (upcoming) for new classes
 * Don't write docs for private members and methods
+* Internal classes (e.g. package-private) are not required to be documented as well as tests
 
 ## Testing
 
