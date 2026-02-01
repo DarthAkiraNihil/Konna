@@ -113,4 +113,6 @@ The foundation that is essential for the whole engine
 
 ### Not prioritized
 
+- [ ] Annotation processing at compile-time instead of run-time
+- [ ] More flexible object pools
 - [ ] Add support for TTF text rendering
