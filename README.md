@@ -1,4 +1,9 @@
+<p>
+   <img src="./public/logo.png"  alt="Logo" style="display: block; margin: 0 auto; width: 50%;" >
+</p>
+
 # Konna
+
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.darthakiranihil/konna.bom?style=plastic&label=BOM%20Version%20(Maven%20Central)&color=00aa88)
 
 Yet another free and open-source game engine (that is possibly like a framework) for roguelike games.
