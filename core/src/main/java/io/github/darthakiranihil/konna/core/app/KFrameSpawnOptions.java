@@ -16,10 +16,11 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonObjectValidatorBuilder;
+import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * Container for frame spawn options that are supposed to be used on its loading.
@@ -39,35 +40,12 @@ public record KFrameSpawnOptions(
     private static final String SIZE_KEY = "size";
     private static final String TITLE_KEY = "title";
 
-    @NullMarked
-    private static final class Schema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        Schema() {
-            var propInfoBuilder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                propInfoBuilder
-                    .withName(SIZE_KEY)
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .build(),
-                propInfoBuilder
-                    .withName(TITLE_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .build()
-            );
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-
-    }
-
     /**
      * Json schema of frame spawn options.
      */
-    public static final KJsonValidator SCHEMA = new Schema();
+    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
+        .create()
+        .withSimpleField(SIZE_KEY, KJsonValueType.OBJECT)
+        .withSimpleField(TITLE_KEY, KJsonValueType.STRING)
+        .build();
 }

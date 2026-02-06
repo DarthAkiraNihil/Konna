@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,20 +29,14 @@ public class KJsonValidatorsPositiveTests extends KStandardTestClass {
     public void testObjectValidatorWithDefaultValue() {
 
         String src = "{\"aboba\": 123}";
-        var propBuilder = new KJsonPropertyValidationInfo.Builder();
-        KJsonValidator validator = new KJsonObjectValidator(
-            propBuilder
-                .withName("aboba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build(),
-            propBuilder
-                .withName("biba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .withRequired(false)
-                .withDefaultValue(1)
-                .build()
-        );
-
+        var validator = KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("aboba", KJsonValueType.NUMBER_INT)
+            .withField("biba", KJsonValueType.NUMBER_INT)
+            .withRequired(false)
+            .withDefaultValue(1)
+            .finishField()
+            .build();
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -65,15 +58,12 @@ public class KJsonValidatorsPositiveTests extends KStandardTestClass {
     public void testObjectValidatorWithNullableValue() {
 
         String src = "{\"aboba\": null}";
-        var propBuilder = new KJsonPropertyValidationInfo.Builder();
-        KJsonValidator validator = new KJsonObjectValidator(
-            propBuilder
-                .withName("aboba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .withNullable(true)
-                .build()
-        );
-
+        var validator = KJsonObjectValidatorBuilder
+            .create()
+            .withField("aboba", KJsonValueType.NUMBER_INT)
+            .withNullable(true)
+            .finishField()
+            .build();
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -94,11 +84,12 @@ public class KJsonValidatorsPositiveTests extends KStandardTestClass {
     @Test
     public void testPropertyBuilderWithDefaultValueAsNull() {
 
-        var builder = new KJsonPropertyValidationInfo.Builder()
-            .withName("test")
+        var builder = KJsonObjectValidatorBuilder
+            .create()
+            .withField("test", KJsonValueType.NUMBER_INT)
             .withNullable(true)
-            .withExpectedType(KJsonValueType.NUMBER_INT)
-            .withRequired(false);
+            .withRequired(false)
+            .finishField();
 
         try {
             builder.build();

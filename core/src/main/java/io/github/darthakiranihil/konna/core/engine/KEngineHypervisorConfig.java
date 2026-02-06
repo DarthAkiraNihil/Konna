@@ -19,12 +19,9 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
-import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -80,93 +77,51 @@ public record KEngineHypervisorConfig(
     private static final String FRAME_LOADER_KEY = "frame_loader";
     private static final String FRAME_OPTIONS_KEY = "frame_options";
 
-    @NullMarked
-    private static final class Schema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        Schema() {
-            var propInfoBuilder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                propInfoBuilder
-                    .withName(ENGINE_CONTEXT_LOADER_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(COMPONENT_LOADER_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(SERVICE_LOADER_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(MESSAGE_ROUTE_CONFIGURERS_KEY)
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(
-                        new KJsonArrayValidator(
-                            KJsonValueType.STRING,
-                            KJsonValueIsClassValidator.INSTANCE
-                        )
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(EVENT_REGISTERERS_KEY)
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(
-                        new KJsonArrayValidator(
-                            KJsonValueType.STRING,
-                            KJsonValueIsClassValidator.INSTANCE
-                        )
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(COMPONENTS_KEY)
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(
-                        new KJsonArrayValidator(
-                            KJsonValueType.STRING,
-                            KJsonValueIsClassValidator.INSTANCE
-                        )
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(FRAME_LOADER_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(FRAME_OPTIONS_KEY)
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .withValidator(
-                        KFrameSpawnOptions.SCHEMA
-                    )
-                    .build()
-            );
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-    }
-
     /**
      * JSON schema of config, that should be used
      * for validation of loaded json file.
      */
-    public static final KJsonValidator SCHEMA = new Schema();
+    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
+        .create()
+        .withField(ENGINE_CONTEXT_LOADER_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(COMPONENT_LOADER_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(SERVICE_LOADER_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(MESSAGE_ROUTE_CONFIGURERS_KEY, KJsonValueType.ARRAY)
+        .withValidator(
+            KJsonArrayValidatorBuilder
+                .create(KJsonValueType.STRING)
+                .withValidator(KJsonValueIsClassValidator.INSTANCE)
+                .build()
+        )
+        .finishField()
+        .withField(EVENT_REGISTERERS_KEY, KJsonValueType.ARRAY)
+        .withValidator(
+            KJsonArrayValidatorBuilder
+                .create(KJsonValueType.STRING)
+                .withValidator(KJsonValueIsClassValidator.INSTANCE)
+                .build()
+        )
+        .finishField()
+        .withField(COMPONENTS_KEY, KJsonValueType.ARRAY)
+        .withValidator(
+            KJsonArrayValidatorBuilder
+                .create(KJsonValueType.STRING)
+                .withValidator(KJsonValueIsClassValidator.INSTANCE)
+                .build()
+        )
+        .finishField()
+        .withField(FRAME_LOADER_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(FRAME_OPTIONS_KEY, KJsonValueType.OBJECT)
+        .withValidator(KFrameSpawnOptions.SCHEMA)
+        .finishField()
+        .build();
 
 }

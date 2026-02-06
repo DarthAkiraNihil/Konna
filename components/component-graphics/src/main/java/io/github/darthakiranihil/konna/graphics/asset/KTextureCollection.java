@@ -16,11 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -56,91 +52,55 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
      */
     public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
         TEXTURE_ASSET_TYPE,
-        new TextureAssetSchema()
-    );
-
-    private static final class TextureAssetSchema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        TextureAssetSchema() {
-
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                builder
-                    .withName("image")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .build(),
-                builder
-                    .withName("shader")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withRequired(false)
-                    .withDefaultValue("default")
-                    .build(),
-                builder
-                    .withName("wrapping")
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .withRequired(false)
-                    .withDefaultValue(
-                        Map.of(
-                            "u", KJsonValue.fromString("REPEAT"),
-                            "v", KJsonValue.fromString("REPEAT")
-                        )
-                    )
-                    .withValidator(
-                        new KJsonObjectValidator(
-                            builder
-                                .createSeparated()
-                                .withName("u")
-                                .withExpectedType(KJsonValueType.STRING)
-                                .withValidator(KTextureWrapping.VALIDATOR)
-                                .build(),
-                            builder
-                                .createSeparated()
-                                .withName("v")
-                                .withExpectedType(KJsonValueType.STRING)
-                                .withValidator(KTextureWrapping.VALIDATOR)
-                                .build()
-                        )
-                    )
-                    .build(),
-                builder
-                    .withName("filtering")
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .withRequired(false)
-                    .withDefaultValue(
-                        Map.of(
-                            "min", KJsonValue.fromString("MIPMAP_LINEAR_LINEAR"),
-                            "mag", KJsonValue.fromString("LINEAR")
-                        )
-                    )
-                    .withValidator(
-                        new KJsonObjectValidator(
-                            builder
-                                .createSeparated()
-                                .withName("min")
-                                .withExpectedType(KJsonValueType.STRING)
-                                .withValidator(KTextureFiltering.VALIDATOR)
-                                .build(),
-                            builder
-                                .createSeparated()
-                                .withName("mag")
-                                .withExpectedType(KJsonValueType.STRING)
-                                .withValidator(KTextureFiltering.VALIDATOR)
-                                .build()
-                        )
-                    )
+        KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("image", KJsonValueType.STRING)
+            .withField("shader", KJsonValueType.STRING)
+            .withRequired(false)
+            .withDefaultValue("default")
+            .finishField()
+            .withField("wrapping", KJsonValueType.OBJECT)
+            .withRequired(false)
+            .withDefaultValue(
+                Map.of(
+                    "u", KJsonValue.fromString("REPEAT"),
+                    "v", KJsonValue.fromString("REPEAT")
+                )
+            )
+            .withValidator(
+                KJsonObjectValidatorBuilder
+                    .create()
+                    .withField("u", KJsonValueType.STRING)
+                    .withValidator(KTextureWrapping.VALIDATOR)
+                    .finishField()
+                    .withField("v", KJsonValueType.STRING)
+                    .withValidator(KTextureWrapping.VALIDATOR)
+                    .finishField()
                     .build()
-            );
-
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-    }
+            )
+            .finishField()
+            .withField("filtering", KJsonValueType.OBJECT)
+            .withRequired(false)
+            .withDefaultValue(
+                Map.of(
+                    "min", KJsonValue.fromString("MIPMAP_LINEAR_LINEAR"),
+                    "mag", KJsonValue.fromString("LINEAR")
+                )
+            )
+            .withValidator(
+                KJsonObjectValidatorBuilder
+                    .create()
+                    .withField("min", KJsonValueType.STRING)
+                    .withValidator(KTextureFiltering.VALIDATOR)
+                    .finishField()
+                    .withField("mag", KJsonValueType.STRING)
+                    .withValidator(KTextureFiltering.VALIDATOR)
+                    .finishField()
+                    .build()
+            )
+            .finishField()
+            .build()
+    );
 
     private final KAssetLoader assetLoader;
     private final KImageLoader imageLoader;

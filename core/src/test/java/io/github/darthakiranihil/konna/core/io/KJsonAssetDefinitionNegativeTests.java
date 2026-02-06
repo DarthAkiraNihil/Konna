@@ -16,11 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetDefinition;
@@ -38,14 +34,10 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
 
         public Schema() {
 
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.validator = new KJsonObjectValidator(
-                builder
-                    .withName("int_property")
-                    .withExpectedType(KJsonValueType.NUMBER_INT)
-                    .build()
-            );
+            this.validator = KJsonObjectValidatorBuilder
+                .create()
+                .withSimpleField("int_property", KJsonValueType.NUMBER_INT)
+                .build();
 
         }
 

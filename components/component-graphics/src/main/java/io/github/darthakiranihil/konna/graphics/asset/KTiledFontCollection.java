@@ -16,11 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
@@ -59,60 +55,26 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
      */
     public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
         TILED_FONT_ASSET_TYPE,
-        new TiledFontAssetSchema()
-    );
-
-    private static final class TiledFontAssetSchema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        TiledFontAssetSchema() {
-
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                builder
-                    .withName("name")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .build(),
-                builder
-                    .withName("face")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .build(),
-                builder
-                    .withName("glyph_size")
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .withValidator(
-                        new KJsonObjectValidator(
-                            builder
-                                .createSeparated()
-                                .withName("width")
-                                .withExpectedType(KJsonValueType.NUMBER_INT)
-                                .build(),
-                            builder
-                                .createSeparated()
-                                .withName("height")
-                                .withExpectedType(KJsonValueType.NUMBER_INT)
-                                .build()
-                        )
-                    )
-                    .build(),
-                builder
-                    .withName("format")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withRequired(false)
-                    .withDefaultValue(KSquaredAsciiTiledFontFormat.class.getCanonicalName())
-                    .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("name", KJsonValueType.STRING)
+            .withSimpleField("face", KJsonValueType.STRING)
+            .withField("glyph_size", KJsonValueType.OBJECT)
+            .withValidator(
+                KJsonObjectValidatorBuilder
+                    .create()
+                    .withSimpleField("width", KJsonValueType.NUMBER_INT)
+                    .withSimpleField("height", KJsonValueType.NUMBER_INT)
                     .build()
-            );
-
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-    }
+            )
+            .finishField()
+            .withField("format", KJsonValueType.STRING)
+            .withRequired(false)
+            .withDefaultValue(KSquaredAsciiTiledFontFormat.class.getCanonicalName())
+            .withValidator(KJsonValueIsClassValidator.INSTANCE)
+            .finishField()
+            .build()
+    );
 
     private final KAssetLoader assetLoader;
     private final KTextureCollection textureCollection;

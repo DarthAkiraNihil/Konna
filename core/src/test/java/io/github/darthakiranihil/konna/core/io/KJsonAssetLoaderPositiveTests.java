@@ -16,12 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
@@ -43,55 +38,29 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
 
         public Alias1Schema() {
 
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.validator = new KJsonObjectValidator(
-                builder
-                    .withName("int_property")
-                    .withExpectedType(KJsonValueType.NUMBER_INT)
-                    .build(),
-                builder
-                    .withName("float_property")
-                    .withExpectedType(KJsonValueType.NUMBER_FLOAT)
-                    .build(),
-                builder
-                    .withName("boolean_property")
-                    .withExpectedType(KJsonValueType.BOOLEAN)
-                    .build(),
-                builder
-                    .withName("string_property")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .build(),
-                builder
-                    .withName("subdef_property")
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .build(),
-                builder
-                    .withName("int_array_property")
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(new KJsonArrayValidator(KJsonValueType.NUMBER_INT))
-                    .build(),
-                builder
-                    .withName("float_array_property")
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(new KJsonArrayValidator(KJsonValueType.NUMBER_FLOAT))
-                    .build(),
-                builder
-                    .withName("boolean_array_property")
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(new KJsonArrayValidator(KJsonValueType.BOOLEAN))
-                    .build(),
-                builder
-                    .withName("string_array_property")
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(new KJsonArrayValidator(KJsonValueType.STRING))
-                    .build(),
-                builder
-                    .withName("subdef_array_property")
-                    .withExpectedType(KJsonValueType.ARRAY)
-                    .withValidator(new KJsonArrayValidator(KJsonValueType.OBJECT))
-                    .build()
-            );
+            this.validator = KJsonObjectValidatorBuilder
+                .create()
+                .withSimpleField("int_property", KJsonValueType.NUMBER_INT)
+                .withSimpleField("float_property", KJsonValueType.NUMBER_FLOAT)
+                .withSimpleField("boolean_property", KJsonValueType.BOOLEAN)
+                .withSimpleField("string_property", KJsonValueType.STRING)
+                .withSimpleField("subdef_property", KJsonValueType.OBJECT)
+                .withField("int_array_property", KJsonValueType.ARRAY)
+                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.NUMBER_INT))
+                .finishField()
+                .withField("float_array_property", KJsonValueType.ARRAY)
+                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.NUMBER_FLOAT))
+                .finishField()
+                .withField("boolean_array_property", KJsonValueType.ARRAY)
+                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.BOOLEAN))
+                .finishField()
+                .withField("string_array_property", KJsonValueType.ARRAY)
+                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.STRING))
+                .finishField()
+                .withField("subdef_array_property", KJsonValueType.ARRAY)
+                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.OBJECT))
+                .finishField()
+                .build();
 
         }
 
