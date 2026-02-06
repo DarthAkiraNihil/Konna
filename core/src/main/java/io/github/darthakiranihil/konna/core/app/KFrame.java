@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.input.KKeyListener;
+import io.github.darthakiranihil.konna.core.io.KKeyListener;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 
 /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.input;
+package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
