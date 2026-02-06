@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.input.KKeyListener;
+import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 
 /**
@@ -108,12 +108,6 @@ public interface KFrame {
     void hide();
 
     /**
-     * Adds a key listener to this frame.
-     * @param listener A new key listener
-     */
-    void addKeyListener(KKeyListener listener);
-
-    /**
      * Terminates this frame (including closing) and releases all its resources.
      */
     void terminate();
@@ -160,5 +154,10 @@ public interface KFrame {
      * @return Flag of frame locking state
      */
     boolean isLocked();
+
+    /**
+     * @return Input processor assigned to this frame
+     */
+    KInputProcessor getInputProcessor();
 
 }

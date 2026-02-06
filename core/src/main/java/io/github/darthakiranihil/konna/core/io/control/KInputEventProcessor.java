@@ -14,30 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.input;
-
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+package io.github.darthakiranihil.konna.core.io.control;
 
 /**
- * Interface for key listener that listens for key pressing and releasing.
+ * Interface for a handler of high-level input events.
+ * It should be implemented for each game individually.
  *
- * @since 0.3.0
+ * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@KExcludeFromGeneratedCoverageReport
-public interface KKeyListener {
+public interface KInputEventProcessor {
 
     /**
-     * Handler for key pressing.
-     * @param data Key event data
+     * Processes this input event.
+     * @param data Input event data
      */
-    void keyPressed(KKeyEventData data);
-
-    /**
-     * Handler for key releasing.
-     * @param data Key event data
-     */
-    void keyReleased(KKeyEventData data);
-    // void keyHold(KKeyEventData data);
+    void process(KInputEventData data);
 
 }

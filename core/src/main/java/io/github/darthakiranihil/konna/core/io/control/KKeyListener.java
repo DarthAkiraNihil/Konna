@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.input;
+package io.github.darthakiranihil.konna.core.io.control;
 
 import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 
 /**
- * Container for key event data.
- * @param key Pressed key
- * @param withShift Flag if key is followed with "Shift" modifier
- * @param withAlt Flag if key is followed with "Alt" modifier
- * @param withSuper Flag if key is followed with "Super" modifier
- * @param withCapsLock Flag if key is followed with "CapsLock" modifier
- * @param withNumLock Flag if key is followed with "NumLock" modifier
+ * Interface for key listener that listens for key pressing and releasing.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KExcludeFromGeneratedCoverageReport
-public record KKeyEventData(
-    KKey key,
-    boolean withShift,
-    boolean withAlt,
-    boolean withSuper,
-    boolean withCapsLock,
-    boolean withNumLock
-) {
+public interface KKeyListener {
+
+    /**
+     * Handler for key pressing.
+     * @param data Key event data
+     */
+    void keyPressed(KKeyInputData data);
+
+    /**
+     * Handler for key releasing.
+     * @param data Key event data
+     */
+    void keyReleased(KKeyInputData data);
+    // void keyHold(KKeyEventData data);
 
 }

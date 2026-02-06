@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLock;
-import io.github.darthakiranihil.konna.core.input.KKeyListener;
+import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import org.jetbrains.annotations.TestOnly;
 
@@ -75,11 +75,6 @@ public final class KTestFrame implements KFrame {
     }
 
     @Override
-    public void addKeyListener(final KKeyListener listener) {
-
-    }
-
-    @Override
     public void terminate() {
 
     }
@@ -119,5 +114,10 @@ public final class KTestFrame implements KFrame {
     @Override
     public boolean isLocked() {
         return false;
+    }
+
+    @Override
+    public KInputProcessor getInputProcessor() {
+        return new KTestInputProcessor();
     }
 }
