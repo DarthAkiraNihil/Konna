@@ -17,26 +17,45 @@
 package io.github.darthakiranihil.konna.core.io.std;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.control.KInputEventData;
-import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
-import io.github.darthakiranihil.konna.core.io.control.KKeyEventData;
+import io.github.darthakiranihil.konna.core.io.control.*;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import org.jspecify.annotations.Nullable;
 
+import java.util.LinkedList;
+import java.util.List;
+
+@KSingleton
 public class KStandardInputProcessor extends KObject implements KInputProcessor {
 
-    public final String INPUT_EVENT_NAME = "input_event";
-
-    private final KEventSystem eventSystem;
-    private final KEvent<KInputEventData> inputEvent;
+    private final List<KInputControlScheme> controlSchemes;
+    private final KInputEventProcessor inputEventProcessor;
 
     private boolean enabled;
 
-    public KStandardInputProcessor(@KInject final KEventSystem eventSystem) {
-        this.eventSystem = eventSystem;
-        this.inputEvent = new KEvent<>(INPUT_EVENT_NAME);
-        this.eventSystem.registerEvent(this.inputEvent);
+    public KStandardInputProcessor(
+        @KInject final KInputEventProcessor inputEventProcessor
+    ) {
+        this.inputEventProcessor = inputEventProcessor;
+        this.controlSchemes = new LinkedList<>();
+        this.enabled = true;
+    }
+
+    @Override
+    public void addControlScheme(KInputControlScheme scheme) {
+        this.controlSchemes.add(scheme);
+    }
+
+    @Override
+    public @Nullable KInputControlScheme getControlScheme(String name) {
+        return this
+            .controlSchemes
+            .stream()
+            .filter(s -> s.getName().equals(name))
+            .findFirst()
+            .orElse(null);
     }
 
     @Override
@@ -50,16 +69,29 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
     }
 
     @Override
-    public void keyPressed(KKeyEventData data) {
+    public void keyPressed(KKeyInputData data) {
         if (!this.enabled) {
             return;
         }
+
+        this.processEvent(data);
     }
 
     @Override
-    public void keyReleased(KKeyEventData data) {
+    public void keyReleased(KKeyInputData data) {
         if (!this.enabled) {
             return;
+        }
+
+        this.processEvent(data);
+    }
+
+    private void processEvent(final KInputData data) {
+        for (KInputControlScheme scheme: this.controlSchemes) {
+            var actions = scheme.getPerformedActions(data);
+            for (KInputEventData action: actions) {
+                this.inputEventProcessor.process(action);
+            }
         }
     }
 }

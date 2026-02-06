@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.io.control.KKey;
-import io.github.darthakiranihil.konna.core.io.control.KKeyEventData;
+import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -325,7 +325,7 @@ public class KGlfwFrame extends KObject implements KFrame {
             this.handle,
             (w, key, scancode, action, mods) -> {
 
-                KKeyEventData eventData = new KKeyEventData(
+                KKeyInputData eventData = new KKeyInputData(
                     KEY_GLFW_TO_KONNA.get(key),
                     (mods & KGlfw.GLFW_MOD_SHIFT) != 0,
                     (mods & KGlfw.GLFW_MOD_ALT) != 0,

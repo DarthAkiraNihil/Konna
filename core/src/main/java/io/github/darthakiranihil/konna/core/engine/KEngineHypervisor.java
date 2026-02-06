@@ -120,7 +120,7 @@ public class KEngineHypervisor extends KObject {
         this.loopEnter = new KSimpleEvent(KFrame.LOOP_ENTER_EVENT_NAME);
         this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
-    this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
+        this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
     }
 
     /**

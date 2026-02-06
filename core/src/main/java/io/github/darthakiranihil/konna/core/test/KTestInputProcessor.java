@@ -16,8 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.test;
 
+import io.github.darthakiranihil.konna.core.io.control.KInputControlScheme;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
-import io.github.darthakiranihil.konna.core.io.control.KKeyEventData;
+import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
+import org.jspecify.annotations.Nullable;
 
 public final class KTestInputProcessor implements KInputProcessor {
 
@@ -32,12 +34,22 @@ public final class KTestInputProcessor implements KInputProcessor {
     }
 
     @Override
-    public void keyPressed(KKeyEventData data) {
+    public void keyPressed(KKeyInputData data) {
 
     }
 
     @Override
-    public void keyReleased(KKeyEventData data) {
+    public void keyReleased(KKeyInputData data) {
 
+    }
+
+    @Override
+    public void addControlScheme(KInputControlScheme scheme) {
+
+    }
+
+    @Override
+    public @Nullable KInputControlScheme getControlScheme(String name) {
+        return null;
     }
 }

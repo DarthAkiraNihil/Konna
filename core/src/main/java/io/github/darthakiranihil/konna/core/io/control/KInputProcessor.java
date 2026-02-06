@@ -16,9 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
+import org.jspecify.annotations.Nullable;
+
 public interface KInputProcessor extends KKeyListener {
 
-    void addControlScheme();
+    void addControlScheme(KInputControlScheme scheme);
+    @Nullable KInputControlScheme getControlScheme(String name);
+
     void disable();
     void enable();
 

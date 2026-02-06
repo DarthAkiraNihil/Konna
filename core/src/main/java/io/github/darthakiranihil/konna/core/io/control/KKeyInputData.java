@@ -31,13 +31,13 @@ import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageRe
  * @author Darth Akira Nihil
  */
 @KExcludeFromGeneratedCoverageReport
-public record KKeyEventData(
+public record KKeyInputData(
     KKey key,
     boolean withShift,
     boolean withAlt,
     boolean withSuper,
     boolean withCapsLock,
     boolean withNumLock
-) {
+) implements KInputData {
 
 }
