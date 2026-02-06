@@ -19,8 +19,16 @@ package io.github.darthakiranihil.konna.core.test;
 import io.github.darthakiranihil.konna.core.io.control.KInputControlScheme;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
+import org.jetbrains.annotations.TestOnly;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Implementation of {@link KInputProcessor} for test purposes.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+@TestOnly
 public final class KTestInputProcessor implements KInputProcessor {
 
     @Override
@@ -34,22 +42,22 @@ public final class KTestInputProcessor implements KInputProcessor {
     }
 
     @Override
-    public void keyPressed(KKeyInputData data) {
+    public void keyPressed(final KKeyInputData data) {
 
     }
 
     @Override
-    public void keyReleased(KKeyInputData data) {
+    public void keyReleased(final KKeyInputData data) {
 
     }
 
     @Override
-    public void addControlScheme(KInputControlScheme scheme) {
+    public void addControlScheme(final KInputControlScheme scheme) {
 
     }
 
     @Override
-    public @Nullable KInputControlScheme getControlScheme(String name) {
+    public @Nullable KInputControlScheme getControlScheme(final String name) {
         return null;
     }
 }

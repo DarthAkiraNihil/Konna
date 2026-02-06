@@ -16,8 +16,19 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
+/**
+ * Interface for a handler of high-level input events.
+ * It should be implemented for each game individually.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public interface KInputEventProcessor {
 
+    /**
+     * Processes this input event.
+     * @param data Input event data
+     */
     void process(KInputEventData data);
 
 }

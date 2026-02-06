@@ -16,6 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
+/**
+ * High-level representation of executed input action.
+ * @param scheme Scheme of the executed input action
+ * @param action Name of the executed action
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public record KInputEventData(
     String scheme,
     String action

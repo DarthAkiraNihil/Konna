@@ -155,6 +155,9 @@ public interface KFrame {
      */
     boolean isLocked();
 
+    /**
+     * @return Input processor assigned to this frame
+     */
     KInputProcessor getInputProcessor();
 
 }

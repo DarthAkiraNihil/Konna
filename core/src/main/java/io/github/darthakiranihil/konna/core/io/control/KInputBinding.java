@@ -16,10 +16,21 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
-import org.jspecify.annotations.Nullable;
-
+/**
+ * Interface representation of an action that is performed on certain input event.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public interface KInputBinding {
 
+    /**
+     * Creates input binding for that action that is performed on keyboard key press
+     * or something like that.
+     * @param action Action name
+     * @param ofKey Key that is assigned to the action
+     * @return Key binding to the action
+     */
     static KInputBinding ofKey(
         final String action,
         final KKey ofKey
@@ -31,18 +42,27 @@ public interface KInputBinding {
             }
 
             @Override
-            public @Nullable String isActionPerformed(KInputData data) {
+            public boolean isActionPerformed(final KInputData data) {
                 if (!KKeyInputData.class.isAssignableFrom(data.getClass())) {
-                    return null;
+                    return false;
                 }
 
                 KKeyInputData keyData = (KKeyInputData) data;
-                return keyData.key() == ofKey ? action : null;
+                return keyData.key() == ofKey;
             }
         };
     }
 
+    /**
+     * @return Name of the action assigned to the binding
+     */
     String getActionName();
-    @Nullable String isActionPerformed(KInputData inputData);
+
+    /**
+     * Checks if the action can be performed for this acquired input data.
+     * @param inputData Raw input data
+     * @return Whether the action is triggered for this input data
+     */
+    boolean isActionPerformed(KInputData inputData);
 
 }

@@ -16,6 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
+/**
+ * Marker-interface of all input data that can be handled by Konna's
+ * input processor. Each input event data (e.g. {@link KKeyInputData})
+ * must implement this interface.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public interface KInputData {
 
 }

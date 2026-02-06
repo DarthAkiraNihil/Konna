@@ -18,8 +18,6 @@ package io.github.darthakiranihil.konna.core.io.std;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.control.*;
-import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import org.jspecify.annotations.Nullable;
@@ -27,6 +25,13 @@ import org.jspecify.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Standard implementation of {@link KInputProcessor} that converts raw input events
+ * to high-level {@link KInputEventData}s and passes them to {@link KInputEventProcessor}.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 public class KStandardInputProcessor extends KObject implements KInputProcessor {
 
@@ -35,6 +40,10 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
 
     private boolean enabled;
 
+    /**
+     * Standard constructor.
+     * @param inputEventProcessor Input event processor
+     */
     public KStandardInputProcessor(
         @KInject final KInputEventProcessor inputEventProcessor
     ) {
@@ -44,12 +53,12 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
     }
 
     @Override
-    public void addControlScheme(KInputControlScheme scheme) {
+    public void addControlScheme(final KInputControlScheme scheme) {
         this.controlSchemes.add(scheme);
     }
 
     @Override
-    public @Nullable KInputControlScheme getControlScheme(String name) {
+    public @Nullable KInputControlScheme getControlScheme(final String name) {
         return this
             .controlSchemes
             .stream()
@@ -69,7 +78,7 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
     }
 
     @Override
-    public void keyPressed(KKeyInputData data) {
+    public void keyPressed(final KKeyInputData data) {
         if (!this.enabled) {
             return;
         }
@@ -78,7 +87,7 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
     }
 
     @Override
-    public void keyReleased(KKeyInputData data) {
+    public void keyReleased(final KKeyInputData data) {
         if (!this.enabled) {
             return;
         }

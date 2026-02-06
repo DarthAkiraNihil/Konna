@@ -19,9 +19,11 @@ package io.github.darthakiranihil.konna.core.io;
 import io.github.darthakiranihil.konna.core.io.control.*;
 import io.github.darthakiranihil.konna.core.io.std.KStandardInputProcessor;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@NullMarked
 public class KStandardInputProcessorTests extends KStandardTestClass {
 
     private static final class TestInputEventProcessor implements KInputEventProcessor {
