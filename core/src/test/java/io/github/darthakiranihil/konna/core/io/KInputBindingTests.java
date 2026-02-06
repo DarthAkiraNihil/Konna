@@ -36,7 +36,7 @@ public class KInputBindingTests extends KStandardTestClass {
         KInputBinding binding = KInputBinding.ofKey("aboba", KKey.A);
 
         Assertions.assertEquals("aboba", binding.getActionName());
-        Assertions.assertEquals("aboba", binding.isActionPerformed(
+        Assertions.assertTrue(binding.isActionPerformed(
             new KKeyInputData(KKey.A, false, false, false, false, false)
         ));
 
@@ -47,10 +47,10 @@ public class KInputBindingTests extends KStandardTestClass {
 
         KInputBinding binding = KInputBinding.ofKey("aboba", KKey.A);
 
-        Assertions.assertNull(binding.isActionPerformed(
+        Assertions.assertFalse(binding.isActionPerformed(
             new KKeyInputData(KKey.B, false, false, false, false, false)
         ));
-        Assertions.assertNull(binding.isActionPerformed(new TestInputData()));
+        Assertions.assertFalse(binding.isActionPerformed(new TestInputData()));
 
     }
 }
