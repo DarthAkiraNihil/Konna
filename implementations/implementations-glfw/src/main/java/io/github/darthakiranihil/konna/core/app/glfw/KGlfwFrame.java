@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLock;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.io.KInputProcessor;
 import io.github.darthakiranihil.konna.core.io.KKey;
 import io.github.darthakiranihil.konna.core.io.KKeyEventData;
 import io.github.darthakiranihil.konna.core.io.KKeyListener;
@@ -171,6 +172,7 @@ public class KGlfwFrame extends KObject implements KFrame {
 
     private final KGlfw glfw;
     private final KGlfwCallbacks glfwCallbacks;
+    private final KInputProcessor inputProcessor;
     private final IntBuffer pWidth;
     private final IntBuffer pHeight;
     private final List<KFrameLock> frameLocks;
@@ -182,11 +184,13 @@ public class KGlfwFrame extends KObject implements KFrame {
     public KGlfwFrame(
         @KInject final KGlfw glfw,
         @KInject final KGlfwCallbacks glfwCallbacks,
+        @KInject final KInputProcessor inputProcessor,
         final String title,
         final KSize size
     ) {
         this.glfw = glfw;
         this.glfwCallbacks = glfwCallbacks;
+        this.inputProcessor = inputProcessor;
 
         if (!this.glfw.glfwInit()) {
             throw new KException(
@@ -215,8 +219,10 @@ public class KGlfwFrame extends KObject implements KFrame {
 
         this.pHeight = IntBuffer.allocate(1);
         this.pWidth = IntBuffer.allocate(1);
-        this.updateSize();
         this.frameLocks = new LinkedList<>();
+
+        this.updateSize();
+        this.setupInputProcessor();
     }
 
     @Override
@@ -291,34 +297,6 @@ public class KGlfwFrame extends KObject implements KFrame {
     }
 
     @Override
-    public void addKeyListener(final KKeyListener listener) {
-
-        glfw.glfwSetKeyCallback(
-            this.handle,
-            (w, key, scancode, action, mods) -> {
-
-                KKeyEventData eventData = new KKeyEventData(
-                    KEY_GLFW_TO_KONNA.get(key),
-                    (mods & KGlfw.GLFW_MOD_SHIFT) != 0,
-                    (mods & KGlfw.GLFW_MOD_ALT) != 0,
-                    (mods & KGlfw.GLFW_MOD_SUPER) != 0,
-                    (mods & KGlfw.GLFW_MOD_CAPS_LOCK) != 0,
-                    (mods & KGlfw.GLFW_MOD_NUM_LOCK) != 0
-                );
-
-                switch (action) {
-                    case KGlfw.GLFW_PRESS -> {
-                        listener.keyPressed(eventData);
-                    }
-                    case KGlfw.GLFW_RELEASE -> {
-                        listener.keyReleased(eventData);
-                    }
-                }
-            }
-        );
-    }
-
-    @Override
     public void addLock(final KFrameLock lock) {
         if (this.frameLocks.contains(lock)) {
             return;
@@ -336,5 +314,36 @@ public class KGlfwFrame extends KObject implements KFrame {
     @Override
     public boolean isLocked() {
         return !this.frameLocks.isEmpty();
+    }
+
+    @Override
+    public KInputProcessor getInputProcessor() {
+        return this.inputProcessor;
+    }
+
+    private void setupInputProcessor() {
+        this.glfw.glfwSetKeyCallback(
+            this.handle,
+            (w, key, scancode, action, mods) -> {
+
+                KKeyEventData eventData = new KKeyEventData(
+                    KEY_GLFW_TO_KONNA.get(key),
+                    (mods & KGlfw.GLFW_MOD_SHIFT) != 0,
+                    (mods & KGlfw.GLFW_MOD_ALT) != 0,
+                    (mods & KGlfw.GLFW_MOD_SUPER) != 0,
+                    (mods & KGlfw.GLFW_MOD_CAPS_LOCK) != 0,
+                    (mods & KGlfw.GLFW_MOD_NUM_LOCK) != 0
+                );
+
+                switch (action) {
+                    case KGlfw.GLFW_PRESS -> {
+                        this.inputProcessor.keyPressed(eventData);
+                    }
+                    case KGlfw.GLFW_RELEASE -> {
+                        this.inputProcessor.keyReleased(eventData);
+                    }
+                }
+            }
+        );
     }
 }
