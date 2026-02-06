@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.data.json.std;
+package io.github.darthakiranihil.konna.core.data.json;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 
 /**
@@ -29,28 +25,28 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationErro
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KJsonObjectValidator implements KJsonValidator {
+public final class KJsonObjectValidator implements KJsonValidator {
 
-    private final KJsonPropertyValidationInfo[] propertyInfo;
+    private final KJsonFieldValidationInfo[] propertyInfo;
 
     /**
      * Standard constructor.
      * @param propertyInfo Object properties' validation info
      *
-     * @see KJsonPropertyValidationInfo
+     * @see KJsonFieldValidationInfo
      */
-    public KJsonObjectValidator(final KJsonPropertyValidationInfo... propertyInfo) {
+    public KJsonObjectValidator(final KJsonFieldValidationInfo... propertyInfo) {
         this.propertyInfo = propertyInfo;
     }
 
     /**
      * Validates a json value - validates object's property according
-     * to its {@link KJsonPropertyValidationInfo} and runs property's
+     * to its {@link KJsonFieldValidationInfo} and runs property's
      * value through validators set on {@link KJsonArrayValidator} instantiation.
      * Also checks if the passed value is {@link KJsonValueType#OBJECT}
      * and throws {@link KJsonValidationError} if it is not.
      * @param value Json value to validate
-     * @see KJsonPropertyValidationInfo
+     * @see KJsonFieldValidationInfo
      */
     @Override
     public void validate(final KJsonValue value) {

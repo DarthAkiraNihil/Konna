@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
@@ -51,55 +50,24 @@ public record KGraphicsComponentConfig(
     private static final String IMAGE_LOADER_CLASS_KEY = "image_loader";
     private static final String TRANSFORM_MATRIX_CALCULATOR_CLASS = "transform_matrix_calculator";
 
-    private static final class Schema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        Schema() {
-            var propInfoBuilder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                propInfoBuilder
-                    .withName(RENDER_FRONTEND_CLASS_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(SHADER_COMPILER_CLASS_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(IMAGE_LOADER_CLASS_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build(),
-                propInfoBuilder
-                    .withName(TRANSFORM_MATRIX_CALCULATOR_CLASS)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(
-                        KJsonValueIsClassValidator.INSTANCE
-                    )
-                    .build()
-            );
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-    }
-
     /**
      * JSON schema of config, that should be used
      * for validation of loaded json file.
      */
-    public static final KJsonValidator SCHEMA = new Schema();
+    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
+        .create()
+        .withField(RENDER_FRONTEND_CLASS_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(SHADER_COMPILER_CLASS_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(IMAGE_LOADER_CLASS_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(TRANSFORM_MATRIX_CALCULATOR_CLASS, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .build();
 
 }

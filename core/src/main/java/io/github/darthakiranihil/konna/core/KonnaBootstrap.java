@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core;
 
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
@@ -32,52 +31,28 @@ final class KonnaBootstrap {
     private static final String HYPERVISOR_CLASS_KEY = "class";
     private static final String HYPERVISOR_CONFIG_KEY = "config";
 
-    private static class Schema implements KJsonValidator {
-
-        private final KJsonValidator validator;
-
-        Schema() {
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.validator = new KJsonObjectValidator(
-                builder
-                    .withName(ARG_PARSER_CLASS_KEY)
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                    .build(),
-                builder
-                    .withName(HYPERVISOR_ROOT_KEY)
-                    .withExpectedType(KJsonValueType.OBJECT)
-                    .withValidator(
-                        new KJsonObjectValidator(
-                            builder
-                                .createSeparated()
-                                .withName(HYPERVISOR_CLASS_KEY)
-                                .withExpectedType(KJsonValueType.STRING)
-                                .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                                .build(),
-                            builder
-                                .createSeparated()
-                                .withName(HYPERVISOR_CONFIG_KEY)
-                                .withExpectedType(KJsonValueType.OBJECT)
-                                .withValidator(KEngineHypervisorConfig.SCHEMA)
-                                .build()
-                        )
-                    )
-                    .build()
-            );
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.validator.validate(value);
-        }
-    }
-
     /**
      * Json schema for Konna bootstrap config.
      */
-    public static final KJsonValidator SCHEMA = new Schema();
+    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
+        .create()
+        .withField(ARG_PARSER_CLASS_KEY, KJsonValueType.STRING)
+        .withValidator(KJsonValueIsClassValidator.INSTANCE)
+        .finishField()
+        .withField(HYPERVISOR_ROOT_KEY, KJsonValueType.OBJECT)
+        .withValidator(
+            KJsonObjectValidatorBuilder
+                .create()
+                .withField(HYPERVISOR_CLASS_KEY, KJsonValueType.STRING)
+                .withValidator(KJsonValueIsClassValidator.INSTANCE)
+                .finishField()
+                .withField(HYPERVISOR_CONFIG_KEY, KJsonValueType.OBJECT)
+                .withValidator(KEngineHypervisorConfig.SCHEMA)
+                .finishField()
+                .build()
+        )
+        .finishField()
+        .build();
 
     private final KJsonValue config;
 

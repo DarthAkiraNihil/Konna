@@ -18,8 +18,6 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonArrayValidator;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -31,18 +29,11 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
     public void testObjectValidatorIncorrectType() {
 
         String src = "[1, 2, 3]";
-        var propBuilder = new KJsonPropertyValidationInfo.Builder();
-        KJsonValidator validator = new KJsonObjectValidator(
-            propBuilder
-                .withName("aboba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build(),
-            propBuilder
-                .withName("biba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build()
-        );
-
+        KJsonValidator validator = KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("aboba", KJsonValueType.NUMBER_INT)
+            .withSimpleField("biba", KJsonValueType.NUMBER_INT)
+            .build();
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -60,18 +51,11 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
     public void testObjectValidatorNoRequiredValue() {
 
         String src = "{\"aboba\": 123}";
-        var propBuilder = new KJsonPropertyValidationInfo.Builder();
-        KJsonValidator validator = new KJsonObjectValidator(
-            propBuilder
-                .withName("aboba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build(),
-            propBuilder
-                .withName("biba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build()
-        );
-
+        KJsonValidator validator = KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("aboba", KJsonValueType.NUMBER_INT)
+            .withSimpleField("biba", KJsonValueType.NUMBER_INT)
+            .build();
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -89,14 +73,10 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
     public void testObjectValidatorGotNullButNotNullable() {
 
         String src = "{\"aboba\": null}";
-        var propBuilder = new KJsonPropertyValidationInfo.Builder();
-        KJsonValidator validator = new KJsonObjectValidator(
-            propBuilder
-                .withName("aboba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build()
-        );
-
+        KJsonValidator validator = KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("aboba", KJsonValueType.NUMBER_INT)
+            .build();
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -114,19 +94,13 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
     public void testObjectValidatorValueValidationFailed() {
 
         String src = "{\"aboba\": \"123\"}";
-        var propBuilder = new KJsonPropertyValidationInfo.Builder();
-        KJsonValidator validator = new KJsonObjectValidator(
-            propBuilder
-                .withName("aboba")
-                .withExpectedType(KJsonValueType.STRING)
-                .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                .build(),
-            propBuilder
-                .withName("biba")
-                .withExpectedType(KJsonValueType.NUMBER_INT)
-                .build()
-        );
-
+        KJsonValidator validator = KJsonObjectValidatorBuilder
+            .create()
+            .withField("aboba", KJsonValueType.STRING)
+            .withValidator(KJsonValueIsClassValidator.INSTANCE)
+            .finishField()
+            .withSimpleField("biba", KJsonValueType.NUMBER_INT)
+            .build();
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -144,9 +118,7 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
     public void testArrayValidatorIncorrectType() {
 
         String src = "{}";
-        KJsonValidator validator = new KJsonArrayValidator(
-            KJsonValueType.NUMBER_INT
-        );
+        KJsonValidator validator = KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.NUMBER_INT);
 
         try {
             KJsonValue parsed = this.jsonParser.parse(src);
@@ -220,57 +192,29 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
     @Test
     public void testPropertyBuilderNoName() {
 
-        var builder = new KJsonPropertyValidationInfo.Builder();
+        var builder = KJsonObjectValidatorBuilder
+            .create()
+            .withField("", KJsonValueType.STRING);
 
         Throwable thrown = Assertions.assertThrows(
-            KJsonValidationError.class, builder::build
+            KJsonValidationError.class, builder::finishField
         );
         Assertions.assertEquals(
-            "Property name cannot be null or empty",
+            "Property name cannot be empty",
             thrown.getMessage()
         );
-
-        thrown = Assertions.assertThrows(
-            KJsonValidationError.class, () -> {
-                builder
-                    .createSeparated()
-                    .withName("")
-                    .build();
-            }
-        );
-        Assertions.assertEquals(
-            "Property name cannot be null or empty",
-            thrown.getMessage()
-        );
-
-    }
-
-    @Test
-    public void testPropertyBuilderNoType() {
-
-        var builder = new KJsonPropertyValidationInfo.Builder()
-            .withName("test");
-
-        Throwable thrown = Assertions.assertThrows(
-            KJsonValidationError.class, builder::build
-        );
-        Assertions.assertEquals(
-            "Property type cannot be null",
-            thrown.getMessage()
-        );
-
     }
 
     @Test
     public void testPropertyBuilderNoDefaultValue() {
 
-        var builder = new KJsonPropertyValidationInfo.Builder()
-            .withName("test")
-            .withExpectedType(KJsonValueType.NUMBER_INT)
+        var builder = KJsonObjectValidatorBuilder
+            .create()
+            .withField("test", KJsonValueType.NUMBER_INT)
             .withRequired(false);
 
         Throwable thrown = Assertions.assertThrows(
-            KJsonValidationError.class, builder::build
+            KJsonValidationError.class, builder::finishField
         );
         Assertions.assertEquals(
             "Cannot set property required without provided default value",

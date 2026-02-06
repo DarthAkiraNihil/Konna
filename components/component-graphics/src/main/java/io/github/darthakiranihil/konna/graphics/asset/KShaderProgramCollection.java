@@ -16,11 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -60,39 +56,12 @@ public final class KShaderProgramCollection
      */
     public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
         SHADER_PROGRAM_ASSET_TYPE,
-        new ShaderProgramAssetSchema()
+        KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField("vertex", KJsonValueType.STRING)
+            .withSimpleField("fragment", KJsonValueType.STRING)
+            .build()
     );
-
-    private static final class ShaderProgramAssetSchema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        ShaderProgramAssetSchema() {
-
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                builder
-                    .withName("vertex")
-                    .withExpectedType(KJsonValueType.STRING)
-                    //.withRequired(false)
-                    //.withDefaultValue(null)
-                    .build(),
-                builder
-                    .withName("fragment")
-                    .withExpectedType(KJsonValueType.STRING)
-                    //.withRequired(false)
-                    //.withDefaultValue(null)
-                    .build()
-            );
-
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-    }
 
     private final Map<String, KShaderProgram> loadedPrograms;
     private @Nullable KShaderProgram defaultTextureShader;

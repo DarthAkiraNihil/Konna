@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.data.json.std;
+package io.github.darthakiranihil.konna.core.data.json;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 
 /**
@@ -28,7 +25,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationErro
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KJsonArrayValidator implements KJsonValidator {
+public final class KJsonArrayValidator implements KJsonValidator {
 
     private final KJsonValueType expectedElementType;
     private final KJsonValidator[] validators;

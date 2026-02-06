@@ -16,11 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonPropertyValidationInfo;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonObjectValidator;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
@@ -56,36 +52,14 @@ public final class KShaderCollection extends KObject implements KAssetCollection
      */
     public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
         SHADER_ASSET_TYPE,
-        new ShaderAssetSchema()
+        KJsonObjectValidatorBuilder
+            .create()
+            .withField("type", KJsonValueType.STRING)
+            .withValidator(KShaderType.VALIDATOR)
+            .finishField()
+            .withSimpleField("source", KJsonValueType.STRING) // todo: value is path
+            .build()
     );
-
-    private static final class ShaderAssetSchema implements KJsonValidator {
-
-        private final KJsonValidator schema;
-
-        ShaderAssetSchema() {
-
-            var builder = new KJsonPropertyValidationInfo.Builder();
-
-            this.schema = new KJsonObjectValidator(
-                builder
-                    .withName("type")
-                    .withExpectedType(KJsonValueType.STRING)
-                    .withValidator(KShaderType.VALIDATOR)
-                    .build(),
-                builder
-                    .withName("source")
-                    .withExpectedType(KJsonValueType.STRING) // todo: value is path
-                    .build()
-            );
-
-        }
-
-        @Override
-        public void validate(final KJsonValue value) {
-            this.schema.validate(value);
-        }
-    }
 
     private final Map<String, KShader> loadedShaders;
 
