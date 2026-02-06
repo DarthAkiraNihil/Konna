@@ -40,6 +40,7 @@ public class KImGuiControllerSpair extends KImGuiController {
 
     private final ImGuiImplGl3 imGuiImplGl3;
     private final ImGuiImplGlfw imGuiImplGlfw;
+    private final KFrame frame;
 
     public KImGuiControllerSpair(
         @KInject final KImGui imGui,
@@ -73,10 +74,14 @@ public class KImGuiControllerSpair extends KImGuiController {
             .add(KImGuiStyle.class, KImGuiStyleSpair.class)
             .add(KImGuiKeyData.class, KImGuiKeyDataSpair.class);
 
+        this.frame = frame;
+
     }
 
     @Override
     protected void onNewFrame() {
+        this.frame.getInputProcessor().enable();
+
         this.imGuiImplGl3.newFrame();
         this.imGuiImplGlfw.newFrame();
         this.imGui.newFrame();
@@ -88,6 +93,12 @@ public class KImGuiControllerSpair extends KImGuiController {
         this.imGuiImplGl3.renderDrawData(
             KImGuiSpairUnboxer.unbox(this.imGui.getDrawData())
         );
+
+        if (
+                this.imGui.getIO().getWantCaptureKeyboard()
+            ||  this.imGui.getIO().getWantCaptureMouse()) {
+            this.frame.getInputProcessor().disable();
+        }
     }
 
     @Override
