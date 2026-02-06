@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import io.github.darthakiranihil.konna.core.io.KInputProcessor;
 import io.github.darthakiranihil.konna.core.io.KKeyListener;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 
@@ -160,5 +161,7 @@ public interface KFrame {
      * @return Flag of frame locking state
      */
     boolean isLocked();
+
+    KInputProcessor getInputProcessor();
 
 }
