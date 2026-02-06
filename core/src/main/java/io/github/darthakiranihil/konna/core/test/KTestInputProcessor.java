@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.test;
 
-import io.github.darthakiranihil.konna.core.io.KInputProcessor;
-import io.github.darthakiranihil.konna.core.io.KKeyEventData;
+import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
+import io.github.darthakiranihil.konna.core.io.control.KKeyEventData;
 
 public final class KTestInputProcessor implements KInputProcessor {
 

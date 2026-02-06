@@ -18,8 +18,7 @@ package io.github.darthakiranihil.konna.core.test;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLock;
-import io.github.darthakiranihil.konna.core.io.KInputProcessor;
-import io.github.darthakiranihil.konna.core.io.KKeyListener;
+import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import org.jetbrains.annotations.TestOnly;
 

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.io;
+package io.github.darthakiranihil.konna.core.io.control;
 
 public interface KInputProcessor extends KKeyListener {
 
+    void addControlScheme();
     void disable();
     void enable();
 
