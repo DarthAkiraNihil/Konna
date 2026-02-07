@@ -90,4 +90,65 @@ public interface KAssetDefinition {
      */
     KAssetDefinition[] getSubdefinitionArray(String property);
 
+    /**
+     * @param property Property name
+     * @return Whether this definition has the int property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasInt(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the float property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasFloat(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the boolean property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasBoolean(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the string property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasString(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the subdefinition property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasSubdefinition(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the int array property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasIntArray(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the float array property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasFloatArray(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the boolean array property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasBooleanArray(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the string array property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasStringArray(String property);
+    /**
+     * @param property Property name
+     * @return Whether this definition has the subdefinition array property with such name or not
+     * @since 0.4.0
+     */
+    boolean hasSubdefinitionArray(String property);
+
 }
