@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.data.json;
-
-import io.github.darthakiranihil.konna.core.util.KValidator;
+package io.github.darthakiranihil.konna.core.util;
 
 /**
- * Represents a json validator that check if the json value
- * is correct according to checks, that are implementation-defined.
+ * Simple interface that represents validator of a value of specific type.
+ * @param <T> Type of validated values
  *
- * @since 0.2.0
+ * @since 0.4.0
  * @author Darth Akira Nihil
  */
 @FunctionalInterface
-public interface KJsonValidator extends KValidator<KJsonValue> {
+public interface KValidator<T> {
 
     /**
-     * Validates a json value.
-     * @throws  io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError
-     *          if json value does not pass validation checks
-     * @param value Json value to validate
+     * Validates the value.
+     * @param value Value to validate
      */
-    void validate(KJsonValue value);
+    void validate(T value);
 
 }
