@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.util.KValidator;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-public interface KAssetTypeDefinition extends KValidator<KAssetDefinition> {
+public interface KAssetTypedef extends KValidator<KAssetDefinition> {
 
     /**
      * @return Name of the type
