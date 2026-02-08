@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetDefinition;
-import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
+import io.github.darthakiranihil.konna.core.io.std.KJsonSubobjectBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 @NullMarked
-public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
+public class KJsonSubobjectBasedAssetLoaderPositiveTests extends KStandardTestClass {
 
     private static final class Alias1Typedef implements KAssetTypedef {
 
@@ -61,11 +61,11 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
     @Test
     public void testLoadAsset() {
 
-        Map<String, KJsonAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
-        assetTypeData.put("type_1", new KJsonAssetLoader.AssetTypeData(
+        Map<String, KJsonSubobjectBasedAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
+        assetTypeData.put("type_1", new KJsonSubobjectBasedAssetLoader.AssetTypeData(
             new String[] {"alias_1"}, new String[] {"classpath:valid_assets_type_1.json"}
         ));
-        KAssetLoader assetLoader = new KJsonAssetLoader(
+        KAssetLoader assetLoader = new KJsonSubobjectBasedAssetLoader(
             new KStandardResourceLoader(
                 List.of(new KClasspathProtocol(
                     ClassLoader.getSystemClassLoader()
@@ -127,11 +127,11 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
     @Test
     public void testAddAssetTypeDefinitionThatIsNotRegistered() {
 
-        Map<String, KJsonAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
-        assetTypeData.put("type_1", new KJsonAssetLoader.AssetTypeData(
+        Map<String, KJsonSubobjectBasedAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
+        assetTypeData.put("type_1", new KJsonSubobjectBasedAssetLoader.AssetTypeData(
             new String[] {"alias_1"}, new String[] {"classpath:valid_assets_type_1.json"}
         ));
-        KAssetLoader assetLoader = new KJsonAssetLoader(
+        KAssetLoader assetLoader = new KJsonSubobjectBasedAssetLoader(
             new KStandardResourceLoader(
                 List.of(new KClasspathProtocol(
                     ClassLoader.getSystemClassLoader()
@@ -164,11 +164,11 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
     @Test
     public void testAddNewAsset() {
 
-        Map<String, KJsonAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
-        assetTypeData.put("type_1", new KJsonAssetLoader.AssetTypeData(
+        Map<String, KJsonSubobjectBasedAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
+        assetTypeData.put("type_1", new KJsonSubobjectBasedAssetLoader.AssetTypeData(
             new String[] {"alias_1"}, new String[] {"classpath:valid_assets_type_1.json"}
         ));
-        KAssetLoader assetLoader = new KJsonAssetLoader(
+        KAssetLoader assetLoader = new KJsonSubobjectBasedAssetLoader(
             new KStandardResourceLoader(
                 List.of(new KClasspathProtocol(
                     ClassLoader.getSystemClassLoader()

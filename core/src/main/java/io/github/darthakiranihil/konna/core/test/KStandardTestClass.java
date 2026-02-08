@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.std.KProxiedEngineContext;
-import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
+import io.github.darthakiranihil.konna.core.io.std.KJsonSubobjectBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.log.KLogger;
@@ -124,7 +124,7 @@ public class KStandardTestClass extends KObject {
                 )
             )
         );
-        var assetLoader = new KJsonAssetLoader(
+        var assetLoader = new KJsonSubobjectBasedAssetLoader(
             resourceLoader,
             Map.of(),
             new KStandardJsonParser(new KStandardJsonTokenizer())
