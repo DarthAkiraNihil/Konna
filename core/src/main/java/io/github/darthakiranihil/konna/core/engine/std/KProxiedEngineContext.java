@@ -166,6 +166,26 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
+    public KResource[] loadResources(final String path) {
+        return this.resourceLoader.loadResources(path);
+    }
+
+    @Override
+    public KResource[] loadResources(final String path, final KProtocol protocol) {
+        return this.resourceLoader.loadResources(path, protocol);
+    }
+
+    @Override
+    public KResource[] loadResources(final String path, boolean recursive) {
+        return this.resourceLoader.loadResources(path, recursive);
+    }
+
+    @Override
+    public KResource[] loadResources(final String path, final KProtocol protocol, boolean recursive) {
+        return this.resourceLoader.loadResources(path, protocol, recursive);
+    }
+
+    @Override
     public <T> void registerEvent(final KEvent<T> event) {
         this.eventSystem.registerEvent(event);
     }

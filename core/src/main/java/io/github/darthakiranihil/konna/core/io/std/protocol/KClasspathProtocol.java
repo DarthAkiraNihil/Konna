@@ -89,7 +89,7 @@ public final class KClasspathProtocol implements KProtocol {
         String realPath = path.substring(PREFIX.length());
         URL resource = this.classLoader.getResource(path);
         if (resource == null) {
-            throw new KIoException("Path not found: " + realPath);
+            return new KResource[0];
         }
 
         try {
@@ -100,7 +100,7 @@ public final class KClasspathProtocol implements KProtocol {
             try {
                 dirPath = Paths.get(uri);
             } catch (FileSystemNotFoundException e) {
-                fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+                fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
                 dirPath = fileSystem.getPath("/");
                 if (!realPath.isEmpty()) {
                     for (String part : realPath.split("/")) {
