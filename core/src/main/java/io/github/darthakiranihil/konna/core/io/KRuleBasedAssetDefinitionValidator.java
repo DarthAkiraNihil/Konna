@@ -16,22 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.util.KValidator;
+import java.util.List;
 
-/**
- * Interface that in encapsulates asset type definition in simple class
- * that provides validation mechanism to define whether an asset definition
- * is valid for this type or not.
- *
- * @since 0.4.0
- * @author Darth Akira Nihil
- */
-public interface KAssetTypedef {
+public final class KRuleBasedAssetDefinitionValidator implements KAssetDefinitionValidator {
 
-    /**
-     * @return Name of the type
-     */
-    String getName();
-    KAssetDefinitionValidator getValidator();
+    private final List<KAssetDefinitionRule> rules;
+
+    public KRuleBasedAssetDefinitionValidator(
+        final List<KAssetDefinitionRule> rules
+    ) {
+        this.rules = rules;
+    }
+
+    @Override
+    public void validate(final KAssetDefinition value) {
+        for (KAssetDefinitionRule rule: this.rules) {
+            rule.validate(value);
+        }
+    }
 
 }

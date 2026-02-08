@@ -58,6 +58,14 @@ public interface KAssetDefinition {
      * @return Asset definition of passed property
      */
     KAssetDefinition getSubdefinition(String property);
+    /**
+     * @param property Property name
+     * @param enumClass Enum class to be extracted
+     * @return Enum value of passed property
+     * @param <T> Enum class type parameter
+     * @since 0.4.0
+     */
+    <T extends Enum<T>> T getEnum(String property, Class<T> enumClass);
 
     /**
      * Returns integer array property of asset definition.
@@ -120,6 +128,13 @@ public interface KAssetDefinition {
      * @since 0.4.0
      */
     boolean hasSubdefinition(String property);
+    /**
+     * @param property Property name
+     * @param enumClass Enum class to be checked
+     * @return Whether this definition has the enum property with such name or not
+     * @since 0.4.0
+     */
+    <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass);
     /**
      * @param property Property name
      * @return Whether this definition has the int array property with such name or not

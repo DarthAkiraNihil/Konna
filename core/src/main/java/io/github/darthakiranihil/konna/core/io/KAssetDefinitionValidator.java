@@ -18,20 +18,6 @@ package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.util.KValidator;
 
-/**
- * Interface that in encapsulates asset type definition in simple class
- * that provides validation mechanism to define whether an asset definition
- * is valid for this type or not.
- *
- * @since 0.4.0
- * @author Darth Akira Nihil
- */
-public interface KAssetTypedef {
-
-    /**
-     * @return Name of the type
-     */
-    String getName();
-    KAssetDefinitionValidator getValidator();
+public interface KAssetDefinitionValidator extends KValidator<KAssetDefinition> {
 
 }

@@ -262,4 +262,33 @@ public class KJsonAssetDefinition implements KAssetDefinition {
 
         return this.value.getProperty(property).getType() == type;
     }
+
+    @Override
+    public <T extends Enum<T>> T getEnum(String property, Class<T> enumClass) {
+        String value = this.getString(property);
+        if (value == null) {
+            throw new KAssetDefinitionError(
+                String.format(
+                    "Value of property %s is null",
+                    property
+                )
+            );
+        }
+
+        try {
+            return Enum.valueOf(enumClass, value);
+        } catch (IllegalArgumentException e) {
+            throw new KAssetDefinitionError(e.getMessage());
+        }
+    }
+
+    @Override
+    public <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass) {
+        try {
+            this.getEnum(property, enumClass);
+            return true;
+        } catch (KAssetDefinitionError e) {
+            return false;
+        }
+    }
 }
