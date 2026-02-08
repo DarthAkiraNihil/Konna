@@ -4,6 +4,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
 import java.io.InputStream;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 /**
@@ -55,12 +56,14 @@ public interface KResource extends Closeable {
 
         @Override
         public ReadableByteChannel channel() {
-            return null;
+            return Channels.newChannel(
+                InputStream.nullInputStream()
+            );
         }
 
         @Override
         public InputStream stream() {
-            return null;
+            return InputStream.nullInputStream();
         }
 
         @Override
