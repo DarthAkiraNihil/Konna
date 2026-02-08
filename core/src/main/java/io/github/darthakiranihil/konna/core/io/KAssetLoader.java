@@ -1,8 +1,5 @@
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-
 /**
  * Interface for a utility class which purpose it to
  * load assets by its id and type alias according to data
@@ -25,18 +22,17 @@ public interface KAssetLoader {
     KAsset loadAsset(String assetId, String typeAlias);
 
     /**
-     * Adds a new asset type alias with its json schema.
-     * @param typeAlias Name of type alias
-     * @param schema Json schema of type data
+     * Adds a new asset type definition to this loader.
+     * @param typedef Asset type definition
      */
-    void addAssetTypeAlias(String typeAlias, KJsonValidator schema);
+    void addAssetTypedef(KAssetTypedef typedef);
 
     /**
      * Add a new asset so that could be loaded by other components at request.
      * @param assetId Global asset id
-     * @param internalType Type alias
+     * @param internalType Type alias used in this application
      * @param rawDefinition Full asset definition
      */
-    void addNewAsset(String assetId, String internalType, KJsonValue rawDefinition);
+    void addNewAsset(String assetId, String internalType, KAssetDefinition rawDefinition);
 
 }

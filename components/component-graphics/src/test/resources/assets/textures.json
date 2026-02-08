@@ -2,12 +2,29 @@
     "cute_image": {
         "Graphics.texture": {
             "image": "classpath:assets/textures/cute_image.png",
-            "shader": "default"
+            "shader": "default",
+            "wrapping": {
+                "u": "REPEAT",
+                "v": "REPEAT"
+            },
+            "filtering": {
+                "min": "MIPMAP_LINEAR_LINEAR",
+                "mag": "LINEAR"
+            }
         }
     },
     "cp438_16x16": {
         "Graphics.texture": {
-            "image": "classpath:assets/textures/cp437_16x16.png"
+            "image": "classpath:assets/textures/cp437_16x16.png",
+            "shader": "default",
+            "wrapping": {
+                "u": "REPEAT",
+                "v": "REPEAT"
+            },
+            "filtering": {
+                "min": "MIPMAP_LINEAR_LINEAR",
+                "mag": "LINEAR"
+            }
         }
     }
 }

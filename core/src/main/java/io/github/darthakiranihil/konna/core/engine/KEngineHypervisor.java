@@ -19,20 +19,19 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.debug.KDebugger;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
@@ -40,7 +39,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -212,14 +210,9 @@ public class KEngineHypervisor extends KObject {
         engineComponents.forEach((_k, v) -> {
             ctx.registerComponent(v);
 
-            List<KPair<String, KJsonValidator>> assetSchemas = v.getAssetSchemas();
-            for (var assetSchema: assetSchemas) {
-
-                ctx.addAssetTypeAlias(
-                    assetSchema.first(),
-                    assetSchema.second()
-                );
-
+            KAssetTypedef[] assetTypedefs = v.getAssetTypedefs();
+            for (var typedef: assetTypedefs) {
+                ctx.addAssetTypedef(typedef);
             }
 
         });

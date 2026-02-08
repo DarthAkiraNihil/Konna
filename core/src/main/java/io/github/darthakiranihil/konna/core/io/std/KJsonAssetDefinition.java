@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import org.jspecify.annotations.Nullable;
@@ -160,7 +161,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
 
     @Override
     public boolean hasFloat(final String property) {
-        return this.hasProperty(property, KJsonValueType.NUMBER_INT);
+        return this.hasProperty(property, KJsonValueType.NUMBER_FLOAT);
     }
 
     @Override
@@ -216,7 +217,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         }
 
         try {
-            this.getFloatArray(property);
+            this.getBooleanArray(property);
             return true;
         } catch (KJsonValueException e) {
             return false;

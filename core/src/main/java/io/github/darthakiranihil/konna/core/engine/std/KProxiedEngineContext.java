@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.engine.std;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -26,9 +24,9 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.*;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KDisposer;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -137,16 +135,12 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public void addAssetTypeAlias(final String typeAlias, final KJsonValidator schema) {
-        this.assetLoader.addAssetTypeAlias(typeAlias, schema);
+    public void addAssetTypedef(KAssetTypedef typedef) {
+        this.assetLoader.addAssetTypedef(typedef);
     }
 
     @Override
-    public void addNewAsset(
-        final String assetId,
-        final String internalType,
-        final KJsonValue rawDefinition
-    ) {
+    public void addNewAsset(String assetId, String internalType, KAssetDefinition rawDefinition) {
         this.assetLoader.addNewAsset(assetId, internalType, rawDefinition);
     }
 

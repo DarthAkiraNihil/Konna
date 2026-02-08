@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.io.std.KJsonAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
@@ -32,41 +33,28 @@ import java.util.Map;
 @NullMarked
 public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
 
-    private static final class Alias1Schema implements KJsonValidator {
+    private static final class Alias1Typedef implements KAssetTypedef {
 
-        private final KJsonValidator validator;
-
-        public Alias1Schema() {
-
-            this.validator = KJsonObjectValidatorBuilder
-                .create()
-                .withSimpleField("int_property", KJsonValueType.NUMBER_INT)
-                .withSimpleField("float_property", KJsonValueType.NUMBER_FLOAT)
-                .withSimpleField("boolean_property", KJsonValueType.BOOLEAN)
-                .withSimpleField("string_property", KJsonValueType.STRING)
-                .withSimpleField("subdef_property", KJsonValueType.OBJECT)
-                .withField("int_array_property", KJsonValueType.ARRAY)
-                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.NUMBER_INT))
-                .finishField()
-                .withField("float_array_property", KJsonValueType.ARRAY)
-                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.NUMBER_FLOAT))
-                .finishField()
-                .withField("boolean_array_property", KJsonValueType.ARRAY)
-                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.BOOLEAN))
-                .finishField()
-                .withField("string_array_property", KJsonValueType.ARRAY)
-                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.STRING))
-                .finishField()
-                .withField("subdef_array_property", KJsonValueType.ARRAY)
-                .withValidator(KJsonArrayValidatorBuilder.createAndBuild(KJsonValueType.OBJECT))
-                .finishField()
-                .build();
-
+        @Override
+        public String getName() {
+            return "alias_1";
         }
 
         @Override
-        public void validate(KJsonValue value) {
-            this.validator.validate(value);
+        public KAssetDefinitionValidator getValidator() {
+            return KRuleBasedAssetDefinitionValidatorBuilder
+                .create()
+                .withInt("int_property")
+                .withFloat("float_property")
+                .withBoolean("boolean_property")
+                .withString("string_property")
+                .withSubdefinition("subdef_property")
+                .withIntArray("int_array_property")
+                .withFloatArray("float_array_property")
+                .withBooleanArray("boolean_array_property")
+                .withStringArray("string_array_property")
+                .withSubdefinitionArray("subdef_array_property")
+                .build();
         }
     }
 
@@ -88,7 +76,7 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
         );
 
         try {
-            assetLoader.addAssetTypeAlias("alias_1", new Alias1Schema());
+            assetLoader.addAssetTypedef(new Alias1Typedef());
 
             KAsset asset = assetLoader.loadAsset("type_1.asset_1", "alias_1");
 
@@ -137,7 +125,7 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    public void testAddAssetTypeAliasThatIsNotRegistered() {
+    public void testAddAssetTypeDefinitionThatIsNotRegistered() {
 
         Map<String, KJsonAssetLoader.AssetTypeData> assetTypeData = new HashMap<>();
         assetTypeData.put("type_1", new KJsonAssetLoader.AssetTypeData(
@@ -154,7 +142,19 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
         );
 
         try {
-            assetLoader.addAssetTypeAlias("alias_16", new Alias1Schema());
+            assetLoader.addAssetTypedef(new KAssetTypedef() {
+                @Override
+                public String getName() {
+                    return "alias_16";
+                }
+
+                @Override
+                public KAssetDefinitionValidator getValidator() {
+                    return KRuleBasedAssetDefinitionValidatorBuilder
+                        .create().build();
+                }
+            });
+
         } catch (Throwable e) {
             Assertions.fail(e);
         }
@@ -179,7 +179,7 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
         );
 
         try {
-            assetLoader.addAssetTypeAlias("alias_1", new Alias1Schema());
+            assetLoader.addAssetTypedef(new Alias1Typedef());
 
             KJsonValue addedDef = this.jsonParser.parse("""
                 {
@@ -223,8 +223,8 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
                     }"""
             );
 
-            assetLoader.addNewAsset("type_1.asset_2", "type_1", addedDef);
-            assetLoader.addNewAsset("type_1.asset_3", "type_1", addedDef);
+            assetLoader.addNewAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {}));
+            assetLoader.addNewAsset("type_1.asset_3", "type_1", new KJsonAssetDefinition(addedDef, v -> {}));
 
         } catch (Throwable e) {
             Assertions.fail(e);
