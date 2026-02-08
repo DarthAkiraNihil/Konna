@@ -18,4 +18,12 @@ public interface KProtocol {
      */
     @Nullable KResource resolve(String path);
 
+    /**
+     * Resolves resources that are located in specific path.
+     * @param path Path to find resources in
+     * @param recursive Flag specifies whether search should be performed recursively or not
+     * @return Array of found resources on specific path
+     * @since 0.4.0
+     */
+    KResource[] resolveMany(String path, boolean recursive);
 }

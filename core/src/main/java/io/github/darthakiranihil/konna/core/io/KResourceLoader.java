@@ -28,4 +28,9 @@ public interface KResourceLoader {
      */
     KResource loadResource(String path, KProtocol protocol);
 
+    KResource[] loadResources(String path);
+    KResource[] loadResources(String path, KProtocol protocol);
+    KResource[] loadResources(String path, boolean recursive);
+    KResource[] loadResources(String path, KProtocol protocol, boolean recursive);
+
 }

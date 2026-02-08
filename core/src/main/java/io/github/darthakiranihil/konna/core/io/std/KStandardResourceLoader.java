@@ -66,4 +66,31 @@ public class KStandardResourceLoader implements KResourceLoader {
         }
         return resolved;
     }
+
+    @Override
+    public KResource[] loadResources(String path) {
+        return this.loadResources(path, true);
+    }
+
+    @Override
+    public KResource[] loadResources(String path, KProtocol protocol) {
+        return this.loadResources(path, protocol, true);
+    }
+
+    @Override
+    public KResource[] loadResources(String path, boolean recursive) {
+        for (KProtocol protocol: this.protocols) {
+            KResource[] resolved = protocol.resolveMany(path, recursive);
+            if (resolved.length > 0) {
+                return resolved;
+            }
+        }
+
+        return new KResource[0];
+    }
+
+    @Override
+    public KResource[] loadResources(String path, KProtocol protocol, boolean recursive) {
+        return protocol.resolveMany(path, recursive);
+    }
 }

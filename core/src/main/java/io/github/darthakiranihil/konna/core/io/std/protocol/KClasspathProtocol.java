@@ -19,10 +19,23 @@ package io.github.darthakiranihil.konna.core.io.std.protocol;
 import io.github.darthakiranihil.konna.core.io.KProtocol;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceUtils;
+import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
+import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Implementation of {@link KProtocol} that searches for resources
@@ -64,5 +77,61 @@ public final class KClasspathProtocol implements KProtocol {
             name,
             is
         );
+    }
+
+    @Override
+    public KResource[] resolveMany(String path, boolean recursive) {
+
+        if (!path.startsWith(PREFIX)) {
+            return new KResource[0];
+        }
+
+        String realPath = path.substring(PREFIX.length());
+        URL resource = this.classLoader.getResource(path);
+        if (resource == null) {
+            throw new KIoException("Path not found: " + realPath);
+        }
+
+        try {
+            URI uri = resource.toURI();
+            Path dirPath;
+            FileSystem fileSystem = null;
+
+            try {
+                dirPath = Paths.get(uri);
+            } catch (FileSystemNotFoundException e) {
+                fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+                dirPath = fileSystem.getPath("/");
+                if (!realPath.isEmpty()) {
+                    for (String part : realPath.split("/")) {
+                        dirPath = dirPath.resolve(part);
+                    }
+                }
+            }
+
+            try (Stream<Path> paths = recursive ? Files.walk(dirPath) : Files.list(dirPath)) {
+                return paths
+                    .filter(Files::isRegularFile)
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .map(p -> new KClasspathResource(
+                        p,
+                        KResourceUtils.getFilename(p),
+                        Objects.requireNonNull(
+                            this.classLoader.getResourceAsStream(p)
+                        )
+                    ))
+                    .toList()
+                    .toArray(new KResource[0]);
+
+            } finally {
+                if (fileSystem != null) {
+                    fileSystem.close();
+                }
+            }
+
+        } catch (URISyntaxException | IOException e) {
+            throw new KIoException(e.getMessage());
+        }
     }
 }
