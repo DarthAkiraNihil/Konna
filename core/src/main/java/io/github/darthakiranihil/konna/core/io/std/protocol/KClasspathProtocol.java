@@ -20,9 +20,17 @@ import io.github.darthakiranihil.konna.core.io.KProtocol;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceUtils;
 import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Implementation of {@link KProtocol} that searches for resources
@@ -64,5 +72,82 @@ public final class KClasspathProtocol implements KProtocol {
             name,
             is
         );
+    }
+
+    @Override
+    public KResource[] resolveMany(final String path, boolean recursive) {
+
+        if (!path.startsWith(PREFIX)) {
+            return new KResource[0];
+        }
+
+        String realPath = path.substring(PREFIX.length());
+
+        try {
+            Enumeration<URL> matches = this.classLoader.getResources(realPath);
+            List<KResource> resources = new LinkedList<>();
+
+            while (matches.hasMoreElements()) {
+                URL url = matches.nextElement();
+                resources.addAll(this.findInsidePath(realPath, url, recursive));
+            }
+
+            return resources.toArray(new KResource[0]);
+
+        } catch (IOException | FileSystemNotFoundException | URISyntaxException e) {
+            KSystemLogger.warning("ClasspathProtocol", e);
+            return new KResource[0];
+        }
+    }
+
+    private List<KClasspathResource> findInsidePath(
+        final String realPath,
+        final URL url,
+        boolean recursive
+    )
+        throws IOException, FileSystemNotFoundException, URISyntaxException {
+
+        URI uri = url.toURI();
+        Path dirPath;
+        FileSystem fileSystem = null;
+
+        try {
+            dirPath = Paths.get(uri);
+        } catch (FileSystemNotFoundException e) {
+
+            fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            dirPath = fileSystem.getPath("/");
+            if (!realPath.isEmpty()) {
+                for (String part : realPath.split("/")) {
+                    dirPath = dirPath.resolve(part);
+                }
+            }
+
+        }
+
+        try (Stream<Path> paths = recursive ? Files.walk(dirPath) : Files.list(dirPath)) {
+            return paths
+                .filter(Files::isRegularFile)
+                .filter(x -> !x.endsWith(".class"))
+                .map(dirPath::relativize)
+                .map(Path::toString)
+                .map(p -> {
+                    String fullPath = realPath + p;
+                    return new KClasspathResource(
+                        fullPath,
+                        KResourceUtils.getFilename(p),
+                        Objects.requireNonNull(
+                            this.classLoader.getResourceAsStream(fullPath)
+                        )
+                    );
+                })
+                .toList();
+
+        } finally {
+            if (fileSystem != null) {
+                fileSystem.close();
+            }
+        }
+
     }
 }
