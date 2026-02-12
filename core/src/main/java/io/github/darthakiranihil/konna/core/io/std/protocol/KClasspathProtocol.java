@@ -19,9 +19,8 @@ package io.github.darthakiranihil.konna.core.io.std.protocol;
 import io.github.darthakiranihil.konna.core.io.KProtocol;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceUtils;
-import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
-import io.github.darthakiranihil.konna.core.struct.KTriplet;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -30,11 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -87,51 +82,69 @@ public final class KClasspathProtocol implements KProtocol {
         }
 
         String realPath = path.substring(PREFIX.length());
-        URL resource = this.classLoader.getResource(path);
-        if (resource == null) {
-            return new KResource[0];
-        }
 
         try {
-            URI uri = resource.toURI();
-            Path dirPath;
-            FileSystem fileSystem = null;
+            Enumeration<URL> matches = this.classLoader.getResources(realPath);
+            List<KResource> resources = new LinkedList<>();
 
-            try {
-                dirPath = Paths.get(uri);
-            } catch (FileSystemNotFoundException e) {
-                fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                dirPath = fileSystem.getPath("/");
-                if (!realPath.isEmpty()) {
-                    for (String part : realPath.split("/")) {
-                        dirPath = dirPath.resolve(part);
-                    }
+            while (matches.hasMoreElements()) {
+                URL url = matches.nextElement();
+                resources.addAll(this.findInsidePath(realPath, url, recursive));
+            }
+
+            return resources.toArray(new KResource[0]);
+
+        } catch (IOException | FileSystemNotFoundException | URISyntaxException e) {
+            KSystemLogger.warning("ClasspathProtocol", e);
+            return new KResource[0];
+        }
+    }
+
+    private List<KClasspathResource> findInsidePath(String realPath, URL url, boolean recursive)
+        throws IOException, FileSystemNotFoundException, URISyntaxException {
+
+        URI uri = url.toURI();
+        Path dirPath;
+        FileSystem fileSystem = null;
+
+        try {
+            dirPath = Paths.get(uri);
+        } catch (FileSystemNotFoundException e) {
+
+            fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            dirPath = fileSystem.getPath("/");
+            if (!realPath.isEmpty()) {
+                for (String part : realPath.split("/")) {
+                    dirPath = dirPath.resolve(part);
                 }
             }
 
-            try (Stream<Path> paths = recursive ? Files.walk(dirPath) : Files.list(dirPath)) {
-                return paths
-                    .filter(Files::isRegularFile)
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .map(p -> new KClasspathResource(
-                        p,
+        }
+
+        try (Stream<Path> paths = recursive ? Files.walk(dirPath) : Files.list(dirPath)) {
+            final Path root = dirPath;
+            return paths
+                .filter(Files::isRegularFile)
+                .filter(x -> !x.endsWith(".class"))
+                .map(root::relativize)
+                .map(Path::toString)
+                .map(p -> {
+                    String fullPath = realPath + p;
+                    return new KClasspathResource(
+                        fullPath,
                         KResourceUtils.getFilename(p),
                         Objects.requireNonNull(
-                            this.classLoader.getResourceAsStream(p)
+                            this.classLoader.getResourceAsStream(fullPath)
                         )
-                    ))
-                    .toList()
-                    .toArray(new KResource[0]);
+                    );
+                })
+                .toList();
 
-            } finally {
-                if (fileSystem != null) {
-                    fileSystem.close();
-                }
+        } finally {
+            if (fileSystem != null) {
+                fileSystem.close();
             }
-
-        } catch (URISyntaxException | IOException e) {
-            throw new KIoException(e.getMessage());
         }
+
     }
 }

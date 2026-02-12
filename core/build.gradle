@@ -27,3 +27,12 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
+
+sourceSets {
+    test {
+        resources {
+            exclude '**/*.class'
+            exclude 'build/classes/**'
+        }
+    }
+}

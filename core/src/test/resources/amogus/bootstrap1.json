@@ -1,0 +1,28 @@
+{
+  "arg_parser": "io.github.darthakiranihil.konna.core.app.std.KStandardArgumentParser",
+  "hypervisor": {
+    "class": "io.github.darthakiranihil.konna.core.engine.KEngineHypervisor",
+    "config": {
+      "context_loader": "io.github.darthakiranihil.konna.core.test.KTestContextLoader",
+      "component_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader",
+      "service_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader",
+      "route_configurers": [
+          "io.github.darthakiranihil.konna.core.test.KEmptyRouteConfigurer"
+      ],
+      "event_registerers": [
+          "io.github.darthakiranihil.konna.core.test.KEmptyEventRegisterer"
+      ],
+      "components": [
+        "io.github.darthakiranihil.konna.core.engine.TestComponent"
+      ],
+      "frame_loader": "io.github.darthakiranihil.konna.core.test.KTestFrameLoader",
+      "frame_options": {
+        "size": {
+            "width": 1000,
+            "height": 800
+        },
+        "title": "Hello, world!"
+      }
+    }
+  }
+}

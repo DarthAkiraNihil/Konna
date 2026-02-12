@@ -20,10 +20,14 @@ import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
 
@@ -32,7 +36,7 @@ public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
     public KStandardResourceLoaderPositiveTests() {
         this.resourceLoader = new KStandardResourceLoader(new ArrayList<>());
         this.resourceLoader.addProtocol(new KClasspathProtocol(
-            ClassLoader.getSystemClassLoader()
+            Thread.currentThread().getContextClassLoader()
         ));
     }
 
@@ -121,6 +125,176 @@ public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
         } catch (Throwable e) {
             Assertions.fail(e);
         }
+
+    }
+
+    @Test
+    public void testLoadManyResourcesNonRecursive() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:amogus/", false);
+        Assertions.assertEquals(4, resources.length);
+        List<String> names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap1.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("test_config1.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_11.json"));
+
+    }
+
+    @Test
+    public void testLoadManyResourcesRecursive() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:amogus/", true);
+        Assertions.assertEquals(5, resources.length);
+        List<String> names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap1.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("test_config1.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("ioa"));
+
+        for (KResource resource : resources) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                Assertions.fail(e);
+            }
+        }
+
+        resources = this.resourceLoader.loadResources("classpath:amogus/");
+        Assertions.assertEquals(5, resources.length);
+        names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap1.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("test_config1.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("ioa"));
+
+        for (KResource resource : resources) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                Assertions.fail(e);
+            }
+        }
+
+    }
+
+    @Test
+    public void testLoadManyResourcesFromRootNonRecursive() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:", false);
+        Assertions.assertEquals(7, resources.length);
+        List<String> names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_1.json"));
+        Assertions.assertTrue(names.contains("test_config.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_1.json"));
+
+    }
+
+    @Test
+    public void testLoadManyResourcesNonRecursiveWithExplicitProtocolPassing() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:amogus/", new KClasspathProtocol(ClassLoader.getSystemClassLoader()), false);
+        Assertions.assertEquals(4, resources.length);
+        List<String> names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap1.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("test_config1.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_11.json"));
+
+    }
+
+    @Test
+    public void testLoadManyResourcesRecursiveWithExplicitProtocolPassing() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:amogus/", new KClasspathProtocol(ClassLoader.getSystemClassLoader()), true);
+        Assertions.assertEquals(5, resources.length);
+        List<String> names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap1.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("test_config1.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("ioa"));
+
+        for (KResource resource : resources) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                Assertions.fail(e);
+            }
+        }
+
+        resources = this.resourceLoader.loadResources("classpath:amogus/", new KClasspathProtocol(ClassLoader.getSystemClassLoader()));
+        Assertions.assertEquals(5, resources.length);
+        names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap1.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("test_config1.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_11.json"));
+        Assertions.assertTrue(names.contains("ioa"));
+
+        for (KResource resource : resources) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                Assertions.fail(e);
+            }
+        }
+
+    }
+
+    @Test
+    public void testLoadManyResourcesFromRootNonRecursiveWithExplicitProtocolPassing() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:", new KClasspathProtocol(ClassLoader.getSystemClassLoader()), false);
+        Assertions.assertEquals(7, resources.length);
+        List<String> names = Arrays
+            .stream(resources)
+            .map(KResource::name)
+            .toList();
+
+        Assertions.assertTrue(names.contains("bootstrap.json"));
+        Assertions.assertTrue(names.contains("invalid_assets_type_1.json"));
+        Assertions.assertTrue(names.contains("test_config.json"));
+        Assertions.assertTrue(names.contains("valid_assets_type_1.json"));
+
+    }
+
+    @Test
+    public void testLoadManyResourcesButProtocolDidNotFoundThem() {
+
+        KResource[] resources = this.resourceLoader.loadResources("classpath:biber/");
+        Assertions.assertEquals(0, resources.length);
 
     }
 }
