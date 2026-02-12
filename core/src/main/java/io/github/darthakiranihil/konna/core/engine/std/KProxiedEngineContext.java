@@ -181,7 +181,11 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public KResource[] loadResources(final String path, final KProtocol protocol, boolean recursive) {
+    public KResource[] loadResources(
+        final String path,
+        final KProtocol protocol,
+        boolean recursive
+    ) {
         return this.resourceLoader.loadResources(path, protocol, recursive);
     }
 

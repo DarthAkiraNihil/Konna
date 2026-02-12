@@ -68,17 +68,17 @@ public class KStandardResourceLoader implements KResourceLoader {
     }
 
     @Override
-    public KResource[] loadResources(String path) {
+    public KResource[] loadResources(final String path) {
         return this.loadResources(path, true);
     }
 
     @Override
-    public KResource[] loadResources(String path, KProtocol protocol) {
+    public KResource[] loadResources(final String path, final KProtocol protocol) {
         return this.loadResources(path, protocol, true);
     }
 
     @Override
-    public KResource[] loadResources(String path, boolean recursive) {
+    public KResource[] loadResources(final String path, boolean recursive) {
         for (KProtocol protocol: this.protocols) {
             KResource[] resolved = protocol.resolveMany(path, recursive);
             if (resolved.length > 0) {
@@ -90,7 +90,11 @@ public class KStandardResourceLoader implements KResourceLoader {
     }
 
     @Override
-    public KResource[] loadResources(String path, KProtocol protocol, boolean recursive) {
+    public KResource[] loadResources(
+        final String path,
+        final KProtocol protocol,
+        boolean recursive
+    ) {
         return protocol.resolveMany(path, recursive);
     }
 }

@@ -75,7 +75,7 @@ public final class KClasspathProtocol implements KProtocol {
     }
 
     @Override
-    public KResource[] resolveMany(String path, boolean recursive) {
+    public KResource[] resolveMany(final String path, boolean recursive) {
 
         if (!path.startsWith(PREFIX)) {
             return new KResource[0];
@@ -100,7 +100,11 @@ public final class KClasspathProtocol implements KProtocol {
         }
     }
 
-    private List<KClasspathResource> findInsidePath(String realPath, URL url, boolean recursive)
+    private List<KClasspathResource> findInsidePath(
+        final String realPath,
+        final URL url,
+        boolean recursive
+    )
         throws IOException, FileSystemNotFoundException, URISyntaxException {
 
         URI uri = url.toURI();
@@ -122,11 +126,10 @@ public final class KClasspathProtocol implements KProtocol {
         }
 
         try (Stream<Path> paths = recursive ? Files.walk(dirPath) : Files.list(dirPath)) {
-            final Path root = dirPath;
             return paths
                 .filter(Files::isRegularFile)
                 .filter(x -> !x.endsWith(".class"))
-                .map(root::relativize)
+                .map(dirPath::relativize)
                 .map(Path::toString)
                 .map(p -> {
                     String fullPath = realPath + p;
