@@ -54,12 +54,12 @@ public interface KResource extends Closeable {
         }
 
         @Override
-        public ReadableByteChannel channel() {
+        public @Nullable ReadableByteChannel channel() {
             return null;
         }
 
         @Override
-        public InputStream stream() {
+        public @Nullable InputStream stream() {
             return null;
         }
 
