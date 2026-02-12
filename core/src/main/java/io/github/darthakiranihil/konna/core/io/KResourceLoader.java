@@ -33,6 +33,7 @@ public interface KResourceLoader {
      * It should walk through the passed path to find them.
      * @param path Path of resources to get
      * @return Array of found resources
+     * @since 0.4.0
      */
     KResource[] loadResources(String path);
     /**
@@ -41,6 +42,7 @@ public interface KResourceLoader {
      * @param path Path of resources to get
      * @param protocol Protocol to use to resolve resources
      * @return Array of found resources
+     * @since 0.4.0
      */
     KResource[] loadResources(String path, KProtocol protocol);
     /**
@@ -49,6 +51,7 @@ public interface KResourceLoader {
      * @param recursive Flag that defines whether loader should walk recursively
      *                  through passed path or not
      * @return Array of found resources
+     * @since 0.4.0
      */
     KResource[] loadResources(String path, boolean recursive);
     /**
@@ -58,6 +61,7 @@ public interface KResourceLoader {
      * @param recursive Flag that defines whether loader should walk recursively
      *                  through passed path or not
      * @return Array of found resources
+     * @since 0.4.0
      */
     KResource[] loadResources(String path, KProtocol protocol, boolean recursive);
 
