@@ -34,7 +34,7 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
+public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
 
     /**
      * Representation of internal (defined inside application) asset type data.
@@ -57,7 +57,7 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
     private final KResourceLoader resourceLoader;
     private final KJsonParser jsonParser;
 
-    private final Map<String, KJsonSubobjectBasedAssetLoader.AssetTypeData> assetTypeData;
+    private final Map<String, KJsonSubtypeBasedAssetLoader.AssetTypeData> assetTypeData;
     private final Map<String, KAssetType> builtAssetTypes;
     private final Map<String, String> reverseAssetTypeMap;
 
@@ -71,7 +71,7 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
      * @param assetTypesData Asset types data
      * @param jsonParser Json parser to parse definitions
      */
-    public KJsonSubobjectBasedAssetLoader(
+    public KJsonSubtypeBasedAssetLoader(
         final KResourceLoader resourceLoader,
         final Map<String, AssetTypeData> assetTypesData,
         final KJsonParser jsonParser
