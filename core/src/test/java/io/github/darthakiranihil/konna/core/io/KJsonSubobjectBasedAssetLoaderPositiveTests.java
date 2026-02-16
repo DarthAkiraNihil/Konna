@@ -41,8 +41,8 @@ public class KJsonSubobjectBasedAssetLoaderPositiveTests extends KStandardTestCl
         }
 
         @Override
-        public KAssetDefinitionValidator getValidator() {
-            return KRuleBasedAssetDefinitionValidatorBuilder
+        public KAssetDefinitionRule getRule() {
+            return KCompositeAssetDefinitionRuleBuilder
                 .create()
                 .withInt("int_property")
                 .withFloat("float_property")
@@ -149,8 +149,8 @@ public class KJsonSubobjectBasedAssetLoaderPositiveTests extends KStandardTestCl
                 }
 
                 @Override
-                public KAssetDefinitionValidator getValidator() {
-                    return KRuleBasedAssetDefinitionValidatorBuilder
+                public KAssetDefinitionRule getRule() {
+                    return KCompositeAssetDefinitionRuleBuilder
                         .create().build();
                 }
             });

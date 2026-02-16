@@ -19,95 +19,95 @@ package io.github.darthakiranihil.konna.core.io;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class KRuleBasedAssetDefinitionValidatorBuilder {
+public final class KCompositeAssetDefinitionRuleBuilder {
 
     private final List<KAssetDefinitionRule> rules;
 
-    public static KRuleBasedAssetDefinitionValidatorBuilder create() {
-        return new KRuleBasedAssetDefinitionValidatorBuilder();
+    public static KCompositeAssetDefinitionRuleBuilder create() {
+        return new KCompositeAssetDefinitionRuleBuilder();
     }
 
-    private KRuleBasedAssetDefinitionValidatorBuilder() {
+    private KCompositeAssetDefinitionRuleBuilder() {
         this.rules = new LinkedList<>();
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withInt(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withInt(final String property) {
         this.rules.add(KAssetDefinitionRule.hasInt(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withFloat(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withFloat(final String property) {
         this.rules.add(KAssetDefinitionRule.hasFloat(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withBoolean(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withBoolean(final String property) {
         this.rules.add(KAssetDefinitionRule.hasBoolean(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withString(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withString(final String property) {
         this.rules.add(KAssetDefinitionRule.hasString(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withNotNullString(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withNotNullString(final String property) {
         this.rules.add(KAssetDefinitionRule.hasNonNullString(property));
         return this;
     }
 
-    public <T extends Enum<T>> KRuleBasedAssetDefinitionValidatorBuilder withEnum(final String property, final Class<T> enumClass) {
+    public <T extends Enum<T>> KCompositeAssetDefinitionRuleBuilder withEnum(final String property, final Class<T> enumClass) {
         this.rules.add(KAssetDefinitionRule.hasEnum(property, enumClass));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withSubdefinition(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withSubdefinition(final String property) {
         this.rules.add(KAssetDefinitionRule.hasSubdefinition(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withValidatedSubdefinition(final String property, final KAssetDefinitionValidator validator) {
+    public KCompositeAssetDefinitionRuleBuilder withValidatedSubdefinition(final String property, final KAssetDefinitionRule validator) {
         this.rules.add(KAssetDefinitionRule.hasSubdefinition(property, validator));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withIntArray(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withIntArray(final String property) {
         this.rules.add(KAssetDefinitionRule.hasIntArray(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withFloatArray(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withFloatArray(final String property) {
         this.rules.add(KAssetDefinitionRule.hasFloatArray(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withBooleanArray(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withBooleanArray(final String property) {
         this.rules.add(KAssetDefinitionRule.hasBooleanArray(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withStringArray(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withStringArray(final String property) {
         this.rules.add(KAssetDefinitionRule.hasStringArray(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withSubdefinitionArray(final String property) {
+    public KCompositeAssetDefinitionRuleBuilder withSubdefinitionArray(final String property) {
         this.rules.add(KAssetDefinitionRule.hasSubdefinitionArray(property));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withValidatedSubdefinitionArray(final String property, final KAssetDefinitionValidator elementValidator) {
+    public KCompositeAssetDefinitionRuleBuilder withValidatedSubdefinitionArray(final String property, final KAssetDefinitionRule elementValidator) {
         this.rules.add(KAssetDefinitionRule.hasSubdefinitionArray(property, elementValidator));
         return this;
     }
 
-    public KRuleBasedAssetDefinitionValidatorBuilder withRule(final KAssetDefinitionRule rule) {
+    public KCompositeAssetDefinitionRuleBuilder withRule(final KAssetDefinitionRule rule) {
         this.rules.add(rule);
         return this;
     }
 
-    public KAssetDefinitionValidator build() {
-        return new KRuleBasedAssetDefinitionValidator(
+    public KAssetDefinitionRule build() {
+        return new KCompositeAssetDefinitionRule(
             this.rules
         );
     }

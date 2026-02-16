@@ -16,9 +16,9 @@
 
 package io.github.darthakiranihil.konna.graphics.type;
 
-import io.github.darthakiranihil.konna.core.io.KAssetDefinitionValidator;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.io.KRuleBasedAssetDefinitionValidatorBuilder;
+import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
 public final class KTiledFontTypeDefinition implements KAssetTypedef {
@@ -29,14 +29,14 @@ public final class KTiledFontTypeDefinition implements KAssetTypedef {
     }
 
     @Override
-    public KAssetDefinitionValidator getValidator() {
-        return KRuleBasedAssetDefinitionValidatorBuilder
+    public KAssetDefinitionRule getRule() {
+        return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withNotNullString("name")
             .withNotNullString("face")
             .withValidatedSubdefinition(
                 "glyph_size",
-                KRuleBasedAssetDefinitionValidatorBuilder
+                KCompositeAssetDefinitionRuleBuilder
                     .create()
                     .withInt("width")
                     .withInt("height")

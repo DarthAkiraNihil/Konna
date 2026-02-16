@@ -16,13 +16,15 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
+import io.github.darthakiranihil.konna.core.util.KValidator;
+
 import java.util.List;
 
-public final class KRuleBasedAssetDefinitionValidator implements KAssetDefinitionValidator {
+public final class KCompositeAssetDefinitionRule implements KAssetDefinitionRule {
 
     private final List<KAssetDefinitionRule> rules;
 
-    public KRuleBasedAssetDefinitionValidator(
+    public KCompositeAssetDefinitionRule(
         final List<KAssetDefinitionRule> rules
     ) {
         this.rules = rules;

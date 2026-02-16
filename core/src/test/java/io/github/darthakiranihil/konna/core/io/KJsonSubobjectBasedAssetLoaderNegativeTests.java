@@ -43,8 +43,8 @@ public class KJsonSubobjectBasedAssetLoaderNegativeTests extends KStandardTestCl
         }
 
         @Override
-        public KAssetDefinitionValidator getValidator() {
-            return KRuleBasedAssetDefinitionValidatorBuilder
+        public KAssetDefinitionRule getRule() {
+            return KCompositeAssetDefinitionRuleBuilder
                 .create()
                 .withInt("int_property")
                 .withFloat("float_property")

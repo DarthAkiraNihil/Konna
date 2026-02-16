@@ -27,8 +27,8 @@ public final class KShaderTypeDefinition implements KAssetTypedef {
     }
 
     @Override
-    public KAssetDefinitionValidator getValidator() {
-        return KRuleBasedAssetDefinitionValidatorBuilder
+    public KAssetDefinitionRule getRule() {
+        return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withEnum("type", KShaderType.class)
             .withNotNullString("source")

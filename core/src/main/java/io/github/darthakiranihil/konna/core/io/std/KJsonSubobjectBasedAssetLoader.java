@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implementation of {@link KAssetLoader} that uses json files to read asset definitions from.
+ * Implementation of {@link KAssetLoader} that uses JSON files to read asset definitions from.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -52,7 +52,7 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
     }
 
     private final Map<String, KAssetTypedef> typeAliasesDefinitions;
-    private final Map<String, KAssetDefinitionValidator> fullAssetDefinitionsValidators;
+    private final Map<String, KAssetDefinitionRule> fullAssetDefinitionsValidators;
 
     private final KResourceLoader resourceLoader;
     private final KJsonParser jsonParser;
@@ -135,10 +135,10 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
             .get(assetId)
             .getSubdefinition(typeAlias);
 
-        KAssetDefinitionValidator validator = this
+        KAssetDefinitionRule validator = this
             .typeAliasesDefinitions
             .get(typeAlias)
-            .getValidator();
+            .getRule();
 
         validator.validate(raw);
 
@@ -162,7 +162,7 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
         }
 
         var loadedAssets = this.loadedRawAssetDefinitions.get(internalType);
-        KAssetDefinitionValidator validator = typedef.getValidator();
+        KAssetDefinitionRule validator = typedef.getRule();
         for (var rawAssetDefinitionEntry: loadedAssets.entrySet()) {
             KAssetDefinition rawAssetDefinition = rawAssetDefinitionEntry.getValue();
             try {
@@ -199,7 +199,7 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
             );
         }
 
-        KAssetDefinitionValidator validator = this.fullAssetDefinitionsValidators.get(internalType);
+        KAssetDefinitionRule validator = this.fullAssetDefinitionsValidators.get(internalType);
         try {
             validator.validate(rawDefinition);
         } catch (KJsonValidationError e) {
@@ -265,11 +265,11 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
         return builder.build();
     }
 
-    private KAssetDefinitionValidator buildFullValidator(
+    private KAssetDefinitionRule buildFullValidator(
         final String[] aliases
     ) {
 
-        var builder = KRuleBasedAssetDefinitionValidatorBuilder.create();
+        var builder = KCompositeAssetDefinitionRuleBuilder.create();
 
         for (String alias: aliases) {
             builder
@@ -278,7 +278,7 @@ public class KJsonSubobjectBasedAssetLoader implements KAssetLoader {
                     this
                         .typeAliasesDefinitions
                         .get(alias)
-                        .getValidator()
+                        .getRule()
                 );
         }
 

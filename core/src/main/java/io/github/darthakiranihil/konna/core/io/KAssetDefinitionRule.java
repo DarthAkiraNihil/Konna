@@ -17,9 +17,10 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.core.util.KValidator;
 
 @FunctionalInterface
-public interface KAssetDefinitionRule extends KAssetDefinitionValidator {
+public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
 
     static KAssetDefinitionRule hasInt(final String property) {
         return (v) -> {
@@ -101,7 +102,7 @@ public interface KAssetDefinitionRule extends KAssetDefinitionValidator {
         };
     }
 
-    static KAssetDefinitionRule hasSubdefinition(final String property, final KAssetDefinitionValidator validator) {
+    static KAssetDefinitionRule hasSubdefinition(final String property, final KAssetDefinitionRule validator) {
         return (v) -> {
             if (!v.hasSubdefinition(property)) {
                 throw KAssetDefinitionError.propertyNotFound(property);
@@ -162,7 +163,7 @@ public interface KAssetDefinitionRule extends KAssetDefinitionValidator {
         };
     }
 
-    static KAssetDefinitionRule hasSubdefinitionArray(final String property, final KAssetDefinitionValidator elementValidator) {
+    static KAssetDefinitionRule hasSubdefinitionArray(final String property, final KAssetDefinitionRule elementValidator) {
         return (v) -> {
             if (!v.hasSubdefinitionArray(property)) {
                 throw KAssetDefinitionError.propertyNotFound(property);

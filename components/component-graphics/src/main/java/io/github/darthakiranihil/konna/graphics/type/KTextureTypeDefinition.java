@@ -16,9 +16,9 @@
 
 package io.github.darthakiranihil.konna.graphics.type;
 
-import io.github.darthakiranihil.konna.core.io.KAssetDefinitionValidator;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.io.KRuleBasedAssetDefinitionValidatorBuilder;
+import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.graphics.image.KTextureFiltering;
 import io.github.darthakiranihil.konna.graphics.image.KTextureWrapping;
 
@@ -30,13 +30,13 @@ public final class KTextureTypeDefinition implements KAssetTypedef {
     }
 
     @Override
-    public KAssetDefinitionValidator getValidator() {
-        return KRuleBasedAssetDefinitionValidatorBuilder
+    public KAssetDefinitionRule getRule() {
+        return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withNotNullString("image")
             .withValidatedSubdefinition(
                 "wrapping",
-                KRuleBasedAssetDefinitionValidatorBuilder
+                KCompositeAssetDefinitionRuleBuilder
                     .create()
                     .withEnum("u", KTextureWrapping.class)
                     .withEnum("v", KTextureWrapping.class)
@@ -44,7 +44,7 @@ public final class KTextureTypeDefinition implements KAssetTypedef {
             )
             .withValidatedSubdefinition(
                 "filtering",
-                KRuleBasedAssetDefinitionValidatorBuilder
+                KCompositeAssetDefinitionRuleBuilder
                     .create()
                     .withEnum("min", KTextureFiltering.class)
                     .withEnum("mag", KTextureFiltering.class)
