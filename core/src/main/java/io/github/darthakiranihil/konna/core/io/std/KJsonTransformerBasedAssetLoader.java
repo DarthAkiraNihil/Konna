@@ -109,6 +109,7 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
 
         KResource[] assetsResources = resourceLoader.loadResources(pathToAssets);
 
+        int indexedAssets = 0;
         for (KResource assetResource: assetsResources) {
 
             if (!assetResource.name().endsWith(".json")) {
@@ -159,8 +160,10 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
             } catch (IOException e) {
                 KSystemLogger.warning("asset_loader", e);
             }
+            indexedAssets++;
         }
 
+        KSystemLogger.info("asset_loader", "Indexed %d assets", indexedAssets);
         this.assetTypedefs = new HashMap<>();
 
     }

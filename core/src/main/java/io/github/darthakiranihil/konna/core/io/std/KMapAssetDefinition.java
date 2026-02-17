@@ -24,14 +24,27 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of {@link KAssetDefinition} that stores data inside a map.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public class KMapAssetDefinition implements KAssetDefinition {
 
     private final Map<String, Object> value;
 
+    /**
+     * Standard constructor.
+     * @param value Map that stores asset definition data
+     */
     public KMapAssetDefinition(final Map<String, Object> value) {
         this.value = value;
     }
 
+    /**
+     * Creates a definition with empty {@link HashMap} inside.
+     */
     public KMapAssetDefinition() {
         this.value = new HashMap<>();
     }
