@@ -196,6 +196,37 @@ public final class KCompositeAssetDefinitionRuleBuilder {
         return this;
     }
 
+    public KCompositeAssetDefinitionRuleBuilder withClassObject(
+        final String property
+    ) {
+        this.rules.add(KAssetDefinitionRule.hasClassObject(property));
+        return this;
+    }
+
+    public <T> KCompositeAssetDefinitionRuleBuilder withClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        this.rules.add(KAssetDefinitionRule.hasClassObject(property, targetClass));
+        return this;
+    }
+
+    public KCompositeAssetDefinitionRuleBuilder withClassObjectArray(
+        final String property
+    ) {
+        this.rules.add(KAssetDefinitionRule.hasClassObjectArray(property));
+        return this;
+    }
+
+    public <T> KCompositeAssetDefinitionRuleBuilder withClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        this.rules.add(KAssetDefinitionRule.hasClassObjectArray(property, targetClass));
+        return this;
+    }
+
+
     /**
      * Adds a custom rule to the composite.
      * @param rule Rule to add to the composite

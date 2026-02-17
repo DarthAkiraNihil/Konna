@@ -269,4 +269,54 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    static KAssetDefinitionRule hasClassObject(
+        final String property
+    ) {
+        return (v) -> {
+            if (v.hasClassObject(property)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    static <T> KAssetDefinitionRule hasClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        return (v) -> {
+            if (v.hasClassObject(property, targetClass)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    static KAssetDefinitionRule hasClassObjectArray(
+        final String property
+    ) {
+        return (v) -> {
+            if (v.hasClassObjectArray(property)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    static <T> KAssetDefinitionRule hasClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        return (v) -> {
+            if (v.hasClassObjectArray(property, targetClass)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
 }
