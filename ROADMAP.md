@@ -78,11 +78,11 @@ The foundation that is essential for the whole engine
 
 ### v. 0.4.0 - The beginning of Entity
 
-- [ ] More proper repo appearance (logo etc.) and repo docs
-- [ ] Add support for setting an input processor for the application
-- [ ] Add another way of defining asset types for components instead of JSON
-- [ ] Maybe another way of store asset definitions?
-- [ ] More convenient JSON object validator prop info builder
+- [x] More proper repo appearance (logo etc.) and repo docs
+- [x] Add support for setting an input processor for the application
+- [x] Add another way of defining asset types for components instead of JSON
+- [x] Maybe another way of store asset definitions?
+- [x] More convenient JSON object validator prop info builder
 - [ ] Implement entity component that contains methods to work with different entities, including the Player itself
     - [ ] Add base class for all entities
     - [ ] Add classes that holds different values that represent entity properties
@@ -116,3 +116,5 @@ The foundation that is essential for the whole engine
 - [ ] Annotation processing at compile-time instead of run-time
 - [ ] More flexible object pools
 - [ ] Add support for TTF text rendering
+- [ ] Custom collections (including optimized for primitive types)
+- 
