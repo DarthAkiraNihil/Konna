@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.entity"
+}
+
+description = "Entity component of Konna engine"
