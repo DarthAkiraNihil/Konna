@@ -9,6 +9,7 @@ rootProject.name = 'Konna'
 include 'core'
 
 include 'component-graphics'
+include 'component-entity'
 
 include 'libfrontend-opengl'
 include 'libfrontend-glfw'
@@ -23,13 +24,17 @@ include 'backend-spair'
 include 'backend-lwjgl'
 
 findProject(':component-graphics').projectDir = new File("components/component-graphics")
+findProject(':component-entity').projectDir = new File("components/component-entity")
+
 findProject(':libfrontend-opengl').projectDir = new File("libfrontend/libfrontend-opengl")
 findProject(':libfrontend-glfw').projectDir = new File("libfrontend/libfrontend-glfw")
 findProject(':libfrontend-stb').projectDir = new File("libfrontend/libfrontend-stb")
 findProject(':libfrontend-dear-imgui').projectDir = new File("libfrontend/libfrontend-dear-imgui")
+
 findProject(':implementations-opengl33').projectDir = new File("implementations/implementations-opengl33")
 findProject(':implementations-glfw').projectDir = new File("implementations/implementations-glfw")
 findProject(':implementations-stb').projectDir = new File("implementations/implementations-stb")
+
 findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
 findProject(':backend-spair').projectDir = new File("backend/backend-spair")
 

@@ -12,6 +12,7 @@ dependencies {
         api project(':core')
 
         api project(':component-graphics')
+        api project(':component-entity')
 
         api project(':libfrontend-opengl')
         api project(':libfrontend-glfw')
