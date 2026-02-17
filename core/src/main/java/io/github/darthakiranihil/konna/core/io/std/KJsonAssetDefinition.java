@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -292,6 +293,118 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     ) {
         try {
             this.getEnum(property, enumClass);
+            return true;
+        } catch (KAssetDefinitionError e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Class<?> getClassObject(
+        final String property
+    ) {
+        return KClassUtils.getForName(
+            this.getString(property)
+        );
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Class<? extends T> getClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        Class<?> clazz = this.getClassObject(property);
+        if (targetClass.isAssignableFrom(clazz)) {
+            return (Class<? extends T>) clazz;
+        }
+
+        throw KAssetDefinitionError.propertyNotFound(property);
+    }
+
+    @Override
+    public Class<?>[] getClassObjectArray(final String property) {
+        String[] strings = this.getStringArray(property);
+        if (strings == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
+
+        Class<?>[] classes = new Class[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            classes[i] = KClassUtils.getForName(strings[i]);
+        }
+        return classes;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Class<? extends T>[] getClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        String[] strings = this.getStringArray(property);
+        if (strings == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
+
+        Class<? extends T>[] classes = new Class[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            Class<?> clazz = KClassUtils.getForName(strings[i]);
+            if (!targetClass.isAssignableFrom(clazz)) {
+                throw new KAssetDefinitionError(
+                    String.format(
+                        "Cannot cast class array element %d to %s",
+                        i,
+                        targetClass
+                    )
+                );
+            }
+
+            classes[i] = (Class<? extends T>) clazz;
+        }
+        return classes;
+    }
+
+    @Override
+    public boolean hasClassObject(final String property) {
+        try {
+            this.getClassObject(property);
+            return true;
+        } catch (KAssetDefinitionError e) {
+            return false;
+        }
+    }
+
+    @Override
+    public <T> boolean hasClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        try {
+            this.getClassObject(property, targetClass);
+            return true;
+        } catch (KAssetDefinitionError e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasClassObjectArray(final String property) {
+        try {
+            this.getClassObjectArray(property);
+            return true;
+        } catch (KAssetDefinitionError e) {
+            return false;
+        }
+    }
+
+    @Override
+    public <T> boolean hasClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        try {
+            this.getClassObjectArray(property);
             return true;
         } catch (KAssetDefinitionError e) {
             return false;

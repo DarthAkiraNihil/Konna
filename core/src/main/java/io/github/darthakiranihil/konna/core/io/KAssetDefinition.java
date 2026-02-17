@@ -67,6 +67,9 @@ public interface KAssetDefinition {
      */
     <T extends Enum<T>> T getEnum(String property, Class<T> enumClass);
 
+    Class<?> getClassObject(String property);
+    <T> Class<? extends T> getClassObject(String property, Class<T> targetClass);
+
     /**
      * Returns integer array property of asset definition.
      * @param property Property name
@@ -97,6 +100,9 @@ public interface KAssetDefinition {
      * @return Subdefinition array of passed property
      */
     KAssetDefinition[] getSubdefinitionArray(String property);
+
+    Class<?>[] getClassObjectArray(String property);
+    <T> Class<? extends T>[] getClassObjectArray(String property, Class<T> targetClass);
 
     /**
      * @param property Property name
@@ -136,6 +142,10 @@ public interface KAssetDefinition {
      * @since 0.4.0
      */
     <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass);
+
+    boolean hasClassObject(String property);
+    <T> boolean hasClassObject(String property, Class<T> targetClass);
+
     /**
      * @param property Property name
      * @return Whether this definition has the int array property with such name or not
@@ -166,5 +176,8 @@ public interface KAssetDefinition {
      * @since 0.4.0
      */
     boolean hasSubdefinitionArray(String property);
+
+    boolean hasClassObjectArray(String property);
+    <T> boolean hasClassObjectArray(String property, Class<T> targetClass);
 
 }
