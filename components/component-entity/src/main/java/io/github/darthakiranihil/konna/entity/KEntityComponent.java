@@ -62,7 +62,7 @@ public class KEntityComponent extends KComponent {
     }
 
     @Override
-    protected void applyConfig(KJsonValue config) {
+    protected void applyConfig(final KJsonValue config) {
 
     }
 
