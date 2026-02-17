@@ -26,6 +26,17 @@ import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 
+/**
+ * Konna Entity component, used for handling game entities (i.e. creating, deleting,
+ * updating, controlling, etc.)
+ * Provided endpoints:
+ * <ul>
+ *     <li>none</li>
+ * </ul>
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @KContainerModifier
 @KSingleton
 @KComponentMetaInfo(

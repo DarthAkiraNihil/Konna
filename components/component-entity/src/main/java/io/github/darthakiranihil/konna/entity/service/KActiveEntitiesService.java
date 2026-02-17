@@ -20,6 +20,13 @@ import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 
+/**
+ * Service for handling entities that are active during this frame
+ * (or something like that)
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 @KComponentServiceMetaInfo(
     name = "ActiveEntities"
