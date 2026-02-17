@@ -37,7 +37,8 @@ public class KAssetDefinitionError extends KException {
     public static KAssetDefinitionError propertyNotFound(final String property) {
         return new KAssetDefinitionError(
             String.format(
-                "Property with name %s is not found in asset definition or its type mismatches with required",
+                    "Property with name %s is not found in asset definition or "
+                +   "its type mismatches with required",
                 property
             )
         );

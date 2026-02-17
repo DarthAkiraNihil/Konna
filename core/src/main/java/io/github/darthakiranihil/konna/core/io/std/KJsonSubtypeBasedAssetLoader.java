@@ -206,7 +206,9 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
             throw new KAssetLoadingException(e);
         }
 
-        Map<String, KAssetDefinition> assetsOfType = this.loadedRawAssetDefinitions.get(internalType);
+        Map<String, KAssetDefinition> assetsOfType = this.loadedRawAssetDefinitions.get(
+            internalType
+        );
         assetsOfType.put(assetId, rawDefinition);
 
     }

@@ -27,15 +27,38 @@ import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Implementation of {@link KAssetLoader} that uses JSON files to read asset definitions from,
+ * but when an asset is loaded, loader performs its definition transformation according to loader's
+ * configuration.
+ * Each asset's definition must be in a single file, that holds a JSON object with mandatory
+ * {@code asset_id} (that must be unique) and {@code type} keys.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
 
+    /**
+     * Simple functional interface for transforming one asset definition to another.
+     */
     @FunctionalInterface
     public interface AssetTransformer {
 
+        /**
+         * Transforms the definition.
+         * @param value Definition to transform
+         * @return Transformed definition
+         */
         KAssetDefinition transform(KAssetDefinition value);
 
     }
 
+    /**
+     * Simple record for data of an asset type used in the application.
+     * @param name Name of type across the application
+     * @param transformersByInternalTypes Map of transformers by all types provided by components
+     */
     public record AssetTypeData(
         String name,
         Map<String, AssetTransformer> transformersByInternalTypes
@@ -47,6 +70,13 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
     private final Map<String, KAssetDefinition> indexedDefinitions;
     private final Map<String, KAssetTypedef> assetTypedefs;
 
+    /**
+     * Standard constructor.
+     * @param resourceLoader Resource loader (to load JSON files)
+     * @param jsonParser JSON parser to parse loaded definitions
+     * @param pathToAssets Path to directory to look definitions in
+     * @param assetTypeData Asset type data used in this application
+     */
     public KJsonTransformerBasedAssetLoader(
         final KResourceLoader resourceLoader,
         final KJsonParser jsonParser,
@@ -136,7 +166,10 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
     }
 
     @Override
-    public KAsset loadAsset(String assetId, String typeAlias) {
+    public KAsset loadAsset(
+        final String assetId,
+        final String typeAlias
+    ) {
 
         KAssetDefinition raw = this.indexedDefinitions.get(assetId);
         if (raw == null) {
@@ -181,13 +214,17 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
     }
 
     @Override
-    public void addAssetTypedef(KAssetTypedef typedef) {
+    public void addAssetTypedef(final KAssetTypedef typedef) {
         this.assetTypedefs.put(typedef.getName(), typedef);
         this.validateAssets(typedef.getName(), typedef.getRule());
     }
 
     @Override
-    public void addNewAsset(String assetId, String internalType, KAssetDefinition rawDefinition) {
+    public void addNewAsset(
+        final String assetId,
+        final String internalType,
+        final KAssetDefinition rawDefinition
+    ) {
 
         var typeData = this.assetTypeData.get(internalType);
         if (typeData == null) {

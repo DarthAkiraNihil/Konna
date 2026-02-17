@@ -131,6 +131,7 @@ public interface KAssetDefinition {
     /**
      * @param property Property name
      * @param enumClass Enum class to be checked
+     * @param <T> Enum class type parameter
      * @return Whether this definition has the enum property with such name or not
      * @since 0.4.0
      */

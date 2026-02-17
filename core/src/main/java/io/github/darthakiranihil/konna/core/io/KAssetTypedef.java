@@ -30,6 +30,10 @@ public interface KAssetTypedef {
      * @return Name of the type
      */
     String getName();
+
+    /**
+     * @return Rule used for this type to validate asset definitions
+     */
     KAssetDefinitionRule getRule();
 
 }

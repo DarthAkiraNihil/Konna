@@ -135,12 +135,16 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public void addAssetTypedef(KAssetTypedef typedef) {
+    public void addAssetTypedef(final KAssetTypedef typedef) {
         this.assetLoader.addAssetTypedef(typedef);
     }
 
     @Override
-    public void addNewAsset(String assetId, String internalType, KAssetDefinition rawDefinition) {
+    public void addNewAsset(
+        final String assetId,
+        final String internalType,
+        final KAssetDefinition rawDefinition
+    ) {
         this.assetLoader.addNewAsset(assetId, internalType, rawDefinition);
     }
 

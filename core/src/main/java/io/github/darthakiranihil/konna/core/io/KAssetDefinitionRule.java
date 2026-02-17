@@ -19,9 +19,20 @@ package io.github.darthakiranihil.konna.core.io;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.util.KValidator;
 
+/**
+ * Simple functional abstraction over asset definition validator.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
 
+    /**
+     * Creates a rule that checks whether a definition has an int property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasInt(final String property) {
         return (v) -> {
             if (v.hasInt(property)) {
@@ -32,6 +43,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a float property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasFloat(final String property) {
         return (v) -> {
             if (v.hasFloat(property)) {
@@ -42,6 +58,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a boolean property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasBoolean(final String property) {
         return (v) -> {
             if (v.hasBoolean(property)) {
@@ -52,6 +73,13 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a string property.
+     * Created rule will ignore string nullability (i.e. if definition has
+     * a string that is null, check will be passed)
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasString(final String property) {
         return (v) -> {
             if (v.hasString(property)) {
@@ -62,6 +90,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a non-null string property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasNonNullString(final String property) {
         return (v) -> {
             if (!v.hasString(property)) {
@@ -82,7 +115,17 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
-    static <T extends Enum<T>> KAssetDefinitionRule hasEnum(final String property, final Class<T> enumClass) {
+    /**
+     * Creates a rule that checks whether a definition has an enum property.
+     * @param property Property to be checked
+     * @param enumClass Class of enum that checked property must have
+     * @param <T> Enum class type parameter
+     * @return Created asset definition rule
+     */
+    static <T extends Enum<T>> KAssetDefinitionRule hasEnum(
+        final String property,
+        final Class<T> enumClass
+    ) {
         return (v) -> {
             if (v.hasEnum(property, enumClass)) {
                 return;
@@ -92,6 +135,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a subdefinition property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasSubdefinition(final String property) {
         return (v) -> {
             if (v.hasSubdefinition(property)) {
@@ -102,7 +150,17 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
-    static KAssetDefinitionRule hasSubdefinition(final String property, final KAssetDefinitionRule validator) {
+    /**
+     * Creates a rule that checks whether a definition has a subdefinition
+     * property with its extra validation.
+     * @param property Property to be checked
+     * @param validator Subdefinition validator
+     * @return Created asset definition rule
+     */
+    static KAssetDefinitionRule hasSubdefinition(
+        final String property,
+        final KAssetDefinitionRule validator
+    ) {
         return (v) -> {
             if (!v.hasSubdefinition(property)) {
                 throw KAssetDefinitionError.propertyNotFound(property);
@@ -113,6 +171,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has an int array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasIntArray(final String property) {
         return (v) -> {
             if (v.hasIntArray(property)) {
@@ -123,6 +186,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a float array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasFloatArray(final String property) {
         return (v) -> {
             if (v.hasFloatArray(property)) {
@@ -133,6 +201,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a boolean array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasBooleanArray(final String property) {
         return (v) -> {
             if (v.hasBooleanArray(property)) {
@@ -143,6 +216,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a string array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasStringArray(final String property) {
         return (v) -> {
             if (v.hasStringArray(property)) {
@@ -153,6 +231,11 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a subdefinition array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
     static KAssetDefinitionRule hasSubdefinitionArray(final String property) {
         return (v) -> {
             if (v.hasSubdefinitionArray(property)) {
@@ -163,7 +246,17 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
-    static KAssetDefinitionRule hasSubdefinitionArray(final String property, final KAssetDefinitionRule elementValidator) {
+    /**
+     * Creates a rule that checks whether a definition has a subdefinition array property
+     * with validating its elements.
+     * @param property Property to be checked
+     * @param elementValidator Validator for array elements
+     * @return Created asset definition rule
+     */
+    static KAssetDefinitionRule hasSubdefinitionArray(
+        final String property,
+        final KAssetDefinitionRule elementValidator
+    ) {
         return (v) -> {
             if (!v.hasSubdefinitionArray(property)) {
                 throw KAssetDefinitionError.propertyNotFound(property);

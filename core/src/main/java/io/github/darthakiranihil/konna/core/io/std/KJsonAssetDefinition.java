@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
-import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import org.jspecify.annotations.Nullable;
@@ -265,9 +264,12 @@ public class KJsonAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public <T extends Enum<T>> T getEnum(String property, Class<T> enumClass) {
-        String value = this.getString(property);
-        if (value == null) {
+    public <T extends Enum<T>> T getEnum(
+        final String property,
+        final Class<T> enumClass
+    ) {
+        String rawValue = this.getString(property);
+        if (rawValue == null) {
             throw new KAssetDefinitionError(
                 String.format(
                     "Value of property %s is null",
@@ -277,14 +279,17 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         }
 
         try {
-            return Enum.valueOf(enumClass, value);
+            return Enum.valueOf(enumClass, rawValue);
         } catch (IllegalArgumentException e) {
             throw new KAssetDefinitionError(e.getMessage());
         }
     }
 
     @Override
-    public <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass) {
+    public <T extends Enum<T>> boolean hasEnum(
+        final String property,
+        final Class<T> enumClass
+    ) {
         try {
             this.getEnum(property, enumClass);
             return true;

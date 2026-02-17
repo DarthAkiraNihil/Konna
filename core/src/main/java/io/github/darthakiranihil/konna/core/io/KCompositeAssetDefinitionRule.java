@@ -16,14 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.util.KValidator;
-
 import java.util.List;
 
+/**
+ * Asset definition rule that combines other asset definition rules in order
+ * to validate any definition.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public final class KCompositeAssetDefinitionRule implements KAssetDefinitionRule {
 
     private final List<KAssetDefinitionRule> rules;
 
+    /**
+     * Standard constructor.
+     * @param rules List of rules to use in validation
+     */
     public KCompositeAssetDefinitionRule(
         final List<KAssetDefinitionRule> rules
     ) {

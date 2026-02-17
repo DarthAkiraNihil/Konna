@@ -21,9 +21,7 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class KMapAssetDefinition implements KAssetDefinition {
@@ -39,7 +37,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public int getInt(String property) {
+    public int getInt(final String property) {
         Object val = this.value.get(property);
         Class<?> valClass = val.getClass();
         if (Long.class.isAssignableFrom(valClass)) {
@@ -56,7 +54,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public float getFloat(String property) {
+    public float getFloat(final String property) {
         Object val = this.value.get(property);
         if (Double.class.isAssignableFrom(val.getClass())) {
             return ((Double) val).floatValue();
@@ -66,29 +64,29 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public boolean getBoolean(String property) {
+    public boolean getBoolean(final String property) {
         return (boolean) this.value.get(property);
     }
 
     @Override
-    public @Nullable String getString(String property) {
+    public @Nullable String getString(final String property) {
         return (String) this.value.get(property);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public KAssetDefinition getSubdefinition(String property) {
-        Object value = this.value.get(property);
-        if (value == null) {
+    public KAssetDefinition getSubdefinition(final String property) {
+        Object v = this.value.get(property);
+        if (v == null) {
             throw KAssetDefinitionError.propertyNotFound(property);
         }
 
-        if (KAssetDefinition.class.isAssignableFrom(value.getClass())) {
-            return (KAssetDefinition) value;
+        if (KAssetDefinition.class.isAssignableFrom(v.getClass())) {
+            return (KAssetDefinition) v;
         }
 
-        if (Map.class.isAssignableFrom(value.getClass())) {
-            return new KMapAssetDefinition((Map<String, Object>) value);
+        if (Map.class.isAssignableFrom(v.getClass())) {
+            return new KMapAssetDefinition((Map<String, Object>) v);
         }
 
         throw KAssetDefinitionError.propertyNotFound(property);
@@ -96,14 +94,14 @@ public class KMapAssetDefinition implements KAssetDefinition {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends Enum<T>> T getEnum(String property, Class<T> enumClass) {
+    public <T extends Enum<T>> T getEnum(final String property, final Class<T> enumClass) {
         Object rawValue = this.value.get(property);
         if (rawValue != null && rawValue.getClass() == enumClass) {
             return (T) rawValue;
         }
 
-        String value = this.getString(property);
-        if (value == null) {
+        String v = this.getString(property);
+        if (v == null) {
             throw new KAssetDefinitionError(
                 String.format(
                     "Value of property %s is null",
@@ -113,24 +111,24 @@ public class KMapAssetDefinition implements KAssetDefinition {
         }
 
         try {
-            return Enum.valueOf(enumClass, value);
+            return Enum.valueOf(enumClass, v);
         } catch (IllegalArgumentException e) {
             throw new KAssetDefinitionError(e.getMessage());
         }
     }
 
     @Override
-    public int[] getIntArray(String property) {
+    public int[] getIntArray(final String property) {
         return this.castToIntArray(this.value.get(property));
     }
 
     @Override
-    public float[] getFloatArray(String property) {
+    public float[] getFloatArray(final String property) {
         return this.castToFloatArray(this.value.get(property));
     }
 
     @Override
-    public boolean[] getBooleanArray(String property) {
+    public boolean[] getBooleanArray(final String property) {
         Object val = this.value.get(property);
         if (boolean[].class.isAssignableFrom(val.getClass())) {
             return (boolean[]) val;
@@ -145,13 +143,13 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public String @Nullable [] getStringArray(String property) {
+    public String @Nullable [] getStringArray(final String property) {
         return (String[]) this.value.get(property);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public KAssetDefinition[] getSubdefinitionArray(String property) {
+    public KAssetDefinition[] getSubdefinitionArray(final String property) {
         Object array = this.value.get(property);
         if (array == null) {
             throw KAssetDefinitionError.propertyNotFound(property);
@@ -174,7 +172,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public boolean hasInt(String property) {
+    public boolean hasInt(final String property) {
         return
                 this.hasPrimitiveProperty(property, int.class, Integer.class)
             ||  this.hasPrimitiveProperty(property, long.class, Long.class)
@@ -183,31 +181,31 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public boolean hasFloat(String property) {
+    public boolean hasFloat(final String property) {
         return
                 this.hasPrimitiveProperty(property, float.class, Float.class)
             ||  this.hasPrimitiveProperty(property, double.class, Double.class);
     }
 
     @Override
-    public boolean hasBoolean(String property) {
+    public boolean hasBoolean(final String property) {
         return this.hasPrimitiveProperty(property, boolean.class, Boolean.class);
     }
 
     @Override
-    public boolean hasString(String property) {
+    public boolean hasString(final String property) {
         return this.hasProperty(property, String.class);
     }
 
     @Override
-    public boolean hasSubdefinition(String property) {
+    public boolean hasSubdefinition(final String property) {
         return
                 this.hasProperty(property, KAssetDefinition.class)
             ||  this.hasProperty(property, Map.class);
     }
 
     @Override
-    public <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass) {
+    public <T extends Enum<T>> boolean hasEnum(final String property, final Class<T> enumClass) {
         try {
             this.getEnum(property, enumClass);
             return true;
@@ -217,7 +215,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public boolean hasIntArray(String property) {
+    public boolean hasIntArray(final String property) {
         return
                 this.hasPrimitiveProperty(property, int[].class, Integer[].class)
             ||  this.hasPrimitiveProperty(property, long[].class, Long[].class)
@@ -226,30 +224,34 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
-    public boolean hasFloatArray(String property) {
+    public boolean hasFloatArray(final String property) {
         return
                 this.hasPrimitiveProperty(property, float[].class, Float[].class)
             ||  this.hasPrimitiveProperty(property, double[].class, Double[].class);
     }
 
     @Override
-    public boolean hasBooleanArray(String property) {
+    public boolean hasBooleanArray(final String property) {
         return this.hasPrimitiveProperty(property, boolean[].class, Boolean[].class);
     }
 
     @Override
-    public boolean hasStringArray(String property) {
+    public boolean hasStringArray(final String property) {
         return this.hasProperty(property, String[].class);
     }
 
     @Override
-    public boolean hasSubdefinitionArray(String property) {
+    public boolean hasSubdefinitionArray(final String property) {
         return
                 this.hasProperty(property, KAssetDefinition[].class)
             ||  this.hasProperty(property, Map[].class);
     }
 
-    private boolean hasPrimitiveProperty(final String property, Class<?> class1, Class<?> class2) {
+    private boolean hasPrimitiveProperty(
+        final String property,
+        final Class<?> class1,
+        final Class<?> class2
+    ) {
         boolean flag = this.value.containsKey(property);
         if (!flag) {
             return false;
@@ -259,7 +261,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
         return val.getClass() == class1 || val.getClass() == class2;
     }
 
-    private boolean hasProperty(final String property, Class<?> clazz) {
+    private boolean hasProperty(final String property, final Class<?> clazz) {
         boolean flag = this.value.containsKey(property);
         if (!flag) {
             return false;
@@ -269,40 +271,40 @@ public class KMapAssetDefinition implements KAssetDefinition {
         return val.getClass() == clazz || clazz.isAssignableFrom(val.getClass());
     }
 
-    private int[] castToIntArray(final Object value) {
+    private int[] castToIntArray(final Object v) {
 
-        if (int[].class.isAssignableFrom(value.getClass())) {
-            return (int[]) value;
+        if (int[].class.isAssignableFrom(v.getClass())) {
+            return (int[]) v;
         }
 
-        int arrayLength = Array.getLength(value);
+        int arrayLength = Array.getLength(v);
         int[] result = new int[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            Object arrayValue = Array.get(value, i);
+            Object arrayValue = Array.get(v, i);
             if (Number.class.isAssignableFrom(arrayValue.getClass())) {
                 result[i] = ((Number) arrayValue).intValue();
             } else {
-                result[i] = (int) Array.get(value, i);
+                result[i] = (int) Array.get(v, i);
             }
         }
         return result;
 
     }
 
-    private float[] castToFloatArray(final Object value) {
+    private float[] castToFloatArray(final Object v) {
 
-        if (float[].class.isAssignableFrom(value.getClass())) {
-            return (float[]) value;
+        if (float[].class.isAssignableFrom(v.getClass())) {
+            return (float[]) v;
         }
 
-        int arrayLength = Array.getLength(value);
+        int arrayLength = Array.getLength(v);
         float[] result = new float[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            Object arrayValue = Array.get(value, i);
+            Object arrayValue = Array.get(v, i);
             if (Number.class.isAssignableFrom(arrayValue.getClass())) {
                 result[i] = ((Number) arrayValue).floatValue();
             } else {
-                result[i] = (float) Array.get(value, i);
+                result[i] = (float) Array.get(v, i);
             }
         }
         return result;
