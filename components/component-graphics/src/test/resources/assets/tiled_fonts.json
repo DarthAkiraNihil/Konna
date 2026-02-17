@@ -6,7 +6,8 @@
       "glyph_size": {
         "width": 16,
         "height": 16
-      }
+      },
+        "format": "io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontFormat"
     }
   }
 }

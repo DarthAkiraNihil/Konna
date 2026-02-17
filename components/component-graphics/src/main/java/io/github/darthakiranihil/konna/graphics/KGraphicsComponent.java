@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -27,19 +26,17 @@ import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.graphics.asset.KShaderCollection;
-import io.github.darthakiranihil.konna.graphics.asset.KShaderProgramCollection;
-import io.github.darthakiranihil.konna.graphics.asset.KTextureCollection;
-import io.github.darthakiranihil.konna.graphics.asset.KTiledFontCollection;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
-
-import java.util.List;
+import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KShaderTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KTextureTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypeDefinition;
 
 /**
  * Konna Graphics component, used for rendering object on the screen.
@@ -72,13 +69,13 @@ public class KGraphicsComponent extends KComponent {
     }
 
     @Override
-    public List<KPair<String, KJsonValidator>> getAssetSchemas() {
-        return List.of(
-            KShaderCollection.ASSET_SCHEMA,
-            KShaderProgramCollection.ASSET_SCHEMA,
-            KTextureCollection.ASSET_SCHEMA,
-            KTiledFontCollection.ASSET_SCHEMA
-        );
+    public KAssetTypedef[] getAssetTypedefs() {
+        return new KAssetTypedef[] {
+            new KShaderTypeDefinition(),
+            new KShaderProgramTypeDefinition(),
+            new KTextureTypeDefinition(),
+            new KTiledFontTypeDefinition()
+        };
     }
 
     @Override

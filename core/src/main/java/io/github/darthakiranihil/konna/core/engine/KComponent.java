@@ -16,22 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for Konna engine component.
@@ -139,10 +140,10 @@ public abstract class KComponent extends KObject {
     }
 
     /**
-     * Returns asset schemas of that types that are internal for its component.
-     * @return List of pairs "internal asset type"-"type's json schema"
+     * Returns asset type definitions of that types that are internal for its component.
+     * @return Array of asset type definitions, used inside this component
      */
-    public abstract List<KPair<String, KJsonValidator>> getAssetSchemas();
+    public abstract KAssetTypedef[] getAssetTypedefs();
 
     /**
      * Runs post-init operations for this component. By default, the method does nothing

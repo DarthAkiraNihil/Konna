@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.io.std;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonValueException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import org.jspecify.annotations.Nullable;
@@ -150,5 +151,150 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         }
 
         return array;
+    }
+
+    @Override
+    public boolean hasInt(final String property) {
+        return this.hasProperty(property, KJsonValueType.NUMBER_INT);
+    }
+
+    @Override
+    public boolean hasFloat(final String property) {
+        return this.hasProperty(property, KJsonValueType.NUMBER_FLOAT);
+    }
+
+    @Override
+    public boolean hasBoolean(final String property) {
+        return this.hasProperty(property, KJsonValueType.BOOLEAN);
+    }
+
+    @Override
+    public boolean hasString(final String property) {
+        return this.hasProperty(property, KJsonValueType.STRING);
+    }
+
+    @Override
+    public boolean hasSubdefinition(final String property) {
+        return this.hasProperty(property, KJsonValueType.OBJECT);
+    }
+
+    @Override
+    public boolean hasIntArray(final String property) {
+        boolean flag = this.hasProperty(property, KJsonValueType.ARRAY);
+        if (!flag) {
+            return false;
+        }
+
+        try {
+            this.getIntArray(property);
+            return true;
+        } catch (KJsonValueException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasFloatArray(final String property) {
+        boolean flag = this.hasProperty(property, KJsonValueType.ARRAY);
+        if (!flag) {
+            return false;
+        }
+
+        try {
+            this.getFloatArray(property);
+            return true;
+        } catch (KJsonValueException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasBooleanArray(final String property) {
+        boolean flag = this.hasProperty(property, KJsonValueType.ARRAY);
+        if (!flag) {
+            return false;
+        }
+
+        try {
+            this.getBooleanArray(property);
+            return true;
+        } catch (KJsonValueException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasStringArray(final String property) {
+        boolean flag = this.hasProperty(property, KJsonValueType.ARRAY);
+        if (!flag) {
+            return false;
+        }
+
+        try {
+            this.getStringArray(property);
+            return true;
+        } catch (KJsonValueException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasSubdefinitionArray(final String property) {
+        boolean flag = this.hasProperty(property, KJsonValueType.ARRAY);
+        if (!flag) {
+            return false;
+        }
+
+        try {
+            this.getSubdefinitionArray(property);
+            return true;
+        } catch (KJsonValueException | KAssetDefinitionError e) {
+            return false;
+        }
+    }
+
+    private boolean hasProperty(final String property, final KJsonValueType type) {
+
+        boolean flag = this.value.hasProperty(property);
+        if (!flag) {
+            return false;
+        }
+
+        return this.value.getProperty(property).getType() == type;
+    }
+
+    @Override
+    public <T extends Enum<T>> T getEnum(
+        final String property,
+        final Class<T> enumClass
+    ) {
+        String rawValue = this.getString(property);
+        if (rawValue == null) {
+            throw new KAssetDefinitionError(
+                String.format(
+                    "Value of property %s is null",
+                    property
+                )
+            );
+        }
+
+        try {
+            return Enum.valueOf(enumClass, rawValue);
+        } catch (IllegalArgumentException e) {
+            throw new KAssetDefinitionError(e.getMessage());
+        }
+    }
+
+    @Override
+    public <T extends Enum<T>> boolean hasEnum(
+        final String property,
+        final Class<T> enumClass
+    ) {
+        try {
+            this.getEnum(property, enumClass);
+            return true;
+        } catch (KAssetDefinitionError e) {
+            return false;
+        }
     }
 }

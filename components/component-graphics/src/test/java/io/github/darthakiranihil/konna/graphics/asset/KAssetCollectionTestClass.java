@@ -19,8 +19,12 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.std.KJsonAssetLoader;
+import io.github.darthakiranihil.konna.core.io.std.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KShaderTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KTextureTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypeDefinition;
 
 import java.util.Map;
 
@@ -31,43 +35,28 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
     protected KAssetCollectionTestClass() {
         super();
 
-        this.assetLoader = new KJsonAssetLoader(
+        this.assetLoader = new KJsonSubtypeBasedAssetLoader(
             KStandardTestClass.context,
-            Map.of("shader", new KJsonAssetLoader.AssetTypeData(
+            Map.of("shader", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] {KShaderCollection.SHADER_ASSET_TYPE },
                 new String[] {"classpath:assets/shaders.json"}
-            ), "shaderProgram", new KJsonAssetLoader.AssetTypeData(
+            ), "shaderProgram", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] {KShaderProgramCollection.SHADER_PROGRAM_ASSET_TYPE},
                 new String[] {"classpath:assets/shader_programs.json"}
-            ), "texture", new KJsonAssetLoader.AssetTypeData(
+            ), "texture", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] {KTextureCollection.TEXTURE_ASSET_TYPE},
                 new String[] {"classpath:assets/textures.json"}
             ),
-            "tiledFont", new KJsonAssetLoader.AssetTypeData(
+            "tiledFont", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] {KTiledFontCollection.TILED_FONT_ASSET_TYPE},
                 new String[] {"classpath:assets/tiled_fonts.json"}
             )),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
 
-        this.assetLoader.addAssetTypeAlias(
-            KShaderCollection.ASSET_SCHEMA.first(),
-            KShaderCollection.ASSET_SCHEMA.second()
-        );
-
-        this.assetLoader.addAssetTypeAlias(
-            KShaderProgramCollection.ASSET_SCHEMA.first(),
-            KShaderProgramCollection.ASSET_SCHEMA.second()
-        );
-
-        this.assetLoader.addAssetTypeAlias(
-            KTextureCollection.ASSET_SCHEMA.first(),
-            KTextureCollection.ASSET_SCHEMA.second()
-        );
-
-        this.assetLoader.addAssetTypeAlias(
-            KTiledFontCollection.ASSET_SCHEMA.first(),
-            KTiledFontCollection.ASSET_SCHEMA.second()
-        );
+        this.assetLoader.addAssetTypedef(new KShaderTypeDefinition());
+        this.assetLoader.addAssetTypedef(new KShaderProgramTypeDefinition());
+        this.assetLoader.addAssetTypedef(new KTextureTypeDefinition());
+        this.assetLoader.addAssetTypedef(new KTiledFontTypeDefinition());
     }
 }

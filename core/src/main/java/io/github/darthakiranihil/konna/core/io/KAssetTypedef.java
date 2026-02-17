@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.data.json;
-
-import io.github.darthakiranihil.konna.core.util.KValidator;
+package io.github.darthakiranihil.konna.core.io;
 
 /**
- * Represents a json validator that check if the json value
- * is correct according to checks, that are implementation-defined.
+ * Interface that in encapsulates asset type definition in simple class
+ * that provides validation mechanism to define whether an asset definition
+ * is valid for this type or not.
  *
- * @since 0.2.0
+ * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@FunctionalInterface
-public interface KJsonValidator extends KValidator<KJsonValue> {
+public interface KAssetTypedef {
 
     /**
-     * Validates a json value.
-     * @throws  io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError
-     *          if json value does not pass validation checks
-     * @param value Json value to validate
+     * @return Name of the type
      */
-    void validate(KJsonValue value);
+    String getName();
+
+    /**
+     * @return Rule used for this type to validate asset definitions
+     */
+    KAssetDefinitionRule getRule();
 
 }

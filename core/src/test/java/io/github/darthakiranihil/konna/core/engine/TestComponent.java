@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import org.jspecify.annotations.NullMarked;
 
@@ -49,7 +50,7 @@ public class TestComponent extends KComponent {
     }
 
     @Override
-    public List<KPair<String, KJsonValidator>> getAssetSchemas() {
-        return List.of();
+    public KAssetTypedef[] getAssetTypedefs() {
+        return new KAssetTypedef[0];
     }
 }
