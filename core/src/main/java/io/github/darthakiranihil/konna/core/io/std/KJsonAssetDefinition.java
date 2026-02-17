@@ -249,7 +249,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         try {
             this.getSubdefinitionArray(property);
             return true;
-        } catch (KJsonValueException e) {
+        } catch (KJsonValueException | KAssetDefinitionError e) {
             return false;
         }
     }

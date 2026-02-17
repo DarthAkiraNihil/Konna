@@ -25,6 +25,9 @@ import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Map;
+
 public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
 
     @NullMarked
@@ -74,5 +77,73 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
         } catch (Throwable e) {
             Assertions.fail(e);
         }
+    }
+
+    @Test
+    public void testHasArraysButExceptionOccurred() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(Map.of(
+                "array",
+                KJsonValue.fromList(List.of(
+                    KJsonValue.fromNumber(1),
+                    KJsonValue.fromNumber(2),
+                    KJsonValue.fromNumber(3)
+                ))
+            )), v -> {}
+        );
+        KAssetDefinition def2 = new KJsonAssetDefinition(
+            KJsonValue.fromMap(Map.of(
+                "array",
+                KJsonValue.fromList(List.of(
+                    KJsonValue.fromString("1")
+                ))
+            )), v -> {}
+        );
+
+        Assertions.assertFalse(def.hasStringArray("array"));
+        Assertions.assertFalse(def.hasSubdefinitionArray("array"));
+        Assertions.assertFalse(def.hasBooleanArray("array"));
+        Assertions.assertFalse(def2.hasIntArray("array"));
+        Assertions.assertFalse(def2.hasFloatArray("array"));
+
+    }
+
+    @Test
+    public void testGetEnumButValueIsNotValid() {
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(Map.of(
+                "enum",
+                KJsonValue.fromString("ABIBA")
+            )), v -> {}
+        );
+
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> {
+            def.getEnum("enum", KJsonValueType.class);
+        });
+    }
+
+    @Test
+    public void testHasEnumAndExceptionOccurred() {
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(Map.of(
+                "enum",
+                KJsonValue.fromString("ABIBA")
+            )), v -> {}
+        );
+
+        Assertions.assertFalse(def.hasEnum("enum", KJsonValueType.class));
+    }
+
+    @Test
+    public void testStringAndIntArrayButExceptionOccurred() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(Map.of()), v -> {}
+        );
+
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> def.getString("aboba"));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> def.getIntArray("aboba"));
+
     }
 }

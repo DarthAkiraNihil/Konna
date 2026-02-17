@@ -20,7 +20,10 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import org.jspecify.annotations.Nullable;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class KMapAssetDefinition implements KAssetDefinition {
@@ -37,11 +40,28 @@ public class KMapAssetDefinition implements KAssetDefinition {
 
     @Override
     public int getInt(String property) {
+        Object val = this.value.get(property);
+        Class<?> valClass = val.getClass();
+        if (Long.class.isAssignableFrom(valClass)) {
+            return ((Long) val).intValue();
+        }
+        if (Short.class.isAssignableFrom(valClass)) {
+            return ((Short) val).intValue();
+        }
+        if (Byte.class.isAssignableFrom(valClass)) {
+            return ((Byte) val).intValue();
+        }
+
         return (int) this.value.get(property);
     }
 
     @Override
     public float getFloat(String property) {
+        Object val = this.value.get(property);
+        if (Double.class.isAssignableFrom(val.getClass())) {
+            return ((Double) val).floatValue();
+        }
+
         return (float) this.value.get(property);
     }
 
@@ -60,7 +80,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
     public KAssetDefinition getSubdefinition(String property) {
         Object value = this.value.get(property);
         if (value == null) {
-            throw new KAssetDefinitionError("subdefinition is null");
+            throw KAssetDefinitionError.propertyNotFound(property);
         }
 
         if (KAssetDefinition.class.isAssignableFrom(value.getClass())) {
@@ -75,7 +95,13 @@ public class KMapAssetDefinition implements KAssetDefinition {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends Enum<T>> T getEnum(String property, Class<T> enumClass) {
+        Object rawValue = this.value.get(property);
+        if (rawValue != null && rawValue.getClass() == enumClass) {
+            return (T) rawValue;
+        }
+
         String value = this.getString(property);
         if (value == null) {
             throw new KAssetDefinitionError(
@@ -95,17 +121,27 @@ public class KMapAssetDefinition implements KAssetDefinition {
 
     @Override
     public int[] getIntArray(String property) {
-        return (int[]) this.value.get(property);
+        return this.castToIntArray(this.value.get(property));
     }
 
     @Override
     public float[] getFloatArray(String property) {
-        return (float[]) this.value.get(property);
+        return this.castToFloatArray(this.value.get(property));
     }
 
     @Override
     public boolean[] getBooleanArray(String property) {
-        return (boolean[]) this.value.get(property);
+        Object val = this.value.get(property);
+        if (boolean[].class.isAssignableFrom(val.getClass())) {
+            return (boolean[]) val;
+        }
+
+        Boolean[] booleanArrayValue = (Boolean[]) val;
+        boolean[] result = new boolean[booleanArrayValue.length];
+        for (int i = 0; i < booleanArrayValue.length; i++) {
+            result[i] = booleanArrayValue[i];
+        }
+        return result;
     }
 
     @Override
@@ -118,7 +154,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
     public KAssetDefinition[] getSubdefinitionArray(String property) {
         Object array = this.value.get(property);
         if (array == null) {
-            throw new KAssetDefinitionError("subdefinition array is null");
+            throw KAssetDefinitionError.propertyNotFound(property);
         }
 
         if (KAssetDefinition[].class.isAssignableFrom(array.getClass())) {
@@ -175,7 +211,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
         try {
             this.getEnum(property, enumClass);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (KAssetDefinitionError | ClassCastException e) {
             return false;
         }
     }
@@ -232,5 +268,48 @@ public class KMapAssetDefinition implements KAssetDefinition {
         Object val = this.value.get(property);
         return val.getClass() == clazz || clazz.isAssignableFrom(val.getClass());
     }
+
+    private int[] castToIntArray(final Object value) {
+
+        if (int[].class.isAssignableFrom(value.getClass())) {
+            return (int[]) value;
+        }
+
+        int arrayLength = Array.getLength(value);
+        int[] result = new int[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            Object arrayValue = Array.get(value, i);
+            if (Number.class.isAssignableFrom(arrayValue.getClass())) {
+                result[i] = ((Number) arrayValue).intValue();
+            } else {
+                result[i] = (int) Array.get(value, i);
+            }
+        }
+        return result;
+
+    }
+
+    private float[] castToFloatArray(final Object value) {
+
+        if (float[].class.isAssignableFrom(value.getClass())) {
+            return (float[]) value;
+        }
+
+        int arrayLength = Array.getLength(value);
+        float[] result = new float[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            Object arrayValue = Array.get(value, i);
+            if (Number.class.isAssignableFrom(arrayValue.getClass())) {
+                result[i] = ((Number) arrayValue).floatValue();
+            } else {
+                result[i] = (float) Array.get(value, i);
+            }
+        }
+        return result;
+
+    }
+
+
+
 
 }
