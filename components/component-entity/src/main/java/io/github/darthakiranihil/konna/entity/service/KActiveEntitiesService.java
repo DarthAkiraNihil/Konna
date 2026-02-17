@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 
 /**
  * Service for handling entities that are active during this frame
- * (or something like that)
+ * (or something like that).
  *
  * @since 0.4.0
  * @author Darth Akira Nihil
