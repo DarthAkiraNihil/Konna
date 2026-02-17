@@ -30,6 +30,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
@@ -157,7 +158,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
             fontFormat = this
                 .activator
                 .createObject(
-                    (Class<? extends KTiledFontFormat>) Class.forName(fontFormatClass)
+                    (Class<? extends KTiledFontFormat>) KClassUtils.getForName(fontFormatClass)
                 );
         } catch (Throwable e) {
             throw new KAssetLoadingException(

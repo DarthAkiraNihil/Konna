@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeseriali
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
 final class KonnaBootstrap {
 
@@ -65,7 +66,7 @@ final class KonnaBootstrap {
 
         try {
             var argumentParserClass = (Class<? extends KArgumentParser>)
-                Class.forName(this.config.getProperty(ARG_PARSER_CLASS_KEY).getString());
+                KClassUtils.getForName(this.config.getProperty(ARG_PARSER_CLASS_KEY).getString());
 
             return argumentParserClass
                 .getConstructor()
@@ -86,7 +87,7 @@ final class KonnaBootstrap {
             var hypervisorData = this.config.getProperty(HYPERVISOR_ROOT_KEY);
 
             var engineHypervisorClass = (Class<? extends KEngineHypervisor>)
-                Class.forName(hypervisorData.getProperty(HYPERVISOR_CLASS_KEY).getString());
+                KClassUtils.getForName(hypervisorData.getProperty(HYPERVISOR_CLASS_KEY).getString());
 
             var engineHypervisorConfig = hypervisorData.getProperty(HYPERVISOR_CONFIG_KEY);
             KEngineHypervisorConfig deserializedConfig = deserializer.deserialize(

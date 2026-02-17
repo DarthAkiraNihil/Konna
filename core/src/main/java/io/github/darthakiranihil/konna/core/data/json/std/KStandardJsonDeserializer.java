@@ -18,11 +18,13 @@ package io.github.darthakiranihil.konna.core.data.json.std;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullUnmarked;
@@ -96,8 +98,8 @@ public class KStandardJsonDeserializer extends KObject implements KJsonDeseriali
                 String val = value.getString();
                 if (Class.class.isAssignableFrom(clazz)) {
                     try {
-                        return (T) Class.forName(val);
-                    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+                        return (T) KClassUtils.getForName(val);
+                    } catch (KClassNotFoundException | NoClassDefFoundError e) {
                         throw new KJsonSerializationException(e);
                     }
                 }
