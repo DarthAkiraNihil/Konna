@@ -18,11 +18,13 @@ package io.github.darthakiranihil.konna.core.io.std;
 
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Implementation of {@link KAssetDefinition} that stores data inside a map.
@@ -324,7 +326,141 @@ public class KMapAssetDefinition implements KAssetDefinition {
 
     }
 
+    @Override
+    public Class<?> getClassObject(
+        final String property
+    ) {
+        Object val = this.value.get(property);
+        if (val == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
 
+        if (Class.class.isAssignableFrom(val.getClass())) {
+            return (Class<?>) val;
+        }
 
+        return KClassUtils.getForName(
+            this.getString(property)
+        );
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Class<? extends T> getClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        Class<?> clazz = this.getClassObject(property);
+        if (targetClass.isAssignableFrom(clazz)) {
+            return (Class<? extends T>) clazz;
+        }
+
+        throw KAssetDefinitionError.propertyNotFound(property);
+    }
+
+    @Override
+    public Class<?>[] getClassObjectArray(final String property) {
+        Object val = this.value.get(property);
+        if (val == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
+        if (Class[].class.isAssignableFrom(val.getClass())) {
+            return (Class<?>[]) val;
+        }
+
+        String[] strings = Objects.requireNonNull(this.getStringArray(property));
+
+        Class<?>[] classes = new Class[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            classes[i] = KClassUtils.getForName(strings[i]);
+        }
+        return classes;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Class<? extends T>[] getClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        Object val = this.value.get(property);
+        if (Class[].class.isAssignableFrom(val.getClass())) {
+            var array = (Class<?>[]) val;
+            if (array.length == 0) {
+                return new Class[0];
+            }
+
+            if (!targetClass.isAssignableFrom(array[0])) {
+                throw KAssetDefinitionError.propertyNotFound(property);
+            }
+
+            return (Class<? extends T>[]) array;
+        }
+
+        String[] strings = Objects.requireNonNull(this.getStringArray(property));
+
+        Class<? extends T>[] classes = new Class[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            Class<?> clazz = KClassUtils.getForName(strings[i]);
+            if (!targetClass.isAssignableFrom(clazz)) {
+                throw new KAssetDefinitionError(
+                    String.format(
+                        "Cannot cast class array element %d to %s",
+                        i,
+                        targetClass
+                    )
+                );
+            }
+
+            classes[i] = (Class<? extends T>) clazz;
+        }
+        return classes;
+    }
+
+    @Override
+    public boolean hasClassObject(final String property) {
+        try {
+            this.getClassObject(property);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    @Override
+    public <T> boolean hasClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        try {
+            this.getClassObject(property, targetClass);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasClassObjectArray(final String property) {
+        try {
+            this.getClassObjectArray(property);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    @Override
+    public <T> boolean hasClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        try {
+            this.getClassObjectArray(property, targetClass);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
 
 }

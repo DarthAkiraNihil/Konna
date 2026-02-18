@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
@@ -24,42 +23,25 @@ import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
+import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Collection of shader assets of type {@link KShaderCollection#SHADER_ASSET_TYPE}.
+ * Collection of shader assets of type
+ * {@link KShaderTypedef#SHADER_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton
 public final class KShaderCollection extends KObject implements KAssetCollection<KShader> {
-
-    /**
-     * Constant for shader asset type inside Graphics component.
-     */
-    public static final String SHADER_ASSET_TYPE = "Graphics.shader";
-    /**
-     * Shader asset type schema.
-     */
-    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
-        SHADER_ASSET_TYPE,
-        KJsonObjectValidatorBuilder
-            .create()
-            .withField("type", KJsonValueType.STRING)
-            .withValidator(KShaderType.VALIDATOR)
-            .finishField()
-            .withSimpleField("source", KJsonValueType.STRING) // todo: value is path
-            .build()
-    );
 
     private final Map<String, KShader> loadedShaders;
 
@@ -103,7 +85,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
             return this.loadedShaders.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, SHADER_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(assetId, KShaderTypedef.SHADER_ASSET_TYPE);
 
         KAssetDefinition shaderDefinition = asset.definition();
         String rawType = shaderDefinition.getString("type");

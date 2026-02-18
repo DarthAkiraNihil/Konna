@@ -19,37 +19,42 @@ package io.github.darthakiranihil.konna.graphics.type;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
-import io.github.darthakiranihil.konna.graphics.image.KTextureFiltering;
-import io.github.darthakiranihil.konna.graphics.image.KTextureWrapping;
+import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
-public final class KTextureTypeDefinition implements KAssetTypedef {
+/**
+ * Asset type definition for shader programs.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public final class KShaderProgramTypedef implements KAssetTypedef {
+
+    /**
+     * Constant for shader program asset type inside Graphics component.
+     */
+    public static final String SHADER_PROGRAM_ASSET_TYPE = "Graphics.shaderProgram";
 
     @Override
     public String getName() {
-        return "Graphics.texture";
+        return SHADER_PROGRAM_ASSET_TYPE;
     }
 
     @Override
     public KAssetDefinitionRule getRule() {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
-            .withNotNullString("image")
-            .withValidatedSubdefinition(
-                "wrapping",
-                KCompositeAssetDefinitionRuleBuilder
-                    .create()
-                    .withEnum("u", KTextureWrapping.class)
-                    .withEnum("v", KTextureWrapping.class)
-                    .build()
-            )
-            .withValidatedSubdefinition(
-                "filtering",
-                KCompositeAssetDefinitionRuleBuilder
-                    .create()
-                    .withEnum("min", KTextureFiltering.class)
-                    .withEnum("mag", KTextureFiltering.class)
-                    .build()
-            )
+            .withString("vertex")
+            .withString("fragment")
+            .withRule((value) -> {
+                String vertex = value.getString("vertex");
+                String fragment = value.getString("fragment");
+
+                if (vertex == null && fragment == null) {
+                    throw new KAssetDefinitionError(
+                        "vertex and fragment shaders cannot be both null!"
+                    );
+                }
+            })
             .build();
     }
 }

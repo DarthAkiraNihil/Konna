@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.graphics.type;
+package io.github.darthakiranihil.konna.core.except;
 
-import io.github.darthakiranihil.konna.core.io.*;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
+/**
+ * Exception thrown when specific class is not found.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public class KClassNotFoundException extends KException {
 
-public final class KShaderTypeDefinition implements KAssetTypedef {
-
-    @Override
-    public String getName() {
-        return "Graphics.shader";
+    public KClassNotFoundException(final String message) {
+        super(message);
     }
-
-    @Override
-    public KAssetDefinitionRule getRule() {
-        return KCompositeAssetDefinitionRuleBuilder
-            .create()
-            .withEnum("type", KShaderType.class)
-            .withNotNullString("source")
-            .build();
-    }
-
 }

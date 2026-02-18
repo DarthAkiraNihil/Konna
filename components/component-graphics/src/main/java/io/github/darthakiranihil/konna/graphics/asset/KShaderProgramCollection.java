@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -26,10 +25,10 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -37,7 +36,7 @@ import java.util.Map;
 
 /**
  * Collection of shader programs of type
- * {@link KShaderProgramCollection#SHADER_PROGRAM_ASSET_TYPE}.
+ * {@link KShaderProgramTypedef#SHADER_PROGRAM_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
@@ -46,22 +45,6 @@ import java.util.Map;
 public final class KShaderProgramCollection
     extends KObject
     implements KAssetCollection<KShaderProgram> {
-
-    /**
-     * Constant for shader program asset type inside Graphics component.
-     */
-    public static final String SHADER_PROGRAM_ASSET_TYPE = "Graphics.shaderProgram";
-    /**
-     * Shader program asset type schema.
-     */
-    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
-        SHADER_PROGRAM_ASSET_TYPE,
-        KJsonObjectValidatorBuilder
-            .create()
-            .withSimpleField("vertex", KJsonValueType.STRING)
-            .withSimpleField("fragment", KJsonValueType.STRING)
-            .build()
-    );
 
     private final Map<String, KShaderProgram> loadedPrograms;
     private @Nullable KShaderProgram defaultTextureShader;
@@ -109,7 +92,10 @@ public final class KShaderProgramCollection
             return this.loadedPrograms.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, SHADER_PROGRAM_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId,
+            KShaderProgramTypedef.SHADER_PROGRAM_ASSET_TYPE
+        );
 
         KAssetDefinition shaderProgramDefinition = asset.definition();
 

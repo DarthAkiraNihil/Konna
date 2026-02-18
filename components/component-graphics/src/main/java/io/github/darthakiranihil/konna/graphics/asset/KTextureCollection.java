@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -26,81 +25,22 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
+import io.github.darthakiranihil.konna.graphics.type.KTextureTypedef;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Collection of texture assets of type {@link KTextureCollection#TEXTURE_ASSET_TYPE}.
+ * Collection of texture assets of type {@link KTextureTypedef#TEXTURE_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @KSingleton
 public final class KTextureCollection extends KObject implements KAssetCollection<KTexture> {
-
-    /**
-     * Constant for texture asset type inside Graphics component.
-     */
-    public static final String TEXTURE_ASSET_TYPE = "Graphics.texture";
-    /**
-     * Texture asset type schema.
-     */
-    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
-        TEXTURE_ASSET_TYPE,
-        KJsonObjectValidatorBuilder
-            .create()
-            .withSimpleField("image", KJsonValueType.STRING)
-            .withField("shader", KJsonValueType.STRING)
-            .withRequired(false)
-            .withDefaultValue("default")
-            .finishField()
-            .withField("wrapping", KJsonValueType.OBJECT)
-            .withRequired(false)
-            .withDefaultValue(
-                Map.of(
-                    "u", KJsonValue.fromString("REPEAT"),
-                    "v", KJsonValue.fromString("REPEAT")
-                )
-            )
-            .withValidator(
-                KJsonObjectValidatorBuilder
-                    .create()
-                    .withField("u", KJsonValueType.STRING)
-                    .withValidator(KTextureWrapping.VALIDATOR)
-                    .finishField()
-                    .withField("v", KJsonValueType.STRING)
-                    .withValidator(KTextureWrapping.VALIDATOR)
-                    .finishField()
-                    .build()
-            )
-            .finishField()
-            .withField("filtering", KJsonValueType.OBJECT)
-            .withRequired(false)
-            .withDefaultValue(
-                Map.of(
-                    "min", KJsonValue.fromString("MIPMAP_LINEAR_LINEAR"),
-                    "mag", KJsonValue.fromString("LINEAR")
-                )
-            )
-            .withValidator(
-                KJsonObjectValidatorBuilder
-                    .create()
-                    .withField("min", KJsonValueType.STRING)
-                    .withValidator(KTextureFiltering.VALIDATOR)
-                    .finishField()
-                    .withField("mag", KJsonValueType.STRING)
-                    .withValidator(KTextureFiltering.VALIDATOR)
-                    .finishField()
-                    .build()
-            )
-            .finishField()
-            .build()
-    );
 
     private final KAssetLoader assetLoader;
     private final KImageLoader imageLoader;
@@ -145,7 +85,10 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
             return this.loadedTextures.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, TEXTURE_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId,
+            KTextureTypedef.TEXTURE_ASSET_TYPE
+        );
         KAssetDefinition textureDefinition = asset.definition();
 
         String imageFile = textureDefinition.getString("image");
@@ -153,7 +96,10 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         if (imageFile == null || shaderId == null) {
             throw new KAssetLoadingException(
-                String.format("Cannot load texture %s: shader or image file path is null", assetId)
+                String.format(
+                    "Cannot load texture %s: shader or image file path is null",
+                    assetId
+                )
             );
         }
 

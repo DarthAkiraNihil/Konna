@@ -19,43 +19,48 @@ package io.github.darthakiranihil.konna.graphics.type;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
-import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.graphics.image.KTextureFiltering;
+import io.github.darthakiranihil.konna.graphics.image.KTextureWrapping;
 
-public final class KTiledFontTypeDefinition implements KAssetTypedef {
+/**
+ * Asset type definition for textures.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public final class KTextureTypedef implements KAssetTypedef {
+
+    /**
+     * Constant for texture asset type inside Graphics component.
+     */
+    public static final String TEXTURE_ASSET_TYPE = "Graphics.texture";
 
     @Override
     public String getName() {
-        return "Graphics.tiledFont";
+        return TEXTURE_ASSET_TYPE;
     }
 
     @Override
     public KAssetDefinitionRule getRule() {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
-            .withNotNullString("name")
-            .withNotNullString("face")
+            .withNotNullString("image")
             .withValidatedSubdefinition(
-                "glyph_size",
+                "wrapping",
                 KCompositeAssetDefinitionRuleBuilder
                     .create()
-                    .withInt("width")
-                    .withInt("height")
+                    .withEnum("u", KTextureWrapping.class)
+                    .withEnum("v", KTextureWrapping.class)
                     .build()
             )
-            .withNotNullString("format")
-            .withRule((value -> {
-                String format = value.getString("format");
-                try {
-                    Class.forName(format);
-                } catch (ClassNotFoundException e) {
-                    throw new KAssetDefinitionError(
-                        String.format(
-                            "unknown format class: %s",
-                            format
-                        )
-                    );
-                }
-            }))
+            .withValidatedSubdefinition(
+                "filtering",
+                KCompositeAssetDefinitionRuleBuilder
+                    .create()
+                    .withEnum("min", KTextureFiltering.class)
+                    .withEnum("mag", KTextureFiltering.class)
+                    .build()
+            )
             .build();
     }
 }

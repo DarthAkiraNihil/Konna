@@ -18,7 +18,9 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -79,6 +81,22 @@ public final class KClassUtils extends KUninstantiable {
                 ))
                 .forEach((c) -> classes.add(c.loadClass()));
             return classes;
+        }
+    }
+
+    /**
+     * Convenience method to get class by its name without forced
+     * checked exception catching.
+     * @param name Name of the class
+     * @return Class object by passed name
+     * @throws KClassNotFoundException if class is not found
+     * @since 0.4.0
+     */
+    public static Class<?> getForName(final @Nullable String name) {
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            throw new KClassNotFoundException(e.getMessage());
         }
     }
 

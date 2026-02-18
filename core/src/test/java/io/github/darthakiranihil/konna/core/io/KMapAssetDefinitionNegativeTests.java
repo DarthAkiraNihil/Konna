@@ -16,7 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.std.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.object.KObjectInstantiationType;
@@ -75,6 +77,12 @@ public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
         source.put("enum_as_string_property", "ARRAY");
         source.put("null", null);
 
+        source.put("class_as_string_property", KStandardJsonParser.class.getCanonicalName());
+        source.put("class_as_class_property", KStandardJsonParser.class);
+        source.put("class_array_as_string_array_property", new String[] {KStandardJsonParser.class.getCanonicalName()});
+        source.put("class_array_as_class_array_property", new Class[] {KStandardJsonParser.class});
+        source.put("empty_class_array_as_class_array_property", new Class[0]);
+
         this.definition = new KMapAssetDefinition(
             source
         );
@@ -99,5 +107,21 @@ public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
 
     }
 
+    @Test
+    public void testGetClassThatIsNotAssignableFrom() {
 
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getClassObject("class_as_class_property", KJsonValidator.class));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getClassObjectArray("class_array_as_class_array_property", KJsonValidator.class));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getClassObjectArray("class_array_as_string_array_property", KJsonValidator.class));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getClassObjectArray("class_array_as_string_array_property", KJsonValidator.class));
+
+    }
+
+    @Test
+    public void testGetClassPropsFromNonExistentStringArray() {
+
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getClassObject("null"));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getClassObjectArray("null"));
+
+    }
 }

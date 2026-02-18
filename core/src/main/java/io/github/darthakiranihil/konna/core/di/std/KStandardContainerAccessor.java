@@ -83,9 +83,9 @@ public final class KStandardContainerAccessor extends KObject implements KContai
         }
 
         try {
-            Class<?> callerClass = Class.forName(stackTrace[2].getClassName());
+            Class<?> callerClass = KClassUtils.getForName(stackTrace[2].getClassName());
             if (callerClass == KActivator.class) {
-                callerClass = Class.forName(
+                callerClass = KClassUtils.getForName(
                     stackTrace[KStandardContainerAccessor.CLASS_BEFORE_ACTIVATOR].getClassName()
                 );
             }

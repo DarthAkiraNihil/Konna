@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.log.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -100,7 +101,9 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
 
         try {
             int stackTraceIdx = 2;
-            Class<?> callerClass = Class.forName(stackTrace[stackTraceIdx++].getClassName());
+            Class<?> callerClass = KClassUtils.getForName(
+                stackTrace[stackTraceIdx++].getClassName()
+            );
             var callerClassInterfaces = Arrays.asList(callerClass.getInterfaces());
             while (
                     (
@@ -111,7 +114,7 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
                     )
                 && stackTraceIdx < stackTrace.length
             ) {
-                callerClass = Class.forName(stackTrace[stackTraceIdx++].getClassName());
+                callerClass = KClassUtils.getForName(stackTrace[stackTraceIdx++].getClassName());
                 callerClassInterfaces = Arrays.asList(callerClass.getInterfaces());
             }
 

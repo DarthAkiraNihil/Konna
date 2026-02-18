@@ -20,6 +20,8 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
 /**
  * Json validator that checks that value represents any existing Java class.
@@ -50,8 +52,8 @@ public class KJsonValueIsClassValidator implements KJsonValidator {
 
         String className = value.getString();
         try {
-            Class.forName(className);
-        } catch (ClassNotFoundException e) {
+            KClassUtils.getForName(className);
+        } catch (KClassNotFoundException e) {
             throw new KJsonValidationError("specified class not found");
         }
 

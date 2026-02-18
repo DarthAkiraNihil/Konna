@@ -16,34 +16,34 @@
 
 package io.github.darthakiranihil.konna.graphics.type;
 
-import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
-import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
-import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 
-public final class KShaderProgramTypeDefinition implements KAssetTypedef {
+/**
+ * Asset type definition for shaders.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public final class KShaderTypedef implements KAssetTypedef {
+
+    /**
+     * Constant for shader asset type inside Graphics component.
+     */
+    public static final String SHADER_ASSET_TYPE = "Graphics.shader";
 
     @Override
     public String getName() {
-        return "Graphics.shaderProgram";
+        return SHADER_ASSET_TYPE;
     }
 
     @Override
     public KAssetDefinitionRule getRule() {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
-            .withString("vertex")
-            .withString("fragment")
-            .withRule((value) -> {
-                String vertex = value.getString("vertex");
-                String fragment = value.getString("fragment");
-
-                if (vertex == null && fragment == null) {
-                    throw new KAssetDefinitionError(
-                        "vertex and fragment shaders cannot be both null!"
-                    );
-                }
-            })
+            .withEnum("type", KShaderType.class)
+            .withNotNullString("source")
             .build();
     }
+
 }

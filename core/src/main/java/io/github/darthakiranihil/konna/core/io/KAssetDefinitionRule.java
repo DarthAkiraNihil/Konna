@@ -269,4 +269,80 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has a class property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
+    static KAssetDefinitionRule hasClassObject(
+        final String property
+    ) {
+        return (v) -> {
+            if (v.hasClassObject(property)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    /**
+     * Creates a rule that checks whether a definition has a class property
+     * with assignability check it is in the definition.
+     * @param property Property to be checked
+     * @param targetClass What class must be assignable to
+     * @param <T> Type parameter of target class
+     * @return Created asset definition rule
+     */
+    static <T> KAssetDefinitionRule hasClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        return (v) -> {
+            if (v.hasClassObject(property, targetClass)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    /**
+     * Creates a rule that checks whether a definition has a class array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     */
+    static KAssetDefinitionRule hasClassObjectArray(
+        final String property
+    ) {
+        return (v) -> {
+            if (v.hasClassObjectArray(property)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    /**
+     * Creates a rule that checks whether a definition has a class array property
+     * with assignability check it is in the definition.
+     * @param property Property to be checked
+     * @param targetClass What class must be assignable to
+     * @param <T> Type parameter of target class
+     * @return Created asset definition rule
+     */
+    static <T> KAssetDefinitionRule hasClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
+        return (v) -> {
+            if (v.hasClassObjectArray(property, targetClass)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
 }
