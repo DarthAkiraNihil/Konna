@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -26,7 +25,6 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -87,7 +85,10 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
             return this.loadedTextures.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KTextureTypeDefinition.TEXTURE_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId,
+            KTextureTypeDefinition.TEXTURE_ASSET_TYPE
+        );
         KAssetDefinition textureDefinition = asset.definition();
 
         String imageFile = textureDefinition.getString("image");
@@ -95,7 +96,10 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         if (imageFile == null || shaderId == null) {
             throw new KAssetLoadingException(
-                String.format("Cannot load texture %s: shader or image file path is null", assetId)
+                String.format(
+                    "Cannot load texture %s: shader or image file path is null",
+                    assetId
+                )
             );
         }
 

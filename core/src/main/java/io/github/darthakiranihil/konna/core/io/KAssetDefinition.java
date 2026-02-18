@@ -67,7 +67,22 @@ public interface KAssetDefinition {
      */
     <T extends Enum<T>> T getEnum(String property, Class<T> enumClass);
 
+    /**
+     * Returns {@link Class} object from asset definition.
+     * @param property Property name
+     * @return Class object contained by this property
+     * @since 0.4.0
+     */
     Class<?> getClassObject(String property);
+    /**
+     * Returns {@link Class} object from asset definition that must be assignable
+     * to a specific class (usual case for user implementations of some class).
+     * @param property Property name
+     * @param targetClass What contained class must be assigned to
+     * @param <T> Type parameter of target class
+     * @return Class object contained by this property
+     * @since 0.4.0
+     */
     <T> Class<? extends T> getClassObject(String property, Class<T> targetClass);
 
     /**
@@ -101,7 +116,23 @@ public interface KAssetDefinition {
      */
     KAssetDefinition[] getSubdefinitionArray(String property);
 
+    /**
+     * Returns array of {@link Class} objects from asset definition.
+     * @param property Property name
+     * @return Class object array contained by this property
+     * @since 0.4.0
+     */
     Class<?>[] getClassObjectArray(String property);
+    /**
+     * Returns array of {@link Class} objects from asset definition whose elements
+     * must be assignable
+     * to a specific class (usual case for user implementations of some class).
+     * @param property Property name
+     * @param targetClass What contained array elements must be assigned to
+     * @param <T> Type parameter of target class
+     * @return Class object array contained by this property
+     * @since 0.4.0
+     */
     <T> Class<? extends T>[] getClassObjectArray(String property, Class<T> targetClass);
 
     /**
@@ -143,7 +174,20 @@ public interface KAssetDefinition {
      */
     <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass);
 
+    /**
+     * @param property Property name
+     * @return Whether this definition contains class property with such name or not
+     * @since 0.4.0
+     */
     boolean hasClassObject(String property);
+    /**
+     * @param property Property name
+     * @param targetClass What contained class must be assigned to
+     * @param <T> Type parameter of target class
+     * @return Whether this definition contains class property with such name or not,
+     *         and whether contained class is assignable to targetClass
+     * @since 0.4.0
+     */
     <T> boolean hasClassObject(String property, Class<T> targetClass);
 
     /**
@@ -177,7 +221,20 @@ public interface KAssetDefinition {
      */
     boolean hasSubdefinitionArray(String property);
 
+    /**
+     * @param property Property name
+     * @return Whether this definition contains class array property with such name or not
+     * @since 0.4.0
+     */
     boolean hasClassObjectArray(String property);
+    /**
+     * @param property Property name
+     * @param targetClass What contained elements must be assigned to
+     * @param <T> Type parameter of target class
+     * @return Whether this definition contains class array property with such name or not,
+     *         and if array elements represent class assignable to targetClass
+     * @since 0.4.0
+     */
     <T> boolean hasClassObjectArray(String property, Class<T> targetClass);
 
 }

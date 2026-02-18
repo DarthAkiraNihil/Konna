@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.io.std;
 
-import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;

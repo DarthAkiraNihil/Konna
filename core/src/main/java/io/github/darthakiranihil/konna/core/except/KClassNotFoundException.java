@@ -24,7 +24,7 @@ package io.github.darthakiranihil.konna.core.except;
  */
 public class KClassNotFoundException extends KException {
 
-    public KClassNotFoundException(String message) {
+    public KClassNotFoundException(final String message) {
         super(message);
     }
 }

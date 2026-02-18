@@ -196,6 +196,11 @@ public final class KCompositeAssetDefinitionRuleBuilder {
         return this;
     }
 
+    /**
+     * Adds a {@link KAssetDefinitionRule#hasClassObject(String)} rule to the composite.
+     * @param property Name of checked property
+     * @return This builder
+     */
     public KCompositeAssetDefinitionRuleBuilder withClassObject(
         final String property
     ) {
@@ -203,6 +208,13 @@ public final class KCompositeAssetDefinitionRuleBuilder {
         return this;
     }
 
+    /**
+     * Adds a {@link KAssetDefinitionRule#hasClassObject(String, Class)} rule to the composite.
+     * @param property Name of checked property
+     * @param targetClass What property must be assignable to
+     * @param <T> Type parameter of target class
+     * @return This builder
+     */
     public <T> KCompositeAssetDefinitionRuleBuilder withClassObject(
         final String property,
         final Class<T> targetClass
@@ -211,6 +223,11 @@ public final class KCompositeAssetDefinitionRuleBuilder {
         return this;
     }
 
+    /**
+     * Adds a {@link KAssetDefinitionRule#hasClassObjectArray(String)} rule to the composite.
+     * @param property Name of checked property
+     * @return This builder
+     */
     public KCompositeAssetDefinitionRuleBuilder withClassObjectArray(
         final String property
     ) {
@@ -218,6 +235,13 @@ public final class KCompositeAssetDefinitionRuleBuilder {
         return this;
     }
 
+    /**
+     * Adds a {@link KAssetDefinitionRule#hasClassObjectArray(String, Class)} rule to the composite.
+     * @param property Name of checked property
+     * @param targetClass What class array elements must be assignable to
+     * @param <T> Type parameter of target class
+     * @return This builder
+     */
     public <T> KCompositeAssetDefinitionRuleBuilder withClassObjectArray(
         final String property,
         final Class<T> targetClass

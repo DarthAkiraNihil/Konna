@@ -87,7 +87,9 @@ final class KonnaBootstrap {
             var hypervisorData = this.config.getProperty(HYPERVISOR_ROOT_KEY);
 
             var engineHypervisorClass = (Class<? extends KEngineHypervisor>)
-                KClassUtils.getForName(hypervisorData.getProperty(HYPERVISOR_CLASS_KEY).getString());
+                KClassUtils.getForName(
+                    hypervisorData.getProperty(HYPERVISOR_CLASS_KEY).getString()
+                );
 
             var engineHypervisorConfig = hypervisorData.getProperty(HYPERVISOR_CONFIG_KEY);
             KEngineHypervisorConfig deserializedConfig = deserializer.deserialize(
@@ -100,7 +102,10 @@ final class KonnaBootstrap {
                 .newInstance(deserializedConfig);
 
         } catch (Throwable e) {
-            throw new KBootstrapException("Could not create engine hypervisor", e);
+            throw new KBootstrapException(
+                "Could not create engine hypervisor",
+                e
+            );
         }
     }
 

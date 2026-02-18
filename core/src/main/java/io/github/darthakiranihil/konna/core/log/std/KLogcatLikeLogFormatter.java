@@ -101,7 +101,9 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
 
         try {
             int stackTraceIdx = 2;
-            Class<?> callerClass = KClassUtils.getForName(stackTrace[stackTraceIdx++].getClassName());
+            Class<?> callerClass = KClassUtils.getForName(
+                stackTrace[stackTraceIdx++].getClassName()
+            );
             var callerClassInterfaces = Arrays.asList(callerClass.getInterfaces());
             while (
                     (
