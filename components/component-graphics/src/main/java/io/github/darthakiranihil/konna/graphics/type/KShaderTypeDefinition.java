@@ -21,9 +21,14 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 
 public final class KShaderTypeDefinition implements KAssetTypedef {
 
+    /**
+     * Constant for shader asset type inside Graphics component.
+     */
+    public static final String SHADER_ASSET_TYPE = "Graphics.shader";
+
     @Override
     public String getName() {
-        return "Graphics.shader";
+        return SHADER_ASSET_TYPE;
     }
 
     @Override

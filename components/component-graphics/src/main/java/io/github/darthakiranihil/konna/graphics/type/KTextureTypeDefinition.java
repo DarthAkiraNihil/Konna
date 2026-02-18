@@ -24,9 +24,14 @@ import io.github.darthakiranihil.konna.graphics.image.KTextureWrapping;
 
 public final class KTextureTypeDefinition implements KAssetTypedef {
 
+    /**
+     * Constant for texture asset type inside Graphics component.
+     */
+    public static final String TEXTURE_ASSET_TYPE = "Graphics.texture";
+
     @Override
     public String getName() {
-        return "Graphics.texture";
+        return TEXTURE_ASSET_TYPE;
     }
 
     @Override

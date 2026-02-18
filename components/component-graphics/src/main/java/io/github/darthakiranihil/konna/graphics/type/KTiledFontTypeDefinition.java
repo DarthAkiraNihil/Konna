@@ -20,12 +20,18 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
 
 public final class KTiledFontTypeDefinition implements KAssetTypedef {
 
+    /**
+     * Constant for tiled font asset type inside Graphics component.
+     */
+    public static final String TILED_FONT_ASSET_TYPE = "Graphics.tiledFont";
+
     @Override
     public String getName() {
-        return "Graphics.tiledFont";
+        return TILED_FONT_ASSET_TYPE;
     }
 
     @Override
@@ -42,20 +48,7 @@ public final class KTiledFontTypeDefinition implements KAssetTypedef {
                     .withInt("height")
                     .build()
             )
-            .withNotNullString("format")
-            .withRule((value -> {
-                String format = value.getString("format");
-                try {
-                    Class.forName(format);
-                } catch (ClassNotFoundException e) {
-                    throw new KAssetDefinitionError(
-                        String.format(
-                            "unknown format class: %s",
-                            format
-                        )
-                    );
-                }
-            }))
+            .withClassObject("format", KTiledFontFormat.class)
             .build();
     }
 }

@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -27,55 +25,24 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
-import io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontFormat;
+import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypeDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Collection of texture assets of type {@link KTiledFontCollection#TILED_FONT_ASSET_TYPE}.
+ * Collection of texture assets of type {@link KTiledFontTypeDefinition#TILED_FONT_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
 public final class KTiledFontCollection extends KObject implements KAssetCollection<KTiledFont> {
-
-    /**
-     * Constant for tiled font asset type inside Graphics component.
-     */
-    public static final String TILED_FONT_ASSET_TYPE = "Graphics.tiledFont";
-    /**
-     * Tiled font asset type schema.
-     */
-    public static final KPair<String, KJsonValidator> ASSET_SCHEMA = new KPair<>(
-        TILED_FONT_ASSET_TYPE,
-        KJsonObjectValidatorBuilder
-            .create()
-            .withSimpleField("name", KJsonValueType.STRING)
-            .withSimpleField("face", KJsonValueType.STRING)
-            .withField("glyph_size", KJsonValueType.OBJECT)
-            .withValidator(
-                KJsonObjectValidatorBuilder
-                    .create()
-                    .withSimpleField("width", KJsonValueType.NUMBER_INT)
-                    .withSimpleField("height", KJsonValueType.NUMBER_INT)
-                    .build()
-            )
-            .finishField()
-            .withField("format", KJsonValueType.STRING)
-            .withRequired(false)
-            .withDefaultValue(KSquaredAsciiTiledFontFormat.class.getCanonicalName())
-            .withValidator(KJsonValueIsClassValidator.INSTANCE)
-            .finishField()
-            .build()
-    );
 
     private final KAssetLoader assetLoader;
     private final KTextureCollection textureCollection;
@@ -121,7 +88,10 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
             return this.loadedFonts.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, TILED_FONT_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId,
+            KTiledFontTypeDefinition.TILED_FONT_ASSET_TYPE
+        );
         KAssetDefinition fontDefinition = asset.definition();
 
         String name = fontDefinition.getString("name");

@@ -23,9 +23,14 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
 public final class KShaderProgramTypeDefinition implements KAssetTypedef {
 
+    /**
+     * Constant for shader program asset type inside Graphics component.
+     */
+    public static final String SHADER_PROGRAM_ASSET_TYPE = "Graphics.shaderProgram";
+
     @Override
     public String getName() {
-        return "Graphics.shaderProgram";
+        return SHADER_PROGRAM_ASSET_TYPE;
     }
 
     @Override
