@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
@@ -29,7 +28,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
-import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -37,7 +36,7 @@ import java.util.Map;
 
 /**
  * Collection of shader programs of type
- * {@link KShaderProgramTypeDefinition#SHADER_PROGRAM_ASSET_TYPE}.
+ * {@link KShaderProgramTypedef#SHADER_PROGRAM_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
@@ -95,7 +94,7 @@ public final class KShaderProgramCollection
 
         KAsset asset = this.assetLoader.loadAsset(
             assetId,
-            KShaderProgramTypeDefinition.SHADER_PROGRAM_ASSET_TYPE
+            KShaderProgramTypedef.SHADER_PROGRAM_ASSET_TYPE
         );
 
         KAssetDefinition shaderProgramDefinition = asset.definition();

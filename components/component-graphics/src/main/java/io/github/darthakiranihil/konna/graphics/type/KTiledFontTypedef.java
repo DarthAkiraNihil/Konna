@@ -19,42 +19,41 @@ package io.github.darthakiranihil.konna.graphics.type;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
-import io.github.darthakiranihil.konna.graphics.image.KTextureFiltering;
-import io.github.darthakiranihil.konna.graphics.image.KTextureWrapping;
+import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
 
-public final class KTextureTypeDefinition implements KAssetTypedef {
+/**
+ * Asset type definition for tiled fonts.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public final class KTiledFontTypedef implements KAssetTypedef {
 
     /**
-     * Constant for texture asset type inside Graphics component.
+     * Constant for tiled font asset type inside Graphics component.
      */
-    public static final String TEXTURE_ASSET_TYPE = "Graphics.texture";
+    public static final String TILED_FONT_ASSET_TYPE = "Graphics.tiledFont";
 
     @Override
     public String getName() {
-        return TEXTURE_ASSET_TYPE;
+        return TILED_FONT_ASSET_TYPE;
     }
 
     @Override
     public KAssetDefinitionRule getRule() {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
-            .withNotNullString("image")
+            .withNotNullString("name")
+            .withNotNullString("face")
             .withValidatedSubdefinition(
-                "wrapping",
+                "glyph_size",
                 KCompositeAssetDefinitionRuleBuilder
                     .create()
-                    .withEnum("u", KTextureWrapping.class)
-                    .withEnum("v", KTextureWrapping.class)
+                    .withInt("width")
+                    .withInt("height")
                     .build()
             )
-            .withValidatedSubdefinition(
-                "filtering",
-                KCompositeAssetDefinitionRuleBuilder
-                    .create()
-                    .withEnum("min", KTextureFiltering.class)
-                    .withEnum("mag", KTextureFiltering.class)
-                    .build()
-            )
+            .withClassObject("format", KTiledFontFormat.class)
             .build();
     }
 }

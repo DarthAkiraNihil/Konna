@@ -31,13 +31,13 @@ import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
-import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Collection of texture assets of type {@link KTiledFontTypeDefinition#TILED_FONT_ASSET_TYPE}.
+ * Collection of texture assets of type {@link KTiledFontTypedef#TILED_FONT_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
@@ -90,7 +90,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
 
         KAsset asset = this.assetLoader.loadAsset(
             assetId,
-            KTiledFontTypeDefinition.TILED_FONT_ASSET_TYPE
+            KTiledFontTypedef.TILED_FONT_ASSET_TYPE
         );
         KAssetDefinition fontDefinition = asset.definition();
 

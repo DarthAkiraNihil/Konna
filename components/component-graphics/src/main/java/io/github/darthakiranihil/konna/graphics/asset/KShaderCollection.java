@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
@@ -28,7 +27,7 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
-import io.github.darthakiranihil.konna.graphics.type.KShaderTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ import java.util.Map;
 
 /**
  * Collection of shader assets of type
- * {@link KShaderTypeDefinition#SHADER_ASSET_TYPE}.
+ * {@link KShaderTypedef#SHADER_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
@@ -86,7 +85,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
             return this.loadedShaders.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KShaderTypeDefinition.SHADER_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(assetId, KShaderTypedef.SHADER_ASSET_TYPE);
 
         KAssetDefinition shaderDefinition = asset.definition();
         String rawType = shaderDefinition.getString("type");

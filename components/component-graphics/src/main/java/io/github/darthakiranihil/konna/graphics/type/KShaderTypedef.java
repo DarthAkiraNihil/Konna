@@ -19,7 +19,13 @@ package io.github.darthakiranihil.konna.graphics.type;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 
-public final class KShaderTypeDefinition implements KAssetTypedef {
+/**
+ * Asset type definition for shaders.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public final class KShaderTypedef implements KAssetTypedef {
 
     /**
      * Constant for shader asset type inside Graphics component.

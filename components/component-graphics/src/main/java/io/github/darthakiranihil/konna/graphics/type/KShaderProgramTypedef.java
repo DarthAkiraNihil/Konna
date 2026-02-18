@@ -21,7 +21,13 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
-public final class KShaderProgramTypeDefinition implements KAssetTypedef {
+/**
+ * Asset type definition for shader programs.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
+public final class KShaderProgramTypedef implements KAssetTypedef {
 
     /**
      * Constant for shader program asset type inside Graphics component.

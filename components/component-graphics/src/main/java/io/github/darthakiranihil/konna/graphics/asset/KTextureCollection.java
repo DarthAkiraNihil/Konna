@@ -28,13 +28,13 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
-import io.github.darthakiranihil.konna.graphics.type.KTextureTypeDefinition;
+import io.github.darthakiranihil.konna.graphics.type.KTextureTypedef;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Collection of texture assets of type {@link KTextureTypeDefinition#TEXTURE_ASSET_TYPE}.
+ * Collection of texture assets of type {@link KTextureTypedef#TEXTURE_ASSET_TYPE}.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
@@ -87,7 +87,7 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         KAsset asset = this.assetLoader.loadAsset(
             assetId,
-            KTextureTypeDefinition.TEXTURE_ASSET_TYPE
+            KTextureTypedef.TEXTURE_ASSET_TYPE
         );
         KAssetDefinition textureDefinition = asset.definition();
 
