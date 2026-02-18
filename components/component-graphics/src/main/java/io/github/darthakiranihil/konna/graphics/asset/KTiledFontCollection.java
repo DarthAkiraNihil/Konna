@@ -31,6 +31,7 @@ import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
+import io.github.darthakiranihil.konna.graphics.text.KTiledFontGlyph;
 import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
 
 import java.util.HashMap;
@@ -122,24 +123,13 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
 
         KTexture face = this.textureCollection.getAsset(faceId);
 
-        KTiledFontFormat fontFormat;
-        String fontFormatClass = fontDefinition.getString("format");
-        try {
-            fontFormat = this
-                .activator
-                .createObject(
-                    (Class<? extends KTiledFontFormat>) KClassUtils.getForName(fontFormatClass)
-                );
-        } catch (Throwable e) {
-            throw new KAssetLoadingException(
-                String.format(
-                        "Cannot get tiled font asset %s: cannot load format class %s. "
-                    +   "Make sure it exists and implement KTiledFontFormat interface",
-                    assetId,
-                    fontFormatClass
-                )
+        KTiledFontFormat fontFormat = this
+            .activator
+            .createObject(
+                fontDefinition.getClassObject(
+                    "format",
+                    KTiledFontFormat.class)
             );
-        }
 
         KTiledFont font = new KTiledFont(
             name,
