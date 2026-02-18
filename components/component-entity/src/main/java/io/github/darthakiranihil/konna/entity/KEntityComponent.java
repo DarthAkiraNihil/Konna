@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 
 /**
  * Konna Entity component, used for handling game entities (i.e. creating, deleting,
@@ -58,7 +59,9 @@ public class KEntityComponent extends KComponent {
 
     @Override
     public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[0];
+        return new KAssetTypedef[] {
+            new KEntityMetadataTypedef()
+        };
     }
 
     @Override
