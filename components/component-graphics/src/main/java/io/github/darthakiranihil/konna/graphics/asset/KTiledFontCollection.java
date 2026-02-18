@@ -27,11 +27,9 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
-import io.github.darthakiranihil.konna.graphics.text.KTiledFontGlyph;
 import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
 
 import java.util.HashMap;
@@ -82,7 +80,6 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
      * @return Built tiled font
      */
     @Override
-    @SuppressWarnings("unchecked")
     public KTiledFont getAsset(final String assetId) {
 
         if (this.loadedFonts.containsKey(assetId)) {
