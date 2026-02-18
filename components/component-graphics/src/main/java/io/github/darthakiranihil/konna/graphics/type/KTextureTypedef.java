@@ -45,6 +45,7 @@ public final class KTextureTypedef implements KAssetTypedef {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withNotNullString("image")
+            .withNotNullString("shader")
             .withValidatedSubdefinition(
                 "wrapping",
                 KCompositeAssetDefinitionRuleBuilder

@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -29,10 +28,10 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
-import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Collection of shader programs of type
@@ -47,7 +46,6 @@ public final class KShaderProgramCollection
     implements KAssetCollection<KShaderProgram> {
 
     private final Map<String, KShaderProgram> loadedPrograms;
-    private @Nullable KShaderProgram defaultTextureShader;
 
     private final KAssetLoader assetLoader;
     private final KShaderCollection shaderCollection;
@@ -104,21 +102,13 @@ public final class KShaderProgramCollection
 
         KShaderProgram linkedProgram;
 
-        if (vertexShaderAssetId == null && fragmentShaderAssetId == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                        "Cannot load shader program %s: "
-                    +   "fragment and vertex shaders cannot be both null",
-                    assetId
-                )
-            );
-        } else if (vertexShaderAssetId == null) {
+        if (vertexShaderAssetId == null) {
             linkedProgram = this.shaderCompiler.createShaderProgram(
-                this.shaderCollection.getAsset(fragmentShaderAssetId)
+                this.shaderCollection.getAsset(Objects.requireNonNull(fragmentShaderAssetId))
             );
         } else if (fragmentShaderAssetId == null) {
             linkedProgram = this.shaderCompiler.createShaderProgram(
-                this.shaderCollection.getAsset(vertexShaderAssetId)
+                this.shaderCollection.getAsset(Objects.requireNonNull(vertexShaderAssetId))
             );
         } else {
             linkedProgram = this.shaderCompiler.createShaderProgram(
