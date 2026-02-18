@@ -16,12 +16,16 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetDefinition;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
@@ -43,6 +47,83 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             KJsonValue.fromMap(Map.of("aboba", KJsonValue.fromNumber(1))), v -> {}
         );
         Assertions.assertFalse(def2.hasIntArray("aboba"));
+
+    }
+
+    @Test
+    public void testGetClassProperties() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(
+                Map.of(
+                    "class_property", KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName()),
+                    "class_array_property", KJsonValue.fromList(
+                        List.of(
+                            KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName())
+                        )
+                    )
+            )
+            ),
+            v -> {}
+        );
+
+        Assertions.assertEquals(KStandardJsonParser.class, def.getClassObject("class_property"));
+        Assertions.assertEquals(KStandardJsonParser.class, def.getClassObject("class_property", KJsonParser.class));
+
+        Assertions.assertEquals(1, def.getClassObjectArray("class_array_property").length);
+        Assertions.assertEquals(1, def.getClassObjectArray("class_array_property", KJsonParser.class).length);
+
+    }
+
+    @Test
+    public void testHasClassProperties() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(
+                Map.of(
+                    "class_property", KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName()),
+                    "class_array_property", KJsonValue.fromList(
+                        List.of(
+                            KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName())
+                        )
+                    )
+                )
+            ),
+            v -> {}
+        );
+
+        Assertions.assertTrue(def.hasClassObject("class_property"));
+        Assertions.assertTrue(def.hasClassObject("class_property", KJsonParser.class));
+
+        Assertions.assertTrue(def.hasClassObjectArray("class_array_property"));
+        Assertions.assertTrue(def.hasClassObjectArray("class_array_property", KJsonParser.class));
+
+    }
+
+    @Test
+    public void testDoesNotHaveClassProperties() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(
+                Map.of(
+                    "class_property", KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName()),
+                    "class_array_property", KJsonValue.fromList(
+                        List.of(
+                            KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName())
+                        )
+                    )
+                )
+            ),
+            v -> {}
+        );
+
+        Assertions.assertFalse(def.hasClassObject("proppp"));
+        Assertions.assertFalse(def.hasClassObject("proppp", KJsonParser.class));
+        Assertions.assertFalse(def.hasClassObject("class_property", KJsonValidator.class));
+
+        Assertions.assertFalse(def.hasClassObjectArray("dfdf"));
+        Assertions.assertFalse(def.hasClassObjectArray("dfdfdf", KJsonParser.class));
+        Assertions.assertFalse(def.hasClassObjectArray("class_array_property", KJsonValidator.class));
 
     }
 }

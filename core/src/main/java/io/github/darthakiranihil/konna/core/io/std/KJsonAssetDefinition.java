@@ -324,10 +324,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
 
     @Override
     public Class<?>[] getClassObjectArray(final String property) {
-        String[] strings = this.getStringArray(property);
-        if (strings == null) {
-            throw KAssetDefinitionError.propertyNotFound(property);
-        }
+        String[] strings = Objects.requireNonNull(this.getStringArray(property));
 
         Class<?>[] classes = new Class[strings.length];
         for (int i = 0; i < strings.length; i++) {
@@ -342,10 +339,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         final String property,
         final Class<T> targetClass
     ) {
-        String[] strings = this.getStringArray(property);
-        if (strings == null) {
-            throw KAssetDefinitionError.propertyNotFound(property);
-        }
+        String[] strings = Objects.requireNonNull(this.getStringArray(property));
 
         Class<? extends T>[] classes = new Class[strings.length];
         for (int i = 0; i < strings.length; i++) {
@@ -370,7 +364,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         try {
             this.getClassObject(property);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -383,7 +377,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         try {
             this.getClassObject(property, targetClass);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -393,7 +387,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         try {
             this.getClassObjectArray(property);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -404,9 +398,9 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         final Class<T> targetClass
     ) {
         try {
-            this.getClassObjectArray(property);
+            this.getClassObjectArray(property, targetClass);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }

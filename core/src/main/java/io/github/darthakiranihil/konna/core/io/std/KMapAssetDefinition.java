@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io.std;
 
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
@@ -24,6 +25,7 @@ import org.jspecify.annotations.Nullable;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Implementation of {@link KAssetDefinition} that stores data inside a map.
@@ -330,6 +332,10 @@ public class KMapAssetDefinition implements KAssetDefinition {
         final String property
     ) {
         Object val = this.value.get(property);
+        if (val == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
+
         if (Class.class.isAssignableFrom(val.getClass())) {
             return (Class<?>) val;
         }
@@ -356,14 +362,14 @@ public class KMapAssetDefinition implements KAssetDefinition {
     @Override
     public Class<?>[] getClassObjectArray(final String property) {
         Object val = this.value.get(property);
+        if (val == null) {
+            throw KAssetDefinitionError.propertyNotFound(property);
+        }
         if (Class[].class.isAssignableFrom(val.getClass())) {
             return (Class<?>[]) val;
         }
 
-        String[] strings = this.getStringArray(property);
-        if (strings == null) {
-            throw KAssetDefinitionError.propertyNotFound(property);
-        }
+        String[] strings = Objects.requireNonNull(this.getStringArray(property));
 
         Class<?>[] classes = new Class[strings.length];
         for (int i = 0; i < strings.length; i++) {
@@ -380,17 +386,19 @@ public class KMapAssetDefinition implements KAssetDefinition {
     ) {
         Object val = this.value.get(property);
         if (Class[].class.isAssignableFrom(val.getClass())) {
-            try {
-                return (Class<? extends T>[]) val;
-            } catch (ClassCastException e) {
+            var array = (Class<?>[]) val;
+            if (array.length == 0) {
+                return new Class[0];
+            }
+
+            if (!targetClass.isAssignableFrom(array[0])) {
                 throw KAssetDefinitionError.propertyNotFound(property);
             }
+
+            return (Class<? extends T>[]) array;
         }
 
-        String[] strings = this.getStringArray(property);
-        if (strings == null) {
-            throw KAssetDefinitionError.propertyNotFound(property);
-        }
+        String[] strings = Objects.requireNonNull(this.getStringArray(property));
 
         Class<? extends T>[] classes = new Class[strings.length];
         for (int i = 0; i < strings.length; i++) {
@@ -415,7 +423,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
         try {
             this.getClassObject(property);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -428,7 +436,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
         try {
             this.getClassObject(property, targetClass);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -438,7 +446,7 @@ public class KMapAssetDefinition implements KAssetDefinition {
         try {
             this.getClassObjectArray(property);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -449,9 +457,9 @@ public class KMapAssetDefinition implements KAssetDefinition {
         final Class<T> targetClass
     ) {
         try {
-            this.getClassObjectArray(property);
+            this.getClassObjectArray(property, targetClass);
             return true;
-        } catch (KAssetDefinitionError e) {
+        } catch (Throwable e) {
             return false;
         }
     }
