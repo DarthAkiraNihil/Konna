@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -32,6 +31,7 @@ import io.github.darthakiranihil.konna.graphics.type.KTextureTypedef;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Collection of texture assets of type {@link KTextureTypedef#TEXTURE_ASSET_TYPE}.
@@ -91,17 +91,8 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         );
         KAssetDefinition textureDefinition = asset.definition();
 
-        String imageFile = textureDefinition.getString("image");
-        String shaderId = textureDefinition.getString("shader");
-
-        if (imageFile == null || shaderId == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot load texture %s: shader or image file path is null",
-                    assetId
-                )
-            );
-        }
+        String imageFile = Objects.requireNonNull(textureDefinition.getString("image"));
+        String shaderId = Objects.requireNonNull(textureDefinition.getString("shader"));
 
         KShaderProgram textureShader = shaderId.equals("default")
             ? this.shaderProgramCollection.getDefaultTextureShader()
@@ -112,10 +103,10 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         KAssetDefinition filtering = textureDefinition.getSubdefinition("filtering");
         KAssetDefinition wrapping = textureDefinition.getSubdefinition("wrapping");
 
-        KTextureFiltering minFilter = KTextureFiltering.valueOf(filtering.getString("min"));
-        KTextureFiltering magFilter = KTextureFiltering.valueOf(filtering.getString("mag"));
-        KTextureWrapping uWrapping = KTextureWrapping.valueOf(wrapping.getString("u"));
-        KTextureWrapping vWrapping = KTextureWrapping.valueOf(wrapping.getString("v"));
+        KTextureFiltering minFilter = filtering.getEnum("min", KTextureFiltering.class);
+        KTextureFiltering magFilter = filtering.getEnum("mag", KTextureFiltering.class);
+        KTextureWrapping uWrapping = wrapping.getEnum("u", KTextureWrapping.class);
+        KTextureWrapping vWrapping = wrapping.getEnum("v", KTextureWrapping.class);
 
         KTexture texture = new KTexture(
             image,

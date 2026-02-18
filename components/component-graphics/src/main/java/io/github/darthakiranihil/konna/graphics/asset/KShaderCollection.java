@@ -32,6 +32,7 @@ import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Collection of shader assets of type
@@ -88,14 +89,8 @@ public final class KShaderCollection extends KObject implements KAssetCollection
         KAsset asset = this.assetLoader.loadAsset(assetId, KShaderTypedef.SHADER_ASSET_TYPE);
 
         KAssetDefinition shaderDefinition = asset.definition();
-        String rawType = shaderDefinition.getString("type");
-        String sourcePath = shaderDefinition.getString("source");
-
-        if (rawType == null || sourcePath == null) {
-            throw new KAssetLoadingException(
-                String.format("Cannot load shader %s: type or source path is null", assetId)
-            );
-        }
+        KShaderType type = shaderDefinition.getEnum("type", KShaderType.class);
+        String sourcePath = Objects.requireNonNull(shaderDefinition.getString("source"));
 
         try (KResource shaderSource = this.resourceLoader.loadResource(sourcePath)) {
 
@@ -105,9 +100,8 @@ public final class KShaderCollection extends KObject implements KAssetCollection
                 );
             }
 
-            KShaderType shaderType = KShaderType.valueOf(rawType);
             KShader compiledShader = this.shaderCompiler.compileShader(
-                shaderSource.string(), shaderType
+                shaderSource.string(), type
             );
 
             this.loadedShaders.put(assetId, compiledShader);

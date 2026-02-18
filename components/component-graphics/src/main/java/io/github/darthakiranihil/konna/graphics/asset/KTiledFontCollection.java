@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -34,6 +33,7 @@ import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Collection of texture assets of type {@link KTiledFontTypedef#TILED_FONT_ASSET_TYPE}.
@@ -92,15 +92,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
         );
         KAssetDefinition fontDefinition = asset.definition();
 
-        String name = fontDefinition.getString("name");
-        if (name == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot get tiled font asset %s: name cannot be null",
-                    assetId
-                )
-            );
-        }
+        String name = Objects.requireNonNull(fontDefinition.getString("name"));
 
         KAssetDefinition glyphSizeData = fontDefinition.getSubdefinition("glyph_size");
         KSize glyphSize = new KSize(
@@ -108,16 +100,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
             glyphSizeData.getInt("height")
         );
 
-        String faceId = fontDefinition.getString("face");
-        if (faceId == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot get tiled font asset %s: font face id cannot be null",
-                    assetId
-                )
-            );
-        }
-
+        String faceId = Objects.requireNonNull(fontDefinition.getString("face"));
         KTexture face = this.textureCollection.getAsset(faceId);
 
         KTiledFontFormat fontFormat = this
@@ -125,7 +108,8 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
             .createObject(
                 fontDefinition.getClassObject(
                     "format",
-                    KTiledFontFormat.class)
+                    KTiledFontFormat.class
+                )
             );
 
         KTiledFont font = new KTiledFont(
