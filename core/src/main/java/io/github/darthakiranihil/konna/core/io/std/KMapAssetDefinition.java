@@ -329,6 +329,11 @@ public class KMapAssetDefinition implements KAssetDefinition {
     public Class<?> getClassObject(
         final String property
     ) {
+        Object val = this.value.get(property);
+        if (Class.class.isAssignableFrom(val.getClass())) {
+            return (Class<?>) val;
+        }
+
         return KClassUtils.getForName(
             this.getString(property)
         );
@@ -350,6 +355,11 @@ public class KMapAssetDefinition implements KAssetDefinition {
 
     @Override
     public Class<?>[] getClassObjectArray(final String property) {
+        Object val = this.value.get(property);
+        if (Class[].class.isAssignableFrom(val.getClass())) {
+            return (Class<?>[]) val;
+        }
+
         String[] strings = this.getStringArray(property);
         if (strings == null) {
             throw KAssetDefinitionError.propertyNotFound(property);
@@ -368,6 +378,15 @@ public class KMapAssetDefinition implements KAssetDefinition {
         final String property,
         final Class<T> targetClass
     ) {
+        Object val = this.value.get(property);
+        if (Class[].class.isAssignableFrom(val.getClass())) {
+            try {
+                return (Class<? extends T>[]) val;
+            } catch (ClassCastException e) {
+                throw KAssetDefinitionError.propertyNotFound(property);
+            }
+        }
+
         String[] strings = this.getStringArray(property);
         if (strings == null) {
             throw KAssetDefinitionError.propertyNotFound(property);
