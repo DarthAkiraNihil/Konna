@@ -27,13 +27,13 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,7 +54,7 @@ public class KActiveEntitiesService extends KObject {
     private final KActivator activator;
 
     private final Map<UUID, KEntity> activeEntities;
-    // private final Map<UUID, KEntity> inactiveEntities;
+    private final Map<UUID, KEntity> inactiveEntities;
 
     private @Nullable KMessenger messenger;
 
@@ -72,7 +72,7 @@ public class KActiveEntitiesService extends KObject {
         this.entityFactory = entityFactory;
 
         this.activeEntities = new HashMap<>();
-        // this.inactiveEntities = new HashMap<>();
+        this.inactiveEntities = new HashMap<>();
 
     }
 
@@ -80,7 +80,7 @@ public class KActiveEntitiesService extends KObject {
         route = "createEntity",
         converter = KInternals.MessageToEntityCreationDataConverter.class
     )
-    public void createEntity(
+    protected void createEntity(
         final String entityName,
         final String entityType
     ) {
@@ -95,15 +95,15 @@ public class KActiveEntitiesService extends KObject {
             created.id()
         );
 
-        this.sendEntityCreated(entityName, entityType, created);
+        this.sendEntityMessage(created, "entityCreated");
 
     }
 
     @KServiceEndpoint(
-        route = "createEntityWithData",
+        route = "restoreEntity",
         converter = KInternals.MessageToEntityCreationDataConverter.class
     )
-    public void createEntityWithData(
+    protected void restoreEntity(
         final String entityName,
         final String entityType,
         final KJsonValue data
@@ -119,7 +119,57 @@ public class KActiveEntitiesService extends KObject {
             created.id()
         );
 
-        this.sendEntityCreated(entityName, entityType, created);
+        this.sendEntityMessage(created, "entityCreated");
+
+    }
+
+    protected void deactivateEntity(
+        final UUID entityId
+    ) {
+
+        if (
+                this.inactiveEntities.containsKey(entityId)
+            ||  !this.activeEntities.containsKey(entityId)
+        ) {
+            return;
+        }
+
+        KEntity deactivated = this.activeEntities.remove(entityId);
+        this.inactiveEntities.put(entityId, deactivated);
+        KSystemLogger.debug(
+            "ActiveEntitiesService",
+            "Deactivated entity [type=%s, name=%s, id=%s]",
+            deactivated.type(),
+            deactivated.name(),
+            deactivated.id()
+        );
+
+        this.sendEntityMessage(deactivated, "entityDeactivated");
+
+    }
+
+    protected void activateEntity(
+        final UUID entityId
+    ) {
+
+        if (
+                !this.inactiveEntities.containsKey(entityId)
+            ||  this.activeEntities.containsKey(entityId)
+        ) {
+            return;
+        }
+
+        KEntity activated = this.inactiveEntities.remove(entityId);
+        this.activeEntities.put(entityId, activated);
+        KSystemLogger.debug(
+            "ActiveEntitiesService",
+            "Activated entity [type=%s, name=%s, id=%s]",
+            activated.type(),
+            activated.name(),
+            activated.id()
+        );
+
+        this.sendEntityMessage(activated, "entityActivated");
 
     }
 
@@ -127,10 +177,9 @@ public class KActiveEntitiesService extends KObject {
         this.messenger = messenger;
     }
 
-    private void sendEntityCreated(
-        final String entityName,
-        final String entityType,
-        final KEntity created
+    private void sendEntityMessage(
+        final KEntity entity,
+        final String messageId
     ) {
 
         if (this.messenger == null) {
@@ -138,17 +187,15 @@ public class KActiveEntitiesService extends KObject {
         }
 
         KUniversalMap body = new KUniversalMap();
-        body.put("id", created.id());
-        body.put("type", entityType);
-        body.put("name", entityName);
+        body.put("id", entity.id());
+        body.put("type", entity.name());
+        body.put("name", entity.type());
 
         this.messenger.sendRegular(
-            "entityCreated",
+            messageId,
             body
         );
 
     }
-
-
 
 }
