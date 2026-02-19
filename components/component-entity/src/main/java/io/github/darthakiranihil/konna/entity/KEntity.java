@@ -47,6 +47,7 @@ public class KEntity extends KObject {
             .filter(c -> c.getClass() == clazz)
             .findFirst()
             .orElse(null);
+
         return (T) result;
 
     }
