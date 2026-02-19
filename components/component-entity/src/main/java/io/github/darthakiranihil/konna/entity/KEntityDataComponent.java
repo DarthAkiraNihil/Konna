@@ -16,8 +16,13 @@
 
 package io.github.darthakiranihil.konna.entity;
 
+/**
+ * Simple marking interface, used to show that this class contains
+ * some data, suitable to be used as entity data.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public interface KEntityDataComponent {
-
-
 
 }

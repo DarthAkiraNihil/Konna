@@ -23,12 +23,28 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Maximum abstract object, representing container for entity properties
+ * and only that. Also provides some convenience methods, used to get
+ * that properties.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public class KEntity extends KObject {
 
+    /**
+     * Default tag, used to mark all created entity objects.
+     */
     public static final KTag TAG = new KTag("entity");
 
     private final List<KEntityDataComponent> dataComponents;
 
+    /**
+     * Standard constructor.
+     * @param name Name of the entity
+     * @param dataComponents List of data components, used by this entity
+     */
     public KEntity(
         final String name,
         final List<KEntityDataComponent> dataComponents
@@ -38,8 +54,16 @@ public class KEntity extends KObject {
         this.dataComponents = dataComponents;
     }
 
+    /**
+     * Tries to get a data components with specific class from this entity.
+     * @param clazz Class of the data component to get
+     * @return The actual data component instance or {@code null} if it is not found
+     * @param <T> Type parameter for retrieved component
+     */
     @SuppressWarnings("unchecked")
-    public final <T extends KEntityDataComponent> @Nullable T getComponent(Class<T> clazz) {
+    public final <T extends KEntityDataComponent> @Nullable T getComponent(
+        final Class<T> clazz
+    ) {
 
         var result = this
             .dataComponents
@@ -51,7 +75,5 @@ public class KEntity extends KObject {
         return (T) result;
 
     }
-
-
 
 }

@@ -33,6 +33,13 @@ import io.github.darthakiranihil.konna.entity.except.KEntityException;
 
 import java.util.*;
 
+/**
+ * Standard implementation of {@link KEntityFactory} that is able to create
+ * entities with recursive resolving of all derived properties from parent types.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 public class KStandardEntityFactory extends KObject implements KEntityFactory {
 
@@ -53,10 +60,11 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
     }
 
     @Override
-    public KEntity createEntity(String name, String type) {
+    public KEntity createEntity(final String name, final String type) {
         KEntityMetadata metadata = this.metadataCollection.getAsset(type);
 
-        Set<Class<? extends KEntityDataComponent>> dataComponents = new HashSet<>(List.of(metadata.dataComponents()));
+        Set<Class<? extends KEntityDataComponent>> dataComponents
+            = new HashSet<>(List.of(metadata.dataComponents()));
         Queue<String> extensions = new LinkedList<>(List.of(metadata.dataExtensionList()));
 
         while (!extensions.isEmpty()) {
@@ -76,11 +84,26 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         return new KEntity(name, createdComponents);
     }
 
+    /**
+     * Creates an entity by its type and data.
+     * The data must be a JSON objects, whose keys are canonical names of used
+     * data component classes and values are JSON-represented data components instances
+     * of its class.
+     * @param name Name of created entity
+     * @param type Entity type
+     * @param data Entity data
+     * @return Created entity instance with provided data
+     */
     @Override
-    public KEntity createEntity(String name, String type, KJsonValue data) {
+    public KEntity createEntity(
+        final String name,
+        final String type,
+        final KJsonValue data
+    ) {
         KEntityMetadata metadata = this.metadataCollection.getAsset(type);
 
-        Set<Class<? extends KEntityDataComponent>> dataComponents = new HashSet<>(List.of(metadata.dataComponents()));
+        Set<Class<? extends KEntityDataComponent>> dataComponents =
+                new HashSet<>(List.of(metadata.dataComponents()));
         Queue<String> extensions = new LinkedList<>(List.of(metadata.dataExtensionList()));
 
         while (!extensions.isEmpty()) {

@@ -43,6 +43,10 @@ public final class KEntityMetadataCollection implements KAssetCollection<KEntity
     private final KAssetLoader assetLoader;
     private final Map<String, KEntityMetadata> loadedMetadata;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader (to load entity metadata)
+     */
     public KEntityMetadataCollection(
         @KInject final KAssetLoader assetLoader
     ) {
@@ -64,7 +68,9 @@ public final class KEntityMetadataCollection implements KAssetCollection<KEntity
 
         String typeName = Objects.requireNonNull(metadataDefinition.getString("type_name"));
 
-        String[] dataExtensions = Objects.requireNonNull(metadataDefinition.getStringArray("data_extensions"));
+        String[] dataExtensions = Objects.requireNonNull(
+            metadataDefinition.getStringArray("data_extensions")
+        );
 
         Class<? extends KEntityDataComponent>[] dataComponents = metadataDefinition
             .getClassObjectArray("data_components", KEntityDataComponent.class);

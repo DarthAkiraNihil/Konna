@@ -19,9 +19,16 @@ package io.github.darthakiranihil.konna.entity.except;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
+/**
+ * Exception thrown when there occurred and error, connected with any entity
+ * (e.g. entity creation failed). By default, the exception is an error.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public class KEntityException extends KException {
 
-    public KEntityException(String message) {
+    public KEntityException(final String message) {
         super(message);
     }
 
