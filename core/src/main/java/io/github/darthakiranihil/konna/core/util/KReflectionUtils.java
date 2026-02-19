@@ -16,10 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Utility class providing different useful reflection utils.
@@ -62,6 +64,49 @@ public final class KReflectionUtils extends KUninstantiable {
         } catch (Throwable e) {
             return null;
         }
+    }
+
+    public static @Nullable Method getMethod(
+        final Class<?> ofClass,
+        final String methodName
+    ) {
+
+        try {
+            Method m = ofClass.getDeclaredMethod(methodName);
+            m.setAccessible(true);
+            return m;
+        } catch (Throwable e) {
+            return null;
+        }
+
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public static Object invokeMethod(
+        final Method method,
+        final Object classInstance,
+        final Object... methodArgs
+    ) {
+
+        try {
+            return method.invoke(classInstance, methodArgs);
+        } catch (Throwable e) {
+            throw new KException(e.getMessage());
+        }
+
+    }
+
+    public static @Nullable Method getSetter(
+        final Class<?> ofClass,
+        final String forField
+    ) {
+        return KReflectionUtils.getMethod(
+            ofClass,
+            String.format(
+                "set%s",
+                forField.substring(0, 1).toUpperCase() + forField.substring(1)
+            )
+        );
     }
 
 }

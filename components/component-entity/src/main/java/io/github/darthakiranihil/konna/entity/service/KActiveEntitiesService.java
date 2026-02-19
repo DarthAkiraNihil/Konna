@@ -29,13 +29,11 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
+import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Service for handling entities that are active during this frame
@@ -214,6 +212,20 @@ public class KActiveEntitiesService extends KObject {
         );
 
         this.sendEntityMessage(deleted, "entityDestroyed");
+
+    }
+
+    @Nullable KEntity getEntity(final UUID entityId) {
+
+        if (this.activeEntities.containsKey(entityId)) {
+            return this.activeEntities.get(entityId);
+        }
+
+        if (this.inactiveEntities.containsKey(entityId)) {
+            return this.inactiveEntities.get(entityId);
+        }
+
+        return null;
 
     }
 
