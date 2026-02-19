@@ -16,10 +16,41 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-public class KEntity<DCT> {
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jspecify.annotations.Nullable;
 
-    DCT getData() {
-        return null;
+import java.util.List;
+
+public class KEntity extends KObject {
+
+    public static final KTag TAG = new KTag("entity");
+
+    private final List<KEntityDataComponent> dataComponents;
+
+    public KEntity(
+        final String name,
+        final List<KEntityDataComponent> dataComponents
+    ) {
+        super(name, KStructUtils.setOfTags(TAG));
+
+        this.dataComponents = dataComponents;
     }
+
+    @SuppressWarnings("unchecked")
+    public final <T extends KEntityDataComponent> @Nullable T getComponent(Class<T> clazz) {
+
+        var result = this
+            .dataComponents
+            .stream()
+            .filter(c -> c.getClass() == clazz)
+            .findFirst()
+            .orElse(null);
+        return (T) result;
+
+    }
+
+
 
 }
