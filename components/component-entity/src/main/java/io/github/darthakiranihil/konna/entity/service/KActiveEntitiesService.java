@@ -16,9 +16,24 @@
 
 package io.github.darthakiranihil.konna.entity.service;
 
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.log.KSystemLogger;
+import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.entity.KEntity;
+import io.github.darthakiranihil.konna.entity.KEntityFactory;
+import org.jspecify.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Service for handling entities that are active during this frame
@@ -29,12 +44,73 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
  */
 @KSingleton
 @KComponentServiceMetaInfo(
-    name = "ActiveEntities"
+    name = "ActiveEntitiesService"
 )
 public class KActiveEntitiesService extends KObject {
 
-    public KActiveEntitiesService() {
+    private final KEntityFactory entityFactory;
+    private final KActivator activator;
 
+    private final Map<UUID, KEntity> activeEntities;
+    // private final Map<UUID, KEntity> inactiveEntities;
+
+    private @Nullable KMessenger messenger;
+
+    public KActiveEntitiesService(
+        @KInject final KActivator activator,
+        @KInject final KEntityFactory entityFactory
+    ) {
+
+        super(
+            "Entity.ActiveEntitiesService",
+            KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
+        );
+
+        this.activator = activator;
+        this.entityFactory = entityFactory;
+
+        this.activeEntities = new HashMap<>();
+        // this.inactiveEntities = new HashMap<>();
+
+    }
+
+    @KServiceEndpoint(
+        route = "createEntity",
+        converter = KInternals.MessageToEntityCreationDataConverter.class
+    )
+    public void createEntity(
+        final String name,
+        final String type
+    ) {
+
+        KEntity created = this.entityFactory.createEntity(name, type);
+        this.activeEntities.put(created.id(), created);
+        KSystemLogger.debug(
+            "ActiveEntitiesService",
+            "Created entity [type=%s, name=%s, id=%s]",
+            type,
+            name,
+            created.id()
+        );
+
+        if (this.messenger == null) {
+            return;
+        }
+
+        KUniversalMap body = new KUniversalMap();
+        body.put("id", created.id());
+        body.put("type", type);
+        body.put("name", name);
+
+        this.messenger.sendRegular(
+            "entityCreated",
+            body
+        );
+
+    }
+
+    public void setMessenger(final KMessenger messenger) {
+        this.messenger = messenger;
     }
 
 }

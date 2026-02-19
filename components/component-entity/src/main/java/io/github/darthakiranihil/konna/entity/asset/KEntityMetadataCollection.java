@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.KEntityMetadata;
@@ -38,7 +39,9 @@ import java.util.Objects;
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KEntityMetadataCollection implements KAssetCollection<KEntityMetadata> {
+public final class KEntityMetadataCollection
+    extends KObject
+    implements KAssetCollection<KEntityMetadata> {
 
     private final KAssetLoader assetLoader;
     private final Map<String, KEntityMetadata> loadedMetadata;
