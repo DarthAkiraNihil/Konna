@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.entity.service;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
@@ -26,6 +27,7 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
@@ -79,19 +81,57 @@ public class KActiveEntitiesService extends KObject {
         converter = KInternals.MessageToEntityCreationDataConverter.class
     )
     public void createEntity(
-        final String name,
-        final String type
+        final String entityName,
+        final String entityType
     ) {
 
-        KEntity created = this.entityFactory.createEntity(name, type);
+        KEntity created = this.entityFactory.createEntity(entityName, entityType);
         this.activeEntities.put(created.id(), created);
         KSystemLogger.debug(
             "ActiveEntitiesService",
             "Created entity [type=%s, name=%s, id=%s]",
-            type,
-            name,
+            entityType,
+            entityName,
             created.id()
         );
+
+        this.sendEntityCreated(entityName, entityType, created);
+
+    }
+
+    @KServiceEndpoint(
+        route = "createEntityWithData",
+        converter = KInternals.MessageToEntityCreationDataConverter.class
+    )
+    public void createEntityWithData(
+        final String entityName,
+        final String entityType,
+        final KJsonValue data
+    ) {
+
+        KEntity created = this.entityFactory.createEntity(entityName, entityType, data);
+        this.activeEntities.put(created.id(), created);
+        KSystemLogger.debug(
+            "ActiveEntitiesService",
+            "Created entity [type=%s, name=%s, id=%s]",
+            entityType,
+            entityName,
+            created.id()
+        );
+
+        this.sendEntityCreated(entityName, entityType, created);
+
+    }
+
+    public void setMessenger(final KMessenger messenger) {
+        this.messenger = messenger;
+    }
+
+    private void sendEntityCreated(
+        final String entityName,
+        final String entityType,
+        final KEntity created
+    ) {
 
         if (this.messenger == null) {
             return;
@@ -99,8 +139,8 @@ public class KActiveEntitiesService extends KObject {
 
         KUniversalMap body = new KUniversalMap();
         body.put("id", created.id());
-        body.put("type", type);
-        body.put("name", name);
+        body.put("type", entityType);
+        body.put("name", entityName);
 
         this.messenger.sendRegular(
             "entityCreated",
@@ -109,8 +149,6 @@ public class KActiveEntitiesService extends KObject {
 
     }
 
-    public void setMessenger(final KMessenger messenger) {
-        this.messenger = messenger;
-    }
+
 
 }
