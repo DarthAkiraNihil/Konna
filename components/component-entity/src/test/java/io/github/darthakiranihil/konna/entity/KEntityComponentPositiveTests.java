@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.graphics;
+package io.github.darthakiranihil.konna.entity;
 
 import io.github.darthakiranihil.konna.core.app.std.KStandardApplicationFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
-import io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KGraphicsComponentPositiveTests extends KStandardTestClass {
-
+public class KEntityComponentPositiveTests extends KStandardTestClass {
     @Test
     @SuppressWarnings("unchecked")
     public void testLoadKonnaWithGraphicsComponentSuccess() {
@@ -53,7 +48,7 @@ public class KGraphicsComponentPositiveTests extends KStandardTestClass {
                     "io.github.darthakiranihil.konna.core.test.KEmptyEventRegisterer"
                 ],
                 "components": [
-                    "io.github.darthakiranihil.konna.graphics.KGraphicsComponent"
+                    "io.github.darthakiranihil.konna.entity.KEntityComponent"
                 ],
                 "frame_loader": "io.github.darthakiranihil.konna.core.test.KTestFrameLoader",
                   "frame_options": {
@@ -93,11 +88,12 @@ public class KGraphicsComponentPositiveTests extends KStandardTestClass {
             engineComponents.setAccessible(true);
 
             Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
-            Assertions.assertTrue(mapOfComponents.containsKey("Graphics"));
+            Assertions.assertTrue(mapOfComponents.containsKey("Entity"));
 
         } catch (Throwable e) {
             Assertions.fail(e);
         }
 
     }
+
 }

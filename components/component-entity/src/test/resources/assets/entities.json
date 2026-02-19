@@ -1,0 +1,36 @@
+{
+    "Typpi1": {
+        "Entity.entityMetadata": {
+            "type_name": "Typpi1",
+            "data_extensions": [],
+            "data_components": []
+        }
+    },
+    "Typpi2": {
+        "Entity.entityMetadata": {
+            "type_name": "Typpi2",
+            "data_extensions": [],
+            "data_components": [
+                "io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent"
+            ]
+        }
+    },
+    "Typpi3": {
+        "Entity.entityMetadata": {
+            "type_name": "Typpi3",
+            "data_extensions": [
+                "Typpi2"
+            ],
+            "data_components": [
+                "io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2"
+            ]
+        }
+    },
+    "Typpi4": {
+        "Entity.entityMetadata": {
+            "type_name": "Typpi4",
+            "data_extensions": [],
+            "data_components": []
+        }
+    }
+}

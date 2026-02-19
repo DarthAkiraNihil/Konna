@@ -64,13 +64,10 @@ public final class KEntityMetadataCollection implements KAssetCollection<KEntity
 
         String typeName = Objects.requireNonNull(metadataDefinition.getString("type_name"));
 
-        String[] dataExtensions = metadataDefinition.getStringArray("data_extensions");
-        if (dataExtensions == null) {
-            dataExtensions = new String[0];
-        }
+        String[] dataExtensions = Objects.requireNonNull(metadataDefinition.getStringArray("data_extensions"));
 
         Class<? extends KEntityDataComponent>[] dataComponents = metadataDefinition
-            .getClassObjectArray("dataComponents", KEntityDataComponent.class);
+            .getClassObjectArray("data_components", KEntityDataComponent.class);
 
         KEntityMetadata metadata = new KEntityMetadata(
             typeName,
