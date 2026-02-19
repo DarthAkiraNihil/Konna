@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -50,6 +51,7 @@ import java.util.UUID;
 public class KActiveEntitiesService extends KObject {
 
     private final KEntityFactory entityFactory;
+    private final KActivator activator;
 
     private final Map<UUID, KEntity> activeEntities;
     private final Map<UUID, KEntity> inactiveEntities;
@@ -57,6 +59,7 @@ public class KActiveEntitiesService extends KObject {
     private @Nullable KMessenger messenger;
 
     public KActiveEntitiesService(
+        @KInject final KActivator activator,
         @KInject final KEntityFactory entityFactory
     ) {
 
@@ -65,6 +68,7 @@ public class KActiveEntitiesService extends KObject {
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
+        this.activator = activator;
         this.entityFactory = entityFactory;
 
         this.activeEntities = new HashMap<>();
@@ -177,9 +181,47 @@ public class KActiveEntitiesService extends KObject {
 
     }
 
+    @KServiceEndpoint(
+        route = "destroyEntity",
+        converter = KInternals.MessageToEntityIdConverter.class
+    )
+    protected void destroyEntity(
+        final UUID entityId
+    ) {
+
+        boolean flag = false;
+        KEntity deleted = null;
+        if (this.activeEntities.containsKey(entityId)) {
+            deleted = this.activeEntities.remove(entityId);
+            this.activator.deleteObject(deleted);
+            flag = true;
+        } else if (this.inactiveEntities.containsKey(entityId)) {
+            deleted = this.inactiveEntities.remove(entityId);
+            this.activator.deleteObject(deleted);
+            flag = true;
+        }
+
+        if (!flag) {
+            return;
+        }
+
+        KSystemLogger.debug(
+            "ActiveEntitiesService",
+            "Destroyed entity [type=%s, name=%s, id=%s]",
+            deleted.type(),
+            deleted.name(),
+            deleted.id()
+        );
+
+        this.sendEntityMessage(deleted, "entityDestroyed");
+
+    }
+
+    /*
     public List<KEntity> getActiveEntities() {
         return List.copyOf(this.activeEntities.values());
     }
+    */
 
     public void setMessenger(final KMessenger messenger) {
         this.messenger = messenger;
