@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.entity.type;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
+import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 
 /**
  * Asset type definition for entity metadata objects.
@@ -43,7 +44,8 @@ public final class KEntityMetadataTypedef implements KAssetTypedef {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withNotNullString("type_name")
-            .withClassObject("dataclass")
+            .withClassObjectArray("data_components", KEntityDataComponent.class)
+            .withStringArray("data_extensions")
             .build();
     }
 }

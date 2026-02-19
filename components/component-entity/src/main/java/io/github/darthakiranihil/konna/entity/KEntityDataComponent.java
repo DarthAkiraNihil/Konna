@@ -16,15 +16,8 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-/**
- * Container for entity metadata that is used to create real entity objects
- * @param typeName Type name of the entity
- *
- */
-public record KEntityMetadata(
-    String typeName,
-    String[] dataExtensionList,
-    Class<? extends KEntityDataComponent>[] dataComponents
-) {
+public interface KEntityDataComponent {
+
+
 
 }
