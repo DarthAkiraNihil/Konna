@@ -16,15 +16,16 @@
 
 package io.github.darthakiranihil.konna.entity.std;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.std.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
-import io.github.darthakiranihil.konna.entity.KEntityMetadata;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
+import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,6 @@ import java.util.Map;
 public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
 
     private final KEntityFactory factory;
-    private final KEntityMetadataCollection metadataCollection;
 
     public KStandardEntityFactoryPositiveTests() {
         var assetLoader = new KJsonSubtypeBasedAssetLoader(
@@ -47,28 +47,176 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         );
         assetLoader.addAssetTypedef(new KEntityMetadataTypedef());
 
-        this.metadataCollection = new KEntityMetadataCollection(
+        var metadataCollection = new KEntityMetadataCollection(
             assetLoader
         );
 
         this.factory = new KStandardEntityFactory(
-            this.metadataCollection,
+            metadataCollection,
             KStandardTestClass.context,
             this.jsonDeserializer
         );
     }
 
     @Test
-    public void testEmptyCreateEntity() {
-
-        KEntityMetadata typpi1 = this.metadataCollection.getAsset("Typpi1");
-
+    public void testCreateEmptyEntity() {
         KEntity entity = this.factory.createEntity("e1", "Typpi1");
-
         var ted1 = entity.getComponent(TestEntityDataComponent.class);
+        Assertions.assertNull(ted1);
+    }
 
-        Assertions.assertNotNull(ted1);
-        Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
+    @Test
+    public void testCreateNonEmptyEntity() {
+
+        KEntity entity = this.factory.createEntity("e2", "Typpi2");
+        var ted = entity.getComponent(TestEntityDataComponent.class);
+        Assertions.assertNotNull(ted);
+        Assertions.assertEquals(TestEntityDataComponent.class, ted.getClass());
 
     }
+
+    @Test
+    void testCreateEntityWithDataExtensions() {
+
+        KEntity entity = this.factory.createEntity("e3", "Typpi3");
+        var ted1 = entity.getComponent(TestEntityDataComponent.class);
+        var ted2 = entity.getComponent(TestEntityDataComponent2.class);
+
+        Assertions.assertNotNull(ted1);
+        Assertions.assertNotNull(ted2);
+
+        Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
+        Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
+
+    }
+
+    @Test
+    void testCreateEntityWithMultilevelDataExtensions() {
+
+        KEntity entity = this.factory.createEntity("e4", "Typpi4");
+        var ted1 = entity.getComponent(TestEntityDataComponent.class);
+        var ted2 = entity.getComponent(TestEntityDataComponent2.class);
+
+        Assertions.assertNotNull(ted1);
+        Assertions.assertNotNull(ted2);
+
+        Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
+        Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
+
+    }
+
+    @Test
+    public void testCreateEmptyEntityWithData() {
+
+        KEntity entity = this.factory.createEntity(
+            "e1",
+            "Typpi1",
+            KJsonValue.fromMap(Map.of())
+        );
+
+        var ted1 = entity.getComponent(TestEntityDataComponent.class);
+        Assertions.assertNull(ted1);
+        // Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
+
+    }
+
+    @Test
+    public void testCreateNonEmptyEntityWithData() {
+
+        KEntity entity = this.factory.createEntity(
+            "e2",
+            "Typpi2",
+            KJsonValue.fromMap(
+                Map.of(
+                    TestEntityDataComponent.class.getCanonicalName(),
+                    KJsonValue.fromMap(
+                        Map.of(
+                            "testField", KJsonValue.fromNumber(1)
+                        )
+                    )
+                )
+            )
+        );
+        var ted = entity.getComponent(TestEntityDataComponent.class);
+        Assertions.assertNotNull(ted);
+        Assertions.assertEquals(TestEntityDataComponent.class, ted.getClass());
+        Assertions.assertEquals(1, ted.getTestField());
+
+    }
+
+    @Test
+    void testCreateEntityWithDataExtensionsWithData() {
+
+        KEntity entity = this.factory.createEntity(
+            "e3",
+            "Typpi3",
+            KJsonValue.fromMap(
+                Map.of(
+                    TestEntityDataComponent.class.getCanonicalName(),
+                    KJsonValue.fromMap(
+                        Map.of(
+                            "testField", KJsonValue.fromNumber(1)
+                        )
+                    ),
+                    TestEntityDataComponent2.class.getCanonicalName(),
+                    KJsonValue.fromMap(
+                        Map.of(
+                            "stringField", KJsonValue.fromString("123")
+                        )
+                    )
+                )
+            )
+        );
+        var ted1 = entity.getComponent(TestEntityDataComponent.class);
+        var ted2 = entity.getComponent(TestEntityDataComponent2.class);
+
+        Assertions.assertNotNull(ted1);
+        Assertions.assertNotNull(ted2);
+
+        Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
+        Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
+
+        Assertions.assertEquals(1, ted1.getTestField());
+        Assertions.assertEquals("123", ted2.getStringField());
+
+    }
+
+    @Test
+    void testCreateEntityWithMultilevelDataExtensionsWithData() {
+
+        KEntity entity = this.factory.createEntity(
+            "e4",
+            "Typpi4",
+            KJsonValue.fromMap(
+                Map.of(
+                    TestEntityDataComponent.class.getCanonicalName(),
+                    KJsonValue.fromMap(
+                        Map.of(
+                            "testField", KJsonValue.fromNumber(1)
+                        )
+                    ),
+                    TestEntityDataComponent2.class.getCanonicalName(),
+                    KJsonValue.fromMap(
+                        Map.of(
+                            "stringField", KJsonValue.fromString("123")
+                        )
+                    )
+                )
+            )
+        );
+        var ted1 = entity.getComponent(TestEntityDataComponent.class);
+        var ted2 = entity.getComponent(TestEntityDataComponent2.class);
+
+        Assertions.assertNotNull(ted1);
+        Assertions.assertNotNull(ted2);
+
+        Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
+        Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
+
+        Assertions.assertEquals(1, ted1.getTestField());
+        Assertions.assertEquals("123", ted2.getStringField());
+
+    }
+
+
 }

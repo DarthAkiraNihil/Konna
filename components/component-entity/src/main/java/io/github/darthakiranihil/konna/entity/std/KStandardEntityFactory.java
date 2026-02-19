@@ -31,10 +31,7 @@ import io.github.darthakiranihil.konna.entity.KEntityMetadata;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @KSingleton
 public class KStandardEntityFactory extends KObject implements KEntityFactory {
@@ -60,9 +57,13 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         KEntityMetadata metadata = this.metadataCollection.getAsset(type);
 
         Set<Class<? extends KEntityDataComponent>> dataComponents = new HashSet<>(List.of(metadata.dataComponents()));
-        for (String extension: metadata.dataExtensionList()) {
+        Queue<String> extensions = new LinkedList<>(List.of(metadata.dataExtensionList()));
+
+        while (!extensions.isEmpty()) {
+            String extension = extensions.poll();
             KEntityMetadata superType = this.metadataCollection.getAsset(extension);
             dataComponents.addAll(List.of(superType.dataComponents()));
+            extensions.addAll(List.of(superType.dataExtensionList()));
         }
 
         List<KEntityDataComponent> createdComponents = new LinkedList<>();
@@ -80,9 +81,13 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         KEntityMetadata metadata = this.metadataCollection.getAsset(type);
 
         Set<Class<? extends KEntityDataComponent>> dataComponents = new HashSet<>(List.of(metadata.dataComponents()));
-        for (String extension: metadata.dataExtensionList()) {
+        Queue<String> extensions = new LinkedList<>(List.of(metadata.dataExtensionList()));
+
+        while (!extensions.isEmpty()) {
+            String extension = extensions.poll();
             KEntityMetadata superType = this.metadataCollection.getAsset(extension);
             dataComponents.addAll(List.of(superType.dataComponents()));
+            extensions.addAll(List.of(superType.dataExtensionList()));
         }
 
         List<KEntityDataComponent> createdComponents = new LinkedList<>();

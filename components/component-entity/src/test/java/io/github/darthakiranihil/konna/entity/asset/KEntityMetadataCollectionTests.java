@@ -51,7 +51,7 @@ public class KEntityMetadataCollectionTests extends KAssetCollectionTestClass {
         Assertions.assertEquals(1, emd3.dataExtensionList().length);
 
         Assertions.assertEquals(0, emd4.dataComponents().length);
-        Assertions.assertEquals(0, emd4.dataExtensionList().length);
+        Assertions.assertEquals(1, emd4.dataExtensionList().length);
         Assertions.assertEquals(emd4, emd4same);
 
     }

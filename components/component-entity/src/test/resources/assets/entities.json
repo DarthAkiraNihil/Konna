@@ -29,7 +29,9 @@
     "Typpi4": {
         "Entity.entityMetadata": {
             "type_name": "Typpi4",
-            "data_extensions": [],
+            "data_extensions": [
+                "Typpi3"
+            ],
             "data_components": []
         }
     }
