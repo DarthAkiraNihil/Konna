@@ -47,6 +47,13 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
     private final KActivator activator;
     private final KJsonDeserializer deserializer;
 
+    /**
+     * Standard constructor.
+     * @param metadataCollection Entity metadata collection (to resolve types)
+     * @param activator Activator to create Entity components
+     * @param deserializer JSON deserializer to restore data components with
+     *                     provided data
+     */
     public KStandardEntityFactory(
         @KInject final KEntityMetadataCollection metadataCollection,
         @KInject final KActivator activator,

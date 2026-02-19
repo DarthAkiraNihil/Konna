@@ -19,6 +19,13 @@ package io.github.darthakiranihil.konna.entity;
 import io.github.darthakiranihil.konna.core.data.json.KJsonCustomName;
 import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
 
+/**
+ * Container for Entity engine component configuration.
+ * @param entityFactoryClass Class of entity factory (to create new entities)
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public record KEntityComponentConfig(
     @KJsonSerialized @KJsonCustomName(name = ENTITY_FACTORY_CLASS_KEY)
     Class<? extends KEntityFactory> entityFactoryClass
