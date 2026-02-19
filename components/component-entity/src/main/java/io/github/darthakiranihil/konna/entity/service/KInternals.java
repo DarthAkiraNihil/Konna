@@ -25,11 +25,13 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 final class KInternals extends KUninstantiable {
 
+    private static final String NAME_KEY = "name";
+    private static final String TYPE_KEY = "type";
+    private static final String DATA_KEY = "data";
+    private static final String ENTITY_ID_KEY = "entity_id";
+
     public static final class MessageToEntityCreationDataConverter
         implements KMessageToEndpointConverter {
-
-        private static final String NAME_KEY = "name";
-        private static final String TYPE_KEY = "type";
 
         @Override
         public Object[] convert(final KMessage message) {
@@ -53,6 +55,61 @@ final class KInternals extends KUninstantiable {
                 body.get(TYPE_KEY),
             };
 
+        }
+    }
+
+    public static final class MessageToEntityRestorationDataConverter
+        implements KMessageToEndpointConverter {
+
+        @Override
+        public Object[] convert(KMessage message) {
+
+            var body = message.body();
+
+            if (!body.containsKey(NAME_KEY)) {
+                throw new KInvalidMessageException(
+                    "Could not get entity name from the message"
+                );
+            }
+
+            if (!body.containsKey(TYPE_KEY)) {
+                throw new KInvalidMessageException(
+                    "Could not get entity type from the message"
+                );
+            }
+
+            if (!body.containsKey(DATA_KEY)) {
+                throw new KInvalidMessageException(
+                    "Could not get entity data from the message"
+                );
+            }
+
+            return new Object[] {
+                body.get(NAME_KEY),
+                body.get(TYPE_KEY),
+                body.get(DATA_KEY),
+            };
+
+        }
+    }
+
+    public static final class MessageToEntityIdConverter
+        implements KMessageToEndpointConverter {
+
+        @Override
+        public Object[] convert(KMessage message) {
+
+            var body = message.body();
+
+            if (!body.containsKey(ENTITY_ID_KEY)) {
+                throw new KInvalidMessageException(
+                    "Could not get entity id from the message"
+                );
+            }
+
+            return new Object[] {
+                body.get(ENTITY_ID_KEY),
+            };
         }
     }
 

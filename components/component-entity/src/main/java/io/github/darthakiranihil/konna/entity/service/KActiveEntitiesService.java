@@ -23,7 +23,6 @@ import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -51,7 +50,6 @@ import java.util.UUID;
 public class KActiveEntitiesService extends KObject {
 
     private final KEntityFactory entityFactory;
-    private final KActivator activator;
 
     private final Map<UUID, KEntity> activeEntities;
     private final Map<UUID, KEntity> inactiveEntities;
@@ -59,7 +57,6 @@ public class KActiveEntitiesService extends KObject {
     private @Nullable KMessenger messenger;
 
     public KActiveEntitiesService(
-        @KInject final KActivator activator,
         @KInject final KEntityFactory entityFactory
     ) {
 
@@ -68,7 +65,6 @@ public class KActiveEntitiesService extends KObject {
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
-        this.activator = activator;
         this.entityFactory = entityFactory;
 
         this.activeEntities = new HashMap<>();
@@ -101,7 +97,7 @@ public class KActiveEntitiesService extends KObject {
 
     @KServiceEndpoint(
         route = "restoreEntity",
-        converter = KInternals.MessageToEntityCreationDataConverter.class
+        converter = KInternals.MessageToEntityRestorationDataConverter.class
     )
     protected void restoreEntity(
         final String entityName,
@@ -123,6 +119,10 @@ public class KActiveEntitiesService extends KObject {
 
     }
 
+    @KServiceEndpoint(
+        route = "deactivateEntity",
+        converter = KInternals.MessageToEntityIdConverter.class
+    )
     protected void deactivateEntity(
         final UUID entityId
     ) {
@@ -148,6 +148,10 @@ public class KActiveEntitiesService extends KObject {
 
     }
 
+    @KServiceEndpoint(
+        route = "activateEntity",
+        converter = KInternals.MessageToEntityIdConverter.class
+    )
     protected void activateEntity(
         final UUID entityId
     ) {
@@ -171,6 +175,10 @@ public class KActiveEntitiesService extends KObject {
 
         this.sendEntityMessage(activated, "entityActivated");
 
+    }
+
+    public List<KEntity> getActiveEntities() {
+        return List.copyOf(this.activeEntities.values());
     }
 
     public void setMessenger(final KMessenger messenger) {
