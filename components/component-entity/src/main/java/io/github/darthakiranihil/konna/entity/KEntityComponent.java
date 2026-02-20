@@ -72,6 +72,7 @@ public class KEntityComponent extends KComponent {
     protected void applyConfig(final KJsonValue config) {
 
         KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
+        KEntityComponentConfig.getSchema().validate(config);
         KEntityComponentConfig cfg = deserializer.deserialize(config, KEntityComponentConfig.class);
         if (cfg == null) {
             throw new KComponentLoadingException("Could not read component config");

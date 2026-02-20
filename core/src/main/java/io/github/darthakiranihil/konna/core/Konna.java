@@ -112,7 +112,7 @@ public final class Konna extends KObject implements Runnable {
      *             <li>
      *             Hypervisor configuration ({@code config} key). It follows
      *             another schema, specified in
-     *         {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig#SCHEMA}
+     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig#getSchema()}
      *             </li>
      *         </ul>
      *     </li>
@@ -147,7 +147,7 @@ public final class Konna extends KObject implements Runnable {
 
             KJsonParser parser = new KStandardJsonParser(new KStandardJsonTokenizer());
             KJsonValue config = parser.parse(bootstrapConfig);
-            KonnaBootstrap.SCHEMA.validate(config);
+            KonnaBootstrap.getSchema().validate(config);
             KonnaBootstrap bootstrap = new KonnaBootstrap(config);
 
             KArgumentParser argParser = bootstrap.getArgumentParser();

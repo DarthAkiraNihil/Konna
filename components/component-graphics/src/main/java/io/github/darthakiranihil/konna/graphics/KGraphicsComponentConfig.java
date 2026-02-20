@@ -51,23 +51,25 @@ public record KGraphicsComponentConfig(
     private static final String TRANSFORM_MATRIX_CALCULATOR_CLASS = "transform_matrix_calculator";
 
     /**
-     * JSON schema of config, that should be used
-     * for validation of loaded json file.
+     * @return JSON schema of config, that should be used
+     *         for validation of loaded JSON  file.
      */
-    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
-        .create()
-        .withField(RENDER_FRONTEND_CLASS_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(SHADER_COMPILER_CLASS_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(IMAGE_LOADER_CLASS_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(TRANSFORM_MATRIX_CALCULATOR_CLASS, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .build();
+    public static KJsonValidator getSchema() {
+        return KJsonObjectValidatorBuilder
+            .create()
+            .withField(RENDER_FRONTEND_CLASS_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(SHADER_COMPILER_CLASS_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(IMAGE_LOADER_CLASS_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(TRANSFORM_MATRIX_CALCULATOR_CLASS, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .build();
+    }
 
 }

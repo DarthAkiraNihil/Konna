@@ -121,7 +121,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param ofClass Class to find getter in
      * @param forField Field to get getter of
      * @return The {@link Method} instance, representing getter for the passed field
-     *         or {@link null} if it is not found
+     *         or {@code null} if it is not found
      * @since 0.4.0
      */
     public static @Nullable Method getGetter(
@@ -145,7 +145,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param forField Field to get setter of
      * @param fieldType Field type (setter parameter type)
      * @return The {@link Method} instance, representing setter for the passed field
-     *         or {@link null} if it is not found
+     *         or {@code null} if it is not found
      * @since 0.4.0
      */
     public static @Nullable Method getSetter(

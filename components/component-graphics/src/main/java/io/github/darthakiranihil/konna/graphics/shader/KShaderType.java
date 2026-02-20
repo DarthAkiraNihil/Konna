@@ -16,9 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.shader;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-
 /**
  * Enumeration for all supported shader types.
  *
@@ -35,19 +32,5 @@ public enum KShaderType {
      * Vertex shader.
      */
     VERTEX;
-
-    /**
-     * Json validator for this type.
-     */
-    public static final KJsonValidator VALIDATOR = (v) -> {
-        String s = v.getString();
-
-        try {
-            KShaderType.valueOf(s);
-        } catch (IllegalArgumentException e) {
-            throw new KJsonValidationError(e.getMessage());
-        }
-
-    };
 
 }

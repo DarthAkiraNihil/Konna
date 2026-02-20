@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonCustomName;
-import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
+import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 
 /**
  * Container for Entity engine component configuration.
@@ -32,5 +32,18 @@ public record KEntityComponentConfig(
 ) {
 
     private static final String ENTITY_FACTORY_CLASS_KEY = "entity_factory";
+
+    /**
+     * @return JSON schema of config, that should be used
+     *         for validation of loaded JSON  file.
+     */
+    public static KJsonValidator getSchema() {
+        return KJsonObjectValidatorBuilder
+            .create()
+            .withField(ENTITY_FACTORY_CLASS_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .build();
+    }
 
 }

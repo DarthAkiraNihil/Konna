@@ -55,7 +55,7 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrows(
             KAssetDefinitionError.class,
-            () -> new KJsonAssetDefinition(KJsonValue.fromNumber(1), KJsonValueIsClassValidator.INSTANCE)
+            () -> new KJsonAssetDefinition(KJsonValue.fromNumber(1), new KJsonValueIsClassValidator())
         );
 
     }
