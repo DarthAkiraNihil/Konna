@@ -23,6 +23,10 @@ include 'implementations-stb'
 include 'backend-spair'
 include 'backend-lwjgl'
 
+include 'annotations-core'
+
+include 'compiler-core'
+
 findProject(':component-graphics').projectDir = new File("components/component-graphics")
 findProject(':component-entity').projectDir = new File("components/component-entity")
 
@@ -37,5 +41,9 @@ findProject(':implementations-stb').projectDir = new File("implementations/imple
 
 findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
 findProject(':backend-spair').projectDir = new File("backend/backend-spair")
+
+findProject(':annotations-core').projectDir = new File("annotations/annotations-core")
+
+findProject(':compiler-core').projectDir = new File("compilers/compiler-core")
 
 include 'konna-bom'

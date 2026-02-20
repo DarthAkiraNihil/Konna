@@ -25,6 +25,8 @@ dependencies {
 
         api project(':backend-spair')
         api project(':backend-lwjgl')
+
+        api project(':compiler-core')
     }
 }
 
