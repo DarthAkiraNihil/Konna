@@ -24,10 +24,7 @@ import io.github.darthakiranihil.konna.core.object.KPoolable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.tools.Diagnostic;
 import java.util.Set;
 
@@ -53,71 +50,83 @@ public final class KPoolableAnnotationProcessor extends AbstractProcessor {
         final Set<? extends TypeElement> annotations,
         final RoundEnvironment roundEnv) {
 
-        for (TypeElement annotation : annotations) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(
+            KPoolable.class
+        )) {
 
-            for (Element element : roundEnv.getElementsAnnotatedWith(
-                KPoolable.class
-            )) {
+            if (element.getKind() != ElementKind.CLASS) {
+                continue;
+            }
 
-                if (element.getKind() != ElementKind.CLASS) {
+            TypeElement classElement = (TypeElement) element;
+            Name canonicalName = classElement.getQualifiedName();
+
+            int onObtain = 0;
+            int onRelease = 0;
+            for (Element enclosed: classElement.getEnclosedElements()) {
+
+                if (enclosed.getKind() != ElementKind.METHOD) {
                     continue;
                 }
 
-                TypeElement classElement = (TypeElement) element;
-                int onObtain = 0;
-                int onRelease = 0;
-                for (Element enclosed: classElement.getEnclosedElements()) {
+                ExecutableElement method = (ExecutableElement) enclosed;
+                var onObtainAnnotation = method.getAnnotation(KOnPoolableObjectObtain.class);
+                var onReleaseAnnotation = method.getAnnotation(KOnPoolableObjectRelease.class);
 
-                    if (enclosed.getKind() != ElementKind.METHOD) {
-                        continue;
-                    }
-
-                    ExecutableElement method = (ExecutableElement) enclosed;
-                    var onObtainAnnotation = method.getAnnotation(KOnPoolableObjectObtain.class);
-                    var onReleaseAnnotation = method.getAnnotation(KOnPoolableObjectRelease.class);
-
-                    if (onObtainAnnotation != null && onReleaseAnnotation != null) {
-                        this.messager.printMessage(
-                            Diagnostic.Kind.ERROR,
-                            String.format(
-                                "Cannot have both %s and %s on a single method at the time",
-                                KOnPoolableObjectObtain.class.getSimpleName(),
-                                KOnPoolableObjectRelease.class.getSimpleName()
-                            )
-                        );
-                    }
-
-                    if (onObtainAnnotation != null) {
-                        onObtain++;
-                    }
-
-                    if (onReleaseAnnotation != null) {
-                        onRelease++;
-                    }
-
-                }
-
-                if (onObtain > 1) {
+                if (onObtainAnnotation != null && onReleaseAnnotation != null) {
                     this.messager.printMessage(
                         Diagnostic.Kind.ERROR,
+                        String.format(
+                            "%s: Cannot have both %s and %s on a single method at the time",
+                            canonicalName,
+                            KOnPoolableObjectObtain.class.getSimpleName(),
+                            KOnPoolableObjectRelease.class.getSimpleName()
+                        )
+                    );
+                }
+
+                if (onObtainAnnotation != null) {
+                    onObtain++;
+                }
+
+                if (onReleaseAnnotation != null) {
+                    onRelease++;
+                }
+
+            }
+
+            if (onObtain > 1) {
+                this.messager.printMessage(
+                    Diagnostic.Kind.ERROR,
+                    String.format(
+                        "%s: %s",
+                        canonicalName,
                         "Cannot have more that one onObtain method on a poolable object"
-                    );
-                }
+                    )
+                );
+            }
 
-                if (onRelease > 1) {
-                    this.messager.printMessage(
-                        Diagnostic.Kind.ERROR,
+            if (onRelease > 1) {
+                this.messager.printMessage(
+                    Diagnostic.Kind.ERROR,
+                    String.format(
+                        "%s: %s",
+                        canonicalName,
                         "Cannot have more that one onRelease method on a poolable object"
-                    );
-                }
+                    )
+                );
+            }
 
-                if (onRelease != onObtain) {
-                    this.messager.printMessage(
-                        Diagnostic.Kind.ERROR,
-                        "A poolable class must have either none "
+            if (onRelease != onObtain) {
+                this.messager.printMessage(
+                    Diagnostic.Kind.ERROR,
+                    String.format(
+                        "%s: %s",
+                        canonicalName,
+                            "A poolable class must have either none "
                         +   "or both of onRelease and onObtain methods"
-                    );
-                }
+                    )
+                );
             }
         }
 
