@@ -18,12 +18,9 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -99,33 +96,34 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             return obtained;
         }
 
-        try {
-            Object[] parameters = new Object[this.onObtainParameterClasses.length];
-            int nonResolvedArgsProcessed = 0;
+        Object[] parameters = new Object[this.onObtainParameterClasses.length];
+        int nonResolvedArgsProcessed = 0;
 
-            for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
-                boolean isNonResolved = true;
-                for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
-                    if (this.onObtainParameterAnnotations[i][j] instanceof KInject) {
-                        isNonResolved = false;
-                        break;
-                    }
-                }
-
-                if (isNonResolved) {
-                    parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
-                    nonResolvedArgsProcessed++;
-                } else {
-                    parameters[i] = this.activator.createObject(
-                        this.onObtainParameterClasses[i],
-                        container
-                    );
+        for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
+            boolean isNonResolved = true;
+            for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
+                if (this.onObtainParameterAnnotations[i][j] instanceof KInject) {
+                    isNonResolved = false;
+                    break;
                 }
             }
-            this.onObjectObtain.invoke(obtained, parameters);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new KInstantiationException(clazz, e);
+
+            if (isNonResolved) {
+                parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
+                nonResolvedArgsProcessed++;
+            } else {
+                parameters[i] = this.activator.createObject(
+                    this.onObtainParameterClasses[i],
+                    container
+                );
+            }
         }
+
+        KReflectionUtils.invokeMethod(
+            this.onObjectObtain,
+            obtained,
+            parameters
+        );
 
         this.unusedObjects.poll();
         return obtained;

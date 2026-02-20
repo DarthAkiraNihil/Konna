@@ -172,7 +172,7 @@ public final class KReflectionUtils extends KUninstantiable {
     ) {
 
         try {
-            var constructor = ofClass.getConstructor(parameterTypes);
+            var constructor = ofClass.getDeclaredConstructor(parameterTypes);
             constructor.setAccessible(true);
             return constructor;
         } catch (NoSuchMethodException e) {
