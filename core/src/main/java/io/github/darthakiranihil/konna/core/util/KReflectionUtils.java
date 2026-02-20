@@ -97,6 +97,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param classInstance Instance of class whose method will be called
      * @param methodArgs Method arguments
      * @return Return value of invoked method
+     * @since 0.4.0
      */
     @SuppressWarnings("UnusedReturnValue")
     public static Object invokeMethod(
@@ -121,6 +122,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param forField Field to get getter of
      * @return The {@link Method} instance, representing getter for the passed field
      *         or {@link null} if it is not found
+     * @since 0.4.0
      */
     public static @Nullable Method getGetter(
         final Class<?> ofClass,
@@ -144,6 +146,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param fieldType Field type (setter parameter type)
      * @return The {@link Method} instance, representing setter for the passed field
      *         or {@link null} if it is not found
+     * @since 0.4.0
      */
     public static @Nullable Method getSetter(
         final Class<?> ofClass,
