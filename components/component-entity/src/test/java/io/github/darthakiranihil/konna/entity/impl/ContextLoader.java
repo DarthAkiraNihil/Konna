@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.test;
+package io.github.darthakiranihil.konna.entity.impl;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.*;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
+import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KJsonSerializer;
+import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonSerializer;
+import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import io.github.darthakiranihil.konna.core.engine.std.KProxiedEngineContext;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KJsonSubtypeBasedAssetLoader;
@@ -32,73 +40,27 @@ import io.github.darthakiranihil.konna.core.log.std.*;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
-import org.jetbrains.annotations.TestOnly;
-import org.jspecify.annotations.Nullable;
+import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.Map;
 
-/**
- * Standard test class, containing implementations of most common Konna classes.
- *
- * @since 0.1.0
- * @author Darth Akira Nihil
- */
-@TestOnly
+@NullMarked
 @KContainerModifier
-public class KStandardTestClass extends KObject {
+public class ContextLoader implements KEngineContextLoader {
 
-    /**
-     * Implementation of a json tokenizer.
-     */
-    protected final KJsonTokenizer jsonTokenizer;
-    /**
-     * Implementation of a json parser.
-     */
-    protected final KJsonParser jsonParser;
-    /**
-     * Implementation of a json serializer.
-     */
-    protected final KJsonSerializer jsonSerializer;
-    /**
-     * Implementation of a json deserializer.
-     */
-    protected final KJsonDeserializer jsonDeserializer;
-    /**
-     * Implementation of a json stringifier.
-     */
-    protected final KJsonStringifier jsonStringifier;
-    /**
-     * Engine context, required for running tests.
-     */
-    @SuppressWarnings("DataFlowIssue")
-    protected static KEngineContext context = null;
+    @Override
+    public KEngineContext load(KApplicationFeatures features) {
 
-    /**
-     * Returns engine context for testing environment.
-     * @return Engine context for testing environment
-     */
-    public static KEngineContext getContext() {
-        return KStandardTestClass.context;
-    }
-
-    /**
-     * Convenience reference to message system.
-     */
-    protected static @Nullable KQueueBasedMessageSystem msgSystem;
-
-    static {
         var index = new KStandardIndex();
 
         var containerResolver = new KStandardContainerAccessor(index);
@@ -128,14 +90,19 @@ public class KStandardTestClass extends KObject {
         );
         var assetLoader = new KJsonSubtypeBasedAssetLoader(
             resourceLoader,
-            Map.of(),
+            Map.of(
+                "entities", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                    new String[] { KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE },
+                    new String[] { "classpath:assets/entities.json"}
+                )
+            ),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
-        KStandardTestClass.context = new KProxiedEngineContext(
+        var ctx = new KProxiedEngineContext(
             activator,
             containerResolver,
             index,
@@ -146,22 +113,8 @@ public class KStandardTestClass extends KObject {
             assetLoader,
             null
         );
-        activator.addContext(KStandardTestClass.context);
-        KStandardTestClass.msgSystem = messageSystem;
-    }
+        activator.addContext(ctx);
+        return ctx;
 
-    /**
-     * Default constructor.
-     */
-    protected KStandardTestClass() {
-        super(
-            "std_test_class",
-            KStructUtils.setOfTags(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)
-        );
-        this.jsonTokenizer = new KStandardJsonTokenizer();
-        this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
-        this.jsonSerializer = new KStandardJsonSerializer();
-        this.jsonDeserializer = new KStandardJsonDeserializer();
-        this.jsonStringifier = new KStandardJsonStringifier();
     }
 }

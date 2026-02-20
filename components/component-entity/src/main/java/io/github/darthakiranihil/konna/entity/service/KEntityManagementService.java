@@ -216,26 +216,6 @@ public class KEntityManagementService extends KObject {
 
     }
 
-    @Nullable KEntity getEntity(final UUID entityId) {
-
-        if (this.activeEntities.containsKey(entityId)) {
-            return this.activeEntities.get(entityId);
-        }
-
-        if (this.inactiveEntities.containsKey(entityId)) {
-            return this.inactiveEntities.get(entityId);
-        }
-
-        return null;
-
-    }
-
-    /*
-    public List<KEntity> getActiveEntities() {
-        return List.copyOf(this.activeEntities.values());
-    }
-    */
-
     public void setMessenger(final KMessenger messenger) {
         this.messenger = messenger;
     }

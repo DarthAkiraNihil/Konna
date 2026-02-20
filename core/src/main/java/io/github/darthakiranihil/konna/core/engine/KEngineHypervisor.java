@@ -306,7 +306,7 @@ public class KEngineHypervisor extends KObject {
 
             try {
 
-                Instant beginTime = Instant.now();
+                // Instant beginTime = Instant.now();
                 // new_frame
                 this.newFrame.invokeSync();
 
@@ -324,11 +324,11 @@ public class KEngineHypervisor extends KObject {
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
-                var deltaTime = Duration.between(beginTime, Instant.now());
-                KSystemLogger.debug(
-                    "hypervisor", "FPS: %f",
-                    ONE_SEC_IN_NANOS / deltaTime.getNano()
-                );
+                // var deltaTime = Duration.between(beginTime, Instant.now());
+                // KSystemLogger.debug(
+                //     "hypervisor", "FPS: %f",
+                //     ONE_SEC_IN_NANOS / deltaTime.getNano()
+                // );
 
                 this.frameFinished.invokeSync();
                 // frame_finished
