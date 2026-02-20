@@ -16,42 +16,111 @@
 
 package io.github.darthakiranihil.konna.compiler.core;
 
+
+import com.google.auto.service.AutoService;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.object.KPoolable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.util.Set;
 
+@AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.core.object.KPoolable"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class KPoolableAnnotationProcessor extends AbstractProcessor {
+public final class KPoolableAnnotationProcessor extends AbstractProcessor {
 
     private Messager messager;
-    private Filer filer;
 
     @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
+    public synchronized void init(final ProcessingEnvironment processingEnv) {
+
         super.init(processingEnv);
         this.messager = processingEnv.getMessager();
-        this.filer = processingEnv.getFiler();
+
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        for (TypeElement annotation : annotations) {
-            // Get all elements annotated with @CustomAnnotation
-            for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-                // Example: print a warning message for each annotated element
-                messager.printMessage(Diagnostic.Kind.WARNING, "Found @CustomAnnotation on " + element.getSimpleName());
+    public boolean process(
+        final Set<? extends TypeElement> annotations,
+        final RoundEnvironment roundEnv) {
 
-                // Here you would add logic to generate code using Filer
+        for (TypeElement annotation : annotations) {
+
+            for (Element element : roundEnv.getElementsAnnotatedWith(
+                KPoolable.class
+            )) {
+
+                if (element.getKind() != ElementKind.CLASS) {
+                    continue;
+                }
+
+                TypeElement classElement = (TypeElement) element;
+                int onObtain = 0;
+                int onRelease = 0;
+                for (Element enclosed: classElement.getEnclosedElements()) {
+
+                    if (enclosed.getKind() != ElementKind.METHOD) {
+                        continue;
+                    }
+
+                    ExecutableElement method = (ExecutableElement) enclosed;
+                    var onObtainAnnotation = method.getAnnotation(KOnPoolableObjectObtain.class);
+                    var onReleaseAnnotation = method.getAnnotation(KOnPoolableObjectRelease.class);
+
+                    if (onObtainAnnotation != null && onReleaseAnnotation != null) {
+                        this.messager.printMessage(
+                            Diagnostic.Kind.ERROR,
+                            String.format(
+                                "Cannot have both %s and %s on a single method at the time",
+                                KOnPoolableObjectObtain.class.getSimpleName(),
+                                KOnPoolableObjectRelease.class.getSimpleName()
+                            )
+                        );
+                    }
+
+                    if (onObtainAnnotation != null) {
+                        onObtain++;
+                    }
+
+                    if (onReleaseAnnotation != null) {
+                        onRelease++;
+                    }
+
+                }
+
+                if (onObtain > 1) {
+                    this.messager.printMessage(
+                        Diagnostic.Kind.ERROR,
+                        "Cannot have more that one onObtain method on a poolable object"
+                    );
+                }
+
+                if (onRelease > 1) {
+                    this.messager.printMessage(
+                        Diagnostic.Kind.ERROR,
+                        "Cannot have more that one onRelease method on a poolable object"
+                    );
+                }
+
+                if (onRelease != onObtain) {
+                    this.messager.printMessage(
+                        Diagnostic.Kind.ERROR,
+                        "A poolable class must have either none "
+                        +   "or both of onRelease and onObtain methods"
+                    );
+                }
             }
         }
-        return true; // Claim responsibility for the annotations
+
+        return true;
     }
 }
