@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.entity.service.KActiveEntitiesService;
+import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 
 /**
@@ -86,8 +86,8 @@ public class KEntityComponent extends KComponent {
     @Override
     public void postInit() {
 
-        KActiveEntitiesService activeEntitiesService = this.ctx.createObject(
-            KActiveEntitiesService.class
+        KEntityManagementService activeEntitiesService = this.ctx.createObject(
+            KEntityManagementService.class
         );
 
         activeEntitiesService.setMessenger(this.messenger);

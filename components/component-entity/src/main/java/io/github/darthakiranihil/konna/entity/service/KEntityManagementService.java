@@ -29,11 +29,12 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
-import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Service for handling entities that are active during this frame
@@ -44,9 +45,9 @@ import java.util.*;
  */
 @KSingleton
 @KComponentServiceMetaInfo(
-    name = "ActiveEntitiesService"
+    name = "EntityManagementService"
 )
-public class KActiveEntitiesService extends KObject {
+public class KEntityManagementService extends KObject {
 
     private final KEntityFactory entityFactory;
     private final KActivator activator;
@@ -56,13 +57,13 @@ public class KActiveEntitiesService extends KObject {
 
     private @Nullable KMessenger messenger;
 
-    public KActiveEntitiesService(
+    public KEntityManagementService(
         @KInject final KActivator activator,
         @KInject final KEntityFactory entityFactory
     ) {
 
         super(
-            "Entity.ActiveEntitiesService",
+            "Entity.EntityManagementService",
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
