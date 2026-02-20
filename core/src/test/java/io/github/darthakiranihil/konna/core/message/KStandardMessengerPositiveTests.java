@@ -253,8 +253,12 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(2, ((TestAnotherService) this.serviceObjectField.get(serviceEntry2)).getTestVar());
             Assertions.assertNotEquals(-1, ((TestService) this.serviceObjectField.get(serviceEntry1)).getTestVar());
+
             Assertions.assertNotNull(this.consumerTest1.getMsg());
             Assertions.assertNotNull(this.consumerTest2.getMsg());
+
+            this.messageSystem.deliverMessage(KMessage.DROP);
+            this.messageSystem.deliverMessageSync(KMessage.DROP);
 
         } catch (Throwable e) {
             Assertions.fail(e);

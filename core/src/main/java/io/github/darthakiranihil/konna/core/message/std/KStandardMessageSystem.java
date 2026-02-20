@@ -107,12 +107,28 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     @Override
     public void deliverMessage(final KMessage message) {
 
+        if (
+            message
+                .messageId()
+                .equals(KMessage.DROP.messageId())
+        ) {
+            return;
+        }
+
         this.messageQueue.add(message);
 
     }
 
     @Override
     public void deliverMessageSync(final KMessage message) {
+
+        if (
+            message
+                .messageId()
+                .equals(KMessage.DROP.messageId())
+        ) {
+            return;
+        }
 
         KSystemLogger.info(
             this.name,
