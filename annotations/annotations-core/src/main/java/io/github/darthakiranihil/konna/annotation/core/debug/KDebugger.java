@@ -23,9 +23,10 @@ import java.lang.annotation.Target;
 
 /**
  * Marks class to be loaded when debug mode is enabled and that the class provides
- * debug functionality that should be called on
- * {@link io.github.darthakiranihil.konna.core.app.KFrame#DEBUG_TICK_EVENT_NAME}
- * event.
+ * debug functionality. Its handling depends on the actual Konna application.
+ *
+ * @since 0.3.0
+ * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

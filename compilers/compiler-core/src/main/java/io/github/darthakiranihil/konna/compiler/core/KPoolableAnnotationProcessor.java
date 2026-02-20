@@ -28,9 +28,24 @@ import javax.lang.model.element.*;
 import javax.tools.Diagnostic;
 import java.util.Set;
 
+/**
+ * Annotation processor, specializing on checking correctness of a pollable classes
+ * (that must be marked with {@link KPoolable} annotation).
+ * <p>
+ * A valid poolable class must have either
+ * one and only one method marked with {@link KOnPoolableObjectObtain}
+ * and {@link KOnPoolableObjectRelease} correspondingly or none of them.
+ * Multiple methods with such annotations, one method with both of them,
+ * only one method with one of these annotations are not allowed and will
+ * cause a compilation error.
+ * </p>
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.object.KPoolable"
+    "io.github.darthakiranihil.konna.annotation.core.object.KPoolable"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public final class KPoolableAnnotationProcessor extends AbstractProcessor {
@@ -48,7 +63,8 @@ public final class KPoolableAnnotationProcessor extends AbstractProcessor {
     @Override
     public boolean process(
         final Set<? extends TypeElement> annotations,
-        final RoundEnvironment roundEnv) {
+        final RoundEnvironment roundEnv
+    ) {
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KPoolable.class
@@ -63,7 +79,17 @@ public final class KPoolableAnnotationProcessor extends AbstractProcessor {
 
             int onObtain = 0;
             int onRelease = 0;
+            boolean hasZeroArgConstructor = false;
+
             for (Element enclosed: classElement.getEnclosedElements()) {
+                System.out.println(enclosed.getKind());
+                if (enclosed.getKind() == ElementKind.CONSTRUCTOR) {
+                    ExecutableElement method = (ExecutableElement) enclosed;
+                    if (method.getParameters().isEmpty()) {
+                        hasZeroArgConstructor = true;
+                    }
+                    continue;
+                }
 
                 if (enclosed.getKind() != ElementKind.METHOD) {
                     continue;
@@ -125,6 +151,17 @@ public final class KPoolableAnnotationProcessor extends AbstractProcessor {
                         canonicalName,
                             "A poolable class must have either none "
                         +   "or both of onRelease and onObtain methods"
+                    )
+                );
+            }
+
+            if (!hasZeroArgConstructor) {
+                this.messager.printMessage(
+                    Diagnostic.Kind.ERROR,
+                    String.format(
+                        "%s: %s",
+                        canonicalName,
+                        "A poolable class must have a zero-arg constructor"
                     )
                 );
             }

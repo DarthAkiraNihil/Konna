@@ -22,9 +22,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks class as poolable so {@link KActivator} should retrieve
- * objects of this class from assigned pool when instantiation is
- * requested.
+ * <p>
+ * Marks class as poolable so all instances of this class should be retrieved
+ * from their assigned pool when instantiation is requested.
+ * </p>
+ * <p>
+ * Each poolable class should provide either both 2 methods annotated with
+ * {@link KOnPoolableObjectObtain} and {@link KOnPoolableObjectRelease} correspondingly
+ * or none of them. Multiple methods with such annotations, one method with both of them,
+ * only one method with one of these annotations are not allowed and will
+ * be prevented at compile-time.
+ * </p>
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

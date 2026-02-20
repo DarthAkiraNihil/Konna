@@ -22,8 +22,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Explicitly marks class as transient, so on each instantiation invoked,
- * {@link KActivator} will create a new instance for each creation.
+ * Explicitly marks class as transient, so on each instantiation
+ * requires a new instance for each creation.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -32,8 +32,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface KTransient {
     /**
-     * Flag that indicated if object should be temporal, so it is not stored in
-     * {@link KObjectRegistry}.
+     * Flag that indicated if object should be temporal, that handling depends
+     * on implementation.
      * @return Flag of object temporality
      */
     boolean temporal() default false;

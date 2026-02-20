@@ -27,9 +27,16 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.util.Set;
 
+/**
+ * Annotation processor that checks correctness of a singleton class.
+ * A singleton cannot be weak and immortal at the same time.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.object.KSingleton"
+    "io.github.darthakiranihil.konna.annotation.core.object.KSingleton"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public final class KSingletonAnnotationProcessor extends AbstractProcessor {
@@ -45,7 +52,10 @@ public final class KSingletonAnnotationProcessor extends AbstractProcessor {
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    public boolean process(
+        final Set<? extends TypeElement> annotations,
+        final RoundEnvironment roundEnv
+    ) {
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KSingleton.class
         )) {

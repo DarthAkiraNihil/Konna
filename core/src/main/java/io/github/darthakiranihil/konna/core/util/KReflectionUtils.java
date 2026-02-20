@@ -166,6 +166,15 @@ public final class KReflectionUtils extends KUninstantiable {
         );
     }
 
+    /**
+     * Returns constructor handle of any class without checked exceptions.
+     * @param ofClass Class to get method from
+     * @param parameterTypes Types of method parameter
+     * @param <T> Type parameter of instances created by constructor
+     * @return The {@link Constructor} object with specific name and parameters or {@code null},
+     *         if the constructor is not found
+     * @since 0.4.0
+     */
     public static <T> @Nullable Constructor<T> getConstructor(
         final Class<T> ofClass,
         final Class<?>... parameterTypes
@@ -181,9 +190,18 @@ public final class KReflectionUtils extends KUninstantiable {
 
     }
 
+    /**
+     * Creates a new instance using constructor without checked exceptions.
+     * @param constructor Constructor instance to use
+     * @param parameters Constructor parameters
+     * @return The created instance
+     * @param <T> Type of created object
+     *
+     * @since 0.4.0
+     */
     public static <T> T newInstance(
-        Constructor<T> constructor,
-        Object... parameters
+        final Constructor<T> constructor,
+        final Object... parameters
     ) {
         try {
             return constructor.newInstance(parameters);

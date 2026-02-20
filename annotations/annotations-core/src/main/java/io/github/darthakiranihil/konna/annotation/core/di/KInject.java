@@ -23,8 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marks that a method parameter value should be
- * injected automatically when an object is created with
- * {@link io.github.darthakiranihil.konna.core.object.KActivator}.
+ * injected automatically by resolving all required dependencies.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

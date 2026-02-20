@@ -1,5 +1,5 @@
 /**
- * Provides abstractions for debugging Konna applications.
+ * Provides annotaions for debugging Konna applications.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil

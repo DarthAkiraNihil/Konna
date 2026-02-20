@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
 import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -68,9 +67,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
     protected final int initialSize;
 
     /**
-     * Constructs abstract pool. Also retrieves onObtain and onRelease
-     * methods of poolable class and if it fails to do it, {@link KInvalidPoolableClassException}
-     * is thrown (a poolable class must contain either both of them or none).
+     * Constructs abstract pool.
      * @param clazz Poolable class
      * @param initialSize Initial size
      */

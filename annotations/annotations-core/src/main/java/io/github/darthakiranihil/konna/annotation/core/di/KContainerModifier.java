@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 
 /**
  * Signalizes that this type of caller class is allowed to modify the resolved
- * environment container, so {@link KContainerAccessor} should not return
- * an immutable container.
+ * environment container, so when it gets the resolved container, it should not
+ * be immutable.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

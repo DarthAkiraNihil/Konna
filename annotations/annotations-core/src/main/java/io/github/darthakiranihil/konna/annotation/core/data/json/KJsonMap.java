@@ -29,7 +29,6 @@ import java.util.Map;
  * Other fields are not affected by this annotation,
  * at least in the standard implementation of deserializer
  *
- * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
  * @author Darth Akira Nihil
  * @since 0.2.0
  */

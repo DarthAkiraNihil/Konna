@@ -22,8 +22,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks constructor as to be called when an object of a class is created
- * with {@link io.github.darthakiranihil.konna.core.object.KActivator}.
+ * Marks constructor to be prioritized when DI is attempting to create
+ * an object of this instance.
  * It's not required, though, because it there is no constructor with such
  * annotation, the first one will be invoked.
  *

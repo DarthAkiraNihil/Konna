@@ -26,8 +26,6 @@ import java.lang.annotation.Target;
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
- *
- * @see KIndex
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PACKAGE)
