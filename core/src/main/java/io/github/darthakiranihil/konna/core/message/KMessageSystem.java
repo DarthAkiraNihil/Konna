@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Interface for the essential part of Konna message system. It provides
@@ -73,6 +74,17 @@ public interface KMessageSystem {
     KMessageSystem addMessageRoute(
         String messageId,
         String destinationEndpoint
+    );
+
+    KMessageSystem addMessageRoute(
+        String messageId,
+        Consumer<KMessage> destination
+    );
+
+    KMessageSystem addMessageRoute(
+        String messageId,
+        Consumer<KMessage> destination,
+        List<Class<? extends KTunnel>> tunnels
     );
 
     /**
