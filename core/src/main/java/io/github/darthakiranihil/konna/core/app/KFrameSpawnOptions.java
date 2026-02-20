@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonObjectValidatorBuilder;
-import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
+import io.github.darthakiranihil.konna.annotation.core.data.json.KJsonSerialized;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.struct.KSize;

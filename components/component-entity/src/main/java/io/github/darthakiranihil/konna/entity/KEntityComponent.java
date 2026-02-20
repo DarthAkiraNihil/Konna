@@ -19,15 +19,15 @@ package io.github.darthakiranihil.konna.entity;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.annotation.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.annotation.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 

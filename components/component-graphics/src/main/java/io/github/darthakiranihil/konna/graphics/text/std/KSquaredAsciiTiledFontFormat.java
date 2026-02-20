@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.text.std;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontGlyph;

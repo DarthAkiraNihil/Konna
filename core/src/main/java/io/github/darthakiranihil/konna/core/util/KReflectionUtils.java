@@ -18,9 +18,12 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import org.jspecify.annotations.Nullable;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -161,6 +164,52 @@ public final class KReflectionUtils extends KUninstantiable {
             ),
             fieldType
         );
+    }
+
+    /**
+     * Returns constructor handle of any class without checked exceptions.
+     * @param ofClass Class to get method from
+     * @param parameterTypes Types of method parameter
+     * @param <T> Type parameter of instances created by constructor
+     * @return The {@link Constructor} object with specific name and parameters or {@code null},
+     *         if the constructor is not found
+     * @since 0.4.0
+     */
+    public static <T> @Nullable Constructor<T> getConstructor(
+        final Class<T> ofClass,
+        final Class<?>... parameterTypes
+    ) {
+
+        try {
+            var constructor = ofClass.getDeclaredConstructor(parameterTypes);
+            constructor.setAccessible(true);
+            return constructor;
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Creates a new instance using constructor without checked exceptions.
+     * @param constructor Constructor instance to use
+     * @param parameters Constructor parameters
+     * @return The created instance
+     * @param <T> Type of created object
+     *
+     * @since 0.4.0
+     */
+    public static <T> T newInstance(
+        final Constructor<T> constructor,
+        final Object... parameters
+    ) {
+        try {
+            return constructor.newInstance(parameters);
+        } catch (InvocationTargetException e) {
+            throw new KInstantiationException(e.getTargetException().getMessage());
+        } catch (Exception e) {
+            throw new KInstantiationException(e.getMessage());
+        }
     }
 
 }

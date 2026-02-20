@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine.std;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.annotation.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;

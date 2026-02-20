@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.annotation.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;

@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.ImDrawData;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawData;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawList;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;

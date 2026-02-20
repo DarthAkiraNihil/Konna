@@ -12,12 +12,16 @@ plugins {
 }
 
 ext {
-    konnaModules = subprojects.findAll {
+    konnaTestedModules = subprojects.findAll {
             it.name.startsWith("component-") // Konna std components
         ||  it.name.startsWith("libfrontend-") // Konna libfrontends
         ||  it.name.startsWith("backend-") // Konna std backends
         ||  it.name.startsWith("implementations-") // Konna std implementations
+        ||  it.name.startsWith("annotations-") // Konna std annotation processors
         ||  it.name == "core" // Konna core
+    }
+    konnaModules = konnaTestedModules + subprojects.findAll {
+        it.name.startsWith("compiler-") // Konna std annotation processors
     }
     allKonnaProjects = konnaModules + project(":konna-bom")
 }
@@ -150,10 +154,10 @@ tasks.register('jacocoRootReport', JacocoReport) {
     description = 'Generates an aggregate report from all subprojects'
     dependsOn(konnaModules.test)
 
-    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(konnaModules.jacocoTestReport.executionData)
+    additionalSourceDirs = files(konnaTestedModules.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(konnaTestedModules.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(konnaTestedModules.sourceSets.main.output)
+    executionData = files(konnaTestedModules.jacocoTestReport.executionData)
 
     reports {
         html.required = true

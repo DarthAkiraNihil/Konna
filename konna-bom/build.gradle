@@ -25,6 +25,10 @@ dependencies {
 
         api project(':backend-spair')
         api project(':backend-lwjgl')
+
+        api project(':annotations-core')
+
+        api project(':compiler-core')
     }
 }
 

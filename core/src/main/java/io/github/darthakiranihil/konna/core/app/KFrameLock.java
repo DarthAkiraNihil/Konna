@@ -16,7 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.annotation.core.di.KInject;
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectRelease;
+import io.github.darthakiranihil.konna.annotation.core.object.KPoolable;
 import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;

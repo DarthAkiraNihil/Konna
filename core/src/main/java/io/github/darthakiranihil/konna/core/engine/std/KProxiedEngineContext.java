@@ -16,9 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.engine.std;
 
+import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.annotation.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.io.*;

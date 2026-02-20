@@ -20,7 +20,7 @@ import imgui.ImDrawList;
 import imgui.ImVec2;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImDrawList;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 

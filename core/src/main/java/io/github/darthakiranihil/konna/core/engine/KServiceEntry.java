@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.annotation.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;

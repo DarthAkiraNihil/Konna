@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.entity;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.annotation.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
 
 /**

@@ -17,13 +17,12 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
+import io.github.darthakiranihil.konna.annotation.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -54,19 +53,10 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
         this.activator = activator;
 
         for (int i = 0; i < initialSize; i++) {
-            T object;
-            try {
-                var constructor = clazz.getDeclaredConstructor();
-                constructor.setAccessible(true);
-                object = constructor.newInstance();
-            } catch (
-                    InstantiationException
-                |   NoSuchMethodException
-                |   IllegalAccessException
-                |   InvocationTargetException e
-            ) {
-                throw new KInstantiationException(clazz, e);
-            }
+
+            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(clazz));
+            T object = KReflectionUtils.newInstance(constructor);
+
             this.unusedObjects.add(new WeakReference<>(object));
             if (object instanceof KObject) {
                 objectRegistry.pushObjectToRegistry(
@@ -79,7 +69,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
 
     /**
      * Obtains an object from the pool. Calling this is a risky operation
-     * if pool is not extensible and behaviour of getting object from an
+     * if pool is not extensible and behavior of getting object from an
      * empty pool is not specified. If reference in unused objects queue is somehow
      * null, a new object will be created
      * @param container Container (for resolving dependencies for onObtain method
@@ -93,25 +83,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
         final Object... nonInjectedArgs
     ) {
 
-        var ref = this.unusedObjects.peek();
-        if (ref == null) {
-            throw new KEmptyObjectPoolException(this.clazz);
-        }
-        T obtained = ref.get();
-        if (obtained == null) {
-            try {
-                var constructor = clazz.getDeclaredConstructor();
-                constructor.setAccessible(true);
-                obtained = constructor.newInstance();
-            } catch (
-                    InstantiationException
-                |   NoSuchMethodException
-                |   IllegalAccessException
-                |   InvocationTargetException e
-            ) {
-                throw new KInstantiationException(clazz, e);
-            }
-        }
+        T obtained = this.retrieveObject();
 
         // no onObtain - no parameter classes and annotations
         if (
@@ -123,32 +95,33 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             return obtained;
         }
 
-        try {
-            Object[] parameters = new Object[this.onObtainParameterClasses.length];
-            int nonResolvedArgsProcessed = 0;
-            for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
-                boolean isNonResolved = true;
-                for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
-                    if (this.onObtainParameterAnnotations[i][j] instanceof KInject) {
-                        isNonResolved = false;
-                        break;
-                    }
-                }
-
-                if (isNonResolved) {
-                    parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
-                    nonResolvedArgsProcessed++;
-                } else {
-                    parameters[i] = this.activator.createObject(
-                        this.onObtainParameterClasses[i],
-                        container
-                    );
+        Object[] parameters = new Object[this.onObtainParameterClasses.length];
+        int nonResolvedArgsProcessed = 0;
+        for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
+            boolean isNonResolved = true;
+            for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
+                if (this.onObtainParameterAnnotations[i][j] instanceof KInject) {
+                    isNonResolved = false;
+                    break;
                 }
             }
-            this.onObjectObtain.invoke(obtained, parameters);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new KInstantiationException(clazz, e);
+
+            if (isNonResolved) {
+                parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
+                nonResolvedArgsProcessed++;
+            } else {
+                parameters[i] = this.activator.createObject(
+                    this.onObtainParameterClasses[i],
+                    container
+                );
+            }
         }
+
+        KReflectionUtils.invokeMethod(
+            this.onObjectObtain,
+            obtained,
+            parameters
+        );
 
         this.unusedObjects.poll();
         return obtained;
@@ -162,17 +135,29 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
      */
     public void release(final T object) {
 
-        try {
-            if (this.onObjectRelease != null) {
-                this.onObjectRelease.invoke(object);
-            }
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new KDeletionException(object, e.getMessage());
+        if (this.onObjectRelease != null) {
+            KReflectionUtils.invokeMethod(
+                this.onObjectRelease,
+                object
+            );
         }
 
         this.unusedObjects.add(new WeakReference<>(object));
 
     }
 
+    private T retrieveObject() {
+        var ref = this.unusedObjects.peek();
+        if (ref == null) {
+            throw new KEmptyObjectPoolException(this.clazz);
+        }
+        T obtained = ref.get();
+        if (obtained == null) {
+            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(clazz));
+            obtained = KReflectionUtils.newInstance(constructor);
+        }
+
+        return obtained;
+    }
 
 }

@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'compiler-module'
+}
+
+ext {
+    artifactId = "konna.compiler-core"
+}
+
+dependencies {
+    implementation project(":annotations-core")
+}
+
+description = "Annotation processor for annotations provided by Konna Core"

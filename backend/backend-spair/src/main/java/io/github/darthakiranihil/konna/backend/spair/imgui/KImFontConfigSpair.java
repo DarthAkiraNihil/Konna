@@ -17,9 +17,9 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImFontConfig;
-import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
+import io.github.darthakiranihil.konna.annotation.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontConfig;
 

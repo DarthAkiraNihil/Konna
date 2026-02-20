@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
 
 /**
  * Container for key event data.

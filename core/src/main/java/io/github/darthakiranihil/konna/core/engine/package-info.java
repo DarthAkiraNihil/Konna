@@ -8,5 +8,5 @@
 @KIndexedPackage
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
+import io.github.darthakiranihil.konna.annotation.core.util.KIndexedPackage;
 import org.jspecify.annotations.NullMarked;

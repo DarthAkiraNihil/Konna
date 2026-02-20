@@ -16,8 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -66,9 +67,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
     protected final int initialSize;
 
     /**
-     * Constructs abstract pool. Also retrieves onObtain and onRelease
-     * methods of poolable class and if it fails to do it, {@link KInvalidPoolableClassException}
-     * is thrown (a poolable class must contain either both of them or none).
+     * Constructs abstract pool.
      * @param clazz Poolable class
      * @param initialSize Initial size
      */
@@ -79,26 +78,18 @@ public abstract class KAbstractObjectPool<T> extends KObject {
             if (method.isAnnotationPresent(KOnPoolableObjectObtain.class)) {
                 method.setAccessible(true);
                 onObtain = method;
+                continue;
             }
+
             if (method.isAnnotationPresent(KOnPoolableObjectRelease.class)) {
                 method.setAccessible(true);
                 onRelease = method;
+                continue;
             }
 
             if (onObtain != null && onRelease != null) {
                 break;
             }
-        }
-
-        if ((onObtain == null) != (onRelease == null)) {
-            throw new KInvalidPoolableClassException(
-                String.format(
-                    "Cannot create pool for %s -"
-                        + " the class must have either both methods invoked"
-                        + " for obtaining and releasing the object or none",
-                    clazz
-                )
-            );
         }
 
         if (onObtain != null) {
@@ -126,7 +117,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * @return A pooled object
      * @throws io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException
      *         If there is no unused objects in the pool
-     * @see io.github.darthakiranihil.konna.core.di.KInject
+     * @see io.github.darthakiranihil.konna.annotation.core.di.KInject
      */
     public abstract T obtain(
         KContainer container,
