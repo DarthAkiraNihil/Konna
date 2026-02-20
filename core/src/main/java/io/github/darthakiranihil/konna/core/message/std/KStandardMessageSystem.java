@@ -179,7 +179,10 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     }
 
     @Override
-    public KMessageSystem addMessageRoute(String messageId, Consumer<KMessage> destination) {
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final Consumer<KMessage> destination
+    ) {
         this.internalAddMessageRoute(messageId, destination, List.of());
         KSystemLogger.debug(
             this.name,
@@ -192,9 +195,9 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
 
     @Override
     public KMessageSystem addMessageRoute(
-        String messageId,
-        Consumer<KMessage> destination,
-        List<Class<? extends KTunnel>> tunnels
+        final String messageId,
+        final Consumer<KMessage> destination,
+        final List<Class<? extends KTunnel>> tunnels
     ) {
         this.internalAddMessageRoute(messageId, destination, tunnels);
         KSystemLogger.debug(
