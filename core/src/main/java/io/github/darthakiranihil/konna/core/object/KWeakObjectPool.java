@@ -21,9 +21,11 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -54,19 +56,10 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
         this.activator = activator;
 
         for (int i = 0; i < initialSize; i++) {
-            T object;
-            try {
-                var constructor = clazz.getDeclaredConstructor();
-                constructor.setAccessible(true);
-                object = constructor.newInstance();
-            } catch (
-                    InstantiationException
-                |   NoSuchMethodException
-                |   IllegalAccessException
-                |   InvocationTargetException e
-            ) {
-                throw new KInstantiationException(clazz, e);
-            }
+
+            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(clazz));
+            T object = KReflectionUtils.newInstance(constructor);
+
             this.unusedObjects.add(new WeakReference<>(object));
             if (object instanceof KObject) {
                 objectRegistry.pushObjectToRegistry(
@@ -162,12 +155,11 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
      */
     public void release(final T object) {
 
-        try {
-            if (this.onObjectRelease != null) {
-                this.onObjectRelease.invoke(object);
-            }
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new KDeletionException(object, e.getMessage());
+        if (this.onObjectRelease != null) {
+            KReflectionUtils.invokeMethod(
+                this.onObjectRelease,
+                object
+            );
         }
 
         this.unusedObjects.add(new WeakReference<>(object));

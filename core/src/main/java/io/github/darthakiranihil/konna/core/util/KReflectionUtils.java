@@ -18,9 +18,12 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import org.jspecify.annotations.Nullable;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -161,6 +164,34 @@ public final class KReflectionUtils extends KUninstantiable {
             ),
             fieldType
         );
+    }
+
+    public static <T> @Nullable Constructor<T> getConstructor(
+        final Class<T> ofClass,
+        final Class<?>... parameterTypes
+    ) {
+
+        try {
+            var constructor = ofClass.getConstructor(parameterTypes);
+            constructor.setAccessible(true);
+            return constructor;
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+
+    }
+
+    public static <T> T newInstance(
+        Constructor<T> constructor,
+        Object... parameters
+    ) {
+        try {
+            return constructor.newInstance(parameters);
+        } catch (InvocationTargetException e) {
+            throw new KInstantiationException(e.getTargetException().getMessage());
+        } catch (Exception e) {
+            throw new KInstantiationException(e.getMessage());
+        }
     }
 
 }

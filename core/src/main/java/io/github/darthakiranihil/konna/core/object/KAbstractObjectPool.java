@@ -79,26 +79,18 @@ public abstract class KAbstractObjectPool<T> extends KObject {
             if (method.isAnnotationPresent(KOnPoolableObjectObtain.class)) {
                 method.setAccessible(true);
                 onObtain = method;
+                continue;
             }
+
             if (method.isAnnotationPresent(KOnPoolableObjectRelease.class)) {
                 method.setAccessible(true);
                 onRelease = method;
+                continue;
             }
 
             if (onObtain != null && onRelease != null) {
                 break;
             }
-        }
-
-        if ((onObtain == null) != (onRelease == null)) {
-            throw new KInvalidPoolableClassException(
-                String.format(
-                    "Cannot create pool for %s -"
-                        + " the class must have either both methods invoked"
-                        + " for obtaining and releasing the object or none",
-                    clazz
-                )
-            );
         }
 
         if (onObtain != null) {
