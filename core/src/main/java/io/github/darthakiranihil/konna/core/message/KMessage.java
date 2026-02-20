@@ -32,6 +32,21 @@ import java.util.UUID;
  */
 public final class KMessage {
 
+    /**
+     * Globally unique instance that is used to indicate that the message has been
+     * dropped by a tunnel or everything similar to that. Its id is generated randomly
+     * so it is impossible to <i>randomly</i> send it when developing own application.
+     * Each implementation of {@link KMessageSystem} must reject this message without
+     * any further processing.
+     *
+     * @since 0.4.0
+     */
+    public static final KMessage DROP = new KMessage(
+        String.format("__drop_message_%s", UUID.randomUUID()),
+        new KUniversalMap(),
+        KMessageType.SYSTEM
+    );
+
     private final UUID id;
     private final String messageId;
     private final KUniversalMap body;
