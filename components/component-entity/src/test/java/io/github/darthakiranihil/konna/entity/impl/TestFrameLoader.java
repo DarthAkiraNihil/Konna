@@ -36,7 +36,7 @@ public class TestFrameLoader extends KTestFrameLoader {
 
         var thread = new Thread(() -> {
             try {
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(8);
                 frame.setShouldClose(true);
             } catch (Throwable e) {
                 throw new KException(e);

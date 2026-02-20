@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Interface for the essential part of Konna message system. It provides
@@ -73,6 +74,39 @@ public interface KMessageSystem {
     KMessageSystem addMessageRoute(
         String messageId,
         String destinationEndpoint
+    );
+
+    /**
+     * Adds a new route for given message id to specified message consumer.
+     * If route with specified message id and consumer already
+     * exists in the system, it will be overridden, however this may be nearly impossible
+     * if consumer is represented as string in a non-deterministic way.
+     * @param messageId Full message id (component name + internal message id)
+     * @param destination Destination message consumer
+     * @return This message system (for method chaining)
+     * @since 0.4.0
+     */
+    KMessageSystem addMessageRoute(
+        String messageId,
+        Consumer<KMessage> destination
+    );
+
+    /**
+     * Adds a new route for given message id to specified message consumer.
+     * If route with specified message id and consumer already
+     * exists in the system, it will be overridden, however this may be nearly impossible
+     * if consumer is represented as string in a non-deterministic way.
+     * @param messageId Full message id (component name + internal message id)
+     * @param destination Destination message consumer
+     * @param tunnels List of tunnels that should be used when delivering a message through
+     *                created route.
+     * @return This message system (for method chaining)
+     * @since 0.4.0
+     */
+    KMessageSystem addMessageRoute(
+        String messageId,
+        Consumer<KMessage> destination,
+        List<Class<? extends KTunnel>> tunnels
     );
 
     /**

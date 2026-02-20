@@ -396,7 +396,6 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);
-            System.out.println("GECON");
             KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");

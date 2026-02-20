@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Standard implementation of {@link KMessageSystem} that uses a watcher thread
@@ -49,7 +51,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     private static final String WATCHER_THREAD_NAME = "message_watcher";
 
     private record RouteConnectionData(
-        KComponent component,
+        BiConsumer<String, KMessage> consumer,
         KTunnel[] tunnels,
         String shortEndpointName
     ) {
@@ -138,7 +140,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.component.acceptMessage(v.shortEndpointName, message);
+                v.consumer.accept(v.shortEndpointName, message);
             });
 
     }
@@ -177,6 +179,38 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     }
 
     @Override
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final Consumer<KMessage> destination
+    ) {
+        this.internalAddMessageRoute(messageId, destination, List.of());
+        KSystemLogger.debug(
+            this.name,
+            "Added message route for messageId=%s to destination=%s",
+            messageId,
+            destination
+        );
+        return this;
+    }
+
+    @Override
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final Consumer<KMessage> destination,
+        final List<Class<? extends KTunnel>> tunnels
+    ) {
+        this.internalAddMessageRoute(messageId, destination, tunnels);
+        KSystemLogger.debug(
+            this.name,
+            "Added message route for messageId=%s to destinationE=%s with %d tunnels",
+            messageId,
+            destination,
+            tunnels.size()
+        );
+        return this;
+    }
+
+    @Override
     public void startPolling() {
         this.polling = true;
         this.watcher = new Thread(this::watch);
@@ -204,29 +238,41 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
                 .subSequence(destinationEndpoint.indexOf('.') + 1, destinationEndpoint.length())
                 .toString();
 
-        if (this.routes.containsKey(messageId)) {
-            var route = this.routes.get(messageId);
-            route.connections.put(
-                destinationEndpoint,
-                new RouteConnectionData(
-                    destinationComponent,
-                    this.makeTunnels(tunnels),
-                    shortEndpointName
-                )
-            );
-            return;
-        }
+        var route = this.routes.containsKey(messageId)
+            ? this.routes.get(messageId)
+            : new RouteData();
 
-        var route = new RouteData();
         route.connections.put(
             destinationEndpoint,
             new RouteConnectionData(
-                destinationComponent,
+                destinationComponent::acceptMessage,
                 this.makeTunnels(tunnels),
                 shortEndpointName
             )
         );
         this.routes.put(messageId, route);
+    }
+
+    private void internalAddMessageRoute(
+        final String messageId,
+        final Consumer<KMessage> destination,
+        final List<Class<? extends KTunnel>> tunnels
+    ) {
+
+        var route = this.routes.containsKey(messageId)
+            ? this.routes.get(messageId)
+            : new RouteData();
+
+        route.connections.put(
+            destination.toString(),
+            new RouteConnectionData(
+                (endpoint, message) -> destination.accept(message),
+                this.makeTunnels(tunnels),
+                destination.toString()
+            )
+        );
+        this.routes.put(messageId, route);
+
     }
 
     private @Nullable KComponent resolveComponent(final String destinationEndpoint) {

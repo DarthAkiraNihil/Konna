@@ -32,6 +32,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Implementation of {@link KEngineContext} that requires ready instances of all
@@ -232,6 +233,23 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final String destinationEndpoint
     ) {
         return this.messageSystem.addMessageRoute(messageId, destinationEndpoint);
+    }
+
+    @Override
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final Consumer<KMessage> destination
+    ) {
+        return this.messageSystem.addMessageRoute(messageId, destination);
+    }
+
+    @Override
+    public KMessageSystem addMessageRoute(
+        final String messageId,
+        final Consumer<KMessage> destination,
+        final List<Class<? extends KTunnel>> tunnels
+    ) {
+        return this.messageSystem.addMessageRoute(messageId, destination, tunnels);
     }
 
     @Override
