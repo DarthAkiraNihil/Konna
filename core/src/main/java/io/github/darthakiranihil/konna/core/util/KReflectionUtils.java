@@ -16,10 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Utility class providing different useful reflection utils.
@@ -62,6 +64,103 @@ public final class KReflectionUtils extends KUninstantiable {
         } catch (Throwable e) {
             return null;
         }
+    }
+
+    /**
+     * Returns method handle of any class without checked exceptions.
+     * @param ofClass Class to get method from
+     * @param methodName Method name
+     * @param parameterTypes Types of method parameter
+     * @return The {@link Method} object with specific name and parameters or {@code null},
+     *         if the method is not found
+     * @since 0.4.0
+     */
+    public static @Nullable Method getMethod(
+        final Class<?> ofClass,
+        final String methodName,
+        final Class<?>... parameterTypes
+    ) {
+
+        try {
+            Method m = ofClass.getDeclaredMethod(methodName, parameterTypes);
+            m.setAccessible(true);
+            return m;
+        } catch (Throwable e) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Invokes passed method without bypassing mandatory checked exceptions catching.
+     * @param method Method handle to invoke
+     * @param classInstance Instance of class whose method will be called
+     * @param methodArgs Method arguments
+     * @return Return value of invoked method
+     * @since 0.4.0
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public static Object invokeMethod(
+        final Method method,
+        final Object classInstance,
+        final Object... methodArgs
+    ) {
+
+        try {
+            return method.invoke(classInstance, methodArgs);
+        } catch (Throwable e) {
+            throw new KException(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Returns getter handle for specific class field. In order for this method
+     * to return the real handle, the getter must be named like {@code get[Field]}
+     * where {@code [Field]} is capitalized name of accessed property.
+     * @param ofClass Class to find getter in
+     * @param forField Field to get getter of
+     * @return The {@link Method} instance, representing getter for the passed field
+     *         or {@link null} if it is not found
+     * @since 0.4.0
+     */
+    public static @Nullable Method getGetter(
+        final Class<?> ofClass,
+        final String forField
+    ) {
+        return KReflectionUtils.getMethod(
+            ofClass,
+            String.format(
+                "get%s",
+                forField.substring(0, 1).toUpperCase() + forField.substring(1)
+            )
+        );
+    }
+
+    /**
+     * Returns setter handle for specific class field. In order for this method
+     * to return the real handle, the getter must be named like {@code set[Field]}
+     * where {@code [Field]} is capitalized name of accessed property.
+     * @param ofClass Class to find setter in
+     * @param forField Field to get setter of
+     * @param fieldType Field type (setter parameter type)
+     * @return The {@link Method} instance, representing setter for the passed field
+     *         or {@link null} if it is not found
+     * @since 0.4.0
+     */
+    public static @Nullable Method getSetter(
+        final Class<?> ofClass,
+        final String forField,
+        final Class<?> fieldType
+    ) {
+        return KReflectionUtils.getMethod(
+            ofClass,
+            String.format(
+                "set%s",
+                forField.substring(0, 1).toUpperCase() + forField.substring(1)
+            ),
+            fieldType
+        );
     }
 
 }

@@ -88,7 +88,7 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
             );
         }
 
-        return new KEntity(name, createdComponents);
+        return new KEntity(name, type, createdComponents);
     }
 
     /**
@@ -142,6 +142,6 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
             );
         }
 
-        return new KEntity(name, createdComponents);
+        return new KEntity(name, type, createdComponents);
     }
 }

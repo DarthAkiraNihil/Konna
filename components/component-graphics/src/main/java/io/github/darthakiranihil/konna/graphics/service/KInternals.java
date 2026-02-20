@@ -20,10 +20,12 @@ import io.github.darthakiranihil.konna.core.engine.KMessageToEndpointConverter;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.except.KInvalidMessageException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
+@KExcludeFromGeneratedCoverageReport
 final class KInternals extends KUninstantiable {
 
     public static final class MessageToRenderableConverter implements KMessageToEndpointConverter {

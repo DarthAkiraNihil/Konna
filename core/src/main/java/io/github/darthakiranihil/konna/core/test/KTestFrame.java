@@ -81,9 +81,7 @@ public final class KTestFrame implements KFrame {
 
     @Override
     public boolean shouldClose() {
-        boolean flag = this.shouldClose;
-        this.setShouldClose(true);
-        return flag;
+        return this.shouldClose;
     }
 
     @Override

@@ -83,6 +83,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
                 continue;
             }
 
+            method.setAccessible(true);
             KServiceEndpoint endpointMeta = method.getAnnotation(KServiceEndpoint.class);
             KMessageToEndpointConverter
                 converter = ctx.createObject(endpointMeta.converter());

@@ -40,6 +40,20 @@ public interface KMessageToEndpointConverter {
     }
 
     /**
+     * Default implementation of {@link KMessageToEndpointConverter}, that
+     * literally just returns array of the only message, that has been passed to the endpoint.
+     *
+     * @since 0.4.0
+     * @author Darth Akira Nihil
+     */
+    final class DirectConverter implements KMessageToEndpointConverter {
+        @Override
+        public Object[] convert(final KMessage message) {
+            return new Object[] {message};
+        }
+    }
+
+    /**
      * Accepts a message and converts it to an array of objects, that
      * represent called service endpoint arguments. Conversion should be
      * performed to the message body, however, it is not required.

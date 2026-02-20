@@ -39,18 +39,22 @@ public class KEntity extends KObject {
     public static final KTag TAG = new KTag("entity");
 
     private final List<KEntityDataComponent> dataComponents;
+    private final String type;
 
     /**
      * Standard constructor.
      * @param name Name of the entity
+     * @param type Name of entity type
      * @param dataComponents List of data components, used by this entity
      */
     public KEntity(
         final String name,
+        final String type,
         final List<KEntityDataComponent> dataComponents
     ) {
         super(name, KStructUtils.setOfTags(TAG));
 
+        this.type = type;
         this.dataComponents = dataComponents;
     }
 
@@ -74,6 +78,13 @@ public class KEntity extends KObject {
 
         return (T) result;
 
+    }
+
+    /**
+     * @return Type of this entity
+     */
+    public final String type() {
+        return this.type;
     }
 
 }
