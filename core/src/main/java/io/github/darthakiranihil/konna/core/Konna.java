@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationErro
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -112,7 +113,7 @@ public final class Konna extends KObject implements Runnable {
      *             <li>
      *             Hypervisor configuration ({@code config} key). It follows
      *             another schema, specified in
-     *         {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig#SCHEMA}
+     *              {@link KEngineHypervisorConfig#getSchema()}
      *             </li>
      *         </ul>
      *     </li>
@@ -147,7 +148,7 @@ public final class Konna extends KObject implements Runnable {
 
             KJsonParser parser = new KStandardJsonParser(new KStandardJsonTokenizer());
             KJsonValue config = parser.parse(bootstrapConfig);
-            KonnaBootstrap.SCHEMA.validate(config);
+            KonnaBootstrap.getSchema().validate(config);
             KonnaBootstrap bootstrap = new KonnaBootstrap(config);
 
             KArgumentParser argParser = bootstrap.getArgumentParser();

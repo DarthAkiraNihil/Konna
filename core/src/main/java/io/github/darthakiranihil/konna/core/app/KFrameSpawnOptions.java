@@ -41,11 +41,13 @@ public record KFrameSpawnOptions(
     private static final String TITLE_KEY = "title";
 
     /**
-     * Json schema of frame spawn options.
+     * @return JSON schema of frame spawn options.
      */
-    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
-        .create()
-        .withSimpleField(SIZE_KEY, KJsonValueType.OBJECT)
-        .withSimpleField(TITLE_KEY, KJsonValueType.STRING)
-        .build();
+    public static KJsonValidator getSchema() {
+        return KJsonObjectValidatorBuilder
+            .create()
+            .withSimpleField(SIZE_KEY, KJsonValueType.OBJECT)
+            .withSimpleField(TITLE_KEY, KJsonValueType.STRING)
+            .build();
+    }
 }

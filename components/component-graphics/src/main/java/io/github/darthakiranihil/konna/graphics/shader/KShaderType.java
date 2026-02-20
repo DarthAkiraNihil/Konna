@@ -36,18 +36,4 @@ public enum KShaderType {
      */
     VERTEX;
 
-    /**
-     * Json validator for this type.
-     */
-    public static final KJsonValidator VALIDATOR = (v) -> {
-        String s = v.getString();
-
-        try {
-            KShaderType.valueOf(s);
-        } catch (IllegalArgumentException e) {
-            throw new KJsonValidationError(e.getMessage());
-        }
-
-    };
-
 }

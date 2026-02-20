@@ -33,27 +33,29 @@ final class KonnaBootstrap {
     private static final String HYPERVISOR_CONFIG_KEY = "config";
 
     /**
-     * Json schema for Konna bootstrap config.
+     * @return Json schema for Konna bootstrap config.
      */
-    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
-        .create()
-        .withField(ARG_PARSER_CLASS_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(HYPERVISOR_ROOT_KEY, KJsonValueType.OBJECT)
-        .withValidator(
-            KJsonObjectValidatorBuilder
-                .create()
-                .withField(HYPERVISOR_CLASS_KEY, KJsonValueType.STRING)
-                .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                .finishField()
-                .withField(HYPERVISOR_CONFIG_KEY, KJsonValueType.OBJECT)
-                .withValidator(KEngineHypervisorConfig.SCHEMA)
-                .finishField()
-                .build()
-        )
-        .finishField()
-        .build();
+    public static KJsonValidator getSchema() {
+        return KJsonObjectValidatorBuilder
+            .create()
+            .withField(ARG_PARSER_CLASS_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(HYPERVISOR_ROOT_KEY, KJsonValueType.OBJECT)
+            .withValidator(
+                KJsonObjectValidatorBuilder
+                    .create()
+                    .withField(HYPERVISOR_CLASS_KEY, KJsonValueType.STRING)
+                    .withValidator(new KJsonValueIsClassValidator())
+                    .finishField()
+                    .withField(HYPERVISOR_CONFIG_KEY, KJsonValueType.OBJECT)
+                    .withValidator(KEngineHypervisorConfig.getSchema())
+                    .finishField()
+                    .build()
+            )
+            .finishField()
+            .build();
+    }
 
     private final KJsonValue config;
 

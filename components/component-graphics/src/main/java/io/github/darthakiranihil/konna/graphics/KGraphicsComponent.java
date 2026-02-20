@@ -82,7 +82,7 @@ public class KGraphicsComponent extends KComponent {
     protected void applyConfig(final KJsonValue config) {
 
         KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
-        KGraphicsComponentConfig.SCHEMA.validate(config);
+        KGraphicsComponentConfig.getSchema().validate(config);
         KGraphicsComponentConfig deserializedConfig = deserializer.deserialize(
             config,
             KGraphicsComponentConfig.class

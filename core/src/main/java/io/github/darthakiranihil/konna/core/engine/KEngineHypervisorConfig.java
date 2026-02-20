@@ -78,50 +78,52 @@ public record KEngineHypervisorConfig(
     private static final String FRAME_OPTIONS_KEY = "frame_options";
 
     /**
-     * JSON schema of config, that should be used
-     * for validation of loaded json file.
+     * @return JSON schema of config, that should be used
+     *         for validation of loaded JSON file.
      */
-    public static final KJsonValidator SCHEMA = KJsonObjectValidatorBuilder
-        .create()
-        .withField(ENGINE_CONTEXT_LOADER_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(COMPONENT_LOADER_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(SERVICE_LOADER_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(MESSAGE_ROUTE_CONFIGURERS_KEY, KJsonValueType.ARRAY)
-        .withValidator(
-            KJsonArrayValidatorBuilder
-                .create(KJsonValueType.STRING)
-                .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                .build()
-        )
-        .finishField()
-        .withField(EVENT_REGISTERERS_KEY, KJsonValueType.ARRAY)
-        .withValidator(
-            KJsonArrayValidatorBuilder
-                .create(KJsonValueType.STRING)
-                .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                .build()
-        )
-        .finishField()
-        .withField(COMPONENTS_KEY, KJsonValueType.ARRAY)
-        .withValidator(
-            KJsonArrayValidatorBuilder
-                .create(KJsonValueType.STRING)
-                .withValidator(KJsonValueIsClassValidator.INSTANCE)
-                .build()
-        )
-        .finishField()
-        .withField(FRAME_LOADER_KEY, KJsonValueType.STRING)
-        .withValidator(KJsonValueIsClassValidator.INSTANCE)
-        .finishField()
-        .withField(FRAME_OPTIONS_KEY, KJsonValueType.OBJECT)
-        .withValidator(KFrameSpawnOptions.SCHEMA)
-        .finishField()
-        .build();
+    public static KJsonValidator getSchema() {
+        return KJsonObjectValidatorBuilder
+            .create()
+            .withField(ENGINE_CONTEXT_LOADER_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(COMPONENT_LOADER_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(SERVICE_LOADER_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(MESSAGE_ROUTE_CONFIGURERS_KEY, KJsonValueType.ARRAY)
+            .withValidator(
+                KJsonArrayValidatorBuilder
+                    .create(KJsonValueType.STRING)
+                    .withValidator(new KJsonValueIsClassValidator())
+                    .build()
+            )
+            .finishField()
+            .withField(EVENT_REGISTERERS_KEY, KJsonValueType.ARRAY)
+            .withValidator(
+                KJsonArrayValidatorBuilder
+                    .create(KJsonValueType.STRING)
+                    .withValidator(new KJsonValueIsClassValidator())
+                    .build()
+            )
+            .finishField()
+            .withField(COMPONENTS_KEY, KJsonValueType.ARRAY)
+            .withValidator(
+                KJsonArrayValidatorBuilder
+                    .create(KJsonValueType.STRING)
+                    .withValidator(new KJsonValueIsClassValidator())
+                    .build()
+            )
+            .finishField()
+            .withField(FRAME_LOADER_KEY, KJsonValueType.STRING)
+            .withValidator(new KJsonValueIsClassValidator())
+            .finishField()
+            .withField(FRAME_OPTIONS_KEY, KJsonValueType.OBJECT)
+            .withValidator(KFrameSpawnOptions.getSchema())
+            .finishField()
+            .build();
+    }
 
 }

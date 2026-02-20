@@ -72,17 +72,4 @@ public enum KTextureFiltering {
         return this != NEAREST && this != LINEAR;
     }
 
-    /**
-     * Json validator for this type.
-     */
-    public static final KJsonValidator VALIDATOR = (v) -> {
-        String s = v.getString();
-
-        try {
-            KTextureFiltering.valueOf(s);
-        } catch (IllegalArgumentException e) {
-            throw new KJsonValidationError(e.getMessage());
-        }
-
-    };
 }

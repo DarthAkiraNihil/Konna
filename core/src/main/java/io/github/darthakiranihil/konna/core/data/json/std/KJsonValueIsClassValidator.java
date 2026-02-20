@@ -32,11 +32,6 @@ import io.github.darthakiranihil.konna.core.util.KClassUtils;
 public class KJsonValueIsClassValidator implements KJsonValidator {
 
     /**
-     * Convenience static instance of the validator.
-     */
-    public static final KJsonValidator INSTANCE = new KJsonValueIsClassValidator();
-
-    /**
      * Checks if passed value is string and its value is a name of any
      * existing Java class (inside application). Throws {@link KJsonValidationError}
      * if one of two conditions are not met.
