@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
 
 /**
  * Interface for key listener that listens for key pressing and releasing.

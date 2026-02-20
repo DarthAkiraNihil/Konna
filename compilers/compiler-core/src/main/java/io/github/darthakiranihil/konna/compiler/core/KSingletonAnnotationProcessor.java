@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.compiler.core;
 
 import com.google.auto.service.AutoService;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

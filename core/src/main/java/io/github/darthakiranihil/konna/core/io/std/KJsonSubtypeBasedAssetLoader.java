@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io.std;
 
+import io.github.darthakiranihil.konna.annotation.core.data.json.KJsonArray;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;

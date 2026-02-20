@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.object.except.KInvalidPoolableClassException;
 import org.jspecify.annotations.Nullable;
@@ -118,7 +120,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * @return A pooled object
      * @throws io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException
      *         If there is no unused objects in the pool
-     * @see io.github.darthakiranihil.konna.core.di.KInject
+     * @see io.github.darthakiranihil.konna.annotation.core.di.KInject
      */
     public abstract T obtain(
         KContainer container,

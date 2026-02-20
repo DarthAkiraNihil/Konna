@@ -18,9 +18,9 @@ package io.github.darthakiranihil.konna.compiler.core;
 
 
 import com.google.auto.service.AutoService;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
-import io.github.darthakiranihil.konna.core.object.KPoolable;
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectRelease;
+import io.github.darthakiranihil.konna.annotation.core.object.KPoolable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
