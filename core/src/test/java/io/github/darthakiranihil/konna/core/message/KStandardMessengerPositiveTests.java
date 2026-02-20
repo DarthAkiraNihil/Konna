@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader;
 import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
@@ -44,6 +46,23 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
     private final Field serviceObjectField;
     private final Field componentServicesField;
+
+    private final ConsumerTest consumerTest1;
+    private final ConsumerTest consumerTest2;
+
+    private static final class ConsumerTest implements Consumer<KMessage> {
+
+        private @Nullable KMessage msg;
+
+        @Override
+        public void accept(KMessage message) {
+            this.msg = message;
+        }
+
+        public @Nullable KMessage getMsg() {
+            return msg;
+        }
+    }
 
     public KStandardMessengerPositiveTests() {
 
@@ -64,6 +83,9 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
                 KJsonValue.fromMap(new HashMap<>())
             );
 
+            this.consumerTest1 = new ConsumerTest();
+            this.consumerTest2 = new ConsumerTest();
+
             this.messageSystem = KStandardTestClass.msgSystem;
 
             this.messageSystem.registerComponent(this.component1);
@@ -77,6 +99,14 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
                 .addMessageRoute(
                     "TestComponent.biba",
                     "TestComponentAgain.TestAnotherService.testEndpoint",
+                    List.of(TunnelExample.class)
+                )
+                .addMessageRoute(
+                    "TestComponentAgain.aboba", this.consumerTest1
+                )
+                .addMessageRoute(
+                    "TestComponent.biba",
+                    this.consumerTest2,
                     List.of(TunnelExample.class)
                 );
 
@@ -223,6 +253,8 @@ public class KStandardMessengerPositiveTests extends KStandardTestClass {
 
             Assertions.assertEquals(2, ((TestAnotherService) this.serviceObjectField.get(serviceEntry2)).getTestVar());
             Assertions.assertNotEquals(-1, ((TestService) this.serviceObjectField.get(serviceEntry1)).getTestVar());
+            Assertions.assertNotNull(this.consumerTest1.getMsg());
+            Assertions.assertNotNull(this.consumerTest2.getMsg());
 
         } catch (Throwable e) {
             Assertions.fail(e);

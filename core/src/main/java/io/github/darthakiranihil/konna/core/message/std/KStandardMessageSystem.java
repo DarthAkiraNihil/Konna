@@ -235,20 +235,10 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
                 .subSequence(destinationEndpoint.indexOf('.') + 1, destinationEndpoint.length())
                 .toString();
 
-        if (this.routes.containsKey(messageId)) {
-            var route = this.routes.get(messageId);
-            route.connections.put(
-                destinationEndpoint,
-                new RouteConnectionData(
-                    destinationComponent::acceptMessage,
-                    this.makeTunnels(tunnels),
-                    shortEndpointName
-                )
-            );
-            return;
-        }
+        var route = this.routes.containsKey(messageId)
+            ? this.routes.get(messageId)
+            : new RouteData();
 
-        var route = new RouteData();
         route.connections.put(
             destinationEndpoint,
             new RouteConnectionData(
