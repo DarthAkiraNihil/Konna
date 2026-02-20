@@ -57,6 +57,11 @@ public class KEntityManagementService extends KObject {
 
     private @Nullable KMessenger messenger;
 
+    /**
+     * Standard constructor.
+     * @param activator Activator to delete entities
+     * @param entityFactory Entity factory for create entities
+     */
     public KEntityManagementService(
         @KInject final KActivator activator,
         @KInject final KEntityFactory entityFactory
@@ -75,6 +80,14 @@ public class KEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Creates an active entity with specific name and type.
+     * If it has been successfully created, a message with id {@code Entity.entityCreated}
+     * will be produced.
+     * It may fail if type is unknown for the entity factory.
+     * @param entityName Name of created entity
+     * @param entityType Type of created entity
+     */
     @KServiceEndpoint(
         route = "createEntity",
         converter = KInternals.MessageToEntityCreationDataConverter.class
@@ -98,6 +111,15 @@ public class KEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Creates an active entity with specific name and type with restoring its data.
+     * If it has been successfully created and deserialized,
+     * a message with id {@code Entity.entityCreated} will be produced.
+     * It may fail if type is unknown for the entity factory or data deserialization has failed.
+     * @param entityName Name of created entity
+     * @param entityType Type of created entity
+     * @param data Data of restored entity
+     */
     @KServiceEndpoint(
         route = "restoreEntity",
         converter = KInternals.MessageToEntityRestorationDataConverter.class
@@ -122,6 +144,12 @@ public class KEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Deactivates entity with specific id. It won't have any effect if the
+     * entity does not exist or already deactivated. Otherwise, it deactivates it
+     * and produces a message with id {@code Entity.entityDeactivated}.
+     * @param entityId ID of entity to deactivate
+     */
     @KServiceEndpoint(
         route = "deactivateEntity",
         converter = KInternals.MessageToEntityIdConverter.class
@@ -151,6 +179,12 @@ public class KEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Activates entity with specific id. It won't have any effect if the
+     * entity does not exist or already activated. Otherwise, it activates it
+     * and produces a message with id {@code Entity.entityActivated}.
+     * @param entityId ID of entity to activate
+     */
     @KServiceEndpoint(
         route = "activateEntity",
         converter = KInternals.MessageToEntityIdConverter.class
@@ -180,6 +214,12 @@ public class KEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Destroys entity with specific id. It won't have any effect if the
+     * entity does not exist. Otherwise, it destroys it
+     * and produces a message with id {@code Entity.entityDestroyed}.
+     * @param entityId ID of entity to destroy
+     */
     @KServiceEndpoint(
         route = "destroyEntity",
         converter = KInternals.MessageToEntityIdConverter.class
@@ -216,6 +256,10 @@ public class KEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Sets messenger for this service.
+     * @param messenger Messenger of Entity component
+     */
     public void setMessenger(final KMessenger messenger) {
         this.messenger = messenger;
     }

@@ -66,6 +66,15 @@ public final class KReflectionUtils extends KUninstantiable {
         }
     }
 
+    /**
+     * Returns method handle of any class without checked exceptions.
+     * @param ofClass Class to get method from
+     * @param methodName Method name
+     * @param parameterTypes Types of method parameter
+     * @return The {@link Method} object with specific name and parameters or {@code null},
+     *         if the method is not found
+     * @since 0.4.0
+     */
     public static @Nullable Method getMethod(
         final Class<?> ofClass,
         final String methodName,
@@ -82,6 +91,13 @@ public final class KReflectionUtils extends KUninstantiable {
 
     }
 
+    /**
+     * Invokes passed method without bypassing mandatory checked exceptions catching.
+     * @param method Method handle to invoke
+     * @param classInstance Instance of class whose method will be called
+     * @param methodArgs Method arguments
+     * @return Return value of invoked method
+     */
     @SuppressWarnings("UnusedReturnValue")
     public static Object invokeMethod(
         final Method method,
@@ -97,6 +113,15 @@ public final class KReflectionUtils extends KUninstantiable {
 
     }
 
+    /**
+     * Returns getter handle for specific class field. In order for this method
+     * to return the real handle, the getter must be named like {@code get[Field]}
+     * where {@code [Field]} is capitalized name of accessed property.
+     * @param ofClass Class to find getter in
+     * @param forField Field to get getter of
+     * @return The {@link Method} instance, representing getter for the passed field
+     *         or {@link null} if it is not found
+     */
     public static @Nullable Method getGetter(
         final Class<?> ofClass,
         final String forField
@@ -110,6 +135,16 @@ public final class KReflectionUtils extends KUninstantiable {
         );
     }
 
+    /**
+     * Returns setter handle for specific class field. In order for this method
+     * to return the real handle, the getter must be named like {@code set[Field]}
+     * where {@code [Field]} is capitalized name of accessed property.
+     * @param ofClass Class to find setter in
+     * @param forField Field to get setter of
+     * @param fieldType Field type (setter parameter type)
+     * @return The {@link Method} instance, representing setter for the passed field
+     *         or {@link null} if it is not found
+     */
     public static @Nullable Method getSetter(
         final Class<?> ofClass,
         final String forField,

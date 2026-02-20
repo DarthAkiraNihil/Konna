@@ -80,6 +80,9 @@ public class KEntity extends KObject {
 
     }
 
+    /**
+     * @return Type of this entity
+     */
     public final String type() {
         return this.type;
     }

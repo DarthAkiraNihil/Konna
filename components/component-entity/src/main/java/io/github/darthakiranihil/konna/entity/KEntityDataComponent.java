@@ -16,10 +16,6 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
-
-import java.lang.reflect.Proxy;
-
 /**
  * Simple marking interface, used to show that this class contains
  * some data, suitable to be used as entity data.

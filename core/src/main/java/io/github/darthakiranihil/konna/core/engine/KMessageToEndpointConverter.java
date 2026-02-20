@@ -39,9 +39,16 @@ public interface KMessageToEndpointConverter {
         }
     }
 
+    /**
+     * Default implementation of {@link KMessageToEndpointConverter}, that
+     * literally just returns array of the only message, that has been passed to the endpoint.
+     *
+     * @since 0.4.0
+     * @author Darth Akira Nihil
+     */
     final class DirectConverter implements KMessageToEndpointConverter {
         @Override
-        public Object[] convert(KMessage message) {
+        public Object[] convert(final KMessage message) {
             return new Object[] {message};
         }
     }

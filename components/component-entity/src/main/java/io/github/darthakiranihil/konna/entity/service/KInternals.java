@@ -31,7 +31,6 @@ final class KInternals extends KUninstantiable {
     private static final String TYPE_KEY = "type";
     private static final String DATA_KEY = "data";
     private static final String ENTITY_ID_KEY = "entity_id";
-    private static final String UPDATE_DATA_KEY = "updated_properties";
 
     public static final class MessageToEntityCreationDataConverter
         implements KMessageToEndpointConverter {
@@ -65,7 +64,7 @@ final class KInternals extends KUninstantiable {
         implements KMessageToEndpointConverter {
 
         @Override
-        public Object[] convert(KMessage message) {
+        public Object[] convert(final KMessage message) {
 
             var body = message.body();
 
@@ -100,7 +99,7 @@ final class KInternals extends KUninstantiable {
         implements KMessageToEndpointConverter {
 
         @Override
-        public Object[] convert(KMessage message) {
+        public Object[] convert(final KMessage message) {
 
             var body = message.body();
 
