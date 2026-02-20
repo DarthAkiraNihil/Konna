@@ -106,7 +106,9 @@ public final class KServiceEntry {
                 route,
                 this.service
             );
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
+            throw new KEndpointRoutingException(e.getTargetException());
+        } catch (IllegalAccessException e) {
             throw new KEndpointRoutingException(e);
         }
     }

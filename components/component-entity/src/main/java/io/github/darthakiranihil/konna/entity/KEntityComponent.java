@@ -29,7 +29,6 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.service.KActiveEntitiesService;
-import io.github.darthakiranihil.konna.entity.service.KEntityUpdaterService;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 
 /**
@@ -90,12 +89,8 @@ public class KEntityComponent extends KComponent {
         KActiveEntitiesService activeEntitiesService = this.ctx.createObject(
             KActiveEntitiesService.class
         );
-        KEntityUpdaterService entityUpdaterService = this.ctx.createObject(
-            KEntityUpdaterService.class
-        );
 
         activeEntitiesService.setMessenger(this.messenger);
-        entityUpdaterService.setMessenger(this.messenger);
 
     }
 }

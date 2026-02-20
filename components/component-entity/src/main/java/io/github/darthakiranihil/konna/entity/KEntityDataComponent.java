@@ -27,27 +27,6 @@ import java.lang.reflect.Proxy;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-public interface KEntityDataComponent extends Cloneable {
-
-    KEntityDataComponent clone();
-    default KEntityDataComponent readonlyClone() {
-
-        KEntityDataComponent cloned = this.clone();
-
-        return (KEntityDataComponent) Proxy.newProxyInstance(
-            ClassLoader.getSystemClassLoader(),
-            new Class[] { KEntityDataComponent.class },
-            (proxy, method, args) -> {
-                if (method.getName().startsWith("set")) {
-                    throw new KUnsupportedOperationException(
-                        "This entity data component is read-only"
-                    );
-                }
-
-                return method.invoke(cloned, args);
-            }
-        );
-
-    }
+public interface KEntityDataComponent {
 
 }

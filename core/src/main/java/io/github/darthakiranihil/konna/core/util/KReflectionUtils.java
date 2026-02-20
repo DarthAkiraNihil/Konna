@@ -68,11 +68,12 @@ public final class KReflectionUtils extends KUninstantiable {
 
     public static @Nullable Method getMethod(
         final Class<?> ofClass,
-        final String methodName
+        final String methodName,
+        final Class<?>... parameterTypes
     ) {
 
         try {
-            Method m = ofClass.getDeclaredMethod(methodName);
+            Method m = ofClass.getDeclaredMethod(methodName, parameterTypes);
             m.setAccessible(true);
             return m;
         } catch (Throwable e) {
@@ -96,16 +97,31 @@ public final class KReflectionUtils extends KUninstantiable {
 
     }
 
-    public static @Nullable Method getSetter(
+    public static @Nullable Method getGetter(
         final Class<?> ofClass,
         final String forField
     ) {
         return KReflectionUtils.getMethod(
             ofClass,
             String.format(
-                "set%s",
+                "get%s",
                 forField.substring(0, 1).toUpperCase() + forField.substring(1)
             )
+        );
+    }
+
+    public static @Nullable Method getSetter(
+        final Class<?> ofClass,
+        final String forField,
+        final Class<?> fieldType
+    ) {
+        return KReflectionUtils.getMethod(
+            ofClass,
+            String.format(
+                "set%s",
+                forField.substring(0, 1).toUpperCase() + forField.substring(1)
+            ),
+            fieldType
         );
     }
 
