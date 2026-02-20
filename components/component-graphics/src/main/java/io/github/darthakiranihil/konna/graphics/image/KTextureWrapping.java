@@ -16,9 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.image;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-
 /**
  * Enumeration representing different modes of texture wrapping.
  * Their applying depends on

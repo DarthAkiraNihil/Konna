@@ -16,9 +16,6 @@
 
 package io.github.darthakiranihil.konna.graphics.shader;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-
 /**
  * Enumeration for all supported shader types.
  *
