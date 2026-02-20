@@ -97,7 +97,7 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
         KJsonValidator validator = KJsonObjectValidatorBuilder
             .create()
             .withField("aboba", KJsonValueType.STRING)
-            .withValidator(KJsonValueIsClassValidator.INSTANCE)
+            .withValidator(new KJsonValueIsClassValidator())
             .finishField()
             .withSimpleField("biba", KJsonValueType.NUMBER_INT)
             .build();
@@ -158,7 +158,7 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
         String src = "[\"1\", \"2\", \"3\"]";
         KJsonValidator validator = new KJsonArrayValidator(
             KJsonValueType.STRING,
-            KJsonValueIsClassValidator.INSTANCE
+            new KJsonValueIsClassValidator()
         );
 
         try {
@@ -181,7 +181,7 @@ public class KJsonValidatorsNegativeTests extends KStandardTestClass {
             KJsonValue parsed = this.jsonParser.parse(src);
             Assertions.assertThrows(
                 KJsonValidationError.class,
-                () -> KJsonValueIsClassValidator.INSTANCE.validate(parsed)
+                () -> new KJsonValueIsClassValidator().validate(parsed)
             );
         } catch (KJsonParseException e) {
             Assertions.fail(e);
