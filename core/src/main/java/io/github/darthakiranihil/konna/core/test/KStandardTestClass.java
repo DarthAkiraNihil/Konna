@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
+import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSystemLogger;
 import io.github.darthakiranihil.konna.core.log.std.*;
@@ -148,6 +149,7 @@ public class KStandardTestClass extends KObject {
         );
         activator.addContext(KStandardTestClass.context);
         KStandardTestClass.msgSystem = messageSystem;
+        KSystemLogger.setLogLevel(KLogLevel.INFO);
     }
 
     /**
