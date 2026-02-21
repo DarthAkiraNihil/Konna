@@ -9,3 +9,9 @@ ext {
 }
 
 description = "Standard implementations of Konna Entity classes"
+
+dependencies {
+
+    implementation project(":component-entity")
+
+}

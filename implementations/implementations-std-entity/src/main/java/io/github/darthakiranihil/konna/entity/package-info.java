@@ -6,6 +6,6 @@
  * @author Darth Akira Nihil
  */
 @NullMarked
-package io.github.darthakiranihil.konna.entity.std;
+package io.github.darthakiranihil.konna.entity;
 
 import org.jspecify.annotations.NullMarked;
