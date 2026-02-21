@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.annotation.core.object.KPoolable;
+import io.github.darthakiranihil.konna.core.object.KPoolable;
 
 @KPoolable(initialPoolSize = 2)
 public class TestPoolableWithoutSpecialMethods {

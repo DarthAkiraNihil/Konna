@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.backend.lwjgl.glfw;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
-import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.glfw.*;
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.*;

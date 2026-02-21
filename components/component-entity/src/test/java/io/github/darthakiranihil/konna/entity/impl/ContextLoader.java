@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeseriali
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonSerializer;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
-import io.github.darthakiranihil.konna.annotation.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.std.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;

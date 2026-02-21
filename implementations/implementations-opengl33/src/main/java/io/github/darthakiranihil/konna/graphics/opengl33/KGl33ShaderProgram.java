@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
-import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 
