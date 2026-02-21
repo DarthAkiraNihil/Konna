@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.impl.TestShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.stb.KStbImageLoader;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;

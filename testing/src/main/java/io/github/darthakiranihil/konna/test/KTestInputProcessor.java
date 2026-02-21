@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.test;
+package io.github.darthakiranihil.konna.test;
 
 import io.github.darthakiranihil.konna.core.io.control.KInputControlScheme;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;

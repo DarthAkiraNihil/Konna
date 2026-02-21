@@ -5,7 +5,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.std.KJsonSubtypeBasedAssetLoader;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;

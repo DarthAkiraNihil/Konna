@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.test;
+package io.github.darthakiranihil.konna.test;
 
-import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import org.jetbrains.annotations.TestOnly;
 
 /**
- * Implementation of {@link KEventRegisterer} to be used only in tests.
- * Does nothing.
+ * Implementation of {@link KEngineContextLoader} to be used only in tests.
+ * Returns context, defined in {@link KStandardTestClass#context}
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @TestOnly
-public final class KEmptyEventRegisterer implements KEventRegisterer {
+public final class KTestContextLoader implements KEngineContextLoader {
 
     @Override
-    public void registerEvents(final KEventSystem eventSystem) {
-
+    public KEngineContext load(final KApplicationFeatures features) {
+        return KStandardTestClass.getContext();
     }
 
 }

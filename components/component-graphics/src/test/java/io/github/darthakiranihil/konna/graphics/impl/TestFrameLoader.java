@@ -18,13 +18,9 @@ package io.github.darthakiranihil.konna.graphics.impl;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
-import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.test.KTestFrameLoader;
-import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
+import io.github.darthakiranihil.konna.test.KTestFrameLoader;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.TimeUnit;

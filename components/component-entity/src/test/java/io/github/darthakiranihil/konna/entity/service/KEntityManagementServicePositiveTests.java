@@ -23,11 +23,10 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2;
-import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

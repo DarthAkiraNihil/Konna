@@ -14,31 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.test;
+package io.github.darthakiranihil.konna.test;
 
-import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KFrameLoader;
-import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import org.jetbrains.annotations.TestOnly;
 
 /**
- * Implementation of {@link KFrameLoader} to be used only in tests.
- * Returns a new {@link KTestFrame}.
+ * Implementation of {@link KMessageRoutesConfigurer} to be used only in tests.
+ * Does nothing.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
 @TestOnly
-public class KTestFrameLoader implements KFrameLoader {
+public final class KEmptyRouteConfigurer implements KMessageRoutesConfigurer {
 
     @Override
-    public KFrame load(final KEngineContext ctx, final KFrameSpawnOptions spawnOptions) {
+    public void setupRoutes(final KMessageSystem messageSystem) {
 
-        ctx
-            .getContainer()
-            .add(KFrame.class, KTestFrame.class);
-
-        return new KTestFrame();
     }
+
 }
