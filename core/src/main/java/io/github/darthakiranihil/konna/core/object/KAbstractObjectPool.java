@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import org.jspecify.annotations.Nullable;
 

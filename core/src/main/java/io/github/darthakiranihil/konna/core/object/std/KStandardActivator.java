@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.object.std;
 
 import io.github.classgraph.ClassGraph;
-import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
