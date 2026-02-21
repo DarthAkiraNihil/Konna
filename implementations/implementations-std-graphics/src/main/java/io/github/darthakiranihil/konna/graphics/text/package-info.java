@@ -5,6 +5,6 @@
  * @author Darth Akira Nihil
  */
 @NullMarked
-package io.github.darthakiranihil.konna.graphics.text.std;
+package io.github.darthakiranihil.konna.graphics.text;
 
 import org.jspecify.annotations.NullMarked;

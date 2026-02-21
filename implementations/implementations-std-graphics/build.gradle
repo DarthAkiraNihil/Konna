@@ -9,3 +9,9 @@ ext {
 }
 
 description = "Standard implementations of Konna Graphics classes"
+
+dependencies {
+
+    implementation project(":component-graphics")
+
+}

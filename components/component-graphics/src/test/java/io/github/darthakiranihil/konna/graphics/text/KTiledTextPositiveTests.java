@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.impl.TestShaderProgram;
-import io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontFormat;
+import io.github.darthakiranihil.konna.graphics.text.KSquaredAsciiTiledFontFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

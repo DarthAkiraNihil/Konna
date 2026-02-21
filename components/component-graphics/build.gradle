@@ -12,6 +12,7 @@ description = "Graphics component of Konna engine"
 
 dependencies {
 
+    testImplementation project(":implementations-std-graphics")
     testImplementation project(":backend-lwjgl")
     testImplementation project(":libfrontend-stb")
     testImplementation project(":implementations-stb")
