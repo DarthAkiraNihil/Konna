@@ -20,6 +20,10 @@ include 'implementations-opengl33'
 include 'implementations-glfw'
 include 'implementations-stb'
 
+include 'implementations-std-core'
+include 'implementations-std-entity'
+include 'implementations-std-graphics'
+
 include 'backend-spair'
 include 'backend-lwjgl'
 
@@ -38,6 +42,10 @@ findProject(':libfrontend-dear-imgui').projectDir = new File("libfrontend/libfro
 findProject(':implementations-opengl33').projectDir = new File("implementations/implementations-opengl33")
 findProject(':implementations-glfw').projectDir = new File("implementations/implementations-glfw")
 findProject(':implementations-stb').projectDir = new File("implementations/implementations-stb")
+
+findProject(':implementations-std-core').projectDir = new File("implementations/implementations-std-core")
+findProject(':implementations-std-entity').projectDir = new File("implementations/implementations-std-entity")
+findProject(':implementations-std-graphics').projectDir = new File("implementations/implementations-std-graphics")
 
 findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
 findProject(':backend-spair').projectDir = new File("backend/backend-spair")

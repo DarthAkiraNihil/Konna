@@ -9,26 +9,11 @@ description = "Konna BOM"
 
 dependencies {
     constraints {
-        api project(':core')
 
-        api project(':component-graphics')
-        api project(':component-entity')
+        parent.konnaModules.sort { "$it.name" }.each {
+            api it
+        }
 
-        api project(':libfrontend-opengl')
-        api project(':libfrontend-glfw')
-        api project(':libfrontend-stb')
-        api project(':libfrontend-dear-imgui')
-
-        api project(':implementations-opengl33')
-        api project(':implementations-glfw')
-        api project(':implementations-stb')
-
-        api project(':backend-spair')
-        api project(':backend-lwjgl')
-
-        api project(':annotations-core')
-
-        api project(':compiler-core')
     }
 }
 
