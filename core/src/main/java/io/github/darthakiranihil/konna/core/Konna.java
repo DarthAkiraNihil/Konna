@@ -204,7 +204,7 @@ public final class Konna extends KObject implements Runnable {
                 "io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser");
 
             return KReflectionUtils.newInstance(
-                Objects.requireNonNull(KReflectionUtils.getConstructor(parser, tokenizer)),
+                Objects.requireNonNull(KReflectionUtils.getConstructor(parser, KJsonTokenizer.class)),
                 KReflectionUtils.newInstance(Objects.requireNonNull(KReflectionUtils.getConstructor(
                     tokenizer)))
             );

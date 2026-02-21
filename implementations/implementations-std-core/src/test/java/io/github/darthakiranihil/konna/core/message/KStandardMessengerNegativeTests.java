@@ -1,0 +1,207 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.darthakiranihil.konna.core.message;
+
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.engine.*;
+import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherService;
+import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.impl.TestService;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+
+public class KStandardMessengerNegativeTests extends KStandardTestClass {
+
+    private final KComponent component1;
+    private final KComponent component2;
+    private final KMessageSystem messageSystem;
+
+    private final Field serviceObjectField;
+    private final Field componentServicesField;
+
+    public KStandardMessengerNegativeTests() {
+
+        KServiceLoader serviceLoader = new KStandardServiceLoader();
+
+        try {
+            this.component1 = new TestComponent(serviceLoader,
+                "TestComponent",
+                KStandardTestClass.context,
+                "io.github.darthakiranihil.konna.core.engine.impl",
+                KJsonValue.fromMap(new HashMap<>())
+            );
+
+            this.component2 = new TestComponentAgain(serviceLoader,
+                "TestComponentAgain",
+                KStandardTestClass.context,
+                "io.github.darthakiranihil.konna.core.engine.another_impl",
+                KJsonValue.fromMap(new HashMap<>())
+            );
+
+            this.messageSystem = KStandardTestClass.context;
+
+            this.serviceObjectField = KServiceEntry.class.getDeclaredField("service");
+            this.componentServicesField = KComponent.class.getDeclaredField("services");
+
+            this.serviceObjectField.setAccessible(true);
+            this.componentServicesField.setAccessible(true);
+
+        } catch (KComponentLoadingException | NoSuchFieldException e) {
+            Assertions.fail(e);
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Test
+    public void testSendRegularMessageSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendRegularSync,
+            messenger2::sendRegularSync,
+            false
+        );
+    }
+
+    @Test
+    public void testSendDebugMessageSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendDebugSync,
+            messenger2::sendDebugSync,
+            false
+        );
+    }
+
+    @Test
+    public void testSendMetricsMessageSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendMetricsSync,
+            messenger2::sendMetricsSync,
+            false
+        );
+    }
+
+    @Test
+    public void testSendSystemMessageSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendSystemSync,
+            messenger2::sendSystemSync,
+            false
+        );
+    }
+
+    @Test
+    public void testSendRegularMessageAsyncSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendRegular,
+            messenger2::sendRegular,
+            true
+        );
+    }
+
+    @Test
+    public void testSendDebugMessageAsyncSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendDebug,
+            messenger2::sendDebug,
+            true
+        );
+    }
+
+    @Test
+    public void testSendMetricsMessageAsyncSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendMetrics,
+            messenger2::sendMetrics,
+            true
+        );
+    }
+
+    @Test
+    public void testSendSystemMessageAsyncSuccess() {
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+
+        this.sendTest(
+            messenger1::sendSystem,
+            messenger2::sendSystem,
+            true
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    private void sendTest(
+        BiConsumer<String, KUniversalMap> sendMethodForFirstMessenger,
+        BiConsumer<String, KUniversalMap> sendMethodForSecondMessenger,
+        boolean isAsync
+    ) {
+
+        var body = new KUniversalMap();
+        body.put("test", 1);
+
+        sendMethodForFirstMessenger.accept("biba", body);
+        sendMethodForSecondMessenger.accept("aboba", new KUniversalMap());
+
+        try {
+
+            if (isAsync) {
+                TimeUnit.SECONDS.sleep(2);
+            }
+
+            Map<String, KServiceEntry> component1Services = (Map<String, KServiceEntry>) this.componentServicesField.get(this.component1);
+            Map<String, KServiceEntry> component2Services = (Map<String, KServiceEntry>) this.componentServicesField.get(this.component2);
+
+            KServiceEntry serviceEntry1 = component1Services.get("TestService");
+            KServiceEntry serviceEntry2 = component2Services.get("TestAnotherService");
+
+            Assertions.assertEquals(-1, ((TestAnotherService) this.serviceObjectField.get(serviceEntry2)).getTestVar());
+            Assertions.assertEquals(-1, ((TestService) this.serviceObjectField.get(serviceEntry1)).getTestVar());
+
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+    }
+
+}

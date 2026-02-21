@@ -16,10 +16,10 @@
 
 package io.github.darthakiranihil.konna.graphics.asset;
 
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.std.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
 import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;

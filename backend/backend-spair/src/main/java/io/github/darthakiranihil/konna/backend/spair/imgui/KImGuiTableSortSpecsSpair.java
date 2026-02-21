@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiTableSortSpecs;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiTableColumnSortSpecs;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiTableSortSpecs;
 

@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfw;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
 

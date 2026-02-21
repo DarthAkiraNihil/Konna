@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 /**
  * Enumeration for all possible processing keys.

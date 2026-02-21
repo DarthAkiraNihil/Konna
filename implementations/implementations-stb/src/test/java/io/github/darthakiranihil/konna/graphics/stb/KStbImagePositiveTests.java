@@ -17,8 +17,8 @@
 package io.github.darthakiranihil.konna.graphics.stb;
 
 import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
-import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
-import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
+import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
+import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;

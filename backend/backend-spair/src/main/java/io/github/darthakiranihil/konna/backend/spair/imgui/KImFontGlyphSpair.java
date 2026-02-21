@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImFontGlyph;
 import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontGlyph;
 
 @KExcludeFromGeneratedCoverageReport
