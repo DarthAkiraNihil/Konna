@@ -6,7 +6,9 @@ pluginManagement {
 }
 
 rootProject.name = 'Konna'
+
 include 'core'
+include 'testing'
 
 include 'component-graphics'
 include 'component-entity'
