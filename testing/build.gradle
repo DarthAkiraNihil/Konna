@@ -9,3 +9,9 @@ ext {
 }
 
 description = "Konna testing module"
+
+dependencies {
+
+    implementation project(":implementations-std-core")
+
+}

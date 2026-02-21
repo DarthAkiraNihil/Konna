@@ -20,16 +20,19 @@ import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -37,6 +40,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Konna. The heart of a game application that performs
@@ -50,7 +54,6 @@ public final class Konna extends KObject implements Runnable {
     private static final String BOOTSTRAP_CONFIG = "bootstrap.json";
 
     private final Thread shutdownHook;
-    private volatile boolean running;
     private @Nullable Thread hypervisorThread;
 
     private final List<KApplicationArgument> applicationArgsOptions;
@@ -145,7 +148,7 @@ public final class Konna extends KObject implements Runnable {
                 );
             }
 
-            KJsonParser parser = new KStandardJsonParser(new KStandardJsonTokenizer());
+            KJsonParser parser = this.createParser();
             KJsonValue config = parser.parse(bootstrapConfig);
             KonnaBootstrap.getSchema().validate(config);
             KonnaBootstrap bootstrap = new KonnaBootstrap(config);
@@ -162,7 +165,6 @@ public final class Konna extends KObject implements Runnable {
             return;
         }
 
-        this.running = true;
         this.hypervisorThread = new Thread(
             () -> {
                 try {
@@ -187,9 +189,46 @@ public final class Konna extends KObject implements Runnable {
             return;
         }
 
-        this.running = false;
         this.hypervisor.shutdown();
         this.hypervisorThread = null;
         KSystemLogger.info(this.name, "Shutdown finished");
+    }
+
+    @SuppressWarnings("unchecked")
+    private KJsonParser createParser() {
+
+        try {
+            Class<? extends KJsonTokenizer> tokenizer = (Class<? extends KJsonTokenizer>) KClassUtils.getForName(
+                "io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer");
+            Class<? extends KJsonParser> parser = (Class<? extends KJsonParser>) KClassUtils.getForName(
+                "io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser");
+
+            return KReflectionUtils.newInstance(
+                Objects.requireNonNull(KReflectionUtils.getConstructor(parser, tokenizer)),
+                KReflectionUtils.newInstance(Objects.requireNonNull(KReflectionUtils.getConstructor(
+                    tokenizer)))
+            );
+
+        } catch (KClassNotFoundException e) {
+            throw new KBootstrapException(
+                String.format(
+                    "%s: %s. %s",
+                    "Could not get standard JSON tokenizer and/or parser",
+                    e,
+                        "So far they are required for Konna starting up so please add"
+                    +   "konna.implementations-std-core to your project"
+                )
+
+            );
+        } catch (NullPointerException | KInstantiationException e) {
+            throw new KBootstrapException(
+                String.format(
+                    "%s: %s. %s",
+                    "Could not instantiate JSON tokenizer and/or parser",
+                    e,
+                    "Please check their constructors signature"
+                )
+            );
+        }
     }
 }

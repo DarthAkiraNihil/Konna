@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.log.system;
 
 import io.github.darthakiranihil.konna.core.log.*;
-import io.github.darthakiranihil.konna.core.log.std.KColorfulTerminalLogFormatter;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
