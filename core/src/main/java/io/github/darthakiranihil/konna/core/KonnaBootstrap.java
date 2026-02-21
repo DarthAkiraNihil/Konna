@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core;
 
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;

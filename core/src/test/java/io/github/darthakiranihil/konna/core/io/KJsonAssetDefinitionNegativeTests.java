@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.std.KJsonAssetDefinition;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;

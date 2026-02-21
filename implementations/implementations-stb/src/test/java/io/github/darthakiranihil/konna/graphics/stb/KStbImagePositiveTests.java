@@ -28,7 +28,6 @@ import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 public class KStbImagePositiveTests extends KStandardTestClass {

@@ -79,7 +79,7 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
     public void testFromJsonComponentClassNotFound() {
 
         String config = "{" +
-            "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader\"," +
+            "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader\"," +
             "\"components\": [" +
             "\"io.github.darthakiranihil.konna.core.engine.TestCompoent\"" +

@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.io.std.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.std.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.io.std.resource.KClasspathResource;
 import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
-import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

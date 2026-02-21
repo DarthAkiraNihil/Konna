@@ -46,7 +46,6 @@ import io.github.darthakiranihil.konna.core.message.std.KStandardMessenger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.std.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.core.util.std.KStandardIndex;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.jspecify.annotations.NullMarked;
