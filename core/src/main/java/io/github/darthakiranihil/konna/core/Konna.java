@@ -198,15 +198,22 @@ public final class Konna extends KObject implements Runnable {
     private KJsonParser createParser() {
 
         try {
-            Class<? extends KJsonTokenizer> tokenizer = (Class<? extends KJsonTokenizer>) KClassUtils.getForName(
-                "io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer");
-            Class<? extends KJsonParser> parser = (Class<? extends KJsonParser>) KClassUtils.getForName(
-                "io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser");
+            Class<? extends KJsonTokenizer> tokenizer = (Class<? extends KJsonTokenizer>)
+                KClassUtils.getForName(
+                    "io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer"
+                );
+            Class<? extends KJsonParser> parser = (Class<? extends KJsonParser>)
+                KClassUtils.getForName(
+                    "io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser"
+                );
 
             return KReflectionUtils.newInstance(
-                Objects.requireNonNull(KReflectionUtils.getConstructor(parser, KJsonTokenizer.class)),
-                KReflectionUtils.newInstance(Objects.requireNonNull(KReflectionUtils.getConstructor(
-                    tokenizer)))
+                Objects.requireNonNull(
+                    KReflectionUtils.getConstructor(parser, KJsonTokenizer.class)
+                ),
+                KReflectionUtils.newInstance(Objects.requireNonNull(
+                    KReflectionUtils.getConstructor(tokenizer))
+                )
             );
 
         } catch (KClassNotFoundException e) {
