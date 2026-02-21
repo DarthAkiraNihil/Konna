@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object.impl;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.annotation.core.object.KTransient;
+import io.github.darthakiranihil.konna.core.object.KTransient;
 
 @KTransient
 public class TestExplicitTransient extends KObject {

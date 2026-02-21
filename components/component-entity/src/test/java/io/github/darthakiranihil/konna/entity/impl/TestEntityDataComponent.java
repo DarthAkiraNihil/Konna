@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.entity.impl;
 
-import io.github.darthakiranihil.konna.annotation.core.data.json.KJsonSerialized;
+import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
 import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 
 public class TestEntityDataComponent implements KEntityDataComponent {

@@ -16,13 +16,13 @@
 
 package io.github.darthakiranihil.konna.entity.asset;
 
-import io.github.darthakiranihil.konna.annotation.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.KEntityMetadata;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;

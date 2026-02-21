@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.test.KTestFrameLoader;
 import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
 import org.jspecify.annotations.NullMarked;

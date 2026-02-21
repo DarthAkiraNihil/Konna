@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.assertion.ImAssertCallback;
-import io.github.darthakiranihil.konna.annotation.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImAssertCallback;
 
 @KExcludeFromGeneratedCoverageReport

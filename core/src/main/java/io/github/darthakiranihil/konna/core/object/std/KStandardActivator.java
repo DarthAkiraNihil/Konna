@@ -17,11 +17,11 @@
 package io.github.darthakiranihil.konna.core.object.std;
 
 import io.github.classgraph.ClassGraph;
-import io.github.darthakiranihil.konna.annotation.core.object.*;
+import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.annotation.core.di.KInjectedConstructor;
+import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
-import io.github.darthakiranihil.konna.annotation.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.object.*;

@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.annotation.core.di.KInject;
-import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
 
 public class TestPartialPoolable {
     private TestSingleton field;

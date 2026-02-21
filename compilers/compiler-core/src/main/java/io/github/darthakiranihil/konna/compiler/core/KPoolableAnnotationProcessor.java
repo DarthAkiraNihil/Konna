@@ -18,9 +18,9 @@ package io.github.darthakiranihil.konna.compiler.core;
 
 
 import com.google.auto.service.AutoService;
-import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.annotation.core.object.KOnPoolableObjectRelease;
-import io.github.darthakiranihil.konna.annotation.core.object.KPoolable;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
+import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
+import io.github.darthakiranihil.konna.core.object.KPoolable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -45,7 +45,7 @@ import java.util.Set;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.annotation.core.object.KPoolable"
+    "io.github.darthakiranihil.konna.core.object.KPoolable"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public final class KPoolableAnnotationProcessor extends AbstractProcessor {
@@ -82,7 +82,6 @@ public final class KPoolableAnnotationProcessor extends AbstractProcessor {
             boolean hasZeroArgConstructor = false;
 
             for (Element enclosed: classElement.getEnclosedElements()) {
-                System.out.println(enclosed.getKind());
                 if (enclosed.getKind() == ElementKind.CONSTRUCTOR) {
                     ExecutableElement method = (ExecutableElement) enclosed;
                     if (method.getParameters().isEmpty()) {

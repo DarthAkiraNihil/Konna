@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object.impl;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.annotation.core.object.*;
+import io.github.darthakiranihil.konna.core.object.*;
 
 @KPoolable(initialPoolSize = 2, weak = true)
 public class TestWeakPoolable extends KObject {

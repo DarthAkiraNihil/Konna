@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.di.std;
 
-import io.github.darthakiranihil.konna.annotation.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.except.KUnknownException;
 import io.github.darthakiranihil.konna.core.object.KActivator;

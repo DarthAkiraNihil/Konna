@@ -22,7 +22,7 @@ import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.annotation.core.util.KIndexedPackage;
+import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.util.*;

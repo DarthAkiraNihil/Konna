@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-import io.github.darthakiranihil.konna.annotation.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 
 /**
  * Represents, literally, a message translator, that transforms

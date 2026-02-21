@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine.impl;
 
-import io.github.darthakiranihil.konna.annotation.core.debug.KDebugger;
+import io.github.darthakiranihil.konna.core.debug.KDebugger;
 
 @KDebugger
 public class TestDebugger {
