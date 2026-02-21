@@ -14,38 +14,52 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.log.std;
+package io.github.darthakiranihil.konna.core.log.system;
 
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
+import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 /**
- * Implementation of {@link KLogFormatter} that just formats the message with
- * args without any other things.
+ * Implementation of {@link KLogHandler} that writes log
+ * messages to stdout (just like terminal). Requires formatter
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KSimpleLogFormatter extends KObject implements KLogFormatter {
+public class KTerminalLogHandler extends KObject implements KLogHandler {
 
-    public KSimpleLogFormatter() {
+    private final KLogFormatter logFormatter;
+
+    /**
+     * Constructs handler with provided formatter.
+     * @param logFormatter Log formatter
+     */
+    public KTerminalLogHandler(final KLogFormatter logFormatter) {
         super(
-            KSimpleLogFormatter.class.getSimpleName(),
+            KTerminalLogHandler.class.getSimpleName(),
             KStructUtils.setOfTags(KTag.DefaultTags.STD)
         );
+        this.logFormatter = logFormatter;
     }
 
     @Override
-    public String format(
-        final KLogLevel level,
+    public void handleLog(
+        final KLogLevel logLevel,
         final String tag,
         final String message,
         final Object... args
     ) {
-        return String.format(message, args);
+
+        System.out.println(this.logFormatter.format(logLevel, tag, message, args));
+
     }
 
+    @Override
+    public boolean hasFormatter() {
+        return true;
+    }
 }

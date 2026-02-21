@@ -14,52 +14,54 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.log.std;
+package io.github.darthakiranihil.konna.core.log;
 
-import io.github.darthakiranihil.konna.core.log.KLogFormatter;
-import io.github.darthakiranihil.konna.core.log.KLogHandler;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
+import java.time.Instant;
+
 /**
- * Implementation of {@link KLogHandler} that writes log
- * messages to stdout (just like terminal). Requires formatter
+ * Implementation of {@link KLogFormatter} that formats given message
+ * and adds timestamp to it and colors of the message log level.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KTerminalLogHandler extends KObject implements KLogHandler {
+public class KColorfulTerminalLogFormatter extends KObject implements KLogFormatter {
 
-    private final KLogFormatter logFormatter;
-
-    /**
-     * Constructs handler with provided formatter.
-     * @param logFormatter Log formatter
-     */
-    public KTerminalLogHandler(final KLogFormatter logFormatter) {
+    public KColorfulTerminalLogFormatter() {
         super(
-            KTerminalLogHandler.class.getSimpleName(),
+            KColorfulTerminalLogFormatter.class.getSimpleName(),
             KStructUtils.setOfTags(KTag.DefaultTags.STD)
         );
-        this.logFormatter = logFormatter;
+    }
+
+    private static String levelToColor(final KLogLevel level) {
+        return switch (level) {
+            case TRACE -> "\033[37m";
+            case DEBUG -> "\033[35m";
+            case INFO -> "\033[36m";
+            case WARNING -> "\033[33m";
+            case ERROR, FATAL -> "\033[31m";
+        };
     }
 
     @Override
-    public void handleLog(
-        final KLogLevel logLevel,
+    public String format(
+        final KLogLevel level,
         final String tag,
         final String message,
         final Object... args
     ) {
-
-        System.out.println(this.logFormatter.format(logLevel, tag, message, args));
-
-    }
-
-    @Override
-    public boolean hasFormatter() {
-        return true;
+        return String.format(
+            "[%s] [%s] [%s%s\033[0m]: %s",
+            Instant.now(),
+            tag,
+            KColorfulTerminalLogFormatter.levelToColor(level),
+            level,
+            String.format(message, args)
+        );
     }
 }

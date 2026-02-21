@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.log;
+package io.github.darthakiranihil.konna.core.log.system;
 
-import io.github.darthakiranihil.konna.core.log.std.*;
+import io.github.darthakiranihil.konna.core.log.KLogHandler;
+import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 import java.util.LinkedList;

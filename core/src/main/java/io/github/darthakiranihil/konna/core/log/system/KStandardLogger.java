@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.log.std;
+package io.github.darthakiranihil.konna.core.log.system;
 
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogHandler;

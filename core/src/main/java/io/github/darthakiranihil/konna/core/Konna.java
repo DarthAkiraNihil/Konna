@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
-import io.github.darthakiranihil.konna.core.log.KSystemLogger;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;

@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.io.KProtocol;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceUtils;
 import io.github.darthakiranihil.konna.core.io.resource.KClasspathResource;
-import io.github.darthakiranihil.konna.core.log.KSystemLogger;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;

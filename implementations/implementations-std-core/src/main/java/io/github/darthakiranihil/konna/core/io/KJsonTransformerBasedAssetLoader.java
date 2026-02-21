@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationErro
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.io.except.KIoException;
-import io.github.darthakiranihil.konna.core.log.KSystemLogger;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 
 import java.io.IOException;
 import java.util.*;

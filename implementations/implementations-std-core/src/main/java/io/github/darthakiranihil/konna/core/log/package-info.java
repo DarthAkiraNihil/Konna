@@ -7,6 +7,6 @@
  * @author Darth Akira Nihil
  */
 @NullMarked
-package io.github.darthakiranihil.konna.core.log.std;
+package io.github.darthakiranihil.konna.core.log;
 
 import org.jspecify.annotations.NullMarked;

@@ -14,40 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.log.std;
+package io.github.darthakiranihil.konna.core.log;
 
-import io.github.darthakiranihil.konna.core.log.KLogFormatter;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
-import java.time.Instant;
-
 /**
- * Implementation of {@link KLogFormatter} that formats given message
- * and adds timestamp to it and colors of the message log level.
+ * Implementation of {@link KLogFormatter} that just formats the message with
+ * args without any other things.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KColorfulTerminalLogFormatter extends KObject implements KLogFormatter {
+public class KSimpleLogFormatter extends KObject implements KLogFormatter {
 
-    public KColorfulTerminalLogFormatter() {
+    public KSimpleLogFormatter() {
         super(
-            KColorfulTerminalLogFormatter.class.getSimpleName(),
+            KSimpleLogFormatter.class.getSimpleName(),
             KStructUtils.setOfTags(KTag.DefaultTags.STD)
         );
-    }
-
-    private static String levelToColor(final KLogLevel level) {
-        return switch (level) {
-            case TRACE -> "\033[37m";
-            case DEBUG -> "\033[35m";
-            case INFO -> "\033[36m";
-            case WARNING -> "\033[33m";
-            case ERROR, FATAL -> "\033[31m";
-        };
     }
 
     @Override
@@ -57,13 +43,7 @@ public class KColorfulTerminalLogFormatter extends KObject implements KLogFormat
         final String message,
         final Object... args
     ) {
-        return String.format(
-            "[%s] [%s] [%s%s\033[0m]: %s",
-            Instant.now(),
-            tag,
-            KColorfulTerminalLogFormatter.levelToColor(level),
-            level,
-            String.format(message, args)
-        );
+        return String.format(message, args);
     }
+
 }
