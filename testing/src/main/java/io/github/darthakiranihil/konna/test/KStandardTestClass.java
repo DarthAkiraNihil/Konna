@@ -135,6 +135,7 @@ public class KStandardTestClass extends KObject {
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
+        eventSystem.startPolling();
         KStandardTestClass.context = new KProxiedEngineContext(
             activator,
             containerResolver,
@@ -144,7 +145,9 @@ public class KStandardTestClass extends KObject {
             messageSystem,
             resourceLoader,
             assetLoader,
-            null
+            ctx -> {
+                eventSystem.stopPolling();
+            }
         );
         activator.addContext(KStandardTestClass.context);
         KStandardTestClass.msgSystem = messageSystem;

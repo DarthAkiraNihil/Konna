@@ -83,15 +83,13 @@ The foundation that is essential for the whole engine
 - [x] Add another way of defining asset types for components instead of JSON
 - [x] Maybe another way of store asset definitions?
 - [x] More convenient JSON object validator prop info builder
-- [ ] Implement entity component that contains methods to work with different entities, including the Player itself
-    - [ ] Add base class for all entities
-    - [ ] Add classes that holds different values that represent entity properties
-    - [ ] Add feature to define entities in json files (so component will create them automatically)
-    - [ ] Add feature to treat entity descriptors (aka definitions) as assets
-    - [ ] Add support for entity behaviours - it will be just like script system
-    - [ ] Add entity model - entity class with list of properties to concrete class with concrete fields (?)
-    - [ ] Add support for user-defined entity properties (or something like that)
-
+- [x] Implement entity component that contains methods to work with different entities, including the Player itself
+    - [x] Add base class for all entities
+    - [x] Add classes that holds different values that represent entity properties
+    - [x] Add feature to define entities in json files (so component will create them automatically)
+    - [x] Add feature to treat entity descriptors (aka definitions) as assets
+    - [x] Add support for entity behaviours - it will be just like script system
+    
 ### v. 0.5.0 - The beginning of Level
 
 - [ ] Implement Level component

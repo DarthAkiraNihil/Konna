@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.entity.KEntityBehaviour;
 import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.KEntityMetadata;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
@@ -78,10 +79,19 @@ public final class KEntityMetadataCollection
         Class<? extends KEntityDataComponent>[] dataComponents = metadataDefinition
             .getClassObjectArray("data_components", KEntityDataComponent.class);
 
+        String[] behaviourExtensions = Objects.requireNonNull(
+            metadataDefinition.getStringArray("behaviour_extensions")
+        );
+
+        Class<? extends KEntityBehaviour>[] behaviours = metadataDefinition
+            .getClassObjectArray("behaviours", KEntityBehaviour.class);
+
         KEntityMetadata metadata = new KEntityMetadata(
             typeName,
             dataExtensions,
-            dataComponents
+            dataComponents,
+            behaviourExtensions,
+            behaviours
         );
         this.loadedMetadata.put(assetId, metadata);
         return metadata;

@@ -37,6 +37,10 @@ Konna/
 │   └── ...
 ├── components/ // Standard Konna components
 │   └── ...
+├── annotaions/ // Annotations
+│   └── ...
+├── compilers/ // Annotation processors
+│   └── ...
 └── ... // other source code
 ```
 
@@ -55,6 +59,7 @@ Konna/
        implementation platform("io.github.darthakiranihil:konna.bom:0.3.0")
    
        implementation "io.github.darthakiranihil:konna.core" // Konna core. It is a required module!
+       implementation "io.github.darthakiranihil:konna.implementations-std-core" // Standard implementations of Konna Core classes. So far it is also a required module
       
        implementation "io.github.darthakiranihil:konna.component-graphics" 
        implementation "io.github.darthakiranihil:konna.backend-lwjgl" 

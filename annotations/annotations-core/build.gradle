@@ -8,4 +8,4 @@ ext {
     artifactId = "konna.annotations-core"
 }
 
-description = "Annotations by Konna Core"
+description = "Annotations of Konna Core"

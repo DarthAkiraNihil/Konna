@@ -19,8 +19,10 @@ package io.github.darthakiranihil.konna.entity;
 /**
  * Container for entity metadata that is used to create real entity objects.
  * @param typeName Type name of the entity
- * @param dataExtensionList List of all types that this type is extended from
+ * @param dataExtensionList List of all types that this type is extended from by data components
  * @param dataComponents List of data components used by this entity type
+ * @param behaviourExtensionList List of all types that this type is extended from by behaviours
+ * @param behaviours List of behaviours used by this entity type
  *
  * @since 0.4.0
  * @author Darth Akira Nihil
@@ -28,7 +30,9 @@ package io.github.darthakiranihil.konna.entity;
 public record KEntityMetadata(
     String typeName,
     String[] dataExtensionList,
-    Class<? extends KEntityDataComponent>[] dataComponents
+    Class<? extends KEntityDataComponent>[] dataComponents,
+    String[] behaviourExtensionList,
+    Class<? extends KEntityBehaviour>[] behaviours
 ) {
 
 }

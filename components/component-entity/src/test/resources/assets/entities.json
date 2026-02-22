@@ -3,7 +3,9 @@
         "Entity.entityMetadata": {
             "type_name": "Typpi1",
             "data_extensions": [],
-            "data_components": []
+            "data_components": [],
+            "behaviour_extensions": [],
+            "behaviours": []
         }
     },
     "Typpi2": {
@@ -12,6 +14,10 @@
             "data_extensions": [],
             "data_components": [
                 "io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent"
+            ],
+            "behaviour_extensions": [],
+            "behaviours": [
+                "io.github.darthakiranihil.konna.entity.impl.TestBehaviour"
             ]
         }
     },
@@ -23,6 +29,12 @@
             ],
             "data_components": [
                 "io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2"
+            ],
+            "behaviour_extensions": [
+                "Typpi2"
+            ],
+            "behaviours": [
+                "io.github.darthakiranihil.konna.entity.impl.TestBehaviour2"
             ]
         }
     },
@@ -32,7 +44,11 @@
             "data_extensions": [
                 "Typpi3"
             ],
-            "data_components": []
+            "data_components": [],
+            "behaviour_extensions": [
+                "Typpi3"
+            ],
+            "behaviours": []
         }
     }
 }
