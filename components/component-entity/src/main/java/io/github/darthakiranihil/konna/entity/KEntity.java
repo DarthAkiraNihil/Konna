@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,6 +40,8 @@ public class KEntity extends KObject {
     public static final KTag TAG = new KTag("entity");
 
     private final List<KEntityDataComponent> dataComponents;
+    private final List<KEntityBehaviour> behaviours;
+
     private final String type;
 
     /**
@@ -56,6 +59,7 @@ public class KEntity extends KObject {
 
         this.type = type;
         this.dataComponents = dataComponents;
+        this.behaviours = new LinkedList<>();
     }
 
     /**
@@ -85,6 +89,14 @@ public class KEntity extends KObject {
      */
     public final String type() {
         return this.type;
+    }
+
+    public void addBehaviour(final KEntityBehaviour behaviour) {
+        this.behaviours.add(behaviour);
+    }
+
+    public List<KEntityBehaviour> getBehaviours() {
+        return this.behaviours;
     }
 
 }

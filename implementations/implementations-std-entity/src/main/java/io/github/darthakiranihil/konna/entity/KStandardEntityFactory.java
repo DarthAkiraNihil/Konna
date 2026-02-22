@@ -84,7 +84,13 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
             );
         }
 
-        return new KEntity(name, type, createdComponents);
+        KEntity entity = new KEntity(name, type, createdComponents);
+        List<KEntityBehaviour> behaviours = this.createBehaviours(metadata, entity);
+        for (var behaviour: behaviours) {
+            entity.addBehaviour(behaviour);
+        }
+
+        return entity;
     }
 
     /**
@@ -138,6 +144,37 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
             );
         }
 
-        return new KEntity(name, type, createdComponents);
+        KEntity entity = new KEntity(name, type, createdComponents);
+        List<KEntityBehaviour> behaviours = this.createBehaviours(metadata, entity);
+        for (var behaviour: behaviours) {
+            entity.addBehaviour(behaviour);
+        }
+
+        return entity;
+    }
+
+    private List<KEntityBehaviour> createBehaviours(
+        final KEntityMetadata metadata,
+        final KEntity createdEntity
+    ) {
+        Set<Class<? extends KEntityBehaviour>> behaviours
+            = new HashSet<>(List.of(metadata.behaviours()));
+        Queue<String> extensions = new LinkedList<>(List.of(metadata.behaviourExtensionList()));
+
+        while (!extensions.isEmpty()) {
+            String extension = extensions.poll();
+            KEntityMetadata superType = this.metadataCollection.getAsset(extension);
+            behaviours.addAll(List.of(superType.behaviours()));
+            extensions.addAll(List.of(superType.behaviourExtensionList()));
+        }
+
+        List<KEntityBehaviour> createdBehaviours = new LinkedList<>();
+        for (var behaviour: behaviours) {
+            createdBehaviours.add(
+                this.activator.createObject(behaviour, createdBehaviours)
+            );
+        }
+
+        return createdBehaviours;
     }
 }
