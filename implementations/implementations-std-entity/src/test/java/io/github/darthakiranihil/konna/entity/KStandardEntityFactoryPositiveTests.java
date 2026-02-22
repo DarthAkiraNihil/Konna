@@ -20,6 +20,8 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.entity.impl.TestBehaviour;
+import io.github.darthakiranihil.konna.entity.impl.TestBehaviour2;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
@@ -61,6 +63,7 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         KEntity entity = this.factory.createEntity("e1", "Typpi1");
         var ted1 = entity.getComponent(TestEntityDataComponent.class);
         Assertions.assertNull(ted1);
+        Assertions.assertEquals(0, entity.getBehaviours().size());
     }
 
     @Test
@@ -70,6 +73,12 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         var ted = entity.getComponent(TestEntityDataComponent.class);
         Assertions.assertNotNull(ted);
         Assertions.assertEquals(TestEntityDataComponent.class, ted.getClass());
+
+        Assertions.assertEquals(1, entity.getBehaviours().size());
+        Assertions.assertEquals(TestBehaviour.class, entity.getBehaviours().getFirst().getClass());
+
+        TestBehaviour tb = (TestBehaviour) entity.getBehaviours().getFirst();
+        Assertions.assertEquals(ted, tb.getComponent(TestEntityDataComponent.class));
 
     }
 
@@ -86,6 +95,15 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
         Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
 
+        Assertions.assertEquals(2, entity.getBehaviours().size());
+        Assertions.assertEquals(TestBehaviour.class, entity.getBehaviours().getFirst().getClass());
+        Assertions.assertEquals(TestBehaviour2.class, entity.getBehaviours().get(1).getClass());
+
+        TestBehaviour tb = (TestBehaviour) entity.getBehaviours().getFirst();
+        Assertions.assertEquals(ted1, tb.getComponent(TestEntityDataComponent.class));
+        TestBehaviour2 tb2 = (TestBehaviour2) entity.getBehaviours().get(1);
+        Assertions.assertEquals(ted2, tb2.getComponent(TestEntityDataComponent2.class));
+
     }
 
     @Test
@@ -100,6 +118,15 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
 
         Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
         Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
+
+        Assertions.assertEquals(2, entity.getBehaviours().size());
+        Assertions.assertEquals(TestBehaviour.class, entity.getBehaviours().getFirst().getClass());
+        Assertions.assertEquals(TestBehaviour2.class, entity.getBehaviours().get(1).getClass());
+
+        TestBehaviour tb = (TestBehaviour) entity.getBehaviours().getFirst();
+        Assertions.assertEquals(ted1, tb.getComponent(TestEntityDataComponent.class));
+        TestBehaviour2 tb2 = (TestBehaviour2) entity.getBehaviours().get(1);
+        Assertions.assertEquals(ted2, tb2.getComponent(TestEntityDataComponent2.class));
 
     }
 

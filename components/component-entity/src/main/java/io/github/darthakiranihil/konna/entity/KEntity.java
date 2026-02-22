@@ -91,11 +91,11 @@ public class KEntity extends KObject {
         return this.type;
     }
 
-    public void addBehaviour(final KEntityBehaviour behaviour) {
+    public final void addBehaviour(final KEntityBehaviour behaviour) {
         this.behaviours.add(behaviour);
     }
 
-    public List<KEntityBehaviour> getBehaviours() {
+    public final List<KEntityBehaviour> getBehaviours() {
         return this.behaviours;
     }
 
