@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.implementations-std-graphics"
+}
+
+description = "Standard implementations of Konna Graphics classes"
+
+dependencies {
+
+    implementation project(":component-graphics")
+
+}

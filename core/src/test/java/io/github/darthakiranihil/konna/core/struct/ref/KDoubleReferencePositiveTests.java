@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.struct.ref;
 
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

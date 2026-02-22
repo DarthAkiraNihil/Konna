@@ -18,11 +18,11 @@ package io.github.darthakiranihil.konna.graphics.text;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.impl.TestShaderProgram;
-import io.github.darthakiranihil.konna.graphics.text.std.KSquaredAsciiTiledFontFormat;
+import io.github.darthakiranihil.konna.graphics.text.KSquaredAsciiTiledFontFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

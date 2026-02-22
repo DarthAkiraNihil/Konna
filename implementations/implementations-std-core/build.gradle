@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.implementations-std-core"
+}
+
+description = "Standard implementations of Konna Core classes"
+
+dependencies {
+
+    implementation 'io.github.classgraph:classgraph:4.8.181'
+    implementation 'io.github.toolfactory:jvm-driver:9.9.10'
+
+}

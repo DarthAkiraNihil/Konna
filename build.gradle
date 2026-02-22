@@ -17,11 +17,13 @@ ext {
         ||  it.name.startsWith("libfrontend-") // Konna libfrontends
         ||  it.name.startsWith("backend-") // Konna std backends
         ||  it.name.startsWith("implementations-") // Konna std implementations
-        ||  it.name.startsWith("annotations-") // Konna std annotation processors
+        ||  it.name.startsWith("annotations-") // Konna annotations
+
         ||  it.name == "core" // Konna core
     }
     konnaModules = konnaTestedModules + subprojects.findAll {
-        it.name.startsWith("compiler-") // Konna std annotation processors
+            it.name.startsWith("compiler-") // Konna std annotation processors
+        ||  it.name == "testing" // Konna testing module
     }
     allKonnaProjects = konnaModules + project(":konna-bom")
 }

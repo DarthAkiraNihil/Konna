@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
-import io.github.darthakiranihil.konna.core.log.KSystemLogger;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;

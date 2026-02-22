@@ -1,17 +1,17 @@
 {
-    "arg_parser": "io.github.darthakiranihil.konna.core.app.std.KStandardArgumentParser",
+    "arg_parser": "io.github.darthakiranihil.konna.core.app.KStandardArgumentParser",
     "hypervisor": {
         "class": "io.github.darthakiranihil.konna.core.engine.KEngineHypervisor",
         "config": {
             "context_loader": "io.github.darthakiranihil.konna.entity.impl.ContextLoader",
-            "component_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader",
-            "service_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader",
+            "component_loader": "io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader",
+            "service_loader": "io.github.darthakiranihil.konna.core.engine.KStandardServiceLoader",
             "route_configurers": [
-                "io.github.darthakiranihil.konna.core.test.KEmptyRouteConfigurer",
+                "io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer",
                 "io.github.darthakiranihil.konna.entity.impl.TestMessageRouteConfigurer"
             ],
             "event_registerers": [
-                "io.github.darthakiranihil.konna.core.test.KEmptyEventRegisterer"
+                "io.github.darthakiranihil.konna.test.KEmptyEventRegisterer"
             ],
             "components": [
                 "io.github.darthakiranihil.konna.entity.KEntityComponent"

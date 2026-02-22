@@ -1,0 +1,10 @@
+{
+    "type_1.asset_1": {
+        "alias_1": {
+            "int1_property": 1,
+            "float1_property": 1.0,
+            "boolean1_property": false,
+            "string1_property": "1234"
+        }
+    }
+}

@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

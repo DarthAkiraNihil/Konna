@@ -22,7 +22,6 @@ import java.util.Map;
 
 /**
  * Interface providing methods to deserialize json values into objects.
- * @see io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer
  *
  * @since 0.1.0
  * @author Darth Akira Nihil
