@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
+
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 /**

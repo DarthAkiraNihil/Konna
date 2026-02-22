@@ -171,7 +171,7 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         List<KEntityBehaviour> createdBehaviours = new LinkedList<>();
         for (var behaviour: behaviours) {
             createdBehaviours.add(
-                this.activator.createObject(behaviour, createdBehaviours)
+                this.activator.createObject(behaviour, createdEntity)
             );
         }
 

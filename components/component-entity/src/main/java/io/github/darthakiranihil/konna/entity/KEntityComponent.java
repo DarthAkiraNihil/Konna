@@ -27,6 +27,8 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
+import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
@@ -81,6 +83,12 @@ public class KEntityComponent extends KComponent {
         KContainer container = this.ctx.getContainer();
 
         container.add(KEntityFactory.class, cfg.entityFactoryClass());
+
+        this.ctx.registerEvent(
+            new KEvent<KEntityManagementService.BehaviourProcessingData>(
+                KEntityManagementService.BEHAVIOUR_PROCESSING_EVENT_NAME
+            )
+        );
 
     }
 

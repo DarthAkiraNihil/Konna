@@ -16,25 +16,28 @@
 
 package io.github.darthakiranihil.konna.entity.service;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
+import io.github.darthakiranihil.konna.entity.KEntityBehaviour;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Service for handling entities that are active during this frame
@@ -49,13 +52,32 @@ import java.util.UUID;
 )
 public class KEntityManagementService extends KObject {
 
+    public static final String BEHAVIOUR_PROCESSING_EVENT_NAME = "behaviour_processing_requested";
+
+    public enum BehaviourProcessingAction {
+        CREATE,
+        ACTIVATE,
+        DEACTIVATE,
+        DESTROY
+    }
+
+    public record BehaviourProcessingData(
+        KEntity entity,
+        BehaviourProcessingAction action
+    ) {
+
+    }
+
     private final KEntityFactory entityFactory;
     private final KActivator activator;
 
     private final Map<UUID, KEntity> activeEntities;
     private final Map<UUID, KEntity> inactiveEntities;
 
+    private final KEvent<BehaviourProcessingData> behaviourProcessingRequested;
+
     private @Nullable KMessenger messenger;
+
 
     /**
      * Standard constructor.
@@ -64,7 +86,8 @@ public class KEntityManagementService extends KObject {
      */
     public KEntityManagementService(
         @KInject final KActivator activator,
-        @KInject final KEntityFactory entityFactory
+        @KInject final KEntityFactory entityFactory,
+        @KInject final KEventSystem eventSystem
     ) {
 
         super(
@@ -77,6 +100,16 @@ public class KEntityManagementService extends KObject {
 
         this.activeEntities = new HashMap<>();
         this.inactiveEntities = new HashMap<>();
+
+        this.behaviourProcessingRequested = Objects.requireNonNull(
+            eventSystem.getEvent(BEHAVIOUR_PROCESSING_EVENT_NAME)
+        );
+        this.behaviourProcessingRequested.subscribe(this::onBehaviourProcessing);
+
+        KSimpleEvent tickEvent = Objects.requireNonNull(
+            eventSystem.getSimpleEvent(KFrame.TICK_EVENT_NAME)
+        );
+        tickEvent.subscribe(this::onTick);
 
     }
 
@@ -107,6 +140,9 @@ public class KEntityManagementService extends KObject {
             created.id()
         );
 
+        this.behaviourProcessingRequested.invoke(
+            new KEntityManagementService.BehaviourProcessingData(created, BehaviourProcessingAction.CREATE)
+        );
         this.sendEntityMessage(created, "entityCreated");
 
     }
@@ -140,6 +176,9 @@ public class KEntityManagementService extends KObject {
             created.id()
         );
 
+        this.behaviourProcessingRequested.invoke(
+            new KEntityManagementService.BehaviourProcessingData(created, BehaviourProcessingAction.CREATE)
+        );
         this.sendEntityMessage(created, "entityCreated");
 
     }
@@ -175,6 +214,9 @@ public class KEntityManagementService extends KObject {
             deactivated.id()
         );
 
+        this.behaviourProcessingRequested.invoke(
+            new KEntityManagementService.BehaviourProcessingData(deactivated, BehaviourProcessingAction.DEACTIVATE)
+        );
         this.sendEntityMessage(deactivated, "entityDeactivated");
 
     }
@@ -210,6 +252,9 @@ public class KEntityManagementService extends KObject {
             activated.id()
         );
 
+        this.behaviourProcessingRequested.invoke(
+            new KEntityManagementService.BehaviourProcessingData(activated, BehaviourProcessingAction.ACTIVATE)
+        );
         this.sendEntityMessage(activated, "entityActivated");
 
     }
@@ -252,6 +297,9 @@ public class KEntityManagementService extends KObject {
             deleted.id()
         );
 
+        this.behaviourProcessingRequested.invoke(
+            new KEntityManagementService.BehaviourProcessingData(deleted, BehaviourProcessingAction.DESTROY)
+        );
         this.sendEntityMessage(deleted, "entityDestroyed");
 
     }
@@ -282,6 +330,43 @@ public class KEntityManagementService extends KObject {
             messageId,
             body
         );
+
+    }
+
+    private void onBehaviourProcessing(
+        final BehaviourProcessingData data
+    ) {
+        KEntity entity = data.entity;
+        List<KEntityBehaviour> behaviours = entity.getBehaviours();
+        switch (data.action()) {
+            case CREATE: {
+                behaviours.forEach(KEntityBehaviour::awake);
+                behaviours.forEach(KEntityBehaviour::onEnable);
+                break;
+            }
+            case ACTIVATE: {
+                behaviours.forEach(KEntityBehaviour::onEnable);
+                break;
+            }
+            case DEACTIVATE: {
+                behaviours.forEach(KEntityBehaviour::onDisable);
+                break;
+            }
+            case DESTROY: {
+                behaviours.forEach(KEntityBehaviour::onDestroy);
+                break;
+            }
+        }
+    }
+
+    private void onTick() {
+
+        this
+            .activeEntities
+            .values()
+            .stream()
+            .map(KEntity::getBehaviours)
+            .forEach(b -> b.forEach(KEntityBehaviour::update));
 
     }
 

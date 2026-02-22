@@ -48,10 +48,6 @@ public abstract class KEntityBehaviour {
 
     }
 
-    public void start() {
-
-    }
-
     public void update() {
 
     }
