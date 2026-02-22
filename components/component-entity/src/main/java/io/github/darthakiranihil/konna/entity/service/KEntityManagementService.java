@@ -52,15 +52,44 @@ import java.util.*;
 )
 public class KEntityManagementService extends KObject {
 
+    /**
+     * Event name for behaviour processing request.
+     */
     public static final String BEHAVIOUR_PROCESSING_EVENT_NAME = "behaviour_processing_requested";
 
+    /**
+     * Helper enum of behaviour processing action.
+     *
+     * @since 0.4.0
+     * @author Darth Akira Nihil
+     */
     public enum BehaviourProcessingAction {
+        /**
+         * Action processed for entity creation.
+         */
         CREATE,
+        /**
+         * Action processed for entity activation.
+         */
         ACTIVATE,
+        /**
+         * Action processed for entity deactivation.
+         */
         DEACTIVATE,
+        /**
+         * Action processed for entity destruction.
+         */
         DESTROY
     }
 
+    /**
+     * Record for behaviour processing event data.
+     * @param entity Entity to process
+     * @param action Action to perform
+     *
+     * @since 0.4.0
+     * @author Darth Akira Nihil
+     */
     public record BehaviourProcessingData(
         KEntity entity,
         BehaviourProcessingAction action
@@ -83,6 +112,8 @@ public class KEntityManagementService extends KObject {
      * Standard constructor.
      * @param activator Activator to delete entities
      * @param entityFactory Entity factory for create entities
+     * @param eventSystem Event system to get registered
+     *                    {@link KEntityManagementService#BEHAVIOUR_PROCESSING_EVENT_NAME}
      */
     public KEntityManagementService(
         @KInject final KActivator activator,
@@ -141,7 +172,9 @@ public class KEntityManagementService extends KObject {
         );
 
         this.behaviourProcessingRequested.invoke(
-            new KEntityManagementService.BehaviourProcessingData(created, BehaviourProcessingAction.CREATE)
+            new KEntityManagementService.BehaviourProcessingData(
+                created, BehaviourProcessingAction.CREATE
+            )
         );
         this.sendEntityMessage(created, "entityCreated");
 
@@ -177,7 +210,9 @@ public class KEntityManagementService extends KObject {
         );
 
         this.behaviourProcessingRequested.invoke(
-            new KEntityManagementService.BehaviourProcessingData(created, BehaviourProcessingAction.CREATE)
+            new KEntityManagementService.BehaviourProcessingData(
+                created, BehaviourProcessingAction.CREATE
+            )
         );
         this.sendEntityMessage(created, "entityCreated");
 
@@ -215,7 +250,9 @@ public class KEntityManagementService extends KObject {
         );
 
         this.behaviourProcessingRequested.invoke(
-            new KEntityManagementService.BehaviourProcessingData(deactivated, BehaviourProcessingAction.DEACTIVATE)
+            new KEntityManagementService.BehaviourProcessingData(
+                deactivated, BehaviourProcessingAction.DEACTIVATE
+            )
         );
         this.sendEntityMessage(deactivated, "entityDeactivated");
 
@@ -253,7 +290,9 @@ public class KEntityManagementService extends KObject {
         );
 
         this.behaviourProcessingRequested.invoke(
-            new KEntityManagementService.BehaviourProcessingData(activated, BehaviourProcessingAction.ACTIVATE)
+            new KEntityManagementService.BehaviourProcessingData(
+                activated, BehaviourProcessingAction.ACTIVATE
+            )
         );
         this.sendEntityMessage(activated, "entityActivated");
 
@@ -298,7 +337,9 @@ public class KEntityManagementService extends KObject {
         );
 
         this.behaviourProcessingRequested.invoke(
-            new KEntityManagementService.BehaviourProcessingData(deleted, BehaviourProcessingAction.DESTROY)
+            new KEntityManagementService.BehaviourProcessingData(
+                deleted, BehaviourProcessingAction.DESTROY
+            )
         );
         this.sendEntityMessage(deleted, "entityDestroyed");
 

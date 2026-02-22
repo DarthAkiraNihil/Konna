@@ -91,10 +91,17 @@ public class KEntity extends KObject {
         return this.type;
     }
 
+    /**
+     * Adds a behaviour to this entity.
+     * @param behaviour Behaviour to add
+     */
     public final void addBehaviour(final KEntityBehaviour behaviour) {
         this.behaviours.add(behaviour);
     }
 
+    /**
+     * @return List ob behaviours assigned to this entity
+     */
     public final List<KEntityBehaviour> getBehaviours() {
         return this.behaviours;
     }

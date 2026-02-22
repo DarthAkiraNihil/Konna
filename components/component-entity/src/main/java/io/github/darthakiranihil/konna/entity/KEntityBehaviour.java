@@ -18,36 +18,68 @@ package io.github.darthakiranihil.konna.entity;
 
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Encapsulation of any entity behaviour that performs some operations
+ * over multiple (or none) data components.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public abstract class KEntityBehaviour {
 
     private final KEntity entity;
 
+    /**
+     * Standard constructor.
+     * @param entity Entity assigned to this behaviour
+     */
     public KEntityBehaviour(final KEntity entity) {
         this.entity = entity;
     }
 
+    /**
+     * Tries to get a data components with specific class from assigned entity.
+     * @param clazz Class of the data component to get
+     * @return The actual data component instance or {@code null} if it is not found
+     * @param <T> Type parameter for retrieved component
+     */
     public final <T extends KEntityDataComponent> @Nullable T getComponent(
         final Class<T> clazz
     ) {
         return this.entity.getComponent(clazz);
     }
 
+    /**
+     * Action performed once the entity has been created.
+     */
     public void awake() {
 
     }
 
+    /**
+     * Action performed when the entity has been destroyed.
+     */
     public void onDestroy() {
 
     }
 
+    /**
+     * Action performed when the entity has been deactivated.
+     */
     public void onDisable() {
 
     }
 
+    /**
+     * Action performed when the entity has been activated.
+     */
     public void onEnable() {
 
     }
 
+    /**
+     * Action performed on each tick if assigned entity is active.
+     */
     public void update() {
 
     }
