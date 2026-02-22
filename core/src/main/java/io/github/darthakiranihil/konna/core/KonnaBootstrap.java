@@ -18,12 +18,16 @@ package io.github.darthakiranihil.konna.core;
 
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.std.KJsonValueIsClassValidator;
-import io.github.darthakiranihil.konna.core.data.json.std.KStandardJsonDeserializer;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
+import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+
+import java.util.Objects;
 
 final class KonnaBootstrap {
 
@@ -82,7 +86,7 @@ final class KonnaBootstrap {
     @SuppressWarnings("unchecked")
     public KEngineHypervisor createHypervisor() {
 
-        KJsonDeserializer deserializer = new KStandardJsonDeserializer();
+        KJsonDeserializer deserializer = this.createDeserializer();
 
         try {
 
@@ -107,6 +111,42 @@ final class KonnaBootstrap {
             throw new KBootstrapException(
                 "Could not create engine hypervisor",
                 e
+            );
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private KJsonDeserializer createDeserializer() {
+
+        try {
+            Class<? extends KJsonDeserializer> deserializer = (Class<? extends KJsonDeserializer>)
+                KClassUtils.getForName(
+                    "io.github.darthakiranihil.konna.core.data.json.KStandardJsonDeserializer"
+                );
+
+            return KReflectionUtils.newInstance(
+                Objects.requireNonNull(KReflectionUtils.getConstructor(deserializer))
+            );
+
+        } catch (KClassNotFoundException e) {
+            throw new KBootstrapException(
+                String.format(
+                    "%s: %s. %s",
+                    "Could not get standard JSON deserializer",
+                    e,
+                        "So far it is required for Konna starting up so please add"
+                    +   "konna.implementations-std-core to your project"
+                )
+
+            );
+        } catch (NullPointerException | KInstantiationException e) {
+            throw new KBootstrapException(
+                String.format(
+                    "%s: %s. %s",
+                    "Could not instantiate JSON deserializer",
+                    e,
+                    "Please check its constructor signature"
+                )
             );
         }
     }

@@ -1,0 +1,440 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.darthakiranihil.konna.core.data.json;
+
+import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullUnmarked;
+import sun.misc.Unsafe; //! I don't like this but there is no other way
+
+import java.lang.reflect.*;
+import java.util.*;
+
+/**
+ * Standard implementation of {@link KJsonDeserializer}.
+ *
+ * @since 0.1.0
+ * @author Darth Akira Nihil
+ */
+@NullUnmarked
+@KSingleton(immortal = true)
+public class KStandardJsonDeserializer extends KObject implements KJsonDeserializer {
+
+    private static Unsafe theUnsafe = null;
+
+    static {
+        try {
+            Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafeField.setAccessible(true);
+            KStandardJsonDeserializer.theUnsafe = (Unsafe) theUnsafeField.get(null);
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public KStandardJsonDeserializer() {
+        super("std_json_deserializer", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+    }
+
+    /**
+     * Deserializes a json value into a new object of passed type.
+     * This implementation requires that all list-like fields are provided
+     * with {@link KJsonArray} annotation, since type erasure does not allow
+     * to get list generic type at runtime
+     * @param value Json value to deserialize
+     * @param clazz Class of destination object
+     * @return Deserialized object
+     * @param <T> Generic type of deserialized object
+     * @throws KJsonSerializationException If it fails to deserialize, mostly because
+     * of attempting to deserialize object with structure that differs from json value
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T deserialize(
+        @NonNull final KJsonValue value,
+        @NonNull final Class<?> clazz
+    ) throws KJsonSerializationException {
+
+        KJsonValueType valueType = value.getType();
+
+        switch (valueType) {
+            case NUMBER_INT -> {
+                return (T) (Integer) value.getInt();
+            }
+            case NUMBER_FLOAT -> {
+                return (T) (Float) value.getFloat();
+            }
+            case NULL -> {
+                return null;
+            }
+            case BOOLEAN -> {
+                return (T) (Boolean) value.getBoolean();
+            }
+            case STRING -> {
+                String val = value.getString();
+                if (Class.class.isAssignableFrom(clazz)) {
+                    try {
+                        return (T) KClassUtils.getForName(val);
+                    } catch (KClassNotFoundException | NoClassDefFoundError e) {
+                        throw new KJsonSerializationException(e);
+                    }
+                }
+
+                return (T) val;
+            }
+            case ARRAY -> {
+                List<?> list = new LinkedList<>();
+
+                for (KJsonValue entry : value) {
+                    list.add(this.deserialize(entry, clazz));
+                }
+
+                return (T) list;
+            }
+            case OBJECT -> {
+
+                try {
+
+                    Object deserialized;
+                    if (clazz.isRecord()) {
+                        deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
+                        for (var entry: value.entrySet()) {
+                            deserialized = this.setRecordField(
+                                clazz,
+                                entry.getKey(),
+                                entry.getValue(),
+                                deserialized
+                            );
+                        }
+                    } else {
+                        var constructors = clazz.getConstructors();
+                        Constructor<?> constructorCandidate = null;
+                        List<KPair<@NotNull String, @NotNull Class<?>>>
+                            parameterMapping = new LinkedList<>();
+
+                        for (var constructor: constructors) {
+                            var parametersAnnotations = constructor.getParameterAnnotations();
+                            var parameterTypes = constructor.getParameterTypes();
+
+                            boolean constructorOk = true;
+                            for (int i = 0; i < parameterTypes.length; i++) {
+
+                                boolean parameterOk = false;
+                                for (var annotation: parametersAnnotations[i]) {
+                                    if (annotation instanceof KJsonConstructorParameter) {
+                                        parameterOk = true;
+                                        parameterMapping.add(
+                                            new KPair<>(
+                                                ((KJsonConstructorParameter) annotation).name(),
+                                                parameterTypes[i]
+                                            )
+                                        );
+                                        break;
+                                    }
+                                }
+
+                                if (!parameterOk) {
+                                    parameterMapping.clear();
+                                    constructorOk = false;
+                                    break;
+                                }
+                            }
+
+                            if (constructorOk) {
+                                constructorCandidate = constructor;
+                                break;
+                            }
+                        }
+
+                        Set<String> ignored = new HashSet<>();
+                        if (constructorCandidate == null) {
+                            deserialized = KStandardJsonDeserializer.theUnsafe.allocateInstance(
+                                clazz
+                            );
+                        } else {
+                            Object[] params = new Object[parameterMapping.size()];
+                            for (int i = 0; i < parameterMapping.size(); i++) {
+                                var mapping = parameterMapping.get(i);
+                                params[i] = this.deserialize(
+                                    value.getProperty(mapping.first()), mapping.second()
+                                );
+                                ignored.add(mapping.first());
+                            }
+                            deserialized = constructorCandidate.newInstance(params);
+                        }
+
+                        for (var entry: value.entrySet()) {
+                            if (ignored.contains(entry.getKey())) {
+                                continue;
+                            }
+
+                            this.setObjectField(
+                                clazz,
+                                entry.getKey(),
+                                entry.getValue(),
+                                deserialized
+                            );
+                        }
+                    }
+
+                    return (T) deserialized;
+                } catch (
+                        InstantiationException
+                    |   IllegalAccessException
+                    |   InvocationTargetException
+                    |   NoSuchMethodException
+                    |   NoSuchFieldException e
+                ) {
+                    throw new KJsonSerializationException(e);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <V> Map<String, V> deserialize(
+        @NonNull final KJsonValue value,
+        @NonNull final Class<?> clazz,
+        @NonNull final Class<?> valueClass
+    ) throws KJsonSerializationException {
+
+        try {
+            Map<String, ?> deserialized = (Map<String, ?>)
+                KStandardJsonDeserializer.theUnsafe.allocateInstance(clazz);
+
+            for (var entry: value.entrySet()) {
+
+                deserialized.put(
+                    entry.getKey(),
+                    this.deserialize(
+                        entry.getValue(),
+                        valueClass
+                    )
+                );
+
+            }
+
+            return (Map<String, V>) deserialized;
+        } catch (Throwable e) {
+            throw new KJsonSerializationException(e);
+        }
+    }
+
+    private Field getField(final Class<?> clazz, final String name) throws NoSuchFieldException {
+        Class<?> klass = clazz;
+        while (klass != Object.class) {
+            for (Field field : klass.getDeclaredFields()) {
+
+                if (field.isAnnotationPresent(KJsonIgnored.class)) {
+                    continue;
+                }
+
+                boolean isPrivateAndNotSerialized =
+                        Modifier.isPrivate(field.getModifiers())
+                    && !field.isAnnotationPresent(KJsonSerialized.class);
+
+                if (isPrivateAndNotSerialized) {
+                    continue;
+                }
+
+
+                if (field.isAnnotationPresent(KJsonCustomName.class)) {
+                    KJsonCustomName meta = field.getAnnotation(KJsonCustomName.class);
+                    if (meta.name().equals(name)) {
+                        return field;
+                    }
+                }
+
+                if (field.getName().equals(name)) {
+                    return field;
+                }
+            }
+            klass = klass.getSuperclass();
+        }
+        throw new NoSuchFieldException(name);
+    }
+
+    private boolean pointsToSameComponent(
+        final RecordComponent recordComponent,
+        final String name
+    ) {
+
+        if (recordComponent.isAnnotationPresent(KJsonIgnored.class)) {
+            return false;
+        }
+
+        if (recordComponent.isAnnotationPresent(KJsonCustomName.class)) {
+            KJsonCustomName meta = recordComponent.getAnnotation(KJsonCustomName.class);
+            if (meta.name().equals(name)) {
+                return true;
+            }
+        }
+
+        return recordComponent.getName().equals(name);
+    }
+
+    private void setObjectField(
+        final Class<?> clazz,
+        final String key,
+        final KJsonValue value,
+        final Object deserialized
+    ) throws
+        IllegalAccessException,
+        NoSuchFieldException,
+        KJsonSerializationException {
+        Field field = this.getField(clazz, key);
+        field.setAccessible(true);
+
+        if (
+                value.getType() == KJsonValueType.OBJECT
+            &&  Map.class.isAssignableFrom(field.getType())) {
+            if (!field.isAnnotationPresent(KJsonMap.class)) {
+                throw new KJsonSerializationException(
+                    "Could not deserialize object, as it is a map-like "
+                        +   "and the KJsonMap annotation is not provided"
+                );
+            }
+
+            KJsonMap meta = field.getAnnotation(KJsonMap.class);
+            field.set(
+                deserialized,
+                this.deserialize(value, meta.mapType(), meta.valueType())
+            );
+            return;
+        }
+
+        if (value.getType() != KJsonValueType.ARRAY) {
+            field.set(
+                deserialized,
+                this.deserialize(value, field.getType())
+            );
+            return;
+        }
+
+        if (!field.isAnnotationPresent(KJsonArray.class)) {
+            throw new KJsonSerializationException(
+                String.format(
+                    "Could not deserialize field %s, as it is an list-like"
+                        +   "and the KJsonArray annotation is not provided",
+                    field.getName()
+                )
+            );
+        }
+
+        KJsonArray meta = field.getAnnotation(KJsonArray.class);
+        var deserializedSubvalue = (List<?>) this.deserialize(value, meta.elementType());
+        if (deserializedSubvalue == null) {
+            field.set(
+                deserialized,
+                null
+            );
+        } else if (field.getType().isArray()) {
+            var array = Array.newInstance(meta.elementType(), deserializedSubvalue.size());
+            for (int j = 0; j < deserializedSubvalue.size(); j++) {
+                Array.set(array, j, deserializedSubvalue.get(j));
+            }
+            field.set(deserialized, array);
+        } else {
+            field.set(
+                deserialized,
+                deserializedSubvalue
+            );
+        }
+    }
+
+    private Object setRecordField(
+        final Class<?> clazz,
+        final String key,
+        final KJsonValue value,
+        final Object deserialized
+    ) throws
+        IllegalAccessException,
+        NoSuchMethodException,
+        KJsonSerializationException,
+        InvocationTargetException,
+        InstantiationException {
+        var components = clazz.getRecordComponents();
+        var params = new Object[components.length];
+        for (int i = 0; i < components.length; i++) {
+            var component = components[i];
+            if (!this.pointsToSameComponent(component, key)) {
+                params[i] = component.getAccessor().invoke(deserialized);
+                continue;
+            }
+
+            if (
+                    value.getType() == KJsonValueType.OBJECT
+                &&  Map.class.isAssignableFrom(component.getType())
+            ) {
+                if (!component.isAnnotationPresent(KJsonMap.class)) {
+                    throw new KJsonSerializationException(
+                        "Could not deserialize object, as it is a map-like "
+                            +   "and the KJsonMap annotation is not provided"
+                    );
+                }
+
+                KJsonMap meta = component.getAnnotation(KJsonMap.class);
+                params[i] = this.deserialize(value, meta.mapType(), meta.valueType());
+                continue;
+            }
+
+            if (value.getType() != KJsonValueType.ARRAY) {
+                params[i] = this.deserialize(value, component.getType());
+                continue;
+            }
+
+            if (!component.isAnnotationPresent(KJsonArray.class)) {
+                throw new KJsonSerializationException(
+                    String.format(
+                        "Could not deserialize field %s, as it is an list-like"
+                            +   "and the KJsonArray annotation is not provided",
+                        component.getName()
+                    )
+                );
+            }
+
+            KJsonArray meta = component.getAnnotation(KJsonArray.class);
+            var deserializedSubvalue = (List<?>) this.deserialize(value, meta.elementType());
+            if (deserializedSubvalue == null) {
+                params[i] = null;
+            } else if (component.getType().isArray()) {
+                var array = Array.newInstance(meta.elementType(), deserializedSubvalue.size());
+                for (int j = 0; j < deserializedSubvalue.size(); j++) {
+                    Array.set(array, j, deserializedSubvalue.get(j));
+                }
+                params[i] = array;
+            } else {
+                params[i] = deserializedSubvalue;
+            }
+        }
+        return clazz.getConstructors()[0].newInstance(params);
+
+    }
+
+}

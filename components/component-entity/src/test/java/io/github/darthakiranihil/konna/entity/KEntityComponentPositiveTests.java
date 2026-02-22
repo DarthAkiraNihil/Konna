@@ -16,14 +16,14 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.app.std.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,19 +38,19 @@ public class KEntityComponentPositiveTests extends KStandardTestClass {
 
         String config = """
             {
-                "context_loader": "io.github.darthakiranihil.konna.core.test.KTestContextLoader",
-                "component_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardComponentLoader",
-                "service_loader": "io.github.darthakiranihil.konna.core.engine.std.KStandardServiceLoader",
+                "context_loader": "io.github.darthakiranihil.konna.test.KTestContextLoader",
+                "component_loader": "io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader",
+                "service_loader": "io.github.darthakiranihil.konna.core.engine.KStandardServiceLoader",
                 "route_configurers": [
-                    "io.github.darthakiranihil.konna.core.test.KEmptyRouteConfigurer"
+                    "io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer"
                 ],
                 "event_registerers": [
-                    "io.github.darthakiranihil.konna.core.test.KEmptyEventRegisterer"
+                    "io.github.darthakiranihil.konna.test.KEmptyEventRegisterer"
                 ],
                 "components": [
                     "io.github.darthakiranihil.konna.entity.KEntityComponent"
                 ],
-                "frame_loader": "io.github.darthakiranihil.konna.core.test.KTestFrameLoader",
+                "frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {
                     "size": {
                         "width": 1000,

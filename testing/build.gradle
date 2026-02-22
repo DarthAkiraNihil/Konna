@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.testing"
+}
+
+description = "Konna testing module"
+
+dependencies {
+
+    implementation project(":implementations-std-core")
+
+}

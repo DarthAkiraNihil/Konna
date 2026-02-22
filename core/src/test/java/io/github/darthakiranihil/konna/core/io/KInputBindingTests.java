@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.io.control.KInputBinding;
 import io.github.darthakiranihil.konna.core.io.control.KInputData;
 import io.github.darthakiranihil.konna.core.io.control.KKey;
 import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
-import io.github.darthakiranihil.konna.core.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

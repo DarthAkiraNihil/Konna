@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiStorage;
 import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStorage;
 
 @KExcludeFromGeneratedCoverageReport

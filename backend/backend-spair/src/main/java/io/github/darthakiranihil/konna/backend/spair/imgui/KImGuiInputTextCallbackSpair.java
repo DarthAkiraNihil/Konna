@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiInputTextCallbackData;
 import imgui.callback.ImGuiInputTextCallback;
-import io.github.darthakiranihil.konna.core.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiInputTextCallback;
 
 @KExcludeFromGeneratedCoverageReport
