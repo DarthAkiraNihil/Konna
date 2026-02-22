@@ -30,6 +30,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
@@ -95,13 +96,19 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
         Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
 
-        Assertions.assertEquals(2, entity.getBehaviours().size());
-        Assertions.assertEquals(TestBehaviour.class, entity.getBehaviours().getFirst().getClass());
-        Assertions.assertEquals(TestBehaviour2.class, entity.getBehaviours().get(1).getClass());
+        List<KEntityBehaviour> behaviourList = entity.getBehaviours();
+        Assertions.assertEquals(2, behaviourList.size());
 
-        TestBehaviour tb = (TestBehaviour) entity.getBehaviours().getFirst();
+        var tbo = behaviourList.stream().filter(x -> x.getClass() == TestBehaviour.class).findFirst();
+        var tb2o = behaviourList.stream().filter(x -> x.getClass() == TestBehaviour2.class).findFirst();
+
+        Assertions.assertTrue(tbo.isPresent());
+        Assertions.assertTrue(tb2o.isPresent());
+
+        var tb = (TestBehaviour) tbo.get();
+        var tb2 = (TestBehaviour2) tb2o.get();
+
         Assertions.assertEquals(ted1, tb.getComponent(TestEntityDataComponent.class));
-        TestBehaviour2 tb2 = (TestBehaviour2) entity.getBehaviours().get(1);
         Assertions.assertEquals(ted2, tb2.getComponent(TestEntityDataComponent2.class));
 
     }
@@ -119,13 +126,19 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(TestEntityDataComponent.class, ted1.getClass());
         Assertions.assertEquals(TestEntityDataComponent2.class, ted2.getClass());
 
-        Assertions.assertEquals(2, entity.getBehaviours().size());
-        Assertions.assertEquals(TestBehaviour.class, entity.getBehaviours().getFirst().getClass());
-        Assertions.assertEquals(TestBehaviour2.class, entity.getBehaviours().get(1).getClass());
+        List<KEntityBehaviour> behaviourList = entity.getBehaviours();
+        Assertions.assertEquals(2, behaviourList.size());
 
-        TestBehaviour tb = (TestBehaviour) entity.getBehaviours().getFirst();
+        var tbo = behaviourList.stream().filter(x -> x.getClass() == TestBehaviour.class).findFirst();
+        var tb2o = behaviourList.stream().filter(x -> x.getClass() == TestBehaviour2.class).findFirst();
+
+        Assertions.assertTrue(tbo.isPresent());
+        Assertions.assertTrue(tb2o.isPresent());
+
+        var tb = (TestBehaviour) tbo.get();
+        var tb2 = (TestBehaviour2) tb2o.get();
+
         Assertions.assertEquals(ted1, tb.getComponent(TestEntityDataComponent.class));
-        TestBehaviour2 tb2 = (TestBehaviour2) entity.getBehaviours().get(1);
         Assertions.assertEquals(ted2, tb2.getComponent(TestEntityDataComponent2.class));
 
     }
