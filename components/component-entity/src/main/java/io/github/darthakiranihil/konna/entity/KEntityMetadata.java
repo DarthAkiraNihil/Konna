@@ -28,7 +28,9 @@ package io.github.darthakiranihil.konna.entity;
 public record KEntityMetadata(
     String typeName,
     String[] dataExtensionList,
-    Class<? extends KEntityDataComponent>[] dataComponents
+    Class<? extends KEntityDataComponent>[] dataComponents,
+    String[] behaviourExtensionList,
+    Class<? extends KEntityBehaviour>[] behaviours
 ) {
 
 }
