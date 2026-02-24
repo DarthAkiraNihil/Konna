@@ -19,6 +19,13 @@ package io.github.darthakiranihil.konna.core.util;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
+/**
+ * Marks this type as generated. This annotation should be added by all annotations
+ * processors that generate code.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @Target(ElementType.TYPE)
 public @interface KGenerated {
 }

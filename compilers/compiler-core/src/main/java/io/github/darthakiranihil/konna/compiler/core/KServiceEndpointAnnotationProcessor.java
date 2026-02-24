@@ -18,15 +18,13 @@ package io.github.darthakiranihil.konna.compiler.core;
 
 
 import com.google.auto.service.AutoService;
-import com.palantir.javapoet.ClassName;
-import com.palantir.javapoet.JavaFile;
-import com.palantir.javapoet.MethodSpec;
-import com.palantir.javapoet.TypeSpec;
+import com.palantir.javapoet.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.*;
@@ -39,6 +37,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * <p>
+ * Annotation processor that handles {@link KServiceEndpoint}s and generate corresponding
+ * message-to-endpoint converters (message body to array of object args).
+ * </p>
+ * <p>
+ * Additionally, it validates occurrance of the endpoint method. The processor will fail
+ * if the endpoint is located in a non-service class
+ * (not annotated with {@link KComponentServiceMetaInfo}) or its parameters are not annotated
+ * with {@link KBodyValue} or {@link KInject}.
+ * </p>
+ * <p>
+ * After endpoint validation it generates the converter to
+ * {@code <package of service>.generated.<service name>$$EndpointConverter_<endpointRoute>}.
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.core.engine.KServiceEndpoint"
@@ -72,7 +89,10 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    public boolean process(
+        final Set<? extends TypeElement> annotations,
+        final RoundEnvironment roundEnv
+    ) {
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KServiceEndpoint.class
@@ -118,7 +138,8 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
     ) {
 
         TypeElement enclosedType = (TypeElement) endpoint.getEnclosingElement();
-        KComponentServiceMetaInfo metaInfo = enclosedType.getAnnotation(KComponentServiceMetaInfo.class);
+        KComponentServiceMetaInfo metaInfo = enclosedType
+            .getAnnotation(KComponentServiceMetaInfo.class);
         if (metaInfo == null) {
             this.messager.printMessage(
                 Diagnostic.Kind.ERROR,
@@ -166,7 +187,8 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
                 String.format(
                     "%s: %s",
                     endpoint,
-                    "Some of endpoint parameters cannot be resolved (no KBodyParam nor KInject is provided)"
+                        "Some of endpoint parameters cannot be resolved"
+                    +   "(no KBodyParam nor KInject is provided)"
                 )
             );
             return null;
@@ -239,7 +261,13 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
             .returns(Object[].class)
-            .addParameter(MESSAGE_CLASS, "message", Modifier.FINAL);
+            .addParameter(
+                ParameterSpec
+                    .builder(MESSAGE_CLASS, "message")
+                    .addModifiers(Modifier.FINAL)
+                    .addAnnotation(NonNull.class)
+                    .build()
+            );
 
         builder.addStatement("var body = message.body()");
         builder.addStatement("Object[] args = new Object[$L]", params.size());

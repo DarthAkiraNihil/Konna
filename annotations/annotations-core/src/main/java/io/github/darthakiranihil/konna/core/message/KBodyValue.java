@@ -16,8 +16,27 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Indicates that this parameter of endpoint method is taken from
+ * message body by specified key. Will not be processed it the parameter
+ * is not in a method,
+ * marked with {@link io.github.darthakiranihil.konna.core.engine.KServiceEndpoint}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.PARAMETER)
 public @interface KBodyValue {
 
+    /**
+     * @return Key of value to take from message body
+     */
     String value();
 
 }

@@ -189,7 +189,7 @@ public class KEntityManagementService extends KObject {
         route = "restoreEntity"
     )
     protected void restoreEntity(
-        @KBodyValue(KInternals.NAME_KEY) String entityName,
+        @KBodyValue(KInternals.NAME_KEY) final String entityName,
         @KBodyValue(KInternals.TYPE_KEY) final String entityType,
         @KBodyValue(KInternals.DATA_KEY) final KJsonValue data
     ) {

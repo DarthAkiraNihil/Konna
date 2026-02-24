@@ -21,37 +21,15 @@ import io.github.darthakiranihil.konna.core.message.KMessage;
 /**
  * Interface for a special type of class, which purpose is to convert
  * {@link KMessage} body to an array of endpoint arguments.
+ * <p>
+ *     Should not be used by hand, as core annotation processor generates
+ *     corresponding classes automatically for all exposed service endpoint.
+ * </p>
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
 public interface KMessageToEndpointConverter {
-
-    /**
-     * Default implementation of {@link KMessageToEndpointConverter}, that
-     * literally does nothing: it just converts a message to an empty object array.
-     * It is used by default for a service endpoint.
-     */
-    final class NoConverter implements KMessageToEndpointConverter {
-        @Override
-        public Object[] convert(final KMessage message) {
-            return new Object[0];
-        }
-    }
-
-    /**
-     * Default implementation of {@link KMessageToEndpointConverter}, that
-     * literally just returns array of the only message, that has been passed to the endpoint.
-     *
-     * @since 0.4.0
-     * @author Darth Akira Nihil
-     */
-    final class DirectConverter implements KMessageToEndpointConverter {
-        @Override
-        public Object[] convert(final KMessage message) {
-            return new Object[] {message};
-        }
-    }
 
     /**
      * Accepts a message and converts it to an array of objects, that

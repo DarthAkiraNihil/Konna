@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core.engine.another_impl;
 
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
-import io.github.darthakiranihil.konna.core.engine.MessageToEndpointConverterExample;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 
 @KComponentServiceMetaInfo(
