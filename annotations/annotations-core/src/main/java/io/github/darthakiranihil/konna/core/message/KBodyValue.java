@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine;
+package io.github.darthakiranihil.konna.core.message;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,28 +22,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Signalizes that a method is a service endpoint.
+ * Indicates that this parameter of endpoint method is taken from
+ * message body by specified key. Will not be processed it the parameter
+ * is not in a method,
+ * marked with {@link io.github.darthakiranihil.konna.core.engine.KServiceEndpoint}.
  *
- * @since 0.2.0
+ * @since 0.5.0
  * @author Darth Akira Nihil
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface KServiceEndpoint {
-    /**
-     * Route of the endpoint.
-     * It does not include name of the service to endpoint belongs to, same
-     * for engine component
-     * @return Route of the endpoint.
-     */
-    String route();
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.PARAMETER)
+public @interface KBodyValue {
 
     /**
-     * Class that is used to convert a message to array of objects
-     * representing called endpoint args. If not specified, a message
-     * will be converted to an empty array.
-     * @return Class of message to endpoint args converter
+     * @return Key of value to take from message body
      */
-    Class<? extends KMessageToEndpointConverter>
-        converter() default KMessageToEndpointConverter.NoConverter.class;
+    String value();
+
 }

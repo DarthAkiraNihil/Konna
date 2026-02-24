@@ -24,9 +24,11 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Standard implementation of {@link KServiceLoader}.
@@ -48,6 +50,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void load(
         final KEngineContext ctx,
         final Class<?> service,
@@ -84,8 +87,25 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
             method.setAccessible(true);
             KServiceEndpoint endpointMeta = method.getAnnotation(KServiceEndpoint.class);
-            KMessageToEndpointConverter
-                converter = ctx.createObject(endpointMeta.converter());
+            var converterClass = KClassUtils
+                .getForName(
+                    String.format(
+                        "%s.generated.%s$$EndpointConverter_%s",
+                        service.getPackageName(),
+                        serviceName,
+                        endpointMeta.route()
+                    )
+                );
+
+            if (!KMessageToEndpointConverter.class.isAssignableFrom(converterClass)) {
+                throw new KServiceLoadingException(
+                    "Found converter class is not a valid converter."
+                );
+            }
+
+            KMessageToEndpointConverter converter =
+                ctx.createObject((Class<? extends KMessageToEndpointConverter>) converterClass);
+
             endpoints.put(
                 endpointMeta.route(),
                 new KPair<>(converter, method)

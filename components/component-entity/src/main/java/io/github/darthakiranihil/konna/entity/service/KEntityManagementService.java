@@ -23,10 +23,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -153,12 +150,11 @@ public class KEntityManagementService extends KObject {
      * @param entityType Type of created entity
      */
     @KServiceEndpoint(
-        route = "createEntity",
-        converter = KInternals.MessageToEntityCreationDataConverter.class
+        route = "createEntity"
     )
     protected void createEntity(
-        final String entityName,
-        final String entityType
+        @KBodyValue(KInternals.NAME_KEY) final String entityName,
+        @KBodyValue(KInternals.TYPE_KEY) final String entityType
     ) {
 
         KEntity created = this.entityFactory.createEntity(entityName, entityType);
@@ -190,13 +186,12 @@ public class KEntityManagementService extends KObject {
      * @param data Data of restored entity
      */
     @KServiceEndpoint(
-        route = "restoreEntity",
-        converter = KInternals.MessageToEntityRestorationDataConverter.class
+        route = "restoreEntity"
     )
     protected void restoreEntity(
-        final String entityName,
-        final String entityType,
-        final KJsonValue data
+        @KBodyValue(KInternals.NAME_KEY) final String entityName,
+        @KBodyValue(KInternals.TYPE_KEY) final String entityType,
+        @KBodyValue(KInternals.DATA_KEY) final KJsonValue data
     ) {
 
         KEntity created = this.entityFactory.createEntity(entityName, entityType, data);
@@ -225,11 +220,10 @@ public class KEntityManagementService extends KObject {
      * @param entityId ID of entity to deactivate
      */
     @KServiceEndpoint(
-        route = "deactivateEntity",
-        converter = KInternals.MessageToEntityIdConverter.class
+        route = "deactivateEntity"
     )
     protected void deactivateEntity(
-        final UUID entityId
+        @KBodyValue(KInternals.ENTITY_ID_KEY) final UUID entityId
     ) {
 
         if (
@@ -265,11 +259,10 @@ public class KEntityManagementService extends KObject {
      * @param entityId ID of entity to activate
      */
     @KServiceEndpoint(
-        route = "activateEntity",
-        converter = KInternals.MessageToEntityIdConverter.class
+        route = "activateEntity"
     )
     protected void activateEntity(
-        final UUID entityId
+        @KBodyValue(KInternals.ENTITY_ID_KEY) final UUID entityId
     ) {
 
         if (
@@ -305,11 +298,10 @@ public class KEntityManagementService extends KObject {
      * @param entityId ID of entity to destroy
      */
     @KServiceEndpoint(
-        route = "destroyEntity",
-        converter = KInternals.MessageToEntityIdConverter.class
+        route = "destroyEntity"
     )
     protected void destroyEntity(
-        final UUID entityId
+        @KBodyValue(KInternals.ENTITY_ID_KEY) final UUID entityId
     ) {
 
         boolean flag = false;

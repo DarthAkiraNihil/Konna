@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.engine;
+package io.github.darthakiranihil.konna.core.util;
 
-import io.github.darthakiranihil.konna.core.message.KMessage;
-import org.jspecify.annotations.NullMarked;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
-@NullMarked
-public class MessageToEndpointConverterExample implements KMessageToEndpointConverter {
-
-    @Override
-    public Object[] convert(KMessage message) {
-        return new Object[] {message.body().get("test")};
-    }
+/**
+ * Marks this type as generated. This annotation should be added by all annotations
+ * processors that generate code.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+@Target(ElementType.TYPE)
+public @interface KGenerated {
 }
