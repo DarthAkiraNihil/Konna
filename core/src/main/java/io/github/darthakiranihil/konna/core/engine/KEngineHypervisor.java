@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
@@ -38,8 +41,7 @@ import org.jspecify.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Konna Engine hypervisor - the primal class for the engine that starts
@@ -398,6 +400,20 @@ public class KEngineHypervisor extends KObject {
         this.ctx.registerEvent(this.ready);
         this.ctx.registerEvent(this.loopLeaving);
 
+        KSystemLogger.info(this.name, "Executing generated event registerers");
+        try (ScanResult scanResult = new ClassGraph()
+            .enableAllInfo()
+            .acceptPackages("konna.generated")
+            .scan()
+        ) {
+            scanResult
+                .getAllClasses()
+                .stream()
+                .filter((c) -> c.implementsInterface(KEventRegisterer.class))
+                .map(ClassInfo::loadClass)
+                .map(c -> (KEventRegisterer) this.ctx.createObject(c))
+                .forEach(er -> er.registerEvents(this.ctx));
+        }
     }
 
 }
