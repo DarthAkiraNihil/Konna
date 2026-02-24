@@ -83,12 +83,6 @@ public class KEntityComponent extends KComponent {
 
         container.add(KEntityFactory.class, cfg.entityFactoryClass());
 
-        this.ctx.registerEvent(
-            new KEvent<KEntityManagementService.BehaviourProcessingData>(
-                KEntityManagementService.BEHAVIOUR_PROCESSING_EVENT_NAME
-            )
-        );
-
     }
 
     @Override

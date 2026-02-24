@@ -39,6 +39,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Annotation processor that generates event registers for all classes
+ * that provided {@link KRequiresEvents}. Pay attention to the fact that
+ * it won't be succeeded if there is an event conflict (same name but different arg type).
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.core.message.KRequiresEvents"
