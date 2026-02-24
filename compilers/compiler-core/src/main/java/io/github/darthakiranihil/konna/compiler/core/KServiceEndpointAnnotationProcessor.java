@@ -23,12 +23,15 @@ import com.palantir.javapoet.JavaFile;
 import com.palantir.javapoet.MethodSpec;
 import com.palantir.javapoet.TypeSpec;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.Kse2;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +45,8 @@ import java.util.Set;
 public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor {
 
     private Messager messager;
+    private Elements elementUtils;
+    private Filer filer;
 
     private static final ClassName MESSAGE_CLASS = ClassName.get(
         "io.github.darthakiranihil.konna.core.message",
@@ -57,7 +62,10 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
     public synchronized void init(final ProcessingEnvironment processingEnv) {
 
         super.init(processingEnv);
+
         this.messager = processingEnv.getMessager();
+        this.elementUtils = processingEnv.getElementUtils();
+        this.filer = processingEnv.getFiler();
 
     }
 
@@ -73,34 +81,23 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             }
 
             ExecutableElement endpoint = (ExecutableElement) element;
-            TypeElement enclosedType = (TypeElement) endpoint.getEnclosingElement();
-
-            var parameters = endpoint.getParameters();
-            long injected = parameters
-                .stream()
-                .filter(p -> p.getAnnotation(KInject.class) != null)
-                .count();
-
-            var bodyParams = parameters
-                .stream()
-                .filter(p -> p.getAnnotation(KBodyValue.class) != null)
-                .map(p -> p.getAnnotation(KBodyValue.class))
-                .toList();
-
-            if (injected + bodyParams.size() < parameters.size()) {
-                this.messager.printMessage(
-                    Diagnostic.Kind.ERROR,
-                    String.format(
-                        "%s: %s",
-                        endpoint,
-                        "Some of endpoint parameters cannot be resolved (no KBodyParam nor KInject is provided)"
-                    )
-                );
+            String[] serviceData = this.validateEndpointEnclosingClass(endpoint);
+            if (serviceData == null) {
                 continue;
             }
 
-            this.generateConverter(
-                enclosedType.getQualifiedName().toString(),
+            String service = serviceData[0];
+            String servicePackage = serviceData[1];
+
+            List<KBodyValue> bodyParams = this.validateEndpointParams(endpoint);
+            if (bodyParams == null) {
+                continue;
+            }
+
+
+            this.brewJava(
+                servicePackage,
+                service,
                 endpoint.getSimpleName().toString(),
                 bodyParams
             );
@@ -110,47 +107,79 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
         return true;
     }
 
-    private void generateConverter(
+    private @Nullable String[] validateEndpointEnclosingClass(
+        final ExecutableElement endpoint
+    ) {
+
+        TypeElement enclosedType = (TypeElement) endpoint.getEnclosingElement();
+        KComponentServiceMetaInfo metaInfo = enclosedType.getAnnotation(KComponentServiceMetaInfo.class);
+        if (metaInfo == null) {
+            this.messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                String.format(
+                    "%s.%s: %s",
+                    enclosedType.getQualifiedName(),
+                    endpoint.getSimpleName(),
+                        "endpoint method does not belong to a component service"
+                    +   "(that must be annotated with KComponentServiceMetaInfo)."
+                )
+            );
+            return null;
+        }
+
+        return new String[] {
+            metaInfo.name(),
+            this
+                .elementUtils
+                .getPackageOf(enclosedType)
+                .getQualifiedName()
+                .toString()
+        };
+
+    }
+
+    private @Nullable List<KBodyValue> validateEndpointParams(
+        final ExecutableElement endpoint
+    ) {
+
+        var parameters = endpoint.getParameters();
+        long injected = parameters
+            .stream()
+            .filter(p -> p.getAnnotation(KInject.class) != null)
+            .count();
+
+        var bodyParams = parameters
+            .stream()
+            .filter(p -> p.getAnnotation(KBodyValue.class) != null)
+            .map(p -> p.getAnnotation(KBodyValue.class))
+            .toList();
+
+        if (injected + bodyParams.size() < parameters.size()) {
+            this.messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                String.format(
+                    "%s: %s",
+                    endpoint,
+                    "Some of endpoint parameters cannot be resolved (no KBodyParam nor KInject is provided)"
+                )
+            );
+            return null;
+        }
+
+        return bodyParams;
+    }
+
+    private void brewJava(
+        final String toPackage,
         final String service,
         final String route,
         final List<KBodyValue> params
     ) {
 
-        var builder = MethodSpec
-            .methodBuilder("convert")
-            .addAnnotation(Override.class)
-            .returns(Object[].class)
-            .addParameter(MESSAGE_CLASS, "message", Modifier.FINAL);
-
-        builder.addStatement("var body = message.body()");
-        builder.addStatement("Object[] args = new Object[$L]", params.size());
-
-        for (int i = 0; i < params.size(); i++) {
-            var param = params.get(i);
-            builder
-                .beginControlFlow(
-                    "if (!body.containsKey($S))",
-                    param.value()
-                )
-                .addStatement(
-                    "throw new $T($S)",
-                    INVALID_MESSAGE_EXCEPTION_CLASS,
-                    String.format(
-                        "Could not get %s from the message",
-                        param.value()
-                    )
-                )
-                .endControlFlow()
-                .addStatement("args[$L] = body.get($S)", i, param.value());
-        }
-
-        builder.addStatement("return args");
-
         TypeSpec converter = TypeSpec
             .classBuilder(
                 String.format(
-                    "%s.generated.kMessageToEndpointConverted$$%s$$%s",
-                    service,
+                    "%s$$EndpointConverter_%s",
                     service,
                     route
                 )
@@ -162,24 +191,74 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
                     "KMessageToEndpointConverter"
                 )
             )
-            .addMethod(builder.build())
+            .addMethod(
+                this.brewConvertMethod(params)
+            )
             .build();
 
         JavaFile javaFile = JavaFile.builder(
-            String.format(
-                "%s.generated",
-                service
-            ),
-            converter
-        )
+                String.format(
+                    "%s.generated",
+                    toPackage
+                ),
+                converter
+            )
+            .indent("    ")
             .build();
 
         try {
-            javaFile.writeTo(System.out);
+            javaFile.writeTo(this.filer);
         } catch (IOException e) {
-            this.messager.printMessage(Diagnostic.Kind.ERROR, "fuck");
+            this.messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                String.format(
+                    "Could not generate converter class for %s",
+                    route
+                )
+            );
         }
 
+
+    }
+
+    private MethodSpec brewConvertMethod(
+        final List<KBodyValue> params
+    ) {
+
+        var builder = MethodSpec
+            .methodBuilder("convert")
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Override.class)
+            .returns(Object[].class)
+            .addParameter(MESSAGE_CLASS, "message", Modifier.FINAL);
+
+        builder.addStatement("var body = message.body()");
+        builder.addStatement("Object[] args = new Object[$L]", params.size());
+
+        for (int i = 0; i < params.size(); i++) {
+            var param = params.get(i);
+            String paramValue = param.value();
+
+            builder
+                .beginControlFlow(
+                    "if (!body.containsKey($S))",
+                    paramValue
+                )
+                .addStatement(
+                    "throw new $T($S)",
+                    INVALID_MESSAGE_EXCEPTION_CLASS,
+                    String.format(
+                        "Could not get %s from the message",
+                        paramValue
+                    )
+                )
+                .endControlFlow()
+                .addStatement("args[$L] = body.get($S)", i, paramValue);
+        }
+
+        builder.addStatement("return args");
+
+        return builder.build();
 
     }
 
