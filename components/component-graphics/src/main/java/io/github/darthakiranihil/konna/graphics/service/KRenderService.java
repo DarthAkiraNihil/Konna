@@ -20,7 +20,9 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.engine.Kse2;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -89,7 +91,8 @@ public class KRenderService extends KObject {
         route = "render",
         converter = KInternals.MessageToRenderableConverter.class
     )
-    public void render(final KRenderable renderable) {
+    @Kse2
+    public void render(@KBodyValue("object") final KRenderable renderable) {
 
         synchronized (this.renderLock) {
             this.currentRenderables.clear();

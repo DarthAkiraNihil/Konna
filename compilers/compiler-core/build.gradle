@@ -10,6 +10,8 @@ ext {
 
 dependencies {
     implementation project(":annotations-core")
+
+    implementation "com.palantir.javapoet:javapoet:0.11.0"
 }
 
 description = "Annotation processor for annotations provided by Konna Core"
