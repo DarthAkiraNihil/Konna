@@ -47,6 +47,13 @@ import java.util.*;
 @KComponentServiceMetaInfo(
     name = "EntityManagementService"
 )
+@KRequiresEvents({
+    @KRequiresEvent(
+        name = KEntityManagementService.BEHAVIOUR_PROCESSING_EVENT_NAME,
+        simple = false,
+        type = KEntityManagementService.BehaviourProcessingData.class
+    )
+})
 public class KEntityManagementService extends KObject {
 
     /**
