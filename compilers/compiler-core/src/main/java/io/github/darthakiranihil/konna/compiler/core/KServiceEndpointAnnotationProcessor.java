@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.Kse2;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.*;
@@ -191,6 +192,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
                     "KMessageToEndpointConverter"
                 )
             )
+            .addAnnotation(KGenerated.class)
             .addMethod(
                 this.brewConvertMethod(params)
             )
@@ -204,6 +206,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
                 converter
             )
             .indent("    ")
+            .addFileComment("Generated with Konna annotation processor. Do not edit!")
             .build();
 
         try {
