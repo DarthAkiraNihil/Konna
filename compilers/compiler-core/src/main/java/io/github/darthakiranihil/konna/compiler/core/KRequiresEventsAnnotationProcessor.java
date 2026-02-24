@@ -236,7 +236,7 @@ public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationPro
 
     }
 
-    private @Nullable TypeMirror getType(KRequiresEvent event) {
+    private @Nullable TypeMirror getType(final KRequiresEvent event) {
         try {
             event.type();
             return null;

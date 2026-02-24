@@ -288,7 +288,7 @@ public final class KStandardActivator extends KObject implements KActivator {
         final KContainer container
     ) {
         // todo: this is ugly. Need to rework the container system
-        if (!(clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()) )) {
+        if (!(clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))) {
             return clazz;
         }
 

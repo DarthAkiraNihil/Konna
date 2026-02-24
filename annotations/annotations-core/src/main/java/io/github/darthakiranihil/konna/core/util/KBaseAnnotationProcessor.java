@@ -33,12 +33,21 @@ import javax.lang.model.util.Elements;
 @NullUnmarked
 public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
+    /**
+     * Filer instance of this annotation processor.
+     */
     protected Filer filer;
+    /**
+     * Element utils instance of this annotation processor.
+     */
     protected Elements elementUtils;
+    /**
+     * Messager instance of this annotation processor.
+     */
     protected Messager messager;
 
     @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
+    public synchronized void init(final ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
 
         this.filer = processingEnv.getFiler();
