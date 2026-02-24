@@ -34,6 +34,7 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -286,6 +287,11 @@ public final class KStandardActivator extends KObject implements KActivator {
         final Class<T> clazz,
         final KContainer container
     ) {
+        // todo: this is ugly. Need to rework the container system
+        if (!(clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))) {
+            return clazz;
+        }
+
         if (this.cachedDependencies.containsKey(clazz)) {
             var ref = this.cachedDependencies.get(clazz);
             var klass = ref.get();

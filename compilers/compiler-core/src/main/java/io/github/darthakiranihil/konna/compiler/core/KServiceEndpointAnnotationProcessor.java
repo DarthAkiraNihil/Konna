@@ -23,14 +23,18 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import io.github.darthakiranihil.konna.core.message.KMessageItself;
+import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
-import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.List;
@@ -61,11 +65,15 @@ import java.util.Set;
     "io.github.darthakiranihil.konna.core.engine.KServiceEndpoint"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor {
+@SuppressWarnings("unused")
+public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationProcessor {
 
-    private Messager messager;
-    private Elements elementUtils;
-    private Filer filer;
+    private record EndpointValidationData(
+        List<KBodyValue> params,
+        boolean isItself
+    ) {
+
+    }
 
     private static final ClassName MESSAGE_CLASS = ClassName.get(
         "io.github.darthakiranihil.konna.core.message",
@@ -76,17 +84,6 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
         "io.github.darthakiranihil.konna.core.message.except",
         "KInvalidMessageException"
     );
-
-    @Override
-    public synchronized void init(final ProcessingEnvironment processingEnv) {
-
-        super.init(processingEnv);
-
-        this.messager = processingEnv.getMessager();
-        this.elementUtils = processingEnv.getElementUtils();
-        this.filer = processingEnv.getFiler();
-
-    }
 
     @Override
     public boolean process(
@@ -115,8 +112,8 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             String service = serviceData[0];
             String servicePackage = serviceData[1];
 
-            List<KBodyValue> bodyParams = this.validateEndpointParams(endpoint);
-            if (bodyParams == null) {
+            EndpointValidationData data = this.validateEndpointParams(endpoint);
+            if (data == null) {
                 continue;
             }
 
@@ -125,7 +122,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
                 servicePackage,
                 service,
                 route,
-                bodyParams
+                data
             );
 
         }
@@ -165,7 +162,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
 
     }
 
-    private @Nullable List<KBodyValue> validateEndpointParams(
+    private @Nullable EndpointValidationData validateEndpointParams(
         final ExecutableElement endpoint
     ) {
 
@@ -181,7 +178,24 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             .map(p -> p.getAnnotation(KBodyValue.class))
             .toList();
 
-        if (injected + bodyParams.size() < parameters.size()) {
+        var itselves = parameters
+            .stream()
+            .filter(p -> p.getAnnotation(KMessageItself.class) != null)
+            .count();
+
+        if (itselves > 1) {
+            this.messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                String.format(
+                    "%s: %s",
+                    endpoint,
+                    "There can be only one endpoint argument, that is the message itself"
+                )
+            );
+            return null;
+        }
+
+        if (injected + bodyParams.size() + itselves < parameters.size()) {
             this.messager.printMessage(
                 Diagnostic.Kind.ERROR,
                 String.format(
@@ -194,14 +208,14 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             return null;
         }
 
-        return bodyParams;
+        return new EndpointValidationData(bodyParams, itselves > 0);
     }
 
     private void brewJava(
         final String toPackage,
         final String service,
         final String route,
-        final List<KBodyValue> params
+        final EndpointValidationData data
     ) {
 
         TypeSpec converter = TypeSpec
@@ -221,7 +235,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             )
             .addAnnotation(KGenerated.class)
             .addMethod(
-                this.brewConvertMethod(params)
+                this.brewConvertMethod(data)
             )
             .build();
 
@@ -253,7 +267,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
     }
 
     private MethodSpec brewConvertMethod(
-        final List<KBodyValue> params
+        final EndpointValidationData data
     ) {
 
         var builder = MethodSpec
@@ -269,6 +283,13 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
                     .build()
             );
 
+        if (data.isItself) {
+            return builder
+                .addStatement("return new $T[] { message }", Object.class)
+                .build();
+        }
+
+        List<KBodyValue> params = data.params;
         builder.addStatement("var body = message.body()");
         builder.addStatement("Object[] args = new Object[$L]", params.size());
 
