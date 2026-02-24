@@ -20,6 +20,7 @@ import com.google.auto.service.AutoService;
 import com.palantir.javapoet.*;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvents;
+import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -52,7 +53,8 @@ import java.util.Set;
     "io.github.darthakiranihil.konna.core.message.KRequiresEvents"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public final class KRequiresEventsAnnotationProcessor extends AbstractProcessor {
+@SuppressWarnings("unused")
+public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationProcessor {
 
     private static int generatedRegisterers = 0;
 
@@ -64,23 +66,10 @@ public final class KRequiresEventsAnnotationProcessor extends AbstractProcessor 
 
     }
 
-    private Messager messager;
-    private Filer filer;
-
     private static final ClassName EVENT_SYSTEM_CLASS = ClassName.get(
         "io.github.darthakiranihil.konna.core.message",
         "KEventSystem"
     );
-
-    @Override
-    public synchronized void init(final ProcessingEnvironment processingEnv) {
-
-        super.init(processingEnv);
-
-        this.messager = processingEnv.getMessager();
-        this.filer = processingEnv.getFiler();
-
-    }
 
     @Override
     public boolean process(

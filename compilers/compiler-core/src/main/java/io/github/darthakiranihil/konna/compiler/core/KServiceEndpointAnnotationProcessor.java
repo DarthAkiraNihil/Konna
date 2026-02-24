@@ -24,14 +24,17 @@ import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KMessageItself;
+import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
-import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.List;
@@ -62,11 +65,8 @@ import java.util.Set;
     "io.github.darthakiranihil.konna.core.engine.KServiceEndpoint"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor {
-
-    private Messager messager;
-    private Elements elementUtils;
-    private Filer filer;
+@SuppressWarnings("unused")
+public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationProcessor {
 
     private record EndpointValidationData(
         List<KBodyValue> params,
@@ -84,17 +84,6 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
         "io.github.darthakiranihil.konna.core.message.except",
         "KInvalidMessageException"
     );
-
-    @Override
-    public synchronized void init(final ProcessingEnvironment processingEnv) {
-
-        super.init(processingEnv);
-
-        this.messager = processingEnv.getMessager();
-        this.elementUtils = processingEnv.getElementUtils();
-        this.filer = processingEnv.getFiler();
-
-    }
 
     @Override
     public boolean process(

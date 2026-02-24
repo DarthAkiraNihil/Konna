@@ -21,6 +21,7 @@ import com.google.auto.service.AutoService;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.object.KPoolable;
+import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -48,17 +49,8 @@ import java.util.Set;
     "io.github.darthakiranihil.konna.core.object.KPoolable"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public final class KPoolableAnnotationProcessor extends AbstractProcessor {
-
-    private Messager messager;
-
-    @Override
-    public synchronized void init(final ProcessingEnvironment processingEnv) {
-
-        super.init(processingEnv);
-        this.messager = processingEnv.getMessager();
-
-    }
+@SuppressWarnings("unused")
+public final class KPoolableAnnotationProcessor extends KBaseAnnotationProcessor {
 
     @Override
     public boolean process(
