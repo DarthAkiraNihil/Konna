@@ -24,7 +24,7 @@ import com.palantir.javapoet.MethodSpec;
 import com.palantir.javapoet.TypeSpec;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.Kse2;
+import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.Nullable;
@@ -36,11 +36,12 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.engine.Kse2"
+    "io.github.darthakiranihil.konna.core.engine.KServiceEndpoint"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor {
@@ -74,7 +75,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
-            Kse2.class
+            KServiceEndpoint.class
         )) {
 
             if (element.getKind() != ElementKind.METHOD) {
@@ -82,6 +83,10 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             }
 
             ExecutableElement endpoint = (ExecutableElement) element;
+            String route = Objects.requireNonNull(
+                endpoint.getAnnotation(KServiceEndpoint.class)
+            ).route();
+
             String[] serviceData = this.validateEndpointEnclosingClass(endpoint);
             if (serviceData == null) {
                 continue;
@@ -99,7 +104,7 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             this.brewJava(
                 servicePackage,
                 service,
-                endpoint.getSimpleName().toString(),
+                route,
                 bodyParams
             );
 
@@ -215,8 +220,9 @@ public final class KServiceEndpointAnnotationProcessor extends AbstractProcessor
             this.messager.printMessage(
                 Diagnostic.Kind.ERROR,
                 String.format(
-                    "Could not generate converter class for %s",
-                    route
+                    "Could not generate converter class for %s: %s",
+                    route,
+                    e
                 )
             );
         }

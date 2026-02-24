@@ -27,10 +27,10 @@ import org.jetbrains.annotations.ApiStatus;
 @KExcludeFromGeneratedCoverageReport
 final class KInternals extends KUninstantiable {
 
-    private static final String NAME_KEY = "name";
-    private static final String TYPE_KEY = "type";
-    private static final String DATA_KEY = "data";
-    private static final String ENTITY_ID_KEY = "entity_id";
+    public static final String NAME_KEY = "name";
+    public static final String TYPE_KEY = "type";
+    public static final String DATA_KEY = "data";
+    public static final String ENTITY_ID_KEY = "entity_id";
 
     public static final class MessageToEntityCreationDataConverter
         implements KMessageToEndpointConverter {

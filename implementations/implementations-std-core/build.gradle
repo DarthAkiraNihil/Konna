@@ -15,4 +15,6 @@ dependencies {
     implementation 'io.github.classgraph:classgraph:4.8.181'
     implementation 'io.github.toolfactory:jvm-driver:9.9.10'
 
+    testAnnotationProcessor project(":compiler-core")
+
 }

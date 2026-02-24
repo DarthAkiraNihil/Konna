@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.engine.another_impl;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.engine.MessageToEndpointConverterExample;
+import io.github.darthakiranihil.konna.core.message.KBodyValue;
 
 @KComponentServiceMetaInfo(
     name = "TestAnotherService"
@@ -28,10 +29,11 @@ public class TestAnotherService {
     private int testVar = -1;
 
     @KServiceEndpoint(
-        route = "testEndpoint",
-        converter = MessageToEndpointConverterExample.class
+        route = "testEndpoint"
     )
-    public void testEndpoint(int testVar) {
+    public void testEndpoint(
+        @KBodyValue("test") int testVar
+    ) {
         this.testVar = testVar;
     }
 

@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
-import io.github.darthakiranihil.konna.core.engine.Kse2;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -88,10 +87,8 @@ public class KRenderService extends KObject {
      * @param renderable Object to be rendered with {@link KRenderFrontend}
      */
     @KServiceEndpoint(
-        route = "render",
-        converter = KInternals.MessageToRenderableConverter.class
+        route = "render"
     )
-    @Kse2
     public void render(@KBodyValue("object") final KRenderable renderable) {
 
         synchronized (this.renderLock) {
@@ -106,10 +103,9 @@ public class KRenderService extends KObject {
      * @param renderables Object array to be rendered with {@link KRenderFrontend}
      */
     @KServiceEndpoint(
-        route = "bulkRender",
-        converter = KInternals.MessageToRenderableArrayConverter.class
+        route = "bulkRender"
     )
-    public void render(final KRenderable[] renderables) {
+    public void render(@KBodyValue("objects") final KRenderable[] renderables) {
 
         synchronized (this.renderLock) {
             this.currentRenderables.clear();
