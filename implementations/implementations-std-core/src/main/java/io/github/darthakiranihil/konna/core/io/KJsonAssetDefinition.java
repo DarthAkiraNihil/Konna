@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -61,6 +62,16 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         }
 
         this.value = value;
+    }
+
+    @Override
+    public List<String> getProperties() {
+        return this
+            .value
+            .entrySet()
+            .stream()
+            .map(Map.Entry::getKey)
+            .toList();
     }
 
     @Override
