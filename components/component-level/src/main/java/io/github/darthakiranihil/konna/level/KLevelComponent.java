@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -41,7 +42,7 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 public class KLevelComponent extends KComponent {
 
     public KLevelComponent(
-        KServiceLoader serviceLoader,
+        @KInject KServiceLoader serviceLoader,
         String name,
         KEngineContext ctx,
         String servicesPackage,
