@@ -121,6 +121,8 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
             }
         );
 
+        Assertions.assertEquals(41, this.definition.getProperties().size());
+
         Assertions.assertEquals(1, this.definition.getIntArray("int_array_property").length);
         Assertions.assertEquals(1, this.definition.getIntArray("long_array_property").length);
         Assertions.assertEquals(1, this.definition.getIntArray("short_array_property").length);

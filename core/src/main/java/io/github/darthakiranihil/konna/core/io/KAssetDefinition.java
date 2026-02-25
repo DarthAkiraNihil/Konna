@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.io;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Interface for a universal container of asset data, that does not depend
  * on its format, however, it is supposed to be used for definitions
@@ -27,6 +29,12 @@ import org.jspecify.annotations.Nullable;
  * @author Darth Akira Nihil
  */
 public interface KAssetDefinition {
+
+    /**
+     * @return List of all properties names contained in this definition
+     * @since 0.5.0
+     */
+    List<String> getProperties();
 
     /**
      * Returns integer property of asset definition.
