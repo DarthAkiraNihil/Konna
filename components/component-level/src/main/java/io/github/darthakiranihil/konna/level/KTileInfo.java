@@ -16,9 +16,42 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.level.property.KIntTileProperty;
+import org.jspecify.annotations.Nullable;
+
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
 public record KTileInfo(
     int id,
     boolean passable,
-    int transparency
+    int transparency,
+    Map<String, KTileProperty> properties
 ) {
+
+    public @Nullable KIntTileProperty getIntProperty(final String name) {
+        KTileProperty prop = this.properties.get(name);
+        if (prop != null && KIntTileProperty.class.isAssignableFrom(prop.getClass())) {
+            return (KIntTileProperty) prop;
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public @Nullable <T> KObjectTileProperty<T> getObjectProperty(final String name) {
+        KTileProperty prop = this.properties.get(name);
+        if (prop != null && KObjectTileProperty.class.isAssignableFrom(prop.getClass())) {
+            try {
+                return (KObjectTileProperty<T>) prop;
+            } catch (ClassCastException e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+
 }

@@ -25,11 +25,14 @@ import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
+import java.util.Map;
+
 public final class KTileCollection implements KAssetCollection<KTileInfo> {
 
     private static final int TILE_TTL = 300;
     private final KAssetLoader assetLoader;
     private final KCache tileCache;
+
     private final KTilePropertyCollection propsCollection;
 
 
@@ -58,10 +61,13 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
         int transparency = tileDefinition.getInt("transparency");
         boolean passable = tileDefinition.getBoolean("passable");
 
+
+
         KTileInfo tile = new KTileInfo(
             tileId,
             passable,
-            transparency
+            transparency,
+            Map.of()
         );
 
         this.tileCache.putToCache(assetId, tile, TILE_TTL);
