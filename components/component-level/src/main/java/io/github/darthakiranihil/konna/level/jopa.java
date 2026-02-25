@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.property;
+package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
+@KObjectTilePropertyType(
+    alias = "Jopa",
+    mapper = "io.github.darthakiranihil.konna.level.floppa"
+)
+public class jopa {
 
-public class KIntTileProperty implements KTileProperty {
-
-    private int value;
-
-    public KIntTileProperty(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return this.value;
-    }
-
-    public void setValue(int newValue) {
-        this.value = newValue;
-    }
+    public int fuck;
 
 }

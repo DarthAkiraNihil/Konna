@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.property;
+package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
+public interface KObjectTileProperty<T> extends KTileProperty {
 
-public class KIntTileProperty implements KTileProperty {
-
-    private int value;
-
-    public KIntTileProperty(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return this.value;
-    }
-
-    public void setValue(int newValue) {
-        this.value = newValue;
-    }
+    T getValue();
 
 }

@@ -9,8 +9,6 @@ ext {
 }
 
 dependencies {
-    implementation project(":annotations-core")
-
     implementation "com.palantir.javapoet:javapoet:0.11.0"
 }
 

@@ -16,15 +16,10 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface KTilePropertyType {
+public interface KObjectTilePropertyMapper<T> {
 
-    String alias();
+    T map(KAssetDefinition definition);
 
 }

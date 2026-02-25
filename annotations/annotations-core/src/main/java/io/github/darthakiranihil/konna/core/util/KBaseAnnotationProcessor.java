@@ -23,6 +23,7 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 /**
  * Base class for all annotation processors.
@@ -45,6 +46,7 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
      * Messager instance of this annotation processor.
      */
     protected Messager messager;
+    protected Types typeUtils;
 
     @Override
     public synchronized void init(final ProcessingEnvironment processingEnv) {
@@ -52,6 +54,7 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
         this.filer = processingEnv.getFiler();
         this.elementUtils = processingEnv.getElementUtils();
+        this.typeUtils = processingEnv.getTypeUtils();
         this.messager = processingEnv.getMessager();
 
     }

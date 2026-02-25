@@ -34,6 +34,7 @@ include 'annotations-core'
 include 'annotations-level'
 
 include 'compiler-core'
+include 'compiler-level'
 
 findProject(':component-graphics').projectDir = new File("components/component-graphics")
 findProject(':component-entity').projectDir = new File("components/component-entity")
@@ -59,5 +60,6 @@ findProject(':annotations-core').projectDir = new File("annotations/annotations-
 findProject(':annotations-level').projectDir = new File("annotations/annotations-level")
 
 findProject(':compiler-core').projectDir = new File("compilers/compiler-core")
+findProject(':compiler-level').projectDir = new File("compilers/compiler-level")
 
 include 'konna-bom'

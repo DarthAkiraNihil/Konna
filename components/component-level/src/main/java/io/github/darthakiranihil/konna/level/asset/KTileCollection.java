@@ -30,14 +30,17 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
     private static final int TILE_TTL = 300;
     private final KAssetLoader assetLoader;
     private final KCache tileCache;
+    private final KTilePropertyCollection propsCollection;
 
 
     public KTileCollection(
         @KInject final KAssetLoader assetLoader,
-        @KInject final KCache cache
+        @KInject final KCache cache,
+        @KInject final KTilePropertyCollection propsCollection
     ) {
         this.assetLoader = assetLoader;
         this.tileCache = cache;
+        this.propsCollection = propsCollection;
     }
 
     @Override
@@ -62,6 +65,7 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
         );
 
         this.tileCache.putToCache(assetId, tile, TILE_TTL);
+
         return tile;
     }
 }

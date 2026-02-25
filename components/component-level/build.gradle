@@ -9,3 +9,11 @@ ext {
 }
 
 description = "Level component of Konna engine"
+
+dependencies {
+
+    implementation project(":annotations-level")
+
+    annotationProcessor project(":compiler-level")
+
+}

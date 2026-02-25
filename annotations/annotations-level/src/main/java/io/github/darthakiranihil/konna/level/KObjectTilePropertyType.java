@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.property;
+package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class KIntTileProperty implements KTileProperty {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface KObjectTilePropertyType {
 
-    private int value;
-
-    public KIntTileProperty(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return this.value;
-    }
-
-    public void setValue(int newValue) {
-        this.value = newValue;
-    }
+    String alias();
+    String mapper();
 
 }

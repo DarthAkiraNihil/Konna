@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.property;
+package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 
-public class KIntTileProperty implements KTileProperty {
+public class floppa implements KObjectTilePropertyMapper<jopa> {
 
-    private int value;
-
-    public KIntTileProperty(int value) {
-        this.value = value;
+    @Override
+    public jopa map(KAssetDefinition definition) {
+        var j = new jopa();
+        j.fuck = definition.getInt("suck_some_dihh");
+        return j;
     }
-
-    public int getValue() {
-        return this.value;
-    }
-
-    public void setValue(int newValue) {
-        this.value = newValue;
-    }
-
 }
