@@ -42,11 +42,11 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 public class KLevelComponent extends KComponent {
 
     public KLevelComponent(
-        @KInject KServiceLoader serviceLoader,
-        String name,
-        KEngineContext ctx,
-        String servicesPackage,
-        KJsonValue config
+        @KInject final KServiceLoader serviceLoader,
+        final String name,
+        final KEngineContext ctx,
+        final String servicesPackage,
+        final KJsonValue config
     ) {
         super(serviceLoader, name, ctx, servicesPackage, config);
     }
@@ -57,7 +57,7 @@ public class KLevelComponent extends KComponent {
     }
 
     @Override
-    protected void applyConfig(KJsonValue config) {
+    protected void applyConfig(final KJsonValue config) {
 
     }
 }
