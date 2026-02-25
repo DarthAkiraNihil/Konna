@@ -21,10 +21,13 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.level.KTileInfo;
+import io.github.darthakiranihil.konna.level.*;
+import io.github.darthakiranihil.konna.level.property.factory.KIntPropertyFactory;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class KTileCollection implements KAssetCollection<KTileInfo> {
@@ -61,17 +64,48 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
         int transparency = tileDefinition.getInt("transparency");
         boolean passable = tileDefinition.getBoolean("passable");
 
+        KAssetDefinition props = tileDefinition.getSubdefinition("properties");
+        Map<String, KTileProperty> readProps = this.readProps(props);
 
 
         KTileInfo tile = new KTileInfo(
             tileId,
             passable,
             transparency,
-            Map.of()
+            readProps
         );
 
         this.tileCache.putToCache(assetId, tile, TILE_TTL);
 
         return tile;
+    }
+
+    private Map<String, KTileProperty> readProps(
+        final KAssetDefinition props
+    ) {
+        Map<String, KTileProperty> readProps = new HashMap<>();
+        for (var prop: props.getProperties()) {
+
+            var factory = this.propsCollection.getAsset(prop);
+            switch (factory) {
+                case KIntPropertyFactory ipf: {
+                    readProps.put(prop, ipf.create(props.getInt(prop)));
+                    break;
+                }
+                case KObjectTilePropertyFactory<?> opf: {
+                    readProps.put(prop, opf.create(props.getSubdefinition(prop)));
+                }
+                default: {
+                    throw new KAssetLoadingException(
+                        String.format(
+                            "Unknown tile property factory: %s",
+                            factory
+                        )
+                    );
+                }
+            }
+        }
+
+        return readProps;
     }
 }

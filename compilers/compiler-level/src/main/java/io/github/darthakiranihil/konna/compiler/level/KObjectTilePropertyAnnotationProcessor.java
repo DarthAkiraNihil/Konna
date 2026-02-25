@@ -52,7 +52,7 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
 
         this.factoryType = ClassName.get(
             "io.github.darthakiranihil.konna.level",
-            "KTilePropertyFactory"
+            "KObjectTilePropertyFactory"
         );
 
         this.objectTilePropertyType = ClassName.get(
@@ -110,10 +110,7 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
 
         ParameterizedTypeName propertyTypeInterface = ParameterizedTypeName.get(
             this.factoryType,
-            ParameterizedTypeName.get(
-                this.objectTilePropertyType,
-                ClassName.get(propertyClass)
-            )
+            ClassName.get(propertyClass)
         );
 
         TypeSpec factory = TypeSpec
