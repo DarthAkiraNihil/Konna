@@ -22,6 +22,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,6 +49,15 @@ public class KMapAssetDefinition implements KAssetDefinition {
      */
     public KMapAssetDefinition() {
         this.value = new HashMap<>();
+    }
+
+    @Override
+    public List<String> getProperties() {
+        return this
+            .value
+            .keySet()
+            .stream()
+            .toList();
     }
 
     @Override
