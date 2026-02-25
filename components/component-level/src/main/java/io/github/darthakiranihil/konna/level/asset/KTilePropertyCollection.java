@@ -23,8 +23,11 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.level.KObjectTileProperty;
+import io.github.darthakiranihil.konna.level.KObjectTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
-import io.github.darthakiranihil.konna.level.property.factory.KIntPropertyFactory;
+import io.github.darthakiranihil.konna.level.property.factory.*;
+import io.github.darthakiranihil.konna.level.property.*;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
 import java.util.Objects;
@@ -35,6 +38,13 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
     private final KActivator activator;
 
     private final KIntPropertyFactory intPropertyFactory;
+    private final KIntArrayTilePropertyFactory intArrayPropertyFactory;
+    private final KFloatTilePropertyFactory floatPropertyFactory;
+    private final KFloatArrayTilePropertyFactory floatArrayPropertyFactory;
+    private final KBooleanTilePropertyFactory booleanPropertyFactory;
+    private final KBooleanArrayTilePropertyFactory booleanArrayPropertyFactory;
+    private final KStringTilePropertyFactory stringPropertyFactory;
+    private final KStringArrayTilePropertyFactory stringArrayPropertyFactory;
 
     public KTilePropertyCollection(
         @KInject final KAssetLoader assetLoader,
@@ -43,8 +53,15 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
 
         this.assetLoader = assetLoader;
         this.activator = activator;
-        this.intPropertyFactory = new KIntPropertyFactory();
 
+        this.intPropertyFactory = new KIntPropertyFactory();
+        this.intArrayPropertyFactory = new KIntArrayTilePropertyFactory();
+        this.floatPropertyFactory = new KFloatTilePropertyFactory();
+        this.floatArrayPropertyFactory = new KFloatArrayTilePropertyFactory();
+        this.booleanPropertyFactory = new KBooleanTilePropertyFactory();
+        this.booleanArrayPropertyFactory = new KBooleanArrayTilePropertyFactory();
+        this.stringPropertyFactory = new KStringTilePropertyFactory();
+        this.stringArrayPropertyFactory = new KStringArrayTilePropertyFactory();
     }
 
     @Override
@@ -65,9 +82,30 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
             case "int": {
                 return this.intPropertyFactory;
             }
+            case "int[]": {
+                return this.intArrayPropertyFactory;
+            }
+            case "float": {
+                return this.floatPropertyFactory;
+            }
+            case "float[]": {
+                return this.floatArrayPropertyFactory;
+            }
+            case "bool": {
+                return this.booleanPropertyFactory;
+            }
+            case "bool[]": {
+                return this.booleanArrayPropertyFactory;
+            }
+            case "string": {
+                return this.stringPropertyFactory;
+            }
+            case "string[]": {
+                return this.stringArrayPropertyFactory;
+            }
         };
 
-        var factoryClass = (Class<? extends KTilePropertyFactory<?>>) KClassUtils.getForName(
+        var factoryClass = (Class<? extends KObjectTilePropertyFactory<?>>) KClassUtils.getForName(
             String.format(
                 "konna.generated.level.props.%s$$Factory",
                 type
@@ -75,6 +113,7 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
         );
 
         return this.activator.createObject(factoryClass);
+
     }
 
 }

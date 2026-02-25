@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.KFloatArrayTileProperty;
 import io.github.darthakiranihil.konna.level.property.KStringArrayTileProperty;
 
-public class KStringArrayTilePropertyFactory implements KTilePropertyFactory<KStringArrayTileProperty> {
+public final class KStringArrayTilePropertyFactory implements KTilePropertyFactory<KStringArrayTileProperty> {
 
     @Override
     public KStringArrayTileProperty create(Object value) {
