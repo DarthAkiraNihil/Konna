@@ -41,15 +41,15 @@ public class KTileInfo {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public boolean isPassable() {
-        return passable;
+        return this.passable;
     }
 
     public int getTransparency() {
-        return transparency;
+        return this.transparency;
     }
 
     public @Nullable KIntTileProperty getIntProperty(final String name) {
