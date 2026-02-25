@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.level"
+}
+
+description = "Level component of Konna engine"
