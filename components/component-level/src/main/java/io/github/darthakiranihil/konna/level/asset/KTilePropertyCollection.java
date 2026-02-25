@@ -21,18 +21,12 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.core.util.KIndex;
-import io.github.darthakiranihil.konna.level.KObjectTileProperty;
-import io.github.darthakiranihil.konna.level.KObjectTilePropertyType;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.factory.KIntPropertyFactory;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public final class KTilePropertyCollection implements KAssetCollection<KTilePropertyFactory<?>> {
@@ -40,39 +34,21 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
     private final KAssetLoader assetLoader;
     private final KActivator activator;
 
-    private final Map<String, Class<?>> objectTypes;
-    // private final Map<String, KTilePropertyFactory<?>> loadedTypes;
-
     private final KIntPropertyFactory intPropertyFactory;
 
     public KTilePropertyCollection(
         @KInject final KAssetLoader assetLoader,
-        @KInject final KActivator activator,
-        @KInject final KIndex index
+        @KInject final KActivator activator
     ) {
 
         this.assetLoader = assetLoader;
         this.activator = activator;
-        this.objectTypes = new HashMap<>();
-
-        index
-            .getClassIndex()
-            .stream()
-            .filter(x -> x.isAnnotationPresent(KObjectTilePropertyType.class))
-            .forEach(x -> {
-                KObjectTilePropertyType meta = x.getAnnotation(KObjectTilePropertyType.class);
-                this.objectTypes.put(meta.alias(), x);
-            });
-
         this.intPropertyFactory = new KIntPropertyFactory();
 
     }
 
     @Override
     public KTilePropertyFactory<?> getAsset(String assetId) {
-//        if (this.loadedTypes.containsKey(assetId)) {
-//            return this.loadedTypes.get(assetId);
-//        }
 
         KAsset asset = this.assetLoader.loadAsset(assetId, KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE);
         KAssetDefinition definition = asset.definition();

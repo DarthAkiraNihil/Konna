@@ -19,16 +19,38 @@ package io.github.darthakiranihil.konna.level;
 import io.github.darthakiranihil.konna.level.property.KIntTileProperty;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Map;
 
-public record KTileInfo(
-    int id,
-    boolean passable,
-    int transparency,
-    Map<String, KTileProperty> properties
-) {
+public class KTileInfo {
+
+    private final int id;
+    private final boolean passable;
+    private final int transparency;
+    private final Map<String, KTileProperty> properties;
+
+    public KTileInfo(
+        int id,
+        boolean passable,
+        int transparency,
+        final Map<String, KTileProperty> properties
+    ) {
+        this.id = id;
+        this.passable = passable;
+        this.transparency = transparency;
+        this.properties = properties;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isPassable() {
+        return passable;
+    }
+
+    public int getTransparency() {
+        return transparency;
+    }
 
     public @Nullable KIntTileProperty getIntProperty(final String name) {
         KTileProperty prop = this.properties.get(name);
