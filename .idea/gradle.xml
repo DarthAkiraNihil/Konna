@@ -27,6 +27,7 @@
             <option value="$PROJECT_DIR$/compilers/compiler-core" />
             <option value="$PROJECT_DIR$/components/component-entity" />
             <option value="$PROJECT_DIR$/components/component-graphics" />
+            <option value="$PROJECT_DIR$/components/component-level" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/implementations/implementations-glfw" />
             <option value="$PROJECT_DIR$/implementations/implementations-opengl33" />
