@@ -12,6 +12,7 @@ include 'testing'
 
 include 'component-graphics'
 include 'component-entity'
+include 'component-level'
 
 include 'libfrontend-opengl'
 include 'libfrontend-glfw'
@@ -35,6 +36,7 @@ include 'compiler-core'
 
 findProject(':component-graphics').projectDir = new File("components/component-graphics")
 findProject(':component-entity').projectDir = new File("components/component-entity")
+findProject(':component-level').projectDir = new File("components/component-level")
 
 findProject(':libfrontend-opengl').projectDir = new File("libfrontend/libfrontend-opengl")
 findProject(':libfrontend-glfw').projectDir = new File("libfrontend/libfrontend-glfw")
