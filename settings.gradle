@@ -31,6 +31,7 @@ include 'backend-spair'
 include 'backend-lwjgl'
 
 include 'annotations-core'
+include 'annotations-level'
 
 include 'compiler-core'
 
@@ -55,6 +56,7 @@ findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
 findProject(':backend-spair').projectDir = new File("backend/backend-spair")
 
 findProject(':annotations-core').projectDir = new File("annotations/annotations-core")
+findProject(':annotations-level').projectDir = new File("annotations/annotations-level")
 
 findProject(':compiler-core').projectDir = new File("compilers/compiler-core")
 

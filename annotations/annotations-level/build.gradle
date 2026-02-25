@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'annotations-module'
+}
+
+ext {
+    artifactId = "konna.annotations-level"
+}
+
+description = "Annotations of Konna Level component"
