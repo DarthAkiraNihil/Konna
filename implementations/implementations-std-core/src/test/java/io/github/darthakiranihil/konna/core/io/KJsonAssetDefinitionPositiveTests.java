@@ -117,6 +117,7 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             v -> {}
         );
 
+        Assertions.assertEquals(2, def.getProperties().size());
         Assertions.assertFalse(def.hasClassObject("proppp"));
         Assertions.assertFalse(def.hasClassObject("proppp", KJsonParser.class));
         Assertions.assertFalse(def.hasClassObject("class_property", KJsonValidator.class));
