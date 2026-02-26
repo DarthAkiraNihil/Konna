@@ -24,11 +24,12 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.level.*;
-import io.github.darthakiranihil.konna.level.property.factory.KIntPropertyFactory;
+import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public final class KTileCollection implements KAssetCollection<KTileInfo> {
 
@@ -92,11 +93,39 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
                     readProps.put(prop, ipf.create(props.getInt(prop)));
                     break;
                 }
-                case KObjectTilePropertyFactory<?> opf: {
+                case KIntArrayPropertyFactory iapf: {
+                    readProps.put(prop, iapf.create(props.getIntArray(prop)));
+                    break;
+                }
+                case KFloatPropertyFactory fpf: {
+                    readProps.put(prop, fpf.create(props.getFloat(prop)));
+                    break;
+                }
+                case KFloatArrayPropertyFactory fapf: {
+                    readProps.put(prop, fapf.create(props.getFloatArray(prop)));
+                    break;
+                }
+                case KBooleanPropertyFactory bpf: {
+                    readProps.put(prop, bpf.create(props.getBoolean(prop)));
+                    break;
+                }
+                case KBooleanArrayPropertyFactory bapf: {
+                    readProps.put(prop, bapf.create(props.getBooleanArray(prop)));
+                    break;
+                }
+                case KStringPropertyFactory spf: {
+                    readProps.put(prop, spf.create(Objects.requireNonNull(props.getString(prop))));
+                    break;
+                }
+                case KStringArrayPropertyFactory sapf: {
+                    readProps.put(prop, sapf.create(Objects.requireNonNull(props.getStringArray(prop))));
+                    break;
+                }
+                case KObjectPropertyFactory<?> opf: {
                     readProps.put(prop, opf.create(props.getSubdefinition(prop)));
                     break;
                 }
-                case KObjectArrayTilePropertyFactory<?> oapf: {
+                case KObjectArrayPropertyFactory<?> oapf: {
                     readProps.put(prop, oapf.create(props.getSubdefinitionArray(prop)));
                     break;
                 }

@@ -18,28 +18,19 @@ package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
-import io.github.darthakiranihil.konna.level.property.KBooleanArrayTileProperty;
-import io.github.darthakiranihil.konna.level.property.KIntArrayTileProperty;
+import io.github.darthakiranihil.konna.level.property.KBooleanTileProperty;
 
-public final class KBooleanArrayTilePropertyFactory implements KTilePropertyFactory<KBooleanArrayTileProperty> {
+public final class KBooleanPropertyFactory implements KTilePropertyFactory<KBooleanTileProperty> {
 
     @Override
-    public KBooleanArrayTileProperty create(Object value) {
+    public KBooleanTileProperty create(Object value) {
         if (
-            boolean[].class.isAssignableFrom(value.getClass())
+                boolean.class.isAssignableFrom(value.getClass())
+            ||  Boolean.class.isAssignableFrom(value.getClass())
         ) {
-            return new KBooleanArrayTileProperty((boolean[]) value);
+            return new KBooleanTileProperty((boolean) value);
         }
 
-        if (Boolean[].class.isAssignableFrom(value.getClass())) {
-            Boolean[] boxed = (Boolean[]) value;
-            boolean[] unboxed = new boolean[boxed.length];
-            for (int i = 0; i < boxed.length; i++) {
-                unboxed[i] = boxed[i];
-            }
-            return new KBooleanArrayTileProperty(unboxed);
-        }
-
-        throw new KInvalidArgumentException("Value is not a boolean array");
+        throw new KInvalidArgumentException("Value is not a boolean");
     }
 }

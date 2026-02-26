@@ -16,5 +16,5 @@
 
 package io.github.darthakiranihil.konna.level;
 
-public interface KObjectArrayTilePropertyFactory<T> extends KTilePropertyFactory<KObjectArrayTileProperty<T>> {
+public interface KObjectArrayPropertyFactory<T> extends KTilePropertyFactory<KObjectArrayTileProperty<T>> {
 }

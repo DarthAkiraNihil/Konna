@@ -18,19 +18,19 @@ package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
-import io.github.darthakiranihil.konna.level.property.KIntTileProperty;
-import io.github.darthakiranihil.konna.level.property.KStringTileProperty;
+import io.github.darthakiranihil.konna.level.property.KFloatTileProperty;
 
-public final class KStringTilePropertyFactory implements KTilePropertyFactory<KStringTileProperty> {
+public final class KFloatPropertyFactory implements KTilePropertyFactory<KFloatTileProperty> {
 
     @Override
-    public KStringTileProperty create(Object value) {
+    public KFloatTileProperty create(Object value) {
         if (
-            String.class.isAssignableFrom(value.getClass())
+                float.class.isAssignableFrom(value.getClass())
+            ||  Float.class.isAssignableFrom(value.getClass())
         ) {
-            return new KStringTileProperty((String) value);
+            return new KFloatTileProperty((float) value);
         }
 
-        throw new KInvalidArgumentException("Value is not a string");
+        throw new KInvalidArgumentException("Value is not a float");
     }
 }

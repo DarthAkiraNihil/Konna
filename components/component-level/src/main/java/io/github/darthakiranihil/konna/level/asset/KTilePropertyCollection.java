@@ -23,12 +23,10 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.level.KObjectArrayTilePropertyFactory;
-import io.github.darthakiranihil.konna.level.KObjectTileProperty;
-import io.github.darthakiranihil.konna.level.KObjectTilePropertyFactory;
+import io.github.darthakiranihil.konna.level.KObjectArrayPropertyFactory;
+import io.github.darthakiranihil.konna.level.KObjectPropertyFactory;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.factory.*;
-import io.github.darthakiranihil.konna.level.property.*;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
 import java.util.Objects;
@@ -39,13 +37,13 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
     private final KActivator activator;
 
     private final KIntPropertyFactory intPropertyFactory;
-    private final KIntArrayTilePropertyFactory intArrayPropertyFactory;
-    private final KFloatTilePropertyFactory floatPropertyFactory;
-    private final KFloatArrayTilePropertyFactory floatArrayPropertyFactory;
-    private final KBooleanTilePropertyFactory booleanPropertyFactory;
-    private final KBooleanArrayTilePropertyFactory booleanArrayPropertyFactory;
-    private final KStringTilePropertyFactory stringPropertyFactory;
-    private final KStringArrayTilePropertyFactory stringArrayPropertyFactory;
+    private final KIntArrayPropertyFactory intArrayPropertyFactory;
+    private final KFloatPropertyFactory floatPropertyFactory;
+    private final KFloatArrayPropertyFactory floatArrayPropertyFactory;
+    private final KBooleanPropertyFactory booleanPropertyFactory;
+    private final KBooleanArrayPropertyFactory booleanArrayPropertyFactory;
+    private final KStringPropertyFactory stringPropertyFactory;
+    private final KStringArrayPropertyFactory stringArrayPropertyFactory;
 
     public KTilePropertyCollection(
         @KInject final KAssetLoader assetLoader,
@@ -56,13 +54,13 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
         this.activator = activator;
 
         this.intPropertyFactory = new KIntPropertyFactory();
-        this.intArrayPropertyFactory = new KIntArrayTilePropertyFactory();
-        this.floatPropertyFactory = new KFloatTilePropertyFactory();
-        this.floatArrayPropertyFactory = new KFloatArrayTilePropertyFactory();
-        this.booleanPropertyFactory = new KBooleanTilePropertyFactory();
-        this.booleanArrayPropertyFactory = new KBooleanArrayTilePropertyFactory();
-        this.stringPropertyFactory = new KStringTilePropertyFactory();
-        this.stringArrayPropertyFactory = new KStringArrayTilePropertyFactory();
+        this.intArrayPropertyFactory = new KIntArrayPropertyFactory();
+        this.floatPropertyFactory = new KFloatPropertyFactory();
+        this.floatArrayPropertyFactory = new KFloatArrayPropertyFactory();
+        this.booleanPropertyFactory = new KBooleanPropertyFactory();
+        this.booleanArrayPropertyFactory = new KBooleanArrayPropertyFactory();
+        this.stringPropertyFactory = new KStringPropertyFactory();
+        this.stringArrayPropertyFactory = new KStringArrayPropertyFactory();
     }
 
     @Override
@@ -115,11 +113,11 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
 
         if (isArray) {
             return this.activator.createObject(
-                (Class<? extends KObjectArrayTilePropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
+                (Class<? extends KObjectArrayPropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
             );
         } else {
             return this.activator.createObject(
-                (Class<? extends KObjectTilePropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
+                (Class<? extends KObjectPropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
             );
         }
 

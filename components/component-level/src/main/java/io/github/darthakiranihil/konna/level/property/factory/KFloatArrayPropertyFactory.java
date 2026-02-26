@@ -19,18 +19,26 @@ package io.github.darthakiranihil.konna.level.property.factory;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.KFloatArrayTileProperty;
-import io.github.darthakiranihil.konna.level.property.KStringArrayTileProperty;
 
-public final class KStringArrayTilePropertyFactory implements KTilePropertyFactory<KStringArrayTileProperty> {
+public final class KFloatArrayPropertyFactory implements KTilePropertyFactory<KFloatArrayTileProperty> {
 
     @Override
-    public KStringArrayTileProperty create(Object value) {
+    public KFloatArrayTileProperty create(Object value) {
         if (
-            String[].class.isAssignableFrom(value.getClass())
+            float[].class.isAssignableFrom(value.getClass())
         ) {
-            return new KStringArrayTileProperty((String[]) value);
+            return new KFloatArrayTileProperty((float[]) value);
         }
 
-        throw new KInvalidArgumentException("Value is not a string array");
+        if (Float[].class.isAssignableFrom(value.getClass())) {
+            Float[] boxed = (Float[]) value;
+            float[] unboxed = new float[boxed.length];
+            for (int i = 0; i < boxed.length; i++) {
+                unboxed[i] = boxed[i];
+            }
+            return new KFloatArrayTileProperty(unboxed);
+        }
+
+        throw new KInvalidArgumentException("Value is not a float array");
     }
 }

@@ -18,20 +18,28 @@ package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
-import io.github.darthakiranihil.konna.level.property.KFloatTileProperty;
-import io.github.darthakiranihil.konna.level.property.KIntTileProperty;
+import io.github.darthakiranihil.konna.level.property.KIntArrayTileProperty;
 
-public final class KFloatTilePropertyFactory implements KTilePropertyFactory<KFloatTileProperty> {
+public final class KIntArrayPropertyFactory implements KTilePropertyFactory<KIntArrayTileProperty> {
 
     @Override
-    public KFloatTileProperty create(Object value) {
+    public KIntArrayTileProperty create(Object value) {
         if (
-                float.class.isAssignableFrom(value.getClass())
-            ||  Float.class.isAssignableFrom(value.getClass())
+            int[].class.isAssignableFrom(value.getClass())
         ) {
-            return new KFloatTileProperty((float) value);
+            return new KIntArrayTileProperty((int[]) value);
         }
 
-        throw new KInvalidArgumentException("Value is not a float");
+        if (Integer[].class.isAssignableFrom(value.getClass())) {
+            Integer[] boxed = (Integer[]) value;
+            int[] unboxed = new int[boxed.length];
+            for (int i = 0; i < boxed.length; i++) {
+                unboxed[i] = boxed[i];
+            }
+            return new KIntArrayTileProperty(unboxed);
+        }
+
+        throw new KInvalidArgumentException("Value is not an int array");
     }
+
 }

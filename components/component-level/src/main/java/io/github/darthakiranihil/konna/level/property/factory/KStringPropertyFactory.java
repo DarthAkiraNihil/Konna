@@ -18,29 +18,18 @@ package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
-import io.github.darthakiranihil.konna.level.property.KIntArrayTileProperty;
-import io.github.darthakiranihil.konna.level.property.KIntTileProperty;
+import io.github.darthakiranihil.konna.level.property.KStringTileProperty;
 
-public final class KIntArrayTilePropertyFactory implements KTilePropertyFactory<KIntArrayTileProperty> {
+public final class KStringPropertyFactory implements KTilePropertyFactory<KStringTileProperty> {
 
     @Override
-    public KIntArrayTileProperty create(Object value) {
+    public KStringTileProperty create(Object value) {
         if (
-            int[].class.isAssignableFrom(value.getClass())
+            String.class.isAssignableFrom(value.getClass())
         ) {
-            return new KIntArrayTileProperty((int[]) value);
+            return new KStringTileProperty((String) value);
         }
 
-        if (Integer[].class.isAssignableFrom(value.getClass())) {
-            Integer[] boxed = (Integer[]) value;
-            int[] unboxed = new int[boxed.length];
-            for (int i = 0; i < boxed.length; i++) {
-                unboxed[i] = boxed[i];
-            }
-            return new KIntArrayTileProperty(unboxed);
-        }
-
-        throw new KInvalidArgumentException("Value is not an int array");
+        throw new KInvalidArgumentException("Value is not a string");
     }
-
 }
