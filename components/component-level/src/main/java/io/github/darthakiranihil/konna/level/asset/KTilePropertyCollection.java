@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.level.KObjectArrayTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.KObjectTileProperty;
 import io.github.darthakiranihil.konna.level.KObjectTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
@@ -105,14 +106,22 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
             }
         };
 
-        var factoryClass = (Class<? extends KObjectTilePropertyFactory<?>>) KClassUtils.getForName(
-            String.format(
-                "konna.generated.level.props.%s$$Factory",
-                type
-            )
+        boolean isArray = type.endsWith("[]");
+        String factoryClassName = String.format(
+            "konna.generated.level.props.%s$$%s",
+            isArray ? type.substring(0, type.lastIndexOf('[')) : type,
+            isArray ? "ArrayFactory" : "Factory"
         );
 
-        return this.activator.createObject(factoryClass);
+        if (isArray) {
+            return this.activator.createObject(
+                (Class<? extends KObjectArrayTilePropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
+            );
+        } else {
+            return this.activator.createObject(
+                (Class<? extends KObjectTilePropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
+            );
+        }
 
     }
 

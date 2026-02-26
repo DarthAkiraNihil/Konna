@@ -45,19 +45,31 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProcessor {
 
-    private final ClassName factoryType;
+    private final ClassName singleFactoryType;
+    private final ClassName arrayFactoryType;
     private final ClassName objectTilePropertyType;
+    private final ClassName objectArrayTilePropertyType;
 
     public KObjectTilePropertyAnnotationProcessor() {
 
-        this.factoryType = ClassName.get(
+        this.singleFactoryType = ClassName.get(
             "io.github.darthakiranihil.konna.level",
             "KObjectTilePropertyFactory"
+        );
+
+        this.arrayFactoryType = ClassName.get(
+            "io.github.darthakiranihil.konna.level",
+            "KObjectArrayTilePropertyFactory"
         );
 
         this.objectTilePropertyType = ClassName.get(
             "io.github.darthakiranihil.konna.level",
             "KObjectTileProperty"
+        );
+
+        this.objectArrayTilePropertyType = ClassName.get(
+            "io.github.darthakiranihil.konna.level",
+            "KObjectArrayTileProperty"
         );
 
     }
@@ -108,15 +120,27 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
         final TypeElement mapperClass
     ) {
 
+        this.brewFactory(alias, propertyClass, mapperClass, false);
+        this.brewFactory(alias, propertyClass, mapperClass, true);
+
+    }
+
+    private void brewFactory(
+        final String alias,
+        final TypeElement propertyClass,
+        final TypeElement mapperClass,
+        boolean isArray
+    ) {
+
         ParameterizedTypeName propertyTypeInterface = ParameterizedTypeName.get(
-            this.factoryType,
+            isArray ? this.arrayFactoryType : this.singleFactoryType,
             ClassName.get(propertyClass)
         );
 
         TypeSpec factory = TypeSpec
             .classBuilder(
                 String.format(
-                    "%s$$Factory",
+                    isArray ? "%s$$ArrayFactory" : "%s$$Factory",
                     alias
                 )
             )
@@ -126,7 +150,8 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
             .addMethod(
                 this.brewCreateMethod(
                     propertyClass,
-                    mapperClass
+                    mapperClass,
+                    isArray
                 )
             )
             .build();
@@ -146,7 +171,7 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
             this.messager.printMessage(
                 Diagnostic.Kind.ERROR,
                 String.format(
-                    "Could not generate registerer class: %s",
+                    "Could not generate factory class: %s",
                     e
                 )
             );
@@ -156,16 +181,22 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
 
     private MethodSpec brewCreateMethod(
         final TypeElement propertyClass,
-        final TypeElement mapperClass
+        final TypeElement mapperClass,
+        boolean isArray
     ) {
 
         ParameterizedTypeName propType = ParameterizedTypeName
             .get(
-                this.objectTilePropertyType,
+                isArray ? this.objectArrayTilePropertyType : this.objectTilePropertyType,
                 ClassName.get(propertyClass)
             );
 
-        return MethodSpec
+        ClassName assetDefinitionClass = ClassName.get(
+            "io.github.darthakiranihil.konna.core.io",
+            "KAssetDefinition"
+        );
+
+        var builder = MethodSpec
             .methodBuilder("create")
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
@@ -175,46 +206,86 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
                     .addAnnotation(NonNull.class)
                     .build()
             )
-            .returns(propType)
-            .beginControlFlow(
-                "if (!$T.class.isAssignableFrom(value.getClass()))",
-                ClassName.get(
-                    "io.github.darthakiranihil.konna.core.io",
-                    "KAssetDefinition"
+            .returns(propType);
+
+        if (isArray) {
+            builder
+                .beginControlFlow(
+                    "if (!$T[].class.isAssignableFrom(value.getClass()))",
+                    assetDefinitionClass
                 )
-            )
-            .addStatement(
-                "throw new $T($S)",
-                ClassName.get(
-                    "io.github.darthakiranihil.konna.core.except",
-                    "KInvalidArgumentException"
-                ),
-                "Value is not an asset definition"
-            )
-            .endControlFlow()
-            .addStatement(
-                "var mapped = new $T().map((KAssetDefinition) value)",
-                mapperClass
-            )
-            .addStatement(
-                "return $L",
-                TypeSpec
-                    .anonymousClassBuilder("")
-                    .addSuperinterface(propType)
-                    .addMethod(
-                        MethodSpec
-                            .methodBuilder("getValue")
-                            .addAnnotation(Override.class)
-                            .addModifiers(Modifier.PUBLIC)
-                            .returns(ClassName.get(propertyClass))
-                            .addStatement("return mapped")
-                            .build()
+                .addStatement(
+                    "throw new $T($S)",
+                    ClassName.get(
+                        "io.github.darthakiranihil.konna.core.except",
+                        "KInvalidArgumentException"
+                    ),
+                    "Value is not an asset definition array"
+                )
+                .endControlFlow()
+                .addStatement("var array = ($T[]) value", assetDefinitionClass)
+                .addStatement("var mapper = new $T()", mapperClass)
+                .addStatement("$T[] mapped = new $T[array.length]", propertyClass, propertyClass)
+                .beginControlFlow("for (int i = 0; i < array.length; i++)")
+                .addStatement("mapped[i] = mapper.map(array[i])")
+                .endControlFlow()
+                .addStatement(
+                    "return $L",
+                    TypeSpec
+                        .anonymousClassBuilder("")
+                        .addSuperinterface(propType)
+                        .addMethod(
+                            MethodSpec
+                                .methodBuilder("getValue")
+                                .addAnnotation(Override.class)
+                                .addModifiers(Modifier.PUBLIC)
+                                .returns(ArrayTypeName.of(ClassName.get(propertyClass)))
+                                .addStatement("return mapped")
+                                .build()
+                        )
+                        .build()
+                );
+        } else {
+            builder
+                .beginControlFlow(
+                    "if (!$T.class.isAssignableFrom(value.getClass()))",
+                    ClassName.get(
+                        "io.github.darthakiranihil.konna.core.io",
+                        "KAssetDefinition"
                     )
-                    .build()
-            )
-            .build();
+                )
+                .addStatement(
+                    "throw new $T($S)",
+                    ClassName.get(
+                        "io.github.darthakiranihil.konna.core.except",
+                        "KInvalidArgumentException"
+                    ),
+                    "Value is not an asset definition"
+                )
+                .endControlFlow()
+                .addStatement(
+                    "var mapped = new $T().map((KAssetDefinition) value)",
+                    mapperClass
+                )
+                .addStatement(
+                    "return $L",
+                    TypeSpec
+                        .anonymousClassBuilder("")
+                        .addSuperinterface(propType)
+                        .addMethod(
+                            MethodSpec
+                                .methodBuilder("getValue")
+                                .addAnnotation(Override.class)
+                                .addModifiers(Modifier.PUBLIC)
+                                .returns(ClassName.get(propertyClass))
+                                .addStatement("return mapped")
+                                .build()
+                        )
+                        .build()
+                );
+        }
 
-
+        return builder.build();
     }
 
 }

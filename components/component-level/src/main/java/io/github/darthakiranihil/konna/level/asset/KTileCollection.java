@@ -94,6 +94,11 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
                 }
                 case KObjectTilePropertyFactory<?> opf: {
                     readProps.put(prop, opf.create(props.getSubdefinition(prop)));
+                    break;
+                }
+                case KObjectArrayTilePropertyFactory<?> oapf: {
+                    readProps.put(prop, oapf.create(props.getSubdefinitionArray(prop)));
+                    break;
                 }
                 default: {
                     throw new KAssetLoadingException(
