@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.level.property.KIntTileProperty;
+import io.github.darthakiranihil.konna.level.property.KObjectTileProperty;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;

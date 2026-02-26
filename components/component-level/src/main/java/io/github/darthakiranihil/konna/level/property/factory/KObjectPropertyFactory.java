@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level;
+package io.github.darthakiranihil.konna.level.property.factory;
 
-public interface KObjectArrayTileProperty<T> extends KTileProperty {
+import io.github.darthakiranihil.konna.level.property.KObjectTileProperty;
+import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 
-    T[] getValue();
+public interface KObjectPropertyFactory<T> extends KTilePropertyFactory<KObjectTileProperty<T>> {
 
 }
