@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 
 public final class KTileTypedef implements KAssetTypedef {
 
-    public static final String TILE_ASSET_TYPE = "Entity.tile";
+    public static final String TILE_ASSET_TYPE = "Level.tile";
 
     @Override
     public String getName() {

@@ -25,7 +25,7 @@ public final class KIntPropertyFactory implements KTilePropertyFactory<KIntTileP
     @Override
     public KIntTileProperty create(Object value) {
         if (
-                int.class.isAssignableFrom(value.getClass())
+            int.class.isAssignableFrom(value.getClass())
             ||  Integer.class.isAssignableFrom(value.getClass())
         ) {
             return new KIntTileProperty((int) value);

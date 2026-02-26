@@ -30,15 +30,6 @@ public final class KFloatArrayPropertyFactory implements KTilePropertyFactory<KF
             return new KFloatArrayTileProperty((float[]) value);
         }
 
-        if (Float[].class.isAssignableFrom(value.getClass())) {
-            Float[] boxed = (Float[]) value;
-            float[] unboxed = new float[boxed.length];
-            for (int i = 0; i < boxed.length; i++) {
-                unboxed[i] = boxed[i];
-            }
-            return new KFloatArrayTileProperty(unboxed);
-        }
-
         throw new KInvalidArgumentException("Value is not a float array");
     }
 }

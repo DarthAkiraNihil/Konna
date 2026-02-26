@@ -15,5 +15,6 @@ dependencies {
     implementation project(":annotations-level")
 
     annotationProcessor project(":compiler-level")
+    testAnnotationProcessor project(":compiler-level")
 
 }

@@ -1,0 +1,52 @@
+{
+    "prop1": {
+        "Level.tilePropertyType": {
+            "property_type": "int"
+        }
+    },
+    "prop2": {
+        "Level.tilePropertyType": {
+            "property_type": "int[]"
+        }
+    },
+    "prop3": {
+        "Level.tilePropertyType": {
+            "property_type": "float"
+        }
+    },
+    "prop4": {
+        "Level.tilePropertyType": {
+            "property_type": "float[]"
+        }
+    },
+    "prop5": {
+        "Level.tilePropertyType": {
+            "property_type": "bool"
+        }
+    },
+    "prop6": {
+        "Level.tilePropertyType": {
+            "property_type": "bool[]"
+        }
+    },
+    "prop7": {
+        "Level.tilePropertyType": {
+            "property_type": "string"
+        }
+    },
+    "prop8": {
+        "Level.tilePropertyType": {
+            "property_type": "string[]"
+        }
+    },
+    "prop9": {
+        "Level.tilePropertyType": {
+            "property_type": "TOTP"
+        }
+    },
+    "prop10": {
+        "Level.tilePropertyType": {
+            "property_type": "TOTP[]"
+        }
+    }
+}

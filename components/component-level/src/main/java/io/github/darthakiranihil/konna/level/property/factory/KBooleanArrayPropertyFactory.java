@@ -30,15 +30,6 @@ public final class KBooleanArrayPropertyFactory implements KTilePropertyFactory<
             return new KBooleanArrayTileProperty((boolean[]) value);
         }
 
-        if (Boolean[].class.isAssignableFrom(value.getClass())) {
-            Boolean[] boxed = (Boolean[]) value;
-            boolean[] unboxed = new boolean[boxed.length];
-            for (int i = 0; i < boxed.length; i++) {
-                unboxed[i] = boxed[i];
-            }
-            return new KBooleanArrayTileProperty(unboxed);
-        }
-
         throw new KInvalidArgumentException("Value is not a boolean array");
     }
 }

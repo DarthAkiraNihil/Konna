@@ -30,15 +30,6 @@ public final class KIntArrayPropertyFactory implements KTilePropertyFactory<KInt
             return new KIntArrayTileProperty((int[]) value);
         }
 
-        if (Integer[].class.isAssignableFrom(value.getClass())) {
-            Integer[] boxed = (Integer[]) value;
-            int[] unboxed = new int[boxed.length];
-            for (int i = 0; i < boxed.length; i++) {
-                unboxed[i] = boxed[i];
-            }
-            return new KIntArrayTileProperty(unboxed);
-        }
-
         throw new KInvalidArgumentException("Value is not an int array");
     }
 

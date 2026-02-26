@@ -53,22 +53,22 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
     public KObjectTilePropertyAnnotationProcessor() {
 
         this.singleFactoryType = ClassName.get(
-            "io.github.darthakiranihil.konna.level",
-            "KObjectTilePropertyFactory"
+            "io.github.darthakiranihil.konna.level.property.factory",
+            "KObjectPropertyFactory"
         );
 
         this.arrayFactoryType = ClassName.get(
-            "io.github.darthakiranihil.konna.level",
-            "KObjectArrayTilePropertyFactory"
+            "io.github.darthakiranihil.konna.level.property.factory",
+            "KObjectArrayPropertyFactory"
         );
 
         this.objectTilePropertyType = ClassName.get(
-            "io.github.darthakiranihil.konna.level",
+            "io.github.darthakiranihil.konna.level.property",
             "KObjectTileProperty"
         );
 
         this.objectArrayTilePropertyType = ClassName.get(
-            "io.github.darthakiranihil.konna.level",
+            "io.github.darthakiranihil.konna.level.property",
             "KObjectArrayTileProperty"
         );
 

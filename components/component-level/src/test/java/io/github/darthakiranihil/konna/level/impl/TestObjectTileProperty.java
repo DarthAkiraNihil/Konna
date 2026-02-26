@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level;
+package io.github.darthakiranihil.konna.level.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.darthakiranihil.konna.level.KObjectTilePropertyType;
 
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.TYPE)
-public @interface KObjectTilePropertyType {
+@KObjectTilePropertyType(
+    alias = "TOTP",
+    mapper = "io.github.darthakiranihil.konna.level.impl.TestObjectTilePropertyMapper"
+)
+public class TestObjectTileProperty {
 
-    String alias();
-    String mapper();
+    private final int testValue;
 
+    public TestObjectTileProperty(int testValue) {
+        this.testValue = testValue;
+    }
+
+    public int getTestValue() {
+        return this.testValue;
+    }
 }

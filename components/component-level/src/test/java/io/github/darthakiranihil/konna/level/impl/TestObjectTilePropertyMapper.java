@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level;
+package io.github.darthakiranihil.konna.level.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.level.KObjectTilePropertyMapper;
 
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.TYPE)
-public @interface KObjectTilePropertyType {
+public class TestObjectTilePropertyMapper implements KObjectTilePropertyMapper<TestObjectTileProperty> {
 
-    String alias();
-    String mapper();
-
+    @Override
+    public TestObjectTileProperty map(KAssetDefinition definition) {
+        return new TestObjectTileProperty(definition.getInt("testValue"));
+    }
 }
