@@ -16,9 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
-
-public interface KObjectTileProperty<T> extends KTileProperty {
+public non-sealed interface KObjectTileProperty<T> extends KTileProperty {
 
     T getValue();
 

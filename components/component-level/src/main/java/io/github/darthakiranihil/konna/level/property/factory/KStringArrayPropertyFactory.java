@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.KStringArrayTileProperty;
 
 public final class KStringArrayPropertyFactory implements KTilePropertyFactory<KStringArrayTileProperty> {

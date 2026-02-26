@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.level.property.KObjectTileProperty;
-import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 
 public interface KObjectPropertyFactory<T> extends KTilePropertyFactory<KObjectTileProperty<T>> {
 

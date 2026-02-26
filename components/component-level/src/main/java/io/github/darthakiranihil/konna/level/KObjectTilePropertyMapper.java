@@ -18,8 +18,21 @@ package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 
+/**
+ * Interface for a class that transforms and asset definition
+ * to an object of specific type.
+ * @param <T> Transformation result type
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KObjectTilePropertyMapper<T> {
 
+    /**
+     * Maps a definition to the object.
+     * @param definition Definition to map
+     * @return The mapped object
+     */
     T map(KAssetDefinition definition);
 
 }

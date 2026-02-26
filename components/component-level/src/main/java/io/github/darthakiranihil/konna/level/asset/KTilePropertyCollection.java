@@ -23,14 +23,21 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.level.property.factory.KObjectArrayPropertyFactory;
-import io.github.darthakiranihil.konna.level.property.factory.KObjectPropertyFactory;
-import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
+import io.github.darthakiranihil.konna.level.property.factory.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
 import java.util.Objects;
 
+/**
+ * Collection of tile properties info assets of type
+ * {@link KTilePropertyTypedef#TILE_PROPERTY_ASSET_TYPE}.
+ * Usually should not be used by hand as its assets are used
+ * in {@link KTileCollection} to deserialize additional properties.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KTilePropertyCollection implements KAssetCollection<KTilePropertyFactory<?>> {
 
     private final KAssetLoader assetLoader;
@@ -45,6 +52,11 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
     private final KStringPropertyFactory stringPropertyFactory;
     private final KStringArrayPropertyFactory stringArrayPropertyFactory;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader
+     * @param activator Activator to create property factories
+     */
     public KTilePropertyCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KActivator activator
@@ -64,9 +76,11 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
     }
 
     @Override
-    public KTilePropertyFactory<?> getAsset(String assetId) {
+    public KTilePropertyFactory<?> getAsset(final String assetId) {
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId, KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE
+        );
         KAssetDefinition definition = asset.definition();
 
         String type = Objects.requireNonNull(definition.getString("property_type"));
@@ -102,7 +116,7 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
             case "string[]": {
                 return this.stringArrayPropertyFactory;
             }
-        };
+        }
 
         boolean isArray = type.endsWith("[]");
         String factoryClassName = String.format(
@@ -113,11 +127,13 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
 
         if (isArray) {
             return this.activator.createObject(
-                (Class<? extends KObjectArrayPropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
+                (Class<? extends KObjectArrayPropertyFactory<?>>)
+                    KClassUtils.getForName(factoryClassName)
             );
         } else {
             return this.activator.createObject(
-                (Class<? extends KObjectPropertyFactory<?>>) KClassUtils.getForName(factoryClassName)
+                (Class<? extends KObjectPropertyFactory<?>>)
+                    KClassUtils.getForName(factoryClassName)
             );
         }
 

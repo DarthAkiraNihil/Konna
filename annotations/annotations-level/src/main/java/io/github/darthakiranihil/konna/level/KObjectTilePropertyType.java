@@ -21,11 +21,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Indicates that this type may be an additional tile property.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface KObjectTilePropertyType {
 
+    /**
+     * @return Alias of this type
+     */
     String alias();
+
+    /**
+     * @return Canonical name of mapper class that is used to transform
+     *         an asset definition to an object of type marked with this annotation
+     */
     String mapper();
 
 }

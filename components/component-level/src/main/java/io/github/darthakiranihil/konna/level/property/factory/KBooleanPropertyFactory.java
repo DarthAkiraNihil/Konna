@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.level.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.KBooleanTileProperty;
 
 public final class KBooleanPropertyFactory implements KTilePropertyFactory<KBooleanTileProperty> {

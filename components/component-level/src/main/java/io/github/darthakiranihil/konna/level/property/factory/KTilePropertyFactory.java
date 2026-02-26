@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level;
+package io.github.darthakiranihil.konna.level.property.factory;
 
+import io.github.darthakiranihil.konna.level.property.KTileProperty;
+
+/**
+ * Interface for specialized factory that is used to box
+ * a value into a tile property container.
+ * @param <T> Type of result tile property container.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KTilePropertyFactory<T extends KTileProperty> {
 
+    /**
+     * Creates a new property.
+     * @param value Value of the property
+     * @return Boxed property
+     */
     T create(Object value);
 
 }

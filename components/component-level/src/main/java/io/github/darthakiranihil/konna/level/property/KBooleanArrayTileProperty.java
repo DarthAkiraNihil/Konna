@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
-
 public final class KBooleanArrayTileProperty implements KTileProperty {
 
     private final boolean[] value;

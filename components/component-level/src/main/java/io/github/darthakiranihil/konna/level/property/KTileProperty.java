@@ -14,7 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level;
+package io.github.darthakiranihil.konna.level.property;
 
-public interface KTileProperty {
+/**
+ * Marker interface that indicates that this object may be used
+ * as container of an additional tile property.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public sealed interface KTileProperty permits
+    KBooleanArrayTileProperty,
+    KBooleanTileProperty,
+    KFloatArrayTileProperty,
+    KFloatTileProperty,
+    KIntArrayTileProperty,
+    KIntTileProperty,
+    KObjectArrayTileProperty,
+    KObjectTileProperty,
+    KStringArrayTileProperty,
+    KStringTileProperty {
+
 }

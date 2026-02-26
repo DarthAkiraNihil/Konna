@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.NullUnmarked;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -32,6 +33,7 @@ import javax.lang.model.util.Types;
  * @author Darth Akira Nihil
  */
 @NullUnmarked
+@KExcludeFromGeneratedCoverageReport
 public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
     /**
@@ -46,6 +48,9 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
      * Messager instance of this annotation processor.
      */
     protected Messager messager;
+    /**
+     * Type utils instance of this annotation processor.
+     */
     protected Types typeUtils;
 
     @Override

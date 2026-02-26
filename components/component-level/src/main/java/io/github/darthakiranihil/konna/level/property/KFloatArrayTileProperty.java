@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
-import io.github.darthakiranihil.konna.level.KTileProperty;
-
 public final class KFloatArrayTileProperty implements KTileProperty {
 
     private final float[] value;

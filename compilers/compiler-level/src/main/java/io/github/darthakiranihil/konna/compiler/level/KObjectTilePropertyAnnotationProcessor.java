@@ -37,13 +37,26 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Annotation processor that scans all types marked with {@link KObjectTilePropertyType}
+ * and generates property factories for these types.
+ * <p>
+ *     The processor generates a factory of a single object and a factory of an array
+ *     of the marked type. These are named {@code <Type>$$Factory}
+ *     and {@code <Type>$$ArrayFactrory} correspondingly where {@code Type} is an
+ *     annotated type. Generated classes are located in {@code konna.generated.level.props} package
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.level.KObjectTilePropertyType"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
-public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProcessor {
+public final class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProcessor {
 
     private final ClassName singleFactoryType;
     private final ClassName arrayFactoryType;
@@ -75,7 +88,10 @@ public class KObjectTilePropertyAnnotationProcessor extends KBaseAnnotationProce
     }
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    public boolean process(
+        final Set<? extends TypeElement> annotations,
+        final RoundEnvironment roundEnv
+    ) {
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KObjectTilePropertyType.class
         )) {

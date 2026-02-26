@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.level.*;
+import io.github.darthakiranihil.konna.level.property.KTileProperty;
 import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
@@ -31,6 +32,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Collection of tile info assets of type
+ * {@link KTileTypedef#TILE_ASSET_TYPE}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KTileCollection implements KAssetCollection<KTileInfo> {
 
     private static final int TILE_TTL = 300;
@@ -39,7 +47,12 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
 
     private final KTilePropertyCollection propsCollection;
 
-
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader
+     * @param cache Cache to store loaded tiles
+     * @param propsCollection Additional tiles' properties collection
+     */
     public KTileCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KCache cache,
@@ -51,7 +64,7 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
     }
 
     @Override
-    public KTileInfo getAsset(String assetId) {
+    public KTileInfo getAsset(final String assetId) {
         if (this.tileCache.hasKey(assetId)) {
             KTileInfo obj = this.tileCache.getFromCache(assetId, KTileInfo.class);
             if (obj != null) {
@@ -118,7 +131,9 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
                     break;
                 }
                 case KStringArrayPropertyFactory sapf: {
-                    readProps.put(prop, sapf.create(Objects.requireNonNull(props.getStringArray(prop))));
+                    readProps.put(prop, sapf.create(Objects.requireNonNull(
+                        props.getStringArray(prop)))
+                    );
                     break;
                 }
                 case KObjectPropertyFactory<?> opf: {

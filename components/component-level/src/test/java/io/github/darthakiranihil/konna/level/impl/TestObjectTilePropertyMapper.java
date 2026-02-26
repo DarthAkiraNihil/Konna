@@ -18,11 +18,12 @@ package io.github.darthakiranihil.konna.level.impl;
 
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.level.KObjectTilePropertyMapper;
+import org.jspecify.annotations.NonNull;
 
 public class TestObjectTilePropertyMapper implements KObjectTilePropertyMapper<TestObjectTileProperty> {
 
     @Override
-    public TestObjectTileProperty map(KAssetDefinition definition) {
+    public TestObjectTileProperty map(@NonNull KAssetDefinition definition) {
         return new TestObjectTileProperty(definition.getInt("testValue"));
     }
 }
