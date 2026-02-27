@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
+/**
+ * Container for additional tile property that is a string array.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KStringArrayTileProperty implements KTileProperty {
 
     private final String[] value;

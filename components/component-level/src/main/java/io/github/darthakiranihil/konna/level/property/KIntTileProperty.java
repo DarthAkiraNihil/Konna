@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
+/**
+ * Container for additional tile property that is an int.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KIntTileProperty implements KTileProperty {
 
     private int value;

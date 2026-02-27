@@ -20,8 +20,17 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 
+/**
+ * Asset type definition for tiles that can be used in levels.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KTileTypedef implements KAssetTypedef {
 
+    /**
+     * Constant for tile type inside Graphics component.
+     */
     public static final String TILE_ASSET_TYPE = "Level.tile";
 
     @Override

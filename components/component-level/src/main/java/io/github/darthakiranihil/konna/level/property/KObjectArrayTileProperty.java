@@ -16,6 +16,15 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
+/**
+ * Container for additional tile property that is an object array where object's
+ * type is user-defined. Usually if the type is marked with corresponding annotation,
+ * the annotation processor of Level generates corresponding implementations of this
+ * interface for marked type.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public non-sealed interface KObjectArrayTileProperty<T> extends KTileProperty {
 
     T[] getValue();

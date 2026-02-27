@@ -188,8 +188,9 @@ public final class KTileInfo {
     }
 
     /**
-     * Attempts to return a nobject tile property from this tile.
+     * Attempts to return an object tile property from this tile.
      * @param name Name of the additional property
+     * @param <T> Type of object contained in the property
      * @return Boxed property of {@code null} if it is not presented
      */
     @SuppressWarnings("unchecked")
@@ -209,6 +210,7 @@ public final class KTileInfo {
     /**
      * Attempts to return an object array tile property from this tile.
      * @param name Name of the additional property
+     * @param <T> Type of object contained in the property
      * @return Boxed property of {@code null} if it is not presented
      */
     @SuppressWarnings("unchecked")

@@ -16,6 +16,12 @@
 
 package io.github.darthakiranihil.konna.level.property;
 
+/**
+ * Container for additional tile property that is a boolean.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KBooleanTileProperty implements KTileProperty {
 
     private boolean value;
