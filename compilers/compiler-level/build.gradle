@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'compiler-module'
+}
+
+ext {
+    artifactId = "konna.compiler-level"
+}
+
+dependencies {
+    implementation project(":annotations-level")
+
+    implementation "com.palantir.javapoet:javapoet:0.11.0"
+}
+
+description = "Annotation processor for annotations provided by Konna Level component"

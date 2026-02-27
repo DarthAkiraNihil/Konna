@@ -25,6 +25,8 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
+import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
 /**
  * Konna Level component, used for managing game levels and level entities.
@@ -53,7 +55,10 @@ public class KLevelComponent extends KComponent {
 
     @Override
     public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[0];
+        return new KAssetTypedef[] {
+            new KTilePropertyTypedef(),
+            new KTileTypedef(),
+        };
     }
 
     @Override

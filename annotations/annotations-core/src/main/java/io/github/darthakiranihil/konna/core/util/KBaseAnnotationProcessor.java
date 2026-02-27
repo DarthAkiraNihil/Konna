@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.NullUnmarked;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -23,6 +24,7 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 /**
  * Base class for all annotation processors.
@@ -31,6 +33,7 @@ import javax.lang.model.util.Elements;
  * @author Darth Akira Nihil
  */
 @NullUnmarked
+@KExcludeFromGeneratedCoverageReport
 public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
     /**
@@ -45,6 +48,10 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
      * Messager instance of this annotation processor.
      */
     protected Messager messager;
+    /**
+     * Type utils instance of this annotation processor.
+     */
+    protected Types typeUtils;
 
     @Override
     public synchronized void init(final ProcessingEnvironment processingEnv) {
@@ -52,6 +59,7 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
         this.filer = processingEnv.getFiler();
         this.elementUtils = processingEnv.getElementUtils();
+        this.typeUtils = processingEnv.getTypeUtils();
         this.messager = processingEnv.getMessager();
 
     }
