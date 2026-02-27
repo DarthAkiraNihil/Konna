@@ -25,7 +25,8 @@ import io.github.darthakiranihil.konna.level.property.KBooleanArrayTileProperty;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KBooleanArrayPropertyFactory implements KTilePropertyFactory<KBooleanArrayTileProperty> {
+public final class KBooleanArrayPropertyFactory
+    implements KTilePropertyFactory<KBooleanArrayTileProperty> {
 
     @Override
     public KBooleanArrayTileProperty create(final Object value) {
