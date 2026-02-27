@@ -19,10 +19,17 @@ package io.github.darthakiranihil.konna.level.property.factory;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.property.KBooleanTileProperty;
 
-public final class KBooleanPropertyFactory implements KTilePropertyFactory<KBooleanTileProperty> {
+/**
+ * Factory class for additional tile properties presented as a boolean.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public final class KBooleanPropertyFactory
+    implements KTilePropertyFactory<KBooleanTileProperty> {
 
     @Override
-    public KBooleanTileProperty create(Object value) {
+    public KBooleanTileProperty create(final Object value) {
         if (
                 boolean.class.isAssignableFrom(value.getClass())
             ||  Boolean.class.isAssignableFrom(value.getClass())

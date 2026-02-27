@@ -26,14 +26,25 @@ public final class KFloatTileProperty implements KTileProperty {
 
     private float value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KFloatTileProperty(final float value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public float getValue() {
         return this.value;
     }
 
+    /**
+     * Sets a new value for this property.
+     * @param value New value of the property
+     */
     public void setValue(float value) {
         this.value = value;
     }

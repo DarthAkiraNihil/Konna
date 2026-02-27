@@ -26,10 +26,17 @@ public final class KStringArrayTileProperty implements KTileProperty {
 
     private final String[] value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KStringArrayTileProperty(final String[] value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public String[] getValue() {
         return this.value;
     }

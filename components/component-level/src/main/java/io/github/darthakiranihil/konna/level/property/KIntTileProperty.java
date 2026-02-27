@@ -26,16 +26,27 @@ public final class KIntTileProperty implements KTileProperty {
 
     private int value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KIntTileProperty(int value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public int getValue() {
         return this.value;
     }
 
-    public void setValue(int newValue) {
-        this.value = newValue;
+    /**
+     * Sets a new value for this property.
+     * @param value New value of the property
+     */
+    public void setValue(int value) {
+        this.value = value;
     }
 
 }

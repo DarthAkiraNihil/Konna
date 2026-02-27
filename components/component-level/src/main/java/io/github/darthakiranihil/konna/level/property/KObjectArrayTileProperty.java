@@ -21,12 +21,16 @@ package io.github.darthakiranihil.konna.level.property;
  * type is user-defined. Usually if the type is marked with corresponding annotation,
  * the annotation processor of Level generates corresponding implementations of this
  * interface for marked type.
+ * @param <T> Type of object contained in this property
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
 public non-sealed interface KObjectArrayTileProperty<T> extends KTileProperty {
 
+    /**
+     * @return Value contained in this property
+     */
     T[] getValue();
 
 }

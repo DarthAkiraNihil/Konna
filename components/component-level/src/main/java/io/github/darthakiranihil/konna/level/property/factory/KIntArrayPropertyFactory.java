@@ -19,10 +19,16 @@ package io.github.darthakiranihil.konna.level.property.factory;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.property.KIntArrayTileProperty;
 
+/**
+ * Factory class for additional tile properties presented as an int array.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KIntArrayPropertyFactory implements KTilePropertyFactory<KIntArrayTileProperty> {
 
     @Override
-    public KIntArrayTileProperty create(Object value) {
+    public KIntArrayTileProperty create(final Object value) {
         if (
             int[].class.isAssignableFrom(value.getClass())
         ) {

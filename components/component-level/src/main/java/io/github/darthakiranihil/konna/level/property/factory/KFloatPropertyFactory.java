@@ -19,10 +19,16 @@ package io.github.darthakiranihil.konna.level.property.factory;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.property.KFloatTileProperty;
 
+/**
+ * Factory class for additional tile properties presented as a float.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KFloatPropertyFactory implements KTilePropertyFactory<KFloatTileProperty> {
 
     @Override
-    public KFloatTileProperty create(Object value) {
+    public KFloatTileProperty create(final Object value) {
         if (
                 float.class.isAssignableFrom(value.getClass())
             ||  Float.class.isAssignableFrom(value.getClass())

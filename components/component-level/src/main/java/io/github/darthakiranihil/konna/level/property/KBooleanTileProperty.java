@@ -26,14 +26,25 @@ public final class KBooleanTileProperty implements KTileProperty {
 
     private boolean value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KBooleanTileProperty(final boolean value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public boolean getValue() {
         return this.value;
     }
 
+    /**
+     * Sets a new value for this property.
+     * @param value New value of the property
+     */
     public void setValue(boolean value) {
         this.value = value;
     }

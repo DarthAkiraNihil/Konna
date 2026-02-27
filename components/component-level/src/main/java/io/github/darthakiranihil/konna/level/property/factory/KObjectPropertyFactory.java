@@ -18,6 +18,14 @@ package io.github.darthakiranihil.konna.level.property.factory;
 
 import io.github.darthakiranihil.konna.level.property.KObjectTileProperty;
 
+/**
+ * Factory class for additional tile properties presented as an object of specific type.
+ * Usually implementation of this interface for each user-defined type is generated automatically.
+ *
+ * @param <T> Type of object contained in created property
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KObjectPropertyFactory<T> extends KTilePropertyFactory<KObjectTileProperty<T>> {
 
 }

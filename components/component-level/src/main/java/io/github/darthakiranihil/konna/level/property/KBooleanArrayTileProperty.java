@@ -26,10 +26,17 @@ public final class KBooleanArrayTileProperty implements KTileProperty {
 
     private final boolean[] value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KBooleanArrayTileProperty(final boolean[] value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public boolean[] getValue() {
         return this.value;
     }

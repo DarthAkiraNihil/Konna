@@ -26,15 +26,26 @@ public final class KStringTileProperty implements KTileProperty {
 
     private String value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KStringTileProperty(final String value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public String getValue() {
         return this.value;
     }
 
-    public void setValue(String value) {
+    /**
+     * Sets a new value for this property.
+     * @param value New value of the property
+     */
+    public void setValue(final String value) {
         this.value = value;
     }
 

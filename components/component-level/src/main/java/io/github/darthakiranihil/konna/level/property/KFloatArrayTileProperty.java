@@ -26,10 +26,17 @@ public final class KFloatArrayTileProperty implements KTileProperty {
 
     private final float[] value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KFloatArrayTileProperty(final float[] value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public float[] getValue() {
         return this.value;
     }

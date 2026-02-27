@@ -19,10 +19,16 @@ package io.github.darthakiranihil.konna.level.property.factory;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.level.property.KStringTileProperty;
 
+/**
+ * Factory class for additional tile properties presented as a string.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KStringPropertyFactory implements KTilePropertyFactory<KStringTileProperty> {
 
     @Override
-    public KStringTileProperty create(Object value) {
+    public KStringTileProperty create(final Object value) {
         if (
             String.class.isAssignableFrom(value.getClass())
         ) {

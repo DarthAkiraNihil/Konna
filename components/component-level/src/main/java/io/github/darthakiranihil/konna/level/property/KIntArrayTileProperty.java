@@ -26,10 +26,17 @@ public final class KIntArrayTileProperty implements KTileProperty {
 
     private final int[] value;
 
+    /**
+     * Constructs the property.
+     * @param value Value of the property
+     */
     public KIntArrayTileProperty(final int[] value) {
         this.value = value;
     }
 
+    /**
+     * @return Value contained in this property
+     */
     public int[] getValue() {
         return this.value;
     }
