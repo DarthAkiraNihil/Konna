@@ -39,7 +39,7 @@ public interface KMapLayer<T> {
      * @param position Position of placed item
      * @return The item located on specified place of {@code null} if it is not found/presented
      */
-    default @Nullable T getOnPosition(KVector2i position) {
+    default @Nullable T getOnPosition(final KVector2i position) {
         return this.getOnPosition(position.x(), position.y());
     }
 

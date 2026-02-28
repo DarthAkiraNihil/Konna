@@ -37,7 +37,7 @@ public final class KTileLayer implements KMapLayer<KTileInfo> {
         private final KTileInfo info;
         private int refs;
 
-        public TileInfo(final KTileInfo info) {
+        TileInfo(final KTileInfo info) {
             this.info = info;
             this.refs = 1;
         }
