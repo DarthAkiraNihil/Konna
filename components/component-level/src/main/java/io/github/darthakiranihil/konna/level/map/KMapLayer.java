@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level;
+package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import org.jspecify.annotations.Nullable;
