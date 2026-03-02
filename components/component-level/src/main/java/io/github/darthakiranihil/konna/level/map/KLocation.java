@@ -21,22 +21,33 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class KLocation extends KObject {
 
     private final Map<String, KMapSector> sectors;
+    private final String[] sectorNames;
 
     public KLocation(
         final String name,
-        final Map<String, KMapSector> sectors
+        final List<KMapSector> sectors
     ) {
         super(name, KStructUtils.setOfTags(KLevelComponentTags.LOCATION));
-        this.sectors = sectors;
+        this.sectors = new HashMap<>(sectors.size());
+
+        sectors.forEach(
+            s -> {
+                this.sectors.put(s.name(), s);
+            }
+        );
+
+        this.sectorNames = this.sectors.keySet().toArray(new String[0]);
     }
 
-    public String[] getSectorList() {
-        return this.sectors.keySet().toArray(new String[0]);
+    public String[] getSectorNames() {
+        return this.sectorNames;
     }
 
     public KMapSector getSector(final String sectorName) {
