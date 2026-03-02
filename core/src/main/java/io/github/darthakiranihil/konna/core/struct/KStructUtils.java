@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.struct;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,15 +62,6 @@ public final class KStructUtils extends KUninstantiable {
             furled[i] = new KVector2i(x[i], y[i]);
         }
         return furled;
-    }
-
-    public static <T> boolean allAreTheSame(final T[] elements) {
-        if (elements.length == 0) {
-            return true;
-        }
-
-        T first = elements[0];
-        return Arrays.stream(elements).allMatch(first::equals);
     }
 
 }

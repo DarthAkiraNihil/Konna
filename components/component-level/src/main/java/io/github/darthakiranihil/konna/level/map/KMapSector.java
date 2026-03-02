@@ -22,11 +22,24 @@ import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 
 import java.util.Objects;
 
+/**
+ * The elementary unit of a game level (location) that provides all information
+ * about its environment (including tiles, links to other sectors etc.).
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KMapSector extends KObject {
 
     private final KTileLayer tileLayer;
     private final KSectorLinkLayer sectorLinkLayer;
 
+    /**
+     * Standard constructor.
+     * @param name Name of the sector
+     * @param tileLayer Tile layer, assigned to this sector
+     * @param sectorLinkLayer Sector link layer, assigned to this sector
+     */
     public KMapSector(
         final String name,
         final KTileLayer tileLayer,
@@ -38,6 +51,12 @@ public final class KMapSector extends KObject {
 
     }
 
+    /**
+     * Returns information of all sector layers that are placed on specific location.
+     * @param x X coordinate of sliced position
+     * @param y Y coordinate of sliced position
+     * @return Slice of the sector on specific place
+     */
     public KMapSectorSlice getSlice(
         int x,
         int y

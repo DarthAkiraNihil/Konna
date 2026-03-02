@@ -25,11 +25,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Representation of a game level, consisting of map sectors,
+ * whose list is immutable.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLocation extends KObject {
 
     private final Map<String, KMapSector> sectors;
     private final String[] sectorNames;
 
+    /**
+     * Standard constructor.
+     * @param name Name of the location
+     * @param sectors Sectors that are parts of the location
+     */
     public KLocation(
         final String name,
         final List<KMapSector> sectors
@@ -46,10 +58,18 @@ public final class KLocation extends KObject {
         this.sectorNames = this.sectors.keySet().toArray(new String[0]);
     }
 
+    /**
+     * @return Array of names of sectors, included in this location
+     */
     public String[] getSectorNames() {
         return this.sectorNames;
     }
 
+    /**
+     * @param sectorName Name of the sector
+     * @return The sector with specified name
+     * @throws KInvalidArgumentException if the sector does not exist in this location
+     */
     public KMapSector getSector(final String sectorName) {
         if (!this.sectors.containsKey(sectorName)) {
             throw new KInvalidArgumentException(

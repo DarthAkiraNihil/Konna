@@ -19,13 +19,25 @@ package io.github.darthakiranihil.konna.level;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
+/**
+ * Utility class that provides tags, specific for Level component's objects.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLevelComponentTags extends KUninstantiable {
 
     private KLevelComponentTags() {
         super();
     }
 
+    /**
+     * Indicates that the object is a map sector.
+     */
     public static final KTag SECTOR = new KTag("sector");
+    /**
+     * Indicates that the object is a location.
+     */
     public static final KTag LOCATION = new KTag("location");
 
 }

@@ -19,6 +19,15 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Immutable data structure that represents information
+ * about all sector layers on specific position.
+ * @param tile Tile located on the slice
+ * @param sectorLink Link to the sector assigned to the slice
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public record KMapSectorSlice(
     KTileInfo tile,
     @Nullable KMapSector sectorLink
