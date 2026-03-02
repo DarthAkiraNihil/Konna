@@ -1,0 +1,87 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.darthakiranihil.konna.level.map;
+
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.level.KLevelComponentTags;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Representation of a game level, consisting of map sectors,
+ * whose list is immutable.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public final class KLocation extends KObject {
+
+    private final Map<String, KMapSector> sectors;
+    private final String[] sectorNames;
+
+    /**
+     * Standard constructor.
+     * @param name Name of the location
+     * @param sectors Sectors that are parts of the location
+     */
+    public KLocation(
+        final String name,
+        final List<KMapSector> sectors
+    ) {
+        super(name, KStructUtils.setOfTags(KLevelComponentTags.LOCATION));
+        this.sectors = new HashMap<>(sectors.size());
+
+        sectors.forEach(
+            s -> {
+                this.sectors.put(s.name(), s);
+            }
+        );
+
+        this.sectorNames = this.sectors.keySet().toArray(new String[0]);
+    }
+
+    /**
+     * @return Array of names of sectors, included in this location
+     */
+    public String[] getSectorNames() {
+        return this.sectorNames;
+    }
+
+    /**
+     * @param sectorName Name of the sector
+     * @return The sector with specified name
+     * @throws KInvalidArgumentException if the sector does not exist in this location
+     */
+    public KMapSector getSector(final String sectorName) {
+        if (!this.sectors.containsKey(sectorName)) {
+            throw new KInvalidArgumentException(
+                String.format(
+                    "Sector not found: %s",
+                    sectorName
+                )
+            );
+        }
+
+        return this.sectors.get(sectorName);
+    }
+
+
+}
