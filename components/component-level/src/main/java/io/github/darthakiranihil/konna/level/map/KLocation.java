@@ -16,38 +16,40 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 
-import java.util.Objects;
+import java.util.Map;
 
-public final class KMapSector extends KObject {
+public final class KLocation extends KObject {
 
-    private final KTileLayer tileLayer;
-    private final KSectorLinkLayer sectorLinkLayer;
+    private final Map<String, KMapSector> sectors;
 
-    public KMapSector(
+    public KLocation(
         final String name,
-        final KTileLayer tileLayer,
-        final KSectorLinkLayer sectorLinkLayer
+        final Map<String, KMapSector> sectors
     ) {
-        super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
-        this.tileLayer = tileLayer;
-        this.sectorLinkLayer = sectorLinkLayer;
-
+        super(name, KStructUtils.setOfTags(KLevelComponentTags.LOCATION));
+        this.sectors = sectors;
     }
 
-    public KMapSectorSlice getSlice(
-        int x,
-        int y
-    ) {
+    public String[] getSectorList() {
+        return this.sectors.keySet().toArray(new String[0]);
+    }
 
-        return new KMapSectorSlice(
-            Objects.requireNonNull(this.tileLayer.getOnPosition(x, y)),
-            this.sectorLinkLayer.getOnPosition(x, y)
-        );
+    public KMapSector getSector(final String sectorName) {
+        if (!this.sectors.containsKey(sectorName)) {
+            throw new KInvalidArgumentException(
+                String.format(
+                    "Sector not found: %s",
+                    sectorName
+                )
+            );
+        }
 
+        return this.sectors.get(sectorName);
     }
 
 
