@@ -292,6 +292,9 @@ public class KMapAssetDefinition implements KAssetDefinition {
         }
 
         Object val = this.value.get(property);
+        if (val == null) {
+            return clazz == String.class;
+        }
         return val.getClass() == clazz || clazz.isAssignableFrom(val.getClass());
     }
 

@@ -1,0 +1,14 @@
+{
+    "sl1": {
+        "Graphics.renderableTexture": {
+            "source": "SLICE_SET",
+            "slice_set": "set_1"
+        }
+    },
+    "sl2": {
+        "Graphics.renderableTexture": {
+            "source": "WHOLE_TEXTURE",
+            "slice_set": null
+        }
+    }
+}
