@@ -53,38 +53,6 @@ public final class KRenderableTextureCollection implements KAssetCollection<KRen
         return this.getAsset(assetId, KVector2i.ZERO, 0);
     }
 
-    public KRenderableTexture getAsset(final String assetId, int unit) {
-        return this.getAsset(assetId, KVector2i.ZERO, unit);
-    }
-
-    public KRenderableTexture getAsset(final String assetId, final KVector2i[] xy) {
-        return this.getAsset(assetId, xy, 0);
-    }
-
-    public KRenderableTexture getAsset(final String assetId, final KVector2i[] xy, int unit) {
-        KAsset asset = this.assetLoader.loadAsset(assetId, KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE);
-        KAssetDefinition definition = asset.definition();
-
-        KRenderableTextureSource source = definition.getEnum("source", KRenderableTextureSource.class);
-        switch (source) {
-            case WHOLE_TEXTURE -> {
-                KTexture texture = this.textureCollection.getAsset(assetId);
-                return KRenderableTexture.wrapIntoRectangle(
-                    KVector2i.ZERO, texture, unit
-                );
-            }
-            case SLICE_SET -> {
-                String sliceSetId = Objects.requireNonNull(definition.getString("slice_set"));
-                KTextureSliceSet set = this.textureSliceSetCollection.getAsset(sliceSetId);
-                return set.getTexture(assetId, xy, unit);
-            }
-        }
-
-        throw new KAssetLoadingException(
-            String.format("Unknown source: %s", source)
-        );
-    }
-
     public KRenderableTexture getAsset(final String assetId, final KVector2i topLeftCorner) {
         return this.getAsset(assetId, topLeftCorner, 0);
     }
@@ -97,14 +65,12 @@ public final class KRenderableTextureCollection implements KAssetCollection<KRen
         switch (source) {
             case WHOLE_TEXTURE -> {
                 KTexture texture = this.textureCollection.getAsset(assetId);
-                return KRenderableTexture.wrapIntoRectangle(
-                    topLeftCorner, texture, unit
-                );
+                return KRenderableTexture.wrapIntoRectangle(topLeftCorner, texture, unit);
             }
             case SLICE_SET -> {
                 String sliceSetId = Objects.requireNonNull(definition.getString("slice_set"));
                 KTextureSliceSet set = this.textureSliceSetCollection.getAsset(sliceSetId);
-                return set.getTexture(assetId, unit);
+                return set.getTexture(assetId, topLeftCorner, unit);
             }
         }
 

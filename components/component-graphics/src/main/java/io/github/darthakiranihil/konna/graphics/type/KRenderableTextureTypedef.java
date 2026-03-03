@@ -39,7 +39,7 @@ public final class KRenderableTextureTypedef implements KAssetTypedef {
             .withEnum("source", KRenderableTextureSource.class)
             .withString("slice_set")
             .withRule(d -> {
-                String textureSetId = d.getString("texture_set");
+                String textureSetId = d.getString("slice_set");
                 KRenderableTextureSource source = d.getEnum("source", KRenderableTextureSource.class);
                 if (source == KRenderableTextureSource.SLICE_SET && textureSetId == null) {
                     throw new KAssetDefinitionError(

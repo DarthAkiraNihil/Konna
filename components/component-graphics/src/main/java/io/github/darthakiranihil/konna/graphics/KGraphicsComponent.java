@@ -33,10 +33,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
-import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
-import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
-import io.github.darthakiranihil.konna.graphics.type.KTextureTypedef;
-import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
+import io.github.darthakiranihil.konna.graphics.type.*;
 
 /**
  * Konna Graphics component, used for rendering object on the screen.
@@ -74,7 +71,9 @@ public class KGraphicsComponent extends KComponent {
             new KShaderTypedef(),
             new KShaderProgramTypedef(),
             new KTextureTypedef(),
-            new KTiledFontTypedef()
+            new KTiledFontTypedef(),
+            new KTextureSliceSetTypedef(),
+            new KRenderableTextureTypedef(),
         };
     }
 

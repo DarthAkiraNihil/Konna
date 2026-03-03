@@ -36,10 +36,6 @@ public final class KTextureSliceSet {
 
     }
 
-    public KRenderableTexture getTexture(final String sliceName) {
-        return this.getTexture(sliceName, 0);
-    }
-
     public KRenderableTexture getTexture(final String sliceName, int unit) {
         this.validateSliceIsPresented(sliceName);
 
@@ -54,18 +50,20 @@ public final class KTextureSliceSet {
         );
     }
 
-    public KRenderableTexture getTexture(final String sliceName, final KVector2i[] xy) {
-        return this.getTexture(sliceName, xy, 0);
-    }
-
-    public KRenderableTexture getTexture(final String sliceName, final KVector2i[] xy, int unit) {
+    public KRenderableTexture getTexture(final String sliceName, final KVector2i topLeftCorner, int unit) {
         this.validateSliceIsPresented(sliceName);
 
         KTextureSliceData sliceData = this.slices.get(sliceName);
 
+        KVector2i[] xy = sliceData.xy();
+        KVector2i[] newXy = new KVector2i[xy.length];
+        for (int i = 0; i < xy.length; i++) {
+            newXy[i] = xy[i].add(topLeftCorner);
+        }
+
         return new KRenderableTexture(
             sliceData.uv(),
-            xy,
+            newXy,
             sliceData.colors(),
             this.baseTexture,
             unit
