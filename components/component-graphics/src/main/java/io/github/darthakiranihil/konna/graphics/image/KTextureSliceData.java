@@ -20,6 +20,16 @@ import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 
+/**
+ * Special data structure that holds all information about a slice
+ * of a base texture.
+ * @param uv UV coordinates of the slice
+ * @param xy XY coordinates of the slice
+ * @param colors Colors of the slice
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public record KTextureSliceData(
     KVector2f[] uv,
     KVector2i[] xy,
