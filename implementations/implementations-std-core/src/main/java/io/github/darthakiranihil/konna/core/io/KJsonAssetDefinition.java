@@ -181,7 +181,9 @@ public class KJsonAssetDefinition implements KAssetDefinition {
 
     @Override
     public boolean hasString(final String property) {
-        return this.hasProperty(property, KJsonValueType.STRING);
+        return
+                this.hasProperty(property, KJsonValueType.STRING)
+            ||  this.hasProperty(property, KJsonValueType.NULL);
     }
 
     @Override

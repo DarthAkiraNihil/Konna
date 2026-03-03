@@ -447,11 +447,11 @@ public class KJsonValue implements Iterable<KJsonValue> {
      * @see KJsonValueException If json value type is not {@link KJsonValueType#STRING}
      */
     public @Nullable String getString() {
-        this.checkTypeMatch(KJsonValueType.STRING);
-
         if (this.isNull()) {
             return null;
         }
+
+        this.checkTypeMatch(KJsonValueType.STRING);
 
         return (String) this.containedValue;
     }
@@ -497,7 +497,11 @@ public class KJsonValue implements Iterable<KJsonValue> {
 
     @Override
     public String toString() {
-        return String.format("KJsonValue[%s]{%s}", this.type, this.containedValue.getClass());
+        return String.format(
+            "KJsonValue[%s]{%s}",
+            this.type,
+            this.containedValue == null ? null : this.containedValue.getClass()
+        );
     }
 
 }

@@ -26,5 +26,19 @@
                 "mag": "LINEAR"
             }
         }
+    },
+    "sl2": {
+        "Graphics.texture": {
+            "image": "classpath:assets/textures/cute_image.png",
+            "shader": "default",
+            "wrapping": {
+                "u": "REPEAT",
+                "v": "REPEAT"
+            },
+            "filtering": {
+                "min": "MIPMAP_LINEAR_LINEAR",
+                "mag": "LINEAR"
+            }
+        }
     }
 }

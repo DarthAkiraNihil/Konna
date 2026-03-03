@@ -20,11 +20,9 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.graphics.type.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
-import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
-import io.github.darthakiranihil.konna.graphics.type.KTextureTypedef;
-import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
 
 import java.util.Map;
 
@@ -50,6 +48,14 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
             "tiledFont", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KTiledFontTypedef.TILED_FONT_ASSET_TYPE},
                 new String[] {"classpath:assets/tiled_fonts.json"}
+            ),
+        "textureSliceSet", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[] { KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE },
+                new String[] {"classpath:assets/slice_sets.json"}
+            ),
+        "renderableTextures", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[] { KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE },
+                new String[] {"classpath:assets/renderables.json"}
             )),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
@@ -58,5 +64,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         this.assetLoader.addAssetTypedef(new KShaderProgramTypedef());
         this.assetLoader.addAssetTypedef(new KTextureTypedef());
         this.assetLoader.addAssetTypedef(new KTiledFontTypedef());
+        this.assetLoader.addAssetTypedef(new KTextureSliceSetTypedef());
+        this.assetLoader.addAssetTypedef(new KRenderableTextureTypedef());
     }
 }
