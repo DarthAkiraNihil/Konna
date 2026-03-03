@@ -21,11 +21,23 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.util.Map;
 
+/**
+ * Container class that holds information how to slice a base texture into
+ * subtextures, each of that has a name, uvs, xys and colors, assigned to subtexture's vertices.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KTextureSliceSet {
 
     private final KTexture baseTexture;
     private final Map<String, KTextureSliceData> slices;
 
+    /**
+     * Standard constructor.
+     * @param baseTexture Base texture, which is being sliced
+     * @param slices Texture slices (name-slice data)
+     */
     public KTextureSliceSet(
         final KTexture baseTexture,
         final Map<String, KTextureSliceData> slices
@@ -36,6 +48,13 @@ public final class KTextureSliceSet {
 
     }
 
+    /**
+     * Attempts to return a renderable texture on specific unit by its name.
+     * @param sliceName Name of the slice
+     * @param unit Return texture unit
+     * @return Renderable texture, representing the slice
+     * @throws KInvalidArgumentException if the slice is not presented in the set
+     */
     public KRenderableTexture getTexture(final String sliceName, int unit) {
         this.validateSliceIsPresented(sliceName);
 
@@ -50,7 +69,20 @@ public final class KTextureSliceSet {
         );
     }
 
-    public KRenderableTexture getTexture(final String sliceName, final KVector2i topLeftCorner, int unit) {
+    /**
+     * Attempts to return a renderable texture on specific unit by its name, but with additional
+     * shift of texture vertices (affecting its xys).
+     * @param sliceName Name of the slice
+     * @param topLeftCorner Coordinate of top-left corner of the result texture
+     * @param unit Return texture unit
+     * @return Renderable texture, representing the slice
+     * @throws KInvalidArgumentException if the slice is not presented in the set
+     */
+    public KRenderableTexture getTexture(
+        final String sliceName,
+        final KVector2i topLeftCorner,
+        int unit
+    ) {
         this.validateSliceIsPresented(sliceName);
 
         KTextureSliceData sliceData = this.slices.get(sliceName);

@@ -18,13 +18,21 @@ package io.github.darthakiranihil.konna.graphics.type;
 
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTextureSource;
 
+/**
+ * Asset type definition for renderable textures.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRenderableTextureTypedef implements KAssetTypedef {
 
+    /**
+     * Constant for renderable texture set type inside Graphics component.
+     */
     public static final String RENDERABLE_TEXTURE_ASSET_TYPE = "Graphics.renderableTexture";
 
     @Override
@@ -40,7 +48,10 @@ public final class KRenderableTextureTypedef implements KAssetTypedef {
             .withString("slice_set")
             .withRule(d -> {
                 String textureSetId = d.getString("slice_set");
-                KRenderableTextureSource source = d.getEnum("source", KRenderableTextureSource.class);
+                KRenderableTextureSource source = d.getEnum(
+                    "source",
+                    KRenderableTextureSource.class
+                );
                 if (source == KRenderableTextureSource.SLICE_SET && textureSetId == null) {
                     throw new KAssetDefinitionError(
                         "Texture set id cannot be null if a renderable texture is taken from there"

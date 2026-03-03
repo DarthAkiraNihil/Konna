@@ -31,6 +31,13 @@ import io.github.darthakiranihil.konna.graphics.type.KRenderableTextureTypedef;
 
 import java.util.Objects;
 
+/**
+ * Collection of renderable textures assets of type
+ * {@link KRenderableTextureTypedef#RENDERABLE_TEXTURE_ASSET_TYPE}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRenderableTextureCollection implements KAssetCollection<KRenderableTexture> {
 
     private final KAssetLoader assetLoader;
@@ -38,6 +45,12 @@ public final class KRenderableTextureCollection implements KAssetCollection<KRen
     private final KTextureSliceSetCollection textureSliceSetCollection;
     private final KTextureCollection textureCollection;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader
+     * @param textureCollection Texture collection to extract the whole textures
+     * @param textureSliceSetCollection Texture slice collection to extract sliced textures
+     */
     public KRenderableTextureCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KTextureCollection textureCollection,
@@ -48,20 +61,50 @@ public final class KRenderableTextureCollection implements KAssetCollection<KRen
         this.textureSliceSetCollection = textureSliceSetCollection;
     }
 
+    /**
+     * Returns a renderable texture on 0-texture-unit and without xys shift.
+     * @param assetId Asset id of resulting renderable texture
+     * @return Renderable texture with specified id
+     */
     @Override
     public KRenderableTexture getAsset(final String assetId) {
         return this.getAsset(assetId, KVector2i.ZERO, 0);
     }
 
+    /**
+     * Returns a renderable texture on 0-texture-unit.
+     * @param assetId Asset id of resulting renderable texture
+     * @param topLeftCorner XY-shift of resulting texture's xys
+     * @return Renderable texture with specified id
+     */
     public KRenderableTexture getAsset(final String assetId, final KVector2i topLeftCorner) {
         return this.getAsset(assetId, topLeftCorner, 0);
     }
 
-    public KRenderableTexture getAsset(final String assetId, final KVector2i topLeftCorner, int unit) {
-        KAsset asset = this.assetLoader.loadAsset(assetId, KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE);
+    /**
+     * Returns a renderable texture on specific texture unit and xys shift. It handles textures
+     * differently, depending on its source (e.g., if the texture source is the whole texture,
+     * it will wrap it all into rectangle, which is not performed if source is a slice set).
+     * @param assetId Asset id of resulting renderable texture
+     * @param topLeftCorner XY-shift of resulting texture's xys
+     * @param unit Texture unit of the resulting texture
+     * @return Renderable texture with specified id
+     */
+    public KRenderableTexture getAsset(
+        final String assetId,
+        final KVector2i topLeftCorner,
+        int unit
+    ) {
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId,
+            KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE
+        );
         KAssetDefinition definition = asset.definition();
 
-        KRenderableTextureSource source = definition.getEnum("source", KRenderableTextureSource.class);
+        KRenderableTextureSource source = definition.getEnum(
+            "source",
+            KRenderableTextureSource.class
+        );
         switch (source) {
             case WHOLE_TEXTURE -> {
                 KTexture texture = this.textureCollection.getAsset(assetId);

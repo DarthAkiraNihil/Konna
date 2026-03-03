@@ -33,12 +33,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Collection of texture slice sets assets of type
+ * {@link KTextureSliceSetTypedef#TEXTURE_SLICE_SET_ASSET_TYPE}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KTextureSliceSetCollection implements KAssetCollection<KTextureSliceSet> {
 
     private final KAssetLoader assetLoader;
     private final KTextureCollection textureCollection;
     private final Map<String, KTextureSliceSet> loadedSets;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader
+     * @param textureCollection Texture collection to extract base textures
+     */
     public KTextureSliceSetCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KTextureCollection textureCollection
@@ -56,7 +68,10 @@ public final class KTextureSliceSetCollection implements KAssetCollection<KTextu
             return this.loadedSets.get(assetId);
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId,
+            KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE
+        );
         KAssetDefinition definition = asset.definition();
 
         String baseTextureId = Objects.requireNonNull(definition.getString("base_texture"));

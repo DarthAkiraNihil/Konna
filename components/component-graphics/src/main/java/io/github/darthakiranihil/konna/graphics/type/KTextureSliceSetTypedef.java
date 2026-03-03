@@ -22,8 +22,17 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
+/**
+ * Asset type definition for texture slice sets.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KTextureSliceSetTypedef implements KAssetTypedef {
 
+    /**
+     * Constant for texture slice set type inside Graphics component.
+     */
     public static final String TEXTURE_SLICE_SET_ASSET_TYPE = "Graphics.textureSliceSet";
 
     @Override
@@ -72,9 +81,10 @@ public final class KTextureSliceSetTypedef implements KAssetTypedef {
                             KAssetDefinition[] xy = d.getSubdefinitionArray("xy");
                             KAssetDefinition[] colors = d.getSubdefinitionArray("colors");
 
-                            //if (uv.length != xy.length || xy.length != colors.length || uv.length != colors.length) {
-                            if (uv.length != xy.length || xy.length != colors.length || uv.length != colors.length) {
-                                throw new KAssetDefinitionError("Amount of uv, xy and colors components must be the same");
+                            if (uv.length != xy.length || xy.length != colors.length) {
+                                throw new KAssetDefinitionError(
+                                    "Amount of uv, xy and colors components must be the same"
+                                );
                             }
                         }
                     )

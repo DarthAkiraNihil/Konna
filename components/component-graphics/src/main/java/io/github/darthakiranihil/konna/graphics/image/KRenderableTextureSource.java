@@ -16,9 +16,23 @@
 
 package io.github.darthakiranihil.konna.graphics.image;
 
+/**
+ * Enumeration representing source of a renderable texture.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public enum KRenderableTextureSource {
 
+    /**
+     * Indicates that source of the texture is the whole origin texture so
+     * it should be full-wrapped.
+     */
     WHOLE_TEXTURE,
+    /**
+     * Indicates that source of the texture is a texture slice set so
+     * the resulting renderable texture should be taken from there.
+     */
     SLICE_SET
 
 }
