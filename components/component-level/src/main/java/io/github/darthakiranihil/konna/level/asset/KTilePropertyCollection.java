@@ -43,7 +43,9 @@ import java.util.Objects;
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KTilePropertyCollection extends KObject implements KAssetCollection<KTilePropertyFactory<?>> {
+public final class KTilePropertyCollection
+    extends KObject
+    implements KAssetCollection<KTilePropertyFactory<?>> {
 
     private final KAssetLoader assetLoader;
     private final KActivator activator;

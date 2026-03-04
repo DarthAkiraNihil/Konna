@@ -54,6 +54,10 @@ public class KLevelService extends KObject {
     private @Nullable KMapSector currentSector;
     private @Nullable KMessenger messenger;
 
+    /**
+     * Standard constructor.
+     * @param locationCollection Location collection to get locations from
+     */
     public KLevelService(
         @KInject final KLocationCollection locationCollection
     ) {
@@ -62,9 +66,14 @@ public class KLevelService extends KObject {
         this.locationCollection = locationCollection;
     }
 
+    /**
+     * Loads a location. When it succeeds (location with specified name exists),
+     * Level.locationLoaded message is produced.
+     * @param locationName Name of the loaded location
+     */
     @KServiceEndpoint(route = "loadLocation")
     public void loadLocation(
-        @KBodyValue("location_name") String locationName
+        @KBodyValue("location_name") final String locationName
     ) {
 
         try {
@@ -97,6 +106,10 @@ public class KLevelService extends KObject {
 
     }
 
+    /**
+     * Sets messenger for this service.
+     * @param messenger Messenger of Entity component
+     */
     public void setMessenger(final KMessenger messenger) {
         this.messenger = messenger;
     }

@@ -35,6 +35,13 @@ import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 
 import java.util.*;
 
+/**
+ * Collection of location assets of type
+ * {@link KLocationTypedef#LOCATION_ASSET_TYPE}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 public final class KLocationCollection extends KObject implements KAssetCollection<KLocation> {
 
@@ -52,6 +59,11 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     private final KAssetLoader assetLoader;
     private final KTileCollection tileCollection;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader
+     * @param tileCollection Tile collection to get tiles for loaded location
+     */
     public KLocationCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KTileCollection tileCollection

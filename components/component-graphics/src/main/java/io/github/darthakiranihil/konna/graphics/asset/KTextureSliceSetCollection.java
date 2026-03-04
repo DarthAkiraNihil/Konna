@@ -45,7 +45,9 @@ import java.util.Objects;
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KTextureSliceSetCollection extends KObject implements KAssetCollection<KTextureSliceSet> {
+public final class KTextureSliceSetCollection
+    extends KObject
+    implements KAssetCollection<KTextureSliceSet> {
 
     private final KAssetLoader assetLoader;
     private final KTextureCollection textureCollection;

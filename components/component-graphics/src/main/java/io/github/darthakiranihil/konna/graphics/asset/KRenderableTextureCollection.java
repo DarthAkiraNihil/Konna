@@ -43,7 +43,9 @@ import java.util.Objects;
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KRenderableTextureCollection extends KObject implements KAssetCollection<KRenderableTexture> {
+public final class KRenderableTextureCollection
+    extends KObject
+    implements KAssetCollection<KRenderableTexture> {
 
     private final KAssetLoader assetLoader;
 

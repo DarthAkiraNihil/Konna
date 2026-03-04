@@ -20,8 +20,17 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 
+/**
+ * Asset type definition for locations that are simply levels.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLocationTypedef implements KAssetTypedef {
 
+    /**
+     * Constant for location property type inside Level component.
+     */
     public static final String LOCATION_ASSET_TYPE = "Level.location";
 
     @Override

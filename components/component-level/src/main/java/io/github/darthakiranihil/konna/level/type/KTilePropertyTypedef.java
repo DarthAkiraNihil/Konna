@@ -29,7 +29,7 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 public final class KTilePropertyTypedef implements KAssetTypedef {
 
     /**
-     * Constant for tile property type inside Graphics component.
+     * Constant for tile property type inside Level component.
      */
     public static final String TILE_PROPERTY_ASSET_TYPE = "Level.tilePropertyType";
 
