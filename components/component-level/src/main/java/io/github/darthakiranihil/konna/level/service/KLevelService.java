@@ -16,7 +16,20 @@
 
 package io.github.darthakiranihil.konna.level.service;
 
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
+import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.level.asset.KLocationCollection;
+import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KMapSector;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Level service for handling current active level like loading a new level,
@@ -25,9 +38,59 @@ import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+
+@KSingleton
 @KComponentServiceMetaInfo(
     name = "LevelService"
 )
-public class KLevelService {
+@SuppressWarnings("FieldCanBeLocal")
+public class KLevelService extends KObject {
+
+    private final KLocationCollection locationCollection;
+
+    private @Nullable KLocation currentLocation;
+    private @Nullable KMapSector currentSector;
+    private @Nullable KMessenger messenger;
+
+    public KLevelService(
+        @KInject final KLocationCollection locationCollection
+    ) {
+        this.locationCollection = locationCollection;
+    }
+
+    @KServiceEndpoint(route = "loadLocation")
+    public void loadLocation(
+        @KBodyValue("location_name") String locationName
+    ) {
+
+        try {
+            this.currentLocation = this.locationCollection.getAsset(locationName);
+        } catch (KAssetLoadingException e) {
+            KSystemLogger.warning(
+                this.name,
+                "Could not load location with name %s",
+                locationName
+            );
+            return;
+        }
+
+        // todo: specify sector to deploy after transition to the location
+        this.currentSector = this.currentLocation.getSector(
+            this.currentLocation.getSectorNames()[0]
+        );
+
+        if (this.messenger == null) {
+            return;
+        }
+
+        KUniversalMap body = new KUniversalMap();
+        body.put("location", this.currentLocation);
+        body.put("sector", this.currentSector);
+
+        this.messenger.sendRegular(
+            "locationLoaded", body
+        );
+
+    }
 
 }
