@@ -22,6 +22,10 @@ import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.property.factory.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.factory.*;
@@ -38,7 +42,8 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KTilePropertyCollection implements KAssetCollection<KTilePropertyFactory<?>> {
+@KSingleton
+public final class KTilePropertyCollection extends KObject implements KAssetCollection<KTilePropertyFactory<?>> {
 
     private final KAssetLoader assetLoader;
     private final KActivator activator;
@@ -61,6 +66,10 @@ public final class KTilePropertyCollection implements KAssetCollection<KTileProp
         @KInject final KAssetLoader assetLoader,
         @KInject final KActivator activator
     ) {
+        super(
+            "Level.tilePropertyCollection",
+            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+        );
 
         this.assetLoader = assetLoader;
         this.activator = activator;

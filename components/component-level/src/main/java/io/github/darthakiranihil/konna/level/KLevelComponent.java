@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
@@ -58,6 +59,7 @@ public class KLevelComponent extends KComponent {
         return new KAssetTypedef[] {
             new KTilePropertyTypedef(),
             new KTileTypedef(),
+            new KLocationTypedef(),
         };
     }
 
