@@ -22,6 +22,10 @@ import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTextureSource;
@@ -38,7 +42,10 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KRenderableTextureCollection implements KAssetCollection<KRenderableTexture> {
+@KSingleton
+public final class KRenderableTextureCollection
+    extends KObject
+    implements KAssetCollection<KRenderableTexture> {
 
     private final KAssetLoader assetLoader;
 
@@ -56,6 +63,11 @@ public final class KRenderableTextureCollection implements KAssetCollection<KRen
         @KInject final KTextureCollection textureCollection,
         @KInject final KTextureSliceSetCollection textureSliceSetCollection
     ) {
+        super(
+            "Graphics.renderableTextureCollection",
+            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+        );
+
         this.assetLoader = assetLoader;
         this.textureCollection = textureCollection;
         this.textureSliceSetCollection = textureSliceSetCollection;

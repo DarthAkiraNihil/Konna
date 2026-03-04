@@ -22,6 +22,10 @@ import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.level.*;
 import io.github.darthakiranihil.konna.level.property.KTileProperty;
@@ -39,7 +43,8 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KTileCollection implements KAssetCollection<KTileInfo> {
+@KSingleton
+public final class KTileCollection extends KObject implements KAssetCollection<KTileInfo> {
 
     private static final int TILE_TTL = 300;
     private final KAssetLoader assetLoader;
@@ -58,6 +63,11 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
         @KInject final KCache cache,
         @KInject final KTilePropertyCollection propsCollection
     ) {
+        super(
+            "Level.tileCollection",
+            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+        );
+
         this.assetLoader = assetLoader;
         this.tileCache = cache;
         this.propsCollection = propsCollection;
@@ -72,7 +82,18 @@ public final class KTileCollection implements KAssetCollection<KTileInfo> {
             }
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KTileTypedef.TILE_ASSET_TYPE);
+        KAsset asset;
+        try {
+            asset = this.assetLoader.loadAsset(assetId, KTileTypedef.TILE_ASSET_TYPE);
+        } catch (NullPointerException e) {
+            throw new KAssetLoadingException(
+                String.format(
+                    "Unknown tile: %s",
+                    assetId
+                )
+            );
+        }
+
         KAssetDefinition tileDefinition = asset.definition();
         int tileId = tileDefinition.getInt("tile_id");
         int transparency = tileDefinition.getInt("transparency");

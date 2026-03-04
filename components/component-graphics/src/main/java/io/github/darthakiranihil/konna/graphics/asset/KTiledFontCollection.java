@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -41,6 +42,7 @@ import java.util.Objects;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@KSingleton
 public final class KTiledFontCollection extends KObject implements KAssetCollection<KTiledFont> {
 
     private final KAssetLoader assetLoader;
