@@ -26,6 +26,8 @@ import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.asset.KLocationCollection;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
@@ -55,6 +57,8 @@ public class KLevelService extends KObject {
     public KLevelService(
         @KInject final KLocationCollection locationCollection
     ) {
+        super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+
         this.locationCollection = locationCollection;
     }
 
@@ -91,6 +95,10 @@ public class KLevelService extends KObject {
             "locationLoaded", body
         );
 
+    }
+
+    public void setMessenger(final KMessenger messenger) {
+        this.messenger = messenger;
     }
 
 }

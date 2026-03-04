@@ -14,93 +14,41 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.test;
+package io.github.darthakiranihil.konna.level.impl;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import io.github.darthakiranihil.konna.core.engine.KProxiedEngineContext;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessenger;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.core.util.KStandardIndex;
-import org.jetbrains.annotations.TestOnly;
-import org.jspecify.annotations.Nullable;
+import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
+import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
+import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
 import java.util.List;
 import java.util.Map;
 
-/**
- * Standard test class, containing implementations of most common Konna classes.
- *
- * @since 0.1.0
- * @author Darth Akira Nihil
- */
-@TestOnly
 @KContainerModifier
-public class KStandardTestClass extends KObject {
+public class ContextLoader implements KEngineContextLoader {
 
-    /**
-     * Implementation of a json tokenizer.
-     */
-    protected final KJsonTokenizer jsonTokenizer;
-    /**
-     * Implementation of a json parser.
-     */
-    protected final KJsonParser jsonParser;
-    /**
-     * Implementation of a json serializer.
-     */
-    protected final KJsonSerializer jsonSerializer;
-    /**
-     * Implementation of a json deserializer.
-     */
-    protected final KJsonDeserializer jsonDeserializer;
-    /**
-     * Implementation of a json stringifier.
-     */
-    protected final KJsonStringifier jsonStringifier;
-    /**
-     * Engine context, required for running tests.
-     */
-    @SuppressWarnings("DataFlowIssue")
-    protected static KEngineContext context = null;
-
-    /**
-     * Returns engine context for testing environment.
-     * @return Engine context for testing environment
-     */
-    public static KEngineContext getContext() {
-        return KStandardTestClass.context;
-    }
-
-    /**
-     * Convenience reference to message system.
-     */
-    protected static @Nullable KQueueBasedMessageSystem msgSystem;
-
-    static {
+    @Override
+    public KEngineContext load(KApplicationFeatures features) {
         var index = new KStandardIndex();
 
         var containerResolver = new KStandardContainerAccessor(index);
@@ -131,15 +79,23 @@ public class KStandardTestClass extends KObject {
         );
         var assetLoader = new KJsonSubtypeBasedAssetLoader(
             resourceLoader,
-            Map.of(),
+            Map.of("tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[] { KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
+                new String[] {"classpath:assets/props.json"}
+            ), "tile", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[] { KTileTypedef.TILE_ASSET_TYPE},
+                new String[] {"classpath:assets/tiles.json"}
+            ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[] { KLocationTypedef.LOCATION_ASSET_TYPE},
+                new String[] {"classpath:assets/locations.json"}
+            )),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
-        eventSystem.startPolling();
-        KStandardTestClass.context = new KProxiedEngineContext(
+        var ctx = new KProxiedEngineContext(
             activator,
             containerResolver,
             index,
@@ -148,27 +104,9 @@ public class KStandardTestClass extends KObject {
             messageSystem,
             resourceLoader,
             assetLoader,
-            ctx -> {
-                eventSystem.stopPolling();
-            }
+            null
         );
-        activator.addContext(KStandardTestClass.context);
-        KStandardTestClass.msgSystem = messageSystem;
-        KSystemLogger.setLogLevel(KLogLevel.INFO);
-    }
-
-    /**
-     * Default constructor.
-     */
-    protected KStandardTestClass() {
-        super(
-            "std_test_class",
-            KStructUtils.setOfTags(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)
-        );
-        this.jsonTokenizer = new KStandardJsonTokenizer();
-        this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);
-        this.jsonSerializer = new KStandardJsonSerializer();
-        this.jsonDeserializer = new KStandardJsonDeserializer();
-        this.jsonStringifier = new KStandardJsonStringifier();
+        activator.addContext(ctx);
+        return ctx;
     }
 }

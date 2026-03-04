@@ -82,7 +82,18 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
             }
         }
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KTileTypedef.TILE_ASSET_TYPE);
+        KAsset asset;
+        try {
+            asset = this.assetLoader.loadAsset(assetId, KTileTypedef.TILE_ASSET_TYPE);
+        } catch (NullPointerException e) {
+            throw new KAssetLoadingException(
+                String.format(
+                    "Unknown tile: %s",
+                    assetId
+                )
+            );
+        }
+
         KAssetDefinition tileDefinition = asset.definition();
         int tileId = tileDefinition.getInt("tile_id");
         int transparency = tileDefinition.getInt("transparency");
