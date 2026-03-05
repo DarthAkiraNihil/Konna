@@ -17,20 +17,18 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.KAsset;
-import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.level.map.KLocation;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
-import io.github.darthakiranihil.konna.level.map.KSectorLinkLayer;
-import io.github.darthakiranihil.konna.level.map.KTileLayer;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
+import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
+import io.github.darthakiranihil.konna.level.map.*;
 import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 
 import java.util.*;
@@ -48,24 +46,31 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     private record RawSector(
         KMapSector containedSector,
         KSize size,
+
         KTileLayer tileLayer,
         KSectorLinkLayer sectorLinkLayer,
+        KMapEntityLayer entityLayer,
+
         String[] tiles,
-        KAssetDefinition[] sectorLinks
+        KAssetDefinition[] sectorLinks,
+        KAssetDefinition[] entities
     ) {
 
     }
 
     private final KAssetLoader assetLoader;
+    private final KEventSystem eventSystem;
     private final KTileCollection tileCollection;
 
     /**
      * Standard constructor.
      * @param assetLoader Asset loader
+     * @param eventSystem Event system that will be injected in loaded entities and sectors
      * @param tileCollection Tile collection to get tiles for loaded location
      */
     public KLocationCollection(
         @KInject final KAssetLoader assetLoader,
+        @KInject final KEventSystem eventSystem,
         @KInject final KTileCollection tileCollection
     ) {
         super(
@@ -74,6 +79,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         );
 
         this.assetLoader = assetLoader;
+        this.eventSystem = eventSystem;
         this.tileCollection = tileCollection;
 
     }
@@ -93,6 +99,8 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
+            this.fillEntityLayer(rs);
+
             filledSectors.add(
                 rs.containedSector()
             );
@@ -121,11 +129,14 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
             KTileLayer tileLayer = new KTileLayer(size);
             KSectorLinkLayer sectorLinkLayer = new KSectorLinkLayer();
+            KMapEntityLayer entityLayer = new KMapEntityLayer();
 
             KMapSector createdSector = new KMapSector(
+                this.eventSystem,
                 sectorName,
                 tileLayer,
-                sectorLinkLayer
+                sectorLinkLayer,
+                entityLayer
             );
 
             rawSectors.put(
@@ -135,8 +146,10 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                     size,
                     tileLayer,
                     sectorLinkLayer,
+                    entityLayer,
                     Objects.requireNonNull(rawSector.getStringArray("tiles")),
-                    rawSector.getSubdefinitionArray("sector_links")
+                    rawSector.getSubdefinitionArray("sector_links"),
+                    rawSector.getSubdefinitionArray("entities")
                 )
             );
         }
@@ -194,13 +207,87 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                 );
             }
 
+            int destinationX = rawLink.getSubdefinition("destination").getInt("x");
+            int destinationY = rawLink.getSubdefinition("destination").getInt("y");
+            if (
+                    destinationX > rawSector.size.width()
+                ||  destinationX < 0
+                ||  destinationY > rawSector.size.height()
+                ||  destinationY < 0
+            ) {
+                throw new KAssetLoadingException(
+                    "Sector link destination is out of bounds of linked sector space"
+                );
+            }
+
             layer.link(
                 x,
                 y,
-                rawSectorsMap.get(linkedSector).containedSector
+                rawSectorsMap.get(linkedSector).containedSector,
+                destinationX,
+                destinationY
             );
 
         }
 
+    }
+
+    private void fillEntityLayer(
+        final RawSector rawSector
+    ) {
+
+        KMapEntityLayer layer = rawSector.entityLayer;
+        KAssetDefinition[] rawData = rawSector.entities;
+
+        for (var data: rawData) {
+
+            int x = data.getSubdefinition("position").getInt("x");
+            int y = data.getSubdefinition("position").getInt("y");
+
+            if (x > rawSector.size.width() || x < 0 || y > rawSector.size.height() || y < 0) {
+                throw new KAssetLoadingException(
+                    "Entities are out of bounds of sector space"
+                );
+            }
+
+            KAssetDefinition[] controllables = data.getSubdefinitionArray("controllable");
+            KAssetDefinition[] staticEntities = data.getSubdefinitionArray("static");
+
+            this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector, false);
+            this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector, true);
+
+        }
+
+    }
+
+    private void placeSimpleEntities(
+        final KMapEntityLayer layer,
+        final KAssetDefinition[] entities,
+        int x,
+        int y,
+        final KMapSector containedSector,
+        boolean areStatic
+    ) {
+        for (var entity: entities) {
+            layer.placeEntity(
+                x,
+                y,
+                areStatic
+                    ? new KStaticEntity(
+                        this.eventSystem,
+                        Objects.requireNonNull(entity.getString("name")),
+                        Objects.requireNonNull(entity.getString("descriptor")),
+                        new KVector2i(x, y),
+                        containedSector
+                    )
+                    : new KControllableEntity(
+                        this.eventSystem,
+                        Objects.requireNonNull(entity.getString("name")),
+                        Objects.requireNonNull(entity.getString("descriptor")),
+                        new KVector2i(x, y),
+                        containedSector
+                    )
+            );
+        }
     }
 }

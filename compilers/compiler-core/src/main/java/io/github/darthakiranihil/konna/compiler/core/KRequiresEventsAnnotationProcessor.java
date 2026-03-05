@@ -35,10 +35,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Annotation processor that generates event registers for all classes
@@ -50,13 +47,12 @@ import java.util.Set;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.message.KRequiresEvents"
+    "io.github.darthakiranihil.konna.core.message.KRequiresEvents",
+    "io.github.darthakiranihil.konna.core.message.KRequiresEvent"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
 public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationProcessor {
-
-    private static int generatedRegisterers = 0;
 
     private record RequiresEventData(
         String name,
@@ -137,13 +133,13 @@ public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationPro
 
             }
 
-            if (!hasError) {
-                this.brewJava(events);
-            }
-
         }
 
-        return false;
+        if (!hasError && !events.isEmpty()) {
+            this.brewJava(events);
+        }
+
+        return true;
     }
 
     private void brewJava(final Map<String, RequiresEventData> events) {
@@ -152,7 +148,7 @@ public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationPro
             .classBuilder(
                 String.format(
                     "kGeneratedEventRegisterer_%d",
-                    generatedRegisterers
+                    System.currentTimeMillis()
                 )
             )
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -167,8 +163,6 @@ public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationPro
                 this.brewRegisterMethod(events)
             )
             .build();
-
-        generatedRegisterers++;
 
         JavaFile javaFile = JavaFile.builder(
                 "konna.generated",

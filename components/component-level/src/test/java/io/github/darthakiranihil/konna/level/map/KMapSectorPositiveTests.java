@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -31,16 +32,19 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KMapSector sector = new KMapSector(
+            KStandardTestClass.context,
             "sector_1",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
-            new KSectorLinkLayer()
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
         );
 
         KMapSectorSlice sectorSlice = sector.getSlice(0, 0);
+        Assertions.assertNotNull(sectorSlice.tile());
         Assertions.assertEquals(tileInfo.getId(), sectorSlice.tile().getId());
         Assertions.assertNull(sectorSlice.sectorLink());
 
@@ -52,29 +56,35 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KMapSector sector2 = new KMapSector(
+            KStandardTestClass.context,
             "sector_2",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
-            new KSectorLinkLayer()
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
         );
 
         KMapSector sector = new KMapSector(
+            KStandardTestClass.context,
             "sector_1",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
-            (new KSectorLinkLayer()).link(0, 0, sector2)
+            (new KSectorLinkLayer()).link(0, 0, sector2, 1, 1),
+            new KMapEntityLayer()
         );
 
         KMapSectorSlice sectorSlice = sector.getSlice(0, 0);
+        Assertions.assertNotNull(sectorSlice.tile());
         Assertions.assertEquals(tileInfo.getId(), sectorSlice.tile().getId());
         Assertions.assertNotNull(sectorSlice.sectorLink());
-        Assertions.assertEquals(sector2.name(), sectorSlice.sectorLink().name());
+        Assertions.assertEquals(sector2.name(), sectorSlice.sectorLink().linkedSector().name());
+        Assertions.assertEquals(new KVector2i(1, 1), sectorSlice.sectorLink().destination());
 
     }
 }

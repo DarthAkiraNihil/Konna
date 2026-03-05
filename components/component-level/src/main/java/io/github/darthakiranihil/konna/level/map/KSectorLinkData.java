@@ -16,26 +16,19 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
-import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.entity.KMapEntity;
-import org.jspecify.annotations.Nullable;
-
-import java.util.List;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 /**
- * Immutable data structure that represents information
- * about all sector layers on specific position.
- * @param tile Tile located on the slice
- * @param sectorLink Link to the sector assigned to the slice
- * @param entities List of entities located on the slice
+ * Sector link data record.
+ * @param linkedSector Linked sector
+ * @param destination Position on the linked sector to move after transition on the link
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public record KMapSectorSlice(
-    @Nullable KTileInfo tile,
-    @Nullable KSectorLinkData sectorLink,
-    List<KMapEntity> entities
+public record KSectorLinkData(
+    KMapSector linkedSector,
+    KVector2i destination
 ) {
 
 }
