@@ -39,7 +39,11 @@ import java.util.Objects;
     simple = false,
     type = KMapSector.EventData.class
 )
-public abstract class KMapEntity extends KObject {
+public abstract sealed class KMapEntity
+    extends KObject
+    permits
+        KControllableEntity
+{
 
     private final KEvent<KMapSector.EventData> entityLeftSectorEvent;
     private final KEvent<KMapSector.EventData> entityMovedEvent;
