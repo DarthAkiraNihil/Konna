@@ -17,9 +17,11 @@
 package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.map.KSectorLinkData;
 
 public abstract class KMapEntity extends KObject {
 
@@ -37,7 +39,7 @@ public abstract class KMapEntity extends KObject {
         this.currentSector = currentSector;
     }
 
-    public void move() {
+    public final void move() {
 
         KVector2i nextDirection = this.getNextMoveDirection();
         KVector2i nextPosition = this.position.add(nextDirection);
@@ -45,20 +47,40 @@ public abstract class KMapEntity extends KObject {
             nextPosition.x(), nextPosition.y()
         );
 
-        if (slice.tile() == null) {
+        if (slice.tile() == null) { // maybe we need to jump to the linked sector
 
-            KMapSector linkedSector = slice.sectorLink();
-            if (linkedSector == null) {
+            KSectorLinkData linkedSectorData = slice.sectorLink();
+            if (linkedSectorData == null) { // oops, there are no link, cannot move
                 return;
             }
 
-            this.currentSector = slice.sectorLink();
+            KMapSectorSlice dstSlice = linkedSectorData
+                .linkedSector()
+                .getSlice(
+                    linkedSectorData.destination().x(),
+                    linkedSectorData.destination().y()
+                );
 
+            if (dstSlice.tile() == null || !dstSlice.tile().isPassable()) {
+                return;
+            }
+
+            this.position = linkedSectorData.destination();
+            this.currentSector = linkedSectorData.linkedSector();
+            return;
         }
 
+        if (!slice.tile().isPassable()) {
+            return;
+        }
 
+        this.position = nextPosition;
 
     }
 
     protected abstract KVector2i getNextMoveDirection();
+
+    public KPair<KVector2i, KMapSector> getPosition() {
+        return new KPair<>(this.position, this.currentSector);
+    }
 }
