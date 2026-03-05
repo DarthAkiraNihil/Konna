@@ -73,7 +73,7 @@ public final class KMapSector extends KObject {
      * @param sectorLinkLayer Sector link layer, assigned to this sector
      */
     public KMapSector(
-        @KInject final KEventSystem eventSystem,
+        final KEventSystem eventSystem,
         final String name,
         final KTileLayer tileLayer,
         final KSectorLinkLayer sectorLinkLayer,

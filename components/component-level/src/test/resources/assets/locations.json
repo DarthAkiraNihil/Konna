@@ -20,7 +20,31 @@
                             "position": {
                                 "x": 0,
                                 "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -42,9 +66,14 @@
                             "position": {
                                 "x": 1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 }
             ]
         }
@@ -70,9 +99,14 @@
                             "position": {
                                 "x": 0,
                                 "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 },
                 {
                     "name": "mf2",
@@ -92,9 +126,14 @@
                             "position": {
                                 "x": 1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 }
             ]
         }
@@ -120,9 +159,14 @@
                             "position": {
                                 "x": -1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 },
                 {
                     "name": "mf2",
@@ -142,9 +186,14 @@
                             "position": {
                                 "x": 1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 }
             ]
         }
@@ -170,9 +219,14 @@
                             "position": {
                                 "x": -1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 },
                 {
                     "name": "mf2",
@@ -192,9 +246,14 @@
                             "position": {
                                 "x": 3,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 }
             ]
         }
@@ -220,9 +279,14 @@
                             "position": {
                                 "x": -1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 },
                 {
                     "name": "mf2",
@@ -242,9 +306,14 @@
                             "position": {
                                 "x": 1,
                                 "y": -1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 }
             ]
         }
@@ -270,9 +339,14 @@
                             "position": {
                                 "x": 1,
                                 "y": 3
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 },
                 {
                     "name": "mf2",
@@ -292,9 +366,14 @@
                             "position": {
                                 "x": 1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 }
             ]
         }
@@ -320,9 +399,14 @@
                             "position": {
                                 "x": 0,
                                 "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
                         }
-                    ]
+                    ],
+                    "entities": []
                 },
                 {
                     "name": "mf2",
@@ -342,7 +426,644 @@
                             "position": {
                                 "x": 1,
                                 "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
                             }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "invalid_by_sector_destination_xa": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 3,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "invalid_by_sector_destination_xb": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": -1,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "invalid_by_sector_destination_ya": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 3
+                            }
+                        }
+                    ],
+                    "entities": []
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "invalid_by_sector_destination_yb": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": -1
+                            }
+                        }
+                    ],
+                    "entities": []
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "invalid_by_entity_position_xb": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": -1,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": -1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": -1,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "invalid_by_entity_position_xa": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 3,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 3,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 3,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "invalid_by_entity_position_ya": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 3
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 3
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "invalid_by_entity_position_yb": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": -1
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": -1
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ]
                         }
                     ]
                 }

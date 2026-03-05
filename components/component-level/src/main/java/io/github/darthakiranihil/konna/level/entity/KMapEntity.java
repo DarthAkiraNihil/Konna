@@ -92,7 +92,11 @@ public abstract sealed class KMapEntity
 
         if (slice.tile() == null) { // maybe we need to jump to the linked sector
 
-            KSectorLinkData linkedSectorData = slice.sectorLink();
+            KSectorLinkData linkedSectorData = this
+                .currentSector
+                .getSlice(this.position.x(), this.position.y())
+                .sectorLink();
+
             if (linkedSectorData == null) { // oops, there are no link, cannot move
                 return;
             }
@@ -135,5 +139,9 @@ public abstract sealed class KMapEntity
 
     public String getDescriptor() {
         return this.descriptor;
+    }
+
+    public final void setCurrentSector(final KMapSector mapSector) {
+        this.currentSector = mapSector;
     }
 }

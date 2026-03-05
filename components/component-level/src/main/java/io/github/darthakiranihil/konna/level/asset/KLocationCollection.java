@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
+import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.map.*;
 import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 
@@ -251,8 +252,8 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             KAssetDefinition[] controllables = data.getSubdefinitionArray("controllable");
             KAssetDefinition[] staticEntities = data.getSubdefinitionArray("static");
 
-            this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector);
-            this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector);
+            this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector, false);
+            this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector, true);
 
         }
 
@@ -263,19 +264,28 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         final KAssetDefinition[] entities,
         int x,
         int y,
-        final KMapSector containedSector
+        final KMapSector containedSector,
+        boolean areStatic
     ) {
         for (var entity: entities) {
             layer.placeEntity(
                 x,
                 y,
-                new KControllableEntity(
-                    this.eventSystem,
-                    Objects.requireNonNull(entity.getString("name")),
-                    Objects.requireNonNull(entity.getString("descriptor")),
-                    new KVector2i(x, y),
-                    containedSector
-                )
+                areStatic
+                    ? new KStaticEntity(
+                        this.eventSystem,
+                        Objects.requireNonNull(entity.getString("name")),
+                        Objects.requireNonNull(entity.getString("descriptor")),
+                        new KVector2i(x, y),
+                        containedSector
+                    )
+                    : new KControllableEntity(
+                        this.eventSystem,
+                        Objects.requireNonNull(entity.getString("name")),
+                        Objects.requireNonNull(entity.getString("descriptor")),
+                        new KVector2i(x, y),
+                        containedSector
+                    )
             );
         }
     }

@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -30,15 +33,20 @@ public class KLocationPositiveTests extends KStandardTestClass {
     public void testGetSectorSuccess() {
 
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
         KMapSector sector = new KMapSector(
+            es,
             "sector_1",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
-            new KSectorLinkLayer()
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
         );
 
         KLocation location = new KLocation("loc1", List.of(sector));

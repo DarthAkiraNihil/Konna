@@ -16,9 +16,11 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides different useful utils, connected with threads and concurrency.
@@ -38,5 +40,13 @@ public final class KThreadUtils extends KUninstantiable {
      */
     public static void runAsync(final Runnable task) {
         CompletableFuture.runAsync(task);
+    }
+
+    public static void sleepForSeconds(long seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            KSystemLogger.info("sleep", "Could not sleep :(");
+        }
     }
 }

@@ -51,7 +51,8 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
         int x,
         int y,
         final KMapSector linkedSector,
-        int destinationX, int destinationY
+        int destinationX,
+        int destinationY
     ) {
         return this.link(new KVector2i(x, y), linkedSector, new KVector2i(destinationX, destinationY));
     }
