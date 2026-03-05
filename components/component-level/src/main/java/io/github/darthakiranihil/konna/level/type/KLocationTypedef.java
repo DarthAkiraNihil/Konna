@@ -40,6 +40,19 @@ public final class KLocationTypedef implements KAssetTypedef {
 
     @Override
     public KAssetDefinitionRule getRule() {
+
+        KAssetDefinitionRule entityRule = KCompositeAssetDefinitionRuleBuilder
+            .create()
+            .withNotNullString("name")
+            .withNotNullString("descriptor")
+            .build();
+
+        KAssetDefinitionRule positionRule = KCompositeAssetDefinitionRuleBuilder
+            .create()
+            .withInt("x")
+            .withInt("y")
+            .build();
+
         return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withValidatedSubdefinitionArray(
@@ -63,19 +76,25 @@ public final class KLocationTypedef implements KAssetTypedef {
                             .withNotNullString("sector")
                             .withValidatedSubdefinition(
                                 "position",
-                                KCompositeAssetDefinitionRuleBuilder
-                                    .create()
-                                    .withInt("x")
-                                    .withInt("y")
-                                    .build()
+                                positionRule
                             )
                             .withValidatedSubdefinition(
                                 "destination",
-                                KCompositeAssetDefinitionRuleBuilder
-                                    .create()
-                                    .withInt("x")
-                                    .withInt("y")
-                                    .build()
+                                positionRule
+                            )
+                            .build()
+                    )
+                    .withValidatedSubdefinitionArray(
+                        "entities",
+                        KCompositeAssetDefinitionRuleBuilder
+                            .create()
+                            .withValidatedSubdefinition(
+                                "position",
+                                positionRule
+                            )
+                            .withValidatedSubdefinitionArray(
+                                "controllable",
+                                entityRule
                             )
                             .build()
                     )

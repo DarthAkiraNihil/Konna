@@ -47,9 +47,12 @@ public abstract class KMapEntity extends KObject {
     private KVector2i position;
     private KMapSector currentSector;
 
+    private final String descriptor;
+
     public KMapEntity(
-        @KInject final KEventSystem eventSystem,
+        final KEventSystem eventSystem,
         final String name,
+        final String descriptor,
         final KVector2i position,
         final KMapSector currentSector
     ) {
@@ -57,6 +60,8 @@ public abstract class KMapEntity extends KObject {
 
         this.position = position;
         this.currentSector = currentSector;
+
+        this.descriptor = descriptor;
 
         this.entityLeftSectorEvent = Objects.requireNonNull(
             eventSystem.getEvent("entityLeftSector")
@@ -123,4 +128,7 @@ public abstract class KMapEntity extends KObject {
         return new KPair<>(this.position, this.currentSector);
     }
 
+    public String getDescriptor() {
+        return this.descriptor;
+    }
 }

@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,7 @@ public class KLocationCollectionTests extends KAssetCollectionTestClass {
 
         KLocationCollection locationCollection = new KLocationCollection(
             this.assetLoader,
+            KStandardTestClass.context,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
@@ -65,6 +67,7 @@ public class KLocationCollectionTests extends KAssetCollectionTestClass {
 
         KLocationCollection locationCollection = new KLocationCollection(
             this.assetLoader,
+            KStandardTestClass.context,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
@@ -84,6 +87,7 @@ public class KLocationCollectionTests extends KAssetCollectionTestClass {
 
         KLocationCollection locationCollection = new KLocationCollection(
             this.assetLoader,
+            KStandardTestClass.context,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
@@ -118,6 +122,7 @@ public class KLocationCollectionTests extends KAssetCollectionTestClass {
 
         KLocationCollection locationCollection = new KLocationCollection(
             this.assetLoader,
+            KStandardTestClass.context,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),

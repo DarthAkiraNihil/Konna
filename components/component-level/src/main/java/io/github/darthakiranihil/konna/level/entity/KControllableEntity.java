@@ -26,12 +26,13 @@ public class KControllableEntity extends KMapEntity {
     private KVector2i nextMove;
 
     public KControllableEntity(
-        @KInject final KEventSystem eventSystem,
+        final KEventSystem eventSystem,
         final String name,
+        final String descriptor,
         final KVector2i position,
         final KMapSector currentSector
     ) {
-        super(eventSystem, name, position, currentSector);
+        super(eventSystem, name, descriptor, position, currentSector);
 
         this.nextMove = KVector2i.ZERO;
     }
