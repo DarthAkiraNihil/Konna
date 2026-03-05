@@ -249,21 +249,34 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             }
 
             KAssetDefinition[] controllables = data.getSubdefinitionArray("controllable");
-            for (var controllable: controllables) {
-                layer.placeEntity(
-                    x,
-                    y,
-                    new KControllableEntity(
-                        this.eventSystem,
-                        Objects.requireNonNull(controllable.getString("name")),
-                        Objects.requireNonNull(controllable.getString("descriptor")),
-                        new KVector2i(x, y),
-                        rawSector.containedSector
-                    )
-                );
-            }
+            KAssetDefinition[] staticEntities = data.getSubdefinitionArray("static");
+
+            this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector);
+            this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector);
 
         }
 
+    }
+
+    private void placeSimpleEntities(
+        final KMapEntityLayer layer,
+        final KAssetDefinition[] entities,
+        int x,
+        int y,
+        final KMapSector containedSector
+    ) {
+        for (var entity: entities) {
+            layer.placeEntity(
+                x,
+                y,
+                new KControllableEntity(
+                    this.eventSystem,
+                    Objects.requireNonNull(entity.getString("name")),
+                    Objects.requireNonNull(entity.getString("descriptor")),
+                    new KVector2i(x, y),
+                    containedSector
+                )
+            );
+        }
     }
 }

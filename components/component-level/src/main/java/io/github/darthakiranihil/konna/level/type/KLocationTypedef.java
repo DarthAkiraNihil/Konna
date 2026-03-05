@@ -96,6 +96,10 @@ public final class KLocationTypedef implements KAssetTypedef {
                                 "controllable",
                                 entityRule
                             )
+                            .withValidatedSubdefinitionArray(
+                                "static",
+                                entityRule
+                            )
                             .build()
                     )
                     .build()

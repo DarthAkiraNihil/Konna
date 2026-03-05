@@ -42,7 +42,8 @@ import java.util.Objects;
 public abstract sealed class KMapEntity
     extends KObject
     permits
-        KControllableEntity
+        KControllableEntity,
+        KStaticEntity
 {
 
     private final KEvent<KMapSector.EventData> entityLeftSectorEvent;
