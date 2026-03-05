@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
  * @author Darth Akira Nihil
  */
 public record KMapSectorSlice(
-    KTileInfo tile,
+    @Nullable KTileInfo tile,
     @Nullable KSectorLinkData sectorLink
 ) {
 

@@ -63,7 +63,7 @@ public final class KMapSector extends KObject {
     ) {
 
         return new KMapSectorSlice(
-            Objects.requireNonNull(this.tileLayer.getOnPosition(x, y)),
+            this.tileLayer.getOnPosition(x, y),
             this.sectorLinkLayer.getOnPosition(x, y)
         );
 
