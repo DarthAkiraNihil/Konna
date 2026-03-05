@@ -27,6 +27,7 @@ import java.util.List;
  * about all sector layers on specific position.
  * @param tile Tile located on the slice
  * @param sectorLink Link to the sector assigned to the slice
+ * @param entities List of entities located on the slice
  *
  * @since 0.5.0
  * @author Darth Akira Nihil

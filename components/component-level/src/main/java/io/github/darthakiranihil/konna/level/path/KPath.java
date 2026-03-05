@@ -20,14 +20,28 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.util.Queue;
 
+/**
+ * Simple data structure containing move directions for a map entity to use for transporting itself
+ * inside a sector.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KPath {
 
     private final Queue<KVector2i> directions;
 
+    /**
+     * Standard constructor.
+     * @param directions Queue of directions to use for moving
+     */
     public KPath(final Queue<KVector2i> directions) {
         this.directions = directions;
     }
 
+    /**
+     * @return Next move direction or {@link KVector2i#ZERO} if there is no more directions
+     */
     public KVector2i next() {
         if (this.directions.isEmpty()) {
             return KVector2i.ZERO;

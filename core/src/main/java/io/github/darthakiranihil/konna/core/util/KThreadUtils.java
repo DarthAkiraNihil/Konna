@@ -42,6 +42,11 @@ public final class KThreadUtils extends KUninstantiable {
         CompletableFuture.runAsync(task);
     }
 
+    /**
+     * Sleeps for seconds in the current thread.
+     * @param seconds Seconds to sleep
+     * @since 0.5.0
+     */
     public static void sleepForSeconds(long seconds) {
         try {
             TimeUnit.SECONDS.sleep(seconds);

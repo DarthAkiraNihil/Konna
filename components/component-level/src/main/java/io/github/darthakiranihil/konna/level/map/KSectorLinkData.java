@@ -18,6 +18,14 @@ package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+/**
+ * Sector link data record.
+ * @param linkedSector Linked sector
+ * @param destination Position on the linked sector to move after transition on the link
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public record KSectorLinkData(
     KMapSector linkedSector,
     KVector2i destination

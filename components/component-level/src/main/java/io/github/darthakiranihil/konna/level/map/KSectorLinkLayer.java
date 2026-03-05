@@ -45,6 +45,8 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
      * @param x X coordinate of placed link
      * @param y Y coordinate of placed link
      * @param linkedSector Sector to link
+     * @param destinationX X coordinate of link destination in the linked sector
+     * @param destinationY Y coordinate of link destination in the linked sector
      * @return This layer (for method chaining)
      */
     public KSectorLinkLayer link(
@@ -54,13 +56,18 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
         int destinationX,
         int destinationY
     ) {
-        return this.link(new KVector2i(x, y), linkedSector, new KVector2i(destinationX, destinationY));
+        return this.link(
+            new KVector2i(x, y),
+            linkedSector,
+            new KVector2i(destinationX, destinationY)
+        );
     }
 
     /**
      * Adds a link to another sector on specific position.
      * @param position Place for the link
      * @param linkedSector Sector to link
+     * @param destination Position of link destination in the linked sector
      * @return This layer (for method chaining)
      */
     public KSectorLinkLayer link(

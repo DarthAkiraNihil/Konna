@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventAction;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -33,6 +32,7 @@ import java.util.Objects;
 /**
  * The elementary unit of a game level (location) that provides all information
  * about its environment (including tiles, links to other sectors etc.).
+ * It requires {@code entityLeftSector} and {@code entityMoved} event to work properly.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
@@ -49,6 +49,11 @@ import java.util.Objects;
 )
 public final class KMapSector extends KObject {
 
+    /**
+     * Event data record for {@code entityLeftSector} and {@code entityMoved} events.
+     * @param entity Affected entity
+     * @param previousPosition Previous position of affected entity
+     */
     public record EventData(
         KMapEntity entity,
         KPair<KVector2i, KMapSector> previousPosition
@@ -68,9 +73,12 @@ public final class KMapSector extends KObject {
 
     /**
      * Standard constructor.
+     * @param eventSystem Event system to get {@code entityLeftSector}
+     *                    and {@code entityMoved} events
      * @param name Name of the sector
      * @param tileLayer Tile layer, assigned to this sector
      * @param sectorLinkLayer Sector link layer, assigned to this sector
+     * @param entityLayer Entity layer, assigned to this sector
      */
     public KMapSector(
         final KEventSystem eventSystem,
@@ -116,7 +124,10 @@ public final class KMapSector extends KObject {
 
     }
 
-
+    /**
+     * Unloads this sector (unsubscribes from {@code entityLeftSector}
+     * and {@code entityMoved} events).
+     */
     public void unload() {
 
         this.entityMovedEvent.unsubscribe(this.entityMovedConsumer);

@@ -83,6 +83,9 @@ public final class KLocation extends KObject {
         return this.sectors.get(sectorName);
     }
 
+    /**
+     * Unloads this location.
+     */
     public void unload() {
         this.sectors.values().forEach(KMapSector::unload);
     }

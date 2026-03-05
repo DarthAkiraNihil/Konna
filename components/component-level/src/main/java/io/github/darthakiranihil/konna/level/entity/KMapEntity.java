@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
@@ -29,6 +28,18 @@ import io.github.darthakiranihil.konna.level.map.KSectorLinkData;
 
 import java.util.Objects;
 
+/**
+ * <p>Base class for all map entities, that is, however, sealed, since there are not so many
+ * possible types of map entities.</p>
+ * <p>
+ *     Each entity has its current sector it's located in and position in this sector.
+ *     Also, it requires {@code entityLeftSector} and {@code entityMoved} events to work properly
+ *     (they are used for notifying sectors about their movement inside them)
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @KRequiresEvent(
     name = "entityLeftSector",
     simple = false,
@@ -43,8 +54,7 @@ public abstract sealed class KMapEntity
     extends KObject
     permits
         KControllableEntity,
-        KStaticEntity
-{
+        KStaticEntity {
 
     private final KEvent<KMapSector.EventData> entityLeftSectorEvent;
     private final KEvent<KMapSector.EventData> entityMovedEvent;
@@ -54,6 +64,16 @@ public abstract sealed class KMapEntity
 
     private final String descriptor;
 
+    /**
+     * Standard constructor.
+     * @param eventSystem Event system to get {@code entityLeftSector}
+     *                    and {@code entityMoved} events
+     * @param name Entity name
+     * @param descriptor Entity descriptor, representing it (maybe an asset id,
+     *                   referencing created entity)
+     * @param position Initial position
+     * @param currentSector Initial sector that is entity attached to
+     */
     public KMapEntity(
         final KEventSystem eventSystem,
         final String name,
@@ -77,6 +97,12 @@ public abstract sealed class KMapEntity
 
     }
 
+    /**
+     * Performs movement for this entity, that is performed with reading its next move direction
+     * and updating position according to destination tile passability and sector links (if
+     * the entity requires to go to another sector, it will be handled properly. It is performed
+     * by adding it to the destination sector and removing it from the source sector).
+     */
     public final void move() {
 
         var previousPosition = this.getPosition();
@@ -131,17 +157,32 @@ public abstract sealed class KMapEntity
         this.entityMovedEvent.invoke(new KMapSector.EventData(this, previousPosition));
     }
 
+    /**
+     * @return Next move direction for this entity.
+     */
     protected abstract KVector2i getNextMoveDirection();
 
+    /**
+     * @return Current sector of this entity and the position inside it
+     */
     public final KPair<KVector2i, KMapSector> getPosition() {
         return new KPair<>(this.position, this.currentSector);
     }
 
+    /**
+     * @return This entity's descriptor
+     */
     public String getDescriptor() {
         return this.descriptor;
     }
 
-    public final void setCurrentSector(final KMapSector mapSector) {
+    /**
+     * Sets a new sector as current for it. Warning: it is not sage as the bounds are not checked.
+     * Actually should be used in level generators.
+     * @param mapSector New map sector
+     * @param newPosition Position inside the sector
+     */
+    public final void setCurrentSector(final KMapSector mapSector, final KVector2i newPosition) {
         this.currentSector = mapSector;
     }
 }

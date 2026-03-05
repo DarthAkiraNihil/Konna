@@ -65,6 +65,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     /**
      * Standard constructor.
      * @param assetLoader Asset loader
+     * @param eventSystem Event system that will be injected in loaded entities and sectors
      * @param tileCollection Tile collection to get tiles for loaded location
      */
     public KLocationCollection(

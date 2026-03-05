@@ -20,6 +20,13 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 
+/**
+ * Representation of a static entity that is not moved during its existence. It can be moved
+ * manually though.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KStaticEntity extends KMapEntity {
 
     public KStaticEntity(
@@ -32,6 +39,9 @@ public final class KStaticEntity extends KMapEntity {
         super(eventSystem, name, descriptor, position, currentSector);
     }
 
+    /**
+     * @return Always {@link KVector2i#ZERO}
+     */
     @Override
     protected KVector2i getNextMoveDirection() {
         return KVector2i.ZERO;

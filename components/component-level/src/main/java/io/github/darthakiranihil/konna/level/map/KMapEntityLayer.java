@@ -18,22 +18,44 @@ package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
-import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * Map layer containing information about entities located inside a sector on specific positions.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+@SuppressWarnings("UnusedReturnValue")
 public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
 
     private final Map<KVector2i, List<KMapEntity>> entities;
 
+    /**
+     * Constructs an empty layer.
+     */
     public KMapEntityLayer() {
         this.entities = new HashMap<>();
     }
 
+    /**
+     * Places an entity on this layer.
+     * @param x X coordinate to place the entity
+     * @param y Y coordinate to place the entity
+     * @param entity Entity to place
+     * @return This layer (for method chaining)
+     */
     public KMapEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
         return this.placeEntity(new KVector2i(x, y), entity);
     }
 
+    /**
+     * Places an entity on this layer.
+     * @param position Position to place the entity
+     * @param entity Entity to place
+     * @return This layer (for method chaining)
+     */
     public KMapEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
         if (!this.entities.containsKey(position)) {
             this.entities.put(position, new LinkedList<>());
@@ -44,10 +66,23 @@ public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
         return this;
     }
 
+    /**
+     * Removes an entity from this layer.
+     * @param x X coordinate to remove the entity from
+     * @param y Y coordinate to remove the entity from
+     * @param entity Entity to remove
+     * @return This layer (for method chaining)
+     */
     public KMapEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
         return this.removeEntity(new KVector2i(x, y), entity);
     }
 
+    /**
+     * Removes an entity from this layer.
+     * @param position Position to remove the entity from
+     * @param entity Entity to remove
+     * @return This layer (for method chaining)
+     */
     public KMapEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
         if (!this.entities.containsKey(position)) {
             return this;

@@ -20,6 +20,12 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 
+/**
+ * Representation of a map entity that can be moved manually.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KControllableEntity extends KMapEntity {
 
     private KVector2i nextMove;
@@ -36,6 +42,9 @@ public final class KControllableEntity extends KMapEntity {
         this.nextMove = KVector2i.ZERO;
     }
 
+    /**
+     * @return The set move direction of {@link KVector2i#ZERO} if it is not specified
+     */
     @Override
     protected KVector2i getNextMoveDirection() {
         KVector2i move = this.nextMove;
@@ -43,6 +52,11 @@ public final class KControllableEntity extends KMapEntity {
         return move;
     }
 
+    /**
+     * Sets the next move direction for this entity.
+     * It will be used on next call of {@link KControllableEntity#getNextMoveDirection()}
+     * @param direction The next move direction
+     */
     public void setNextMoveDirection(final KVector2i direction) {
         this.nextMove = direction;
     }
