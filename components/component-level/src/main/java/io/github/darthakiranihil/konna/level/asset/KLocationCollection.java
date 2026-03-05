@@ -194,10 +194,25 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                 );
             }
 
+            int destinationX = rawLink.getSubdefinition("destination").getInt("x");
+            int destinationY = rawLink.getSubdefinition("destination").getInt("y");
+            if (
+                    destinationX > rawSector.size.width()
+                ||  destinationX < 0
+                ||  destinationY > rawSector.size.height()
+                ||  destinationY < 0
+            ) {
+                throw new KAssetLoadingException(
+                    "Sector link destination is out of bounds of linked sector space"
+                );
+            }
+
             layer.link(
                 x,
                 y,
-                rawSectorsMap.get(linkedSector).containedSector
+                rawSectorsMap.get(linkedSector).containedSector,
+                destinationX,
+                destinationY
             );
 
         }

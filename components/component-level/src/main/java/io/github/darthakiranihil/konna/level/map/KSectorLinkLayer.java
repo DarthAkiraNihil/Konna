@@ -29,9 +29,9 @@ import java.util.Map;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KSectorLinkLayer implements KMapLayer<KMapSector> {
+public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
 
-    private final Map<KVector2i, KMapSector> links;
+    private final Map<KVector2i, KSectorLinkData> links;
 
     /**
      * Creates an empty layer.
@@ -47,8 +47,13 @@ public final class KSectorLinkLayer implements KMapLayer<KMapSector> {
      * @param linkedSector Sector to link
      * @return This layer (for method chaining)
      */
-    public KSectorLinkLayer link(int x, int y, final KMapSector linkedSector) {
-        return this.link(new KVector2i(x, y), linkedSector);
+    public KSectorLinkLayer link(
+        int x,
+        int y,
+        final KMapSector linkedSector,
+        int destinationX, int destinationY
+    ) {
+        return this.link(new KVector2i(x, y), linkedSector, new KVector2i(destinationX, destinationY));
     }
 
     /**
@@ -57,18 +62,22 @@ public final class KSectorLinkLayer implements KMapLayer<KMapSector> {
      * @param linkedSector Sector to link
      * @return This layer (for method chaining)
      */
-    public KSectorLinkLayer link(final KVector2i position, final KMapSector linkedSector) {
-        this.links.put(position, linkedSector);
+    public KSectorLinkLayer link(
+        final KVector2i position,
+        final KMapSector linkedSector,
+        final KVector2i destination
+    ) {
+        this.links.put(position, new KSectorLinkData(linkedSector, destination));
         return this;
     }
 
     @Override
-    public @Nullable KMapSector getOnPosition(int x, int y) {
+    public @Nullable KSectorLinkData getOnPosition(int x, int y) {
         return this.getOnPosition(new KVector2i(x, y));
     }
 
     @Override
-    public @Nullable KMapSector getOnPosition(final KVector2i position) {
+    public @Nullable KSectorLinkData getOnPosition(final KVector2i position) {
         return this.links.get(position);
     }
 

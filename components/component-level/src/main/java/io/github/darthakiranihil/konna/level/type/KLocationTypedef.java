@@ -69,6 +69,14 @@ public final class KLocationTypedef implements KAssetTypedef {
                                     .withInt("y")
                                     .build()
                             )
+                            .withValidatedSubdefinition(
+                                "destination",
+                                KCompositeAssetDefinitionRuleBuilder
+                                    .create()
+                                    .withInt("x")
+                                    .withInt("y")
+                                    .build()
+                            )
                             .build()
                     )
                     .build()
