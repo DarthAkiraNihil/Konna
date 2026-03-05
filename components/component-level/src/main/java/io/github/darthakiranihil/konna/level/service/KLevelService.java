@@ -77,6 +77,10 @@ public class KLevelService extends KObject {
     ) {
 
         try {
+            if (this.currentLocation != null) {
+                this.currentLocation.unload();
+            }
+
             this.currentLocation = this.locationCollection.getAsset(locationName);
         } catch (KAssetLoadingException e) {
             KSystemLogger.warning(

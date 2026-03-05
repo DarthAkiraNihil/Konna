@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 
@@ -24,11 +26,12 @@ public class KControllableEntity extends KMapEntity {
     private KVector2i nextMove;
 
     public KControllableEntity(
+        @KInject final KEventSystem eventSystem,
         final String name,
         final KVector2i position,
         final KMapSector currentSector
     ) {
-        super(name, position, currentSector);
+        super(eventSystem, name, position, currentSector);
 
         this.nextMove = KVector2i.ZERO;
     }

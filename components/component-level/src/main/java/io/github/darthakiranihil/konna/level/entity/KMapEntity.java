@@ -16,6 +16,10 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
@@ -23,12 +27,28 @@ import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import io.github.darthakiranihil.konna.level.map.KSectorLinkData;
 
+import java.util.Objects;
+
+@KRequiresEvent(
+    name = "entityLeftSector",
+    simple = false,
+    type = KMapSector.EventData.class
+)
+@KRequiresEvent(
+    name = "entityMoved",
+    simple = false,
+    type = KMapSector.EventData.class
+)
 public abstract class KMapEntity extends KObject {
+
+    private final KEvent<KMapSector.EventData> entityLeftSectorEvent;
+    private final KEvent<KMapSector.EventData> entityMovedEvent;
 
     private KVector2i position;
     private KMapSector currentSector;
 
     public KMapEntity(
+        @KInject final KEventSystem eventSystem,
         final String name,
         final KVector2i position,
         final KMapSector currentSector
@@ -37,11 +57,24 @@ public abstract class KMapEntity extends KObject {
 
         this.position = position;
         this.currentSector = currentSector;
+
+        this.entityLeftSectorEvent = Objects.requireNonNull(
+            eventSystem.getEvent("entityLeftSector")
+        );
+        this.entityMovedEvent = Objects.requireNonNull(
+            eventSystem.getEvent("entityMoved")
+        );
+
     }
 
     public final void move() {
 
+        var previousPosition = this.getPosition();
         KVector2i nextDirection = this.getNextMoveDirection();
+        if (nextDirection == KVector2i.ZERO) {
+            return;
+        }
+
         KVector2i nextPosition = this.position.add(nextDirection);
         KMapSectorSlice slice = this.currentSector.getSlice(
             nextPosition.x(), nextPosition.y()
@@ -53,20 +86,26 @@ public abstract class KMapEntity extends KObject {
             if (linkedSectorData == null) { // oops, there are no link, cannot move
                 return;
             }
+            nextPosition = linkedSectorData.destination().add(nextDirection);
 
             KMapSectorSlice dstSlice = linkedSectorData
                 .linkedSector()
                 .getSlice(
-                    linkedSectorData.destination().x(),
-                    linkedSectorData.destination().y()
+                    nextPosition.x(),
+                    nextPosition.y()
                 );
 
             if (dstSlice.tile() == null || !dstSlice.tile().isPassable()) {
                 return;
             }
 
-            this.position = linkedSectorData.destination();
+            this.position = nextPosition;
             this.currentSector = linkedSectorData.linkedSector();
+            this.entityLeftSectorEvent.invoke(
+                new KMapSector.EventData(
+                    this, previousPosition
+                )
+            );
             return;
         }
 
@@ -75,12 +114,13 @@ public abstract class KMapEntity extends KObject {
         }
 
         this.position = nextPosition;
-
+        this.entityMovedEvent.invoke(new KMapSector.EventData(this, previousPosition));
     }
 
     protected abstract KVector2i getNextMoveDirection();
 
-    public KPair<KVector2i, KMapSector> getPosition() {
+    public final KPair<KVector2i, KMapSector> getPosition() {
         return new KPair<>(this.position, this.currentSector);
     }
+
 }

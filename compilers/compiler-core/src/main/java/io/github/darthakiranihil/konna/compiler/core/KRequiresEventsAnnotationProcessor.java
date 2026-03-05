@@ -50,7 +50,8 @@ import java.util.Set;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.message.KRequiresEvents"
+    "io.github.darthakiranihil.konna.core.message.KRequiresEvents",
+    "io.github.darthakiranihil.konna.core.message.KRequiresEvent"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")

@@ -17,7 +17,10 @@
 package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.level.KTileInfo;
+import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 import org.jspecify.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Immutable data structure that represents information
@@ -30,7 +33,8 @@ import org.jspecify.annotations.Nullable;
  */
 public record KMapSectorSlice(
     @Nullable KTileInfo tile,
-    @Nullable KSectorLinkData sectorLink
+    @Nullable KSectorLinkData sectorLink,
+    List<KMapEntity> entities
 ) {
 
 }
