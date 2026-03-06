@@ -22,23 +22,23 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public interface KGraph<IDX, COL, W> extends Iterable<KGraph.Node<IDX, COL, W>> {
+public interface KIntWeightedGraph<IDX, COL> extends Iterable<KIntWeightedGraph.Node<IDX, COL>> {
 
-    interface Node<IDX, COL, W> {
+    interface Node<IDX, COL> {
         IDX index();
         COL color();
-        Set<KPair<W, Node<IDX, COL, W>>> adjacent();
+        Set<KPair<Integer, Node<IDX, COL>>> adjacent();
     }
 
     Set<IDX> getNodeIndices();
     void clear();
 
     void add(IDX index, COL color);
-    @Nullable Node<IDX, COL, W> get(IDX index);
+    @Nullable Node<IDX, COL> get(IDX index);
 
-    void connect(IDX src, IDX dst, W weight);
-    void biConnect(IDX src, IDX dst, W weight);
+    void connect(IDX src, IDX dst, int weight);
+    void biConnect(IDX src, IDX dst, int weight);
 
-    List<KPair<IDX, W>> getPath(IDX src, IDX dst);
+    List<IDX> getPath(IDX src, IDX dst);
 
 }

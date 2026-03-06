@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KGraphicsComponentPositiveTests extends KStandardTestClass {
+public class KIntWeightedGraphicsComponentPositiveTests extends KStandardTestClass {
 
     @Test
     @SuppressWarnings("unchecked")
