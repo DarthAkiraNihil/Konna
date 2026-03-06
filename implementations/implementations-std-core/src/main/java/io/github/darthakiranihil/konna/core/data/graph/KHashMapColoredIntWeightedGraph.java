@@ -23,15 +23,17 @@ import org.jspecify.annotations.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
+public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWeightedGraph<IDX, COL> {
 
-    private final class HashMapGraphNode implements KIntWeightedGraph.Node<IDX> {
+    private final class HashMapGraphNode implements KColoredIntWeightedGraph.Node<IDX, COL> {
 
         private final IDX index;
-        private final Set<KPair<Integer, KIntWeightedGraph.Node<IDX>>> adjacent;
+        private final COL color;
+        private final Set<KPair<Integer, Node<IDX, COL>>> adjacent;
 
-        HashMapGraphNode(IDX index) {
+        HashMapGraphNode(IDX index, COL color) {
             this.index = index;
+            this.color = color;
             this.adjacent = new HashSet<>();
         }
 
@@ -39,22 +41,27 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
         public IDX index() {
             return this.index;
         }
-        
+
         @Override
-        public Set<KPair<Integer, KIntWeightedGraph.Node<IDX>>> adjacent() {
+        public COL color() {
+            return this.color;
+        }
+
+        @Override
+        public Set<KPair<Integer, Node<IDX, COL>>> adjacent() {
             return this.adjacent;
         }
 
     }
 
-    private static final class DijkstraNode<IDX> {
+    private static final class DijkstraNode<IDX, COL> {
 
-        private final KIntWeightedGraph.Node<IDX> node;
+        private final Node<IDX, COL> node;
         private int pathWeight;
         private boolean visited;
-        private @Nullable DijkstraNode<IDX> parent;
+        private @Nullable DijkstraNode<IDX, COL> parent;
 
-        DijkstraNode(final KIntWeightedGraph.Node<IDX> node) {
+        DijkstraNode(final Node<IDX, COL> node) {
             this.node = node;
             this.pathWeight = Integer.MAX_VALUE;
             this.parent = null;
@@ -65,20 +72,23 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
 
     private final Map<IDX, HashMapGraphNode> nodes;
 
-    public KHashMapIntWeightedGraph() {
+    public KHashMapColoredIntWeightedGraph() {
         this.nodes = new HashMap<>();
     }
 
     @Override
-    public void add(IDX index) {
+    public void add(IDX index, COL color) {
         this.nodes.put(
             index,
-            new HashMapGraphNode(index)
+            new HashMapGraphNode(
+                index,
+                color
+            )
         );
     }
 
     @Override
-    public @Nullable Node<IDX> get(IDX index) {
+    public @Nullable Node<IDX, COL> get(IDX index) {
         return this.nodes.get(index);
     }
 
@@ -109,7 +119,7 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
     @Override
     public List<IDX> getPath(IDX src, IDX dst) {
 
-        Map<IDX, DijkstraNode<IDX>> dijkstraNodes = new HashMap<>();
+        Map<IDX, DijkstraNode<IDX, COL>> dijkstraNodes = new HashMap<>();
         for (var e: this.nodes.entrySet()) {
             dijkstraNodes.put(
                 e.getKey(),
@@ -120,7 +130,7 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
         var srcNode = Objects.requireNonNull(dijkstraNodes.get(src));
         srcNode.pathWeight = 0;
 
-        Queue<DijkstraNode<IDX>> processingQueue = new LinkedList<>();
+        Queue<DijkstraNode<IDX, COL>> processingQueue = new LinkedList<>();
         processingQueue.add(srcNode);
 
         while (!processingQueue.isEmpty()) {
@@ -165,28 +175,27 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
     }
 
     @Override
-    public @NonNull Iterator<KIntWeightedGraph.Node<IDX>> iterator() {
+    public @NonNull Iterator<Node<IDX, COL>> iterator() {
         return this
             .nodes
             .values()
             .stream()
-            .map(x -> (KIntWeightedGraph.Node<IDX>) x)
+            .map(x -> (Node<IDX, COL>) x)
             .iterator();
     }
 
     @Override
-    public void forEach(Consumer<? super KIntWeightedGraph.Node<IDX>> action) {
+    public void forEach(Consumer<? super Node<IDX, COL>> action) {
         this.nodes.values().forEach(action);
     }
 
     @Override
-    public Spliterator<KIntWeightedGraph.Node<IDX>> spliterator() {
+    public Spliterator<Node<IDX, COL>> spliterator() {
         return this
             .nodes
             .values()
             .stream()
-            .map(x -> (KIntWeightedGraph.Node<IDX>) x)
+            .map(x -> (Node<IDX, COL>) x)
             .spliterator();
     }
-    
 }
