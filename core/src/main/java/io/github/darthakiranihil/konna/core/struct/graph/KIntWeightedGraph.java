@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.data.graph;
+package io.github.darthakiranihil.konna.core.struct.graph;
 
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import org.jspecify.annotations.Nullable;
