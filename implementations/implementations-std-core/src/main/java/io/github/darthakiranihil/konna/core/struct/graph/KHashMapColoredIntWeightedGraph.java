@@ -17,14 +17,22 @@
 package io.github.darthakiranihil.konna.core.struct.graph;
 
 import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.struct.graph.KColoredIntWeightedGraph;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWeightedGraph<IDX, COL> {
+/**
+ * Implementation of {@link KColoredIntWeightedGraph} that uses HashMap for storing graph nodes.
+ * (uses Dijkstra's algorithm to calculate path between two nodes).
+ * @param <IDX> Index type to reference a graph node
+ * @param <COL> Type of node's color
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public class KHashMapColoredIntWeightedGraph<IDX, COL>
+    implements KColoredIntWeightedGraph<IDX, COL> {
 
     private final class HashMapGraphNode implements KColoredIntWeightedGraph.Node<IDX, COL> {
 
@@ -32,7 +40,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
         private final COL color;
         private final Set<KPair<Integer, Node<IDX, COL>>> adjacent;
 
-        HashMapGraphNode(IDX index, COL color) {
+        HashMapGraphNode(final IDX index, final COL color) {
             this.index = index;
             this.color = color;
             this.adjacent = new HashSet<>();
@@ -73,12 +81,15 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
 
     private final Map<IDX, HashMapGraphNode> nodes;
 
+    /**
+     * Constructs an empty graph.
+     */
     public KHashMapColoredIntWeightedGraph() {
         this.nodes = new HashMap<>();
     }
 
     @Override
-    public void add(IDX index, COL color) {
+    public void add(final IDX index, final COL color) {
         this.nodes.put(
             index,
             new HashMapGraphNode(
@@ -89,12 +100,12 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
     }
 
     @Override
-    public @Nullable Node<IDX, COL> get(IDX index) {
+    public @Nullable Node<IDX, COL> get(final IDX index) {
         return this.nodes.get(index);
     }
 
     @Override
-    public void connect(IDX src, IDX dst, int weight) {
+    public void connect(final IDX src, final IDX dst, int weight) {
         var srcNode = this.nodes.get(src);
         var dstNode = this.nodes.get(dst);
         if (srcNode == null || dstNode == null) {
@@ -105,7 +116,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
     }
 
     @Override
-    public void biConnect(IDX src, IDX dst, int weight) {
+    public void biConnect(final IDX src, final IDX dst, int weight) {
         this.connect(src, dst, weight);
         this.connect(dst, src, weight);
     }
@@ -121,7 +132,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
     }
 
     @Override
-    public List<IDX> getPath(IDX src, IDX dst) {
+    public List<IDX> getPath(final IDX src, final IDX dst) {
 
         Map<IDX, DijkstraNode<IDX, COL>> dijkstraNodes = new HashMap<>();
         for (var e: this.nodes.entrySet()) {
@@ -182,7 +193,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
     }
 
     @Override
-    public @NonNull Iterator<Node<IDX, COL>> iterator() {
+    public Iterator<Node<IDX, COL>> iterator() {
         return this
             .nodes
             .values()
@@ -192,7 +203,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
     }
 
     @Override
-    public void forEach(Consumer<? super Node<IDX, COL>> action) {
+    public void forEach(final Consumer<? super Node<IDX, COL>> action) {
         this.nodes.values().forEach(action);
     }
 
