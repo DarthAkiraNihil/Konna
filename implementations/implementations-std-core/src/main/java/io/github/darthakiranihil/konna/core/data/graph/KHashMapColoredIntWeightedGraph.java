@@ -94,8 +94,11 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
 
     @Override
     public void connect(IDX src, IDX dst, int weight) {
-        var srcNode = Objects.requireNonNull(this.nodes.get(src));
-        var dstNode = Objects.requireNonNull(this.nodes.get(dst));
+        var srcNode = this.nodes.get(src);
+        var dstNode = this.nodes.get(dst);
+        if (srcNode == null || dstNode == null) {
+            return;
+        }
 
         srcNode.adjacent.add(new KPair<>(weight, dstNode));
     }
@@ -127,7 +130,10 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
             );
         }
 
-        var srcNode = Objects.requireNonNull(dijkstraNodes.get(src));
+        var srcNode = dijkstraNodes.get(src);
+        if (srcNode == null) {
+            return List.of();
+        }
         srcNode.pathWeight = 0;
 
         Queue<DijkstraNode<IDX, COL>> processingQueue = new LinkedList<>();
@@ -161,8 +167,8 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
             );
         }
 
-        var dstNode = Objects.requireNonNull(dijkstraNodes.get(dst));
-        if (dstNode.parent == null) {
+        var dstNode = dijkstraNodes.get(dst);
+        if (dstNode == null || dstNode.parent == null) {
             return List.of();
         }
 
@@ -198,4 +204,5 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL> implements KColoredIntWei
             .map(x -> (Node<IDX, COL>) x)
             .spliterator();
     }
+
 }

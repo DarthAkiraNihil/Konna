@@ -84,8 +84,11 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
 
     @Override
     public void connect(IDX src, IDX dst, int weight) {
-        var srcNode = Objects.requireNonNull(this.nodes.get(src));
-        var dstNode = Objects.requireNonNull(this.nodes.get(dst));
+        var srcNode = this.nodes.get(src);
+        var dstNode = this.nodes.get(dst);
+        if (srcNode == null || dstNode == null) {
+            return;
+        }
 
         srcNode.adjacent.add(new KPair<>(weight, dstNode));
     }
@@ -117,7 +120,10 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
             );
         }
 
-        var srcNode = Objects.requireNonNull(dijkstraNodes.get(src));
+        var srcNode = dijkstraNodes.get(src);
+        if (srcNode == null) {
+            return List.of();
+        }
         srcNode.pathWeight = 0;
 
         Queue<DijkstraNode<IDX>> processingQueue = new LinkedList<>();
@@ -151,8 +157,8 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
             );
         }
 
-        var dstNode = Objects.requireNonNull(dijkstraNodes.get(dst));
-        if (dstNode.parent == null) {
+        var dstNode = dijkstraNodes.get(dst);
+        if (dstNode == null || dstNode.parent == null) {
             return List.of();
         }
 
