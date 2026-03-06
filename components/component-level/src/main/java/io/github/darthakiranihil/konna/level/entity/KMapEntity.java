@@ -54,7 +54,8 @@ public abstract sealed class KMapEntity
     extends KObject
     permits
         KControllableEntity,
-        KStaticEntity {
+        KStaticEntity,
+        KAutonomousEntity {
 
     private final KEvent<KMapSector.EventData> entityLeftSectorEvent;
     private final KEvent<KMapSector.EventData> entityMovedEvent;
