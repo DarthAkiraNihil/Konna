@@ -102,7 +102,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
             this.fillEntityLayer(rs);
-            rs.reachabilityAreaLayer.recalculate();
+            rs.reachabilityAreaLayer.refresh();
 
             filledSectors.add(
                 rs.containedSector()

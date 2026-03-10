@@ -23,12 +23,24 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * Map layer containing information about reachability areas that represent
+ * sector zones that are not connected. This it a technical layer because
+ * it should not be filled manually.
+ *
+ * @since 0.5.0
+ * @since Darth Akira Nihil
+ */
 public final class KReachabilityAreaLayer {
 
     private final int[][] areas;
     private final KSize size;
     private final KTileLayer tileLayer;
 
+    /**
+     * Constructs a layer with automatic filling it.
+     * @param tileLayer Assigned tile layer
+     */
     public KReachabilityAreaLayer(final KTileLayer tileLayer) {
 
         this.size = tileLayer.getSize();
@@ -38,10 +50,22 @@ public final class KReachabilityAreaLayer {
         this.fillLayer(tileLayer);
     }
 
+    /**
+     * @param src Source point
+     * @param dst Destination point
+     * @return Whether it is possible to reach destination from source point in this layer
+     */
     public boolean isReachable(final KVector2i src, final KVector2i dst) {
         return this.isReachable(src.x(), src.y(), dst.x(), dst.y());
     }
 
+    /**
+     * @param srcX X coordinate of source point
+     * @param srcY Y coordinate of source point
+     * @param dstX X coordinate of destination point
+     * @param dstY Y coordinate of destination point
+     * @return Whether it is possible to reach destination from source point in this layer
+     */
     public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
 
         if (srcX >= this.size.width() || srcX < 0 || srcY >= this.size.height() || srcY < 0) {
@@ -66,13 +90,16 @@ public final class KReachabilityAreaLayer {
         return this.size;
     }
 
-    public void recalculate() {
+    /**
+     * Recalculates reachability areas of this layer.
+     */
+    public void refresh() {
         this.fillLayer(this.tileLayer);
     }
 
-    private void fillLayer(final KTileLayer tileLayer) {
+    private void fillLayer(final KTileLayer sourceTileLayer) {
 
-        KVector2i start = this.getNextFreeTilePosition(tileLayer);
+        KVector2i start = this.getNextFreeTilePosition(sourceTileLayer);
         int area = 1;
         while (start != null) {
 
@@ -87,30 +114,32 @@ public final class KReachabilityAreaLayer {
 
                 this.areas[visited.y()][visited.x()] = area;
 
-                this.testNeighborTile(visitedX - 1, visitedY, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX - 1, visitedY - 1, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX, visitedY - 1, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY - 1, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX - 1, visitedY + 1, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX, visitedY + 1, toVisit, seen, tileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY + 1, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX + 1, visitedY, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY - 1, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX, visitedY - 1, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX + 1, visitedY - 1, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY + 1, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX, visitedY + 1, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX + 1, visitedY + 1, toVisit, seen, sourceTileLayer);
 
             }
 
-            start = this.getNextFreeTilePosition(tileLayer);
+            start = this.getNextFreeTilePosition(sourceTileLayer);
             area++;
 
         }
 
     }
 
-    private @Nullable KVector2i getNextFreeTilePosition(final KTileLayer tileLayer) {
+    private @Nullable KVector2i getNextFreeTilePosition(
+        final KTileLayer sourceTileLayer
+    ) {
 
         for (int i = 0; i < this.size.width(); i++) {
             for (int j = 0; j < this.size.height(); j++) {
 
-                KTileInfo tile = tileLayer.getOnPosition(i, j);
+                KTileInfo tile = sourceTileLayer.getOnPosition(i, j);
                 if (tile != null && tile.isPassable() && this.areas[j][i] == 0) {
                     return new KVector2i(i, j);
                 }
@@ -126,10 +155,10 @@ public final class KReachabilityAreaLayer {
         int y,
         final Deque<KVector2i> visitedQueue,
         final Set<KVector2i> seen,
-        final KTileLayer tileLayer
+        final KTileLayer sourceTileLayer
     ) {
 
-        KTileInfo tileInfo = tileLayer.getOnPosition(x, y);
+        KTileInfo tileInfo = sourceTileLayer.getOnPosition(x, y);
         KVector2i pos = new KVector2i(x, y);
         if (
                 tileInfo != null

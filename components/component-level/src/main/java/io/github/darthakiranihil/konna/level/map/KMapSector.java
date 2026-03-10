@@ -137,10 +137,22 @@ public final class KMapSector extends KObject {
 
     }
 
+    /**
+     * @param src Source point
+     * @param dst Destination point
+     * @return Whether it is possible to reach destination from source point in this layer
+     */
     public boolean isReachable(final KVector2i src, final KVector2i dst) {
         return this.reachabilityAreaLayer.isReachable(src, dst);
     }
 
+    /**
+     * @param srcX X coordinate of source point
+     * @param srcY Y coordinate of source point
+     * @param dstX X coordinate of destination point
+     * @param dstY Y coordinate of destination point
+     * @return Whether it is possible to reach destination from source point in this layer
+     */
     public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
         return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
     }
