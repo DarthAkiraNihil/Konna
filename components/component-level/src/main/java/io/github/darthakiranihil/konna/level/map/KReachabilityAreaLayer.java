@@ -27,11 +27,14 @@ public final class KReachabilityAreaLayer {
 
     private final int[][] areas;
     private final KSize size;
+    private final KTileLayer tileLayer;
 
     public KReachabilityAreaLayer(final KTileLayer tileLayer) {
 
         this.size = tileLayer.getSize();
         this.areas = new int[this.size.height()][this.size.width()];
+        this.tileLayer = tileLayer;
+
         this.fillLayer(tileLayer);
     }
 
@@ -63,6 +66,10 @@ public final class KReachabilityAreaLayer {
         return this.size;
     }
 
+    public void recalculate() {
+        this.fillLayer(this.tileLayer);
+    }
+
     private void fillLayer(final KTileLayer tileLayer) {
 
         KVector2i start = this.getNextFreeTilePosition(tileLayer);
@@ -70,6 +77,7 @@ public final class KReachabilityAreaLayer {
         while (start != null) {
 
             Stack<KVector2i> toVisit = new Stack<>();
+            toVisit.add(start);
             while (!toVisit.empty()) {
                 KVector2i visited = toVisit.pop();
 
@@ -120,7 +128,7 @@ public final class KReachabilityAreaLayer {
     ) {
 
         KTileInfo tileInfo = tileLayer.getOnPosition(x, y);
-        if (tileInfo != null && tileInfo.isPassable()) {
+        if (tileInfo != null && tileInfo.isPassable() && this.areas[y][x] == 0) {
             visitedStack.push(new KVector2i(x, y));
         }
 

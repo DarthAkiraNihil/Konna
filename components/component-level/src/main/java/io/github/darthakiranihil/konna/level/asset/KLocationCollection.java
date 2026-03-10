@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.map.*;
@@ -50,6 +51,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         KTileLayer tileLayer,
         KSectorLinkLayer sectorLinkLayer,
         KMapEntityLayer entityLayer,
+        KReachabilityAreaLayer reachabilityAreaLayer,
 
         String[] tiles,
         KAssetDefinition[] sectorLinks,
@@ -100,6 +102,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
             this.fillEntityLayer(rs);
+            rs.reachabilityAreaLayer.recalculate();
 
             filledSectors.add(
                 rs.containedSector()
@@ -147,6 +150,14 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                     tileLayer,
                     sectorLinkLayer,
                     entityLayer,
+                    Objects.requireNonNull(
+                        KReflectionUtils.getField(
+                            KMapSector.class,
+                            createdSector,
+                            "reachabilityAreaLayer",
+                            KReachabilityAreaLayer.class
+                        )
+                    ),
                     Objects.requireNonNull(rawSector.getStringArray("tiles")),
                     rawSector.getSubdefinitionArray("sector_links"),
                     rawSector.getSubdefinitionArray("entities")

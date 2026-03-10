@@ -72,6 +72,8 @@ public final class KMapSector extends KObject {
     private final KSectorLinkLayer sectorLinkLayer;
     private final KMapEntityLayer entityLayer;
 
+    private final KReachabilityAreaLayer reachabilityAreaLayer;
+
     /**
      * Standard constructor.
      * @param eventSystem Event system to get {@code entityLeftSector}
@@ -104,6 +106,7 @@ public final class KMapSector extends KObject {
         this.entityMovedEvent.subscribe(this.entityMovedConsumer);
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
+        this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer);
     }
 
     /**
@@ -132,6 +135,14 @@ public final class KMapSector extends KObject {
             this.entityLayer.getOnPosition(x, y)
         );
 
+    }
+
+    public boolean isReachable(final KVector2i src, final KVector2i dst) {
+        return this.reachabilityAreaLayer.isReachable(src, dst);
+    }
+
+    public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
+        return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
     }
 
     /**
