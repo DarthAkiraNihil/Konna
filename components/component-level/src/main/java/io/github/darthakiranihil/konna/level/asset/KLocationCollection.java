@@ -17,7 +17,10 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.KAsset;
+import io.github.darthakiranihil.konna.core.io.KAssetCollection;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -100,6 +103,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
             this.fillEntityLayer(rs);
+            rs.containedSector.refresh();
 
             filledSectors.add(
                 rs.containedSector()
