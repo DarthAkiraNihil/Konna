@@ -1069,5 +1069,118 @@
                 }
             ]
         }
+    },
+    "connectivity_graph_test": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                },
+                {
+                    "name": "mf3",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        },
+                        {
+                            "sector": "mf4",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                },
+                {
+                    "name": "mf4",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [],
+                    "entities": []
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf3",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
     }
 }

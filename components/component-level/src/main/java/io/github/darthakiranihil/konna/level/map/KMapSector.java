@@ -106,7 +106,11 @@ public final class KMapSector extends KObject {
 
     }
 
-
+    /**
+     * Returns size of this sector, that is defined as size of its tile layer since
+     * each sized layers of sectors are equal by size.
+     * @return Size of this sector
+     */
     public KSize getSize() {
         return this.tileLayer.getSize();
     }

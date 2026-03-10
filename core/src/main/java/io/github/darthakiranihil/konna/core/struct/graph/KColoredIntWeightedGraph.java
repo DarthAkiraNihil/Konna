@@ -77,6 +77,11 @@ public interface KColoredIntWeightedGraph<IDX, COL>
      * @return Graph node with specified index
      */
     @Nullable Node<IDX, COL> get(IDX index);
+
+    /**
+     * @param index Index of tested node
+     * @return Whether this graph has a node with specified index or not
+     */
     boolean has(IDX index);
 
     /**
