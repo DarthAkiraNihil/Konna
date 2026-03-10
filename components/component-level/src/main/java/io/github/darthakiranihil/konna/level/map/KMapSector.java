@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
@@ -103,6 +104,11 @@ public final class KMapSector extends KObject {
         this.entityMovedEvent.subscribe(this.entityMovedConsumer);
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
+    }
+
+
+    public KSize getSize() {
+        return this.tileLayer.getSize();
     }
 
     /**

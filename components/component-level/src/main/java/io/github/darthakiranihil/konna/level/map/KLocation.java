@@ -19,6 +19,8 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
+import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 
 import java.util.HashMap;
@@ -36,6 +38,7 @@ public final class KLocation extends KObject {
 
     private final Map<String, KMapSector> sectors;
     private final String[] sectorNames;
+    private final KIntWeightedGraph<String> sectorConnectivityGraph;
 
     /**
      * Standard constructor.
@@ -56,6 +59,7 @@ public final class KLocation extends KObject {
         );
 
         this.sectorNames = this.sectors.keySet().toArray(new String[0]);
+        this.sectorConnectivityGraph = this.buildSectorConnectivityGraph();
     }
 
     /**
@@ -88,6 +92,12 @@ public final class KLocation extends KObject {
      */
     public void unload() {
         this.sectors.values().forEach(KMapSector::unload);
+    }
+
+    private KIntWeightedGraph<String> buildSectorConnectivityGraph() {
+
+
+
     }
 
 

@@ -121,6 +121,9 @@ public class KHashMapIntWeightedGraphPositiveTests extends KStandardTestClass {
         g.add("3");
         g.add("4");
 
+        Assertions.assertTrue(g.has("1"));
+        Assertions.assertTrue(g.has("2"));
+
         g.connect("1", "2", 1);
         g.connect("2", "3", 1);
         g.connect("3", "4", 1);

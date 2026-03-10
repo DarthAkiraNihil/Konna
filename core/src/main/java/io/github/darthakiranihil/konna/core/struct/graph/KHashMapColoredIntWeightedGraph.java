@@ -217,4 +217,9 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL>
             .spliterator();
     }
 
+    @Override
+    public boolean has(final IDX index) {
+        return this.nodes.containsKey(index);
+    }
+
 }

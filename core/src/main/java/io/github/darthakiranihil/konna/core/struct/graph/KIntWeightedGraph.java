@@ -67,6 +67,8 @@ public interface KIntWeightedGraph<IDX> extends Iterable<KIntWeightedGraph.Node<
      */
     @Nullable Node<IDX> get(IDX index);
 
+    boolean has(IDX index);
+
     /**
      * Connects a source node to the destination with specific weight.
      * If one or all of connected nodes are not presented in the graph, nothing happens
