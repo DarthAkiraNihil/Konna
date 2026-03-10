@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
@@ -96,7 +97,36 @@ public final class KLocation extends KObject {
 
     private KIntWeightedGraph<String> buildSectorConnectivityGraph() {
 
+        KIntWeightedGraph<String> graph = new KHashMapIntWeightedGraph<>();
 
+        for (var entry: this.sectors.entrySet()) {
+
+            String sourceSectorName = entry.getKey();
+            graph.add(sourceSectorName);
+            KMapSector sector = entry.getValue();
+
+            KSize sectorSize = sector.getSize();
+            for (int i = 0; i < sectorSize.width(); i++) {
+                for (int j = 0; j < sectorSize.height(); j++) {
+
+                    KMapSectorSlice slice = sector.getSlice(i, j);
+                    if (slice.sectorLink() == null) {
+                        continue;
+                    }
+
+                    String linkedSectorName = slice.sectorLink().linkedSector().name();
+                    if (!graph.has(linkedSectorName)) {
+                        graph.add(linkedSectorName);
+                    }
+
+                    graph.connect(sourceSectorName, linkedSectorName, 1);
+
+                }
+            }
+
+        }
+
+        return graph;
 
     }
 
