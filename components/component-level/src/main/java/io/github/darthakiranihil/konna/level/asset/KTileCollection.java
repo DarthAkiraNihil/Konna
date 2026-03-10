@@ -96,7 +96,7 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
 
         KAssetDefinition tileDefinition = asset.definition();
         int tileId = tileDefinition.getInt("tile_id");
-        int transparency = tileDefinition.getInt("transparency");
+        int opaqueness = tileDefinition.getInt("opaqueness");
         boolean passable = tileDefinition.getBoolean("passable");
 
         KAssetDefinition props = tileDefinition.getSubdefinition("properties");
@@ -106,7 +106,7 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
         KTileInfo tile = new KTileInfo(
             tileId,
             passable,
-            transparency,
+            opaqueness,
             readProps
         );
 
