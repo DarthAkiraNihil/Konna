@@ -204,5 +204,9 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
             .map(x -> (KIntWeightedGraph.Node<IDX>) x)
             .spliterator();
     }
-    
+
+    @Override
+    public boolean has(final IDX index) {
+        return this.nodes.containsKey(index);
+    }
 }

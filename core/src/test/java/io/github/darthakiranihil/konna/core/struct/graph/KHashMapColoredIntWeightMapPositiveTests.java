@@ -73,6 +73,9 @@ public class KHashMapColoredIntWeightMapPositiveTests extends KStandardTestClass
 
         g.biConnect("1", "2", 1);
 
+        Assertions.assertTrue(g.has("1"));
+        Assertions.assertTrue(g.has("2"));
+
         var node = g.get("1");
         var node2 = g.get("2");
 

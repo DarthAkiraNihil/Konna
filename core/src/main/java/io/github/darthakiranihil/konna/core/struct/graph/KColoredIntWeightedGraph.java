@@ -79,6 +79,12 @@ public interface KColoredIntWeightedGraph<IDX, COL>
     @Nullable Node<IDX, COL> get(IDX index);
 
     /**
+     * @param index Index of tested node
+     * @return Whether this graph has a node with specified index or not
+     */
+    boolean has(IDX index);
+
+    /**
      * Connects a source node to the destination with specific weight.
      * If one or all of connected nodes are not presented in the graph, nothing happens.
      * @param src Source node index
