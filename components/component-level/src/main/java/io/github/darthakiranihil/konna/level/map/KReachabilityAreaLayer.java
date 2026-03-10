@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Stack;
+import java.util.*;
 
 public final class KReachabilityAreaLayer {
 
@@ -76,9 +76,10 @@ public final class KReachabilityAreaLayer {
         int area = 1;
         while (start != null) {
 
-            Stack<KVector2i> toVisit = new Stack<>();
+            Set<KVector2i> seen = new HashSet<>();
+            Deque<KVector2i> toVisit = new LinkedList<>();
             toVisit.add(start);
-            while (!toVisit.empty()) {
+            while (!toVisit.isEmpty()) {
                 KVector2i visited = toVisit.pop();
 
                 int visitedX = visited.x();
@@ -86,14 +87,14 @@ public final class KReachabilityAreaLayer {
 
                 this.areas[visited.y()][visited.x()] = area;
 
-                this.testNeighborTile(visitedX - 1, visitedY, toVisit, tileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY, toVisit, tileLayer);
-                this.testNeighborTile(visitedX - 1, visitedY - 1, toVisit, tileLayer);
-                this.testNeighborTile(visitedX, visitedY - 1, toVisit, tileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY - 1, toVisit, tileLayer);
-                this.testNeighborTile(visitedX - 1, visitedY + 1, toVisit, tileLayer);
-                this.testNeighborTile(visitedX, visitedY + 1, toVisit, tileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY + 1, toVisit, tileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX + 1, visitedY, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY - 1, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX, visitedY - 1, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX + 1, visitedY - 1, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY + 1, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX, visitedY + 1, toVisit, seen, tileLayer);
+                this.testNeighborTile(visitedX + 1, visitedY + 1, toVisit, seen, tileLayer);
 
             }
 
@@ -123,13 +124,21 @@ public final class KReachabilityAreaLayer {
     private void testNeighborTile(
         int x,
         int y,
-        final Stack<KVector2i> visitedStack,
+        final Deque<KVector2i> visitedQueue,
+        final Set<KVector2i> seen,
         final KTileLayer tileLayer
     ) {
 
         KTileInfo tileInfo = tileLayer.getOnPosition(x, y);
-        if (tileInfo != null && tileInfo.isPassable() && this.areas[y][x] == 0) {
-            visitedStack.push(new KVector2i(x, y));
+        KVector2i pos = new KVector2i(x, y);
+        if (
+                tileInfo != null
+            &&  tileInfo.isPassable()
+            &&  this.areas[y][x] == 0
+            &&  !seen.contains(pos)
+        ) {
+            visitedQueue.push(pos);
+            seen.add(pos);
         }
 
     }
