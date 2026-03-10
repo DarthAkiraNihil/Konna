@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.struct.graph;
 
-import io.github.darthakiranihil.konna.core.struct.graph.KColoredIntWeightedGraph;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
