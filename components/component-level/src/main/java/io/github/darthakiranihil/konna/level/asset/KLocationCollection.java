@@ -17,7 +17,10 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.KAsset;
+import io.github.darthakiranihil.konna.core.io.KAssetCollection;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -26,7 +29,6 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.map.*;
@@ -51,7 +53,6 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         KTileLayer tileLayer,
         KSectorLinkLayer sectorLinkLayer,
         KMapEntityLayer entityLayer,
-        KReachabilityAreaLayer reachabilityAreaLayer,
 
         String[] tiles,
         KAssetDefinition[] sectorLinks,
@@ -102,7 +103,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
             this.fillEntityLayer(rs);
-            rs.reachabilityAreaLayer.refresh();
+            rs.containedSector.refresh();
 
             filledSectors.add(
                 rs.containedSector()
@@ -150,14 +151,6 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                     tileLayer,
                     sectorLinkLayer,
                     entityLayer,
-                    Objects.requireNonNull(
-                        KReflectionUtils.getField(
-                            KMapSector.class,
-                            createdSector,
-                            "reachabilityAreaLayer",
-                            KReachabilityAreaLayer.class
-                        )
-                    ),
                     Objects.requireNonNull(rawSector.getStringArray("tiles")),
                     rawSector.getSubdefinitionArray("sector_links"),
                     rawSector.getSubdefinitionArray("entities")

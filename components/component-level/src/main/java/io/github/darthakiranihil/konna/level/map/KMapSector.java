@@ -168,6 +168,15 @@ public final class KMapSector extends KObject {
 
     }
 
+    /**
+     * Refreshes this sector.
+     */
+    public void refresh() {
+
+        this.reachabilityAreaLayer.refresh();
+
+    }
+
     private void onEntityMoved(final EventData data) {
 
         if (data.previousPosition.second() != this) {
