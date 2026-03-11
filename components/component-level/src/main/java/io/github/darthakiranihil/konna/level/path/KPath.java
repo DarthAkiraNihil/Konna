@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.level.path;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -28,6 +30,8 @@ import java.util.Queue;
  * @author Darth Akira Nihil
  */
 public final class KPath {
+
+    public static final KPath EMPTY = new KPath(new LinkedList<>());
 
     private final Queue<KVector2i> directions;
 
