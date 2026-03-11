@@ -128,7 +128,7 @@ public final class KLocation extends KObject {
                 float observedY = data.third().y();
 
                 while (vision > 0) {
-                    KMapSectorSlice slice = observedSector.getSlice((int) observedX, (int) observedY);
+                    KMapSectorSlice slice = observedSector.getSliceAndVisit((int) observedX, (int) observedY);
                     if (slice.tile() != null) {
                         vision -= slice.tile().getOpaqueness();
                     }
@@ -167,6 +167,7 @@ public final class KLocation extends KObject {
                         .getSector(o.first())
                         .getSlice(position.x(), position.y());
                 })
+                .filter(s -> s.tile() != null)
                 .sorted(Comparator.comparing(KMapSectorSlice::sectorName))
                 .toList()
         );
