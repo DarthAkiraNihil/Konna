@@ -26,6 +26,7 @@ include 'implementations-stb'
 include 'implementations-std-core'
 include 'implementations-std-entity'
 include 'implementations-std-graphics'
+include 'implementations-std-level'
 
 include 'backend-spair'
 include 'backend-lwjgl'
@@ -52,6 +53,7 @@ findProject(':implementations-stb').projectDir = new File("implementations/imple
 findProject(':implementations-std-core').projectDir = new File("implementations/implementations-std-core")
 findProject(':implementations-std-entity').projectDir = new File("implementations/implementations-std-entity")
 findProject(':implementations-std-graphics').projectDir = new File("implementations/implementations-std-graphics")
+findProject(':implementations-std-level').projectDir = new File("implementations/implementations-std-level")
 
 findProject(':backend-lwjgl').projectDir = new File("backend/backend-lwjgl")
 findProject(':backend-spair').projectDir = new File("backend/backend-spair")
