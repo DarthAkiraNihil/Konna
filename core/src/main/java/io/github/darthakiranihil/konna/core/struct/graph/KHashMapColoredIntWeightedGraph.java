@@ -132,7 +132,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL>
     }
 
     @Override
-    public List<IDX> getPath(final IDX src, final IDX dst) {
+    public List<IDX> getPath(final IDX src, final IDX dst, boolean forceOverwriteSrcCost) {
 
         Map<IDX, DijkstraNode<IDX, COL>> dijkstraNodes = new HashMap<>();
         for (var e: this.nodes.entrySet()) {
@@ -161,7 +161,14 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL>
                 IDX adjIdx = realNode.index();
 
                 var dijkstraAdjNode = dijkstraNodes.get(adjIdx);
-                if (dijkstraNode.pathWeight + adjacentNode.first() < dijkstraAdjNode.pathWeight) {
+
+                boolean betterToGoThroughAdjacent =
+                    dijkstraNode.pathWeight + adjacentNode.first() < dijkstraAdjNode.pathWeight;
+
+                if (
+                        betterToGoThroughAdjacent
+                    ||  (adjacentNode.second().index().equals(src) && forceOverwriteSrcCost)
+                ) {
                     dijkstraAdjNode.pathWeight = dijkstraNode.pathWeight + adjacentNode.first();
                     dijkstraAdjNode.parent = dijkstraNode;
                 }
@@ -185,10 +192,15 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL>
         }
 
         List<IDX> path = new LinkedList<>();
-        while (dstNode != null) {
+        do {
             path.addFirst(dstNode.node.index());
             dstNode = dstNode.parent;
+        } while (dstNode != null && !dstNode.node.index().equals(src));
+
+        if (dstNode != null && dstNode.node.index().equals(src)) {
+            path.addFirst(dstNode.node.index());
         }
+
         return Collections.unmodifiableList(path);
     }
 

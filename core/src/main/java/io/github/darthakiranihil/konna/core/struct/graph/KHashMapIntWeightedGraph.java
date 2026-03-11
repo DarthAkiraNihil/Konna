@@ -120,7 +120,7 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
     }
 
     @Override
-    public List<IDX> getPath(final IDX src, final IDX dst) {
+    public List<IDX> getPath(final IDX src, final IDX dst, boolean forceOverwriteSrcCost) {
 
         Map<IDX, DijkstraNode<IDX>> dijkstraNodes = new HashMap<>();
         for (var e: this.nodes.entrySet()) {
@@ -149,7 +149,14 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
                 IDX adjIdx = realNode.index();
 
                 var dijkstraAdjNode = dijkstraNodes.get(adjIdx);
-                if (dijkstraNode.pathWeight + adjacentNode.first() < dijkstraAdjNode.pathWeight) {
+
+                boolean betterToGoThroughAdjacent =
+                    dijkstraNode.pathWeight + adjacentNode.first() < dijkstraAdjNode.pathWeight;
+
+                if (
+                    betterToGoThroughAdjacent
+                        ||  (adjacentNode.second().index().equals(src) && forceOverwriteSrcCost)
+                ) {
                     dijkstraAdjNode.pathWeight = dijkstraNode.pathWeight + adjacentNode.first();
                     dijkstraAdjNode.parent = dijkstraNode;
                 }
@@ -173,10 +180,16 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
         }
 
         List<IDX> path = new LinkedList<>();
-        while (dstNode != null) {
+
+        do {
             path.addFirst(dstNode.node.index());
             dstNode = dstNode.parent;
+        } while (dstNode != null && !dstNode.node.index().equals(src));
+
+        if (dstNode != null && dstNode.node.index().equals(src)) {
+            path.addFirst(dstNode.node.index());
         }
+
         return Collections.unmodifiableList(path);
     }
 
