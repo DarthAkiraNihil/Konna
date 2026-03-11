@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import io.github.darthakiranihil.konna.level.KTileInfo;
@@ -52,6 +53,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
@@ -85,6 +87,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
@@ -124,6 +127,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, impassableTileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
@@ -162,6 +166,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
@@ -200,6 +205,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel2
         );
@@ -212,6 +218,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             (new KSectorLinkLayer())
                 .link(0, 0, sector2, 1, 1),
             mel
@@ -254,6 +261,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, impassableTileInfo)
                 .placeTile(1, 0, impassableTileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel2
         );
@@ -266,6 +274,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             (new KSectorLinkLayer())
                 .link(0, 0, sector2, 1, 1),
             mel
@@ -307,6 +316,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
@@ -324,5 +334,109 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
 
         Assertions.assertEquals(1, mel.getOnPosition(0, 0).size());
         es.stopPolling();
+    }
+
+    @Test
+    public void testMoveControllableEntityButHeightDiffIsTooBig() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+
+        KStandardEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.startPolling();
+
+        KMapEntityLayer mel = new KMapEntityLayer();
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            (new KTileLayer(2, 2))
+                .placeTile(0, 0, tileInfo)
+                .placeTile(0, 1, tileInfo)
+                .placeTile(1, 0, tileInfo)
+                .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2))
+                .setHeight(0, 1, 2)
+                .setHeight(1, 1, 2),
+            new KSectorLinkLayer(),
+            mel
+        );
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        mel.placeEntity(0, 0, controllableEntity);
+
+        var previousPosition = controllableEntity.getPosition();
+        controllableEntity.setNextMoveDirection(new KVector2i(0, 1));
+        controllableEntity.move();
+        KThreadUtils.sleepForSeconds(1);
+        Assertions.assertEquals(
+            previousPosition,
+            controllableEntity.getPosition()
+        );
+
+        Assertions.assertEquals(1, mel.getOnPosition(0, 0).size());
+        es.stopPolling();
+
+    }
+
+    @Test
+    public void testControllableEntityToAnotherSectorButHeightDiffIsTooBig() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+
+        KStandardEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.startPolling();
+
+        KMapEntityLayer mel = new KMapEntityLayer();
+        KMapEntityLayer mel2 = new KMapEntityLayer();
+
+        KMapSector sector2 = new KMapSector(
+            es,
+            "sector_2",
+            (new KTileLayer(2, 2))
+                .placeTile(0, 0, tileInfo)
+                .placeTile(0, 1, tileInfo)
+                .placeTile(1, 0, tileInfo)
+                .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2))
+                .setHeight(0, 0, 2)
+                .setHeight(1, 0, 2)
+                .setHeight(0, 1, 2)
+                .setHeight(1, 1, 2),
+            new KSectorLinkLayer(),
+            mel2
+        );
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            (new KTileLayer(2, 2))
+                .placeTile(0, 0, tileInfo)
+                .placeTile(0, 1, tileInfo)
+                .placeTile(1, 0, tileInfo)
+                .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
+            (new KSectorLinkLayer())
+                .link(0, 0, sector2, 1, 1),
+            mel
+        );
+
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        mel.placeEntity(0, 0, controllableEntity);
+
+        var previousPosition = controllableEntity.getPosition();
+        controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
+        controllableEntity.move();
+        KThreadUtils.sleepForSeconds(1);
+        Assertions.assertEquals(
+            previousPosition,
+            controllableEntity.getPosition()
+        );
+
+        Assertions.assertEquals(1, mel.getOnPosition(0, 0).size());
+        Assertions.assertEquals(0, mel2.getOnPosition(0, 1).size());
+        es.stopPolling();
+
     }
 }

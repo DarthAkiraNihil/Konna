@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -45,6 +46,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -72,6 +74,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -84,6 +87,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             (new KSectorLinkLayer()).link(0, 0, sector2, 1, 1),
             new KMapEntityLayer()
         );
@@ -122,6 +126,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             es,
             "sector",
             layer,
+            new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -176,6 +181,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             es,
             "sector",
             layer,
+            new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -230,6 +236,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             es,
             "sector",
             layer,
+            new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -287,6 +294,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             es,
             "sector",
             layer,
+            new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );

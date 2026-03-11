@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -46,6 +47,7 @@ public class KLocationPositiveTests extends KStandardTestClass {
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -79,6 +81,7 @@ public class KLocationPositiveTests extends KStandardTestClass {
             es,
             "sector_1",
             tileLayer,
+            new KHeightLayer(new KSize(11, 11)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -143,6 +146,7 @@ public class KLocationPositiveTests extends KStandardTestClass {
             es,
             "sector_2",
             tileLayer2,
+            new KHeightLayer(new KSize(11, 11)),
             sl2,
             new KMapEntityLayer()
         );
@@ -150,6 +154,7 @@ public class KLocationPositiveTests extends KStandardTestClass {
             es,
             "sector_1",
             tileLayer,
+            new KHeightLayer(new KSize(11, 11)),
             sl1,
             new KMapEntityLayer()
         );
@@ -191,6 +196,146 @@ public class KLocationPositiveTests extends KStandardTestClass {
                     new KVector2i(1, 6),
                     new KVector2i(9, 6),
                     new KVector2i(0, 5)
+                )
+            )
+        );
+
+    }
+
+    @Test
+    public void testObserveWithHeightDecreasing() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer tileLayer = new KTileLayer(11, 11);
+        KHeightLayer heightLayer = new KHeightLayer(tileLayer.getSize());
+
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                tileLayer.placeTile(i, j, tileInfo);
+            }
+        }
+
+        for (int i = 0; i < 11; i++) {
+            for (int j = 8; j < 11; j++) {
+                heightLayer.setHeight(i, j, 2);
+            }
+        }
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            tileLayer,
+            heightLayer,
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        KLocation location = new KLocation("loc1", List.of(sector));
+
+        KFov fov = location.observePoint("sector_1", 5, 8, 3);
+        Assertions.assertEquals(32, fov.getObservedSlices().size());
+        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        Assertions.assertTrue(
+            positions.containsAll(
+                List.of(
+                    new KVector2i(7, 5),
+                    new KVector2i(7, 6),
+                    new KVector2i(6, 6),
+                    new KVector2i(4, 5),
+                    new KVector2i(6, 7),
+                    new KVector2i(6, 8),
+                    new KVector2i(4, 6),
+                    new KVector2i(6, 9),
+                    new KVector2i(4, 7),
+                    new KVector2i(6, 10),
+                    new KVector2i(4, 8),
+                    new KVector2i(2, 6),
+                    new KVector2i(4, 9),
+                    new KVector2i(2, 7),
+                    new KVector2i(4, 10),
+                    new KVector2i(8, 6),
+                    new KVector2i(6, 5),
+                    new KVector2i(8, 7),
+                    new KVector2i(5, 5),
+                    new KVector2i(7, 7),
+                    new KVector2i(7, 8),
+                    new KVector2i(5, 6),
+                    new KVector2i(7, 9),
+                    new KVector2i(3, 5),
+                    new KVector2i(5, 7),
+                    new KVector2i(5, 8),
+                    new KVector2i(3, 6),
+                    new KVector2i(5, 9),
+                    new KVector2i(3, 7),
+                    new KVector2i(5, 10),
+                    new KVector2i(3, 8),
+                    new KVector2i(3, 9)
+                )
+            )
+        );
+
+    }
+
+    @Test
+    public void testObserveWithHeightIncreasing() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer tileLayer = new KTileLayer(11, 11);
+        KHeightLayer heightLayer = new KHeightLayer(tileLayer.getSize());
+
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                tileLayer.placeTile(i, j, tileInfo);
+            }
+        }
+
+        for (int i = 0; i < 11; i++) {
+            for (int j = 8; j < 11; j++) {
+                heightLayer.setHeight(i, j, 2);
+            }
+        }
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            tileLayer,
+            heightLayer,
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        KLocation location = new KLocation("loc1", List.of(sector));
+
+        KFov fov = location.observePoint("sector_1", 5, 7, 3);
+        Assertions.assertEquals(18, fov.getObservedSlices().size());
+        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        Assertions.assertTrue(
+            positions.containsAll(
+                List.of(
+                    new KVector2i(6, 7),
+                    new KVector2i(7, 8),
+                    new KVector2i(7, 7),
+                    new KVector2i(6, 5),
+                    new KVector2i(5, 5),
+                    new KVector2i(7, 6),
+                    new KVector2i(6, 6),
+                    new KVector2i(6, 8),
+                    new KVector2i(4, 6),
+                    new KVector2i(4, 7),
+                    new KVector2i(3, 6),
+                    new KVector2i(4, 8),
+                    new KVector2i(3, 7),
+                    new KVector2i(3, 8),
+                    new KVector2i(5, 7),
+                    new KVector2i(5, 8),
+                    new KVector2i(5, 6),
+                    new KVector2i(4, 5)
                 )
             )
         );

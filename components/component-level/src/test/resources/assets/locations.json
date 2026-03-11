@@ -14,6 +14,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf2",
@@ -60,6 +64,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf1",
@@ -87,6 +95,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -119,6 +131,10 @@
                         "tile_valid",
                         "tile_valid",
                         "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
                     ],
                     "sector_links": [
                         {
@@ -153,6 +169,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf2",
@@ -179,6 +199,10 @@
                         "tile_valid",
                         "tile_valid",
                         "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
                     ],
                     "sector_links": [
                         {
@@ -213,6 +237,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf2",
@@ -239,6 +267,10 @@
                         "tile_valid",
                         "tile_valid",
                         "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
                     ],
                     "sector_links": [
                         {
@@ -273,6 +305,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf2",
@@ -299,6 +335,10 @@
                         "tile_valid",
                         "tile_valid",
                         "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
                     ],
                     "sector_links": [
                         {
@@ -327,6 +367,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -354,6 +398,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -393,6 +441,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf3",
@@ -414,6 +466,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -447,6 +503,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -474,6 +534,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -513,6 +577,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf2",
@@ -539,6 +607,10 @@
                         "tile_valid",
                         "tile_valid",
                         "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
                     ],
                     "sector_links": [
                         {
@@ -567,6 +639,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -600,6 +676,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf1",
@@ -627,6 +707,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -660,6 +744,10 @@
                         "tile_valid",
                         "tile_valid"
                     ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "sector_links": [
                         {
                             "sector": "mf1",
@@ -687,6 +775,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -738,6 +830,10 @@
                         "tile_valid",
                         "tile_valid",
                         "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
                     ],
                     "sector_links": [
                         {
@@ -785,6 +881,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -831,6 +931,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -883,6 +987,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -929,6 +1037,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -981,6 +1093,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -1027,6 +1143,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -1079,6 +1199,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -1106,6 +1230,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -1144,6 +1272,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
@@ -1159,6 +1291,10 @@
                         "width": 2,
                         "height": 2
                     },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
                     "tiles": [
                         "tile_valid",
                         "tile_valid",
