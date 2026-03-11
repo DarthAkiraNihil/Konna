@@ -41,6 +41,7 @@ public final class KReachabilityAreaLayer {
     /**
      * Constructs a layer with automatic filling it.
      * @param tileLayer Assigned tile layer
+     * @param heightLayer Assigned height layer
      */
     public KReachabilityAreaLayer(
         final KTileLayer tileLayer,
@@ -123,14 +124,78 @@ public final class KReachabilityAreaLayer {
                 this.areas[visitedY][visitedX] = area;
                 int visitedZ = sourceHeightLayer.getOnPosition(visitedX, visitedY);
 
-                this.testNeighborTile(visitedX - 1, visitedY, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX + 1, visitedY, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX - 1, visitedY - 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX, visitedY - 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX + 1, visitedY - 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX - 1, visitedY + 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX, visitedY + 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
-                this.testNeighborTile(visitedX + 1, visitedY + 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(
+                    visitedX - 1,
+                    visitedY,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX + 1,
+                    visitedY,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX - 1,
+                    visitedY - 1,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX,
+                    visitedY - 1,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX + 1,
+                    visitedY - 1,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX - 1,
+                    visitedY + 1,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX,
+                    visitedY + 1,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
+                this.testNeighborTile(
+                    visitedX + 1,
+                    visitedY + 1,
+                    visitedZ,
+                    toVisit,
+                    seen,
+                    sourceTileLayer,
+                    sourceHeightLayer
+                );
 
             }
 

@@ -34,7 +34,7 @@ public final class KHeightLayer {
      * Constructs a layer with zero height for all places.
      * @param size Size of the layer
      */
-    public KHeightLayer(KSize size) {
+    public KHeightLayer(final KSize size) {
         this.heights = new int[size.height()][size.width()];
         this.size = size;
     }
