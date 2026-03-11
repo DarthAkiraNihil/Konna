@@ -39,6 +39,7 @@ import java.util.List;
 public record KMapSectorSlice(
     String sectorName,
     KVector2i position,
+    int height,
     @Nullable KTileInfo tile,
     boolean seen,
     @Nullable KSectorLinkData sectorLink,

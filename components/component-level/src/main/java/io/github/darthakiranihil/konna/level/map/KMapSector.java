@@ -70,6 +70,7 @@ public final class KMapSector extends KObject {
     private final KEvent<EventData> entityMovedEvent;
 
     private final KTileLayer tileLayer;
+    private final KHeightLayer heightLayer;
     private final KSectorLinkLayer sectorLinkLayer;
     private final KMapEntityLayer entityLayer;
 
@@ -82,6 +83,7 @@ public final class KMapSector extends KObject {
      *                    and {@code entityMoved} events
      * @param name Name of the sector
      * @param tileLayer Tile layer, assigned to this sector
+     * @param heightLayer Height layer, assigned to this sector
      * @param sectorLinkLayer Sector link layer, assigned to this sector
      * @param entityLayer Entity layer, assigned to this sector
      */
@@ -89,12 +91,14 @@ public final class KMapSector extends KObject {
         final KEventSystem eventSystem,
         final String name,
         final KTileLayer tileLayer,
+        final KHeightLayer heightLayer,
         final KSectorLinkLayer sectorLinkLayer,
         final KMapEntityLayer entityLayer
     ) {
         super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
 
         this.tileLayer = tileLayer;
+        this.heightLayer = heightLayer;
         this.sectorLinkLayer = sectorLinkLayer;
         this.entityLayer = entityLayer;
 
@@ -135,6 +139,7 @@ public final class KMapSector extends KObject {
         return new KMapSectorSlice(
             this.name,
             new KVector2i(x, y),
+            this.heightLayer.getOnPosition(x, y),
             this.tileLayer.getOnPosition(x, y),
             this.seenPlacesLayer.getSeenStatus(x, y),
             this.sectorLinkLayer.getOnPosition(x, y),
