@@ -21,6 +21,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Map layer containing information about links to other map sectors
@@ -87,6 +88,17 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
     @Override
     public @Nullable KSectorLinkData getOnPosition(final KVector2i position) {
         return this.links.get(position);
+    }
+
+    public Map<KVector2i, KSectorLinkData> getToSector(final String destinationSector) {
+
+        return this
+            .links
+            .entrySet()
+            .stream()
+            .filter(x -> x.getValue().linkedSector().name().equals(destinationSector))
+            .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+
     }
 
 }
