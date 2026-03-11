@@ -130,6 +130,8 @@ public final class KMapSector extends KObject {
     ) {
 
         return new KMapSectorSlice(
+            this.name,
+            new KVector2i(x, y),
             this.tileLayer.getOnPosition(x, y),
             this.sectorLinkLayer.getOnPosition(x, y),
             this.entityLayer.getOnPosition(x, y)

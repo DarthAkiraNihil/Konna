@@ -18,16 +18,12 @@ package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Representation of a game level, consisting of map sectors,
@@ -38,7 +34,8 @@ import java.util.Map;
  */
 public final class KLocation extends KObject {
 
-    private final int FOV_CAST_RAYS_COUNT = 360;
+    private static final int FOV_CAST_RAYS_COUNT = 360;
+
 
     private final Map<String, KMapSector> sectors;
     private final String[] sectorNames;
@@ -103,16 +100,76 @@ public final class KLocation extends KObject {
     }
 
     public KFov observePoint(final String sector, int x, int y, int visionRange) {
-        return new KFov(List.of());
-//        for (int i = 0; i < this->height; i++) {
-//            for (int j = 0; j < this->length; j++) {
-//                this->playerFOV[i][j] = false;
-//            }
-//        }
-//        for(int i = 0; i < 360; i++) {
-//            this->doFov(std::cos((float)i*0.01745f), std::sin((float)i*0.01745f));
-//        }
 
+        Set<KPair<String, KVector2i>> observed = new HashSet<>();
+
+        for (int i = 0; i < FOV_CAST_RAYS_COUNT; i++) {
+
+            float xSh = (float) Math.cos(Math.toRadians(i));
+            float ySh = (float) Math.sin(Math.toRadians(i));
+
+            Deque<KTriplet<String, Integer, KVector2f>> observingQueue = new LinkedList<>();
+            observingQueue.add(
+                new KTriplet<>(
+                    sector,
+                    visionRange,
+                    new KVector2f(x + 0.5f, y + 0.5f)
+                )
+            );
+
+            Set<String> seenSectors = new HashSet<>();
+            while (!observingQueue.isEmpty()) {
+
+                var data = observingQueue.pop();
+                KMapSector observedSector = this.getSector(data.first());
+                int vision = data.second();
+
+                float observedX = data.third().x();
+                float observedY = data.third().y();
+
+                while (vision > 0) {
+                    KMapSectorSlice slice = observedSector.getSlice((int) observedX, (int) observedY);
+                    if (slice.tile() != null) {
+                        vision -= slice.tile().getOpaqueness();
+                    }
+
+                    observed.add(new KPair<>(observedSector.name(), slice.position()));
+                    if (slice.sectorLink() != null && !seenSectors.contains(slice.sectorLink().linkedSector().name())) {
+                        var linkData = slice.sectorLink();
+                        observingQueue.add(
+                            new KTriplet<>(
+                                linkData.linkedSector().name(),
+                                vision,
+                                new KVector2f(
+                                    linkData.destination().x(),
+                                    linkData.destination().y()
+                                )
+                            )
+                        );
+                    }
+
+                    vision--;
+                    observedX += xSh;
+                    observedY += ySh;
+                }
+
+                seenSectors.add(data.first());
+
+            }
+        }
+
+        return new KFov(
+            observed
+                .stream()
+                .map(o -> {
+                    var position = o.second();
+                    return this
+                        .getSector(o.first())
+                        .getSlice(position.x(), position.y());
+                })
+                .sorted(Comparator.comparing(KMapSectorSlice::sectorName))
+                .toList()
+        );
     }
 
     private KIntWeightedGraph<String> buildSectorConnectivityGraph() {

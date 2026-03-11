@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 import org.jspecify.annotations.Nullable;
@@ -33,6 +34,8 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public record KMapSectorSlice(
+    String sectorName,
+    KVector2i position,
     @Nullable KTileInfo tile,
     @Nullable KSectorLinkData sectorLink,
     List<KMapEntity> entities
