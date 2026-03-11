@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -45,7 +46,7 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
             .placeTile(2, 1, tileInfo1)
             .placeTile(2, 2, tileInfo1);
 
-        this.reachabilityAreaLayer = new KReachabilityAreaLayer(layer);
+        this.reachabilityAreaLayer = new KReachabilityAreaLayer(layer, new KHeightLayer(new KSize(3, 3)));
 
         Assertions.assertEquals(layer.getSize(), this.reachabilityAreaLayer.getSize());
     }
@@ -146,6 +147,36 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
         Assertions.assertFalse(
             this.reachabilityAreaLayer.isReachable(0, 0, 1, 1)
         );
+
+    }
+
+    @Test
+    public void testUnreachableByHeight() {
+
+        KTileLayer layer = new KTileLayer(3, 3);
+        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
+
+        layer
+            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(0, 1, tileInfo1)
+            .placeTile(0, 2, tileInfo1)
+            .placeTile(1, 0, tileInfo1)
+            .placeTile(1, 1, tileInfo1)
+            .placeTile(1, 2, tileInfo1)
+            .placeTile(2, 0, tileInfo1)
+            .placeTile(2, 1, tileInfo1)
+            .placeTile(2, 2, tileInfo1);
+
+        KHeightLayer hl = new KHeightLayer(new KSize(3, 3));
+        hl
+            .setHeight(2, 0, 2)
+            .setHeight(2, 1, 2)
+            .setHeight(2, 2, 2);
+
+        var rl = new KReachabilityAreaLayer(layer, hl);
+
+        Assertions.assertFalse(rl.isReachable(0, 0, 2, 2));
+        Assertions.assertFalse(rl.isReachable(new KVector2i(0, 0), new KVector2i(2, 2)));
 
     }
 }

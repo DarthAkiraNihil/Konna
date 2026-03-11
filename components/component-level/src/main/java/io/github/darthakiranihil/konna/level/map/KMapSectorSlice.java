@@ -29,6 +29,7 @@ import java.util.List;
  * @param sectorName Sector name that the slice belongs to
  * @param position Position of the slice in assigned sector
  * @param tile Tile located on the slice
+ * @param height Height of the slice
  * @param seen Flag indicates if this slice has been visited earlier
  * @param sectorLink Link to the sector assigned to the slice
  * @param entities List of entities located on the slice
@@ -39,6 +40,7 @@ import java.util.List;
 public record KMapSectorSlice(
     String sectorName,
     KVector2i position,
+    int height,
     @Nullable KTileInfo tile,
     boolean seen,
     @Nullable KSectorLinkData sectorLink,

@@ -69,6 +69,7 @@ public final class KLocationTypedef implements KAssetTypedef {
                             .build()
                     )
                     .withStringArray("tiles")
+                    .withIntArray("heights")
                     .withValidatedSubdefinitionArray(
                         "sector_links",
                         KCompositeAssetDefinitionRuleBuilder

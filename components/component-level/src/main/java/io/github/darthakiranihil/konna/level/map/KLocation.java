@@ -127,7 +127,7 @@ public final class KLocation extends KObject {
             observingQueue.add(
                 new KTriplet<>(
                     sector,
-                    visionRange,
+                    visionRange * 2,
                     new KVector2f(x + 0.5f, y + 0.5f)
                 )
             );
@@ -139,6 +139,8 @@ public final class KLocation extends KObject {
                 KMapSector observedSector = this.getSector(data.first());
                 int vision = data.second();
 
+                Integer previousHeight = null;
+
                 float observedX = data.third().x();
                 float observedY = data.third().y();
 
@@ -148,8 +150,18 @@ public final class KLocation extends KObject {
                     );
 
                     if (slice.tile() != null) {
-                        vision -= slice.tile().getOpaqueness();
+                        vision -= slice.tile().getOpaqueness() * 2;
                     }
+
+                    int currentHeight = slice.height();
+                    if (previousHeight != null) {
+                        if (currentHeight > previousHeight) {
+                            vision -= (currentHeight - previousHeight);
+                        } else if (currentHeight < previousHeight) {
+                            vision++;
+                        }
+                    }
+                    previousHeight = currentHeight;
 
                     observed.add(new KPair<>(observedSector.name(), slice.position()));
                     if (
@@ -169,7 +181,7 @@ public final class KLocation extends KObject {
                         );
                     }
 
-                    vision--;
+                    vision -= 2;
                     observedX += xSh;
                     observedY += ySh;
                 }
