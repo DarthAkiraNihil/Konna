@@ -112,7 +112,7 @@ public final class KMapSector extends KObject {
         this.entityMovedEvent.subscribe(this.entityMovedConsumer);
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
-        this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer);
+        this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer, heightLayer);
         this.seenPlacesLayer = new KSeenPlacesLayer(tileLayer.getSize());
     }
 

@@ -36,18 +36,23 @@ public final class KReachabilityAreaLayer {
     private final int[][] areas;
     private final KSize size;
     private final KTileLayer tileLayer;
+    private final KHeightLayer heightLayer;
 
     /**
      * Constructs a layer with automatic filling it.
      * @param tileLayer Assigned tile layer
      */
-    public KReachabilityAreaLayer(final KTileLayer tileLayer) {
+    public KReachabilityAreaLayer(
+        final KTileLayer tileLayer,
+        final KHeightLayer heightLayer
+    ) {
 
         this.size = tileLayer.getSize();
         this.areas = new int[this.size.height()][this.size.width()];
         this.tileLayer = tileLayer;
+        this.heightLayer = heightLayer;
 
-        this.fillLayer(tileLayer);
+        this.fillLayer(tileLayer, heightLayer);
     }
 
     /**
@@ -94,10 +99,13 @@ public final class KReachabilityAreaLayer {
      * Recalculates reachability areas of this layer.
      */
     public void refresh() {
-        this.fillLayer(this.tileLayer);
+        this.fillLayer(this.tileLayer, this.heightLayer);
     }
 
-    private void fillLayer(final KTileLayer sourceTileLayer) {
+    private void fillLayer(
+        final KTileLayer sourceTileLayer,
+        final KHeightLayer sourceHeightLayer
+    ) {
 
         KVector2i start = this.getNextFreeTilePosition(sourceTileLayer);
         int area = 1;
@@ -112,16 +120,17 @@ public final class KReachabilityAreaLayer {
                 int visitedX = visited.x();
                 int visitedY = visited.y();
 
-                this.areas[visited.y()][visited.x()] = area;
+                this.areas[visitedY][visitedX] = area;
+                int visitedZ = sourceHeightLayer.getOnPosition(visitedX, visitedY);
 
-                this.testNeighborTile(visitedX - 1, visitedY, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX - 1, visitedY - 1, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX, visitedY - 1, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY - 1, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX - 1, visitedY + 1, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX, visitedY + 1, toVisit, seen, sourceTileLayer);
-                this.testNeighborTile(visitedX + 1, visitedY + 1, toVisit, seen, sourceTileLayer);
+                this.testNeighborTile(visitedX - 1, visitedY, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX + 1, visitedY, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX - 1, visitedY - 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX, visitedY - 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX + 1, visitedY - 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX - 1, visitedY + 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX, visitedY + 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
+                this.testNeighborTile(visitedX + 1, visitedY + 1, visitedZ, toVisit, seen, sourceTileLayer, sourceHeightLayer);
 
             }
 
@@ -153,18 +162,22 @@ public final class KReachabilityAreaLayer {
     private void testNeighborTile(
         int x,
         int y,
+        int previousZ,
         final Deque<KVector2i> visitedQueue,
         final Set<KVector2i> seen,
-        final KTileLayer sourceTileLayer
+        final KTileLayer sourceTileLayer,
+        final KHeightLayer sourceHeightLayer
     ) {
 
         KTileInfo tileInfo = sourceTileLayer.getOnPosition(x, y);
+        int height = sourceHeightLayer.getOnPosition(x, y);
         KVector2i pos = new KVector2i(x, y);
         if (
                 tileInfo != null
             &&  tileInfo.isPassable()
             &&  this.areas[y][x] == 0
             &&  !seen.contains(pos)
+            &&  Math.abs(previousZ - height) <= 1
         ) {
             visitedQueue.push(pos);
             seen.add(pos);
