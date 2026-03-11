@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -57,6 +58,142 @@ public class KLocationPositiveTests extends KStandardTestClass {
 
         KMapSector sector1 = location.getSector("sector_1");
         Assertions.assertEquals(sector.name(), sector1.name());
+
+    }
+
+    @Test
+    public void testObservePointRegular() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer tileLayer = new KTileLayer(11, 11);
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                tileLayer.placeTile(i, j, tileInfo);
+            }
+        }
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            tileLayer,
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        KLocation location = new KLocation("loc1", List.of(sector));
+
+        KFov fov = location.observePoint("sector_1", 5, 5, 3);
+        KFov fov2 = location.observePoint("sector_1", new KVector2i(5, 5), 3);
+        Assertions.assertEquals(21, fov.getObservedSlices().size());
+        Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());
+        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        Assertions.assertTrue(
+            positions.containsAll(
+                List.of(
+                    new KVector2i(3, 4),
+                    new KVector2i(3, 5),
+                    new KVector2i(3, 6),
+                    new KVector2i(4, 3),
+                    new KVector2i(4, 4),
+                    new KVector2i(4, 5),
+                    new KVector2i(4, 6),
+                    new KVector2i(4, 7),
+                    new KVector2i(5, 3),
+                    new KVector2i(5, 4),
+                    new KVector2i(5, 5),
+                    new KVector2i(5, 6),
+                    new KVector2i(5, 7),
+                    new KVector2i(6, 3),
+                    new KVector2i(6, 4),
+                    new KVector2i(6, 5),
+                    new KVector2i(6, 6),
+                    new KVector2i(6, 7),
+                    new KVector2i(7, 4),
+                    new KVector2i(7, 5),
+                    new KVector2i(7, 6)
+                )
+            )
+        );
+
+    }
+
+    @Test
+    public void testObserveWithSectorLink() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer tileLayer = new KTileLayer(11, 11);
+        KTileLayer tileLayer2 = new KTileLayer(11, 11);
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                tileLayer.placeTile(i, j, tileInfo);
+                tileLayer2.placeTile(i, j, tileInfo);
+            }
+        }
+
+        KSectorLinkLayer sl1 = new KSectorLinkLayer();
+        KSectorLinkLayer sl2 = new KSectorLinkLayer();
+
+        KMapSector sector2 = new KMapSector(
+            es,
+            "sector_2",
+            tileLayer2,
+            sl2,
+            new KMapEntityLayer()
+        );
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            tileLayer,
+            sl1,
+            new KMapEntityLayer()
+        );
+
+        sl1.link(0, 5, sector2, 10, 5);
+        sl2.link(10, 5, sector, 0, 5);
+
+        KLocation location = new KLocation("loc1", List.of(sector, sector2));
+
+        KFov fov = location.observePoint("sector_1", 0, 5, 3);
+        Assertions.assertEquals(26, fov.getObservedSlices().size());
+        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        Assertions.assertTrue(
+            positions.containsAll(
+                List.of(
+                    new KVector2i(0, 6),
+                    new KVector2i(10, 7),
+                    new KVector2i(9, 3),
+                    new KVector2i(10, 3),
+                    new KVector2i(8, 4),
+                    new KVector2i(2, 6),
+                    new KVector2i(8, 5),
+                    new KVector2i(9, 5),
+                    new KVector2i(10, 4),
+                    new KVector2i(10, 5),
+                    new KVector2i(0, 4),
+                    new KVector2i(8, 3),
+                    new KVector2i(8, 6),
+                    new KVector2i(2, 5),
+                    new KVector2i(9, 4),
+                    new KVector2i(1, 4),
+                    new KVector2i(1, 3),
+                    new KVector2i(2, 4),
+                    new KVector2i(10, 6),
+                    new KVector2i(0, 3),
+                    new KVector2i(0, 7),
+                    new KVector2i(1, 5),
+                    new KVector2i(1, 7),
+                    new KVector2i(1, 6),
+                    new KVector2i(9, 6),
+                    new KVector2i(0, 5)
+                )
+            )
+        );
 
     }
 }
