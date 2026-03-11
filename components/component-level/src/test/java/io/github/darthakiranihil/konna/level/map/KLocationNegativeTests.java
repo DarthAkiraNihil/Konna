@@ -36,4 +36,16 @@ public class KLocationNegativeTests extends KStandardTestClass {
         );
 
     }
+
+    @Test
+    public void testObserveUnknownSector() {
+
+        KLocation location = new KLocation("loc1", List.of());
+
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> location.observePoint("sector_1", 1, 1, 2)
+        );
+
+    }
 }

@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
+import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 
 import java.util.Objects;
@@ -73,6 +74,7 @@ public final class KMapSector extends KObject {
     private final KMapEntityLayer entityLayer;
 
     private final KReachabilityAreaLayer reachabilityAreaLayer;
+    private final KSeenPlacesLayer seenPlacesLayer;
 
     /**
      * Standard constructor.
@@ -107,6 +109,7 @@ public final class KMapSector extends KObject {
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
         this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer);
+        this.seenPlacesLayer = new KSeenPlacesLayer(tileLayer.getSize());
     }
 
     /**
@@ -130,10 +133,33 @@ public final class KMapSector extends KObject {
     ) {
 
         return new KMapSectorSlice(
+            this.name,
+            new KVector2i(x, y),
             this.tileLayer.getOnPosition(x, y),
+            this.seenPlacesLayer.getSeenStatus(x, y),
             this.sectorLinkLayer.getOnPosition(x, y),
             this.entityLayer.getOnPosition(x, y)
         );
+
+    }
+
+    /**
+     * Returns information of all sector layers that are placed on specific location
+     * and marks it as seen.
+     * @param x X coordinate of sliced position
+     * @param y Y coordinate of sliced position
+     * @return Slice of the sector on specific place
+     */
+    public KMapSectorSlice getSliceAndVisit(
+        int x,
+        int y
+    ) {
+
+        KTileInfo tile = this.tileLayer.getOnPosition(x, y);
+        if (tile != null) {
+            this.seenPlacesLayer.seeThePlace(x, y);
+        }
+        return this.getSlice(x, y);
 
     }
 

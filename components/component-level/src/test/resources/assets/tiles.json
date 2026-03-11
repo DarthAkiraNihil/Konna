@@ -2,7 +2,7 @@
     "tile_valid": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -35,7 +35,7 @@
     "tile_invalid1": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": "123",
@@ -68,7 +68,7 @@
     "tile_invalid2": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -101,7 +101,7 @@
     "tile_invalid3": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -134,7 +134,7 @@
     "tile_invalid4": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -167,7 +167,7 @@
     "tile_invalid5": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -200,7 +200,7 @@
     "tile_invalid6": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -233,7 +233,7 @@
     "tile_invalid7": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -266,7 +266,7 @@
     "tile_invalid8": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -299,7 +299,7 @@
     "tile_invalid9": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,
@@ -330,7 +330,7 @@
     "tile_invalid10": {
         "Level.tile": {
             "tile_id": 1,
-            "transparency": 10,
+            "opaqueness": 10,
             "passable": true,
             "properties": {
                 "prop1": 1,

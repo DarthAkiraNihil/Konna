@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 import org.jspecify.annotations.Nullable;
@@ -25,7 +26,10 @@ import java.util.List;
 /**
  * Immutable data structure that represents information
  * about all sector layers on specific position.
+ * @param sectorName Sector name that the slice belongs to
+ * @param position Position of the slice in assigned sector
  * @param tile Tile located on the slice
+ * @param seen Flag indicates if this slice has been visited earlier
  * @param sectorLink Link to the sector assigned to the slice
  * @param entities List of entities located on the slice
  *
@@ -33,7 +37,10 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public record KMapSectorSlice(
+    String sectorName,
+    KVector2i position,
     @Nullable KTileInfo tile,
+    boolean seen,
     @Nullable KSectorLinkData sectorLink,
     List<KMapEntity> entities
 ) {

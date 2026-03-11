@@ -39,7 +39,7 @@ public class KTileCollectionPositiveTests extends KAssetCollectionTestClass {
         tc.getAsset("tile_valid");
 
         Assertions.assertEquals(1, tile.getId());
-        Assertions.assertEquals(10, tile.getTransparency());
+        Assertions.assertEquals(10, tile.getOpaqueness());
         Assertions.assertTrue(tile.isPassable());
 
         var ip = tile.getIntProperty("prop1");
