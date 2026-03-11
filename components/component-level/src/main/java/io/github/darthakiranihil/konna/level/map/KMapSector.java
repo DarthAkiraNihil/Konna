@@ -143,6 +143,13 @@ public final class KMapSector extends KObject {
 
     }
 
+    /**
+     * Returns information of all sector layers that are placed on specific location
+     * and marks it as seen.
+     * @param x X coordinate of sliced position
+     * @param y Y coordinate of sliced position
+     * @return Slice of the sector on specific place
+     */
     public KMapSectorSlice getSliceAndVisit(
         int x,
         int y

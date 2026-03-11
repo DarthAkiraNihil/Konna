@@ -19,24 +19,48 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+/**
+ * Special map layer that contains information about seen status of places.
+ * It is supposed to be used when rendering a location since visited-and-seen,
+ * visited-and-unseen and unvisited are different types of places.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KSeenPlacesLayer {
 
     private final boolean[][] seen;
     private final KSize size;
 
+    /**
+     * Constructs a layer full of unseen places.
+     * @param size Size of this layer
+     */
     public KSeenPlacesLayer(final KSize size) {
         this.seen = new boolean[size.height()][size.width()];
         this.size = size;
     }
 
+    /**
+     * @return Size of this layer
+     */
     public KSize getSize() {
         return this.size;
     }
 
+    /**
+     * @param position Position of place to test
+     * @return Flag indicating whether specified place has been seen
+     */
     public boolean getSeenStatus(final KVector2i position) {
         return this.getSeenStatus(position.x(), position.y());
     }
 
+    /**
+     * @param x X coordinate of position of place to test
+     * @param y Y coordinate of position of place to test
+     * @return Flag indicating whether specified place has been seen
+     */
     public boolean getSeenStatus(int x, int y) {
 
         if (x < 0 || x >= this.size.width() || y < 0 || y >= this.size.height()) {
@@ -46,10 +70,19 @@ public final class KSeenPlacesLayer {
         return this.seen[y][x];
     }
 
+    /**
+     * Marks a specific place as seen.
+     * @param position Position to mark
+     */
     public void seeThePlace(final KVector2i position) {
         this.seeThePlace(position.x(), position.y());
     }
 
+    /**
+     * Marks a specific place as seen.
+     * @param x X coordinate of position to mark
+     * @param y Y coordinate of position to mark
+     */
     public void seeThePlace(int x, int y) {
 
         if (x < 0 || x >= this.size.width() || y < 0 || y >= this.size.height()) {

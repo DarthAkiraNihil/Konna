@@ -95,10 +95,25 @@ public final class KLocation extends KObject {
         this.sectors.values().forEach(KMapSector::unload);
     }
 
+    /**
+     * Observes a point in this location.
+     * @param sector Sector to begin observing in
+     * @param point Position to begin observing on
+     * @param visionRange How far does it need to observe
+     * @return Field of view for this position
+     */
     public KFov observePoint(final String sector, final KVector2i point, int visionRange) {
         return this.observePoint(sector, point.x(), point.y(), visionRange);
     }
 
+    /**
+     * Observes a point in this location.
+     * @param sector Sector to begin observing in
+     * @param x X coordinate of position to begin observing on
+     * @param y Y coordinate of position to begin observing on
+     * @param visionRange How far does it need to observe
+     * @return Field of view for this position
+     */
     public KFov observePoint(final String sector, int x, int y, int visionRange) {
 
         Set<KPair<String, KVector2i>> observed = new HashSet<>();
@@ -128,13 +143,19 @@ public final class KLocation extends KObject {
                 float observedY = data.third().y();
 
                 while (vision > 0) {
-                    KMapSectorSlice slice = observedSector.getSliceAndVisit((int) observedX, (int) observedY);
+                    KMapSectorSlice slice = observedSector.getSliceAndVisit(
+                        (int) observedX, (int) observedY
+                    );
+
                     if (slice.tile() != null) {
                         vision -= slice.tile().getOpaqueness();
                     }
 
                     observed.add(new KPair<>(observedSector.name(), slice.position()));
-                    if (slice.sectorLink() != null && !seenSectors.contains(slice.sectorLink().linkedSector().name())) {
+                    if (
+                            slice.sectorLink() != null
+                        &&  !seenSectors.contains(slice.sectorLink().linkedSector().name())
+                    ) {
                         var linkData = slice.sectorLink();
                         observingQueue.add(
                             new KTriplet<>(

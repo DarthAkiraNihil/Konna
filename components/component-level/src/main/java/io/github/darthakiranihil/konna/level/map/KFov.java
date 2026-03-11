@@ -18,14 +18,27 @@ package io.github.darthakiranihil.konna.level.map;
 
 import java.util.List;
 
+/**
+ * Convenience class that represents entity's field of view.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KFov {
 
     private final List<KMapSectorSlice> observedSlices;
 
+    /**
+     * Constructs FOV with list of observed slices.
+     * @param observedSlices List of observed slices
+     */
     public KFov(final List<KMapSectorSlice> observedSlices) {
         this.observedSlices = observedSlices;
     }
 
+    /**
+     * @return List of observed slices of this FOV
+     */
     public List<KMapSectorSlice> getObservedSlices() {
         return this.observedSlices;
     }
