@@ -167,12 +167,9 @@ public class KAStarPathfinder implements KPathfinder {
         }
 
         if (sectorPath.size() == 1 && sectorPath.getFirst().equals(dstSector)) {
+            // on this stage source and destination are guaranteed to be connected
             KMapSector dst = location.getSector(dstSector);
             Queue<KVector2i> path = this.getPath(dst, srcX, srcY, dstX, dstY);
-            if (path.isEmpty()) {
-                return KPath.EMPTY;
-            }
-
             return new KPath(path);
         }
 

@@ -53,4 +53,8 @@ public final class KPath {
 
         return this.directions.poll();
     }
+
+    public boolean finished() {
+        return this.directions.isEmpty();
+    }
 }

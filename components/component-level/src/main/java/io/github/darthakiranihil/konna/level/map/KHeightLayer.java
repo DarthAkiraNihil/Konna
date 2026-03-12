@@ -30,6 +30,10 @@ public final class KHeightLayer {
     private final int[][] heights;
     private final KSize size;
 
+    public KHeightLayer(int width, int height) {
+        this(new KSize(width, height));
+    }
+
     /**
      * Constructs a layer with zero height for all places.
      * @param size Size of the layer
