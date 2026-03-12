@@ -29,39 +29,70 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * <p>
+ *     Implementation of {@link KPathfinder} that uses A* (AStar) pathfinding algorithm
+ *     to find paths inside same sectors.
+ * </p>
+ * <p>
+ *     When it is required to find path between different
+ *     sectors, it firstly tries to find a sector path from source to destination sector,
+ *     and if it is present then calculates list of checkpoints. The list includes source
+ *     position, destination position and required sector links that lead to sectors,
+ *     presented in the sector path.
+ * </p>
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public class KAStarPathfinder implements KPathfinder {
 
+    /**
+     * Enumeration consisting of possible heuristics used in A* algorithm to
+     * calculate path cost to the goal.
+     *
+     * @since 0.5.0
+     * @author Darth Akira Nihil
+     */
     public enum Heuristic {
 
+        /**
+         * Uses Euclidean distance as heuristic.
+         */
         EUCLIDEAN {
             @Override
-            public double costDelta(int srcX, int srcY, int dstX, int dstY) {
+            double costDelta(int srcX, int srcY, int dstX, int dstY) {
                 return this.distance(srcX, srcY, dstX, dstY);
             }
 
             @Override
-            public double distance(int srcX, int srcY, int dstX, int dstY) {
+            double distance(int srcX, int srcY, int dstX, int dstY) {
                 return Math.sqrt(
                     Math.pow(srcX - dstX, 2) + Math.pow(srcY - dstY, 2)
                 );
             }
 
         },
+        /**
+         * Uses Manhattan distance as heuristic.
+         */
         MANHATTAN {
             @Override
-            public double costDelta(int srcX, int srcY, int dstX, int dstY) {
+            double costDelta(int srcX, int srcY, int dstX, int dstY) {
                 return 1;
             }
 
             @Override
-            public double distance(int srcX, int srcY, int dstX, int dstY) {
+            double distance(int srcX, int srcY, int dstX, int dstY) {
                 return Math.abs(srcX - dstX) + Math.abs(dstX - dstY);
             }
 
         },
+        /**
+         * Uses Chebyshev distance as heuristic.
+         */
         CHEBYSHEV {
             @Override
-            public double costDelta(
+            double costDelta(
                 int srcX,
                 int srcY,
                 int dstX,
@@ -71,13 +102,17 @@ public class KAStarPathfinder implements KPathfinder {
             }
 
             @Override
-            public double distance(int srcX, int srcY, int dstX, int dstY) {
+            double distance(int srcX, int srcY, int dstX, int dstY) {
                 return Math.max(Math.abs(srcX - dstX), Math.abs(srcY - dstY));
             }
         },
+        /**
+         * Uses Chebyshev distance as heuristic, but costs for diagonal and straight paths
+         * are different (1 for diagonal, 1 / sqrt(2) for straight).
+         */
         NATURALIZED_CHEBYSHEV {
             @Override
-            public double costDelta(
+            double costDelta(
                 int srcX,
                 int srcY,
                 int dstX,
@@ -91,18 +126,18 @@ public class KAStarPathfinder implements KPathfinder {
             }
 
             @Override
-            public double distance(int srcX, int srcY, int dstX, int dstY) {
+            double distance(int srcX, int srcY, int dstX, int dstY) {
                 return Math.max(Math.abs(srcX - dstX), Math.abs(srcY - dstY));
             }
         };
 
-        public abstract double costDelta(
+        abstract double costDelta(
             int srcX,
             int srcY,
             int dstX,
             int dstY
         );
-        public abstract double distance(
+        abstract double distance(
             int srcX,
             int srcY,
             int dstX,
@@ -111,7 +146,7 @@ public class KAStarPathfinder implements KPathfinder {
 
     }
 
-    private final static class AStarNode {
+    private static final class AStarNode {
 
         private double w;
         private final KVector2i position;
@@ -161,7 +196,8 @@ public class KAStarPathfinder implements KPathfinder {
             connectivityGraph
         );
 
-        // cases: 1 - we are in the right place, more than one - we need to get checkpoint, 0 - no path
+        // cases: 1 - we are in the right place,
+        // more than one - we need to get checkpoint, 0 - no path
         if (sectorPath.isEmpty()) {
             return KPath.EMPTY;
         }
@@ -290,7 +326,7 @@ public class KAStarPathfinder implements KPathfinder {
 
     private KVector2i chooseNode(
         final Queue<KVector2i> reachable,
-        AStarNode[][] pathGraph,
+        final AStarNode[][] pathGraph,
         int dstX,
         int dstY
     ) {
@@ -456,7 +492,9 @@ public class KAStarPathfinder implements KPathfinder {
         KMapSector penultimate = location.getSector(penultimateSectorName);
         KMapSector last = location.getSector(lastSectorName);
 
-        KVector2i source = checkpoints.isEmpty() ? new KVector2i(srcX, srcY) : checkpoints.getLast().third();
+        KVector2i source = checkpoints.isEmpty()
+            ? new KVector2i(srcX, srcY)
+            : checkpoints.getLast().third();
 
         var linksFromPenultimateToLast = penultimate.getLinksToSector(lastSectorName);
 

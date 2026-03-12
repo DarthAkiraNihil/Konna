@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.level.path;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.map.*;
@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("ExtractMethodRecommender")
 public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
     private final KLocation location;
@@ -658,7 +657,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(loc2, "s1", 3, 1, "s4", 3, 4);
+        KPath ep = euclidean.findPath(loc2, new KPair<>("s1", new KVector2i(3, 1)), new KPair<>("s4", new KVector2i(3, 4)));
         KPath ch = chebyshev.findPath(loc2, "s1", 3, 1, "s4", 3, 4);
         KPath nch = naturalizedChebyshev.findPath(loc2, "s1", 3, 1, "s4", 3, 4);
         KPath mn = manhattan.findPath(loc2, "s1", 3, 1, "s4", 3, 4);

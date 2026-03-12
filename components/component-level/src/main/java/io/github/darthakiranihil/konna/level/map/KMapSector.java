@@ -189,6 +189,10 @@ public final class KMapSector extends KObject {
         return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
     }
 
+    /**
+     * @param destinationSector Name of sector that is destination for found links
+     * @return Map of links to the destination sector in this sector
+     */
     public Map<KVector2i, KSectorLinkData> getLinksToSector(final String destinationSector) {
         return this.sectorLinkLayer.getToSector(destinationSector);
     }

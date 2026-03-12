@@ -114,7 +114,12 @@ public final class KLocation extends KObject {
      * @param visionRange How far does it need to observe
      * @return Field of view for this position
      */
-    public KFov observePoint(final String sector, int x, int y, int visionRange) { // todo: move to interface???
+    public KFov observePoint(
+        final String sector,
+        int x,
+        int y,
+        int visionRange
+    ) { // todo: move to interface???
 
         Set<KPair<String, KVector2i>> observed = new HashSet<>();
 
@@ -206,6 +211,9 @@ public final class KLocation extends KObject {
         );
     }
 
+    /**
+     * @return Sector connectivity graph for this location
+     */
     public KIntWeightedGraph<String> getSectorConnectivityGraph() {
         return this.sectorConnectivityGraph;
     }

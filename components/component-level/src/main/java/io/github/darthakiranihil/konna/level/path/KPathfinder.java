@@ -22,14 +22,70 @@ import io.github.darthakiranihil.konna.level.map.KLocation;
 
 public interface KPathfinder {
 
-    default KPath findPath(KLocation location, KPair<String, KVector2i> src, KPair<String, KVector2i> dst) {
+    /**
+     * Finds a path from source to destination inside specific location.
+     * @param location Location to find path in
+     * @param src Source coordinates (sector + position)
+     * @param dst Destination coordinates (sector + position)
+     * @return Path from source to destination in specified location (if present),
+     *         else {@link KPath#EMPTY}
+     */
+    default KPath findPath(
+        final KLocation location,
+        final KPair<String, KVector2i> src,
+        final KPair<String, KVector2i> dst
+    ) {
         return this.findPath(location, src.first(), src.second(), dst.first(), dst.second());
     }
 
-    default KPath findPath(KLocation location, String srcSector, KVector2i srcPosition, String dstSector, KVector2i dstPosition) {
-        return this.findPath(location, srcSector, srcPosition.x(), srcPosition.y(), dstSector, dstPosition.x(), dstPosition.y());
+    /**
+     * Finds a path from source to destination inside specific location.
+     * @param location Location to find path in
+     * @param srcSector Source sector name
+     * @param srcPosition Source position
+     * @param dstSector Destination sector name
+     * @param dstPosition Destination position
+     * @return Path from source to destination in specified location (if present),
+     *         else {@link KPath#EMPTY}
+     */
+    default KPath findPath(
+        final KLocation location,
+        final String srcSector,
+        final KVector2i srcPosition,
+        final String dstSector,
+        final KVector2i dstPosition
+    ) {
+        return this.findPath(
+            location,
+            srcSector,
+            srcPosition.x(),
+            srcPosition.y(),
+            dstSector,
+            dstPosition.x(),
+            dstPosition.y()
+        );
     }
 
-    KPath findPath(KLocation location, String srcSector, int srcX, int srcY, String dstSector, int dstX, int dstY);
+    /**
+     * Finds a path from source to destination inside specific location.
+     * @param location Location to find path in
+     * @param srcSector Source sector name
+     * @param srcX X coordinate of source position
+     * @param srcY Y coordinate of source position
+     * @param dstSector Destination sector name
+     * @param dstX X coordinate of destination position
+     * @param dstY Y coordinate of destination position
+     * @return Path from source to destination in specified location (if present),
+     *         else {@link KPath#EMPTY}
+     */
+    KPath findPath(
+        KLocation location,
+        String srcSector,
+        int srcX,
+        int srcY,
+        String dstSector,
+        int dstX,
+        int dstY
+    );
 
 }

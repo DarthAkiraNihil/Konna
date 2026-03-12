@@ -90,6 +90,10 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
         return this.links.get(position);
     }
 
+    /**
+     * @param destinationSector Destination sector for found links
+     * @return Map of links that points to the destination sector
+     */
     public Map<KVector2i, KSectorLinkData> getToSector(final String destinationSector) {
 
         return this
