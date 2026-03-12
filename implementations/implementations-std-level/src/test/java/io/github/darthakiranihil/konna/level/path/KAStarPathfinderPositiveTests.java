@@ -667,5 +667,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(nch.finished());
         Assertions.assertTrue(mn.finished());
 
+        Assertions.assertEquals(KVector2i.ZERO, ep.next());
+
     }
 }
