@@ -28,21 +28,110 @@ import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class KAStarPathfinder implements KPathfinder {
 
+    public enum Heuristic {
+
+        EUCLIDEAN {
+            @Override
+            public double costDelta(int srcX, int srcY, int dstX, int dstY) {
+                return this.distance(srcX, srcY, dstX, dstY);
+            }
+
+            @Override
+            public double distance(int srcX, int srcY, int dstX, int dstY) {
+                return Math.sqrt(
+                    Math.pow(srcX - dstX, 2) + Math.pow(srcY - dstY, 2)
+                );
+            }
+
+        },
+        MANHATTAN {
+            @Override
+            public double costDelta(int srcX, int srcY, int dstX, int dstY) {
+                return 1;
+            }
+
+            @Override
+            public double distance(int srcX, int srcY, int dstX, int dstY) {
+                return Math.abs(srcX - dstX) + Math.abs(dstX - dstY);
+            }
+
+        },
+        CHEBYSHEV {
+            @Override
+            public double costDelta(
+                int srcX,
+                int srcY,
+                int dstX,
+                int dstY
+            ) {
+                return 1;
+            }
+
+            @Override
+            public double distance(int srcX, int srcY, int dstX, int dstY) {
+                return Math.max(Math.abs(srcX - dstX), Math.abs(srcY - dstY));
+            }
+        },
+        NATURALIZED_CHEBYSHEV {
+            @Override
+            public double costDelta(
+                int srcX,
+                int srcY,
+                int dstX,
+                int dstY
+            ) {
+                if (Math.abs(srcX - dstX) == 1 && Math.abs(srcY - dstY) == 1) {
+                    return 1 / Math.sqrt(2);
+                }
+
+                return 1;
+            }
+
+            @Override
+            public double distance(int srcX, int srcY, int dstX, int dstY) {
+                return Math.max(Math.abs(srcX - dstX), Math.abs(srcY - dstY));
+            }
+        };
+
+        public abstract double costDelta(
+            int srcX,
+            int srcY,
+            int dstX,
+            int dstY
+        );
+        public abstract double distance(
+            int srcX,
+            int srcY,
+            int dstX,
+            int dstY
+        );
+
+    }
+
     private final static class AStarNode {
 
-        private int w;
+        private double w;
         private final KVector2i position;
         private @Nullable AStarNode previous;
 
         AStarNode(final KVector2i position) {
             this.position = position;
-            this.w = Integer.MAX_VALUE;
+            this.w = Double.MAX_VALUE;
         }
 
+    }
+
+    private final Heuristic heuristic;
+
+    public KAStarPathfinder() {
+        this(Heuristic.NATURALIZED_CHEBYSHEV);
+    }
+
+    public KAStarPathfinder(final Heuristic heuristic) {
+        this.heuristic = heuristic;
     }
 
     @Override
@@ -184,9 +273,15 @@ public class KAStarPathfinder implements KPathfinder {
 
                 AStarNode adjAStarNode = pathGraph[adjacent.y()][adjacent.x()];
                 AStarNode aStarNode = pathGraph[node.y()][node.x()];
-                if (aStarNode.w + 1 < adjAStarNode.w) {
+                double costDelta = this.heuristic.costDelta(
+                    node.x(),
+                    node.y(),
+                    adjacent.x(),
+                    adjacent.y()
+                );
+                if (aStarNode.w + costDelta < adjAStarNode.w) {
                     adjAStarNode.previous = aStarNode;
-                    adjAStarNode.w = aStarNode.w + 1;
+                    adjAStarNode.w = aStarNode.w + costDelta;
                 }
             }
 
@@ -203,15 +298,15 @@ public class KAStarPathfinder implements KPathfinder {
         int dstY
     ) {
 
-        int minCost = Integer.MAX_VALUE;
+        double minCost = Double.MAX_VALUE;
         KVector2i bestNode = null;
         for (var node: reachable) {
             int nodeX = node.x();
             int nodeY = node.y();
 
-            int costStartToNode = pathGraph[node.y()][node.x()].w;
-            int costToDestination = Math.max(Math.abs(nodeX - dstX), Math.abs(nodeY - dstY));
-            int totalCost = costStartToNode + costToDestination;
+            double costStartToNode = pathGraph[node.y()][node.x()].w;
+            double costToDestination = this.heuristic.distance(nodeX, nodeY, dstX, dstY);
+            double totalCost = costStartToNode + costToDestination;
             if (minCost > totalCost) {
                 minCost = totalCost;
                 bestNode = node;
