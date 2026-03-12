@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 import java.util.Map;
 
-public abstract class KMapEntityStateMachine extends KObject {
+public abstract class KMapEntityController extends KObject {
 
     private KMapEntityState currentState;
 

@@ -23,21 +23,21 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.level.entity.state.KMapEntityState;
-import io.github.darthakiranihil.konna.level.entity.state.KMapEntityStateMachineMetadata;
+import io.github.darthakiranihil.konna.level.entity.state.KMapEntityControllerMetadata;
 import io.github.darthakiranihil.konna.level.entity.state.KMapEntityStateTransition;
-import io.github.darthakiranihil.konna.level.type.KMapEntityStateMachineMetadataTypedef;
+import io.github.darthakiranihil.konna.level.type.KMapEntityControllerMetadataTypedef;
 
 import java.util.*;
 
-public final class KMapEntityStateMachineMetadataCollection
-    implements KAssetCollection<KMapEntityStateMachineMetadata> {
+public final class KMapEntityControllerMetadataCollection
+    implements KAssetCollection<KMapEntityControllerMetadata> {
 
     private static final int METADATA_TTL = 60;
 
     private final KAssetLoader assetLoader;
     private final KCache metadataCache;
 
-    public KMapEntityStateMachineMetadataCollection(
+    public KMapEntityControllerMetadataCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KCache cache
     ) {
@@ -46,10 +46,10 @@ public final class KMapEntityStateMachineMetadataCollection
     }
 
     @Override
-    public KMapEntityStateMachineMetadata getAsset(String assetId) {
+    public KMapEntityControllerMetadata getAsset(String assetId) {
         if (this.metadataCache.hasKey(assetId)) {
-            KMapEntityStateMachineMetadata obj =
-                this.metadataCache.getFromCache(assetId, KMapEntityStateMachineMetadata.class);
+            KMapEntityControllerMetadata obj =
+                this.metadataCache.getFromCache(assetId, KMapEntityControllerMetadata.class);
             if (obj != null) {
                 return obj;
             }
@@ -57,7 +57,7 @@ public final class KMapEntityStateMachineMetadataCollection
 
         KAsset asset = this.assetLoader.loadAsset(
             assetId,
-            KMapEntityStateMachineMetadataTypedef.STATE_MACHINE_METADATA_TYPEDEF
+            KMapEntityControllerMetadataTypedef.CONTROLLER_METADATA_TYPEDEF
         );
         KAssetDefinition definition = asset.definition();
 
@@ -65,7 +65,7 @@ public final class KMapEntityStateMachineMetadataCollection
         KAssetDefinition[] transitions = definition.getSubdefinitionArray("transitions");
 
         Map<String, Class<? extends KMapEntityState>> statesMetadata = new HashMap<>();
-        List<KMapEntityStateMachineMetadata.TransitionMetadata>
+        List<KMapEntityControllerMetadata.TransitionMetadata>
             transitionMetadata = new ArrayList<>(transitions.length);
 
         List<String> stateNodes = states.getProperties();
@@ -78,7 +78,7 @@ public final class KMapEntityStateMachineMetadataCollection
 
         for (var transition: transitions) {
             transitionMetadata.add(
-                new KMapEntityStateMachineMetadata.TransitionMetadata(
+                new KMapEntityControllerMetadata.TransitionMetadata(
                     Objects.requireNonNull(transition.getString("from")),
                     Objects.requireNonNull(transition.getString("to")),
                     transition.getClassObject("class", KMapEntityStateTransition.class)
@@ -86,7 +86,7 @@ public final class KMapEntityStateMachineMetadataCollection
             );
         }
 
-        KMapEntityStateMachineMetadata metadata = new KMapEntityStateMachineMetadata(
+        KMapEntityControllerMetadata metadata = new KMapEntityControllerMetadata(
             statesMetadata,
             transitionMetadata
         );

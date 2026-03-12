@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.level.entity.state;
 import java.util.List;
 import java.util.Map;
 
-public record KMapEntityStateMachineMetadata(
+public record KMapEntityControllerMetadata(
     Map<String, Class<? extends KMapEntityState>> states,
     List<TransitionMetadata> transitions
 ) {

@@ -24,13 +24,13 @@ import io.github.darthakiranihil.konna.level.entity.state.KMapEntityStateTransit
 import java.util.List;
 import java.util.Objects;
 
-public final class KMapEntityStateMachineMetadataTypedef implements KAssetTypedef {
+public final class KMapEntityControllerMetadataTypedef implements KAssetTypedef {
 
-    public static final String STATE_MACHINE_METADATA_TYPEDEF = "Level.stateMachineMetadata";
+    public static final String CONTROLLER_METADATA_TYPEDEF = "Level.controllerMetadata";
 
     @Override
     public String getName() {
-        return STATE_MACHINE_METADATA_TYPEDEF;
+        return CONTROLLER_METADATA_TYPEDEF;
     }
 
     @Override
