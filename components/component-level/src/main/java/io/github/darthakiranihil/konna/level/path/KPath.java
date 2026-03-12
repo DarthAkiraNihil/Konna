@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.path;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -28,6 +29,11 @@ import java.util.Queue;
  * @author Darth Akira Nihil
  */
 public final class KPath {
+
+    /**
+     * Constant for the empty path.
+     */
+    public static final KPath EMPTY = new KPath(new LinkedList<>());
 
     private final Queue<KVector2i> directions;
 
@@ -48,5 +54,12 @@ public final class KPath {
         }
 
         return this.directions.poll();
+    }
+
+    /**
+     * @return Whether the path is finished (no more directions) or not
+     */
+    public boolean finished() {
+        return this.directions.isEmpty();
     }
 }

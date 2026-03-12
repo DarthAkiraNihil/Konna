@@ -100,6 +100,21 @@ public interface KIntWeightedGraph<IDX> extends Iterable<KIntWeightedGraph.Node<
      * @param dst Destination node index
      * @return Path between specified nodes
      */
-    List<IDX> getPath(IDX src, IDX dst);
+    default List<IDX> getPath(final IDX src, final IDX dst) {
+        return this.getPath(src, dst, false);
+    }
+
+    /**
+     * Returns path between two nodes.
+     * If one or all of connected nodes are not presented in the graph, an empty path is returned.
+     * @param src Source node index
+     * @param dst Destination node index
+     * @param forceOverwriteSrcCost Flag that indicates if cost of source node
+     *                              should be overwritten when it is adjacent
+     *                              (used for cases when you need to find another path from
+     *                              source to destination, that is the source)
+     * @return Path between specified nodes
+     */
+    List<IDX> getPath(IDX src, IDX dst, boolean forceOverwriteSrcCost);
 
 }

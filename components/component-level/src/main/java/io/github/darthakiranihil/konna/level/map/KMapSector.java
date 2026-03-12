@@ -29,6 +29,7 @@ import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -186,6 +187,14 @@ public final class KMapSector extends KObject {
      */
     public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
         return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
+    }
+
+    /**
+     * @param destinationSector Name of sector that is destination for found links
+     * @return Map of links to the destination sector in this sector
+     */
+    public Map<KVector2i, KSectorLinkData> getLinksToSector(final String destinationSector) {
+        return this.sectorLinkLayer.getToSector(destinationSector);
     }
 
     /**
