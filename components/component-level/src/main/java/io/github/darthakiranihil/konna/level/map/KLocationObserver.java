@@ -54,8 +54,8 @@ public interface KLocationObserver {
      * @return Field of view for this position
      */
     KFov observePoint(
-        final KLocation location,
-        final String sector,
+        KLocation location,
+        String sector,
         int x,
         int y,
         int visionRange

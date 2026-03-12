@@ -23,17 +23,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class KLocationNegativeTests extends KStandardTestClass {
+public class KRaycastLocationObserverNegativeTests extends KStandardTestClass {
 
     @Test
-    public void testGetSectorFailed() {
+    public void testObserveUnknownSector() {
 
+        KLocationObserver observer = new KRaycastLocationObserver();
         KLocation location = new KLocation("loc1", List.of());
 
         Assertions.assertThrows(
             KInvalidArgumentException.class,
-            () -> location.getSector("sector_1")
+            () -> observer.observePoint(location, "sector_1", 1, 1, 2)
         );
 
     }
+
 }

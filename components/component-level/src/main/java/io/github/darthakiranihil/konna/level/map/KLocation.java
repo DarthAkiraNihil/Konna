@@ -34,9 +34,6 @@ import java.util.*;
  */
 public final class KLocation extends KObject {
 
-    private static final int FOV_CAST_RAYS_COUNT = 360;
-
-
     private final Map<String, KMapSector> sectors;
     private final String[] sectorNames;
     private final KIntWeightedGraph<String> sectorConnectivityGraph;
@@ -93,122 +90,6 @@ public final class KLocation extends KObject {
      */
     public void unload() {
         this.sectors.values().forEach(KMapSector::unload);
-    }
-
-    /**
-     * Observes a point in this location.
-     * @param sector Sector to begin observing in
-     * @param point Position to begin observing on
-     * @param visionRange How far does it need to observe
-     * @return Field of view for this position
-     */
-    public KFov observePoint(final String sector, final KVector2i point, int visionRange) {
-        return this.observePoint(sector, point.x(), point.y(), visionRange);
-    }
-
-    /**
-     * Observes a point in this location.
-     * @param sector Sector to begin observing in
-     * @param x X coordinate of position to begin observing on
-     * @param y Y coordinate of position to begin observing on
-     * @param visionRange How far does it need to observe
-     * @return Field of view for this position
-     */
-    public KFov observePoint(
-        final String sector,
-        int x,
-        int y,
-        int visionRange
-    ) { // todo: move to interface???
-
-        Set<KPair<String, KVector2i>> observed = new HashSet<>();
-
-        for (int i = 0; i < FOV_CAST_RAYS_COUNT; i++) {
-
-            float xSh = (float) Math.cos(Math.toRadians(i));
-            float ySh = (float) Math.sin(Math.toRadians(i));
-
-            Deque<KTriplet<String, Integer, KVector2f>> observingQueue = new LinkedList<>();
-            observingQueue.add(
-                new KTriplet<>(
-                    sector,
-                    visionRange * 2,
-                    new KVector2f(x + 0.5f, y + 0.5f)
-                )
-            );
-
-            Set<String> seenSectors = new HashSet<>();
-            while (!observingQueue.isEmpty()) {
-
-                var data = observingQueue.pop();
-                KMapSector observedSector = this.getSector(data.first());
-                int vision = data.second();
-
-                Integer previousHeight = null;
-
-                float observedX = data.third().x();
-                float observedY = data.third().y();
-
-                while (vision > 0) {
-                    KMapSectorSlice slice = observedSector.getSliceAndVisit(
-                        (int) observedX, (int) observedY
-                    );
-
-                    if (slice.tile() != null) {
-                        vision -= slice.tile().getOpaqueness() * 2;
-                    }
-
-                    int currentHeight = slice.height();
-                    if (previousHeight != null) {
-                        if (currentHeight > previousHeight) {
-                            vision -= (currentHeight - previousHeight);
-                        } else if (currentHeight < previousHeight) {
-                            vision++;
-                        }
-                    }
-                    previousHeight = currentHeight;
-
-                    observed.add(new KPair<>(observedSector.name(), slice.position()));
-                    if (
-                            slice.sectorLink() != null
-                        &&  !seenSectors.contains(slice.sectorLink().linkedSector().name())
-                    ) {
-                        var linkData = slice.sectorLink();
-                        observingQueue.add(
-                            new KTriplet<>(
-                                linkData.linkedSector().name(),
-                                vision,
-                                new KVector2f(
-                                    linkData.destination().x(),
-                                    linkData.destination().y()
-                                )
-                            )
-                        );
-                    }
-
-                    vision -= 2;
-                    observedX += xSh;
-                    observedY += ySh;
-                }
-
-                seenSectors.add(data.first());
-
-            }
-        }
-
-        return new KFov(
-            observed
-                .stream()
-                .map(o -> {
-                    var position = o.second();
-                    return this
-                        .getSector(o.first())
-                        .getSlice(position.x(), position.y());
-                })
-                .filter(s -> s.tile() != null)
-                .sorted(Comparator.comparing(KMapSectorSlice::sectorName))
-                .toList()
-        );
     }
 
     /**
