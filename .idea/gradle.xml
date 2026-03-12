@@ -37,6 +37,7 @@
             <option value="$PROJECT_DIR$/implementations/implementations-std-core" />
             <option value="$PROJECT_DIR$/implementations/implementations-std-entity" />
             <option value="$PROJECT_DIR$/implementations/implementations-std-graphics" />
+            <option value="$PROJECT_DIR$/implementations/implementations-std-level" />
             <option value="$PROJECT_DIR$/konna-bom" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-dear-imgui" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />

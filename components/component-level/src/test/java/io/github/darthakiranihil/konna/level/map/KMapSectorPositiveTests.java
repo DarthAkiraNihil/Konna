@@ -16,6 +16,10 @@
 
 package io.github.darthakiranihil.konna.level.map;
 
+import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -29,16 +33,20 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     @Test
     public void testGetSectorSliceWithoutLinkedSector() {
 
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KMapSector sector = new KMapSector(
-            KStandardTestClass.context,
+            es,
             "sector_1",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
@@ -53,28 +61,33 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     @Test
     public void testGetSectorSliceWithLinkedSector() {
 
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KMapSector sector2 = new KMapSector(
-            KStandardTestClass.context,
+            es,
             "sector_2",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KMapEntityLayer()
         );
 
         KMapSector sector = new KMapSector(
-            KStandardTestClass.context,
+            es,
             "sector_1",
             (new KTileLayer(2, 2))
                 .placeTile(0, 0, tileInfo)
                 .placeTile(0, 1, tileInfo)
                 .placeTile(1, 0, tileInfo)
                 .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
             (new KSectorLinkLayer()).link(0, 0, sector2, 1, 1),
             new KMapEntityLayer()
         );
@@ -85,6 +98,213 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
         Assertions.assertNotNull(sectorSlice.sectorLink());
         Assertions.assertEquals(sector2.name(), sectorSlice.sectorLink().linkedSector().name());
         Assertions.assertEquals(new KVector2i(1, 1), sectorSlice.sectorLink().destination());
+
+    }
+
+    @Test
+    public void testReachable() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer layer = new KTileLayer(3, 3);
+        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+
+        layer
+            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(0, 1, tileInfo1)
+            .placeTile(0, 2, tileInfo1)
+            .placeTile(1, 0, tileInfo2)
+            .placeTile(1, 1, tileInfo2)
+            .placeTile(1, 2, tileInfo2)
+            .placeTile(2, 0, tileInfo1)
+            .placeTile(2, 1, tileInfo1)
+            .placeTile(2, 2, tileInfo1);
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector",
+            layer,
+            new KHeightLayer(new KSize(3, 3)),
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        Assertions.assertTrue(
+            sector.isReachable(
+                new KVector2i(0, 0),
+                new KVector2i(0, 2)
+            )
+        );
+        Assertions.assertTrue(
+            sector.isReachable(
+                new KVector2i(2, 0),
+                new KVector2i(2, 2)
+            )
+        );
+        Assertions.assertTrue(
+            sector.isReachable(
+                0, 0, 0, 2
+            )
+        );
+        Assertions.assertTrue(
+            sector.isReachable(
+                2, 0, 2, 2
+            )
+        );
+
+    }
+
+    @Test
+    public void testUnreachableBecauseOfDifferentAreas() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer layer = new KTileLayer(3, 3);
+        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+
+        layer
+            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(0, 1, tileInfo1)
+            .placeTile(0, 2, tileInfo1)
+            .placeTile(1, 0, tileInfo2)
+            .placeTile(1, 1, tileInfo2)
+            .placeTile(1, 2, tileInfo2)
+            .placeTile(2, 0, tileInfo1)
+            .placeTile(2, 1, tileInfo1)
+            .placeTile(2, 2, tileInfo1);
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector",
+            layer,
+            new KHeightLayer(new KSize(3, 3)),
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        Assertions.assertFalse(
+            sector.isReachable(
+                new KVector2i(0, 0),
+                new KVector2i(2, 2)
+            )
+        );
+        Assertions.assertFalse(
+            sector.isReachable(
+                new KVector2i(2, 0),
+                new KVector2i(0, 2)
+            )
+        );
+        Assertions.assertFalse(
+            sector.isReachable(
+                0, 0, 2, 2
+            )
+        );
+        Assertions.assertFalse(
+            sector.isReachable(
+                2, 0, 0, 2
+            )
+        );
+
+    }
+
+    @Test
+    public void testUnreachableBecauseOfOutOfBounds() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer layer = new KTileLayer(3, 3);
+        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+
+        layer
+            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(0, 1, tileInfo1)
+            .placeTile(0, 2, tileInfo1)
+            .placeTile(1, 0, tileInfo2)
+            .placeTile(1, 1, tileInfo2)
+            .placeTile(1, 2, tileInfo2)
+            .placeTile(2, 0, tileInfo1)
+            .placeTile(2, 1, tileInfo1)
+            .placeTile(2, 2, tileInfo1);
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector",
+            layer,
+            new KHeightLayer(new KSize(3, 3)),
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(-1, 0), new KVector2i(0, 1))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(3, 0), new KVector2i(0, 1))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, -1), new KVector2i(0, 1))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, 3), new KVector2i(0, 1))
+        );
+
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, 1), new KVector2i(-1, 0))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, 1), new KVector2i(3, 0))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, 1), new KVector2i(0, -1))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, 1), new KVector2i(0, 3))
+        );
+
+    }
+
+    @Test
+    public void testUnreachableBecauseOfImpassableTile() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        KTileLayer layer = new KTileLayer(3, 3);
+        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+
+        layer
+            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(0, 1, tileInfo1)
+            .placeTile(0, 2, tileInfo1)
+            .placeTile(1, 0, tileInfo2)
+            .placeTile(1, 1, tileInfo2)
+            .placeTile(1, 2, tileInfo2)
+            .placeTile(2, 0, tileInfo1)
+            .placeTile(2, 1, tileInfo1)
+            .placeTile(2, 2, tileInfo1);
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector",
+            layer,
+            new KHeightLayer(new KSize(3, 3)),
+            new KSectorLinkLayer(),
+            new KMapEntityLayer()
+        );
+
+        Assertions.assertFalse(
+            sector.isReachable(new KVector2i(0, 0), new KVector2i(1, 1))
+        );
+        Assertions.assertFalse(
+            sector.isReachable(0, 0, 1, 1)
+        );
 
     }
 }

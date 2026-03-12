@@ -18,12 +18,12 @@ package io.github.darthakiranihil.konna.level.map;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
+import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Representation of a game level, consisting of map sectors,
@@ -36,6 +36,7 @@ public final class KLocation extends KObject {
 
     private final Map<String, KMapSector> sectors;
     private final String[] sectorNames;
+    private final KIntWeightedGraph<String> sectorConnectivityGraph;
 
     /**
      * Standard constructor.
@@ -56,6 +57,7 @@ public final class KLocation extends KObject {
         );
 
         this.sectorNames = this.sectors.keySet().toArray(new String[0]);
+        this.sectorConnectivityGraph = this.buildSectorConnectivityGraph();
     }
 
     /**
@@ -88,6 +90,48 @@ public final class KLocation extends KObject {
      */
     public void unload() {
         this.sectors.values().forEach(KMapSector::unload);
+    }
+
+    /**
+     * @return Sector connectivity graph for this location
+     */
+    public KIntWeightedGraph<String> getSectorConnectivityGraph() {
+        return this.sectorConnectivityGraph;
+    }
+
+    private KIntWeightedGraph<String> buildSectorConnectivityGraph() {
+
+        KIntWeightedGraph<String> graph = new KHashMapIntWeightedGraph<>();
+
+        for (var entry: this.sectors.entrySet()) {
+
+            String sourceSectorName = entry.getKey();
+            graph.add(sourceSectorName);
+            KMapSector sector = entry.getValue();
+
+            KSize sectorSize = sector.getSize();
+            for (int i = 0; i < sectorSize.width(); i++) {
+                for (int j = 0; j < sectorSize.height(); j++) {
+
+                    KMapSectorSlice slice = sector.getSlice(i, j);
+                    if (slice.sectorLink() == null) {
+                        continue;
+                    }
+
+                    String linkedSectorName = slice.sectorLink().linkedSector().name();
+                    if (!graph.has(linkedSectorName)) {
+                        graph.add(linkedSectorName);
+                    }
+
+                    graph.connect(sourceSectorName, linkedSectorName, 1);
+
+                }
+            }
+
+        }
+
+        return graph;
+
     }
 
 

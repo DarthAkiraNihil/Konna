@@ -113,6 +113,12 @@ public abstract sealed class KMapEntity
         }
 
         KVector2i nextPosition = this.position.add(nextDirection);
+        KMapSectorSlice previousSlice = this.currentSector.getSlice(
+            this.position.x(),
+            this.position.y()
+        );
+        int previousHeight = previousSlice.height();
+
         KMapSectorSlice slice = this.currentSector.getSlice(
             nextPosition.x(), nextPosition.y()
         );
@@ -136,7 +142,11 @@ public abstract sealed class KMapEntity
                     nextPosition.y()
                 );
 
-            if (dstSlice.tile() == null || !dstSlice.tile().isPassable()) {
+            if (
+                    dstSlice.tile() == null
+                ||  !dstSlice.tile().isPassable()
+                ||  Math.abs(dstSlice.height() - previousHeight) > 1
+            ) {
                 return;
             }
 
@@ -150,7 +160,7 @@ public abstract sealed class KMapEntity
             return;
         }
 
-        if (!slice.tile().isPassable()) {
+        if (!slice.tile().isPassable() || Math.abs(slice.height() - previousHeight) > 1) {
             return;
         }
 

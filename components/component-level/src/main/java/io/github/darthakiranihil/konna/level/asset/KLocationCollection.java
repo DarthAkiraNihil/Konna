@@ -17,7 +17,10 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.KAsset;
+import io.github.darthakiranihil.konna.core.io.KAssetCollection;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -48,12 +51,14 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         KSize size,
 
         KTileLayer tileLayer,
+        KHeightLayer heightLayer,
         KSectorLinkLayer sectorLinkLayer,
         KMapEntityLayer entityLayer,
 
         String[] tiles,
         KAssetDefinition[] sectorLinks,
-        KAssetDefinition[] entities
+        KAssetDefinition[] entities,
+        int[] heights
     ) {
 
     }
@@ -100,6 +105,9 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
             this.fillEntityLayer(rs);
+            this.fillHeightLayer(rs);
+
+            rs.containedSector.refresh();
 
             filledSectors.add(
                 rs.containedSector()
@@ -128,6 +136,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             );
 
             KTileLayer tileLayer = new KTileLayer(size);
+            KHeightLayer heightLayer = new KHeightLayer(size);
             KSectorLinkLayer sectorLinkLayer = new KSectorLinkLayer();
             KMapEntityLayer entityLayer = new KMapEntityLayer();
 
@@ -135,6 +144,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                 this.eventSystem,
                 sectorName,
                 tileLayer,
+                heightLayer,
                 sectorLinkLayer,
                 entityLayer
             );
@@ -145,11 +155,13 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                     createdSector,
                     size,
                     tileLayer,
+                    heightLayer,
                     sectorLinkLayer,
                     entityLayer,
                     Objects.requireNonNull(rawSector.getStringArray("tiles")),
                     rawSector.getSubdefinitionArray("sector_links"),
-                    rawSector.getSubdefinitionArray("entities")
+                    rawSector.getSubdefinitionArray("entities"),
+                    rawSector.getIntArray("heights")
                 )
             );
         }
@@ -289,5 +301,26 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                     )
             );
         }
+    }
+
+    private void fillHeightLayer(
+        final RawSector rawSector
+    ) {
+
+        int[] heights = rawSector.heights;
+        KHeightLayer layer = rawSector.heightLayer;
+        KSize size = rawSector.size;
+
+        for (int i = 0; i < heights.length; i++) {
+
+            int x = i % size.width();
+            int y = i / size.width();
+
+            layer.setHeight(
+                x, y, heights[i]
+            );
+
+        }
+
     }
 }

@@ -43,7 +43,7 @@ public final class KTileTypedef implements KAssetTypedef {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
             .withInt("tile_id")
-            .withInt("transparency")
+            .withInt("opaqueness")
             .withBoolean("passable")
             .build();
     }

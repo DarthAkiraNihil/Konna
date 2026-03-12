@@ -22,11 +22,14 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
+import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -68,8 +71,12 @@ public final class KMapSector extends KObject {
     private final KEvent<EventData> entityMovedEvent;
 
     private final KTileLayer tileLayer;
+    private final KHeightLayer heightLayer;
     private final KSectorLinkLayer sectorLinkLayer;
     private final KMapEntityLayer entityLayer;
+
+    private final KReachabilityAreaLayer reachabilityAreaLayer;
+    private final KSeenPlacesLayer seenPlacesLayer;
 
     /**
      * Standard constructor.
@@ -77,6 +84,7 @@ public final class KMapSector extends KObject {
      *                    and {@code entityMoved} events
      * @param name Name of the sector
      * @param tileLayer Tile layer, assigned to this sector
+     * @param heightLayer Height layer, assigned to this sector
      * @param sectorLinkLayer Sector link layer, assigned to this sector
      * @param entityLayer Entity layer, assigned to this sector
      */
@@ -84,12 +92,14 @@ public final class KMapSector extends KObject {
         final KEventSystem eventSystem,
         final String name,
         final KTileLayer tileLayer,
+        final KHeightLayer heightLayer,
         final KSectorLinkLayer sectorLinkLayer,
         final KMapEntityLayer entityLayer
     ) {
         super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
 
         this.tileLayer = tileLayer;
+        this.heightLayer = heightLayer;
         this.sectorLinkLayer = sectorLinkLayer;
         this.entityLayer = entityLayer;
 
@@ -103,6 +113,17 @@ public final class KMapSector extends KObject {
         this.entityMovedEvent.subscribe(this.entityMovedConsumer);
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
+        this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer, heightLayer);
+        this.seenPlacesLayer = new KSeenPlacesLayer(tileLayer.getSize());
+    }
+
+    /**
+     * Returns size of this sector, that is defined as size of its tile layer since
+     * each sized layers of sectors are equal by size.
+     * @return Size of this sector
+     */
+    public KSize getSize() {
+        return this.tileLayer.getSize();
     }
 
     /**
@@ -117,11 +138,63 @@ public final class KMapSector extends KObject {
     ) {
 
         return new KMapSectorSlice(
+            this.name,
+            new KVector2i(x, y),
+            this.heightLayer.getOnPosition(x, y),
             this.tileLayer.getOnPosition(x, y),
+            this.seenPlacesLayer.getSeenStatus(x, y),
             this.sectorLinkLayer.getOnPosition(x, y),
             this.entityLayer.getOnPosition(x, y)
         );
 
+    }
+
+    /**
+     * Returns information of all sector layers that are placed on specific location
+     * and marks it as seen.
+     * @param x X coordinate of sliced position
+     * @param y Y coordinate of sliced position
+     * @return Slice of the sector on specific place
+     */
+    public KMapSectorSlice getSliceAndVisit(
+        int x,
+        int y
+    ) {
+
+        KTileInfo tile = this.tileLayer.getOnPosition(x, y);
+        if (tile != null) {
+            this.seenPlacesLayer.seeThePlace(x, y);
+        }
+        return this.getSlice(x, y);
+
+    }
+
+    /**
+     * @param src Source point
+     * @param dst Destination point
+     * @return Whether it is possible to reach destination from source point in this layer
+     */
+    public boolean isReachable(final KVector2i src, final KVector2i dst) {
+        return this.reachabilityAreaLayer.isReachable(src, dst);
+    }
+
+    /**
+     * @param srcX X coordinate of source point
+     * @param srcY Y coordinate of source point
+     * @param dstX X coordinate of destination point
+     * @param dstY Y coordinate of destination point
+     * @return Whether it is possible to reach destination from source point in this layer
+     */
+    public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
+        return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
+    }
+
+    /**
+     * @param destinationSector Name of sector that is destination for found links
+     * @return Map of links to the destination sector in this sector
+     */
+    public Map<KVector2i, KSectorLinkData> getLinksToSector(final String destinationSector) {
+        return this.sectorLinkLayer.getToSector(destinationSector);
     }
 
     /**
@@ -132,6 +205,15 @@ public final class KMapSector extends KObject {
 
         this.entityMovedEvent.unsubscribe(this.entityMovedConsumer);
         this.entityLeftSectorEvent.unsubscribe(this.entityLeftSectorConsumer);
+
+    }
+
+    /**
+     * Refreshes this sector.
+     */
+    public void refresh() {
+
+        this.reachabilityAreaLayer.refresh();
 
     }
 

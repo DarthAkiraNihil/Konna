@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'non-core-module'
+}
+
+ext {
+    artifactId = "konna.implementations-std-level"
+}
+
+description = "Standard implementations of Konna Level classes"
+
+dependencies {
+
+    implementation project(":component-level")
+
+}

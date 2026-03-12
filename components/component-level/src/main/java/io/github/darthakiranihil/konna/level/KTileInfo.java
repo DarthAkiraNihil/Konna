@@ -32,25 +32,25 @@ public final class KTileInfo {
 
     private final int id;
     private final boolean passable;
-    private final int transparency;
+    private final int opaqueness;
     private final Map<String, KTileProperty> properties;
 
     /**
      * Standard constructor.
      * @param id Numeric tile id
      * @param passable Flag that indicates if this tile can be passed through
-     * @param transparency Transparency value - how far an entity can see through this tile
+     * @param opaqueness Opaqueness value - how strong it reduces an entity vision range
      * @param properties Additional tile properties
      */
     public KTileInfo(
         int id,
         boolean passable,
-        int transparency,
+        int opaqueness,
         final Map<String, KTileProperty> properties
     ) {
         this.id = id;
         this.passable = passable;
-        this.transparency = transparency;
+        this.opaqueness = opaqueness;
         this.properties = properties;
     }
 
@@ -69,10 +69,10 @@ public final class KTileInfo {
     }
 
     /**
-     * @return Value of transparency of this tile
+     * @return Value of opaqueness of this tile
      */
-    public int getTransparency() {
-        return this.transparency;
+    public int getOpaqueness() {
+        return this.opaqueness;
     }
 
     /**
