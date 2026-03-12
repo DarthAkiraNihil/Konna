@@ -23,14 +23,15 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
-import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
+import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.map.*;
 import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 
@@ -66,6 +67,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     private final KAssetLoader assetLoader;
     private final KEventSystem eventSystem;
     private final KTileCollection tileCollection;
+    private final KActivator activator;
 
     /**
      * Standard constructor.
@@ -76,7 +78,8 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     public KLocationCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KEventSystem eventSystem,
-        @KInject final KTileCollection tileCollection
+        @KInject final KTileCollection tileCollection,
+        @KInject final KActivator activator
     ) {
         super(
             "Level.locationCollection",
@@ -86,6 +89,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         this.assetLoader = assetLoader;
         this.eventSystem = eventSystem;
         this.tileCollection = tileCollection;
+        this.activator = activator;
 
     }
 
@@ -98,13 +102,18 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         KAssetDefinition[] rawSectorsDefinitions = definition.getSubdefinitionArray("sectors");
         Map<String, RawSector> rawSectors = this.createRawSectors(rawSectorsDefinitions);
         List<KMapSector> filledSectors = new LinkedList<>();
+        List<KTriplet<
+            KAutonomousEntity,
+            Class<? extends KAutonomousEntityController>,
+            KAssetDefinition
+        >> autonomousEntities = new LinkedList<>();
 
         for (var rawSector: rawSectors.entrySet()) {
             RawSector rs = rawSector.getValue();
 
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
-            this.fillEntityLayer(rs);
+            this.fillEntityLayer(rs, autonomousEntities);
             this.fillHeightLayer(rs);
 
             rs.containedSector.refresh();
@@ -114,10 +123,12 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             );
         }
 
-        return new KLocation(
+        KLocation location = new KLocation(
             assetId,
             filledSectors
         );
+        this.createControllers(autonomousEntities, location);
+        return location;
     }
 
     private Map<String, RawSector> createRawSectors(
@@ -245,7 +256,12 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     }
 
     private void fillEntityLayer(
-        final RawSector rawSector
+        final RawSector rawSector,
+        final List<KTriplet<
+            KAutonomousEntity,
+            Class<? extends KAutonomousEntityController>,
+            KAssetDefinition
+        >> autonomousEntitiesList
     ) {
 
         KMapEntityLayer layer = rawSector.entityLayer;
@@ -264,10 +280,33 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
             KAssetDefinition[] controllables = data.getSubdefinitionArray("controllable");
             KAssetDefinition[] staticEntities = data.getSubdefinitionArray("static");
+            KAssetDefinition[] autonomousEntities = data.getSubdefinitionArray("autonomous");
 
             this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector, false);
             this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector, true);
 
+            for (var autonomous: autonomousEntities) {
+
+                var auto = new KAutonomousEntity(
+                    this.eventSystem,
+                    Objects.requireNonNull(autonomous.getString("name")),
+                    Objects.requireNonNull(autonomous.getString("descriptor")),
+                    new KVector2i(x, y),
+                    rawSector.containedSector
+                );
+
+                layer.placeEntity(x, y, auto);
+                autonomousEntitiesList.add(
+                    new KTriplet<>(
+                        auto,
+                        autonomous.getClassObject(
+                            "controller",
+                            KAutonomousEntityController.class
+                        ),
+                        autonomous.getSubdefinition("params")
+                    )
+                );
+            }
         }
 
     }
@@ -322,5 +361,28 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
         }
 
+    }
+
+    private void createControllers(
+        final List<KTriplet<
+            KAutonomousEntity,
+            Class<? extends KAutonomousEntityController>,
+            KAssetDefinition
+        >> autonomousEntitiesList,
+        final KLocation location
+    ) {
+        for (var data: autonomousEntitiesList) {
+            KAutonomousEntity entity = data.first();
+            KAutonomousEntityController controller = this
+                .activator
+                .createObject(
+                    data.second(),
+                    entity,
+                    location,
+                    data.third()
+                );
+
+            entity.setController(controller);
+        }
     }
 }

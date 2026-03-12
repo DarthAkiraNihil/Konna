@@ -39,5 +39,9 @@ public final class KLevelComponentTags extends KUninstantiable {
      * Indicates that the object is a location.
      */
     public static final KTag LOCATION = new KTag("location");
+    /**
+     * Indicates that the object is an autonomous entity controller.
+     */
+    public static final KTag CONTROLLER = new KTag("controller");
 
 }

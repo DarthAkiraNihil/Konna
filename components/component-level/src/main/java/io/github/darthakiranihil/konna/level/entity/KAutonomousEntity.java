@@ -19,8 +19,11 @@ package io.github.darthakiranihil.konna.level.entity;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
+import org.jspecify.annotations.Nullable;
 
 public final class KAutonomousEntity extends KMapEntity {
+
+    private @Nullable KAutonomousEntityController controller;
 
     public KAutonomousEntity(
         final KEventSystem eventSystem,
@@ -34,6 +37,14 @@ public final class KAutonomousEntity extends KMapEntity {
 
     @Override
     protected KVector2i getNextMoveDirection() {
-        return null;
+        if (this.controller == null) {
+            return KVector2i.ZERO;
+        }
+
+        return this.controller.getNextMoveDirection();
+    }
+
+    public void setController(final KAutonomousEntityController controller) {
+        this.controller = controller;
     }
 }
