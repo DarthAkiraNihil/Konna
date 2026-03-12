@@ -20,6 +20,13 @@ import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 
+/**
+ * Interface providing methods to find paths in specific locations
+ * between two points.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KPathfinder {
 
     /**
