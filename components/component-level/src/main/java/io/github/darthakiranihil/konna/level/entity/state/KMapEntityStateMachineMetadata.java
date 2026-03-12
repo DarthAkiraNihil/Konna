@@ -16,26 +16,20 @@
 
 package io.github.darthakiranihil.konna.level.entity.state;
 
-import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-
+import java.util.List;
 import java.util.Map;
 
-public abstract class KMapEntityStateMachine extends KObject {
+public record KMapEntityStateMachineMetadata(
+    Map<String, Class<? extends KMapEntityState>> states,
+    List<TransitionMetadata> transitions
+) {
 
-    private KMapEntityState currentState;
-
-    protected abstract Map<String, KMapEntityState> getStates(KUniversalMap params);
-
-    public final KVector2i getNextMoveDirection() {
-
-        KVector2i result = currentState.getNextMoveDirection();
-        this.currentState = currentState.getNextState();
-        return result;
+    public record TransitionMetadata(
+        String from,
+        String to,
+        Class<? extends KMapEntityStateTransition> transition
+    ) {
 
     }
-
-
 
 }
