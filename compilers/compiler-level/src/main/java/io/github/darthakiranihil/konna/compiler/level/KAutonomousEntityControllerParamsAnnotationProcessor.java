@@ -146,6 +146,57 @@ public final class KAutonomousEntityControllerParamsAnnotationProcessor
 
         }
 
+        for (Element element : roundEnv.getElementsAnnotatedWith(
+            KAutonomousEntityControllerParam.class
+        )) {
+
+            if (element.getKind() != ElementKind.CONSTRUCTOR) {
+                continue;
+            }
+
+            ExecutableElement constructorElement = (ExecutableElement) element;
+            if (constructorElement.getAnnotation(KAutonomousEntityControllerParams.class) != null) { // has been processed in previous loop
+                continue;
+            }
+
+            KAutonomousEntityControllerParam param = Objects.requireNonNull(
+                constructorElement.getAnnotation(KAutonomousEntityControllerParam.class)
+            );
+
+            Element enclosing = constructorElement.getEnclosingElement();
+            TypeElement enclosingClass = (TypeElement) enclosing;
+
+            String paramName = param.name();
+
+            boolean doesTypeRequiresQualifier =
+                param.type() == KAutonomousEntityControllerParam.Metatype
+                    .CLASS_THAT_EXTENDS
+                    ||  param.type() == KAutonomousEntityControllerParam.Metatype
+                    .CLASS_THAT_EXTENDS_ARRAY
+                    ||  param.type() == KAutonomousEntityControllerParam.Metatype
+                    .ENUM;
+
+            if (doesTypeRequiresQualifier &&  param.qualifier().isBlank()) {
+
+                this.messager.printMessage(
+                    Diagnostic.Kind.ERROR,
+                    String.format(
+                        "%s: param type %s requires a non-blank qualifier, but blank provided",
+                        paramName,
+                        param.type()
+                    )
+                );
+
+                continue;
+            }
+
+            this.brewJava(
+                enclosingClass.getSimpleName().toString(),
+                Map.of(param.name(), param)
+            );
+
+        }
+
         return true;
     }
 

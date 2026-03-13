@@ -1327,5 +1327,353 @@
                 }
             ]
         }
+    },
+    "valid_only_autonomous": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestController",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "valid_no_validator": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "valid_validator_is_not_a_rule": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.FalseValidatedController",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
+    },
+    "invalid_validation_failed": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestController",
+                                    "params": {
+                                        "test1": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
     }
 }

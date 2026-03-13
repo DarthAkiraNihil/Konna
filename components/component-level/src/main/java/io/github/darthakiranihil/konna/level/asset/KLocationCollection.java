@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.asset;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -394,7 +395,11 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                 } else {
                     KAssetDefinitionRule validator = this.activator
                         .createObject((Class<? extends KAssetDefinitionRule>) paramsValidator);
-                    validator.validate(controllerParams);
+                    try {
+                        validator.validate(controllerParams);
+                    } catch (KAssetDefinitionError e) {
+                        throw new KAssetLoadingException(e);
+                    }
                 }
             } catch (KClassNotFoundException e) {
                 KSystemLogger.warning(

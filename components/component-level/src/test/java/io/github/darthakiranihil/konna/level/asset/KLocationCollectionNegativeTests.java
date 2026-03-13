@@ -197,4 +197,29 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
         );
 
     }
+
+    @Test
+    public void testLoadWithAutonomousButValidationFailed() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+
+        KLocationCollection locationCollection = new KLocationCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> locationCollection.getAsset("invalid_validation_failed")
+        );
+
+    }
 }

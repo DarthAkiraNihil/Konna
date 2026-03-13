@@ -439,4 +439,55 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.stopPolling();
 
     }
+
+    @Test
+    public void testMoveAutonomousWithoutController() {
+
+        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+
+        KStandardEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.startPolling();
+
+        KMapEntityLayer mel = new KMapEntityLayer();
+        KMapEntityLayer mel2 = new KMapEntityLayer();
+
+        KMapSector sector2 = new KMapSector(
+            es,
+            "sector_2",
+            (new KTileLayer(2, 2))
+                .placeTile(0, 0, tileInfo)
+                .placeTile(0, 1, tileInfo)
+                .placeTile(1, 0, tileInfo)
+                .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2))
+                .setHeight(0, 0, 2)
+                .setHeight(1, 0, 2)
+                .setHeight(0, 1, 2)
+                .setHeight(1, 1, 2),
+            new KSectorLinkLayer(),
+            mel2
+        );
+
+        KMapSector sector = new KMapSector(
+            es,
+            "sector_1",
+            (new KTileLayer(2, 2))
+                .placeTile(0, 0, tileInfo)
+                .placeTile(0, 1, tileInfo)
+                .placeTile(1, 0, tileInfo)
+                .placeTile(1, 1, tileInfo),
+            new KHeightLayer(new KSize(2, 2)),
+            (new KSectorLinkLayer())
+                .link(0, 0, sector2, 1, 1),
+            mel
+        );
+
+        KAutonomousEntity auto = new KAutonomousEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        mel.placeEntity(0, 0, auto);
+        auto.move();
+        Assertions.assertEquals(new KPair<>(KVector2i.ZERO, sector), auto.getPosition());
+
+    }
 }
