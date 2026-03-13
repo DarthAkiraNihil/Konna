@@ -44,7 +44,7 @@ import java.util.Set;
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
-public class KAutonomousEntityControllerParamsAnnotationProcessor
+public final class KAutonomousEntityControllerParamsAnnotationProcessor
     extends KBaseAnnotationProcessor {
 
     private static final ClassName ASSET_DEFINITION_RULE_CLASS_NAME = ClassName.get(

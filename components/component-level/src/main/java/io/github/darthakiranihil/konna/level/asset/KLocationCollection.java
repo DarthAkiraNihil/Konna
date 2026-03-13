@@ -17,11 +17,10 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.KAsset;
-import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
+import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -31,6 +30,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.map.*;
 import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
@@ -363,6 +363,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
     }
 
+    @SuppressWarnings("unchecked")
     private void createControllers(
         final List<KTriplet<
             KAutonomousEntity,
@@ -373,13 +374,43 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     ) {
         for (var data: autonomousEntitiesList) {
             KAutonomousEntity entity = data.first();
+            Class<? extends KAutonomousEntityController> controllerClass = data.second();
+            KAssetDefinition controllerParams = data.third();
+
+            try {
+                var paramsValidator = KClassUtils
+                        .getForName(
+                            String.format(
+                                "konna.generated.level.entity.%s$$ParamValidator",
+                                controllerClass.getSimpleName()
+                            )
+                        );
+
+                if (!KAssetDefinitionRule.class.isAssignableFrom(paramsValidator)) {
+                    KSystemLogger.warning(
+                        this.name,
+                        "Found validator is not an KAssetDefinitionRule instance! Skipping validation"
+                    );
+                } else {
+                    KAssetDefinitionRule validator = this.activator
+                        .createObject((Class<? extends KAssetDefinitionRule>) paramsValidator);
+                    validator.validate(controllerParams);
+                }
+            } catch (KClassNotFoundException e) {
+                KSystemLogger.warning(
+                    this.name,
+                    "Could not find param validator for %s. Skipping validation",
+                    controllerClass.getCanonicalName()
+                );
+            }
+
             KAutonomousEntityController controller = this
                 .activator
                 .createObject(
-                    data.second(),
+                    controllerClass,
                     entity,
                     location,
-                    data.third()
+                    controllerParams
                 );
 
             entity.setController(controller);
