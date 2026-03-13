@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.SOURCE)
@@ -23,6 +25,7 @@ import java.lang.annotation.*;
 @Repeatable(KAutonomousEntityControllerParams.class)
 public @interface KAutonomousEntityControllerParam {
 
+    @KExcludeFromGeneratedCoverageReport
     enum Metatype {
 
         INT,

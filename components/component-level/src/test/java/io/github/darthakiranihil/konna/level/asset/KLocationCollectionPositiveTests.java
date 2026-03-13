@@ -29,6 +29,7 @@ import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +51,8 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         KLocation loaded = locationCollection.getAsset("valid");
@@ -117,7 +119,8 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         KLocation loaded = locationCollection.getAsset("connectivity_graph_test");
