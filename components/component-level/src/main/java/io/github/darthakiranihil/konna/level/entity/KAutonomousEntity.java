@@ -21,6 +21,13 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Representation of an entity that moves automatically i.e. being
+ * controller by another objects that specifies move directions for the assigned entity.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KAutonomousEntity extends KMapEntity {
 
     private @Nullable KAutonomousEntityController controller;
@@ -35,6 +42,10 @@ public final class KAutonomousEntity extends KMapEntity {
         super(eventSystem, name, descriptor, position, currentSector);
     }
 
+    /**
+     * @return Next move direction provided by its assigned controller or
+     *         {@link KVector2i#ZERO} if it is not specified
+     */
     @Override
     protected KVector2i getNextMoveDirection() {
         if (this.controller == null) {
@@ -44,6 +55,10 @@ public final class KAutonomousEntity extends KMapEntity {
         return this.controller.getNextMoveDirection();
     }
 
+    /**
+     * Assigns a controller to this entity.
+     * @param controller Controller to assign to this entity
+     */
     public void setController(final KAutonomousEntityController controller) {
         this.controller = controller;
     }

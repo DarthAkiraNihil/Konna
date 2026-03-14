@@ -21,10 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Container annotation for {@link KAutonomousEntityControllerParam}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.CONSTRUCTOR)
 public @interface KAutonomousEntityControllerParams {
 
+    /**
+     * @return All params specified for this entity controller.
+     */
     KAutonomousEntityControllerParam[] value();
 
 }

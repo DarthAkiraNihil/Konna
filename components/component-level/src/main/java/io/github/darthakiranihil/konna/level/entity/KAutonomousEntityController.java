@@ -23,12 +23,39 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 
+/**
+ * Provides for assigned autonomous entity next move directions in order
+ * for them to move. The way it returns a new direction depends on implementation.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public abstract class KAutonomousEntityController extends KObject {
 
-
+    /**
+     * Entity assigned to this controller.
+     */
     protected final KMapEntity assignedEntity;
+    /**
+     * Location the assigned entity belongs to.
+     */
     protected final KLocation location;
 
+    /**
+     * <p>
+     *     Standard constructor.
+     * </p>
+     * <p>
+     *     Please note that if this controller needs validation for passed parameters,
+     *     its constructor should be annotated with {@link KAutonomousEntityControllerParam}
+     *     or {@link KAutonomousEntityControllerParams} annotations.
+     * </p>
+     * @param assignedEntity Entity assigned to this controller
+     *                       (that should be autonomous entity, also the controller should
+     *                       be assigned to that entity)
+     * @param location Location the assigned entity belongs to
+     * @param params Controller parameters
+     */
     public KAutonomousEntityController(
         final KMapEntity assignedEntity,
         final KLocation location,
@@ -48,7 +75,15 @@ public abstract class KAutonomousEntityController extends KObject {
         this.applyParams(params);
     }
 
+    /**
+     * Applies params to this controller.
+     * @param params Params to apply
+     */
     protected abstract void applyParams(KAssetDefinition params);
+
+    /**
+     * @return Next move direction for assigned entity
+     */
     public abstract KVector2i getNextMoveDirection();
 
 }

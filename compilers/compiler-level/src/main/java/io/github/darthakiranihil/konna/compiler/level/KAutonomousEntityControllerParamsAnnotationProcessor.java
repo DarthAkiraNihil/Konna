@@ -37,6 +37,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * <p>
+ *     Annotation processor that generates validator for params, passed to autonomous
+ *     entities controllers.
+ * </p>
+ * <p>
+ *     It will cause a compilation error if there is more than one parameter with the same
+ *     name, but different metatype. Also prevents to specify parameters without a qualifier,
+ *     if their metatype are class object, that extends another class, an array of that objects
+ *     or an enum.
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.level.entity.KAutonomousEntityControllerParam",
@@ -155,7 +170,10 @@ public final class KAutonomousEntityControllerParamsAnnotationProcessor
             }
 
             ExecutableElement constructorElement = (ExecutableElement) element;
-            if (constructorElement.getAnnotation(KAutonomousEntityControllerParams.class) != null) { // has been processed in previous loop
+            if (
+                constructorElement.getAnnotation(KAutonomousEntityControllerParams.class) != null
+            ) {
+                // has been processed in previous loop
                 continue;
             }
 
@@ -278,15 +296,44 @@ public final class KAutonomousEntityControllerParamsAnnotationProcessor
                     param.name(),
                     ClassName.get(this.elementUtils.getTypeElement(param.qualifier()))
                 );
-                case ENUM -> builder.addStatement("builder.withEnum($S, $T.class)", param.name(), ClassName.get(this.elementUtils.getTypeElement(param.qualifier())));
-                case SUBDEF -> builder.addStatement("builder.withSubdefinition($S)", param.name());
-                case INT_ARRAY -> builder.addStatement("builder.withIntArray($S)", param.name());
-                case FLOAT_ARRAY -> builder.addStatement("builder.withFloatArray($S)", param.name());
-                case STRING_ARRAY -> builder.addStatement("builder.withStringArray($S)", param.name());
-                case BOOLEAN_ARRAY -> builder.addStatement("builder.withBooleanArray($S)", param.name());
-                case CLASS_ARRAY -> builder.addStatement("builder.withClassObjectArray($S)", param.name());
-                case CLASS_THAT_EXTENDS_ARRAY -> builder.addStatement("builder.withClassObjectArray($S, $T.class)", param.name(), ClassName.get(this.elementUtils.getTypeElement(param.qualifier())));
-                case SUBDEF_ARRAY -> builder.addStatement("builder.withSubdefinitionArray($S)", param.name());
+                case ENUM -> builder.addStatement(
+                    "builder.withEnum($S, $T.class)",
+                    param.name(),
+                    ClassName.get(this.elementUtils.getTypeElement(param.qualifier()))
+                );
+                case SUBDEF -> builder.addStatement(
+                    "builder.withSubdefinition($S)",
+                    param.name()
+                );
+                case INT_ARRAY -> builder.addStatement(
+                    "builder.withIntArray($S)",
+                    param.name()
+                );
+                case FLOAT_ARRAY -> builder.addStatement(
+                    "builder.withFloatArray($S)",
+                    param.name()
+                );
+                case STRING_ARRAY -> builder.addStatement(
+                    "builder.withStringArray($S)",
+                    param.name()
+                );
+                case BOOLEAN_ARRAY -> builder.addStatement(
+                    "builder.withBooleanArray($S)",
+                    param.name()
+                );
+                case CLASS_ARRAY -> builder.addStatement(
+                    "builder.withClassObjectArray($S)",
+                    param.name()
+                );
+                case CLASS_THAT_EXTENDS_ARRAY -> builder.addStatement(
+                    "builder.withClassObjectArray($S, $T.class)",
+                    param.name(),
+                    ClassName.get(this.elementUtils.getTypeElement(param.qualifier()))
+                );
+                case SUBDEF_ARRAY -> builder.addStatement(
+                    "builder.withSubdefinitionArray($S)",
+                    param.name()
+                );
             }
         }
 
