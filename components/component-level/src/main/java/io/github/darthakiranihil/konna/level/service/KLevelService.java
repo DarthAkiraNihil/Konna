@@ -72,7 +72,7 @@ public class KLevelService extends KObject {
      * @param locationName Name of the loaded location
      */
     @KServiceEndpoint(route = "loadLocation")
-    public void loadLocation(
+    protected void loadLocation(
         @KBodyValue("location_name") final String locationName
     ) {
 
