@@ -24,16 +24,18 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
-import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
+import io.github.darthakiranihil.konna.level.entity.*;
+import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
+import io.github.darthakiranihil.konna.level.impl.TestController;
+import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
+@SuppressWarnings("ExtractMethodRecommender")
 public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass {
 
     @Test
@@ -50,7 +52,8 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         KLocation loaded = locationCollection.getAsset("valid");
@@ -117,7 +120,8 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         KLocation loaded = locationCollection.getAsset("connectivity_graph_test");
@@ -140,6 +144,132 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
         Assertions.assertEquals("mf2", p.get(1));
         Assertions.assertEquals("mf3", p.get(2));
         Assertions.assertEquals("mf4", p.get(3));
+
+    }
+
+    @Test
+    public void testLoadWithValidatedAutonomousEntity() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+
+        KLocationCollection locationCollection = new KLocationCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        KLocation location = locationCollection.getAsset("valid_only_autonomous");
+        KMapSector sector = location.getSector("mf1");
+        KMapSectorSlice slice = sector.getSlice(0, 0);
+        Assertions.assertEquals(1, slice.entities().size());
+
+        KMapEntity entity = slice.entities().getFirst();
+        Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
+
+        KAutonomousEntityController controller = KReflectionUtils.getField(
+            KAutonomousEntity.class,
+            entity,
+            "controller",
+            KAutonomousEntityController.class
+        );
+        Assertions.assertNotNull(controller);
+
+        Assertions.assertEquals(TestController.class, controller.getClass());
+        TestController tc = (TestController) controller;
+        Assertions.assertEquals(42069, tc.getTest());
+
+        Assertions.assertEquals(new KVector2i(1, 0), controller.getNextMoveDirection());
+        entity.move();
+        Assertions.assertEquals(new KPair<>(new KVector2i(1, 0), sector), entity.getPosition());
+
+    }
+
+    @Test
+    public void testLoadFalseValidatedAutonomousEntity() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+
+        KLocationCollection locationCollection = new KLocationCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        KLocation location = locationCollection.getAsset("valid_validator_is_not_a_rule");
+        KMapSector sector = location.getSector("mf1");
+        KMapSectorSlice slice = sector.getSlice(0, 0);
+        Assertions.assertEquals(1, slice.entities().size());
+
+        KMapEntity entity = slice.entities().getFirst();
+        Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
+
+        KAutonomousEntityController controller = KReflectionUtils.getField(
+            KAutonomousEntity.class,
+            entity,
+            "controller",
+            KAutonomousEntityController.class
+        );
+        Assertions.assertNotNull(controller);
+
+        Assertions.assertEquals(FalseValidatedController.class, controller.getClass());
+        Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
+        entity.move();
+        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
+
+    }
+
+    @Test
+    public void testLoadAutonomousEntityWithoutValidation() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+
+        KLocationCollection locationCollection = new KLocationCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        KLocation location = locationCollection.getAsset("valid_no_validator");
+        KMapSector sector = location.getSector("mf1");
+        KMapSectorSlice slice = sector.getSlice(0, 0);
+        Assertions.assertEquals(1, slice.entities().size());
+
+        KMapEntity entity = slice.entities().getFirst();
+        Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
+
+        KAutonomousEntityController controller = KReflectionUtils.getField(
+            KAutonomousEntity.class,
+            entity,
+            "controller",
+            KAutonomousEntityController.class
+        );
+        Assertions.assertNotNull(controller);
+
+        Assertions.assertEquals(TestControllerWithoutValidator.class, controller.getClass());
+        Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
+        entity.move();
+        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
 
     }
 }

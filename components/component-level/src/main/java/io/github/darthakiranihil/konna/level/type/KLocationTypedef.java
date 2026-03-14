@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.type;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
+import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 
 /**
  * Asset type definition for locations that are simply levels.
@@ -100,6 +101,19 @@ public final class KLocationTypedef implements KAssetTypedef {
                             .withValidatedSubdefinitionArray(
                                 "static",
                                 entityRule
+                            )
+                            .withValidatedSubdefinitionArray(
+                                "autonomous",
+                                KCompositeAssetDefinitionRuleBuilder
+                                    .create()
+                                    .withNotNullString("name")
+                                    .withNotNullString("descriptor")
+                                    .withClassObject(
+                                        "controller",
+                                        KAutonomousEntityController.class
+                                    )
+                                    .withSubdefinition("params")
+                                    .build()
                             )
                             .build()
                     )

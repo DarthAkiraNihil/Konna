@@ -9,3 +9,9 @@ ext {
 }
 
 description = "Annotations of Konna Level component"
+
+dependencies {
+
+    implementation project(":annotations-core")
+
+}

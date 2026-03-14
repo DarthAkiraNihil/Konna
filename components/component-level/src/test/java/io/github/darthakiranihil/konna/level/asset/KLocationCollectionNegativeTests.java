@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +42,8 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         Assertions.assertThrows(
@@ -65,7 +67,8 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         Assertions.assertThrows(
@@ -104,7 +107,8 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         Assertions.assertThrows(
@@ -128,7 +132,8 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         Assertions.assertThrows(
@@ -167,7 +172,8 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
                 this.assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            )
+            ),
+            KStandardTestClass.context
         );
 
         Assertions.assertThrows(
@@ -188,6 +194,31 @@ public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass 
         Assertions.assertThrows(
             KAssetLoadingException.class,
             () -> locationCollection.getAsset("invalid_by_entity_position_ya")
+        );
+
+    }
+
+    @Test
+    public void testLoadWithAutonomousButValidationFailed() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+
+        KLocationCollection locationCollection = new KLocationCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> locationCollection.getAsset("invalid_validation_failed")
         );
 
     }

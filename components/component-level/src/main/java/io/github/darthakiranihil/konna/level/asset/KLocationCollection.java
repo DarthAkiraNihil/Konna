@@ -17,20 +17,22 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.KAsset;
-import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
+import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
-import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.map.*;
 import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 
@@ -66,17 +68,20 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     private final KAssetLoader assetLoader;
     private final KEventSystem eventSystem;
     private final KTileCollection tileCollection;
+    private final KActivator activator;
 
     /**
      * Standard constructor.
      * @param assetLoader Asset loader
      * @param eventSystem Event system that will be injected in loaded entities and sectors
      * @param tileCollection Tile collection to get tiles for loaded location
+     * @param activator Activator to create autonomous entity controllers
      */
     public KLocationCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KEventSystem eventSystem,
-        @KInject final KTileCollection tileCollection
+        @KInject final KTileCollection tileCollection,
+        @KInject final KActivator activator
     ) {
         super(
             "Level.locationCollection",
@@ -86,6 +91,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         this.assetLoader = assetLoader;
         this.eventSystem = eventSystem;
         this.tileCollection = tileCollection;
+        this.activator = activator;
 
     }
 
@@ -98,13 +104,18 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         KAssetDefinition[] rawSectorsDefinitions = definition.getSubdefinitionArray("sectors");
         Map<String, RawSector> rawSectors = this.createRawSectors(rawSectorsDefinitions);
         List<KMapSector> filledSectors = new LinkedList<>();
+        List<KTriplet<
+            KAutonomousEntity,
+            Class<? extends KAutonomousEntityController>,
+            KAssetDefinition
+        >> autonomousEntities = new LinkedList<>();
 
         for (var rawSector: rawSectors.entrySet()) {
             RawSector rs = rawSector.getValue();
 
             this.fillTileLayer(rs);
             this.fillSectorLinkLayer(rs, rawSectors);
-            this.fillEntityLayer(rs);
+            this.fillEntityLayer(rs, autonomousEntities);
             this.fillHeightLayer(rs);
 
             rs.containedSector.refresh();
@@ -114,10 +125,12 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             );
         }
 
-        return new KLocation(
+        KLocation location = new KLocation(
             assetId,
             filledSectors
         );
+        this.createControllers(autonomousEntities, location);
+        return location;
     }
 
     private Map<String, RawSector> createRawSectors(
@@ -245,7 +258,12 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     }
 
     private void fillEntityLayer(
-        final RawSector rawSector
+        final RawSector rawSector,
+        final List<KTriplet<
+            KAutonomousEntity,
+            Class<? extends KAutonomousEntityController>,
+            KAssetDefinition
+        >> autonomousEntitiesList
     ) {
 
         KMapEntityLayer layer = rawSector.entityLayer;
@@ -264,10 +282,33 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
             KAssetDefinition[] controllables = data.getSubdefinitionArray("controllable");
             KAssetDefinition[] staticEntities = data.getSubdefinitionArray("static");
+            KAssetDefinition[] autonomousEntities = data.getSubdefinitionArray("autonomous");
 
             this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector, false);
             this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector, true);
 
+            for (var autonomous: autonomousEntities) {
+
+                var auto = new KAutonomousEntity(
+                    this.eventSystem,
+                    Objects.requireNonNull(autonomous.getString("name")),
+                    Objects.requireNonNull(autonomous.getString("descriptor")),
+                    new KVector2i(x, y),
+                    rawSector.containedSector
+                );
+
+                layer.placeEntity(x, y, auto);
+                autonomousEntitiesList.add(
+                    new KTriplet<>(
+                        auto,
+                        autonomous.getClassObject(
+                            "controller",
+                            KAutonomousEntityController.class
+                        ),
+                        autonomous.getSubdefinition("params")
+                    )
+                );
+            }
         }
 
     }
@@ -322,5 +363,64 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
 
         }
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void createControllers(
+        final List<KTriplet<
+            KAutonomousEntity,
+            Class<? extends KAutonomousEntityController>,
+            KAssetDefinition
+        >> autonomousEntitiesList,
+        final KLocation location
+    ) {
+        for (var data: autonomousEntitiesList) {
+            KAutonomousEntity entity = data.first();
+            Class<? extends KAutonomousEntityController> controllerClass = data.second();
+            KAssetDefinition controllerParams = data.third();
+
+            try {
+                var paramsValidator = KClassUtils
+                        .getForName(
+                            String.format(
+                                "konna.generated.level.entity.%s$$ParamValidator",
+                                controllerClass.getSimpleName()
+                            )
+                        );
+
+                if (!KAssetDefinitionRule.class.isAssignableFrom(paramsValidator)) {
+                    KSystemLogger.warning(
+                        this.name,
+                            "Found validator is not an KAssetDefinitionRule instance!"
+                        +   "Skipping validation"
+                    );
+                } else {
+                    KAssetDefinitionRule validator = this.activator
+                        .createObject((Class<? extends KAssetDefinitionRule>) paramsValidator);
+                    try {
+                        validator.validate(controllerParams);
+                    } catch (KAssetDefinitionError e) {
+                        throw new KAssetLoadingException(e);
+                    }
+                }
+            } catch (KClassNotFoundException e) {
+                KSystemLogger.warning(
+                    this.name,
+                    "Could not find param validator for %s. Skipping validation",
+                    controllerClass.getCanonicalName()
+                );
+            }
+
+            KAutonomousEntityController controller = this
+                .activator
+                .createObject(
+                    controllerClass,
+                    entity,
+                    location,
+                    controllerParams
+                );
+
+            entity.setController(controller);
+        }
     }
 }
