@@ -29,8 +29,7 @@ import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The elementary unit of a game level (location) that provides all information
@@ -187,6 +186,50 @@ public final class KMapSector extends KObject {
      */
     public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
         return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
+    }
+
+    // todo: remove this disgusting poltergeist shit make a direct access,
+    // but not through layers but something like "tools"
+    /**
+     * Places an entity on this layer.
+     * @param x X coordinate to place the entity
+     * @param y Y coordinate to place the entity
+     * @param entity Entity to place
+     * @return This layer (for method chaining)
+     */
+    public KMapEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
+        return this.entityLayer.placeEntity(x, y, entity);
+    }
+
+    /**
+     * Places an entity on this layer.
+     * @param position Position to place the entity
+     * @param entity Entity to place
+     * @return This layer (for method chaining)
+     */
+    public KMapEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
+        return this.entityLayer.placeEntity(position, entity);
+    }
+
+    /**
+     * Removes an entity from this layer.
+     * @param x X coordinate to remove the entity from
+     * @param y Y coordinate to remove the entity from
+     * @param entity Entity to remove
+     * @return This layer (for method chaining)
+     */
+    public KMapEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
+        return this.entityLayer.removeEntity(x, y, entity);
+    }
+
+    /**
+     * Removes an entity from this layer.
+     * @param position Position to remove the entity from
+     * @param entity Entity to remove
+     * @return This layer (for method chaining)
+     */
+    public KMapEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
+        return this.entityLayer.removeEntity(position, entity);
     }
 
     /**

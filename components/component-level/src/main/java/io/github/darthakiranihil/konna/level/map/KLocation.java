@@ -85,6 +85,10 @@ public final class KLocation extends KObject {
         return this.sectors.get(sectorName);
     }
 
+    public boolean hasSector(final String sectorName) {
+        return this.sectors.containsKey(sectorName);
+    }
+
     /**
      * Unloads this location.
      */
