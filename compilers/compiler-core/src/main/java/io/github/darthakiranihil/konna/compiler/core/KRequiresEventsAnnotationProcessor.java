@@ -204,7 +204,7 @@ public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationPro
         for (var event: events.values()) {
             if (event.simple()) {
                 builder.addStatement(
-                    "eventSystem.registerSimpleEvent(new $T($S))",
+                    "eventSystem.registerEvent(new $T($S))",
                     ClassName.get(
                         "io.github.darthakiranihil.konna.core.message",
                         "KSimpleEvent"
