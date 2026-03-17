@@ -63,6 +63,8 @@ public class KLevelService extends KObject {
     /**
      * Standard constructor.
      * @param locationCollection Location collection to get locations from
+     * @param eventSystem Event system to get {@code locationLoaded} and {@code locationUnloaded}
+     *                    events to invoke.
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,
@@ -72,8 +74,12 @@ public class KLevelService extends KObject {
 
         this.locationCollection = locationCollection;
 
-        this.locationLoaded = Objects.requireNonNull(eventSystem.getEvent("locationLoaded"));
-        this.locationUnloaded = Objects.requireNonNull(eventSystem.getSimpleEvent("locationUnloaded"));
+        this.locationLoaded = Objects.requireNonNull(
+            eventSystem.getEvent("locationLoaded")
+        );
+        this.locationUnloaded = Objects.requireNonNull(
+            eventSystem.getSimpleEvent("locationUnloaded")
+        );
     }
 
     /**

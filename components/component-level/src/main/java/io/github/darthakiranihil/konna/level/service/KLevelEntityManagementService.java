@@ -74,14 +74,27 @@ public class KLevelEntityManagementService extends KObject {
     private @Nullable KMessenger messenger;
     private @Nullable KLocation currentLocation;
 
+    /**
+     * Standard constructor.
+     * @param eventSystem Event system to get {@code locationLoaded} and {@code locationUnloaded}
+     *                    events
+     * @param activator Activator to create autonomous entities' controllers
+     */
     public KLevelEntityManagementService(
         @KInject final KEventSystem eventSystem,
         @KInject final KActivator activator
     ) {
-        super("Level.LevelEntityManagementService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super(
+            "Level.LevelEntityManagementService",
+            KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
+        );
 
-        KEvent<KLocation> locationLoaded = Objects.requireNonNull(eventSystem.getEvent("locationLoaded"));
-        KSimpleEvent locationUnloaded = Objects.requireNonNull(eventSystem.getSimpleEvent("locationUnloaded"));
+        KEvent<KLocation> locationLoaded = Objects.requireNonNull(
+            eventSystem.getEvent("locationLoaded")
+        );
+        KSimpleEvent locationUnloaded = Objects.requireNonNull(
+            eventSystem.getSimpleEvent("locationUnloaded")
+        );
 
         locationUnloaded.subscribe(this.onLocationUnloadedConsumer);
         locationLoaded.subscribe(this.onLocationLoadedConsumer);
@@ -94,10 +107,24 @@ public class KLevelEntityManagementService extends KObject {
         this.eventSystem = eventSystem;
     }
 
+    /**
+     * Sets a messenger for this service.
+     * @param messenger Messenger to set
+     */
     public void setMessenger(final KMessenger messenger) {
         this.messenger = messenger;
     }
 
+    /**
+     * <p>
+     *     Moves all entities presented at the current moment.
+     *     Autonomous entities are moved first, then controllable entities.
+     * </p>
+     * <p>
+     *     If service has an assigned messenger, it sends {@code controllableEntities}
+     *     message with list of all controllable entities located by {@code moved} key.
+     * </p>
+     */
     @KServiceEndpoint(route = "moveAllEntities")
     protected void moveAllEntities() {
         this.autonomouses.values().forEach(KMapEntity::move);
@@ -116,6 +143,11 @@ public class KLevelEntityManagementService extends KObject {
         );
     }
 
+    /**
+     * Sets a direction for a controllable entity if it exists.
+     * @param entityId Entity ID to move
+     * @param direction New direction for moved entity
+     */
     @KServiceEndpoint(route = "setDirectionForControllableEntity")
     protected void setDirectionForControllableEntity(
         @KBodyValue("entity_id") final UUID entityId,
@@ -131,6 +163,23 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Creates a new autonomous entity in current location if it is presented.
+     *     It will fail if deployment sector, position or controller are invalid.
+     * </p>
+     * <p>
+     *     If an entity has been created, it will send {@code autonomousEntityCreated} message
+     *     with created entity id (key {@code entity_id}), its position (key {@code position})
+     *     and instance (key {@code instance})
+     * </p>
+     * @param entityName Name of created entity
+     * @param descriptor Descriptor of created entity
+     * @param sectorName Name of sector to create entity in (deployment sector)
+     * @param position Position to place entity on
+     * @param controller Controller for autonomous entity
+     * @param controllerParams Controller params
+     */
     @SuppressWarnings("unchecked")
     @KServiceEndpoint(route = "createAutonomousEntity")
     protected void createAutonomousEntity(
@@ -142,7 +191,9 @@ public class KLevelEntityManagementService extends KObject {
         @KBodyValue("params") final KAssetDefinition controllerParams
     ) {
 
-        KMapSector deploymentSector = this.getDeploymentSector(sectorName, position, "an autonomous");
+        KMapSector deploymentSector = this.getDeploymentSector(
+            sectorName, position, "an autonomous"
+        );
         if (deploymentSector == null) {
             return;
         }
@@ -210,6 +261,18 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Destroys an autonomous entity in current location if it is presented.
+     *     If there is no loaded level, it will fail
+     * </p>
+     * <p>
+     *     If it succeeds, it will send {@code autonomousEntityDestroyed} message
+     *     with created entity id (key {@code entity_id}), its position (key {@code position})
+     *     and instance (key {@code instance})
+     * </p>
+     * @param entityId Entity id to destroy
+     */
     @KServiceEndpoint(route = "destroyAutonomousEntity")
     protected void destroyAutonomousEntity(
         @KBodyValue("entity_id") final UUID entityId
@@ -238,6 +301,21 @@ public class KLevelEntityManagementService extends KObject {
         this.sendMessage(entity, "autonomousEntityDestroyed");
     }
 
+    /**
+     * <p>
+     *     Creates a new static entity in current location if it is presented.
+     *     It will fail if deployment sector or position are invalid.
+     * </p>
+     * <p>
+     *     If an entity has been created, it will send {@code staticEntityCreated} message
+     *     with created entity id (key {@code entity_id}), its position (key {@code position})
+     *     and instance (key {@code instance})
+     * </p>
+     * @param entityName Name of created entity
+     * @param descriptor Descriptor of created entity
+     * @param sectorName Name of sector to create entity in (deployment sector)
+     * @param position Position to place entity on
+     */
     @KServiceEndpoint(route = "createStaticEntity")
     protected void createStaticEntity(
         @KBodyValue("name") final String entityName,
@@ -266,6 +344,18 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Destroys a static entity in current location if it is presented.
+     *     If there is no loaded level, it will fail
+     * </p>
+     * <p>
+     *     If it succeeds, it will send {@code staticEntityDestroyed} message
+     *     with created entity id (key {@code entity_id}), its position (key {@code position})
+     *     and instance (key {@code instance})
+     * </p>
+     * @param entityId Entity id to destroy
+     */
     @KServiceEndpoint(route = "destroyStaticEntity")
     protected void destroyStaticEntity(
         @KBodyValue("entity_id") final UUID entityId
@@ -295,6 +385,21 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Creates a new controllable entity in current location if it is presented.
+     *     It will fail if deployment sector or position are invalid.
+     * </p>
+     * <p>
+     *     If an entity has been created, it will send {@code controllableEntityCreated} message
+     *     with created entity id (key {@code entity_id}), its position (key {@code position})
+     *     and instance (key {@code instance})
+     * </p>
+     * @param entityName Name of created entity
+     * @param descriptor Descriptor of created entity
+     * @param sectorName Name of sector to create entity in (deployment sector)
+     * @param position Position to place entity on
+     */
     @KServiceEndpoint(route = "createControllableEntity")
     protected void createControllableEntity(
         @KBodyValue("name") final String entityName,
@@ -303,7 +408,9 @@ public class KLevelEntityManagementService extends KObject {
         @KBodyValue("position") final KVector2i position
     ) {
 
-        KMapSector deploymentSector = this.getDeploymentSector(sectorName, position, "a controllable");
+        KMapSector deploymentSector = this.getDeploymentSector(
+            sectorName, position, "a controllable"
+        );
         if (deploymentSector == null) {
             return;
         }
@@ -323,6 +430,18 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Destroys a controllable entity in current location if it is presented.
+     *     If there is no loaded level, it will fail
+     * </p>
+     * <p>
+     *     If it succeeds, it will send {@code controllableEntityDestroyed} message
+     *     with created entity id (key {@code entity_id}), its position (key {@code position})
+     *     and instance (key {@code instance})
+     * </p>
+     * @param entityId Entity id to destroy
+     */
     @KServiceEndpoint(route = "destroyControllableEntity")
     protected void destroyControllableEntity(
         @KBodyValue("entity_id") final UUID entityId
@@ -351,6 +470,11 @@ public class KLevelEntityManagementService extends KObject {
         this.sendMessage(entity, "controllableEntityDestroyed");
     }
 
+    /**
+     * Handles level loading by getting all loaded entities and adding them
+     * to own lists to track.
+     * @param location Loaded level instance
+     */
     protected void onLocationLoaded(final KLocation location) {
 
         this.currentLocation = location;
@@ -389,6 +513,9 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
+    /**
+     * Handles level unloading by clearing lists of all tracked entities.
+     */
     protected void onLocationUnloaded() {
         this.controllables.clear();
         this.statics.clear();
