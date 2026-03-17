@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.path;
 
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.map.KLevel;
+import io.github.darthakiranihil.konna.level.layer.KLevel;
 
 /**
  * Interface providing methods to find paths in specific levels

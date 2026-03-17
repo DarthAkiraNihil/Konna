@@ -5,6 +5,6 @@
  * @author Darth Akira Nihil
  */
 @NullMarked
-package io.github.darthakiranihil.konna.level.map;
+package io.github.darthakiranihil.konna.level.layer;
 
 import org.jspecify.annotations.NullMarked;

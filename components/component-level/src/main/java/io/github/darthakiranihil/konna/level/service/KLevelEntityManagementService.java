@@ -35,9 +35,9 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.entity.*;
-import io.github.darthakiranihil.konna.level.map.KLevel;
-import io.github.darthakiranihil.konna.level.map.KLevelSector;
-import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.KLevel;
+import io.github.darthakiranihil.konna.level.layer.KLevelSector;
+import io.github.darthakiranihil.konna.level.layer.KMapSectorSlice;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;

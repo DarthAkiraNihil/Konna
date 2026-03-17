@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.map;
+package io.github.darthakiranihil.konna.level.layer;
 
 import java.util.List;
 

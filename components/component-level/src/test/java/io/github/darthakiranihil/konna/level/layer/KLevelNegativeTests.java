@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.map;
+package io.github.darthakiranihil.konna.level.layer;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-/**
- * Sector link data record.
- * @param linkedSector Linked sector
- * @param destination Position on the linked sector to move after transition on the link
- *
- * @since 0.5.0
- * @author Darth Akira Nihil
- */
-public record KSectorLinkData(
-    KLevelSector linkedSector,
-    KVector2i destination
-) {
+import java.util.List;
 
+public class KLevelNegativeTests extends KStandardTestClass {
+
+    @Test
+    public void testGetSectorFailed() {
+
+        KLevel level = new KLevel("loc1", List.of());
+
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> level.getSector("sector_1")
+        );
+
+    }
 }
