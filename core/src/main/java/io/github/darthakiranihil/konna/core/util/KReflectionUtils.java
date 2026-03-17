@@ -43,6 +43,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param ofClass Class to get field handle of
      * @param fieldName Field name
      * @return Field handle for specified field in class or {@code null} if not presented
+     * @since 0.5.0
      */
     public static @Nullable Field getField(
         final Class<?> ofClass,
@@ -64,6 +65,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param fieldClass Type of field value
      * @return Actual field value or {@code null} if it failed to get it
      * @param <T> Type of field value
+     * @since 0.5.0
      */
     public static <T> @Nullable T getFieldValue(
         final Field field,
@@ -82,6 +84,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * @param field Field handle
      * @param instance Instance to get field value of
      * @return Actual field value or {@code null} if it failed to get it
+     * @since 0.5.0
      */
     public static @Nullable Object getFieldValue(
         final Field field,
