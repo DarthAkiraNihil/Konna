@@ -39,6 +39,62 @@ public final class KReflectionUtils extends KUninstantiable {
     }
 
     /**
+     * Returns a field handle without forcing to catch checked exceptions.
+     * @param ofClass Class to get field handle of
+     * @param fieldName Field name
+     * @return Field handle for specified field in class or {@code null} if not presented
+     */
+    public static @Nullable Field getField(
+        final Class<?> ofClass,
+        final String fieldName
+    ) {
+        try {
+            Field f = ofClass.getDeclaredField(fieldName);
+            f.setAccessible(true);
+            return f;
+        } catch (NoSuchFieldException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Gets field value of provided field without forcing to catch checked exceptions.
+     * @param field Field handle
+     * @param instance Instance to get field value of
+     * @param fieldClass Type of field value
+     * @return Actual field value or {@code null} if it failed to get it
+     * @param <T> Type of field value
+     */
+    public static <T> @Nullable T getFieldValue(
+        final Field field,
+        final Object instance,
+        final Class<T> fieldClass
+    ) {
+        try {
+            return fieldClass.cast(field.get(instance));
+        } catch (Throwable e) {
+            return null;
+        }
+    }
+
+    /**
+     * Gets field value as is without forcing catching checked exceptions.
+     * @param field Field handle
+     * @param instance Instance to get field value of
+     * @return Actual field value or {@code null} if it failed to get it
+     */
+    public static @Nullable Object getFieldValue(
+        final Field field,
+        final Object instance
+    ) {
+        try {
+            return field.get(instance);
+        } catch (Throwable e) {
+            return null;
+        }
+    }
+
+    /**
      * Gets field of a class with automatic cast.
      * @param ofClass Class where to get field from
      * @param classInstance Instance of class that is being accessed
@@ -48,7 +104,7 @@ public final class KReflectionUtils extends KUninstantiable {
      * field and target or class and instance types do not match.
      * @param <T> Type of accessed field.
      */
-    public static <T> @Nullable T getField(
+    public static <T> @Nullable T getFieldValue(
         final Class<?> ofClass,
         final Object classInstance,
         final String fieldName,

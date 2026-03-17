@@ -204,6 +204,7 @@ public class KLevelEntityManagementService extends KObject {
 
         entity.setController(controllerInstance);
         deploymentSector.placeEntity(position, entity);
+        this.autonomouses.put(entity.id(), entity);
 
         this.sendMessage(entity, "autonomousEntityCreated");
 
@@ -221,7 +222,7 @@ public class KLevelEntityManagementService extends KObject {
             return;
         }
 
-        if (!this.statics.containsKey(entityId)) {
+        if (!this.autonomouses.containsKey(entityId)) {
             KSystemLogger.warning(
                 this.name,
                 "Unknown autonomous entity id: %s",
@@ -230,7 +231,7 @@ public class KLevelEntityManagementService extends KObject {
             return;
         }
 
-        KStaticEntity entity = this.statics.remove(entityId);
+        KAutonomousEntity entity = this.autonomouses.remove(entityId);
         var position = entity.getPosition();
         position.second().removeEntity(position.first(), entity);
 
@@ -259,6 +260,8 @@ public class KLevelEntityManagementService extends KObject {
         );
 
         deploymentSector.placeEntity(position, entity);
+        this.statics.put(entity.id(), entity);
+
         this.sendMessage(entity, "staticEntityCreated");
 
     }
@@ -305,7 +308,7 @@ public class KLevelEntityManagementService extends KObject {
             return;
         }
 
-        KStaticEntity entity = new KStaticEntity(
+        KControllableEntity entity = new KControllableEntity(
             this.eventSystem,
             entityName,
             descriptor,
@@ -314,6 +317,8 @@ public class KLevelEntityManagementService extends KObject {
         );
 
         deploymentSector.placeEntity(position, entity);
+        this.controllables.put(entity.id(), entity);
+
         this.sendMessage(entity, "controllableEntityCreated");
 
     }

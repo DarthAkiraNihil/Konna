@@ -29,5 +29,45 @@ public class TestMessageRouteConfigurer implements KMessageRoutesConfigurer {
             "Level.LevelService.loadLocation"
         );
 
+        messageSystem.addMessageRoute(
+            "setDirectionForControllableEntity",
+            "Level.LevelEntityManagementService.setDirectionForControllableEntity"
+        );
+
+        messageSystem.addMessageRoute(
+            "moveAllEntities",
+            "Level.LevelEntityManagementService.moveAllEntities"
+        );
+
+        messageSystem.addMessageRoute(
+            "createStaticEntity",
+            "Level.LevelEntityManagementService.createStaticEntity"
+        );
+
+        messageSystem.addMessageRoute(
+            "createControllableEntity",
+            "Level.LevelEntityManagementService.createControllableEntity"
+        );
+
+        messageSystem.addMessageRoute(
+            "createAutonomousEntity",
+            "Level.LevelEntityManagementService.createAutonomousEntity"
+        );
+
+        messageSystem.addMessageRoute(
+            "destroyStaticEntity",
+            "Level.LevelEntityManagementService.destroyStaticEntity"
+        );
+
+        messageSystem.addMessageRoute(
+            "destroyControllableEntity",
+            "Level.LevelEntityManagementService.destroyControllableEntity"
+        );
+
+        messageSystem.addMessageRoute(
+            "destroyAutonomousEntity",
+            "Level.LevelEntityManagementService.destroyAutonomousEntity"
+        );
+
     }
 }

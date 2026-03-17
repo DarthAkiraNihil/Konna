@@ -27,7 +27,7 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 final class KImGuiSpairUnboxer extends KUninstantiable {
 
     public static ImFont unbox(final KImFont original) {
-        ImFont f = KReflectionUtils.getField(
+        ImFont f = KReflectionUtils.getFieldValue(
             KImFontSpair.class,
             original,
             "boxed",
@@ -47,7 +47,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
 
     public static ImFontGlyph unbox(final KImFontGlyph original) {
 
-        ImFontGlyph gl = KReflectionUtils.getField(
+        ImFontGlyph gl = KReflectionUtils.getFieldValue(
             KImFontGlyphSpair.class,
             original,
             "boxed",
@@ -65,7 +65,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImDrawList unbox(final KImDrawList original) {
-        ImDrawList dl = KReflectionUtils.getField(
+        ImDrawList dl = KReflectionUtils.getFieldValue(
             KImDrawListSpair.class,
             original,
             "boxed",
@@ -83,7 +83,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImDrawData unbox(final KImDrawData original) {
-        ImDrawData dd = KReflectionUtils.getField(
+        ImDrawData dd = KReflectionUtils.getFieldValue(
             KImDrawDataSpair.class,
             original,
             "boxed",
@@ -101,7 +101,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImGuiViewport unbox(final KImGuiViewport original) {
-        ImGuiViewport vp = KReflectionUtils.getField(
+        ImGuiViewport vp = KReflectionUtils.getFieldValue(
             KImGuiViewportSpair.class,
             original,
             "boxed",
@@ -119,7 +119,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImGuiWindowClass unbox(final KImGuiWindowClass original) {
-        ImGuiWindowClass wc = KReflectionUtils.getField(
+        ImGuiWindowClass wc = KReflectionUtils.getFieldValue(
             KImGuiWindowClassSpair.class,
             original,
             "boxed",
@@ -137,7 +137,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImGuiKeyData unbox(final KImGuiKeyData original) {
-        ImGuiKeyData kd = KReflectionUtils.getField(
+        ImGuiKeyData kd = KReflectionUtils.getFieldValue(
             KImGuiKeyDataSpair.class,
             original,
             "boxed",
@@ -155,7 +155,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImFontConfig unbox(final KImFontConfig original) {
-        ImFontConfig fc = KReflectionUtils.getField(
+        ImFontConfig fc = KReflectionUtils.getFieldValue(
             KImFontConfigSpair.class,
             original,
             "boxed",
@@ -173,7 +173,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImFontAtlas unbox(final KImFontAtlas original) {
-        ImFontAtlas fc = KReflectionUtils.getField(
+        ImFontAtlas fc = KReflectionUtils.getFieldValue(
             KImFontAtlasSpair.class,
             original,
             "boxed",
@@ -191,7 +191,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImGuiStorage unbox(final KImGuiStorage original) {
-        ImGuiStorage s = KReflectionUtils.getField(
+        ImGuiStorage s = KReflectionUtils.getFieldValue(
             KImGuiStorageSpair.class,
             original,
             "boxed",
@@ -209,7 +209,7 @@ final class KImGuiSpairUnboxer extends KUninstantiable {
     }
 
     public static ImGuiStyle unbox(final KImGuiStyle original) {
-        ImGuiStyle s = KReflectionUtils.getField(
+        ImGuiStyle s = KReflectionUtils.getFieldValue(
             KImGuiStyleSpair.class,
             original,
             "boxed",

@@ -48,19 +48,19 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     }
 
     @Test
-    public void testGetField() {
+    public void testGetFieldValue() {
         TestClass test = new TestClass(1);
         Assertions.assertEquals(
             1,
-            KReflectionUtils.getField(TestClass.class, test, "property", Integer.class)
+            KReflectionUtils.getFieldValue(TestClass.class, test, "property", Integer.class)
         );
     }
 
     @Test
-    public void testGetFieldOfAnotherClass() {
+    public void testGetFieldValueOfAnotherClass() {
         TestClass test = new TestClass(1);
         Assertions.assertNull(
-            KReflectionUtils.getField(Konna.class, test, "property", int.class)
+            KReflectionUtils.getFieldValue(Konna.class, test, "property", int.class)
         );
     }
 
@@ -68,7 +68,7 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     public void testGetNonExistentField() {
         TestClass test = new TestClass(1);
         Assertions.assertNull(
-            KReflectionUtils.getField(TestClass.class, test, "property1", int.class)
+            KReflectionUtils.getFieldValue(TestClass.class, test, "property1", int.class)
         );
     }
 

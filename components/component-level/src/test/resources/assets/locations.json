@@ -1675,5 +1675,126 @@
                 }
             ]
         }
+    },
+    "test_level_entity_management_service": {
+        "Level.location": {
+            "sectors": [
+                {
+                    "name": "mf1",
+                    "size": {
+                        "width": 3,
+                        "height": 3
+                    },
+                    "heights": [
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 2,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [],
+                            "autonomous": []
+                        },
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "static": [],
+                            "controllable": [],
+                            "autonomous": [
+                                {
+                                    "name": "a1",
+                                    "descriptor": "a1",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestController",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "controllable": [],
+                            "autonomous": []
+                        }
+                    ]
+                },
+                {
+                    "name": "mf2",
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": []
+                }
+            ]
+        }
     }
 }

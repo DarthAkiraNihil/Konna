@@ -125,7 +125,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
         );
 
         KLocation loaded = locationCollection.getAsset("connectivity_graph_test");
-        KIntWeightedGraph<String> graph = (KIntWeightedGraph<String>) KReflectionUtils.getField(
+        KIntWeightedGraph<String> graph = (KIntWeightedGraph<String>) KReflectionUtils.getFieldValue(
             KLocation.class,
             loaded,
             "sectorConnectivityGraph",
@@ -173,7 +173,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
         KMapEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
 
-        KAutonomousEntityController controller = KReflectionUtils.getField(
+        KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
             KAutonomousEntity.class,
             entity,
             "controller",
@@ -217,7 +217,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
         KMapEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
 
-        KAutonomousEntityController controller = KReflectionUtils.getField(
+        KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
             KAutonomousEntity.class,
             entity,
             "controller",
@@ -258,7 +258,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
         KMapEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
 
-        KAutonomousEntityController controller = KReflectionUtils.getField(
+        KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
             KAutonomousEntity.class,
             entity,
             "controller",
