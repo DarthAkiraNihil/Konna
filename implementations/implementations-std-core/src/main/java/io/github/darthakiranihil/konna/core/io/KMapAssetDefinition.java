@@ -475,4 +475,37 @@ public class KMapAssetDefinition implements KAssetDefinition {
         }
     }
 
+    @Override
+    public @Nullable Object getObject(final String property) {
+        return this.value.get(property);
+    }
+
+    @Override
+    public @Nullable Object[] getObjectArray(final String property) {
+        var val = this.value.get(property);
+        if (List.class.isAssignableFrom(val.getClass())) {
+            return ((List<?>) val).toArray();
+        }
+        return (Object[]) val;
+    }
+
+    @Override
+    public boolean hasObject(final String property) {
+        return this.value.containsKey(property);
+    }
+
+    @Override
+    public boolean hasObjectArray(final String property) {
+        if (!this.value.containsKey(property)) {
+            return false;
+        }
+
+        try {
+            this.getObjectArray(property);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
 }

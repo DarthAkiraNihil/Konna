@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
@@ -80,6 +81,7 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
         source.put("class_array_as_string_array_property", new String[] {KStandardJsonParser.class.getCanonicalName()});
         source.put("class_array_as_class_array_property", new Class[] {KStandardJsonParser.class});
         source.put("empty_class_array_as_class_array_property", new Class[0]);
+        source.put("array_as_list", List.of("aboba"));
 
         this.definition = new KMapAssetDefinition(
             source
@@ -121,7 +123,7 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
             }
         );
 
-        Assertions.assertEquals(41, this.definition.getProperties().size());
+        Assertions.assertEquals(42, this.definition.getProperties().size());
 
         Assertions.assertEquals(1, this.definition.getIntArray("int_array_property").length);
         Assertions.assertEquals(1, this.definition.getIntArray("long_array_property").length);
@@ -152,6 +154,10 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(1, this.definition.getClassObjectArray("class_array_as_class_array_property").length);
         Assertions.assertEquals(1, this.definition.getClassObjectArray("class_array_as_string_array_property", KJsonParser.class).length);
         Assertions.assertEquals(1, this.definition.getClassObjectArray("class_array_as_class_array_property", KJsonParser.class).length);
+
+        Assertions.assertNotNull(this.definition.getObject("double_property"));
+        Assertions.assertEquals(1, this.definition.getObjectArray("boxed_byte_array_property").length);
+        Assertions.assertEquals(1, this.definition.getObjectArray("array_as_list").length);
 
     }
 
@@ -211,6 +217,10 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(this.definition.hasClassObjectArray("empty_class_array_as_class_array_property", KJsonParser.class));
         Assertions.assertTrue(this.definition.hasClassObjectArray("empty_class_array_as_class_array_property", KJsonValidator.class));
 
+        Assertions.assertTrue(this.definition.hasObject("double_property"));
+        Assertions.assertTrue(this.definition.hasObjectArray("boxed_byte_array_property"));
+        Assertions.assertTrue(this.definition.hasObjectArray("array_as_list"));
+
     }
 
     @Test
@@ -245,6 +255,11 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
         Assertions.assertFalse(this.definition.hasClassObjectArray("aboba213", KJsonParser.class));
         Assertions.assertFalse(this.definition.hasClassObjectArray("boolean_array_property", KJsonParser.class));
         Assertions.assertFalse(this.definition.hasClassObjectArray("class_array_as_class_array_property", KJsonValidator.class));
+
+        Assertions.assertFalse(this.definition.hasObject("proppp"));
+
+        Assertions.assertFalse(this.definition.hasObjectArray("proppp"));
+        Assertions.assertFalse(this.definition.hasObjectArray("float_property"));
 
     }
 }

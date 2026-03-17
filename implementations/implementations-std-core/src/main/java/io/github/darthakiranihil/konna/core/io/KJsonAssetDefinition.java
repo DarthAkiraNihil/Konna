@@ -416,4 +416,30 @@ public class KJsonAssetDefinition implements KAssetDefinition {
             return false;
         }
     }
+
+    @Override
+    public @Nullable Object getObject(final String property) {
+        return this.value.getProperty(property).getRawObject();
+    }
+
+    @Override
+    public @Nullable Object[] getObjectArray(final String property) {
+        List<KJsonValue> list = this.value.getProperty(property).getList();
+        @Nullable Object[] array = new Object[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i).getRawObject();
+        }
+
+        return array;
+    }
+
+    @Override
+    public boolean hasObject(final String property) {
+        return this.value.hasProperty(property);
+    }
+
+    @Override
+    public boolean hasObjectArray(final String property) {
+        return this.hasProperty(property, KJsonValueType.ARRAY);
+    }
 }
