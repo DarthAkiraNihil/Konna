@@ -65,7 +65,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
             konnaWithOnlyDefaultArgs.run();
 
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(2);
             KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");

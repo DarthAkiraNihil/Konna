@@ -66,7 +66,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     void setUp(final TestInfo testInfo) {
         Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
         konnaWithOnlyDefaultArgs.run();
-        KThreadUtils.sleepForSeconds(1);
+        KThreadUtils.sleepForSeconds(2);
         this.realContext = KReflectionUtils.getFieldValue(
             this.ctx,
             Objects.requireNonNull(KReflectionUtils.getFieldValue(

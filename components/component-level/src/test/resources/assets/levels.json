@@ -1503,7 +1503,7 @@
         }
     },
     "valid_validator_is_not_a_rule": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -1590,7 +1590,7 @@
         }
     },
     "invalid_validation_failed": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -1677,7 +1677,7 @@
         }
     },
     "test_level_entity_management_service": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",

@@ -273,20 +273,20 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        Assertions.assertTrue(euclidean.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(chebyshev.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(manhattan.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(euclidean.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(chebyshev.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(manhattan.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
 
-        Assertions.assertTrue(euclidean.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
-        Assertions.assertTrue(chebyshev.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
-        Assertions.assertTrue(naturalizedChebyshev.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
-        Assertions.assertTrue(manhattan.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(euclidean.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(chebyshev.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(naturalizedChebyshev.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(manhattan.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
 
-        Assertions.assertTrue(euclidean.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(chebyshev.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(naturalizedChebyshev.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(manhattan.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(euclidean.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(chebyshev.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(naturalizedChebyshev.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(manhattan.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
 
     }
 
