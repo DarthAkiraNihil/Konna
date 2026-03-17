@@ -94,6 +94,17 @@ public interface KAssetDefinition {
     <T> Class<? extends T> getClassObject(String property, Class<T> targetClass);
 
     /**
+     * Returns asset definition property value "as-is" without any additional casting,
+     * that is useful when concrete type is unknown. Using this method is signing that
+     * its type will be handled manually.
+     * You are on your own now!
+     * @param property Property name
+     * @return Raw object contained by this property
+     * @since 0.5.0
+     */
+    @Nullable Object getObject(String property);
+
+    /**
      * Returns integer array property of asset definition.
      * @param property Property name
      * @return Integer array of passed property
@@ -142,6 +153,17 @@ public interface KAssetDefinition {
      * @since 0.4.0
      */
     <T> Class<? extends T>[] getClassObjectArray(String property, Class<T> targetClass);
+
+    /**
+     * Returns array of raw ("as-is") objects from asset definition without any additional casting,
+     * that is useful when concrete type is unknown. Using this method is signing that
+     * values types will be handled manually.
+     * You are on your own now!
+     * @param property Property name
+     * @return Raw object array contained by this property
+     * @since 0.5.0
+     */
+    @Nullable Object[] getObjectArray(String property);
 
     /**
      * @param property Property name
@@ -200,6 +222,13 @@ public interface KAssetDefinition {
 
     /**
      * @param property Property name
+     * @return Whether this definition contains any-object property
+     * @since 0.5.0
+     */
+    boolean hasObject(String property);
+
+    /**
+     * @param property Property name
      * @return Whether this definition has the int array property with such name or not
      * @since 0.4.0
      */
@@ -244,5 +273,12 @@ public interface KAssetDefinition {
      * @since 0.4.0
      */
     <T> boolean hasClassObjectArray(String property, Class<T> targetClass);
+
+    /**
+     * @param property Property name
+     * @return Whether this definition contains array-of-any-objects property
+     * @since 0.5.0
+     */
+    boolean hasObjectArray(String property);
 
 }

@@ -127,4 +127,73 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
         Assertions.assertFalse(def.hasClassObjectArray("class_array_property", KJsonValidator.class));
 
     }
+
+    @Test
+    public void testGetObjectProperties() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(
+                Map.of(
+                    "class_property", KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName()),
+                    "class_array_property", KJsonValue.fromList(
+                        List.of(
+                            KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName())
+                        )
+                    )
+                )
+            ),
+            v -> {}
+        );
+
+        Assertions.assertNotNull(def.getObject("class_property"));
+        Assertions.assertEquals(1, def.getObjectArray("class_array_property").length);
+
+    }
+
+    @Test
+    public void testHasObjectProperties() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(
+                Map.of(
+                    "class_property", KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName()),
+                    "class_array_property", KJsonValue.fromList(
+                        List.of(
+                            KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName())
+                        )
+                    )
+                )
+            ),
+            v -> {}
+        );
+
+        Assertions.assertTrue(def.hasObject("class_property"));
+        Assertions.assertTrue(def.hasObjectArray("class_array_property"));
+
+    }
+
+    @Test
+    public void testDoesNotHaveObjectProperties() {
+
+        KAssetDefinition def = new KJsonAssetDefinition(
+            KJsonValue.fromMap(
+                Map.of(
+                    "class_property", KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName()),
+                    "class_array_property", KJsonValue.fromList(
+                        List.of(
+                            KJsonValue.fromString(KStandardJsonParser.class.getCanonicalName())
+                        )
+                    )
+                )
+            ),
+            v -> {}
+        );
+
+        Assertions.assertEquals(2, def.getProperties().size());
+        Assertions.assertFalse(def.hasObject("proppp"));
+
+        Assertions.assertFalse(def.hasObjectArray("proppp"));
+        Assertions.assertFalse(def.hasObjectArray("class_property"));
+
+    }
 }

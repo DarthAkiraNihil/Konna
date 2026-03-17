@@ -250,6 +250,32 @@ public final class KCompositeAssetDefinitionRuleBuilder {
         return this;
     }
 
+    /**
+     * Adds a {@link KAssetDefinitionRule#hasObject(String)} rule to the composite.
+     * @param property Name of checked property
+     * @return This builder
+     * @since 0.5.0
+     */
+    public KCompositeAssetDefinitionRuleBuilder withObject(
+        final String property
+    ) {
+        this.rules.add(KAssetDefinitionRule.hasObject(property));
+        return this;
+    }
+
+    /**
+     * Adds a {@link KAssetDefinitionRule#hasObjectArray(String)} rule to the composite.
+     * @param property Name of checked property
+     * @return This builder
+     * @since 0.5.0
+     */
+    public KCompositeAssetDefinitionRuleBuilder withObjectArray(
+        final String property
+    ) {
+        this.rules.add(KAssetDefinitionRule.hasObjectArray(property));
+        return this;
+    }
+
 
     /**
      * Adds a custom rule to the composite.

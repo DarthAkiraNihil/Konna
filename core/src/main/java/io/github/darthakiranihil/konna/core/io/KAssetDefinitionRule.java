@@ -345,4 +345,40 @@ public interface KAssetDefinitionRule extends KValidator<KAssetDefinition> {
         };
     }
 
+    /**
+     * Creates a rule that checks whether a definition has an object property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     * @since 0.5.0
+     */
+    static KAssetDefinitionRule hasObject(
+        final String property
+    ) {
+        return (v) -> {
+            if (v.hasObject(property)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
+    /**
+     * Creates a rule that checks whether a definition has an object array property.
+     * @param property Property to be checked
+     * @return Created asset definition rule
+     * @since 0.5.0
+     */
+    static KAssetDefinitionRule hasObjectArray(
+        final String property
+    ) {
+        return (v) -> {
+            if (v.hasObjectArray(property)) {
+                return;
+            }
+
+            throw KAssetDefinitionError.propertyNotFound(property);
+        };
+    }
+
 }
