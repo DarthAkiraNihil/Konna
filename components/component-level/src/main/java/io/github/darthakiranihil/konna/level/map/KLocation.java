@@ -86,6 +86,14 @@ public final class KLocation extends KObject {
     }
 
     /**
+     * @param sectorName Sector name to check containment for
+     * @return Whether the sector with specific name is presented in this level
+     */
+    public boolean hasSector(final String sectorName) {
+        return this.sectors.containsKey(sectorName);
+    }
+
+    /**
      * Unloads this location.
      */
     public void unload() {

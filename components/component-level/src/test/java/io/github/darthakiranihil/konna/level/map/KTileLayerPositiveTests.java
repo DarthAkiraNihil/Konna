@@ -175,7 +175,7 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         KTileLayer layer = new KTileLayer(2, 2);
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
-        int[][] array = Objects.requireNonNull(KReflectionUtils.getField(KTileLayer.class, layer, "tiles", int[][].class));
+        int[][] array = Objects.requireNonNull(KReflectionUtils.getFieldValue(KTileLayer.class, layer, "tiles", int[][].class));
 
         layer.placeTile(0, 0, tileInfo);
         layer.placeTile(0, 1, tileInfo);

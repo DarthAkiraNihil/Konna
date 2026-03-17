@@ -22,8 +22,7 @@ import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.message.KBodyValue;
-import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -32,6 +31,8 @@ import io.github.darthakiranihil.konna.level.asset.KLocationCollection;
 import io.github.darthakiranihil.konna.level.map.KLocation;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * Level service for handling current active level like loading a new level,
@@ -45,10 +46,15 @@ import org.jspecify.annotations.Nullable;
 @KComponentServiceMetaInfo(
     name = "LevelService"
 )
+@KRequiresEvent(name = "locationLoaded", simple = false, type = KLocation.class)
+@KRequiresEvent(name = "locationUnloaded")
 @SuppressWarnings("FieldCanBeLocal")
 public class KLevelService extends KObject {
 
     private final KLocationCollection locationCollection;
+
+    private final KEvent<KLocation> locationLoaded;
+    private final KSimpleEvent locationUnloaded;
 
     private @Nullable KLocation currentLocation;
     private @Nullable KMapSector currentSector;
@@ -57,13 +63,23 @@ public class KLevelService extends KObject {
     /**
      * Standard constructor.
      * @param locationCollection Location collection to get locations from
+     * @param eventSystem Event system to get {@code locationLoaded} and {@code locationUnloaded}
+     *                    events to invoke.
      */
     public KLevelService(
+        @KInject final KEventSystem eventSystem,
         @KInject final KLocationCollection locationCollection
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
         this.locationCollection = locationCollection;
+
+        this.locationLoaded = Objects.requireNonNull(
+            eventSystem.getEvent("locationLoaded")
+        );
+        this.locationUnloaded = Objects.requireNonNull(
+            eventSystem.getSimpleEvent("locationUnloaded")
+        );
     }
 
     /**
@@ -72,13 +88,14 @@ public class KLevelService extends KObject {
      * @param locationName Name of the loaded location
      */
     @KServiceEndpoint(route = "loadLocation")
-    public void loadLocation(
+    protected void loadLocation(
         @KBodyValue("location_name") final String locationName
     ) {
 
         try {
             if (this.currentLocation != null) {
                 this.currentLocation.unload();
+                this.locationUnloaded.invokeSync();
             }
 
             this.currentLocation = this.locationCollection.getAsset(locationName);
@@ -95,6 +112,8 @@ public class KLevelService extends KObject {
         this.currentSector = this.currentLocation.getSector(
             this.currentLocation.getSectorNames()[0]
         );
+
+        this.locationLoaded.invokeSync(this.currentLocation);
 
         if (this.messenger == null) {
             return;

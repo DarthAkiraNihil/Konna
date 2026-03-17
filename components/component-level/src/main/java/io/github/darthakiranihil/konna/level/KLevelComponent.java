@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
 import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
@@ -74,7 +75,11 @@ public class KLevelComponent extends KComponent {
         KLevelService levelService = this.ctx.createObject(
             KLevelService.class
         );
+        KLevelEntityManagementService levelEntityManagementService = this.ctx.createObject(
+            KLevelEntityManagementService.class
+        );
 
         levelService.setMessenger(this.messenger);
+        levelEntityManagementService.setMessenger(this.messenger);
     }
 }
