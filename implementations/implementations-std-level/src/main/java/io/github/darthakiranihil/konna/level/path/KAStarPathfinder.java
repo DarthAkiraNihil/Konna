@@ -22,9 +22,9 @@ import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.map.KLocation;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
-import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -171,7 +171,7 @@ public class KAStarPathfinder implements KPathfinder {
 
     @Override
     public KPath findPath(
-        final KLocation location,
+        final KLevel location,
         final String srcSector,
         int srcX,
         int srcY,
@@ -204,7 +204,7 @@ public class KAStarPathfinder implements KPathfinder {
 
         if (sectorPath.size() == 1 && sectorPath.getFirst().equals(dstSector)) {
             // on this stage source and destination are guaranteed to be connected
-            KMapSector dst = location.getSector(dstSector);
+            KLevelSector dst = location.getSector(dstSector);
             Queue<KVector2i> path = this.getPath(dst, srcX, srcY, dstX, dstY);
             return new KPath(path);
         }
@@ -213,7 +213,7 @@ public class KAStarPathfinder implements KPathfinder {
         Queue<KVector2i> finalPath = new LinkedList<>();
 
         for (int i = 0; i < checkpoints.size(); i++) {
-            KMapSector dst = location.getSector(sectorPath.get(i));
+            KLevelSector dst = location.getSector(sectorPath.get(i));
             var checkpoint = checkpoints.get(i);
             var checkpointPath = this.getPath(
                 dst,
@@ -235,7 +235,7 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private List<String> getSectorPath(
-        final KLocation location,
+        final KLevel location,
         final String srcSector,
         int srcX,
         int srcY,
@@ -246,7 +246,7 @@ public class KAStarPathfinder implements KPathfinder {
     ) {
 
         if (srcSector.equals(dstSector)) {
-            KMapSector dst = location.getSector(dstSector);
+            KLevelSector dst = location.getSector(dstSector);
             if (dst.isReachable(srcX, srcY, dstX, dstY)) {
                 return List.of(dstSector);
             }
@@ -260,7 +260,7 @@ public class KAStarPathfinder implements KPathfinder {
 
 
     private Queue<KVector2i> getPath(
-        final KMapSector sector,
+        final KLevelSector sector,
         int srcX,
         int srcY,
         int dstX,
@@ -373,7 +373,7 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private Set<KVector2i> getAdjacentNodes(
-        final KMapSector sector,
+        final KLevelSector sector,
         int x,
         int y,
         final Set<KVector2i> explored
@@ -381,7 +381,7 @@ public class KAStarPathfinder implements KPathfinder {
 
         Set<KVector2i> adjacent = new HashSet<>();
 
-        KMapSectorSlice srcSlice = sector.getSlice(x, y);
+        KLevelSectorSlice srcSlice = sector.getSlice(x, y);
 
         this.testAdjacentNode(srcSlice, sector, x + 1, y - 1, adjacent, explored);
         this.testAdjacentNode(srcSlice, sector, x + 1, y + 1, adjacent, explored);
@@ -399,15 +399,15 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private void testAdjacentNode(
-        final KMapSectorSlice slice,
-        final KMapSector sector,
+        final KLevelSectorSlice slice,
+        final KLevelSector sector,
         int adjacentX,
         int adjacentY,
         final Set<KVector2i> adjacent,
         final Set<KVector2i> explored
     ) {
 
-        KMapSectorSlice adjacentSlice = sector.getSlice(adjacentX, adjacentY);
+        KLevelSectorSlice adjacentSlice = sector.getSlice(adjacentX, adjacentY);
         KTileInfo adjacentTileInfo = adjacentSlice.tile();
 
         if (
@@ -423,7 +423,7 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private List<KPair<KVector2i, KVector2i>> getCheckpoints(
-        final KLocation location,
+        final KLevel location,
         final List<String> sectorPath,
         int srcX,
         int srcY,
@@ -440,8 +440,8 @@ public class KAStarPathfinder implements KPathfinder {
             String secondSectorName = sectorPath.get(i + 1);
             String thirdSectorName = sectorPath.get(i + 2);
 
-            KMapSector first = location.getSector(firstSectorName);
-            KMapSector second = location.getSector(secondSectorName);
+            KLevelSector first = location.getSector(firstSectorName);
+            KLevelSector second = location.getSector(secondSectorName);
 
             KVector2i source = i == 0 ? new KVector2i(srcX, srcY) : checkpoints.getLast().third();
 
@@ -489,8 +489,8 @@ public class KAStarPathfinder implements KPathfinder {
         String penultimateSectorName = sectorPath.get(sectorPath.size() - 2);
         String lastSectorName = sectorPath.getLast();
 
-        KMapSector penultimate = location.getSector(penultimateSectorName);
-        KMapSector last = location.getSector(lastSectorName);
+        KLevelSector penultimate = location.getSector(penultimateSectorName);
+        KLevelSector last = location.getSector(lastSectorName);
 
         KVector2i source = checkpoints.isEmpty()
             ? new KVector2i(srcX, srcY)

@@ -21,8 +21,10 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.map.*;
+import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,13 +34,13 @@ import java.util.Map;
 
 public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
-    private final KLocation location;
+    private final KLevel level;
 
     public KAStarPathfinderPositiveTests() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -96,16 +98,16 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KMapSector s3 = new KMapSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KMapSector s4 = new KMapSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        this.location = new KLocation(
+        this.level = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 
@@ -119,10 +121,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -150,10 +152,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -185,10 +187,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -226,10 +228,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -271,20 +273,20 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        Assertions.assertTrue(euclidean.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(chebyshev.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(manhattan.findPath(this.location, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(euclidean.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(chebyshev.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(manhattan.findPath(this.level, "s1", 1, 1, "s5", 1, 3).finished());
 
-        Assertions.assertTrue(euclidean.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
-        Assertions.assertTrue(chebyshev.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
-        Assertions.assertTrue(naturalizedChebyshev.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
-        Assertions.assertTrue(manhattan.findPath(this.location, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(euclidean.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(chebyshev.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(naturalizedChebyshev.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
+        Assertions.assertTrue(manhattan.findPath(this.level, "s0", 1, 1, "s2", 1, 3).finished());
 
-        Assertions.assertTrue(euclidean.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(chebyshev.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(naturalizedChebyshev.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
-        Assertions.assertTrue(manhattan.findPath(this.location, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(euclidean.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(chebyshev.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(naturalizedChebyshev.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
+        Assertions.assertTrue(manhattan.findPath(this.level, "s0", 1, 1, "s5", 1, 3).finished());
 
     }
 
@@ -292,8 +294,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathButSectorPathIsEmpty() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -325,11 +327,11 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(1, 3, tileInfo)
             .placeTile(0, 3, tileInfo);
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KLevelEntityLayer());
 
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l2", List.of(s1, s2)
         );
 
@@ -349,8 +351,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathToSelfButPathIsThroughAnotherSectors() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -381,13 +383,13 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
 
         sl1.link(4, 1, s2, 0, 1);
         sl2.link(4, 1, s1, 0, 1);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l2", List.of(s1, s2)
         );
 
@@ -429,8 +431,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -461,12 +463,12 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
 
         sl2.link(4, 1, s1, 0, 1);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l2", List.of(s1, s2)
         );
 
@@ -491,8 +493,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathToAnotherSectorButSomeLinksAreBad() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -549,16 +551,16 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KMapSector s3 = new KMapSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KMapSector s4 = new KMapSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 
@@ -582,8 +584,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathToAnotherSectorButSomeLinksAreBadOnLast() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -639,16 +641,16 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KMapSector s3 = new KMapSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KMapSector s4 = new KMapSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 

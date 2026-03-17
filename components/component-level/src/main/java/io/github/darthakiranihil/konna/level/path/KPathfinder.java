@@ -18,10 +18,10 @@ package io.github.darthakiranihil.konna.level.path;
 
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.KLevel;
 
 /**
- * Interface providing methods to find paths in specific locations
+ * Interface providing methods to find paths in specific levels
  * between two points.
  *
  * @since 0.5.0
@@ -30,40 +30,40 @@ import io.github.darthakiranihil.konna.level.map.KLocation;
 public interface KPathfinder {
 
     /**
-     * Finds a path from source to destination inside specific location.
-     * @param location Location to find path in
+     * Finds a path from source to destination inside specific level.
+     * @param level Level to find path in
      * @param src Source coordinates (sector + position)
      * @param dst Destination coordinates (sector + position)
-     * @return Path from source to destination in specified location (if present),
+     * @return Path from source to destination in specified level (if present),
      *         else {@link KPath#EMPTY}
      */
     default KPath findPath(
-        final KLocation location,
+        final KLevel level,
         final KPair<String, KVector2i> src,
         final KPair<String, KVector2i> dst
     ) {
-        return this.findPath(location, src.first(), src.second(), dst.first(), dst.second());
+        return this.findPath(level, src.first(), src.second(), dst.first(), dst.second());
     }
 
     /**
-     * Finds a path from source to destination inside specific location.
-     * @param location Location to find path in
+     * Finds a path from source to destination inside specific level.
+     * @param level Level to find path in
      * @param srcSector Source sector name
      * @param srcPosition Source position
      * @param dstSector Destination sector name
      * @param dstPosition Destination position
-     * @return Path from source to destination in specified location (if present),
+     * @return Path from source to destination in specified level (if present),
      *         else {@link KPath#EMPTY}
      */
     default KPath findPath(
-        final KLocation location,
+        final KLevel level,
         final String srcSector,
         final KVector2i srcPosition,
         final String dstSector,
         final KVector2i dstPosition
     ) {
         return this.findPath(
-            location,
+            level,
             srcSector,
             srcPosition.x(),
             srcPosition.y(),
@@ -74,19 +74,19 @@ public interface KPathfinder {
     }
 
     /**
-     * Finds a path from source to destination inside specific location.
-     * @param location Location to find path in
+     * Finds a path from source to destination inside specific level.
+     * @param level Level to find path in
      * @param srcSector Source sector name
      * @param srcX X coordinate of source position
      * @param srcY Y coordinate of source position
      * @param dstSector Destination sector name
      * @param dstX X coordinate of destination position
      * @param dstY Y coordinate of destination position
-     * @return Path from source to destination in specified location (if present),
+     * @return Path from source to destination in specified level (if present),
      *         else {@link KPath#EMPTY}
      */
     KPath findPath(
-        KLocation location,
+        KLevel level,
         String srcSector,
         int srcX,
         int srcY,

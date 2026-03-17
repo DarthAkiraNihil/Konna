@@ -19,19 +19,19 @@ package io.github.darthakiranihil.konna.level.impl;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
-import io.github.darthakiranihil.konna.level.entity.KMapEntity;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
+import io.github.darthakiranihil.konna.level.KLevel;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class FalseValidatedController extends KAutonomousEntityController {
 
     public FalseValidatedController(
-        KMapEntity assignedEntity,
-        KLocation location,
+        KLevelEntity assignedEntity,
+        KLevel level,
         KAssetDefinition params
     ) {
-        super(assignedEntity, location, params);
+        super(assignedEntity, level, params);
     }
 
     @Override

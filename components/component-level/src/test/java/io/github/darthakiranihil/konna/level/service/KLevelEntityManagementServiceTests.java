@@ -31,7 +31,7 @@ import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
 import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.*;
 
@@ -51,7 +51,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     private Map<UUID, KControllableEntity> controllables;
     private Map<UUID, KStaticEntity> statics;
     private Map<UUID, KAutonomousEntity> autonomouses;
-    private KLocation currentLocation;
+    private KLevel currentLevel;
     private KEngineContext realContext;
 
     public KLevelEntityManagementServiceTests() {
@@ -66,7 +66,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     void setUp(final TestInfo testInfo) {
         Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
         konnaWithOnlyDefaultArgs.run();
-        KThreadUtils.sleepForSeconds(1);
+        KThreadUtils.sleepForSeconds(2);
         this.realContext = KReflectionUtils.getFieldValue(
             this.ctx,
             Objects.requireNonNull(KReflectionUtils.getFieldValue(
@@ -78,10 +78,10 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         Assertions.assertNotNull(this.realContext);
 
-        if (!testInfo.getTags().contains("doNotLoadLocation")) {
+        if (!testInfo.getTags().contains("doNotLoadLevel")) {
             var body = new KUniversalMap();
-            body.put("location_name", "test_level_entity_management_service");
-            this.realContext.deliverMessageSync(KMessage.regular("loadLocation", body));
+            body.put("level_name", "test_level_entity_management_service");
+            this.realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
         }
 
         var serviceOpt =  this.realContext
@@ -93,11 +93,11 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         Assertions.assertTrue(serviceOpt.isPresent());
         var service = (KLevelEntityManagementService) serviceOpt.get().object();
 
-        this.currentLocation = KReflectionUtils.getFieldValue(
+        this.currentLevel = KReflectionUtils.getFieldValue(
             KLevelEntityManagementService.class,
             service,
-            "currentLocation",
-            KLocation.class
+            "currentLevel",
+            KLevel.class
         );
 
         this.controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(
@@ -119,10 +119,10 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
             Map.class
         );
 
-        if (testInfo.getTags().contains("doNotLoadLocation")) {
-            Assertions.assertNull(this.currentLocation);
+        if (testInfo.getTags().contains("doNotLoadLevel")) {
+            Assertions.assertNull(this.currentLevel);
         } else {
-            Assertions.assertNotNull(this.currentLocation);
+            Assertions.assertNotNull(this.currentLevel);
         }
         Assertions.assertNotNull(this.controllables);
         Assertions.assertNotNull(this.statics);
@@ -132,7 +132,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testMoveControllableEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -157,7 +157,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateAutonomousEntityValid() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -193,7 +193,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateAutonomousEntityValidationSkippedBecauseNoValidator() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -229,7 +229,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateAutonomousEntityValidationSkippedBecauseInvalidValidator() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -265,7 +265,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateAutonomousEntityButValidationFailed() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -287,7 +287,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testDestroyAutonomousEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -313,7 +313,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateControllableEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -347,7 +347,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testDestroyControllableEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -372,7 +372,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateStaticEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -406,7 +406,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testDestroyStaticEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -431,7 +431,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateEntitiesOnInvalidPosition() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -459,7 +459,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testCreateEntitiesOnUnknownSector() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -485,7 +485,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
     @Test
     public void testDestroyUnknownEntities() {
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -506,7 +506,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     @Test
     public void testSetDirectionForUnknownControllable() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLocation.name());
+        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
         Assertions.assertEquals(1,  this.controllables.size());
         Assertions.assertEquals(1,  this.statics.size());
         Assertions.assertEquals(1,  this.autonomouses.size());
@@ -530,10 +530,10 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     }
 
     @Test
-    @Tag("doNotLoadLocation")
-    public void testCreateEntitiesWithoutLocation() {
+    @Tag("doNotLoadLevel")
+    public void testCreateEntitiesWithoutLevel() {
 
-        Assertions.assertNull(this.currentLocation);
+        Assertions.assertNull(this.currentLevel);
         Assertions.assertEquals(0,  this.controllables.size());
         Assertions.assertEquals(0,  this.statics.size());
         Assertions.assertEquals(0,  this.autonomouses.size());
@@ -558,10 +558,10 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     }
 
     @Test
-    @Tag("doNotLoadLocation")
-    public void testDestroyEntitiesWithoutLocation() {
+    @Tag("doNotLoadLevel")
+    public void testDestroyEntitiesWithoutLevel() {
 
-        Assertions.assertNull(this.currentLocation);
+        Assertions.assertNull(this.currentLevel);
         Assertions.assertEquals(0,  this.controllables.size());
         Assertions.assertEquals(0,  this.statics.size());
         Assertions.assertEquals(0,  this.autonomouses.size());

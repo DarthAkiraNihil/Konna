@@ -16,32 +16,31 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import java.util.List;
 
 /**
- * Utility class that provides tags, specific for Level component's objects.
+ * Convenience class that represents entity's field of view.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KLevelComponentTags extends KUninstantiable {
+public final class KFov {
 
-    private KLevelComponentTags() {
-        super();
+    private final List<KLevelSectorSlice> observedSlices;
+
+    /**
+     * Constructs FOV with list of observed slices.
+     * @param observedSlices List of observed slices
+     */
+    public KFov(final List<KLevelSectorSlice> observedSlices) {
+        this.observedSlices = observedSlices;
     }
 
     /**
-     * Indicates that the object is a map sector.
+     * @return List of observed slices of this FOV
      */
-    public static final KTag SECTOR = new KTag("sector");
-    /**
-     * Indicates that the object is a level.
-     */
-    public static final KTag LEVEL = new KTag("level");
-    /**
-     * Indicates that the object is an autonomous entity controller.
-     */
-    public static final KTag CONTROLLER = new KTag("controller");
+    public List<KLevelSectorSlice> getObservedSlices() {
+        return this.observedSlices;
+    }
 
 }

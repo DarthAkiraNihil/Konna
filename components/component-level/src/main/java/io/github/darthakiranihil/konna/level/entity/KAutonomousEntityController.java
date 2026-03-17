@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.KLevel;
 
 /**
  * Provides for assigned autonomous entity next move directions in order
@@ -35,11 +35,11 @@ public abstract class KAutonomousEntityController extends KObject {
     /**
      * Entity assigned to this controller.
      */
-    protected final KMapEntity assignedEntity;
+    protected final KLevelEntity assignedEntity;
     /**
-     * Location the assigned entity belongs to.
+     * Level the assigned entity belongs to.
      */
-    protected final KLocation location;
+    protected final KLevel level;
 
     /**
      * <p>
@@ -53,12 +53,12 @@ public abstract class KAutonomousEntityController extends KObject {
      * @param assignedEntity Entity assigned to this controller
      *                       (that should be autonomous entity, also the controller should
      *                       be assigned to that entity)
-     * @param location Location the assigned entity belongs to
+     * @param level Level the assigned entity belongs to
      * @param params Controller parameters
      */
     public KAutonomousEntityController(
-        final KMapEntity assignedEntity,
-        final KLocation location,
+        final KLevelEntity assignedEntity,
+        final KLevel level,
         final KAssetDefinition params
     ) {
         super(
@@ -70,7 +70,7 @@ public abstract class KAutonomousEntityController extends KObject {
             KStructUtils.setOfTags(KLevelComponentTags.CONTROLLER)
         );
         this.assignedEntity = assignedEntity;
-        this.location = location;
+        this.level = level;
 
         this.applyParams(params);
     }
