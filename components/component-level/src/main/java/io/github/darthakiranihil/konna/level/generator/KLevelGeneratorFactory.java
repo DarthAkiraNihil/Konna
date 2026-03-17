@@ -16,51 +16,8 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.level.KLevel;
+public interface KLevelGeneratorFactory {
 
-public final class KLevelGenerator {
-
-    public KLevelGenerator(
-        final KActivator activator,
-        final KLevelGeneratorMetadata metadata
-    ) {
-
-
-
-    }
-
-    KLevel generate(long seed) {
-        return null;
-    }
+    KLevelGenerator create(KLevelGeneratorMetadata metadata);
 
 }
-
-/*
- *
- * {
- * "nodes": {
- * "id": "class"
- * },
- * "connections": [
- *     {
- * "from": {
- * "node": "id",
- * "param": "name"
- * },
- * "to":{
- * "node":"id",
- * "param": "name"
- * }
-*      }
- * ],
- * "constants":{
- * "id": value
- * }
- * }
- *
- *
- *
- *
- */

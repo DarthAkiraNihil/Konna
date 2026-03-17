@@ -16,51 +16,13 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 
-public final class KLevelGenerator {
+import java.util.Random;
 
-    public KLevelGenerator(
-        final KActivator activator,
-        final KLevelGeneratorMetadata metadata
-    ) {
+@FunctionalInterface
+public interface KGeneratorNode {
 
-
-
-    }
-
-    KLevel generate(long seed) {
-        return null;
-    }
+    KUniversalMap process(KUniversalMap params, Random rnd);
 
 }
-
-/*
- *
- * {
- * "nodes": {
- * "id": "class"
- * },
- * "connections": [
- *     {
- * "from": {
- * "node": "id",
- * "param": "name"
- * },
- * "to":{
- * "node":"id",
- * "param": "name"
- * }
-*      }
- * ],
- * "constants":{
- * "id": value
- * }
- * }
- *
- *
- *
- *
- */
