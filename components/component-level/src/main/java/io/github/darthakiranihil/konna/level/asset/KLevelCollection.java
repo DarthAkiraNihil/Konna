@@ -49,7 +49,7 @@ import java.util.*;
 public final class KLevelCollection extends KObject implements KAssetCollection<KLevel> {
 
     private record RawSector(
-        KMapSector containedSector,
+        KLevelSector containedSector,
         KSize size,
 
         KTileLayer tileLayer,
@@ -103,7 +103,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
 
         KAssetDefinition[] rawSectorsDefinitions = definition.getSubdefinitionArray("sectors");
         Map<String, RawSector> rawSectors = this.createRawSectors(rawSectorsDefinitions);
-        List<KMapSector> filledSectors = new LinkedList<>();
+        List<KLevelSector> filledSectors = new LinkedList<>();
         List<KTriplet<
             KAutonomousEntity,
             Class<? extends KAutonomousEntityController>,
@@ -153,7 +153,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             KSectorLinkLayer sectorLinkLayer = new KSectorLinkLayer();
             KMapEntityLayer entityLayer = new KMapEntityLayer();
 
-            KMapSector createdSector = new KMapSector(
+            KLevelSector createdSector = new KLevelSector(
                 this.eventSystem,
                 sectorName,
                 tileLayer,
@@ -318,7 +318,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         final KAssetDefinition[] entities,
         int x,
         int y,
-        final KMapSector containedSector,
+        final KLevelSector containedSector,
         boolean areStatic
     ) {
         for (var entity: entities) {

@@ -53,7 +53,7 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
     public KSectorLinkLayer link(
         int x,
         int y,
-        final KMapSector linkedSector,
+        final KLevelSector linkedSector,
         int destinationX,
         int destinationY
     ) {
@@ -73,7 +73,7 @@ public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
      */
     public KSectorLinkLayer link(
         final KVector2i position,
-        final KMapSector linkedSector,
+        final KLevelSector linkedSector,
         final KVector2i destination
     ) {
         this.links.put(position, new KSectorLinkData(linkedSector, destination));

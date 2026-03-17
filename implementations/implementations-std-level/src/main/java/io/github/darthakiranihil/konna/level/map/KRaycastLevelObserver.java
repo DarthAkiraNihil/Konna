@@ -63,7 +63,7 @@ public final class KRaycastLevelObserver implements KLevelObserver {
             while (!observingQueue.isEmpty()) {
 
                 var data = observingQueue.pop();
-                KMapSector observedSector = location.getSector(data.first());
+                KLevelSector observedSector = location.getSector(data.first());
                 int vision = data.second();
 
                 Integer previousHeight = null;

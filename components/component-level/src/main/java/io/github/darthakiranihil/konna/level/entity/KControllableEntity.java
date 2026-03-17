@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 
 /**
  * Representation of a map entity that can be moved manually.
@@ -35,7 +35,7 @@ public final class KControllableEntity extends KMapEntity {
         final String name,
         final String descriptor,
         final KVector2i position,
-        final KMapSector currentSector
+        final KLevelSector currentSector
     ) {
         super(eventSystem, name, descriptor, position, currentSector);
 

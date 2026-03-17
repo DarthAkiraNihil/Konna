@@ -38,8 +38,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer tileLayer = new KTileLayer(11, 11);
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
@@ -47,7 +47,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             }
         }
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             tileLayer,
@@ -99,8 +99,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer tileLayer = new KTileLayer(11, 11);
         KTileLayer tileLayer2 = new KTileLayer(11, 11);
         for (int i = 0; i < 11; i++) {
@@ -113,7 +113,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KMapSector sector2 = new KMapSector(
+        KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
             tileLayer2,
@@ -121,7 +121,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             sl2,
             new KMapEntityLayer()
         );
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             tileLayer,
@@ -179,8 +179,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer tileLayer = new KTileLayer(11, 11);
         KHeightLayer heightLayer = new KHeightLayer(tileLayer.getSize());
 
@@ -196,7 +196,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             }
         }
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             tileLayer,
@@ -257,8 +257,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer tileLayer = new KTileLayer(11, 11);
         KHeightLayer heightLayer = new KHeightLayer(tileLayer.getSize());
 
@@ -274,7 +274,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             }
         }
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             tileLayer,

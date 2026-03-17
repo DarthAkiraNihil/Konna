@@ -28,17 +28,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class KMapSectorPositiveTests extends KStandardTestClass {
+public class KLevelSectorPositiveTests extends KStandardTestClass {
 
     @Test
     public void testGetSectorSliceWithoutLinkedSector() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -62,11 +62,11 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     public void testGetSectorSliceWithLinkedSector() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
-        KMapSector sector2 = new KMapSector(
+        KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
             (new KTileLayer(2, 2))
@@ -79,7 +79,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -105,8 +105,8 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     public void testReachable() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
         KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
@@ -122,7 +122,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             .placeTile(2, 1, tileInfo1)
             .placeTile(2, 2, tileInfo1);
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector",
             layer,
@@ -160,8 +160,8 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     public void testUnreachableBecauseOfDifferentAreas() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
         KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
@@ -177,7 +177,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             .placeTile(2, 1, tileInfo1)
             .placeTile(2, 2, tileInfo1);
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector",
             layer,
@@ -215,8 +215,8 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     public void testUnreachableBecauseOfOutOfBounds() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
         KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
@@ -232,7 +232,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             .placeTile(2, 1, tileInfo1)
             .placeTile(2, 2, tileInfo1);
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector",
             layer,
@@ -273,8 +273,8 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
     public void testUnreachableBecauseOfImpassableTile() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
         KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
@@ -290,7 +290,7 @@ public class KMapSectorPositiveTests extends KStandardTestClass {
             .placeTile(2, 1, tileInfo1)
             .placeTile(2, 2, tileInfo1);
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector",
             layer,

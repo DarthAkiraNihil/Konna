@@ -29,7 +29,7 @@ import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
 import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
 import io.github.darthakiranihil.konna.level.map.KLevel;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -42,8 +42,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     public void testLoadValidLevel() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -64,8 +64,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
             loaded.getSectorNames()
         );
 
-        KMapSector mf1 = loaded.getSector("mf1");
-        KMapSector mf2 = loaded.getSector("mf2");
+        KLevelSector mf1 = loaded.getSector("mf1");
+        KLevelSector mf2 = loaded.getSector("mf2");
 
         KMapSectorSlice sl1 = mf1.getSlice(0, 0);
         KMapSectorSlice sl2 = mf2.getSlice(1, 1);
@@ -110,8 +110,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     public void testLoadAndCheckConnectivityGraph() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -151,8 +151,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     public void testLoadWithValidatedAutonomousEntity() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -166,7 +166,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         );
 
         KLevel level = levelCollection.getAsset("valid_only_autonomous");
-        KMapSector sector = level.getSector("mf1");
+        KLevelSector sector = level.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
@@ -195,8 +195,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     public void testLoadFalseValidatedAutonomousEntity() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -210,7 +210,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         );
 
         KLevel level = levelCollection.getAsset("valid_validator_is_not_a_rule");
-        KMapSector sector = level.getSector("mf1");
+        KLevelSector sector = level.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
@@ -236,8 +236,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     public void testLoadAutonomousEntityWithoutValidation() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -251,7 +251,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         );
 
         KLevel level = levelCollection.getAsset("valid_no_validator");
-        KMapSector sector = level.getSector("mf1");
+        KLevelSector sector = level.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 

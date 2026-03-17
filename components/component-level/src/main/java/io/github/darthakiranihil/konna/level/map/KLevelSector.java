@@ -42,14 +42,14 @@ import java.util.*;
 @KRequiresEvent(
     name = "entityLeftSector",
     simple = false,
-    type = KMapSector.EventData.class
+    type = KLevelSector.EventData.class
 )
 @KRequiresEvent(
     name = "entityMoved",
     simple = false,
-    type = KMapSector.EventData.class
+    type = KLevelSector.EventData.class
 )
-public final class KMapSector extends KObject {
+public final class KLevelSector extends KObject {
 
     /**
      * Event data record for {@code entityLeftSector} and {@code entityMoved} events.
@@ -58,7 +58,7 @@ public final class KMapSector extends KObject {
      */
     public record EventData(
         KMapEntity entity,
-        KPair<KVector2i, KMapSector> previousPosition
+        KPair<KVector2i, KLevelSector> previousPosition
     ) {
 
     }
@@ -87,7 +87,7 @@ public final class KMapSector extends KObject {
      * @param sectorLinkLayer Sector link layer, assigned to this sector
      * @param entityLayer Entity layer, assigned to this sector
      */
-    public KMapSector(
+    public KLevelSector(
         final KEventSystem eventSystem,
         final String name,
         final KTileLayer tileLayer,

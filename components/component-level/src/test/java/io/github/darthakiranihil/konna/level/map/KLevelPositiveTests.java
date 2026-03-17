@@ -35,10 +35,10 @@ public class KLevelPositiveTests extends KStandardTestClass {
 
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -57,7 +57,7 @@ public class KLevelPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(1, sectors.length);
         Assertions.assertEquals("sector_1", sectors[0]);
 
-        KMapSector sector1 = level.getSector("sector_1");
+        KLevelSector sector1 = level.getSector("sector_1");
         Assertions.assertEquals(sector.name(), sector1.name());
 
     }

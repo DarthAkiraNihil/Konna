@@ -29,7 +29,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
 import io.github.darthakiranihil.konna.level.map.KLevel;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
@@ -57,7 +57,7 @@ public class KLevelService extends KObject {
     private final KSimpleEvent levelUnloaded;
 
     private @Nullable KLevel currentLevel;
-    private @Nullable KMapSector currentSector;
+    private @Nullable KLevelSector currentSector;
     private @Nullable KMessenger messenger;
 
     /**

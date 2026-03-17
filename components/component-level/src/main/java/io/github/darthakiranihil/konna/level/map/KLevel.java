@@ -34,7 +34,7 @@ import java.util.*;
  */
 public final class KLevel extends KObject {
 
-    private final Map<String, KMapSector> sectors;
+    private final Map<String, KLevelSector> sectors;
     private final String[] sectorNames;
     private final KIntWeightedGraph<String> sectorConnectivityGraph;
 
@@ -45,7 +45,7 @@ public final class KLevel extends KObject {
      */
     public KLevel(
         final String name,
-        final List<KMapSector> sectors
+        final List<KLevelSector> sectors
     ) {
         super(name, KStructUtils.setOfTags(KLevelComponentTags.LEVEL));
         this.sectors = new HashMap<>(sectors.size());
@@ -72,7 +72,7 @@ public final class KLevel extends KObject {
      * @return The sector with specified name
      * @throws KInvalidArgumentException if the sector does not exist in this level
      */
-    public KMapSector getSector(final String sectorName) {
+    public KLevelSector getSector(final String sectorName) {
         if (!this.sectors.containsKey(sectorName)) {
             throw new KInvalidArgumentException(
                 String.format(
@@ -97,7 +97,7 @@ public final class KLevel extends KObject {
      * Unloads this level.
      */
     public void unload() {
-        this.sectors.values().forEach(KMapSector::unload);
+        this.sectors.values().forEach(KLevelSector::unload);
     }
 
     /**
@@ -115,7 +115,7 @@ public final class KLevel extends KObject {
 
             String sourceSectorName = entry.getKey();
             graph.add(sourceSectorName);
-            KMapSector sector = entry.getValue();
+            KLevelSector sector = entry.getValue();
 
             KSize sectorSize = sector.getSize();
             for (int i = 0; i < sectorSize.width(); i++) {

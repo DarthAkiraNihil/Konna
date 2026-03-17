@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,8 +32,8 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
     public void testLoadInvalidByTileLocation() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -57,8 +57,8 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
     public void testLoadInvalidByLinkLocation() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -97,8 +97,8 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
     public void testLoadInvalidByLinkName() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -122,8 +122,8 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
     public void testLoadByInvalidLinkDestination() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -162,8 +162,8 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
     public void testLoadInvalidByEntityPosition() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
@@ -202,8 +202,8 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
     public void testLoadWithAutonomousButValidationFailed() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,

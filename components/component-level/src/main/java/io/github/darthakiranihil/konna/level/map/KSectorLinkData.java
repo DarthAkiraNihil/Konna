@@ -27,7 +27,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
  * @author Darth Akira Nihil
  */
 public record KSectorLinkData(
-    KMapSector linkedSector,
+    KLevelSector linkedSector,
     KVector2i destination
 ) {
 

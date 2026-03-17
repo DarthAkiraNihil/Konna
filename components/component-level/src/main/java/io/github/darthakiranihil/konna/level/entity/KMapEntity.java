@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import io.github.darthakiranihil.konna.level.map.KSectorLinkData;
 
@@ -43,12 +43,12 @@ import java.util.Objects;
 @KRequiresEvent(
     name = "entityLeftSector",
     simple = false,
-    type = KMapSector.EventData.class
+    type = KLevelSector.EventData.class
 )
 @KRequiresEvent(
     name = "entityMoved",
     simple = false,
-    type = KMapSector.EventData.class
+    type = KLevelSector.EventData.class
 )
 public abstract sealed class KMapEntity
     extends KObject
@@ -57,11 +57,11 @@ public abstract sealed class KMapEntity
         KStaticEntity,
         KAutonomousEntity {
 
-    private final KEvent<KMapSector.EventData> entityLeftSectorEvent;
-    private final KEvent<KMapSector.EventData> entityMovedEvent;
+    private final KEvent<KLevelSector.EventData> entityLeftSectorEvent;
+    private final KEvent<KLevelSector.EventData> entityMovedEvent;
 
     private KVector2i position;
-    private KMapSector currentSector;
+    private KLevelSector currentSector;
 
     private final String descriptor;
 
@@ -80,7 +80,7 @@ public abstract sealed class KMapEntity
         final String name,
         final String descriptor,
         final KVector2i position,
-        final KMapSector currentSector
+        final KLevelSector currentSector
     ) {
         super(name);
 
@@ -153,7 +153,7 @@ public abstract sealed class KMapEntity
             this.position = nextPosition;
             this.currentSector = linkedSectorData.linkedSector();
             this.entityLeftSectorEvent.invoke(
-                new KMapSector.EventData(
+                new KLevelSector.EventData(
                     this, previousPosition
                 )
             );
@@ -165,7 +165,7 @@ public abstract sealed class KMapEntity
         }
 
         this.position = nextPosition;
-        this.entityMovedEvent.invoke(new KMapSector.EventData(this, previousPosition));
+        this.entityMovedEvent.invoke(new KLevelSector.EventData(this, previousPosition));
     }
 
     /**
@@ -176,7 +176,7 @@ public abstract sealed class KMapEntity
     /**
      * @return Current sector of this entity and the position inside it
      */
-    public final KPair<KVector2i, KMapSector> getPosition() {
+    public final KPair<KVector2i, KLevelSector> getPosition() {
         return new KPair<>(this.position, this.currentSector);
     }
 
@@ -193,7 +193,7 @@ public abstract sealed class KMapEntity
      * @param mapSector New map sector
      * @param newPosition Position inside the sector
      */
-    public final void setCurrentSector(final KMapSector mapSector, final KVector2i newPosition) {
+    public final void setCurrentSector(final KLevelSector mapSector, final KVector2i newPosition) {
         this.currentSector = mapSector;
     }
 }

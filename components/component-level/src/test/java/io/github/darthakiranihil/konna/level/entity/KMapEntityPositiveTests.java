@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -29,7 +28,6 @@ import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Map;
 
 public class KMapEntityPositiveTests extends KStandardTestClass {
@@ -40,12 +38,12 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -74,12 +72,12 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -114,12 +112,12 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo impassableTileInfo = new KTileInfo(2, false, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -153,12 +151,12 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -190,14 +188,14 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
         KMapEntityLayer mel2 = new KMapEntityLayer();
 
-        KMapSector sector2 = new KMapSector(
+        KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
             (new KTileLayer(2, 2))
@@ -210,7 +208,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
             mel2
         );
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -246,14 +244,14 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo impassableTileInfo = new KTileInfo(2, false, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
         KMapEntityLayer mel2 = new KMapEntityLayer();
 
-        KMapSector sector2 = new KMapSector(
+        KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
             (new KTileLayer(2, 2))
@@ -266,7 +264,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
             mel2
         );
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -303,12 +301,12 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -342,12 +340,12 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -384,14 +382,14 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
         KMapEntityLayer mel2 = new KMapEntityLayer();
 
-        KMapSector sector2 = new KMapSector(
+        KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
             (new KTileLayer(2, 2))
@@ -408,7 +406,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
             mel2
         );
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))
@@ -446,14 +444,14 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
         KMapEntityLayer mel = new KMapEntityLayer();
         KMapEntityLayer mel2 = new KMapEntityLayer();
 
-        KMapSector sector2 = new KMapSector(
+        KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
             (new KTileLayer(2, 2))
@@ -470,7 +468,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
             mel2
         );
 
-        KMapSector sector = new KMapSector(
+        KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             (new KTileLayer(2, 2))

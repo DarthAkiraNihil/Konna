@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.level.map.KLevel;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -86,7 +86,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             Assertions.assertTrue(service.isPresent());
 
             var cloc = (KLevel) currentLevel.get(service.get().object());
-            var csec = (KMapSector) currentSector.get(service.get().object());
+            var csec = (KLevelSector) currentSector.get(service.get().object());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);

@@ -36,7 +36,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.map.KLevel;
-import io.github.darthakiranihil.konna.level.map.KMapSector;
+import io.github.darthakiranihil.konna.level.map.KLevelSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import org.jspecify.annotations.Nullable;
 
@@ -191,7 +191,7 @@ public class KLevelEntityManagementService extends KObject {
         @KBodyValue("params") final KAssetDefinition controllerParams
     ) {
 
-        KMapSector deploymentSector = this.getDeploymentSector(
+        KLevelSector deploymentSector = this.getDeploymentSector(
             sectorName, position, "an autonomous"
         );
         if (deploymentSector == null) {
@@ -324,7 +324,7 @@ public class KLevelEntityManagementService extends KObject {
         @KBodyValue("position") final KVector2i position
     ) {
 
-        KMapSector deploymentSector = this.getDeploymentSector(sectorName, position, "a static");
+        KLevelSector deploymentSector = this.getDeploymentSector(sectorName, position, "a static");
         if (deploymentSector == null) {
             return;
         }
@@ -408,7 +408,7 @@ public class KLevelEntityManagementService extends KObject {
         @KBodyValue("position") final KVector2i position
     ) {
 
-        KMapSector deploymentSector = this.getDeploymentSector(
+        KLevelSector deploymentSector = this.getDeploymentSector(
             sectorName, position, "a controllable"
         );
         if (deploymentSector == null) {
@@ -480,7 +480,7 @@ public class KLevelEntityManagementService extends KObject {
         this.currentLevel = level;
 
         for (String sectorName: level.getSectorNames()) {
-            KMapSector sector = level.getSector(sectorName);
+            KLevelSector sector = level.getSector(sectorName);
 
             KSize sectorSize = sector.getSize();
             for (int i = 0; i < sectorSize.width(); i++) {
@@ -522,7 +522,7 @@ public class KLevelEntityManagementService extends KObject {
         this.autonomouses.clear();
     }
 
-    private @Nullable KMapSector getDeploymentSector(
+    private @Nullable KLevelSector getDeploymentSector(
         final String sectorName,
         final KVector2i position,
         final String entityType
@@ -545,7 +545,7 @@ public class KLevelEntityManagementService extends KObject {
             );
         }
 
-        KMapSector deploymentSector = this.currentLevel.getSector(sectorName);
+        KLevelSector deploymentSector = this.currentLevel.getSector(sectorName);
         KMapSectorSlice slice = deploymentSector.getSlice(position.x(), position.y());
         if (slice.tile() == null) {
             KSystemLogger.warning(

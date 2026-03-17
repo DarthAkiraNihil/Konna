@@ -37,8 +37,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public KAStarPathfinderPositiveTests() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -96,10 +96,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KMapSector s3 = new KMapSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KMapSector s4 = new KMapSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
@@ -292,8 +292,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathButSectorPathIsEmpty() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -325,8 +325,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(1, 3, tileInfo)
             .placeTile(0, 3, tileInfo);
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
 
 
         var loc2 = new KLevel(
@@ -349,8 +349,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathToSelfButPathIsThroughAnotherSectors() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -381,8 +381,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
 
         sl1.link(4, 1, s2, 0, 1);
         sl2.link(4, 1, s1, 0, 1);
@@ -429,8 +429,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -461,8 +461,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
 
         sl2.link(4, 1, s1, 0, 1);
 
@@ -491,8 +491,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathToAnotherSectorButSomeLinksAreBad() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -549,10 +549,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KMapSector s3 = new KMapSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KMapSector s4 = new KMapSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
@@ -582,8 +582,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
     public void testGetPathToAnotherSectorButSomeLinksAreBadOnLast() {
 
         KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
@@ -639,10 +639,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KMapSector s1 = new KMapSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KMapSector s3 = new KMapSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KMapSector s4 = new KMapSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
