@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
-import io.github.darthakiranihil.konna.level.layer.KLevel;
+import io.github.darthakiranihil.konna.level.KLevel;
 
 /**
  * Provides for assigned autonomous entity next move directions in order

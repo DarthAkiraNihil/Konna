@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.layer;
+package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.KTileInfo;
+import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
+import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
+import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
+import io.github.darthakiranihil.konna.level.layer.KTileLayer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

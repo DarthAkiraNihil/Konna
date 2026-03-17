@@ -22,9 +22,9 @@ import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.layer.KLevel;
-import io.github.darthakiranihil.konna.level.layer.KLevelSector;
-import io.github.darthakiranihil.konna.level.layer.KLevelSectorSlice;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;

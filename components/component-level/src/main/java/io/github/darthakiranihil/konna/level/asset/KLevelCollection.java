@@ -32,6 +32,8 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.type.KLevelTypedef;

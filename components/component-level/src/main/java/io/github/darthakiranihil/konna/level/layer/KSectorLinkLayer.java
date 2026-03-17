@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.KLevelSector;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;

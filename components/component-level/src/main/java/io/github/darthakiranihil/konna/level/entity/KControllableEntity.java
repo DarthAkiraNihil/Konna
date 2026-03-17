@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.layer.KLevelSector;
+import io.github.darthakiranihil.konna.level.KLevelSector;
 
 /**
  * Representation of a map entity that can be moved manually.

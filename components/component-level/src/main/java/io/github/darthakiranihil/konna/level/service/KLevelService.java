@@ -28,8 +28,8 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
-import io.github.darthakiranihil.konna.level.layer.KLevel;
-import io.github.darthakiranihil.konna.level.layer.KLevelSector;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelSector;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.layer;
+package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
+import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;

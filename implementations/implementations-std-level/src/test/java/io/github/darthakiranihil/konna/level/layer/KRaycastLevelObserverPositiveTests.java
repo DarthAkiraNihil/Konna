@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.KTileInfo;
+import io.github.darthakiranihil.konna.level.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KLevel level = new KLevel("loc1", List.of(sector));
 
         KFov fov = observer.observePoint(level,"sector_1", 5, 5, 3);
-        KFov fov2 = observer.observePoint(level,"sector_1", new KVector2i(5, 5), 3);
+        KFov fov2 = observer.observePoint(level, "sector_1", new KVector2i(5, 5), 3);
         Assertions.assertEquals(21, fov.getObservedSlices().size());
         Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());
         var positions = fov.getObservedSlices().stream().map(KLevelSectorSlice::position).toList();
