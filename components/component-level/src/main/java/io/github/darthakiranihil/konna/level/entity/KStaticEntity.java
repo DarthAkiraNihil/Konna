@@ -27,7 +27,7 @@ import io.github.darthakiranihil.konna.level.KLevelSector;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KStaticEntity extends KMapEntity {
+public final class KStaticEntity extends KLevelEntity {
 
     public KStaticEntity(
         final KEventSystem eventSystem,

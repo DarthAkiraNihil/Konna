@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.level.KLevelSector;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KControllableEntity extends KMapEntity {
+public final class KControllableEntity extends KLevelEntity {
 
     private KVector2i nextMove;
 

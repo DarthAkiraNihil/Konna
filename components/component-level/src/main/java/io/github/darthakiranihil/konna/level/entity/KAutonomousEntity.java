@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KAutonomousEntity extends KMapEntity {
+public final class KAutonomousEntity extends KLevelEntity {
 
     private @Nullable KAutonomousEntityController controller;
 

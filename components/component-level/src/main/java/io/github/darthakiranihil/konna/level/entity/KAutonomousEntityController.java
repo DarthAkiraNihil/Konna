@@ -35,7 +35,7 @@ public abstract class KAutonomousEntityController extends KObject {
     /**
      * Entity assigned to this controller.
      */
-    protected final KMapEntity assignedEntity;
+    protected final KLevelEntity assignedEntity;
     /**
      * Level the assigned entity belongs to.
      */
@@ -57,7 +57,7 @@ public abstract class KAutonomousEntityController extends KObject {
      * @param params Controller parameters
      */
     public KAutonomousEntityController(
-        final KMapEntity assignedEntity,
+        final KLevelEntity assignedEntity,
         final KLevel level,
         final KAssetDefinition params
     ) {

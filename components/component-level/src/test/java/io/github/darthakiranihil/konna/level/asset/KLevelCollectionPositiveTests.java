@@ -170,7 +170,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
-        KMapEntity entity = slice.entities().getFirst();
+        KLevelEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
 
         KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
@@ -214,7 +214,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
-        KMapEntity entity = slice.entities().getFirst();
+        KLevelEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
 
         KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
@@ -255,7 +255,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
-        KMapEntity entity = slice.entities().getFirst();
+        KLevelEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
 
         KAutonomousEntityController controller = KReflectionUtils.getFieldValue(

@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.entity.KMapEntity;
+import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 
 import java.util.*;
@@ -56,7 +56,7 @@ public final class KLevelSector extends KObject {
      * @param previousPosition Previous position of affected entity
      */
     public record EventData(
-        KMapEntity entity,
+        KLevelEntity entity,
         KPair<KVector2i, KLevelSector> previousPosition
     ) {
 
@@ -196,7 +196,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(int x, int y, final KLevelEntity entity) {
         return this.entityLayer.placeEntity(x, y, entity);
     }
 
@@ -206,7 +206,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(final KVector2i position, final KLevelEntity entity) {
         return this.entityLayer.placeEntity(position, entity);
     }
 
@@ -217,7 +217,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(int x, int y, final KLevelEntity entity) {
         return this.entityLayer.removeEntity(x, y, entity);
     }
 
@@ -227,7 +227,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(final KVector2i position, final KLevelEntity entity) {
         return this.entityLayer.removeEntity(position, entity);
     }
 

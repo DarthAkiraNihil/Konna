@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class KMapEntityPositiveTests extends KStandardTestClass {
+public class KLevelEntityPositiveTests extends KStandardTestClass {
 
     @Test
     public void testMoveStaticEntity() {

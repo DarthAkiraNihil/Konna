@@ -127,8 +127,8 @@ public class KLevelEntityManagementService extends KObject {
      */
     @KServiceEndpoint(route = "moveAllEntities")
     protected void moveAllEntities() {
-        this.autonomouses.values().forEach(KMapEntity::move);
-        this.controllables.values().forEach(KMapEntity::move);
+        this.autonomouses.values().forEach(KLevelEntity::move);
+        this.controllables.values().forEach(KLevelEntity::move);
 
         if (this.messenger == null) {
             return;
@@ -559,7 +559,7 @@ public class KLevelEntityManagementService extends KObject {
         return deploymentSector;
     }
 
-    private void sendMessage(final KMapEntity entity, final String messageId) {
+    private void sendMessage(final KLevelEntity entity, final String messageId) {
         if (this.messenger == null) {
             return;
         }

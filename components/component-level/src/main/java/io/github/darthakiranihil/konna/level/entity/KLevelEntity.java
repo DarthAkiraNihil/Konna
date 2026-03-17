@@ -50,7 +50,7 @@ import java.util.Objects;
     simple = false,
     type = KLevelSector.EventData.class
 )
-public abstract sealed class KMapEntity
+public abstract sealed class KLevelEntity
     extends KObject
     permits
         KControllableEntity,
@@ -75,7 +75,7 @@ public abstract sealed class KMapEntity
      * @param position Initial position
      * @param currentSector Initial sector that is entity attached to
      */
-    public KMapEntity(
+    public KLevelEntity(
         final KEventSystem eventSystem,
         final String name,
         final String descriptor,

@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.entity.KMapEntity;
+import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 
 import java.util.*;
 
@@ -28,9 +28,9 @@ import java.util.*;
  * @author Darth Akira Nihil
  */
 @SuppressWarnings("UnusedReturnValue")
-public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
+public final class KLevelEntityLayer implements KLevelLayer<List<KLevelEntity>> {
 
-    private final Map<KVector2i, List<KMapEntity>> entities;
+    private final Map<KVector2i, List<KLevelEntity>> entities;
 
     /**
      * Constructs an empty layer.
@@ -46,7 +46,7 @@ public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(int x, int y, final KLevelEntity entity) {
         return this.placeEntity(new KVector2i(x, y), entity);
     }
 
@@ -56,12 +56,12 @@ public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(final KVector2i position, final KLevelEntity entity) {
         if (!this.entities.containsKey(position)) {
             this.entities.put(position, new LinkedList<>());
         }
 
-        List<KMapEntity> list = this.entities.get(position);
+        List<KLevelEntity> list = this.entities.get(position);
         list.add(entity);
         return this;
     }
@@ -73,7 +73,7 @@ public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(int x, int y, final KLevelEntity entity) {
         return this.removeEntity(new KVector2i(x, y), entity);
     }
 
@@ -83,13 +83,13 @@ public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KLevelEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(final KVector2i position, final KLevelEntity entity) {
         if (!this.entities.containsKey(position)) {
             return this;
         }
 
-        List<KMapEntity> list = this.entities.get(position);
-        Optional<KMapEntity> deleted = list
+        List<KLevelEntity> list = this.entities.get(position);
+        Optional<KLevelEntity> deleted = list
             .stream()
             .filter(x -> x.id() == entity.id())
             .findFirst();
@@ -101,12 +101,12 @@ public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
     }
 
     @Override
-    public List<KMapEntity> getOnPosition(int x, int y) {
+    public List<KLevelEntity> getOnPosition(int x, int y) {
         return this.getOnPosition(new KVector2i(x, y));
     }
 
     @Override
-    public List<KMapEntity> getOnPosition(final KVector2i position) {
+    public List<KLevelEntity> getOnPosition(final KVector2i position) {
         if (!this.entities.containsKey(position)) {
             return List.of();
         }
