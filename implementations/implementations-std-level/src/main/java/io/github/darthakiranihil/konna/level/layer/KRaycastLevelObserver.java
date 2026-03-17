@@ -72,7 +72,7 @@ public final class KRaycastLevelObserver implements KLevelObserver {
                 float observedY = data.third().y();
 
                 while (vision > 0) {
-                    KMapSectorSlice slice = observedSector.getSliceAndVisit(
+                    KLevelSectorSlice slice = observedSector.getSliceAndVisit(
                         (int) observedX, (int) observedY
                     );
 
@@ -128,7 +128,7 @@ public final class KRaycastLevelObserver implements KLevelObserver {
                         .getSlice(position.x(), position.y());
                 })
                 .filter(s -> s.tile() != null)
-                .sorted(Comparator.comparing(KMapSectorSlice::sectorName))
+                .sorted(Comparator.comparing(KLevelSectorSlice::sectorName))
                 .toList()
         );
     }

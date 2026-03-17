@@ -37,7 +37,7 @@ import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.layer.KLevel;
 import io.github.darthakiranihil.konna.level.layer.KLevelSector;
-import io.github.darthakiranihil.konna.level.layer.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.KLevelSectorSlice;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -485,7 +485,7 @@ public class KLevelEntityManagementService extends KObject {
             KSize sectorSize = sector.getSize();
             for (int i = 0; i < sectorSize.width(); i++) {
                 for (int j = 0; j < sectorSize.height(); j++) {
-                    KMapSectorSlice slice = sector.getSlice(i, j);
+                    KLevelSectorSlice slice = sector.getSlice(i, j);
                     for (var entity: slice.entities()) {
                         switch (entity) {
                             case KControllableEntity controllable -> this.controllables.put(
@@ -546,7 +546,7 @@ public class KLevelEntityManagementService extends KObject {
         }
 
         KLevelSector deploymentSector = this.currentLevel.getSector(sectorName);
-        KMapSectorSlice slice = deploymentSector.getSlice(position.x(), position.y());
+        KLevelSectorSlice slice = deploymentSector.getSlice(position.x(), position.y());
         if (slice.tile() == null) {
             KSystemLogger.warning(
                 this.name,

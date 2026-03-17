@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.KLevel;
 import io.github.darthakiranihil.konna.level.layer.KLevelSector;
-import io.github.darthakiranihil.konna.level.layer.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.KLevelSectorSlice;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -381,7 +381,7 @@ public class KAStarPathfinder implements KPathfinder {
 
         Set<KVector2i> adjacent = new HashSet<>();
 
-        KMapSectorSlice srcSlice = sector.getSlice(x, y);
+        KLevelSectorSlice srcSlice = sector.getSlice(x, y);
 
         this.testAdjacentNode(srcSlice, sector, x + 1, y - 1, adjacent, explored);
         this.testAdjacentNode(srcSlice, sector, x + 1, y + 1, adjacent, explored);
@@ -399,7 +399,7 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private void testAdjacentNode(
-        final KMapSectorSlice slice,
+        final KLevelSectorSlice slice,
         final KLevelSector sector,
         int adjacentX,
         int adjacentY,
@@ -407,7 +407,7 @@ public class KAStarPathfinder implements KPathfinder {
         final Set<KVector2i> explored
     ) {
 
-        KMapSectorSlice adjacentSlice = sector.getSlice(adjacentX, adjacentY);
+        KLevelSectorSlice adjacentSlice = sector.getSlice(adjacentX, adjacentY);
         KTileInfo adjacentTileInfo = adjacentSlice.tile();
 
         if (

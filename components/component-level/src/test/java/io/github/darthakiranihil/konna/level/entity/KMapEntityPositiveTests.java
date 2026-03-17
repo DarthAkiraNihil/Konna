@@ -42,7 +42,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
@@ -76,7 +76,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
@@ -116,7 +116,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
@@ -155,7 +155,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
@@ -192,8 +192,8 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
-        KMapEntityLayer mel2 = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
+        KLevelEntityLayer mel2 = new KLevelEntityLayer();
 
         KLevelSector sector2 = new KLevelSector(
             es,
@@ -248,8 +248,8 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
-        KMapEntityLayer mel2 = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
+        KLevelEntityLayer mel2 = new KLevelEntityLayer();
 
         KLevelSector sector2 = new KLevelSector(
             es,
@@ -305,7 +305,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
@@ -344,7 +344,7 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
@@ -386,8 +386,8 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
-        KMapEntityLayer mel2 = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
+        KLevelEntityLayer mel2 = new KLevelEntityLayer();
 
         KLevelSector sector2 = new KLevelSector(
             es,
@@ -448,8 +448,8 @@ public class KMapEntityPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         es.startPolling();
 
-        KMapEntityLayer mel = new KMapEntityLayer();
-        KMapEntityLayer mel2 = new KMapEntityLayer();
+        KLevelEntityLayer mel = new KLevelEntityLayer();
+        KLevelEntityLayer mel2 = new KLevelEntityLayer();
 
         KLevelSector sector2 = new KLevelSector(
             es,

@@ -31,7 +31,7 @@ import java.util.Map;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KTileLayer implements KMapLayer<KTileInfo> {
+public final class KTileLayer implements KLevelLayer<KTileInfo> {
 
     private static final class TileInfo {
         private final KTileInfo info;

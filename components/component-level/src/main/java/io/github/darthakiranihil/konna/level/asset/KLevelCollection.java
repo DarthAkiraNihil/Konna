@@ -55,7 +55,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         KTileLayer tileLayer,
         KHeightLayer heightLayer,
         KSectorLinkLayer sectorLinkLayer,
-        KMapEntityLayer entityLayer,
+        KLevelEntityLayer entityLayer,
 
         String[] tiles,
         KAssetDefinition[] sectorLinks,
@@ -151,7 +151,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             KTileLayer tileLayer = new KTileLayer(size);
             KHeightLayer heightLayer = new KHeightLayer(size);
             KSectorLinkLayer sectorLinkLayer = new KSectorLinkLayer();
-            KMapEntityLayer entityLayer = new KMapEntityLayer();
+            KLevelEntityLayer entityLayer = new KLevelEntityLayer();
 
             KLevelSector createdSector = new KLevelSector(
                 this.eventSystem,
@@ -266,7 +266,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         >> autonomousEntitiesList
     ) {
 
-        KMapEntityLayer layer = rawSector.entityLayer;
+        KLevelEntityLayer layer = rawSector.entityLayer;
         KAssetDefinition[] rawData = rawSector.entities;
 
         for (var data: rawData) {
@@ -314,7 +314,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
     }
 
     private void placeSimpleEntities(
-        final KMapEntityLayer layer,
+        final KLevelEntityLayer layer,
         final KAssetDefinition[] entities,
         int x,
         int y,

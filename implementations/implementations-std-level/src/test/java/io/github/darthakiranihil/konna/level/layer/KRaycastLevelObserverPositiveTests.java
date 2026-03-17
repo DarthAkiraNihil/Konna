@@ -53,7 +53,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(11, 11)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));
@@ -62,7 +62,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KFov fov2 = observer.observePoint(level,"sector_1", new KVector2i(5, 5), 3);
         Assertions.assertEquals(21, fov.getObservedSlices().size());
         Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());
-        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        var positions = fov.getObservedSlices().stream().map(KLevelSectorSlice::position).toList();
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
@@ -119,7 +119,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer2,
             new KHeightLayer(new KSize(11, 11)),
             sl2,
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
         KLevelSector sector = new KLevelSector(
             es,
@@ -127,7 +127,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(11, 11)),
             sl1,
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         sl1.link(0, 5, sector2, 10, 5);
@@ -137,7 +137,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
         KFov fov = observer.observePoint(level,"sector_1", 0, 5, 3);
         Assertions.assertEquals(26, fov.getObservedSlices().size());
-        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        var positions = fov.getObservedSlices().stream().map(KLevelSectorSlice::position).toList();
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
@@ -202,14 +202,14 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             heightLayer,
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));
 
         KFov fov = observer.observePoint(level,"sector_1", 5, 8, 3);
         Assertions.assertEquals(32, fov.getObservedSlices().size());
-        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        var positions = fov.getObservedSlices().stream().map(KLevelSectorSlice::position).toList();
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
@@ -280,14 +280,14 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             heightLayer,
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));
 
         KFov fov = observer.observePoint(level,"sector_1", 5, 7, 3);
         Assertions.assertEquals(18, fov.getObservedSlices().size());
-        var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
+        var positions = fov.getObservedSlices().stream().map(KLevelSectorSlice::position).toList();
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(

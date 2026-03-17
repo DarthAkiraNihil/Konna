@@ -72,7 +72,7 @@ public final class KLevelSector extends KObject {
     private final KTileLayer tileLayer;
     private final KHeightLayer heightLayer;
     private final KSectorLinkLayer sectorLinkLayer;
-    private final KMapEntityLayer entityLayer;
+    private final KLevelEntityLayer entityLayer;
 
     private final KReachabilityAreaLayer reachabilityAreaLayer;
     private final KSeenPlacesLayer seenPlacesLayer;
@@ -93,7 +93,7 @@ public final class KLevelSector extends KObject {
         final KTileLayer tileLayer,
         final KHeightLayer heightLayer,
         final KSectorLinkLayer sectorLinkLayer,
-        final KMapEntityLayer entityLayer
+        final KLevelEntityLayer entityLayer
     ) {
         super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
 
@@ -131,12 +131,12 @@ public final class KLevelSector extends KObject {
      * @param y Y coordinate of sliced position
      * @return Slice of the sector on specific place
      */
-    public KMapSectorSlice getSlice(
+    public KLevelSectorSlice getSlice(
         int x,
         int y
     ) {
 
-        return new KMapSectorSlice(
+        return new KLevelSectorSlice(
             this.name,
             new KVector2i(x, y),
             this.heightLayer.getOnPosition(x, y),
@@ -155,7 +155,7 @@ public final class KLevelSector extends KObject {
      * @param y Y coordinate of sliced position
      * @return Slice of the sector on specific place
      */
-    public KMapSectorSlice getSliceAndVisit(
+    public KLevelSectorSlice getSliceAndVisit(
         int x,
         int y
     ) {
@@ -197,7 +197,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
         return this.entityLayer.placeEntity(x, y, entity);
     }
 
@@ -207,7 +207,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
         return this.entityLayer.placeEntity(position, entity);
     }
 
@@ -218,7 +218,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
         return this.entityLayer.removeEntity(x, y, entity);
     }
 
@@ -228,7 +228,7 @@ public final class KLevelSector extends KObject {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
         return this.entityLayer.removeEntity(position, entity);
     }
 

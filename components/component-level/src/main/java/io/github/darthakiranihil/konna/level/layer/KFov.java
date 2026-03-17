@@ -26,20 +26,20 @@ import java.util.List;
  */
 public final class KFov {
 
-    private final List<KMapSectorSlice> observedSlices;
+    private final List<KLevelSectorSlice> observedSlices;
 
     /**
      * Constructs FOV with list of observed slices.
      * @param observedSlices List of observed slices
      */
-    public KFov(final List<KMapSectorSlice> observedSlices) {
+    public KFov(final List<KLevelSectorSlice> observedSlices) {
         this.observedSlices = observedSlices;
     }
 
     /**
      * @return List of observed slices of this FOV
      */
-    public List<KMapSectorSlice> getObservedSlices() {
+    public List<KLevelSectorSlice> getObservedSlices() {
         return this.observedSlices;
     }
 

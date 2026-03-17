@@ -28,14 +28,14 @@ import java.util.*;
  * @author Darth Akira Nihil
  */
 @SuppressWarnings("UnusedReturnValue")
-public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
+public final class KLevelEntityLayer implements KLevelLayer<List<KMapEntity>> {
 
     private final Map<KVector2i, List<KMapEntity>> entities;
 
     /**
      * Constructs an empty layer.
      */
-    public KMapEntityLayer() {
+    public KLevelEntityLayer() {
         this.entities = new HashMap<>();
     }
 
@@ -46,7 +46,7 @@ public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(int x, int y, final KMapEntity entity) {
         return this.placeEntity(new KVector2i(x, y), entity);
     }
 
@@ -56,7 +56,7 @@ public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer placeEntity(final KVector2i position, final KMapEntity entity) {
         if (!this.entities.containsKey(position)) {
             this.entities.put(position, new LinkedList<>());
         }
@@ -73,7 +73,7 @@ public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(int x, int y, final KMapEntity entity) {
         return this.removeEntity(new KVector2i(x, y), entity);
     }
 
@@ -83,7 +83,7 @@ public final class KMapEntityLayer implements KMapLayer<List<KMapEntity>> {
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    public KMapEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
+    public KLevelEntityLayer removeEntity(final KVector2i position, final KMapEntity entity) {
         if (!this.entities.containsKey(position)) {
             return this;
         }

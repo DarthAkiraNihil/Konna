@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
 import io.github.darthakiranihil.konna.level.layer.KLevel;
 import io.github.darthakiranihil.konna.level.layer.KLevelSector;
-import io.github.darthakiranihil.konna.level.layer.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -67,8 +67,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         KLevelSector mf1 = loaded.getSector("mf1");
         KLevelSector mf2 = loaded.getSector("mf2");
 
-        KMapSectorSlice sl1 = mf1.getSlice(0, 0);
-        KMapSectorSlice sl2 = mf2.getSlice(1, 1);
+        KLevelSectorSlice sl1 = mf1.getSlice(0, 0);
+        KLevelSectorSlice sl2 = mf2.getSlice(1, 1);
 
         Assertions.assertNotNull(sl1.sectorLink());
         Assertions.assertNotNull(sl2.sectorLink());
@@ -167,7 +167,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
 
         KLevel level = levelCollection.getAsset("valid_only_autonomous");
         KLevelSector sector = level.getSector("mf1");
-        KMapSectorSlice slice = sector.getSlice(0, 0);
+        KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
         KMapEntity entity = slice.entities().getFirst();
@@ -211,7 +211,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
 
         KLevel level = levelCollection.getAsset("valid_validator_is_not_a_rule");
         KLevelSector sector = level.getSector("mf1");
-        KMapSectorSlice slice = sector.getSlice(0, 0);
+        KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
         KMapEntity entity = slice.entities().getFirst();
@@ -252,7 +252,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
 
         KLevel level = levelCollection.getAsset("valid_no_validator");
         KLevelSector sector = level.getSector("mf1");
-        KMapSectorSlice slice = sector.getSlice(0, 0);
+        KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
         KMapEntity entity = slice.entities().getFirst();

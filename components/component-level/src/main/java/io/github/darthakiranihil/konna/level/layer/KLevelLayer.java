@@ -26,7 +26,7 @@ import org.jspecify.annotations.Nullable;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public interface KMapLayer<T> {
+public interface KLevelLayer<T> {
 
     /**
      * @param x X coordinate of placed item

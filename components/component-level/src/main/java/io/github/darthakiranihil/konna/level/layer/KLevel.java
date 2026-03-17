@@ -121,7 +121,7 @@ public final class KLevel extends KObject {
             for (int i = 0; i < sectorSize.width(); i++) {
                 for (int j = 0; j < sectorSize.height(); j++) {
 
-                    KMapSectorSlice slice = sector.getSlice(i, j);
+                    KLevelSectorSlice slice = sector.getSlice(i, j);
                     if (slice.sectorLink() == null) {
                         continue;
                     }

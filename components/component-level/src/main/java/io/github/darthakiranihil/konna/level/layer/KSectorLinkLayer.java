@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KSectorLinkLayer implements KMapLayer<KSectorLinkData> {
+public final class KSectorLinkLayer implements KLevelLayer<KSectorLinkData> {
 
     private final Map<KVector2i, KSectorLinkData> links;
 

@@ -48,7 +48,7 @@ public class KLevelPositiveTests extends KStandardTestClass {
                 .placeTile(1, 1, tileInfo),
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));

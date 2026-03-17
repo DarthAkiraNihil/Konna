@@ -48,10 +48,10 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
                 .placeTile(1, 1, tileInfo),
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
-        KMapSectorSlice sectorSlice = sector.getSlice(0, 0);
+        KLevelSectorSlice sectorSlice = sector.getSlice(0, 0);
         Assertions.assertNotNull(sectorSlice.tile());
         Assertions.assertEquals(tileInfo.getId(), sectorSlice.tile().getId());
         Assertions.assertNull(sectorSlice.sectorLink());
@@ -76,7 +76,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
                 .placeTile(1, 1, tileInfo),
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         KLevelSector sector = new KLevelSector(
@@ -89,10 +89,10 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
                 .placeTile(1, 1, tileInfo),
             new KHeightLayer(new KSize(2, 2)),
             (new KSectorLinkLayer()).link(0, 0, sector2, 1, 1),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
-        KMapSectorSlice sectorSlice = sector.getSlice(0, 0);
+        KLevelSectorSlice sectorSlice = sector.getSlice(0, 0);
         Assertions.assertNotNull(sectorSlice.tile());
         Assertions.assertEquals(tileInfo.getId(), sectorSlice.tile().getId());
         Assertions.assertNotNull(sectorSlice.sectorLink());
@@ -128,7 +128,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         Assertions.assertTrue(
@@ -183,7 +183,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         Assertions.assertFalse(
@@ -238,7 +238,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         Assertions.assertFalse(
@@ -296,7 +296,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KMapEntityLayer()
+            new KLevelEntityLayer()
         );
 
         Assertions.assertFalse(

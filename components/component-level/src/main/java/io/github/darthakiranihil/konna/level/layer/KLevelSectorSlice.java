@@ -37,7 +37,7 @@ import java.util.List;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public record KMapSectorSlice(
+public record KLevelSectorSlice(
     String sectorName,
     KVector2i position,
     int height,

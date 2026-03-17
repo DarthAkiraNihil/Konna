@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.KLevelSector;
-import io.github.darthakiranihil.konna.level.layer.KMapSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
 
 import java.util.Objects;
@@ -113,13 +113,13 @@ public abstract sealed class KMapEntity
         }
 
         KVector2i nextPosition = this.position.add(nextDirection);
-        KMapSectorSlice previousSlice = this.currentSector.getSlice(
+        KLevelSectorSlice previousSlice = this.currentSector.getSlice(
             this.position.x(),
             this.position.y()
         );
         int previousHeight = previousSlice.height();
 
-        KMapSectorSlice slice = this.currentSector.getSlice(
+        KLevelSectorSlice slice = this.currentSector.getSlice(
             nextPosition.x(), nextPosition.y()
         );
 
@@ -135,7 +135,7 @@ public abstract sealed class KMapEntity
             }
             nextPosition = linkedSectorData.destination().add(nextDirection);
 
-            KMapSectorSlice dstSlice = linkedSectorData
+            KLevelSectorSlice dstSlice = linkedSectorData
                 .linkedSector()
                 .getSlice(
                     nextPosition.x(),

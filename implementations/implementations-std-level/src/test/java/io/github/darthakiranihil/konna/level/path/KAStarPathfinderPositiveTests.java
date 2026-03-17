@@ -96,10 +96,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
@@ -325,8 +325,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(1, 3, tileInfo)
             .placeTile(0, 3, tileInfo);
 
-        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
-        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KLevelEntityLayer());
 
 
         var loc2 = new KLevel(
@@ -381,8 +381,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
 
         sl1.link(4, 1, s2, 0, 1);
         sl2.link(4, 1, s1, 0, 1);
@@ -461,8 +461,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl1 = new KSectorLinkLayer();
         KSectorLinkLayer sl2 = new KSectorLinkLayer();
 
-        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
 
         sl2.link(4, 1, s1, 0, 1);
 
@@ -549,10 +549,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
@@ -639,10 +639,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KSectorLinkLayer sl3 = new KSectorLinkLayer();
         KSectorLinkLayer sl4 = new KSectorLinkLayer();
 
-        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KMapEntityLayer());
-        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KMapEntityLayer());
-        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KMapEntityLayer());
-        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KMapEntityLayer());
+        KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
+        KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
+        KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
+        KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
         sl1.link(3, 4, s2, 3, 0);
         sl2.link(0, 3, s3, 4, 3);
