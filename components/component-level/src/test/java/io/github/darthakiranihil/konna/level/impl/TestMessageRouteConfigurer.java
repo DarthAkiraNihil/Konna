@@ -25,8 +25,8 @@ public class TestMessageRouteConfigurer implements KMessageRoutesConfigurer {
     public void setupRoutes(KMessageSystem messageSystem) {
 
         messageSystem.addMessageRoute(
-            "loadLocation",
-            "Level.LevelService.loadLocation"
+            "loadLevel",
+            "Level.LevelService.loadLevel"
         );
 
         messageSystem.addMessageRoute(

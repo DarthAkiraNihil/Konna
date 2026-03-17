@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
-import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
+import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -43,14 +43,14 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
                 new String[] { KTileTypedef.TILE_ASSET_TYPE},
                 new String[] {"classpath:assets/tiles.json"}
             ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[] { KLocationTypedef.LOCATION_ASSET_TYPE},
-                new String[] {"classpath:assets/locations.json"}
+                new String[] { KLevelTypedef.LEVEL_ASSET_TYPE },
+                new String[] {"classpath:assets/levels.json"}
             )),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
 
         this.assetLoader.addAssetTypedef(new KTilePropertyTypedef());
         this.assetLoader.addAssetTypedef(new KTileTypedef());
-        this.assetLoader.addAssetTypedef(new KLocationTypedef());
+        this.assetLoader.addAssetTypedef(new KLevelTypedef());
     }
 }

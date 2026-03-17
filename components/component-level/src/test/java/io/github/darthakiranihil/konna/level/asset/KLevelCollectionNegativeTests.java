@@ -35,7 +35,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -48,7 +48,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_tile")
+            () -> levelCollection.getAsset("invalid_by_tile")
         );
 
     }
@@ -60,7 +60,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -73,22 +73,22 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_link_position_xb")
+            () -> levelCollection.getAsset("invalid_by_link_position_xb")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_link_position_xa")
+            () -> levelCollection.getAsset("invalid_by_link_position_xa")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_link_position_yb")
+            () -> levelCollection.getAsset("invalid_by_link_position_yb")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_link_position_ya")
+            () -> levelCollection.getAsset("invalid_by_link_position_ya")
         );
 
     }
@@ -100,7 +100,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -113,7 +113,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_linked_sector")
+            () -> levelCollection.getAsset("invalid_by_linked_sector")
         );
 
     }
@@ -125,7 +125,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -138,22 +138,22 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_sector_destination_xb")
+            () -> levelCollection.getAsset("invalid_by_sector_destination_xb")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_sector_destination_xa")
+            () -> levelCollection.getAsset("invalid_by_sector_destination_xa")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_sector_destination_yb")
+            () -> levelCollection.getAsset("invalid_by_sector_destination_yb")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_sector_destination_ya")
+            () -> levelCollection.getAsset("invalid_by_sector_destination_ya")
         );
 
     }
@@ -165,7 +165,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -178,22 +178,22 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_entity_position_xb")
+            () -> levelCollection.getAsset("invalid_by_entity_position_xb")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_entity_position_xa")
+            () -> levelCollection.getAsset("invalid_by_entity_position_xa")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_entity_position_yb")
+            () -> levelCollection.getAsset("invalid_by_entity_position_yb")
         );
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_by_entity_position_ya")
+            () -> levelCollection.getAsset("invalid_by_entity_position_ya")
         );
 
     }
@@ -205,7 +205,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -218,7 +218,7 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
-            () -> locationCollection.getAsset("invalid_validation_failed")
+            () -> levelCollection.getAsset("invalid_validation_failed")
         );
 
     }

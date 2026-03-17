@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ExtractMethodRecommender")
-public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
+public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
     @Test
     public void testObservePointRegular() {
 
-        KLocationObserver observer = new KRaycastLocationObserver();
+        KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
@@ -56,10 +56,10 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLevel location = new KLevel("loc1", List.of(sector));
+        KLevel level = new KLevel("loc1", List.of(sector));
 
-        KFov fov = observer.observePoint(location,"sector_1", 5, 5, 3);
-        KFov fov2 = observer.observePoint(location,"sector_1", new KVector2i(5, 5), 3);
+        KFov fov = observer.observePoint(level,"sector_1", 5, 5, 3);
+        KFov fov2 = observer.observePoint(level,"sector_1", new KVector2i(5, 5), 3);
         Assertions.assertEquals(21, fov.getObservedSlices().size());
         Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());
         var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
@@ -96,7 +96,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
     @Test
     public void testObserveWithSectorLink() {
 
-        KLocationObserver observer = new KRaycastLocationObserver();
+        KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
@@ -133,9 +133,9 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
         sl1.link(0, 5, sector2, 10, 5);
         sl2.link(10, 5, sector, 0, 5);
 
-        KLevel location = new KLevel("loc1", List.of(sector, sector2));
+        KLevel level = new KLevel("loc1", List.of(sector, sector2));
 
-        KFov fov = observer.observePoint(location,"sector_1", 0, 5, 3);
+        KFov fov = observer.observePoint(level,"sector_1", 0, 5, 3);
         Assertions.assertEquals(26, fov.getObservedSlices().size());
         var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
         Assertions.assertTrue(
@@ -176,7 +176,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
     @Test
     public void testObserveWithHeightDecreasing() {
 
-        KLocationObserver observer = new KRaycastLocationObserver();
+        KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
@@ -205,9 +205,9 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLevel location = new KLevel("loc1", List.of(sector));
+        KLevel level = new KLevel("loc1", List.of(sector));
 
-        KFov fov = observer.observePoint(location,"sector_1", 5, 8, 3);
+        KFov fov = observer.observePoint(level,"sector_1", 5, 8, 3);
         Assertions.assertEquals(32, fov.getObservedSlices().size());
         var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
         Assertions.assertTrue(
@@ -254,7 +254,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
     @Test
     public void testObserveWithHeightIncreasing() {
 
-        KLocationObserver observer = new KRaycastLocationObserver();
+        KLevelObserver observer = new KRaycastLevelObserver();
         KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
@@ -283,9 +283,9 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLevel location = new KLevel("loc1", List.of(sector));
+        KLevel level = new KLevel("loc1", List.of(sector));
 
-        KFov fov = observer.observePoint(location,"sector_1", 5, 7, 3);
+        KFov fov = observer.observePoint(level,"sector_1", 5, 7, 3);
         Assertions.assertEquals(18, fov.getObservedSlices().size());
         var positions = fov.getObservedSlices().stream().map(KMapSectorSlice::position).toList();
         Assertions.assertTrue(

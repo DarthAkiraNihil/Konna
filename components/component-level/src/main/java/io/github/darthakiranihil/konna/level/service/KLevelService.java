@@ -27,7 +27,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.level.asset.KLocationCollection;
+import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
 import io.github.darthakiranihil.konna.level.map.KLevel;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import org.jspecify.annotations.Nullable;
@@ -51,7 +51,7 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class KLevelService extends KObject {
 
-    private final KLocationCollection levelCollection;
+    private final KLevelCollection levelCollection;
 
     private final KEvent<KLevel> levelLoaded;
     private final KSimpleEvent levelUnloaded;
@@ -68,7 +68,7 @@ public class KLevelService extends KObject {
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,
-        @KInject final KLocationCollection levelCollection
+        @KInject final KLevelCollection levelCollection
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 

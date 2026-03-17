@@ -28,11 +28,11 @@ public class KLevelNegativeTests extends KStandardTestClass {
     @Test
     public void testGetSectorFailed() {
 
-        KLevel location = new KLevel("loc1", List.of());
+        KLevel level = new KLevel("loc1", List.of());
 
         Assertions.assertThrows(
             KInvalidArgumentException.class,
-            () -> location.getSector("sector_1")
+            () -> level.getSector("sector_1")
         );
 
     }

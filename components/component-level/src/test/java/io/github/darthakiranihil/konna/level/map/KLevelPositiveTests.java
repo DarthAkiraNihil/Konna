@@ -51,13 +51,13 @@ public class KLevelPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLevel location = new KLevel("loc1", List.of(sector));
+        KLevel level = new KLevel("loc1", List.of(sector));
 
-        String[] sectors = location.getSectorNames();
+        String[] sectors = level.getSectorNames();
         Assertions.assertEquals(1, sectors.length);
         Assertions.assertEquals("sector_1", sectors[0]);
 
-        KMapSector sector1 = location.getSector("sector_1");
+        KMapSector sector1 = level.getSector("sector_1");
         Assertions.assertEquals(sector.name(), sector1.name());
 
     }

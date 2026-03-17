@@ -58,7 +58,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
     }
 
     @Test
-    public void testLoadLocation() {
+    public void testLoadLevel() {
 
         try {
 
@@ -68,14 +68,14 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             TimeUnit.SECONDS.sleep(1);
             KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
-            Field currentLocation = KLevelService.class.getDeclaredField("currentLocation");
+            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
             Field currentSector = KLevelService.class.getDeclaredField("currentSector");
-            currentLocation.setAccessible(true);
+            currentLevel.setAccessible(true);
             currentSector.setAccessible(true);
 
             var body = new KUniversalMap();
-            body.put("location_name", "valid");
-            realContext.deliverMessageSync(KMessage.regular("loadLocation", body));
+            body.put("level_name", "valid");
+            realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
 
             var service = realContext
                 .listObjects()
@@ -85,7 +85,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
             Assertions.assertTrue(service.isPresent());
 
-            var cloc = (KLevel) currentLocation.get(service.get().object());
+            var cloc = (KLevel) currentLevel.get(service.get().object());
             var csec = (KMapSector) currentSector.get(service.get().object());
 
             Assertions.assertEquals("valid", cloc.name());

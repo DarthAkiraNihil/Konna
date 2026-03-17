@@ -23,17 +23,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class KRaycastLocationObserverNegativeTests extends KStandardTestClass {
+public class KRaycastLevelObserverNegativeTests extends KStandardTestClass {
 
     @Test
     public void testObserveUnknownSector() {
 
-        KLocationObserver observer = new KRaycastLocationObserver();
-        KLevel location = new KLevel("loc1", List.of());
+        KLevelObserver observer = new KRaycastLevelObserver();
+        KLevel level = new KLevel("loc1", List.of());
 
         Assertions.assertThrows(
             KInvalidArgumentException.class,
-            () -> observer.observePoint(location, "sector_1", 1, 1, 2)
+            () -> observer.observePoint(level, "sector_1", 1, 1, 2)
         );
 
     }

@@ -24,13 +24,13 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import java.util.*;
 
 /**
- * Implementation of {@link KLocationObserver} that uses raycasting to calculate
+ * Implementation of {@link KLevelObserver} that uses raycasting to calculate
  * a field of view.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KRaycastLocationObserver implements KLocationObserver {
+public final class KRaycastLevelObserver implements KLevelObserver {
 
     private static final int FOV_CAST_RAYS_COUNT = 360;
 

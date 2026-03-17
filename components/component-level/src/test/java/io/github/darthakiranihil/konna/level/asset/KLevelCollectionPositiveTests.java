@@ -39,13 +39,13 @@ import org.junit.jupiter.api.Test;
 public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
 
     @Test
-    public void testLoadValidLocation() {
+    public void testLoadValidLevel() {
 
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -56,7 +56,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
             KStandardTestClass.context
         );
 
-        KLevel loaded = locationCollection.getAsset("valid");
+        KLevel loaded = levelCollection.getAsset("valid");
         Assertions.assertArrayEquals(
             new String[] {
                 "mf2", "mf1"
@@ -113,7 +113,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -124,7 +124,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
             KStandardTestClass.context
         );
 
-        KLevel loaded = locationCollection.getAsset("connectivity_graph_test");
+        KLevel loaded = levelCollection.getAsset("connectivity_graph_test");
         KIntWeightedGraph<String> graph = (KIntWeightedGraph<String>) KReflectionUtils.getFieldValue(
             KLevel.class,
             loaded,
@@ -154,7 +154,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -165,8 +165,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
             KStandardTestClass.context
         );
 
-        KLevel location = locationCollection.getAsset("valid_only_autonomous");
-        KMapSector sector = location.getSector("mf1");
+        KLevel level = levelCollection.getAsset("valid_only_autonomous");
+        KMapSector sector = level.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
@@ -198,7 +198,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -209,8 +209,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
             KStandardTestClass.context
         );
 
-        KLevel location = locationCollection.getAsset("valid_validator_is_not_a_rule");
-        KMapSector sector = location.getSector("mf1");
+        KLevel level = levelCollection.getAsset("valid_validator_is_not_a_rule");
+        KMapSector sector = level.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
@@ -239,7 +239,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KMapSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KMapSector.EventData>("entityLeftSector"));
 
-        KLocationCollection locationCollection = new KLocationCollection(
+        KLevelCollection levelCollection = new KLevelCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -250,8 +250,8 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
             KStandardTestClass.context
         );
 
-        KLevel location = locationCollection.getAsset("valid_no_validator");
-        KMapSector sector = location.getSector("mf1");
+        KLevel level = levelCollection.getAsset("valid_no_validator");
+        KMapSector sector = level.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 

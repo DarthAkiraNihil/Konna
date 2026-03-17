@@ -28,10 +28,10 @@ public class FalseValidatedController extends KAutonomousEntityController {
 
     public FalseValidatedController(
         KMapEntity assignedEntity,
-        KLevel location,
+        KLevel level,
         KAssetDefinition params
     ) {
-        super(assignedEntity, location, params);
+        super(assignedEntity, level, params);
     }
 
     @Override

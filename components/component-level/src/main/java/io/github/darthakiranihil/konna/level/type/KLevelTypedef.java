@@ -27,16 +27,16 @@ import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KLocationTypedef implements KAssetTypedef {
+public final class KLevelTypedef implements KAssetTypedef {
 
     /**
      * Constant for level property type inside Level component.
      */
-    public static final String LOCATION_ASSET_TYPE = "Level.level";
+    public static final String LEVEL_ASSET_TYPE = "Level.level";
 
     @Override
     public String getName() {
-        return LOCATION_ASSET_TYPE;
+        return LEVEL_ASSET_TYPE;
     }
 
     @Override

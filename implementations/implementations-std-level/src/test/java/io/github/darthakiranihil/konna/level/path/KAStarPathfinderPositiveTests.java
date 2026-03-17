@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
-    private final KLevel location;
+    private final KLevel level;
 
     public KAStarPathfinderPositiveTests() {
 
@@ -105,7 +105,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        this.location = new KLevel(
+        this.level = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 
@@ -119,10 +119,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s1", 3, 1);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -150,10 +150,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s2", 3, 1);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -185,10 +185,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s3", 3, 3);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),
@@ -226,10 +226,10 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
-        KPath ch = chebyshev.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
-        KPath nch = naturalizedChebyshev.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
-        KPath mn = manhattan.findPath(this.location, "s1", 1, 1, "s4", 1, 3);
+        KPath ep = euclidean.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
+        KPath ch = chebyshev.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
+        KPath nch = naturalizedChebyshev.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
+        KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
 
         KVector2i[] expected = new KVector2i[] {
             new KVector2i(1, 0),

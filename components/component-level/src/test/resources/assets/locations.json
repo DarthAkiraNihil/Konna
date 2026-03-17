@@ -1,6 +1,6 @@
 {
     "valid": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -88,7 +88,7 @@
         }
     },
     "invalid_by_tile": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -156,7 +156,7 @@
         }
     },
     "invalid_by_link_position_xb": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -224,7 +224,7 @@
         }
     },
     "invalid_by_link_position_xa": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -292,7 +292,7 @@
         }
     },
     "invalid_by_link_position_yb": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -360,7 +360,7 @@
         }
     },
     "invalid_by_link_position_ya": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -428,7 +428,7 @@
         }
     },
     "invalid_by_linked_sector": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -496,7 +496,7 @@
         }
     },
     "invalid_by_sector_destination_xa": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -564,7 +564,7 @@
         }
     },
     "invalid_by_sector_destination_xb": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -632,7 +632,7 @@
         }
     },
     "invalid_by_sector_destination_ya": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -700,7 +700,7 @@
         }
     },
     "invalid_by_sector_destination_yb": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -768,7 +768,7 @@
         }
     },
     "invalid_by_entity_position_xb": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -876,7 +876,7 @@
         }
     },
     "invalid_by_entity_position_xa": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -984,7 +984,7 @@
         }
     },
     "invalid_by_entity_position_ya": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -1092,7 +1092,7 @@
         }
     },
     "invalid_by_entity_position_yb": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -1200,7 +1200,7 @@
         }
     },
     "connectivity_graph_test": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -1329,7 +1329,7 @@
         }
     },
     "valid_only_autonomous": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",
@@ -1416,7 +1416,7 @@
         }
     },
     "valid_no_validator": {
-        "Level.location": {
+        "Level.level": {
             "sectors": [
                 {
                     "name": "mf1",

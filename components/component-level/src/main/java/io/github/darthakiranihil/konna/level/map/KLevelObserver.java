@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public interface KLocationObserver {
+public interface KLevelObserver {
 
     /**
      * Observes a point in specified level.
