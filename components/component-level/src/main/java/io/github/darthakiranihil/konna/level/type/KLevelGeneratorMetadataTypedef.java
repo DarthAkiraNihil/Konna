@@ -105,6 +105,8 @@ public final class KLevelGeneratorMetadataTypedef implements KAssetTypedef {
                     i++;
                 }
             })
+
+            // todo: constants validation (need to add constant nodes first)
             .build();
     }
 }

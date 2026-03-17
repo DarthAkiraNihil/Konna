@@ -184,13 +184,4 @@ public class KImage implements KCopyable<KImage> {
         return Objects.hash(this.rawImageData, this.width, this.height);
     }
 
-    // todo: make a filter
-    //    public KImage applyShaders(final KShader[] shaders) {
-    //        KImage copy = this.copy();
-    //        //        for (KShader shader: shaders) {
-    //        //            copy = shader.apply(copy);
-    //        //        }
-    //        return copy;
-    //    }
-
 }
