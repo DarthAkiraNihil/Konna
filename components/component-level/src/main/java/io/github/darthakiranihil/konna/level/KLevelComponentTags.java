@@ -36,9 +36,9 @@ public final class KLevelComponentTags extends KUninstantiable {
      */
     public static final KTag SECTOR = new KTag("sector");
     /**
-     * Indicates that the object is a location.
+     * Indicates that the object is a level.
      */
-    public static final KTag LOCATION = new KTag("location");
+    public static final KTag LEVEL = new KTag("level");
     /**
      * Indicates that the object is an autonomous entity controller.
      */

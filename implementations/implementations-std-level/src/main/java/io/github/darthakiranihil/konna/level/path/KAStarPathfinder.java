@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import org.jspecify.annotations.Nullable;
@@ -171,7 +171,7 @@ public class KAStarPathfinder implements KPathfinder {
 
     @Override
     public KPath findPath(
-        final KLocation location,
+        final KLevel location,
         final String srcSector,
         int srcX,
         int srcY,
@@ -235,7 +235,7 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private List<String> getSectorPath(
-        final KLocation location,
+        final KLevel location,
         final String srcSector,
         int srcX,
         int srcY,
@@ -423,7 +423,7 @@ public class KAStarPathfinder implements KPathfinder {
     }
 
     private List<KPair<KVector2i, KVector2i>> getCheckpoints(
-        final KLocation location,
+        final KLevel location,
         final List<String> sectorPath,
         int srcX,
         int srcY,

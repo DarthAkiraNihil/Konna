@@ -36,7 +36,7 @@ public final class KRaycastLocationObserver implements KLocationObserver {
 
     @Override
     public KFov observePoint(
-        final KLocation location,
+        final KLevel location,
         final String sector,
         int x,
         int y,

@@ -29,7 +29,7 @@ public class KRaycastLocationObserverNegativeTests extends KStandardTestClass {
     public void testObserveUnknownSector() {
 
         KLocationObserver observer = new KRaycastLocationObserver();
-        KLocation location = new KLocation("loc1", List.of());
+        KLevel location = new KLevel("loc1", List.of());
 
         Assertions.assertThrows(
             KInvalidArgumentException.class,

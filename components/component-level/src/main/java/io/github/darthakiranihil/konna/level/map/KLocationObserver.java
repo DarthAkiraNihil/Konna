@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.level.map;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 /**
- * Interface providing methods to observe different location
+ * Interface providing methods to observe different levels
  * to get a field of view.
  *
  * @since 0.5.0
@@ -28,25 +28,25 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 public interface KLocationObserver {
 
     /**
-     * Observes a point in specified location.
-     * @param location Location to observe
+     * Observes a point in specified level.
+     * @param level Level to observe
      * @param sector Sector to begin observing in
      * @param point Position to begin observing on
      * @param visionRange How far does it need to observe
      * @return Field of view for this position
      */
     default KFov observePoint(
-        final KLocation location,
+        final KLevel level,
         final String sector,
         final KVector2i point,
         int visionRange
     ) {
-        return this.observePoint(location, sector, point.x(), point.y(), visionRange);
+        return this.observePoint(level, sector, point.x(), point.y(), visionRange);
     }
 
     /**
-     * Observes a point in specified location.
-     * @param location Location to observe
+     * Observes a point in specified level.
+     * @param level Level to observe
      * @param sector Sector to begin observing in
      * @param x X coordinate of position to begin observing on
      * @param y Y coordinate of position to begin observing on
@@ -54,7 +54,7 @@ public interface KLocationObserver {
      * @return Field of view for this position
      */
     KFov observePoint(
-        KLocation location,
+        KLevel level,
         String sector,
         int x,
         int y,

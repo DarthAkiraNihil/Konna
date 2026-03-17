@@ -32,7 +32,7 @@ import java.util.*;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KLocation extends KObject {
+public final class KLevel extends KObject {
 
     private final Map<String, KMapSector> sectors;
     private final String[] sectorNames;
@@ -40,14 +40,14 @@ public final class KLocation extends KObject {
 
     /**
      * Standard constructor.
-     * @param name Name of the location
-     * @param sectors Sectors that are parts of the location
+     * @param name Name of the level
+     * @param sectors Sectors that are parts of the level
      */
-    public KLocation(
+    public KLevel(
         final String name,
         final List<KMapSector> sectors
     ) {
-        super(name, KStructUtils.setOfTags(KLevelComponentTags.LOCATION));
+        super(name, KStructUtils.setOfTags(KLevelComponentTags.LEVEL));
         this.sectors = new HashMap<>(sectors.size());
 
         sectors.forEach(
@@ -61,7 +61,7 @@ public final class KLocation extends KObject {
     }
 
     /**
-     * @return Array of names of sectors, included in this location
+     * @return Array of names of sectors, included in this level
      */
     public String[] getSectorNames() {
         return this.sectorNames;
@@ -70,7 +70,7 @@ public final class KLocation extends KObject {
     /**
      * @param sectorName Name of the sector
      * @return The sector with specified name
-     * @throws KInvalidArgumentException if the sector does not exist in this location
+     * @throws KInvalidArgumentException if the sector does not exist in this level
      */
     public KMapSector getSector(final String sectorName) {
         if (!this.sectors.containsKey(sectorName)) {
@@ -94,14 +94,14 @@ public final class KLocation extends KObject {
     }
 
     /**
-     * Unloads this location.
+     * Unloads this level.
      */
     public void unload() {
         this.sectors.values().forEach(KMapSector::unload);
     }
 
     /**
-     * @return Sector connectivity graph for this location
+     * @return Sector connectivity graph for this level
      */
     public KIntWeightedGraph<String> getSectorConnectivityGraph() {
         return this.sectorConnectivityGraph;

@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KLocationCollectionNegativeTests extends KAssetCollectionTestClass {
+public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
 
     @Test
     public void testLoadInvalidByTileLocation() {

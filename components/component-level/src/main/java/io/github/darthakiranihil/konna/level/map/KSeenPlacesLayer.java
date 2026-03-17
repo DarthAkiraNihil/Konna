@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 /**
  * Special map layer that contains information about seen status of places.
- * It is supposed to be used when rendering a location since visited-and-seen,
+ * It is supposed to be used when rendering a level since visited-and-seen,
  * visited-and-unseen and unvisited are different types of places.
  *
  * @since 0.5.0

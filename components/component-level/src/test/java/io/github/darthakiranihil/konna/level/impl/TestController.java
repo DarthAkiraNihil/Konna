@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityControllerParam;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -30,7 +30,7 @@ public class TestController extends KAutonomousEntityController {
     private int test;
 
     @KAutonomousEntityControllerParam(name = "test", type = KAutonomousEntityControllerParam.Metatype.INT)
-    public TestController(KMapEntity assignedEntity, KLocation location, KAssetDefinition params) {
+    public TestController(KMapEntity assignedEntity, KLevel location, KAssetDefinition params) {
         super(assignedEntity, location, params);
     }
 

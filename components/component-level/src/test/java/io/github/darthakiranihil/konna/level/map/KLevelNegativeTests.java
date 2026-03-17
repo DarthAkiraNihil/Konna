@@ -23,12 +23,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class KLocationNegativeTests extends KStandardTestClass {
+public class KLevelNegativeTests extends KStandardTestClass {
 
     @Test
     public void testGetSectorFailed() {
 
-        KLocation location = new KLocation("loc1", List.of());
+        KLevel location = new KLevel("loc1", List.of());
 
         Assertions.assertThrows(
             KInvalidArgumentException.class,

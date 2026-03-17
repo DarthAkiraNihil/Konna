@@ -39,14 +39,14 @@ import io.github.darthakiranihil.konna.level.type.KLocationTypedef;
 import java.util.*;
 
 /**
- * Collection of location assets of type
+ * Collection of level assets of type
  * {@link KLocationTypedef#LOCATION_ASSET_TYPE}.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KLocationCollection extends KObject implements KAssetCollection<KLocation> {
+public final class KLocationCollection extends KObject implements KAssetCollection<KLevel> {
 
     private record RawSector(
         KMapSector containedSector,
@@ -74,7 +74,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
      * Standard constructor.
      * @param assetLoader Asset loader
      * @param eventSystem Event system that will be injected in loaded entities and sectors
-     * @param tileCollection Tile collection to get tiles for loaded location
+     * @param tileCollection Tile collection to get tiles for loaded level
      * @param activator Activator to create autonomous entity controllers
      */
     public KLocationCollection(
@@ -84,7 +84,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
         @KInject final KActivator activator
     ) {
         super(
-            "Level.locationCollection",
+            "Level.levelCollection",
             KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
         );
 
@@ -96,7 +96,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
     }
 
     @Override
-    public KLocation getAsset(final String assetId) {
+    public KLevel getAsset(final String assetId) {
 
         KAsset asset = this.assetLoader.loadAsset(assetId, KLocationTypedef.LOCATION_ASSET_TYPE);
         KAssetDefinition definition = asset.definition();
@@ -125,12 +125,12 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             );
         }
 
-        KLocation location = new KLocation(
+        KLevel level = new KLevel(
             assetId,
             filledSectors
         );
-        this.createControllers(autonomousEntities, location);
-        return location;
+        this.createControllers(autonomousEntities, level);
+        return level;
     }
 
     private Map<String, RawSector> createRawSectors(
@@ -372,7 +372,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
             Class<? extends KAutonomousEntityController>,
             KAssetDefinition
         >> autonomousEntitiesList,
-        final KLocation location
+        final KLevel level
     ) {
         for (var data: autonomousEntitiesList) {
             KAutonomousEntity entity = data.first();
@@ -416,7 +416,7 @@ public final class KLocationCollection extends KObject implements KAssetCollecti
                 .createObject(
                     controllerClass,
                     entity,
-                    location,
+                    level,
                     controllerParams
                 );
 

@@ -31,7 +31,7 @@ import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
 import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.*;
 
@@ -51,7 +51,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     private Map<UUID, KControllableEntity> controllables;
     private Map<UUID, KStaticEntity> statics;
     private Map<UUID, KAutonomousEntity> autonomouses;
-    private KLocation currentLocation;
+    private KLevel currentLocation;
     private KEngineContext realContext;
 
     public KLevelEntityManagementServiceTests() {
@@ -97,7 +97,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
             KLevelEntityManagementService.class,
             service,
             "currentLocation",
-            KLocation.class
+            KLevel.class
         );
 
         this.controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(

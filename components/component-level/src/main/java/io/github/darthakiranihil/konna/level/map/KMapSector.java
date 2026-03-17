@@ -32,7 +32,7 @@ import io.github.darthakiranihil.konna.level.entity.KMapEntity;
 import java.util.*;
 
 /**
- * The elementary unit of a game level (location) that provides all information
+ * The elementary unit of a game level that provides all information
  * about its environment (including tiles, links to other sectors etc.).
  * It requires {@code entityLeftSector} and {@code entityMoved} event to work properly.
  *
@@ -126,7 +126,7 @@ public final class KMapSector extends KObject {
     }
 
     /**
-     * Returns information of all sector layers that are placed on specific location.
+     * Returns information of all sector layers that are placed on specific level.
      * @param x X coordinate of sliced position
      * @param y Y coordinate of sliced position
      * @return Slice of the sector on specific place
@@ -149,7 +149,7 @@ public final class KMapSector extends KObject {
     }
 
     /**
-     * Returns information of all sector layers that are placed on specific location
+     * Returns information of all sector layers that are placed on specific level
      * and marks it as seen.
      * @param x X coordinate of sliced position
      * @param y Y coordinate of sliced position

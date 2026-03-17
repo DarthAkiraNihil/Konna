@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 import io.github.darthakiranihil.konna.level.entity.KMapEntity;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -28,7 +28,7 @@ public class TestControllerWithoutValidator extends KAutonomousEntityController 
 
     public TestControllerWithoutValidator(
         KMapEntity assignedEntity,
-        KLocation location,
+        KLevel location,
         KAssetDefinition params
     ) {
         super(assignedEntity, location, params);

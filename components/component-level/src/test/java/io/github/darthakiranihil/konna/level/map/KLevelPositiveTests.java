@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-public class KLocationPositiveTests extends KStandardTestClass {
+public class KLevelPositiveTests extends KStandardTestClass {
 
     @Test
     public void testGetSectorSuccess() {
@@ -51,7 +51,7 @@ public class KLocationPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLocation location = new KLocation("loc1", List.of(sector));
+        KLevel location = new KLevel("loc1", List.of(sector));
 
         String[] sectors = location.getSectorNames();
         Assertions.assertEquals(1, sectors.length);

@@ -35,7 +35,7 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.entity.*;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import org.jspecify.annotations.Nullable;
@@ -56,13 +56,13 @@ import java.util.UUID;
 @KComponentServiceMetaInfo(
     name = "LevelEntityManagementService"
 )
-@KRequiresEvent(name = "locationLoaded", simple = false, type = KLocation.class)
-@KRequiresEvent(name = "locationUnloaded")
+@KRequiresEvent(name = "levelLoaded", simple = false, type = KLevel.class)
+@KRequiresEvent(name = "levelUnloaded")
 @SuppressWarnings("FieldCanBeLocal,unused")
 public class KLevelEntityManagementService extends KObject {
 
-    private final KEventAction<KLocation> onLocationLoadedConsumer = this::onLocationLoaded;
-    private final KSimpleEventAction onLocationUnloadedConsumer = this::onLocationUnloaded;
+    private final KEventAction<KLevel> onLeveLoadedConsumer = this::onLevelLoaded;
+    private final KSimpleEventAction onLevelUnloadedConsumer = this::onLevelUnloaded;
 
     private final Map<UUID, KControllableEntity> controllables;
     private final Map<UUID, KStaticEntity> statics;
@@ -72,11 +72,11 @@ public class KLevelEntityManagementService extends KObject {
     private final KActivator activator;
 
     private @Nullable KMessenger messenger;
-    private @Nullable KLocation currentLocation;
+    private @Nullable KLevel currentLevel;
 
     /**
      * Standard constructor.
-     * @param eventSystem Event system to get {@code locationLoaded} and {@code locationUnloaded}
+     * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events
      * @param activator Activator to create autonomous entities' controllers
      */
@@ -89,15 +89,15 @@ public class KLevelEntityManagementService extends KObject {
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
-        KEvent<KLocation> locationLoaded = Objects.requireNonNull(
-            eventSystem.getEvent("locationLoaded")
+        KEvent<KLevel> levelLoaded = Objects.requireNonNull(
+            eventSystem.getEvent("levelLoaded")
         );
-        KSimpleEvent locationUnloaded = Objects.requireNonNull(
-            eventSystem.getSimpleEvent("locationUnloaded")
+        KSimpleEvent levelUnloaded = Objects.requireNonNull(
+            eventSystem.getSimpleEvent("levelUnloaded")
         );
 
-        locationUnloaded.subscribe(this.onLocationUnloadedConsumer);
-        locationLoaded.subscribe(this.onLocationLoadedConsumer);
+        levelUnloaded.subscribe(this.onLevelUnloadedConsumer);
+        levelLoaded.subscribe(this.onLeveLoadedConsumer);
 
         this.controllables = new HashMap<>();
         this.statics = new HashMap<>();
@@ -165,7 +165,7 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Creates a new autonomous entity in current location if it is presented.
+     *     Creates a new autonomous entity in current level if it is presented.
      *     It will fail if deployment sector, position or controller are invalid.
      * </p>
      * <p>
@@ -249,7 +249,7 @@ public class KLevelEntityManagementService extends KObject {
             .createObject(
                 controller,
                 entity,
-                Objects.requireNonNull(this.currentLocation),
+                Objects.requireNonNull(this.currentLevel),
                 controllerParams
             );
 
@@ -263,7 +263,7 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Destroys an autonomous entity in current location if it is presented.
+     *     Destroys an autonomous entity in current level if it is presented.
      *     If there is no loaded level, it will fail
      * </p>
      * <p>
@@ -277,10 +277,10 @@ public class KLevelEntityManagementService extends KObject {
     protected void destroyAutonomousEntity(
         @KBodyValue("entity_id") final UUID entityId
     ) {
-        if (this.currentLocation == null) {
+        if (this.currentLevel == null) {
             KSystemLogger.warning(
                 this.name,
-                "Cannot delete an autonomous entity: no location loaded"
+                "Cannot delete an autonomous entity: no level loaded"
             );
             return;
         }
@@ -303,7 +303,7 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Creates a new static entity in current location if it is presented.
+     *     Creates a new static entity in current level if it is presented.
      *     It will fail if deployment sector or position are invalid.
      * </p>
      * <p>
@@ -346,7 +346,7 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Destroys a static entity in current location if it is presented.
+     *     Destroys a static entity in current level if it is presented.
      *     If there is no loaded level, it will fail
      * </p>
      * <p>
@@ -360,10 +360,10 @@ public class KLevelEntityManagementService extends KObject {
     protected void destroyStaticEntity(
         @KBodyValue("entity_id") final UUID entityId
     ) {
-        if (this.currentLocation == null) {
+        if (this.currentLevel == null) {
             KSystemLogger.warning(
                 this.name,
-                "Cannot delete a static entity: no location loaded"
+                "Cannot delete a static entity: no level loaded"
             );
             return;
         }
@@ -387,7 +387,7 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Creates a new controllable entity in current location if it is presented.
+     *     Creates a new controllable entity in current level if it is presented.
      *     It will fail if deployment sector or position are invalid.
      * </p>
      * <p>
@@ -432,7 +432,7 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Destroys a controllable entity in current location if it is presented.
+     *     Destroys a controllable entity in current level if it is presented.
      *     If there is no loaded level, it will fail
      * </p>
      * <p>
@@ -446,10 +446,10 @@ public class KLevelEntityManagementService extends KObject {
     protected void destroyControllableEntity(
         @KBodyValue("entity_id") final UUID entityId
     ) {
-        if (this.currentLocation == null) {
+        if (this.currentLevel == null) {
             KSystemLogger.warning(
                 this.name,
-                "Cannot delete a controllable entity: no location loaded"
+                "Cannot delete a controllable entity: no level loaded"
             );
             return;
         }
@@ -473,14 +473,14 @@ public class KLevelEntityManagementService extends KObject {
     /**
      * Handles level loading by getting all loaded entities and adding them
      * to own lists to track.
-     * @param location Loaded level instance
+     * @param level Loaded level instance
      */
-    protected void onLocationLoaded(final KLocation location) {
+    protected void onLevelLoaded(final KLevel level) {
 
-        this.currentLocation = location;
+        this.currentLevel = level;
 
-        for (String sectorName: location.getSectorNames()) {
-            KMapSector sector = location.getSector(sectorName);
+        for (String sectorName: level.getSectorNames()) {
+            KMapSector sector = level.getSector(sectorName);
 
             KSize sectorSize = sector.getSize();
             for (int i = 0; i < sectorSize.width(); i++) {
@@ -516,7 +516,7 @@ public class KLevelEntityManagementService extends KObject {
     /**
      * Handles level unloading by clearing lists of all tracked entities.
      */
-    protected void onLocationUnloaded() {
+    protected void onLevelUnloaded() {
         this.controllables.clear();
         this.statics.clear();
         this.autonomouses.clear();
@@ -527,16 +527,16 @@ public class KLevelEntityManagementService extends KObject {
         final KVector2i position,
         final String entityType
     ) {
-        if (this.currentLocation == null) {
+        if (this.currentLevel == null) {
             KSystemLogger.warning(
                 this.name,
-                "Cannot create %s entity: no location loaded",
+                "Cannot create %s entity: no level loaded",
                 entityType
             );
             return null;
         }
 
-        if (!this.currentLocation.hasSector(sectorName)) {
+        if (!this.currentLevel.hasSector(sectorName)) {
             KSystemLogger.warning(
                 this.name,
                 "Cannot create %s entity: no sector with name %s",
@@ -545,7 +545,7 @@ public class KLevelEntityManagementService extends KObject {
             );
         }
 
-        KMapSector deploymentSector = this.currentLocation.getSector(sectorName);
+        KMapSector deploymentSector = this.currentLevel.getSector(sectorName);
         KMapSectorSlice slice = deploymentSector.getSlice(position.x(), position.y());
         if (slice.tile() == null) {
             KSystemLogger.warning(

@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
-    private final KLocation location;
+    private final KLevel location;
 
     public KAStarPathfinderPositiveTests() {
 
@@ -105,7 +105,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        this.location = new KLocation(
+        this.location = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 
@@ -329,7 +329,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KMapSector s2 = new KMapSector(es, "s2", tl2, new KHeightLayer(11, 11), new KSectorLinkLayer(), new KMapEntityLayer());
 
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l2", List.of(s1, s2)
         );
 
@@ -387,7 +387,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         sl1.link(4, 1, s2, 0, 1);
         sl2.link(4, 1, s1, 0, 1);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l2", List.of(s1, s2)
         );
 
@@ -466,7 +466,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         sl2.link(4, 1, s1, 0, 1);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l2", List.of(s1, s2)
         );
 
@@ -558,7 +558,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 
@@ -648,7 +648,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         sl2.link(0, 3, s3, 4, 3);
         sl3.link(1, 0, s4, 1, 4);
 
-        var loc2 = new KLocation(
+        var loc2 = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
         );
 

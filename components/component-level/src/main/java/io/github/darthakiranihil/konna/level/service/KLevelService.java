@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.asset.KLocationCollection;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import org.jspecify.annotations.Nullable;
 
@@ -46,85 +46,85 @@ import java.util.Objects;
 @KComponentServiceMetaInfo(
     name = "LevelService"
 )
-@KRequiresEvent(name = "locationLoaded", simple = false, type = KLocation.class)
-@KRequiresEvent(name = "locationUnloaded")
+@KRequiresEvent(name = "levelLoaded", simple = false, type = KLevel.class)
+@KRequiresEvent(name = "levelUnloaded")
 @SuppressWarnings("FieldCanBeLocal")
 public class KLevelService extends KObject {
 
-    private final KLocationCollection locationCollection;
+    private final KLocationCollection levelCollection;
 
-    private final KEvent<KLocation> locationLoaded;
-    private final KSimpleEvent locationUnloaded;
+    private final KEvent<KLevel> levelLoaded;
+    private final KSimpleEvent levelUnloaded;
 
-    private @Nullable KLocation currentLocation;
+    private @Nullable KLevel currentLevel;
     private @Nullable KMapSector currentSector;
     private @Nullable KMessenger messenger;
 
     /**
      * Standard constructor.
-     * @param locationCollection Location collection to get locations from
-     * @param eventSystem Event system to get {@code locationLoaded} and {@code locationUnloaded}
+     * @param levelCollection Level collection to get levels from
+     * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events to invoke.
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,
-        @KInject final KLocationCollection locationCollection
+        @KInject final KLocationCollection levelCollection
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
-        this.locationCollection = locationCollection;
+        this.levelCollection = levelCollection;
 
-        this.locationLoaded = Objects.requireNonNull(
-            eventSystem.getEvent("locationLoaded")
+        this.levelLoaded = Objects.requireNonNull(
+            eventSystem.getEvent("levelLoaded")
         );
-        this.locationUnloaded = Objects.requireNonNull(
-            eventSystem.getSimpleEvent("locationUnloaded")
+        this.levelUnloaded = Objects.requireNonNull(
+            eventSystem.getSimpleEvent("levelUnloaded")
         );
     }
 
     /**
-     * Loads a location. When it succeeds (location with specified name exists),
-     * Level.locationLoaded message is produced.
-     * @param locationName Name of the loaded location
+     * Loads a level. When it succeeds (level with specified name exists),
+     * Level.levelLoaded message is produced.
+     * @param levelName Name of the loaded level
      */
-    @KServiceEndpoint(route = "loadLocation")
-    protected void loadLocation(
-        @KBodyValue("location_name") final String locationName
+    @KServiceEndpoint(route = "loadLevel")
+    protected void loadLevel(
+        @KBodyValue("level_name") final String levelName
     ) {
 
         try {
-            if (this.currentLocation != null) {
-                this.currentLocation.unload();
-                this.locationUnloaded.invokeSync();
+            if (this.currentLevel != null) {
+                this.currentLevel.unload();
+                this.levelUnloaded.invokeSync();
             }
 
-            this.currentLocation = this.locationCollection.getAsset(locationName);
+            this.currentLevel = this.levelCollection.getAsset(levelName);
         } catch (KAssetLoadingException e) {
             KSystemLogger.warning(
                 this.name,
-                "Could not load location with name %s",
-                locationName
+                "Could not load level with name %s",
+                levelName
             );
             return;
         }
 
-        // todo: specify sector to deploy after transition to the location
-        this.currentSector = this.currentLocation.getSector(
-            this.currentLocation.getSectorNames()[0]
+        // todo: specify sector to deploy after transition to the level
+        this.currentSector = this.currentLevel.getSector(
+            this.currentLevel.getSectorNames()[0]
         );
 
-        this.locationLoaded.invokeSync(this.currentLocation);
+        this.levelLoaded.invokeSync(this.currentLevel);
 
         if (this.messenger == null) {
             return;
         }
 
         KUniversalMap body = new KUniversalMap();
-        body.put("location", this.currentLocation);
+        body.put("level", this.currentLevel);
         body.put("sector", this.currentSector);
 
         this.messenger.sendRegular(
-            "locationLoaded", body
+            "levelLoaded", body
         );
 
     }

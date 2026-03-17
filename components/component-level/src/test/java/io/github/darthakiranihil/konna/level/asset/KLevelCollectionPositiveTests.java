@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
 import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
-import io.github.darthakiranihil.konna.level.map.KLocation;
+import io.github.darthakiranihil.konna.level.map.KLevel;
 import io.github.darthakiranihil.konna.level.map.KMapSector;
 import io.github.darthakiranihil.konna.level.map.KMapSectorSlice;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("ExtractMethodRecommender")
-public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass {
+public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
 
     @Test
     public void testLoadValidLocation() {
@@ -56,7 +56,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
             KStandardTestClass.context
         );
 
-        KLocation loaded = locationCollection.getAsset("valid");
+        KLevel loaded = locationCollection.getAsset("valid");
         Assertions.assertArrayEquals(
             new String[] {
                 "mf2", "mf1"
@@ -124,9 +124,9 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
             KStandardTestClass.context
         );
 
-        KLocation loaded = locationCollection.getAsset("connectivity_graph_test");
+        KLevel loaded = locationCollection.getAsset("connectivity_graph_test");
         KIntWeightedGraph<String> graph = (KIntWeightedGraph<String>) KReflectionUtils.getFieldValue(
-            KLocation.class,
+            KLevel.class,
             loaded,
             "sectorConnectivityGraph",
             KIntWeightedGraph.class
@@ -165,7 +165,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
             KStandardTestClass.context
         );
 
-        KLocation location = locationCollection.getAsset("valid_only_autonomous");
+        KLevel location = locationCollection.getAsset("valid_only_autonomous");
         KMapSector sector = location.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
@@ -209,7 +209,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
             KStandardTestClass.context
         );
 
-        KLocation location = locationCollection.getAsset("valid_validator_is_not_a_rule");
+        KLevel location = locationCollection.getAsset("valid_validator_is_not_a_rule");
         KMapSector sector = location.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
@@ -250,7 +250,7 @@ public class KLocationCollectionPositiveTests extends KAssetCollectionTestClass 
             KStandardTestClass.context
         );
 
-        KLocation location = locationCollection.getAsset("valid_no_validator");
+        KLevel location = locationCollection.getAsset("valid_no_validator");
         KMapSector sector = location.getSector("mf1");
         KMapSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());

@@ -56,7 +56,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLocation location = new KLocation("loc1", List.of(sector));
+        KLevel location = new KLevel("loc1", List.of(sector));
 
         KFov fov = observer.observePoint(location,"sector_1", 5, 5, 3);
         KFov fov2 = observer.observePoint(location,"sector_1", new KVector2i(5, 5), 3);
@@ -133,7 +133,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
         sl1.link(0, 5, sector2, 10, 5);
         sl2.link(10, 5, sector, 0, 5);
 
-        KLocation location = new KLocation("loc1", List.of(sector, sector2));
+        KLevel location = new KLevel("loc1", List.of(sector, sector2));
 
         KFov fov = observer.observePoint(location,"sector_1", 0, 5, 3);
         Assertions.assertEquals(26, fov.getObservedSlices().size());
@@ -205,7 +205,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLocation location = new KLocation("loc1", List.of(sector));
+        KLevel location = new KLevel("loc1", List.of(sector));
 
         KFov fov = observer.observePoint(location,"sector_1", 5, 8, 3);
         Assertions.assertEquals(32, fov.getObservedSlices().size());
@@ -283,7 +283,7 @@ public class KRaycastLocationObserverPositiveTests extends KStandardTestClass {
             new KMapEntityLayer()
         );
 
-        KLocation location = new KLocation("loc1", List.of(sector));
+        KLevel location = new KLevel("loc1", List.of(sector));
 
         KFov fov = observer.observePoint(location,"sector_1", 5, 7, 3);
         Assertions.assertEquals(18, fov.getObservedSlices().size());
