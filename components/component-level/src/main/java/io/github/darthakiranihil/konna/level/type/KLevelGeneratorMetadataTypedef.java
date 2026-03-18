@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
+import io.github.darthakiranihil.konna.level.generator.KConstantNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 
 import java.util.Objects;
@@ -105,8 +106,23 @@ public final class KLevelGeneratorMetadataTypedef implements KAssetTypedef {
                     i++;
                 }
             })
+            .withRule((md) -> {
+                KAssetDefinition constants = md.getSubdefinition("constants");
+                KAssetDefinition nodes = md.getSubdefinition("nodes");
 
-            // todo: constants validation (need to add constant nodes first)
+                for (var constant: constants.getProperties()) {
+                    if (nodes.hasClassObject(constant, KConstantNode.class)) {
+                        continue;
+                    }
+
+                    throw new KAssetDefinitionError(
+                        String.format(
+                            "Constant node %s points to an unknown or non-constant node",
+                            constant
+                        )
+                    );
+                }
+            })
             .build();
     }
 }

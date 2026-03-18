@@ -102,39 +102,8 @@ public final class KLevelGenerator extends KObject {
             if (processingQueue.isEmpty()) {
                 ultimate = current;
             }
-            KUniversalMap input = new KUniversalMap();
-            // todo: skip building input for constant nodes
-            for (var dependency: current.dependencies) {
-                GeneratorProcessingRecord source = nodes.get(dependency.first());
-                if (source.outputParams == null) {
-                    throw new KGenerationException(
-                        String.format(
-                            "Illegal state: node %s has not been processed, but requested now",
-                            dependency.first()
-                        )
-                    );
-                }
 
-                if (!source.outputParams.containsKey(dependency.second())) {
-                    throw new KGenerationException(
-                        String.format(
-                            "Attempted to get output parameter %s of node %s, which is not presented",
-                            dependency.first(),
-                            dependency.second()
-                        )
-                    );
-                }
-
-                input.put(
-                    dependency.third(),
-                    source.outputParams.get(dependency.second())
-                );
-            }
-
-            if (current.inputParamsValidator != null) {
-                current.inputParamsValidator.validate(input);
-            }
-
+            KUniversalMap input = this.prepareInput(nodes, current);
             KUniversalMap output = current.nodeInstance.process(input, rnd);
             current.outputParamsValidator.validate(output);
             current.outputParams = output;
@@ -155,65 +124,174 @@ public final class KLevelGenerator extends KObject {
         return generatedLevel;
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, GeneratorProcessingRecord> createNodes() {
+    private KUniversalMap prepareInput(
+        final Map<String, GeneratorProcessingRecord> nodes,
+        final GeneratorProcessingRecord current
+    ) {
+        KUniversalMap input = new KUniversalMap();
+        if (current.nodeInstance instanceof KConstantNode) {
+            return input;
+        }
 
-        Map<String, GeneratorProcessingRecord> nodes = new HashMap<>();
-
-        this.metadata.nodes().forEach((k, v) -> {
-            var instance = this.activator.createObject(v);
-            String nodeClassName = v.getSimpleName();
-
-            KValidator<KUniversalMap> inputParamsValidator = null;
-            try {
-                Class<? extends KValidator<KUniversalMap>> inputParamsValidatorClass =
-                    (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
-                    String.format(
-                        "konna.generated.level.generator.%s$$InputValidator",
-                        nodeClassName
-                    ));
-                inputParamsValidator = this.activator.createObject(inputParamsValidatorClass);
-            } catch (KClassNotFoundException e) {
-                KSystemLogger.warning(
-                    this.name,
-                    "Could not find input params validator for node %s."
-                        +   "Validation will be skipped!",
-                    v.getCanonicalName()
-                );
-            }
-
-            KValidator<KUniversalMap> outputParamsValidator;
-            try {
-                Class<? extends KValidator<KUniversalMap>> outputParamsValidatorClass =
-                    (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
-                        String.format(
-                            "konna.generated.level.generator.%s$$OutputValidator",
-                            nodeClassName
-                        ));
-                outputParamsValidator = this.activator.createObject(outputParamsValidatorClass);
-            } catch (KClassNotFoundException e) {
+        for (var dependency: current.dependencies) {
+            GeneratorProcessingRecord source = nodes.get(dependency.first());
+            if (source.outputParams == null) {
                 throw new KGenerationException(
                     String.format(
-                            "%s: no output validator specified!"
-                        +   "Be sure the generator node specifies at least one output parameter",
-                        k
+                        "Illegal state: node %s has not been processed, but requested now",
+                        dependency.first()
                     )
                 );
             }
 
-            nodes.put(
-                k,
-                new GeneratorProcessingRecord(
-                    instance,
-                    inputParamsValidator,
-                    outputParamsValidator
-                )
+            if (!source.outputParams.containsKey(dependency.second())) {
+                throw new KGenerationException(
+                    String.format(
+                        "Attempted to get output parameter %s of node %s, which is not presented",
+                        dependency.first(),
+                        dependency.second()
+                    )
+                );
+            }
+
+            input.put(
+                dependency.third(),
+                source.outputParams.get(dependency.second())
             );
-        });
+        }
+
+        if (current.inputParamsValidator != null) {
+            current.inputParamsValidator.validate(input);
+        }
+
+        return input;
+    }
+
+    private Map<String, GeneratorProcessingRecord> createNodes() {
+
+        Map<String, GeneratorProcessingRecord> nodes = new HashMap<>();
+        for (var node: this.metadata.nodes().entrySet()) {
+            var nodeId = node.getKey();
+            var nodeClass = node.getValue();
+            boolean isConst = KConstantNode.class.isAssignableFrom(nodeClass);
+
+            if (isConst) {
+                nodes.put(
+                    nodeId,
+                    this.createConstantNode(nodeId, nodeClass)
+                );
+            } else {
+                nodes.put(
+                    nodeId,
+                    this.createCommonNode(nodeId, nodeClass)
+                );
+            }
+        }
 
         return nodes;
 
     }
+
+    @SuppressWarnings("unchecked")
+    private GeneratorProcessingRecord createConstantNode(
+        final String nodeId,
+        final Class<? extends KGeneratorNode> nodeClass
+    ) {
+
+        Object constant = this.metadata.constants().get(nodeId);
+        if (constant == null) {
+            throw new KGenerationException(
+                String.format(
+                    "Unknown constant node: %s",
+                    nodeId
+                )
+            );
+        }
+
+        var instance = this.activator.createObject(nodeClass, constant);
+        String nodeClassName = nodeClass.getSimpleName();
+
+        KValidator<KUniversalMap> outputParamsValidator;
+        try {
+            Class<? extends KValidator<KUniversalMap>> outputParamsValidatorClass =
+                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
+                    String.format(
+                        "konna.generated.level.generator.%s$$OutputValidator",
+                        nodeClassName
+                    ));
+            outputParamsValidator = this.activator.createObject(outputParamsValidatorClass);
+        } catch (KClassNotFoundException e) {
+            throw new KGenerationException(
+                String.format(
+                        "%s: no output validator specified!"
+                    +   "Be sure the generator node specifies at least one output parameter",
+                    nodeId
+                )
+            );
+        }
+
+        return new GeneratorProcessingRecord(
+            instance,
+            null,
+            outputParamsValidator
+        );
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private GeneratorProcessingRecord createCommonNode(
+        final String nodeId,
+        final Class<? extends KGeneratorNode> nodeClass
+    ) {
+        var instance = this.activator.createObject(nodeClass);
+        String nodeClassName = nodeClass.getSimpleName();
+
+        KValidator<KUniversalMap> inputParamsValidator = null;
+        try {
+            Class<? extends KValidator<KUniversalMap>> inputParamsValidatorClass =
+                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
+                    String.format(
+                        "konna.generated.level.generator.%s$$InputValidator",
+                        nodeClassName
+                    ));
+            inputParamsValidator = this.activator.createObject(inputParamsValidatorClass);
+        } catch (KClassNotFoundException e) {
+            KSystemLogger.warning(
+                this.name,
+            "Could not find input params validator for node %s."
+                +   "Validation will be skipped!",
+                nodeClass.getCanonicalName()
+            );
+        }
+
+        KValidator<KUniversalMap> outputParamsValidator;
+        try {
+            Class<? extends KValidator<KUniversalMap>> outputParamsValidatorClass =
+                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
+                    String.format(
+                        "konna.generated.level.generator.%s$$OutputValidator",
+                        nodeClassName
+                    ));
+            outputParamsValidator = this.activator.createObject(outputParamsValidatorClass);
+        } catch (KClassNotFoundException e) {
+            throw new KGenerationException(
+                String.format(
+                        "%s: no output validator specified!"
+                    +   "Be sure the generator node specifies at least one output parameter",
+                    nodeId
+                )
+            );
+        }
+
+        return new GeneratorProcessingRecord(
+            instance,
+            inputParamsValidator,
+            outputParamsValidator
+        );
+
+    }
+
+
 
     private void fillDependencies(
         final Map<String, GeneratorProcessingRecord> nodes,
