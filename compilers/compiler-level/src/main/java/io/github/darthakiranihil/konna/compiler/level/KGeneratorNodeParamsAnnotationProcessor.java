@@ -41,6 +41,20 @@ import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * <p>
+ *     Annotation processor that generates input and output params validators for generator nodes.
+ * </p>
+ * <p>
+ *     Important note (todo): when there are parameter with same name but different types,
+ *     their validation logic will be generated for <i>each unique combination</i>
+ *     that may lead to an unexpected behavior (potentially causing level generation errors).
+ *     <b>It will be so for some time but will be fixed sometime</b>
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam",
@@ -127,8 +141,6 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
                     paramType = e.getTypeMirror();
                 }
                 Objects.requireNonNull(paramType);
-
-                collectedForClass.add(new Param(param.name(), paramType));
 
                 collectedForClass.add(new Param(param.name(), paramType));
             }

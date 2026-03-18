@@ -18,12 +18,36 @@ package io.github.darthakiranihil.konna.level.generator;
 
 import java.lang.annotation.*;
 
+/**
+ * <p>
+ *     Annotation that specifies input parameter for a generator node.
+ * </p>
+ * <p>
+ *     Usually it should be handled by annotation processor that generates
+ *     corresponding validator that checks input params structure according to provided input
+ *     params description.
+ * </p>
+ * <p>
+ *     So far it is not required to be exact in {@code process} method of a generator node,
+ *     though applying to other methods of other classes is senseless.
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 @Repeatable(KGeneratorNodeInputParams.class)
 public @interface KGeneratorNodeInputParam {
 
+    /**
+     * @return Parameter name
+     */
     String name();
+
+    /**
+     * @return Parameter type
+     */
     Class<?> type();
 
 }

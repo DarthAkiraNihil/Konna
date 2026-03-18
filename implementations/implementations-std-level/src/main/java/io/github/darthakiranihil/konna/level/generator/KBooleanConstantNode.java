@@ -21,10 +21,21 @@ import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 
 import java.util.Random;
 
+/**
+ * Constant generator node containing a boolean value.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KBooleanConstantNode implements KConstantNode {
 
     private final boolean object;
 
+    /**
+     * Constructs the node. Will throw a {@link KInvalidArgumentException} if
+     * the passed object is not a boolean.
+     * @param object Value to pack into the constant
+     */
     public KBooleanConstantNode(final Object object) {
         if (!Boolean.class.isAssignableFrom(object.getClass())) {
             throw new KInvalidArgumentException("Object must be a float!");

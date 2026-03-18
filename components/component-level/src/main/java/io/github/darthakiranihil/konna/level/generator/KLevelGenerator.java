@@ -33,6 +33,43 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * <p>
+ *     Level procedural generation engine based on node system.
+ * </p>
+ * <p>
+ *     On construction, it accepts prepared metadata, that is used to create generator graph
+ *     to be processed. Also finds all input and output validators for all processed nodes.
+ * </p>
+ * <p>
+ *     There are some requirements that metadata should meet in order for generation to be
+ *     ended successfully:
+ *     <ul>
+ *         <li>
+ *             Generator graph must contain one and only one root node (that does not have
+ *             any adjacent nodes). If there are more than one of it,
+ *             a {@link KGenerationException} will be thrown.
+ *         </li>
+ *         <li>
+ *             The root node must return in output the only instance of {@link KLevel}, located
+ *             by {@code level} key! (actually the output may contain multiple values, but
+ *             only {@code level} will be used, others will be ignored)
+ *         </li>
+ *         <li>
+ *             All nodes used in the generator must specify at least one output parameter,
+ *             else {@link KGenerationException} will be thrown on node that does not fit
+ *             this requirement.
+ *         </li>
+ *         <li>
+ *             Each constant in metadata must point to existing node inside this generator.
+ *         </li>
+ *     </ul>
+ * </p>
+ *
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLevelGenerator extends KObject {
 
     private static final class GeneratorGraphNode {
@@ -41,7 +78,7 @@ public final class KLevelGenerator extends KObject {
         private boolean visited;
         private int connectionsFromThisNode;
 
-        public GeneratorGraphNode(
+        GeneratorGraphNode(
             final String nodeId,
             int initialConnections
         ) {
@@ -61,7 +98,7 @@ public final class KLevelGenerator extends KObject {
 
         private @Nullable KUniversalMap outputParams;
 
-        public GeneratorProcessingRecord(
+        GeneratorProcessingRecord(
             final KGeneratorNode nodeInstance,
             final @Nullable KValidator<KUniversalMap> inputParamsValidator,
             final KValidator<KUniversalMap> outputParamsValidator
@@ -76,6 +113,12 @@ public final class KLevelGenerator extends KObject {
     private final KActivator activator;
     private final KLevelGeneratorMetadata metadata;
 
+    /**
+     * Standard constructor.
+     * @param name Generator name
+     * @param activator Activator to create nodes
+     * @param metadata Generator metadata
+     */
     public KLevelGenerator(
         final String name,
         final KActivator activator,
@@ -87,6 +130,13 @@ public final class KLevelGenerator extends KObject {
 
     }
 
+    /**
+     * Generates a new level by processing nodes, specified in the metadata.
+     * During this process it generates a {@link Random} instance, that is shared by all
+     * processed nodes.
+     * @param seed The initial seed for generator
+     * @return Generated level
+     */
     KLevel generate(long seed) {
 
         var nodes = this.createNodes();
@@ -108,7 +158,8 @@ public final class KLevelGenerator extends KObject {
             }
         }
 
-        Queue<GeneratorProcessingRecord> processingQueue = this.createProcessingQueue(nodes, dependencyGraph);
+        Queue<GeneratorProcessingRecord>
+            processingQueue = this.createProcessingQueue(nodes, dependencyGraph);
         Random rnd = new Random(seed);
 
         GeneratorProcessingRecord ultimate = null;

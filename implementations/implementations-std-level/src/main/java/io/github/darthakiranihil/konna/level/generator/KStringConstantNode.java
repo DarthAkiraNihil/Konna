@@ -21,9 +21,20 @@ import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 
 import java.util.Random;
 
+/**
+ * Constant generator node containing a string value.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KStringConstantNode implements KConstantNode {
     private final String object;
 
+    /**
+     * Constructs the node. Will throw a {@link KInvalidArgumentException} if
+     * the passed object is not a string.
+     * @param object Value to pack into the constant
+     */
     public KStringConstantNode(final Object object) {
         if (!String.class.isAssignableFrom(object.getClass())) {
             throw new KInvalidArgumentException("Object must be a string!");

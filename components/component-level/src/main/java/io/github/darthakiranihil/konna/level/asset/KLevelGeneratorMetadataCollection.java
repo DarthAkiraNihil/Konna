@@ -28,11 +28,22 @@ import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef
 
 import java.util.*;
 
+/**
+ * Collection of level generator metadata assets of type
+ * {@link KLevelGeneratorMetadataTypedef#LEVEL_GENERATOR_METADATA_TYPE}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLevelGeneratorMetadataCollection
     implements KAssetCollection<KLevelGeneratorMetadata> {
 
     private final KAssetLoader assetLoader;
 
+    /**
+     * Standard constructor.
+     * @param assetLoader Asset loader
+     */
     public KLevelGeneratorMetadataCollection(
         @KInject final KAssetLoader assetLoader
     ) {

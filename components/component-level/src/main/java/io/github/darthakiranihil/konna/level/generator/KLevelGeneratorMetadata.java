@@ -21,12 +21,29 @@ import io.github.darthakiranihil.konna.core.struct.KPair;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Metadata that is used by {@link KLevelGenerator} to create nodes (including constants)
+ * and connections between them in order to properly process them in level generation process.
+ *
+ * @param nodes Map of node ids and their classes
+ * @param connections Set of connections between nodes
+ * @param constants Map of node ids and their constants contained in them (a node must be
+ *                  a {@link KConstantNode}
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public record KLevelGeneratorMetadata(
     Map<String, Class<? extends KGeneratorNode>> nodes,
     Set<KPair<ConnectionJoint, ConnectionJoint>> connections,
     Map<String, Object> constants
 ) {
 
+    /**
+     * Record containing one part of internode connection.
+     * @param nodeId Node id that this joint belongs to
+     * @param paramName Parameter name that connects to the joint
+     */
     public record ConnectionJoint(
         String nodeId,
         String paramName

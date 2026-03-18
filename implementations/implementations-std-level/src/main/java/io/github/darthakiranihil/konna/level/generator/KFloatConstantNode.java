@@ -21,10 +21,21 @@ import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 
 import java.util.Random;
 
+/**
+ * Constant generator node containing a float value.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KFloatConstantNode implements KConstantNode {
 
     private final float object;
 
+    /**
+     * Constructs the node. Will throw a {@link KInvalidArgumentException} if
+     * the passed object is not a float.
+     * @param object Value to pack into the constant
+     */
     public KFloatConstantNode(final Object object) {
         if (!Float.class.isAssignableFrom(object.getClass())) {
             throw new KInvalidArgumentException("Object must be a float!");

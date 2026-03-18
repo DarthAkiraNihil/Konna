@@ -20,9 +20,23 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 
 import java.util.Random;
 
+/**
+ * Interface for an elementary functional unit in {@link KLevelGenerator}
+ * that takes input parameters and a {@link Random} instance to return some data in output
+ * to be transported to other nodes.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KGeneratorNode {
 
+    /**
+     * Runs processing for this node.
+     * @param params Input parameters for processing
+     * @param rnd {@link Random} instance created in this generation session
+     * @return Processing result to be handled by other nodes
+     */
     KUniversalMap process(KUniversalMap params, Random rnd);
 
 }

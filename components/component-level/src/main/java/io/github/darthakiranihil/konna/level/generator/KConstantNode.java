@@ -16,6 +16,20 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
+/**
+ * <p>
+ *     Special marker interface for type of nodes that does not take any input parameters
+ *     but return some constant to be handled by other nodes.
+ * </p>
+ * <p>
+ *     Each constant node must have the only constructor, that accepts the only parameter
+ *     of type {@link Object}. When the node is being processed, it must return in output
+ *     the object passed via constructor by {@code value} key.
+ * </p>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KConstantNode extends KGeneratorNode {
 
 }

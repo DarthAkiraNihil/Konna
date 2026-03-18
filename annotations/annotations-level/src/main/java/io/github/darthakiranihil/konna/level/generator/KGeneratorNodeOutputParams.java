@@ -21,10 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Container annotation for {@link KGeneratorNodeOutputParam}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 public @interface KGeneratorNodeOutputParams {
 
+    /**
+     * @return All output parameters specified for this node
+     */
     KGeneratorNodeOutputParam[] value();
 
 }

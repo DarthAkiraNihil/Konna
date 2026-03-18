@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 
 /**
- * Asset type definition for levels that are simply levels.
+ * Asset type definition for levels.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 public final class KLevelTypedef implements KAssetTypedef {
 
     /**
-     * Constant for level property type inside Level component.
+     * Constant for level type inside Level component.
      */
     public static final String LEVEL_ASSET_TYPE = "Level.level";
 

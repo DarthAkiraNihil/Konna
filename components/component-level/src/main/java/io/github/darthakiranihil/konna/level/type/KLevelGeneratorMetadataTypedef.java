@@ -26,9 +26,20 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 
 import java.util.Objects;
 
+/**
+ * Asset type definition for level generator metadata that is used in
+ * level procedural generation engine to construct nodes, connections between them
+ * and constants.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLevelGeneratorMetadataTypedef implements KAssetTypedef {
 
-    public static String LEVEL_GENERATOR_METADATA_TYPE = "Level.generatorMetadata";
+    /**
+     * Constant for level generator metadata type inside Level component.
+     */
+    public static final String LEVEL_GENERATOR_METADATA_TYPE = "Level.generatorMetadata";
 
     @Override
     public String getName() {
