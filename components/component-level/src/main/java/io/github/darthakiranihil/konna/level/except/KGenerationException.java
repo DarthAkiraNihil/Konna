@@ -19,6 +19,12 @@ package io.github.darthakiranihil.konna.level.except;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
+/**
+ * Exception thrown when procedural level generation has failed due to different reasons.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public class KGenerationException extends KException {
 
     public KGenerationException(final String message) {
