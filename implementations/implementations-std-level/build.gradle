@@ -14,4 +14,7 @@ dependencies {
 
     implementation project(":component-level")
 
+    implementation project(":annotations-level")
+    annotationProcessor project(":compiler-level")
+
 }

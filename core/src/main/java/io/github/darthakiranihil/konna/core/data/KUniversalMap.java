@@ -67,7 +67,7 @@ public class KUniversalMap extends HashMap<String, Object> {
      */
     public <T> @Nullable T getSafe(final String key, final Class<T> clazz) {
         Object raw = this.get(key);
-        if (clazz != raw.getClass()) {
+        if (raw == null || clazz != raw.getClass()) {
             return null;
         }
 
