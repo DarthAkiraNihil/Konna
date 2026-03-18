@@ -18,21 +18,17 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.NullUnmarked;
-import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
-import java.util.Map;
 
 /**
  * Base class for all annotation processors.
@@ -72,7 +68,15 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
     }
 
-    protected TypeMirror getClassValueFromAnnotation(
+    /**
+     * Returns a type mirror for value of annotation, that returns {@link Class} instances.
+     * @param element Element containing annotation
+     * @param annotation Annotation to extract class field from
+     * @param field Name of field that returns {@link Class}
+     * @return Type mirror for annotation field returning {@link Class}
+     */
+    @SuppressWarnings("SameParameterValue")
+    protected final TypeMirror getClassValueFromAnnotation(
         final Element element,
         final Class<? extends Annotation> annotation,
         final String field
@@ -87,7 +91,7 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
                 continue;
             }
 
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annotationMirror
+            for (var entry : annotationMirror
                 .getElementValues()
                 .entrySet()
             ) {

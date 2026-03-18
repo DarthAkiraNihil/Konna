@@ -34,7 +34,7 @@ public final class KIntConstantNode implements KConstantNode {
     }
 
     @Override
-    @KGeneratorOutputParam(name = "value", type = Integer.class)
+    @KGeneratorNodeOutputParam(name = "value", type = Integer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
         KUniversalMap result = new KUniversalMap();
         result.put("value", this.object);

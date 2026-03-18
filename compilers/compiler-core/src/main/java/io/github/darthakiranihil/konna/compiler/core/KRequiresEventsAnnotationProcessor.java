@@ -232,7 +232,7 @@ public final class KRequiresEventsAnnotationProcessor extends KBaseAnnotationPro
 
     private @Nullable TypeMirror getType(final KRequiresEvent event) {
         try {
-            event.type();
+            var clazz = event.type();
             return null;
         } catch (MirroredTypeException e) {
             return e.getTypeMirror();

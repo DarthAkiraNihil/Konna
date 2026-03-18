@@ -20,10 +20,10 @@ import com.google.auto.service.AutoService;
 import com.palantir.javapoet.*;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorInputParam;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorInputParams;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorOutputParam;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorOutputParams;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParams;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParams;
 import org.jspecify.annotations.NonNull;
 
 import javax.annotation.processing.Processor;
@@ -43,10 +43,10 @@ import java.util.*;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.level.generator.KGeneratorInputParam",
-    "io.github.darthakiranihil.konna.level.generator.KGeneratorInputParams",
-    "io.github.darthakiranihil.konna.level.generator.KGeneratorOutputParam",
-    "io.github.darthakiranihil.konna.level.generator.KGeneratorOutputParams",
+    "io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam",
+    "io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParams",
+    "io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam",
+    "io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParams",
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
@@ -100,7 +100,7 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
         Map<String, Set<Param>> collected = new HashMap<>();
 
-        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorInputParams.class)) {
+        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorNodeInputParams.class)) {
 
             Element enclosing = element.getEnclosingElement();
             if (enclosing.getKind() != ElementKind.CLASS) {
@@ -115,8 +115,8 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
             Set<Param> collectedForClass = collected.get(enclosingSimpleName);
 
-            KGeneratorInputParams params = Objects.requireNonNull(
-                element.getAnnotation(KGeneratorInputParams.class)
+            KGeneratorNodeInputParams params = Objects.requireNonNull(
+                element.getAnnotation(KGeneratorNodeInputParams.class)
             );
             for (var param: params.value()) {
                 // todo: more proper way to get class value
@@ -135,14 +135,14 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
         }
 
-        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorInputParam.class)) {
+        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorNodeInputParam.class)) {
 
             Element enclosing = element.getEnclosingElement();
             if (enclosing.getKind() != ElementKind.CLASS) {
                 continue;
             }
 
-            if (element.getAnnotation(KGeneratorInputParams.class) != null) {
+            if (element.getAnnotation(KGeneratorNodeInputParams.class) != null) {
                 continue;
             }
 
@@ -154,12 +154,12 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
             Set<Param> collectedForClass = collected.get(enclosingSimpleName);
 
-            KGeneratorInputParam param = Objects.requireNonNull(
-                element.getAnnotation(KGeneratorInputParam.class)
+            KGeneratorNodeInputParam param = Objects.requireNonNull(
+                element.getAnnotation(KGeneratorNodeInputParam.class)
             );
             TypeMirror paramType = this.getClassValueFromAnnotation(
                 element,
-                KGeneratorInputParam.class,
+                KGeneratorNodeInputParam.class,
                 "type"
             );
 
@@ -177,7 +177,7 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
         Map<String, Set<Param>> collected = new HashMap<>();
 
-        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorOutputParams.class)) {
+        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorNodeOutputParams.class)) {
 
             Element enclosing = element.getEnclosingElement();
             if (enclosing.getKind() != ElementKind.CLASS) {
@@ -192,8 +192,8 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
             Set<Param> collectedForClass = collected.get(enclosingSimpleName);
 
-            KGeneratorOutputParam[] params = Objects.requireNonNull(
-                element.getAnnotationsByType(KGeneratorOutputParam.class)
+            KGeneratorNodeOutputParam[] params = Objects.requireNonNull(
+                element.getAnnotationsByType(KGeneratorNodeOutputParam.class)
             );
             for (var param: params) {
                 TypeMirror paramType = null;
@@ -209,14 +209,14 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
         }
 
-        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorOutputParam.class)) {
+        for (var element: roundEnv.getElementsAnnotatedWith(KGeneratorNodeOutputParam.class)) {
 
             Element enclosing = element.getEnclosingElement();
             if (enclosing.getKind() != ElementKind.CLASS) {
                 continue;
             }
 
-            if (element.getAnnotation(KGeneratorOutputParams.class) != null) {
+            if (element.getAnnotation(KGeneratorNodeOutputParams.class) != null) {
                 continue;
             }
 
@@ -228,12 +228,12 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
 
             Set<Param> collectedForClass = collected.get(enclosingSimpleName);
 
-            KGeneratorOutputParam param = Objects.requireNonNull(
-                element.getAnnotation(KGeneratorOutputParam.class)
+            KGeneratorNodeOutputParam param = Objects.requireNonNull(
+                element.getAnnotation(KGeneratorNodeOutputParam.class)
             );
             TypeMirror paramType = this.getClassValueFromAnnotation(
                 element,
-                KGeneratorOutputParam.class,
+                KGeneratorNodeOutputParam.class,
                 "type"
             );
 

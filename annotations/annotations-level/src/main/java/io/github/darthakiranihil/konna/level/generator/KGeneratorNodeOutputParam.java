@@ -16,15 +16,14 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
-public @interface KGeneratorInputParams {
+@Repeatable(KGeneratorNodeOutputParams.class)
+public @interface KGeneratorNodeOutputParam {
 
-    KGeneratorInputParam[] value();
+    String name();
+    Class<?> type();
 
 }

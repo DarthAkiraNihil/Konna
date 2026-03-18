@@ -17,9 +17,9 @@
 package io.github.darthakiranihil.konna.level.impl;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorInputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorOutputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Random;
@@ -28,8 +28,8 @@ import java.util.Random;
 public class PassthroughNode implements KGeneratorNode {
 
     @Override
-    @KGeneratorInputParam(name = "value", type = String.class)
-    @KGeneratorOutputParam(name = "value", type = String.class)
+    @KGeneratorNodeInputParam(name = "value", type = String.class)
+    @KGeneratorNodeOutputParam(name = "value", type = String.class)
     public KUniversalMap process(KUniversalMap params, Random rnd) {
         return params;
     }

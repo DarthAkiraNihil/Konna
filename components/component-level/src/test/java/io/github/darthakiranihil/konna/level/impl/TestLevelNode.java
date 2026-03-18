@@ -30,9 +30,9 @@ import io.github.darthakiranihil.konna.level.asset.KAssetCollectionTestClass;
 import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
 import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorInputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorOutputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
@@ -90,8 +90,8 @@ public class TestLevelNode implements KGeneratorNode {
     }
 
     @Override
-    @KGeneratorInputParam(name = "asset_id", type = String.class)
-    @KGeneratorOutputParam(name = "level", type = KLevel.class)
+    @KGeneratorNodeInputParam(name = "asset_id", type = String.class)
+    @KGeneratorNodeOutputParam(name = "level", type = KLevel.class)
     public KUniversalMap process(KUniversalMap params, Random rnd) {
 
         String assetId = params.get("asset_id", String.class);

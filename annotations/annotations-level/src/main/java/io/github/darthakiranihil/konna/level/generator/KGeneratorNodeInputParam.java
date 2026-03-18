@@ -20,8 +20,8 @@ import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
-@Repeatable(KGeneratorInputParams.class)
-public @interface KGeneratorInputParam {
+@Repeatable(KGeneratorNodeInputParams.class)
+public @interface KGeneratorNodeInputParam {
 
     String name();
     Class<?> type();

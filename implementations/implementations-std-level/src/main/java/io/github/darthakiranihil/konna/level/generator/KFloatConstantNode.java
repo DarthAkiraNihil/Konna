@@ -34,7 +34,7 @@ public final class KFloatConstantNode implements KConstantNode {
     }
 
     @Override
-    @KGeneratorOutputParam(name = "value", type = Float.class)
+    @KGeneratorNodeOutputParam(name = "value", type = Float.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
         KUniversalMap result = new KUniversalMap();
         result.put("value", this.object);
