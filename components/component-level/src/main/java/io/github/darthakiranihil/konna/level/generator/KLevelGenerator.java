@@ -353,6 +353,14 @@ public final class KLevelGenerator extends KObject {
             tree.connect(fromId, toId, 1);
         }
 
+        for (var node: this.metadata.nodes().keySet()) {
+            if (tree.has(node)) {
+                continue;
+            }
+
+            tree.add(node, new GeneratorGraphNode(node, 0));
+        }
+
         return tree;
 
     }

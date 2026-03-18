@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.impl;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.level.generator.KConstantNode;
+import org.jspecify.annotations.NullMarked;
 
-import java.lang.reflect.Type;
 import java.util.Random;
 
-public class TestNode implements KGeneratorNode {
+@NullMarked
+public class TestUnvalidatedOutputConstantNode implements KConstantNode {
 
-    @KGeneratorInputParam(name = "aboba", type = Integer.class)
-    @KGeneratorInputParam(name = "abyyyy", type = Integer.class)
-    @KGeneratorOutputParam(name = "abiba", type = KLevelGenerator.class)
-    @KGeneratorOutputParam(name = "motherfucker", type = KUniversalMap.class)
-    @KGeneratorOutputParam(name = "giggity", type = Random.class)
+    public TestUnvalidatedOutputConstantNode(Object object) {
+    }
+
     @Override
     public KUniversalMap process(KUniversalMap params, Random rnd) {
-        return null;
+        return new KUniversalMap();
     }
 }
