@@ -18,13 +18,21 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * Base class for all annotation processors.
@@ -62,5 +70,41 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
         this.typeUtils = processingEnv.getTypeUtils();
         this.messager = processingEnv.getMessager();
 
+    }
+
+    protected TypeMirror getClassValueFromAnnotation(
+        final Element element,
+        final Class<? extends Annotation> annotation,
+        final String field
+    ) {
+        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+            if (!annotationMirror
+                .getAnnotationType()
+                .asElement()
+                .toString()
+                .contentEquals(annotation.getName())
+            ) {
+                continue;
+            }
+
+            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annotationMirror
+                .getElementValues()
+                .entrySet()
+            ) {
+                if (!entry.getKey().getSimpleName().contentEquals(field)) {
+                    continue;
+                }
+
+                return (TypeMirror) entry.getValue().getValue();
+            }
+
+        }
+
+        throw new IllegalArgumentException(
+            String.format(
+                "Unknown annotation field: %s",
+                field
+            )
+        );
     }
 }

@@ -92,7 +92,8 @@ public final class KLevelGenerator extends KObject {
 
         var nodes = this.createNodes();
         this.fillDependencies(nodes, this.metadata.connections());
-        Queue<GeneratorProcessingRecord> processingQueue = this.createProcessingQueue(nodes);
+        var dependencyGraph = this.buildDependencyGraph();
+        Queue<GeneratorProcessingRecord> processingQueue = this.createProcessingQueue(nodes, dependencyGraph);
         Random rnd = new Random(seed);
 
         GeneratorProcessingRecord ultimate = null;
@@ -214,101 +215,6 @@ public final class KLevelGenerator extends KObject {
 
     }
 
-    private Queue<GeneratorProcessingRecord> createProcessingQueue(
-        final Map<String, GeneratorProcessingRecord> nodes
-    ) {
-
-        KColoredIntWeightedGraph<String, GeneratorGraphNode>
-            graph = new KHashMapColoredIntWeightedGraph<>();
-
-        for (var connection: this.metadata.connections()) {
-            KLevelGeneratorMetadata.ConnectionJoint from = connection.first();
-            KLevelGeneratorMetadata.ConnectionJoint to = connection.second();
-
-            String fromId = from.nodeId();
-            String toId = to.nodeId();
-
-            if (!graph.has(fromId)) {
-                graph.add(fromId, new GeneratorGraphNode(fromId, 1));
-            } else {
-                var fromNode = Objects.requireNonNull(graph.get(fromId));
-                fromNode.color().connectionsFromThisNode++;
-            }
-
-            if (!graph.has(toId)) {
-                graph.add(toId, new GeneratorGraphNode(toId, 0));
-            }
-
-            graph.biConnect(fromId, toId, 0);
-        }
-
-        KColoredIntWeightedGraph.Node<String, GeneratorGraphNode> root = null;
-        for (String nodeId: nodes.keySet()) {
-            var candidate = Objects.requireNonNull(graph.get(nodeId));
-            if (candidate.color().connectionsFromThisNode > 0) {
-                continue;
-            }
-
-            if (root == null) {
-                root = candidate;
-            } else {
-                throw new KGenerationException(
-                    "Invalid generator: there can be only one root node (which is the final node)"
-                );
-            }
-        }
-
-        Queue<KColoredIntWeightedGraph.Node<String, GeneratorGraphNode>>
-            priorityBuildingQueue = new ArrayDeque<>(graph.getNodeIndices().size());
-        Objects.requireNonNull(root);
-        root.color().visited = true;
-
-        priorityBuildingQueue.addAll(
-            root
-                .adjacent()
-                .stream()
-                .map(KPair::second)
-                .toList()
-        );
-        Queue<GeneratorGraphNode> rawProcessingQueue = new PriorityQueue<>(
-            graph.getNodeIndices().size(),
-            Comparator.comparing(x -> x.priority)
-        );
-        rawProcessingQueue.add(root.color());
-
-        while (!priorityBuildingQueue.isEmpty()) {
-            var current = priorityBuildingQueue.poll();
-            var sumPriority = current
-                .adjacent()
-                .stream()
-                .map(KPair::second)
-                .filter(x -> x.color().visited)
-                .mapToInt(x -> x.color().priority)
-                .sum();
-
-            var currentColor = current.color();
-            currentColor.priority = sumPriority - 1;
-            currentColor.visited = true;
-            rawProcessingQueue.add(currentColor);
-
-            priorityBuildingQueue.addAll(
-                current
-                    .adjacent()
-                    .stream()
-                    .map(KPair::second)
-                    .filter(x -> x.color().visited)
-                    .toList()
-            );
-        }
-
-        Queue<GeneratorProcessingRecord> processingQueue = new ArrayDeque<>(rawProcessingQueue.size());
-        while (!rawProcessingQueue.isEmpty()) {
-            processingQueue.add(nodes.get(rawProcessingQueue.poll().nodeId));
-        }
-        return processingQueue;
-
-    }
-
     private void fillDependencies(
         final Map<String, GeneratorProcessingRecord> nodes,
         final KPair<
@@ -325,6 +231,78 @@ public final class KLevelGenerator extends KObject {
                 new KTriplet<>(from.nodeId(), from.paramName(), to.paramName())
             );
         }
+
+    }
+
+    private KColoredIntWeightedGraph<String, GeneratorGraphNode> buildDependencyGraph() {
+
+        KColoredIntWeightedGraph<String, GeneratorGraphNode>
+            tree = new KHashMapColoredIntWeightedGraph<>();
+
+        for (var connection: this.metadata.connections()) {
+            KLevelGeneratorMetadata.ConnectionJoint from = connection.first();
+            KLevelGeneratorMetadata.ConnectionJoint to = connection.second();
+
+            String fromId = from.nodeId();
+            String toId = to.nodeId();
+
+            if (!tree.has(fromId)) {
+                tree.add(fromId, new GeneratorGraphNode(fromId, 1));
+            } else {
+                var fromNode = Objects.requireNonNull(tree.get(fromId));
+                fromNode.color().connectionsFromThisNode++;
+            }
+
+            if (!tree.has(toId)) {
+                tree.add(toId, new GeneratorGraphNode(toId, 0));
+            }
+
+            tree.connect(fromId, toId, 1);
+        }
+
+        return tree;
+
+    }
+
+    private void dfs(
+        final Map<String, GeneratorProcessingRecord> createdNodes,
+        final KColoredIntWeightedGraph.Node<String, GeneratorGraphNode> node,
+        final Deque<GeneratorProcessingRecord> nodeDeque
+    ) {
+
+        node.color().visited = true;
+        for (var adjacent: node.adjacent()) {
+            var adjacentNode = adjacent.second();
+            if (adjacentNode.color().visited) {
+                continue;
+            }
+
+            this.dfs(createdNodes, adjacentNode, nodeDeque);
+        }
+        nodeDeque.addFirst(
+            createdNodes.get(node.color().nodeId)
+        );
+
+    }
+
+    private Queue<GeneratorProcessingRecord> createProcessingQueue(
+        final Map<String, GeneratorProcessingRecord> createdNodes,
+        final KColoredIntWeightedGraph<String, GeneratorGraphNode> dependencyGraph
+    ) {
+
+        Set<String> nodeNames = dependencyGraph.getNodeIndices();
+        Deque<GeneratorProcessingRecord> nodeDeque = new ArrayDeque<>(nodeNames.size());
+
+        for (var nodeName: nodeNames) {
+            var node = Objects.requireNonNull(dependencyGraph.get(nodeName));
+            if (node.color().visited) {
+                continue;
+            }
+
+            this.dfs(createdNodes, node, nodeDeque);
+        }
+
+        return nodeDeque;
 
     }
 
