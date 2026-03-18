@@ -39,7 +39,6 @@ public final class KLevelGenerator extends KObject {
 
         private final String nodeId;
         private boolean visited;
-        private int priority;
         private int connectionsFromThisNode;
 
         public GeneratorGraphNode(
@@ -93,6 +92,22 @@ public final class KLevelGenerator extends KObject {
         var nodes = this.createNodes();
         this.fillDependencies(nodes, this.metadata.connections());
         var dependencyGraph = this.buildDependencyGraph();
+        KColoredIntWeightedGraph.Node<String, GeneratorGraphNode> root = null;
+        for (String nodeId: nodes.keySet()) {
+            var candidate = Objects.requireNonNull(dependencyGraph.get(nodeId));
+            if (candidate.color().connectionsFromThisNode > 0) {
+                continue;
+            }
+
+            if (root == null) {
+                root = candidate;
+            } else {
+                throw new KGenerationException(
+                    "Invalid generator: there can be only one root node (which is the final node)"
+                );
+            }
+        }
+
         Queue<GeneratorProcessingRecord> processingQueue = this.createProcessingQueue(nodes, dependencyGraph);
         Random rnd = new Random(seed);
 
@@ -295,10 +310,10 @@ public final class KLevelGenerator extends KObject {
 
     private void fillDependencies(
         final Map<String, GeneratorProcessingRecord> nodes,
-        final KPair<
+        final Set<KPair<
             KLevelGeneratorMetadata.ConnectionJoint,
             KLevelGeneratorMetadata.ConnectionJoint
-        >[] connections
+        >> connections
     ) {
 
         for (var connection: connections) {
@@ -385,31 +400,3 @@ public final class KLevelGenerator extends KObject {
     }
 
 }
-
-/*
- *
- * {
- * "nodes": {
- * "id": "class"
- * },
- * "connections": [
- *     {
- * "from": {
- * "node": "id",
- * "param": "name"
- * },
- * "to":{
- * "node":"id",
- * "param": "name"
- * }
-*      }
- * ],
- * "constants":{
- * "id": value
- * }
- * }
- *
- *
- *
- *
- */

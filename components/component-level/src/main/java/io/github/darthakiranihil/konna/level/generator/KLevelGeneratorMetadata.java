@@ -19,10 +19,11 @@ package io.github.darthakiranihil.konna.level.generator;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 
 import java.util.Map;
+import java.util.Set;
 
 public record KLevelGeneratorMetadata(
     Map<String, Class<? extends KGeneratorNode>> nodes,
-    KPair<ConnectionJoint, ConnectionJoint>[] connections,
+    Set<KPair<ConnectionJoint, ConnectionJoint>> connections,
     Map<String, Object> constants
 ) {
 
