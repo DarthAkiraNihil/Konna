@@ -33,9 +33,11 @@ import java.util.Map;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KTileLayer implements KObjectLevelLayer<KTileInfo, KTileLayerTool> {
+public final class KTileLayer
+    extends KAbstractSizedLayer<KTileLayerTool>
+    implements KObjectLevelLayer<KTileInfo, KTileLayerTool> {
 
-    private final class Tool implements KTileLayerTool {
+    private static final class Tool implements KTileLayerTool {
 
         private final KTileLayer self;
 
@@ -45,17 +47,12 @@ public final class KTileLayer implements KObjectLevelLayer<KTileInfo, KTileLayer
 
         @Override
         public @Nullable KTileInfo getOnPosition(int x, int y) {
-            if (x >= this.self.size.width() || x < 0 || y >= this.self.size.height() || y < 0) {
-                return null;
-            }
+            return this.self.getOnPosition(x, y);
+        }
 
-            int numericId = this.self.tiles[y][x];
-            if (!this.self.tileInfos.containsKey(numericId)) {
-                return null;
-            }
-
-            TileInfo info = this.self.tileInfos.get(numericId);
-            return info.info;
+        @Override
+        public @Nullable KTileInfo getOnPosition(KVector2i position) {
+            return this.self.getOnPosition(position);
         }
 
         @Override
@@ -108,8 +105,9 @@ public final class KTileLayer implements KObjectLevelLayer<KTileInfo, KTileLayer
 
     private final int[][] tiles;
     private final Map<Integer, TileInfo> tileInfos;
-
     private final KSize size;
+
+    private final KTileLayerTool tool;
 
     /**
      * Constructs an empty layer with specific size.
@@ -125,9 +123,11 @@ public final class KTileLayer implements KObjectLevelLayer<KTileInfo, KTileLayer
      * @param size Layer size
      */
     public KTileLayer(final KSize size) {
+        super(size);
         this.size = size;
         this.tiles = new int[size.height()][size.width()];
         this.tileInfos = new HashMap<>();
+        this.tool = new Tool(this);
     }
 
     @Override
@@ -145,15 +145,8 @@ public final class KTileLayer implements KObjectLevelLayer<KTileInfo, KTileLayer
         return info.info;
     }
 
-    /**
-     * @return Size of this layer
-     */
-    public KSize getSize() {
-        return this.size;
-    }
-
     @Override
     public KTileLayerTool getTool() {
-        return new Tool(this);
+        return this.tool;
     }
 }
