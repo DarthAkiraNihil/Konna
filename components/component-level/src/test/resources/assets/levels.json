@@ -1,9 +1,8 @@
 {
     "valid": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -53,8 +52,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -84,14 +82,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_tile": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -121,8 +118,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -152,14 +148,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_link_position_xb": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -189,8 +184,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -220,14 +214,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_link_position_xa": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -257,8 +250,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -288,14 +280,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_link_position_yb": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -325,8 +316,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -356,14 +346,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_link_position_ya": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -393,8 +382,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -424,14 +412,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_linked_sector": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -461,8 +448,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -492,14 +478,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_sector_destination_xa": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -529,8 +514,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -560,14 +544,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_sector_destination_xb": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -597,8 +580,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -628,14 +610,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_sector_destination_ya": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -665,8 +646,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -696,14 +676,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_sector_destination_yb": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -733,8 +712,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -764,14 +742,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_by_entity_position_xb": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -821,8 +798,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -872,14 +848,13 @@
                         }
                     ]
                 }
-            ]
+            }
         }
     },
     "invalid_by_entity_position_xa": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -929,8 +904,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -980,14 +954,13 @@
                         }
                     ]
                 }
-            ]
+            }
         }
     },
     "invalid_by_entity_position_ya": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1037,8 +1010,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1088,14 +1060,13 @@
                         }
                     ]
                 }
-            ]
+            }
         }
     },
     "invalid_by_entity_position_yb": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1145,8 +1116,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1196,14 +1166,13 @@
                         }
                     ]
                 }
-            ]
+            }
         }
     },
     "connectivity_graph_test": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1233,8 +1202,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf3",
+                "mf3": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1275,8 +1243,7 @@
                     ],
                     "entities": []
                 },
-                {
-                    "name": "mf4",
+                "mf4": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1294,8 +1261,7 @@
                     "sector_links": [],
                     "entities": []
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1325,14 +1291,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "valid_only_autonomous": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1381,8 +1346,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1412,14 +1376,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "valid_no_validator": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1468,8 +1431,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1499,14 +1461,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "valid_validator_is_not_a_rule": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1555,8 +1516,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1586,14 +1546,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "invalid_validation_failed": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1642,8 +1601,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1673,14 +1631,13 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     },
     "test_level_entity_management_service": {
         "Level.level": {
-            "sectors": [
-                {
-                    "name": "mf1",
+            "sectors": {
+                "mf1": {
                     "size": {
                         "width": 3,
                         "height": 3
@@ -1763,8 +1720,7 @@
                         }
                     ]
                 },
-                {
-                    "name": "mf2",
+                "mf2": {
                     "size": {
                         "width": 2,
                         "height": 2
@@ -1794,7 +1750,7 @@
                     ],
                     "entities": []
                 }
-            ]
+            }
         }
     }
 }
