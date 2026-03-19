@@ -18,17 +18,22 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
-import org.jspecify.annotations.Nullable;
 
-/**
- * Interface that represents a container of items, located on specific places.
- * @param <OBJ> Type of item located on this layer
- *
- * @since 0.5.0
- * @author Darth Akira Nihil
- */
-public interface KLevelLayer<TOOL extends KLayerTool> {
+public interface KBooleanLevelLayer<TOOL extends KLayerTool> extends KLevelLayer<TOOL> {
 
-    TOOL getTool();
+    /**
+     * @param x X coordinate of placed item
+     * @param y Y coordinate of placed item
+     * @return The item located on specified place of {@code null} if it is not found/presented
+     */
+    boolean getOnPosition(int x, int y);
+
+    /**
+     * @param position Position of placed item
+     * @return The item located on specified place of {@code null} if it is not found/presented
+     */
+    default boolean getOnPosition(final KVector2i position) {
+        return this.getOnPosition(position.x(), position.y());
+    }
 
 }

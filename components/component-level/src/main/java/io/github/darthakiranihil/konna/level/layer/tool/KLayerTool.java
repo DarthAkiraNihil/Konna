@@ -14,21 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.layer;
+package io.github.darthakiranihil.konna.level.layer.tool;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
-import org.jspecify.annotations.Nullable;
-
-/**
- * Interface that represents a container of items, located on specific places.
- * @param <OBJ> Type of item located on this layer
- *
- * @since 0.5.0
- * @author Darth Akira Nihil
- */
-public interface KLevelLayer<TOOL extends KLayerTool> {
-
-    TOOL getTool();
-
+public interface KLayerTool {
 }
