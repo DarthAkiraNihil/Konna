@@ -16,16 +16,127 @@
 
 package io.github.darthakiranihil.konna.level.type;
 
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
+import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 
 /**
  * <p>
  *     Asset type definition for levels.
  * </p>
- * // todo: add schema after reworking (sector name is key)
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code sectors} - level sectors (subdefinition)
+ *              <ul>
+ *                  <li>key is a non-null string, representing name of the sector/li>
+ *                  <li>
+ *                      value is a subdefinition, containing information about sector
+ *                      <ul>
+ *                          <li>
+ *                              {@code size} - sector's size (subdefinition)
+ *                              <ul>
+ *                                  <li>{@code width} - int</li>
+ *                                  <li>{@code height} - int</li>
+ *                              </ul>
+ *                          </li>
+ *                          <li>
+ *                              {@code tiles} - sector tiles
+ *                              (array of width * height non-null strings)
+ *                          </li>
+ *                          <li>
+ *                              {@code heights} - sector heightmap
+ *                              (array of width * height ints)
+ *                          </li>
+ *                          <li>
+ *                              {@code sector_links} - sector links (subdefinition array)
+ *                              <ul>
+ *                                  <li>
+ *                                      {@code sector} - name of linked sector (non-null string)
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code position} - position of the link (subdefinition)
+ *                                      <ul>
+ *                                          <li>{@code x} - int</li>
+ *                                          <li>{@code y} - int</li>
+ *                                      </ul>
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code destination} - destination on the linked sector
+ *                                      (subdefinition)
+ *                                      <ul>
+ *                                          <li>{@code x} - int</li>
+ *                                          <li>{@code y} - int</li>
+ *                                      </ul>
+ *                                  </li>
+ *                              </ul>
+ *                          </li>
+ *                          <li>
+ *                              {@code entities} - sector entities (subdefinition array)
+ *                              <ul>
+ *                                  <li>
+ *                                      {@code position} - position to place entities on
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code controllable} - list of controllable entities
+ *                                      (subdefinition array)
+ *                                      <ul>
+ *                                          <li>
+ *                                              {@code name} - entity name (non-null string)
+ *                                          </li>
+ *                                          <li>
+ *                                              {@code descriptor} - entity descriptor
+ *                                              (non-null string)
+ *                                          </li>
+ *                                      </ul>
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code static} - list of static entities
+ *                                      (subdefinition array)
+ *                                      <ul>
+ *                                          <li>
+ *                                              {@code name} - entity name (non-null string)
+ *                                          </li>
+ *                                          <li>
+ *                                              {@code descriptor} - entity descriptor
+ *                                              (non-null string)
+ *                                          </li>
+ *                                      </ul>
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code autonomous} - list of static entities
+ *                                      (subdefinition array)
+ *                                      <ul>
+ *                                          <li>
+ *                                              {@code name} - entity name (non-null string)
+ *                                          </li>
+ *                                          <li>
+ *                                              {@code descriptor} - entity descriptor
+ *                                              (non-null string)
+ *                                          </li>
+ *                                          <li>
+ *                                              {@code controller} - entity controller
+ *                                              (reference to a class extending
+ *                                              {@link KAutonomousEntityController}
+ *                                          </li>
+ *                                          <li>
+ *                                              {@code params} - controller params (subdefinition)
+ *                                          </li>
+ *                                      </ul>
+ *                                  </li>
+ *                              </ul>
+ *                          </li>
+ *                      </ul>
+ *                  </li>
+ *              </ul>
+ *          </li>
+ *
+ *      </ul>
+ * </p>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
@@ -57,69 +168,82 @@ public final class KLevelTypedef implements KAssetTypedef {
             .withInt("y")
             .build();
 
+        KAssetDefinitionRule sectorRule = KCompositeAssetDefinitionRuleBuilder
+            .create()
+            .withValidatedSubdefinition(
+                "size",
+                KCompositeAssetDefinitionRuleBuilder
+                    .create()
+                    .withInt("width")
+                    .withInt("height")
+                    .build()
+            )
+            .withStringArray("tiles")
+            .withIntArray("heights")
+            .withValidatedSubdefinitionArray(
+                "sector_links",
+                KCompositeAssetDefinitionRuleBuilder
+                    .create()
+                    .withNotNullString("sector")
+                    .withValidatedSubdefinition(
+                        "position",
+                        positionRule
+                    )
+                    .withValidatedSubdefinition(
+                        "destination",
+                        positionRule
+                    )
+                    .build()
+            )
+            .withValidatedSubdefinitionArray(
+                "entities",
+                KCompositeAssetDefinitionRuleBuilder
+                    .create()
+                    .withValidatedSubdefinition(
+                        "position",
+                        positionRule
+                    )
+                    .withValidatedSubdefinitionArray(
+                        "controllable",
+                        entityRule
+                    )
+                    .withValidatedSubdefinitionArray(
+                        "static",
+                        entityRule
+                    )
+                    .withValidatedSubdefinitionArray(
+                        "autonomous",
+                        KCompositeAssetDefinitionRuleBuilder
+                            .create()
+                            .withNotNullString("name")
+                            .withNotNullString("descriptor")
+                            .withClassObject(
+                                "controller",
+                                KAutonomousEntityController.class
+                            )
+                            .withSubdefinition("params")
+                            .build()
+                    )
+                    .build()
+            )
+            .build();
+
         return KCompositeAssetDefinitionRuleBuilder
             .create()
-            .withValidatedSubdefinitionArray(
+            .withValidatedSubdefinition(
                 "sectors",
                 KCompositeAssetDefinitionRuleBuilder
                     .create()
-                    .withNotNullString("name")
-                    .withValidatedSubdefinition(
-                        "size",
-                        KCompositeAssetDefinitionRuleBuilder
-                            .create()
-                            .withInt("width")
-                            .withInt("height")
-                            .build()
-                    )
-                    .withStringArray("tiles")
-                    .withIntArray("heights")
-                    .withValidatedSubdefinitionArray(
-                        "sector_links",
-                        KCompositeAssetDefinitionRuleBuilder
-                            .create()
-                            .withNotNullString("sector")
-                            .withValidatedSubdefinition(
-                                "position",
-                                positionRule
-                            )
-                            .withValidatedSubdefinition(
-                                "destination",
-                                positionRule
-                            )
-                            .build()
-                    )
-                    .withValidatedSubdefinitionArray(
-                        "entities",
-                        KCompositeAssetDefinitionRuleBuilder
-                            .create()
-                            .withValidatedSubdefinition(
-                                "position",
-                                positionRule
-                            )
-                            .withValidatedSubdefinitionArray(
-                                "controllable",
-                                entityRule
-                            )
-                            .withValidatedSubdefinitionArray(
-                                "static",
-                                entityRule
-                            )
-                            .withValidatedSubdefinitionArray(
-                                "autonomous",
-                                KCompositeAssetDefinitionRuleBuilder
-                                    .create()
-                                    .withNotNullString("name")
-                                    .withNotNullString("descriptor")
-                                    .withClassObject(
-                                        "controller",
-                                        KAutonomousEntityController.class
-                                    )
-                                    .withSubdefinition("params")
-                                    .build()
-                            )
-                            .build()
-                    )
+                    .withRule(sectors -> {
+                        for (var sector: sectors.getProperties()) {
+                            if (!sectors.hasSubdefinition(sector)) {
+                                throw KAssetDefinitionError.propertyNotFound(sector);
+                            }
+
+                            KAssetDefinition sectorDefinition = sectors.getSubdefinition(sector);
+                            sectorRule.validate(sectorDefinition);
+                        }
+                    })
                     .build()
             )
             .build();

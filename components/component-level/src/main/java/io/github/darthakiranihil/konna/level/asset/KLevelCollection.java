@@ -103,7 +103,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         KAsset asset = this.assetLoader.loadAsset(assetId, KLevelTypedef.LEVEL_ASSET_TYPE);
         KAssetDefinition definition = asset.definition();
 
-        KAssetDefinition[] rawSectorsDefinitions = definition.getSubdefinitionArray("sectors");
+        KAssetDefinition rawSectorsDefinitions = definition.getSubdefinition("sectors");
         Map<String, RawSector> rawSectors = this.createRawSectors(rawSectorsDefinitions);
         List<KLevelSector> filledSectors = new LinkedList<>();
         List<KTriplet<
@@ -136,14 +136,12 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
     }
 
     private Map<String, RawSector> createRawSectors(
-        final KAssetDefinition[] rawSectorsDefinitions
+        final KAssetDefinition rawSectorsDefinitions
     ) {
         Map<String, RawSector> rawSectors = new HashMap<>();
 
-        for (KAssetDefinition rawSector: rawSectorsDefinitions) {
-            String sectorName = Objects.requireNonNull(
-                rawSector.getString("name")
-            );
+        for (String sectorName: rawSectorsDefinitions.getProperties()) {
+            KAssetDefinition rawSector = rawSectorsDefinitions.getSubdefinition(sectorName);
             KAssetDefinition rawSize = rawSector.getSubdefinition("size");
             KSize size = new KSize(
                 rawSize.getInt("width"),
