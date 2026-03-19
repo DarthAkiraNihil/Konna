@@ -21,7 +21,26 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 
 /**
- * Asset type definition for tiles that can be used in levels.
+ * <p>
+ *     Asset type definition for tiles that can be used in levels.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code tile_id} - numeric tile id (int)
+ *          </li>
+ *          <li>
+ *              {@code opaqueness} - tile opaqueness (int)
+ *          </li>
+ *          <li>
+ *              {@code passable} - tile passability flag (boolean)
+ *          </li>
+ *          <li>
+ *              {@code properties} - tile properties (subdefinition)
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
@@ -45,6 +64,7 @@ public final class KTileTypedef implements KAssetTypedef {
             .withInt("tile_id")
             .withInt("opaqueness")
             .withBoolean("passable")
+            .withSubdefinition("properties")
             .build();
     }
 }

@@ -23,7 +23,21 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTextureSource;
 
 /**
- * Asset type definition for renderable textures.
+ * <p>
+ *     Asset type definition for renderable textures.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>{@code source} - a valid {@link KRenderableTextureSource}</li>
+ *          <li>
+ *              {@code slice_set} - string that may be null if {@code source} is
+ *              {@link KRenderableTextureSource#WHOLE_TEXTURE}, else must be an
+ *              asset id of a
+ *              {@link io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet}
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil

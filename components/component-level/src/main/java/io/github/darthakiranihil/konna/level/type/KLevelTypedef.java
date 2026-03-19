@@ -22,7 +22,10 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 
 /**
- * Asset type definition for levels.
+ * <p>
+ *     Asset type definition for levels.
+ * </p>
+ * // todo: add schema after reworking (sector name is key)
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
