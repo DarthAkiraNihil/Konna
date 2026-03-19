@@ -22,7 +22,24 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
 /**
- * Asset type definition for shader programs.
+ * <p>
+ *     Asset type definition for shader programs.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code vertex} - nullable string that is asset id of
+ *              a valid vertex {@link io.github.darthakiranihil.konna.graphics.shader.KShader}
+ *              (must not be null, if {@code fragment} is null)
+ *          </li>
+ *          <li>
+ *              {@code fragment} - nullable string that is asset id of
+ *              a valid fragment {@link io.github.darthakiranihil.konna.graphics.shader.KShader}
+ *              (must not be null, if {@code vertex} is null)
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.4.0
  * @author Darth Akira Nihil

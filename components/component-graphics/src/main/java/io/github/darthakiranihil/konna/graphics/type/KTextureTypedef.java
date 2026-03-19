@@ -23,7 +23,36 @@ import io.github.darthakiranihil.konna.graphics.image.KTextureFiltering;
 import io.github.darthakiranihil.konna.graphics.image.KTextureWrapping;
 
 /**
- * Asset type definition for textures.
+ * <p>
+ *     Asset type definition for textures.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code image} - path to a valid image to use in texture (non-null string)
+ *          </li>
+ *          <li>
+ *              {@code shader} - asset id of a valid
+ *              {@link io.github.darthakiranihil.konna.graphics.shader.KShaderProgram} to
+ *              link to the texture (non-null string)
+ *          </li>
+ *          <li>
+ *              {@code wrapping} - texture wrapping (subdefinition)
+ *              <ul>
+ *                  <li>{@code u} - a valid {@link KTextureWrapping}</li>
+ *                  <li>{@code v} - a valid {@link KTextureWrapping}</li>
+ *              </ul>
+ *          </li>
+ *          <li>
+ *              {@code filtering} - texture filtering (subdefinition)
+ *              <ul>
+ *                  <li>{@code min} - a valid {@link KTextureFiltering}</li>
+ *                  <li>{@code mag} - a valid {@link KTextureFiltering}</li>
+ *              </ul>
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.4.0
  * @author Darth Akira Nihil

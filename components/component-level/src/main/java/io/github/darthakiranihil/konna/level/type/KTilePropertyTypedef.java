@@ -21,7 +21,33 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 
 /**
- * Asset type definition for available additional tile property types.
+ * <p>
+ *     Asset type definition for available additional tile property types.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code property_type} - non-null string representing type of property.
+ *              Possible values for this property:
+ *              <ul>
+ *                  <li>{@code int}</li>
+ *                  <li>{@code int[]}</li>
+ *                  <li>{@code float}</li>
+ *                  <li>{@code float[]}</li>
+ *                  <li>{@code bool}</li>
+ *                  <li>{@code bool[]}</li>
+ *                  <li>{@code string}</li>
+ *                  <li>{@code string[]}</li>
+ *                  <li>a non-null string to point to an object property alias</li>
+ *                  <li>
+ *                      a non-null string to point to an object
+ *                      property alias with {@code []} suffix
+ *                  </li>
+ *              </ul>
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil

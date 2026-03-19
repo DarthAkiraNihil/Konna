@@ -27,9 +27,52 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import java.util.Objects;
 
 /**
- * Asset type definition for level generator metadata that is used in
- * level procedural generation engine to construct nodes, connections between them
- * and constants.
+ * <p>
+ *     Asset type definition for level generator metadata that is used in
+ *     level procedural generation engine to construct nodes, connections between them
+ *     and constants.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code nodes} - nodes of defining generator (subdefinition)
+ *              <ul>
+ *                  <li>key is a non-null string, representing node id inside this metadata</li>
+ *                  <li>value is a reference to {@link Class} extending {@link KGeneratorNode}</li>
+ *              </ul>
+ *          </li>
+ *          <li>
+ *              {@code connections} - connections between nodes (array of subdefinitions)
+ *              <ul>
+ *                  <li>
+ *                      {@code from} - start of connection (subdefinition)
+ *                      <ul>
+ *                          <li>{@code node} - node id (must be presented in {@code nodes})</li>
+ *                          <li>{@code param} - parameter name to extract from node output</li>
+ *                      </ul>
+ *                  </li>
+ *                  <li>
+ *                      {@code to} - end of connection (subdefinition)
+ *                      <ul>
+ *                          <li>{@code node} - node id (must be presented in {@code nodes})</li>
+ *                          <li>{@code param} - parameter name to put to node input</li>
+ *                      </ul>
+ *                  </li>
+ *              </ul>
+ *          </li>
+ *          <li>
+ *              {@code constants} - constants values to put to constant nodes (subdefinition)
+ *              <ul>
+ *                  <li>
+ *                      key is a non-null string, pointing to node id inside this metadata
+ *                      (node must extend {@link KConstantNode})
+ *                  </li>
+ *                  <li>value is non-validated object (any type, but must be handled by node)</li>
+ *              </ul>
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil

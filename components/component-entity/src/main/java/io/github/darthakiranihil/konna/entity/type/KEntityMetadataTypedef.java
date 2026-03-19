@@ -24,6 +24,32 @@ import io.github.darthakiranihil.konna.entity.KEntityDataComponent;
 
 /**
  * Asset type definition for entity metadata objects.
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code type_name} - non-null string
+ *          </li>
+ *          <li>
+ *              {@code data_components} - array of {@link Class} that extends
+ *              {@link KEntityDataComponent}
+ *          </li>
+ *          <li>
+ *              {@code data_extensions} - array of non-null string that are ids to valid
+ *              {@link io.github.darthakiranihil.konna.entity.KEntityMetadata} to extend
+ *              by data.
+ *          </li>
+ *          <li>
+ *              {@code behaviours} - array of {@link Class} that extends
+ *              {@link KEntityBehaviour}
+ *          </li>
+ *          <li>
+ *              {@code behaviour_extensions} - array of non-null string that are ids to valid
+ *              {@link io.github.darthakiranihil.konna.entity.KEntityMetadata} to extend
+ *              by behavior.
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.4.0
  * @author Darth Akira Nihil

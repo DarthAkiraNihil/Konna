@@ -36,12 +36,47 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.type.*;
 
 /**
- * Konna Graphics component, used for rendering object on the screen.
- * Provided endpoints:
- * <ul>
- *     <li>Graphics.RenderService.render</li>
- *     <li>Graphics.RenderService.bulkRender</li>
- * </ul>
+ * <p>
+ *     Konna Graphics component, used for rendering object on the screen.
+ * </p>
+ * <p>
+ *     <h2>Provided endpoints</h2>
+ *     <ul>
+ *         <li>
+ *             <p>
+ *                 <i>Graphics.RenderService.render</i> - renders on object
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code object} -
+ *                         {@link io.github.darthakiranihil.konna.graphics.render.KRenderable} -
+ *                         object to render
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Graphics.RenderService.bulkRender</i> - renders array of objects
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code objects} -
+ *                         {@link io.github.darthakiranihil.konna.graphics.render.KRenderable}[] -
+ *                         array of objects to render
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *     </ul>
+ * </p>
+ * <p>
+ *     Produced messages: none
+ * </p>
  *
  * @since 0.3.0
  * @author Darth Akira Nihil

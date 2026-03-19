@@ -32,12 +32,213 @@ import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 
 /**
- * Konna Entity component, used for handling game entities (i.e. creating, deleting,
- * updating, controlling, etc.)
- * Provided endpoints:
- * <ul>
- *     <li>none</li>
- * </ul>
+ * <p>
+ *     Konna Entity component, used for handling game entities (i.e. creating, deleting,
+ *     updating, controlling, etc.)
+ * </p>
+ * <p>
+ *     <h2>Provided endpoints</h2>
+ *     <ul>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.EntityManagementService.createEntity</i> - creates a new entity
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code name} -
+ *                         {@link String} -
+ *                         name of created entity
+ *                     </li>
+ *                     <li>
+ *                         {@code type} -
+ *                         {@link String} -
+ *                         type of created entity
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.EntityManagementService.restoreEntity</i> - creates a new entity with
+ *                 its data restoration
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code name} -
+ *                         {@link String} -
+ *                         name of created entity
+ *                     </li>
+ *                     <li>
+ *                         {@code type} -
+ *                         {@link String} -
+ *                         type of created entity
+ *                     </li>
+ *                     <li>
+ *                         {@code data} -
+ *                         {@link KJsonValue} -
+ *                         data of entity to be restored
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.EntityManagementService.deactivateEntity</i> - deactivates an entity
+ *                 so it won't be updated on ticks
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code entity_id} -
+ *                         {@link java.util.UUID} -
+ *                         id of entity to deactivate
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.EntityManagementService.activateEntity</i> - activates an entity
+ *                 so it will be updated on ticks
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code entity_id} -
+ *                         {@link java.util.UUID} -
+ *                         id of entity to activate
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.EntityManagementService.destroyEntity</i> - destroys an entity
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code entity_id} -
+ *                         {@link java.util.UUID} -
+ *                         id of entity to destroy
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *     </ul>
+ * </p>
+ * <p>
+ *     <h2>Produced messages</h2>
+ *     <ul>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.entityCreated</i>
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code id} -
+ *                         {@link java.util.UUID} -
+ *                         id of created entity
+ *                     </li>
+ *                     <li>
+ *                         {@code name} -
+ *                         {@link String} -
+ *                         name of created entity
+ *                     </li>
+ *                     <li>
+ *                         {@code type} -
+ *                         {@link String} -
+ *                         type of created entity
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.entityActivated</i>
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code id} -
+ *                         {@link java.util.UUID} -
+ *                         id of activated entity
+ *                     </li>
+ *                     <li>
+ *                         {@code name} -
+ *                         {@link String} -
+ *                         name of activated entity
+ *                     </li>
+ *                     <li>
+ *                         {@code type} -
+ *                         {@link String} -
+ *                         type of activated entity
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.entityDeactivated</i>
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code id} -
+ *                         {@link java.util.UUID} -
+ *                         id of deactivated entity
+ *                     </li>
+ *                     <li>
+ *                         {@code name} -
+ *                         {@link String} -
+ *                         name of deactivated entity
+ *                     </li>
+ *                     <li>
+ *                         {@code type} -
+ *                         {@link String} -
+ *                         type of deactivated entity
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Entity.entityDestroyed</i>
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code id} -
+ *                         {@link java.util.UUID} -
+ *                         id of destroyed entity
+ *                     </li>
+ *                     <li>
+ *                         {@code name} -
+ *                         {@link String} -
+ *                         name of destroyed entity
+ *                     </li>
+ *                     <li>
+ *                         {@code type} -
+ *                         {@link String} -
+ *                         type of destroyed entity
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *     </ul>
+ * </p>
  *
  * @since 0.4.0
  * @author Darth Akira Nihil

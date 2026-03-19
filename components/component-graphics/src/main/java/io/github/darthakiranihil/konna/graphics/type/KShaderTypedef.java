@@ -20,7 +20,20 @@ import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 
 /**
- * Asset type definition for shaders.
+ * <p>
+ *     Asset type definition for shaders.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code type} - a valid {@link KShaderType}
+ *          </li>
+ *          <li>
+ *              {@code source} - path to shader source file (non-null string)
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.4.0
  * @author Darth Akira Nihil

@@ -22,7 +22,32 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
 
 /**
- * Asset type definition for tiled fonts.
+ * <p>
+ *     Asset type definition for tiled fonts.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code name} - non-null string
+ *          </li>
+ *          <li>
+ *              {@code face} - asset id of a valid
+ *              {@link io.github.darthakiranihil.konna.graphics.image.KTexture} (non-null string)
+ *          </li>
+ *          <li>
+ *              {@code glyph_size} - size of a single symbol (subdefinition)
+ *              <ul>
+ *                  <li>{@code width} - int</li>
+ *                  <li>{@code height} - int</li>
+ *              </ul>
+ *          </li>
+ *          <li>
+ *              {@code format} - a valid reference to {@link Class} that extends
+ *              {@link KTiledFontFormat}
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.4.0
  * @author Darth Akira Nihil

@@ -23,7 +23,50 @@ import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuil
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 
 /**
- * Asset type definition for texture slice sets.
+ * <p>
+ *     Asset type definition for texture slice sets.
+ * </p>
+ * <p>
+ *      Its asset schema is
+ *      <ul>
+ *          <li>
+ *              {@code base_texture} - asset id of a valid
+ *              {@link io.github.darthakiranihil.konna.graphics.image.KTexture} (non-null string)
+ *          </li>
+ *          <li>
+ *              {@code slices} - list of slices (array of subdefinitions)
+ *              <ul>
+ *                  <li>{@code name} - name of a slice (non-null string)</li>
+ *                  <li>
+ *                      {@code uv} - list of slice uvs (array of subdefinitions)
+ *                      <ul>
+ *                          <li>{@code u} - float</li>
+ *                          <li>{@code v} - float</li>
+ *                      </ul>
+ *                  </li>
+ *                  <li>
+ *                      {@code xy} - list of slice xys (array of subdefinitions)
+ *                      <ul>
+ *                          <li>{@code x} - float</li>
+ *                          <li>{@code y} - float</li>
+ *                      </ul>
+ *                  </li>
+ *                  <li>
+ *                      {@code colors} - list of slice colors (array of subdefinitions)
+ *                      <ul>
+ *                          <li>{@code r} - int</li>
+ *                          <li>{@code g} - int</li>
+ *                          <li>{@code b} - int</li>
+ *                      </ul>
+ *                  </li>
+ *                  <li>
+ *                      number of elements in {@code uv}, {@code xy} and {@code colors}
+ *                      must be the same!
+ *                  </li>
+ *              </ul>
+ *          </li>
+ *      </ul>
+ * </p>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
