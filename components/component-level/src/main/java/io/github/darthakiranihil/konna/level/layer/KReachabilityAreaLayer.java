@@ -68,7 +68,6 @@ public final class KReachabilityAreaLayer extends KAbstractSizedLayer<KReachabil
     }
 
     private final int[][] areas;
-    private final KSize size;
     private final KTileLayer tileLayer;
     private final KHeightLayer heightLayer;
     private final KReachabilityAreaLayerTool tool;
@@ -83,7 +82,6 @@ public final class KReachabilityAreaLayer extends KAbstractSizedLayer<KReachabil
         final KHeightLayer heightLayer
     ) {
         super(tileLayer.getSize());
-        this.size = tileLayer.getSize();
         this.areas = new int[this.size.height()][this.size.width()];
         this.tileLayer = tileLayer;
         this.heightLayer = heightLayer;

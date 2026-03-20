@@ -55,7 +55,6 @@ public final class KHeightLayer
 
 
     private final int[][] heights;
-    private final KSize size;
     private final KHeightLayerTool tool;
 
     /**
@@ -74,7 +73,6 @@ public final class KHeightLayer
     public KHeightLayer(final KSize size) {
         super(size);
         this.heights = new int[size.height()][size.width()];
-        this.size = size;
         this.tool = new Tool(this);
     }
 

@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 
 public abstract class KAbstractSizedLayer<TOOL extends KLayerTool> implements KSizedLevelLayer<TOOL> {
 
-    private final KSize size;
+    protected final KSize size;
 
     protected KAbstractSizedLayer(final KSize size) {
         this.size = size;
