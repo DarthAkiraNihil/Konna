@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public interface KHeightLayerTool extends KLayerTool {
+public interface KHeightLayerTool extends KSizedLayerTool {
 
     /**
      * @param x X coordinate of position to get height of

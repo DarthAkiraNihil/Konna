@@ -65,6 +65,10 @@ public final class KReachabilityAreaLayer extends KAbstractSizedLayer<KReachabil
 
         }
 
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
     }
 
     private final int[][] areas;

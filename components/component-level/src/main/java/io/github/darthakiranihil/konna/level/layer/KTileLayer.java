@@ -91,6 +91,11 @@ public final class KTileLayer
         public KTileLayerTool placeTile(final KVector2i position, final KTileInfo tile) {
             return this.placeTile(position.x(), position.y(), tile);
         }
+
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
     }
 
     private static final class TileInfo {

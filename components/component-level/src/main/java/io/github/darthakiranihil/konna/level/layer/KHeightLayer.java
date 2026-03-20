@@ -51,6 +51,11 @@ public final class KHeightLayer
             this.self.heights[y][x] = height;
             return this;
         }
+
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
     }
 
 

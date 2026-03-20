@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public interface KVisitedPlacesLayerTool extends KLayerTool {
+public interface KVisitedPlacesLayerTool extends KSizedLayerTool {
 
     /**
      * @param position Position of place to test

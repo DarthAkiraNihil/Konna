@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
-public interface KReachabilityAreaLayerTool extends KLayerTool {
+public interface KReachabilityAreaLayerTool extends KSizedLayerTool {
 
     /**
      * @param src Source point

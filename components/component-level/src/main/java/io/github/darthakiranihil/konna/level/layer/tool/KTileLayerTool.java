@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.KTileLayer;
 import org.jspecify.annotations.Nullable;
 
-public interface KTileLayerTool extends KReadableObjectLayerTool<KTileInfo> {
+public interface KTileLayerTool extends KReadableObjectLayerTool<KTileInfo>, KSizedLayerTool {
 
     /**
      * Places a tile on this layer. It does not perform such operation of the position

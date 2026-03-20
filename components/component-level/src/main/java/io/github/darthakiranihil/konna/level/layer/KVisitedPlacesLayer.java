@@ -65,6 +65,10 @@ public final class KVisitedPlacesLayer
             this.self.seen[y][x] = true;
         }
 
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
     }
 
     private final boolean[][] seen;
