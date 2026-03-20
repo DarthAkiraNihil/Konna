@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
 import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
 import io.github.darthakiranihil.konna.level.layer.KTileLayer;
+import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,14 +42,18 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
 
+        KTileLayer tl = new KTileLayer(2, 2);
+        tl
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tl,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KLevelEntityLayer()
@@ -68,30 +73,41 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileLayer tl2 = new KTileLayer(2, 2);
+        tl2
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
 
         KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tl2,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KLevelEntityLayer()
         );
 
+        KTileLayer tl = new KTileLayer(2, 2);
+        tl
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+        KSectorLinkLayer sll = new KSectorLinkLayer();
+        sll
+            .getTool()
+            .link(0, 0, sector2, 1, 1);
+
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tl2,
             new KHeightLayer(new KSize(2, 2)),
-            (new KSectorLinkLayer()).link(0, 0, sector2, 1, 1),
+            sll,
             new KLevelEntityLayer()
         );
 
@@ -113,8 +129,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KTileLayer layer = new KTileLayer(3, 3);
         KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
-
         layer
+            .getTool()
             .placeTile(new KVector2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
@@ -134,25 +150,27 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             new KLevelEntityLayer()
         );
 
+        var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
+
         Assertions.assertTrue(
-            sector.isReachable(
+            reachTool.isReachable(
                 new KVector2i(0, 0),
                 new KVector2i(0, 2)
             )
         );
         Assertions.assertTrue(
-            sector.isReachable(
+            reachTool.isReachable(
                 new KVector2i(2, 0),
                 new KVector2i(2, 2)
             )
         );
         Assertions.assertTrue(
-            sector.isReachable(
+            reachTool.isReachable(
                 0, 0, 0, 2
             )
         );
         Assertions.assertTrue(
-            sector.isReachable(
+            reachTool.isReachable(
                 2, 0, 2, 2
             )
         );
@@ -170,6 +188,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
 
         layer
+            .getTool()
             .placeTile(new KVector2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
@@ -188,26 +207,26 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             new KSectorLinkLayer(),
             new KLevelEntityLayer()
         );
-
+        var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
-            sector.isReachable(
+            reachTool.isReachable(
                 new KVector2i(0, 0),
                 new KVector2i(2, 2)
             )
         );
         Assertions.assertFalse(
-            sector.isReachable(
+            reachTool.isReachable(
                 new KVector2i(2, 0),
                 new KVector2i(0, 2)
             )
         );
         Assertions.assertFalse(
-            sector.isReachable(
+            reachTool.isReachable(
                 0, 0, 2, 2
             )
         );
         Assertions.assertFalse(
-            sector.isReachable(
+            reachTool.isReachable(
                 2, 0, 0, 2
             )
         );
@@ -225,6 +244,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
 
         layer
+            .getTool()
             .placeTile(new KVector2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
@@ -243,31 +263,31 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             new KSectorLinkLayer(),
             new KLevelEntityLayer()
         );
+        var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
+        Assertions.assertFalse(
+            reachTool.isReachable(new KVector2i(-1, 0), new KVector2i(0, 1))
+        );
+        Assertions.assertFalse(
+            reachTool.isReachable(new KVector2i(3, 0), new KVector2i(0, 1))
+        );
+        Assertions.assertFalse(
+            reachTool.isReachable(new KVector2i(0, -1), new KVector2i(0, 1))
+        );
+        Assertions.assertFalse(
+            reachTool.isReachable(new KVector2i(0, 3), new KVector2i(0, 1))
+        );
 
         Assertions.assertFalse(
-            sector.isReachable(new KVector2i(-1, 0), new KVector2i(0, 1))
+            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(-1, 0))
         );
         Assertions.assertFalse(
-            sector.isReachable(new KVector2i(3, 0), new KVector2i(0, 1))
+            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(3, 0))
         );
         Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, -1), new KVector2i(0, 1))
+            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(0, -1))
         );
         Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, 3), new KVector2i(0, 1))
-        );
-
-        Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, 1), new KVector2i(-1, 0))
-        );
-        Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, 1), new KVector2i(3, 0))
-        );
-        Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, 1), new KVector2i(0, -1))
-        );
-        Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, 1), new KVector2i(0, 3))
+            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(0, 3))
         );
 
     }
@@ -283,6 +303,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
 
         layer
+            .getTool()
             .placeTile(new KVector2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
@@ -301,12 +322,12 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             new KSectorLinkLayer(),
             new KLevelEntityLayer()
         );
-
+        var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
-            sector.isReachable(new KVector2i(0, 0), new KVector2i(1, 1))
+            reachTool.isReachable(new KVector2i(0, 0), new KVector2i(1, 1))
         );
         Assertions.assertFalse(
-            sector.isReachable(0, 0, 1, 1)
+            reachTool.isReachable(0, 0, 1, 1)
         );
 
     }

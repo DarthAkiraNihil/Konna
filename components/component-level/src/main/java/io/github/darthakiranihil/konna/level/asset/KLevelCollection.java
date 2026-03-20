@@ -36,6 +36,10 @@ import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.layer.*;
+import io.github.darthakiranihil.konna.level.layer.tool.KHeightLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
 
 import java.util.*;
@@ -188,6 +192,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
 
         String[] rawTiles = rawSector.tiles;
         KTileLayer layer = rawSector.tileLayer;
+        KTileLayerTool tool = layer.getTool();
         KSize size = rawSector.size;
 
         for (int i = 0; i < rawTiles.length; i++) {
@@ -195,7 +200,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             int x = i % size.width();
             int y = i / size.width();
 
-            layer.placeTile(
+            tool.placeTile(
                 x, y, this.tileCollection.getAsset(rawTiles[i])
             );
 
@@ -209,6 +214,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
     ) {
 
         KSectorLinkLayer layer = rawSector.sectorLinkLayer;
+        KSectorLinkLayerTool tool = layer.getTool();
         KAssetDefinition[] rawLinks = rawSector.sectorLinks;
 
         for (var rawLink: rawLinks) {
@@ -245,7 +251,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                 );
             }
 
-            layer.link(
+            tool.link(
                 x,
                 y,
                 rawSectorsMap.get(linkedSector).containedSector,
@@ -284,8 +290,9 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             KAssetDefinition[] staticEntities = data.getSubdefinitionArray("static");
             KAssetDefinition[] autonomousEntities = data.getSubdefinitionArray("autonomous");
 
-            this.placeSimpleEntities(layer, controllables, x, y, rawSector.containedSector, false);
-            this.placeSimpleEntities(layer, staticEntities, x, y, rawSector.containedSector, true);
+            var tool = layer.getTool();
+            this.placeSimpleEntities(tool, controllables, x, y, rawSector.containedSector, false);
+            this.placeSimpleEntities(tool, staticEntities, x, y, rawSector.containedSector, true);
 
             for (var autonomous: autonomousEntities) {
 
@@ -297,7 +304,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                     rawSector.containedSector
                 );
 
-                layer.placeEntity(x, y, auto);
+                tool.placeEntity(x, y, auto);
                 autonomousEntitiesList.add(
                     new KTriplet<>(
                         auto,
@@ -314,7 +321,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
     }
 
     private void placeSimpleEntities(
-        final KLevelEntityLayer layer,
+        final KLevelEntityLayerTool tool,
         final KAssetDefinition[] entities,
         int x,
         int y,
@@ -322,7 +329,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         boolean areStatic
     ) {
         for (var entity: entities) {
-            layer.placeEntity(
+            tool.placeEntity(
                 x,
                 y,
                 areStatic
@@ -350,6 +357,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
 
         int[] heights = rawSector.heights;
         KHeightLayer layer = rawSector.heightLayer;
+        KHeightLayerTool tool = layer.getTool();
         KSize size = rawSector.size;
 
         for (int i = 0; i < heights.length; i++) {
@@ -357,7 +365,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             int x = i % size.width();
             int y = i / size.width();
 
-            layer.setHeight(
+            tool.setHeight(
                 x, y, heights[i]
             );
 

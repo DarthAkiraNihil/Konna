@@ -38,6 +38,7 @@ import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -254,7 +255,8 @@ public class KLevelEntityManagementService extends KObject {
             );
 
         entity.setController(controllerInstance);
-        deploymentSector.placeEntity(position, entity);
+        var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
+        tool.placeEntity(position, entity);
         this.autonomouses.put(entity.id(), entity);
 
         this.sendMessage(entity, "autonomousEntityCreated");
@@ -296,7 +298,8 @@ public class KLevelEntityManagementService extends KObject {
 
         KAutonomousEntity entity = this.autonomouses.remove(entityId);
         var position = entity.getPosition();
-        position.second().removeEntity(position.first(), entity);
+        var tool = position.second().getTool(KLevelEntityLayerTool.class);
+        tool.removeEntity(position.first(), entity);
 
         this.sendMessage(entity, "autonomousEntityDestroyed");
     }
@@ -337,7 +340,8 @@ public class KLevelEntityManagementService extends KObject {
             deploymentSector
         );
 
-        deploymentSector.placeEntity(position, entity);
+        var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
+        tool.placeEntity(position, entity);
         this.statics.put(entity.id(), entity);
 
         this.sendMessage(entity, "staticEntityCreated");
@@ -379,7 +383,8 @@ public class KLevelEntityManagementService extends KObject {
 
         KStaticEntity entity = this.statics.remove(entityId);
         var position = entity.getPosition();
-        position.second().removeEntity(position.first(), entity);
+        var tool = position.second().getTool(KLevelEntityLayerTool.class);
+        tool.removeEntity(position.first(), entity);
 
         this.sendMessage(entity, "staticEntityDestroyed");
 
@@ -423,7 +428,8 @@ public class KLevelEntityManagementService extends KObject {
             deploymentSector
         );
 
-        deploymentSector.placeEntity(position, entity);
+        var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
+        tool.placeEntity(position, entity);
         this.controllables.put(entity.id(), entity);
 
         this.sendMessage(entity, "controllableEntityCreated");
@@ -465,7 +471,8 @@ public class KLevelEntityManagementService extends KObject {
 
         KControllableEntity entity = this.controllables.remove(entityId);
         var position = entity.getPosition();
-        position.second().removeEntity(position.first(), entity);
+        var tool = position.second().getTool(KLevelEntityLayerTool.class);
+        tool.removeEntity(position.first(), entity);
 
         this.sendMessage(entity, "controllableEntityDestroyed");
     }

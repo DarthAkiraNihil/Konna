@@ -25,6 +25,8 @@ import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -247,7 +249,8 @@ public class KAStarPathfinder implements KPathfinder {
 
         if (srcSector.equals(dstSector)) {
             KLevelSector dst = location.getSector(dstSector);
-            if (dst.isReachable(srcX, srcY, dstX, dstY)) {
+            var tool = dst.getTool(KReachabilityAreaLayerTool.class);
+            if (tool.isReachable(srcX, srcY, dstX, dstY)) {
                 return List.of(dstSector);
             }
 
@@ -443,10 +446,13 @@ public class KAStarPathfinder implements KPathfinder {
             KLevelSector first = location.getSector(firstSectorName);
             KLevelSector second = location.getSector(secondSectorName);
 
+            var firstLinkTool = first.getTool(KSectorLinkLayerTool.class);
+            var secondLinkTool = second.getTool(KSectorLinkLayerTool.class);
+
             KVector2i source = i == 0 ? new KVector2i(srcX, srcY) : checkpoints.getLast().third();
 
-            var linksFromFirstToSecond = first.getLinksToSector(secondSectorName);
-            var linksFromSecondToThird = second.getLinksToSector(thirdSectorName);
+            var linksFromFirstToSecond = firstLinkTool.getToSector(secondSectorName);
+            var linksFromSecondToThird = secondLinkTool.getToSector(thirdSectorName);
 
             List<KVector2i> goodLinks = new ArrayList<>(linksFromFirstToSecond.size());
 
@@ -456,7 +462,9 @@ public class KAStarPathfinder implements KPathfinder {
                         .keySet()
                         .stream()
                         .noneMatch(
-                            x -> second.isReachable(
+                            x -> second
+                                .getTool(KReachabilityAreaLayerTool.class)
+                                .isReachable(
                                 linkFromFirstToSecond.getValue().destination(),
                                 x
                             )
@@ -496,14 +504,16 @@ public class KAStarPathfinder implements KPathfinder {
             ? new KVector2i(srcX, srcY)
             : checkpoints.getLast().third();
 
-        var linksFromPenultimateToLast = penultimate.getLinksToSector(lastSectorName);
+        var penultimateLinkTool = penultimate.getTool(KSectorLinkLayerTool.class);
+        var linksFromPenultimateToLast = penultimateLinkTool.getToSector(lastSectorName);
 
         List<KVector2i> goodLinks = new ArrayList<>(linksFromPenultimateToLast.size());
         KVector2i destination = new KVector2i(dstX, dstY);
 
         for (var linkFromPenultimateToLast: linksFromPenultimateToLast.entrySet()) {
+            var lastReachabilityTool = last.getTool(KReachabilityAreaLayerTool.class);
             if (
-                !last.isReachable(
+                !lastReachabilityTool.isReachable(
                     linkFromPenultimateToLast.getValue().destination(),
                     destination
                 )

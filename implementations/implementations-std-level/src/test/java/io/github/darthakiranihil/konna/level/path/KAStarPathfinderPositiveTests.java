@@ -52,14 +52,15 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tl1.placeTile(i, j, impassable);
-                tl2.placeTile(i, j, impassable);
-                tl3.placeTile(i, j, impassable);
-                tl4.placeTile(i, j, impassable);
+                tl1.getTool().placeTile(i, j, impassable);
+                tl2.getTool().placeTile(i, j, impassable);
+                tl3.getTool().placeTile(i, j, impassable);
+                tl4.getTool().placeTile(i, j, impassable);
             }
         }
 
         tl1
+            .getTool()
             .placeTile(1, 1, tileInfo)
             .placeTile(2, 1, tileInfo)
             .placeTile(3, 1, tileInfo)
@@ -68,6 +69,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(3, 4, tileInfo);
 
         tl2
+            .getTool()
             .placeTile(3, 0, tileInfo)
             .placeTile(3, 1, tileInfo)
             .placeTile(3, 2, tileInfo)
@@ -77,6 +79,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(0, 3, tileInfo);
 
         tl3
+            .getTool()
             .placeTile(4, 3, tileInfo)
             .placeTile(3, 3, tileInfo)
             .placeTile(2, 3, tileInfo)
@@ -86,6 +89,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(1, 0, tileInfo);
 
         tl4
+            .getTool()
             .placeTile(1, 4, tileInfo)
             .placeTile(1, 3, tileInfo)
             .placeTile(1, 2, tileInfo)
@@ -103,9 +107,9 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
         KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
-        sl1.link(3, 4, s2, 3, 0);
-        sl2.link(0, 3, s3, 4, 3);
-        sl3.link(1, 0, s4, 1, 4);
+        sl1.getTool().link(3, 4, s2, 3, 0);
+        sl2.getTool().link(0, 3, s3, 4, 3);
+        sl3.getTool().link(1, 0, s4, 1, 4);
 
         this.level = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
@@ -305,12 +309,13 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tl1.placeTile(i, j, impassable);
-                tl2.placeTile(i, j, impassable);
+                tl1.getTool().placeTile(i, j, impassable);
+                tl2.getTool().placeTile(i, j, impassable);
             }
         }
 
         tl1
+            .getTool()
             .placeTile(1, 1, tileInfo)
             .placeTile(2, 1, tileInfo)
             .placeTile(3, 1, tileInfo)
@@ -319,6 +324,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(3, 4, tileInfo);
 
         tl2
+            .getTool()
             .placeTile(3, 0, tileInfo)
             .placeTile(3, 1, tileInfo)
             .placeTile(3, 2, tileInfo)
@@ -362,18 +368,20 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tl1.placeTile(i, j, impassable);
-                tl2.placeTile(i, j, impassable);
+                tl1.getTool().placeTile(i, j, impassable);
+                tl2.getTool().placeTile(i, j, impassable);
             }
         }
 
         tl1
+            .getTool()
             .placeTile(0, 1, tileInfo)
             .placeTile(1, 1, tileInfo)
             .placeTile(3, 1, tileInfo)
             .placeTile(4, 1, tileInfo);
 
         tl2
+            .getTool()
             .placeTile(0, 1, tileInfo)
             .placeTile(1, 1, tileInfo)
             .placeTile(2, 1, tileInfo)
@@ -386,8 +394,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
         KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
 
-        sl1.link(4, 1, s2, 0, 1);
-        sl2.link(4, 1, s1, 0, 1);
+        sl1.getTool().link(4, 1, s2, 0, 1);
+        sl2.getTool().link(4, 1, s1, 0, 1);
 
         var loc2 = new KLevel(
             "l2", List.of(s1, s2)
@@ -442,18 +450,20 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tl1.placeTile(i, j, impassable);
-                tl2.placeTile(i, j, impassable);
+                tl1.getTool().placeTile(i, j, impassable);
+                tl2.getTool().placeTile(i, j, impassable);
             }
         }
 
         tl1
+            .getTool()
             .placeTile(0, 1, tileInfo)
             .placeTile(1, 1, tileInfo)
             .placeTile(3, 1, tileInfo)
             .placeTile(4, 1, tileInfo);
 
         tl2
+            .getTool()
             .placeTile(0, 1, tileInfo)
             .placeTile(1, 1, tileInfo)
             .placeTile(2, 1, tileInfo)
@@ -466,7 +476,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KLevelSector s1 = new KLevelSector(es, "s1", tl1, new KHeightLayer(11, 11), sl1, new KLevelEntityLayer());
         KLevelSector s2 = new KLevelSector(es, "s2", tl2, new KHeightLayer(11, 11), sl2, new KLevelEntityLayer());
 
-        sl2.link(4, 1, s1, 0, 1);
+        sl2.getTool().link(4, 1, s1, 0, 1);
 
         var loc2 = new KLevel(
             "l2", List.of(s1, s2)
@@ -506,14 +516,15 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tl1.placeTile(i, j, impassable);
-                tl2.placeTile(i, j, impassable);
-                tl3.placeTile(i, j, impassable);
-                tl4.placeTile(i, j, impassable);
+                tl1.getTool().placeTile(i, j, impassable);
+                tl2.getTool().placeTile(i, j, impassable);
+                tl3.getTool().placeTile(i, j, impassable);
+                tl4.getTool().placeTile(i, j, impassable);
             }
         }
 
         tl1
+            .getTool()
             .placeTile(1, 1, tileInfo)
             .placeTile(2, 1, tileInfo)
             .placeTile(3, 1, tileInfo)
@@ -522,6 +533,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(3, 4, tileInfo);
 
         tl2
+            .getTool()
             .placeTile(3, 0, tileInfo)
             .placeTile(3, 1, tileInfo)
             .placeTile(3, 2, tileInfo)
@@ -530,6 +542,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(0, 3, tileInfo);
 
         tl3
+            .getTool()
             .placeTile(4, 3, tileInfo)
             .placeTile(3, 3, tileInfo)
             .placeTile(2, 3, tileInfo)
@@ -539,6 +552,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(1, 0, tileInfo);
 
         tl4
+            .getTool()
             .placeTile(1, 4, tileInfo)
             .placeTile(1, 3, tileInfo)
             .placeTile(1, 2, tileInfo)
@@ -556,9 +570,9 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
         KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
-        sl1.link(3, 4, s2, 3, 0);
-        sl2.link(0, 3, s3, 4, 3);
-        sl3.link(1, 0, s4, 1, 4);
+        sl1.getTool().link(3, 4, s2, 3, 0);
+        sl2.getTool().link(0, 3, s3, 4, 3);
+        sl3.getTool().link(1, 0, s4, 1, 4);
 
         var loc2 = new KLevel(
             "l1", List.of(s1, s2, s3, s4)
@@ -597,14 +611,15 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tl1.placeTile(i, j, impassable);
-                tl2.placeTile(i, j, impassable);
-                tl3.placeTile(i, j, impassable);
-                tl4.placeTile(i, j, impassable);
+                tl1.getTool().placeTile(i, j, impassable);
+                tl2.getTool().placeTile(i, j, impassable);
+                tl3.getTool().placeTile(i, j, impassable);
+                tl4.getTool().placeTile(i, j, impassable);
             }
         }
 
         tl1
+            .getTool()
             .placeTile(1, 1, tileInfo)
             .placeTile(2, 1, tileInfo)
             .placeTile(3, 1, tileInfo)
@@ -613,6 +628,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(3, 4, tileInfo);
 
         tl2
+            .getTool()
             .placeTile(3, 0, tileInfo)
             .placeTile(3, 1, tileInfo)
             .placeTile(3, 2, tileInfo)
@@ -622,6 +638,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(0, 3, tileInfo);
 
         tl3
+            .getTool()
             .placeTile(4, 3, tileInfo)
             .placeTile(3, 3, tileInfo)
             .placeTile(2, 3, tileInfo)
@@ -631,6 +648,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
             .placeTile(1, 0, tileInfo);
 
         tl4
+            .getTool()
             .placeTile(1, 4, tileInfo)
             .placeTile(1, 3, tileInfo)
             .placeTile(1, 2, tileInfo)
@@ -646,9 +664,9 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KLevelSector s3 = new KLevelSector(es, "s3", tl3, new KHeightLayer(11, 11), sl3, new KLevelEntityLayer());
         KLevelSector s4 = new KLevelSector(es, "s4", tl4, new KHeightLayer(11, 11), sl4, new KLevelEntityLayer());
 
-        sl1.link(3, 4, s2, 3, 0);
-        sl2.link(0, 3, s3, 4, 3);
-        sl3.link(1, 0, s4, 1, 4);
+        sl1.getTool().link(3, 4, s2, 3, 0);
+        sl2.getTool().link(0, 3, s3, 4, 3);
+        sl3.getTool().link(1, 0, s4, 1, 4);
 
         var loc2 = new KLevel(
             "l1", List.of(s1, s2, s3, s4)

@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
+import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 
 import java.util.List;
 

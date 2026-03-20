@@ -41,9 +41,10 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer tileLayer = new KTileLayer(11, 11);
+        var tool = tileLayer.getTool();
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                tileLayer.placeTile(i, j, tileInfo);
+                tool.placeTile(i, j, tileInfo);
             }
         }
 
@@ -105,8 +106,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KTileLayer tileLayer2 = new KTileLayer(11, 11);
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                tileLayer.placeTile(i, j, tileInfo);
-                tileLayer2.placeTile(i, j, tileInfo);
+                tileLayer.getTool().placeTile(i, j, tileInfo);
+                tileLayer2.getTool().placeTile(i, j, tileInfo);
             }
         }
 
@@ -130,8 +131,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             new KLevelEntityLayer()
         );
 
-        sl1.link(0, 5, sector2, 10, 5);
-        sl2.link(10, 5, sector, 0, 5);
+        sl1.getTool().link(0, 5, sector2, 10, 5);
+        sl2.getTool().link(10, 5, sector, 0, 5);
 
         KLevel level = new KLevel("loc1", List.of(sector, sector2));
 
@@ -186,13 +187,13 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                tileLayer.placeTile(i, j, tileInfo);
+                tileLayer.getTool().placeTile(i, j, tileInfo);
             }
         }
 
         for (int i = 0; i < 11; i++) {
             for (int j = 8; j < 11; j++) {
-                heightLayer.setHeight(i, j, 2);
+                heightLayer.getTool().setHeight(i, j, 2);
             }
         }
 
@@ -264,13 +265,13 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                tileLayer.placeTile(i, j, tileInfo);
+                tileLayer.getTool().placeTile(i, j, tileInfo);
             }
         }
 
         for (int i = 0; i < 11; i++) {
             for (int j = 8; j < 11; j++) {
-                heightLayer.setHeight(i, j, 2);
+                heightLayer.getTool().setHeight(i, j, 2);
             }
         }
 

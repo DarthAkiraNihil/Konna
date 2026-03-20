@@ -25,49 +25,54 @@ import org.junit.jupiter.api.Test;
 public class KVisitedPlacesLayerPositiveTests extends KStandardTestClass {
 
     @Test
-    public void testGetSeenStatus() {
+    public void testisVisited() {
 
         KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
+        var tool = layer.getTool();
+        
         Assertions.assertEquals(new KSize(2, 2), layer.getSize());
-        Assertions.assertFalse(layer.getSeenStatus(0, 0));
+        Assertions.assertFalse(tool.isVisited(0, 0));
         Assertions.assertEquals(
-            layer.getSeenStatus(0, 0),
-            layer.getSeenStatus(new KVector2i(0, 0))
+            tool.isVisited(0, 0),
+            tool.isVisited(new KVector2i(0, 0))
         );
 
 
     }
 
     @Test
-    public void testSeeThePlace() {
+    public void testVisitPlace() {
 
         KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
+        var tool = layer.getTool();
+        
         Assertions.assertEquals(new KSize(2, 2), layer.getSize());
-        layer.seeThePlace(0, 0);
-        Assertions.assertTrue(layer.getSeenStatus(0, 0));
+        tool.visitPlace(0, 0);
+        Assertions.assertTrue(tool.isVisited(0, 0));
         Assertions.assertEquals(
-            layer.getSeenStatus(0, 0),
-            layer.getSeenStatus(new KVector2i(0, 0))
+            tool.isVisited(0, 0),
+            tool.isVisited(new KVector2i(0, 0))
         );
 
-        layer.seeThePlace(new KVector2i(1, 1));
-        Assertions.assertTrue(layer.getSeenStatus(1, 1));
+        tool.visitPlace(new KVector2i(1, 1));
+        Assertions.assertTrue(tool.isVisited(1, 1));
         Assertions.assertEquals(
-            layer.getSeenStatus(1, 1),
-            layer.getSeenStatus(new KVector2i(1, 1))
+            tool.isVisited(1, 1),
+            tool.isVisited(new KVector2i(1, 1))
         );
 
     }
 
     @Test
-    public void testGetSeenStatusOutOfBounds() {
+    public void testisVisitedOutOfBounds() {
 
         KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
-
-        Assertions.assertFalse(layer.getSeenStatus(-1, 0));
-        Assertions.assertFalse(layer.getSeenStatus(2, 0));
-        Assertions.assertFalse(layer.getSeenStatus(0, -1));
-        Assertions.assertFalse(layer.getSeenStatus(0, 2));
+        var tool = layer.getTool();
+        
+        Assertions.assertFalse(tool.isVisited(-1, 0));
+        Assertions.assertFalse(tool.isVisited(2, 0));
+        Assertions.assertFalse(tool.isVisited(0, -1));
+        Assertions.assertFalse(tool.isVisited(0, 2));
 
     }
 
@@ -75,15 +80,16 @@ public class KVisitedPlacesLayerPositiveTests extends KStandardTestClass {
     public void testSetSeenStatusOutOfBounds() {
 
         KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
+        var tool = layer.getTool();
 
-        layer.seeThePlace(-1, 0);
-        layer.seeThePlace(2, 0);
-        layer.seeThePlace(0, -1);
-        layer.seeThePlace(0, 2);
-        Assertions.assertFalse(layer.getSeenStatus(0, 0));
-        Assertions.assertFalse(layer.getSeenStatus(0, 1));
-        Assertions.assertFalse(layer.getSeenStatus(1, 0));
-        Assertions.assertFalse(layer.getSeenStatus(1, 1));
+        tool.visitPlace(-1, 0);
+        tool.visitPlace(2, 0);
+        tool.visitPlace(0, -1);
+        tool.visitPlace(0, 2);
+        Assertions.assertFalse(tool.isVisited(0, 0));
+        Assertions.assertFalse(tool.isVisited(0, 1));
+        Assertions.assertFalse(tool.isVisited(1, 0));
+        Assertions.assertFalse(tool.isVisited(1, 1));
 
     }
 }

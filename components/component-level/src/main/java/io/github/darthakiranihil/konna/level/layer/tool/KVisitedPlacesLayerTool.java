@@ -39,7 +39,7 @@ public interface KVisitedPlacesLayerTool extends KSizedLayerTool {
      * @param position Position to mark
      */
     default void visitPlace(final KVector2i position) {
-        this.isVisited(position.x(), position.y());
+        this.visitPlace(position.x(), position.y());
     }
     /**
      * Marks a specific place as seen.

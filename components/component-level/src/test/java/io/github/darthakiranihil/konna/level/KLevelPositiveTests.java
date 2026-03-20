@@ -40,15 +40,18 @@ public class KLevelPositiveTests extends KStandardTestClass {
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        KTileLayer tl = new KTileLayer(2, 2);
+        tl
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
 
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tl,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             new KLevelEntityLayer()
