@@ -74,7 +74,7 @@ public final class KLevelSector extends KObject {
     private final KLevelEntityLayer entityLayer;
 
     private final KReachabilityAreaLayer reachabilityAreaLayer;
-    private final KSeenPlacesLayer seenPlacesLayer;
+    private final KVisitedPlacesLayer seenPlacesLayer;
 
     /**
      * Standard constructor.
@@ -112,7 +112,7 @@ public final class KLevelSector extends KObject {
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
         this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer, heightLayer);
-        this.seenPlacesLayer = new KSeenPlacesLayer(tileLayer.getSize());
+        this.seenPlacesLayer = new KVisitedPlacesLayer(tileLayer.getSize());
     }
 
     /**

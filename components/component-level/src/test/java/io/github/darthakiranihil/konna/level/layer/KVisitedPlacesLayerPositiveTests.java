@@ -22,12 +22,12 @@ import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KSeenPlacesLayerPositiveTests extends KStandardTestClass {
+public class KVisitedPlacesLayerPositiveTests extends KStandardTestClass {
 
     @Test
     public void testGetSeenStatus() {
 
-        KSeenPlacesLayer layer = new KSeenPlacesLayer(new KSize(2, 2));
+        KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
         Assertions.assertEquals(new KSize(2, 2), layer.getSize());
         Assertions.assertFalse(layer.getSeenStatus(0, 0));
         Assertions.assertEquals(
@@ -41,7 +41,7 @@ public class KSeenPlacesLayerPositiveTests extends KStandardTestClass {
     @Test
     public void testSeeThePlace() {
 
-        KSeenPlacesLayer layer = new KSeenPlacesLayer(new KSize(2, 2));
+        KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
         Assertions.assertEquals(new KSize(2, 2), layer.getSize());
         layer.seeThePlace(0, 0);
         Assertions.assertTrue(layer.getSeenStatus(0, 0));
@@ -62,7 +62,7 @@ public class KSeenPlacesLayerPositiveTests extends KStandardTestClass {
     @Test
     public void testGetSeenStatusOutOfBounds() {
 
-        KSeenPlacesLayer layer = new KSeenPlacesLayer(new KSize(2, 2));
+        KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
 
         Assertions.assertFalse(layer.getSeenStatus(-1, 0));
         Assertions.assertFalse(layer.getSeenStatus(2, 0));
@@ -74,7 +74,7 @@ public class KSeenPlacesLayerPositiveTests extends KStandardTestClass {
     @Test
     public void testSetSeenStatusOutOfBounds() {
 
-        KSeenPlacesLayer layer = new KSeenPlacesLayer(new KSize(2, 2));
+        KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
 
         layer.seeThePlace(-1, 0);
         layer.seeThePlace(2, 0);
