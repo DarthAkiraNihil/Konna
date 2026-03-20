@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
 import io.github.darthakiranihil.konna.level.layer.KTileLayer;
 import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -117,6 +118,10 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         Assertions.assertNotNull(sectorSlice.sectorLink());
         Assertions.assertEquals(sector2.name(), sectorSlice.sectorLink().linkedSector().name());
         Assertions.assertEquals(new KVector2i(1, 1), sectorSlice.sectorLink().destination());
+        Assertions.assertEquals(sectorSlice, sector.getSlice(KVector2i.ZERO));
+        var sectorLinkTool = sector.getTool(KSectorLinkLayerTool.class);
+        Assertions.assertEquals(sectorSlice.sectorLink(), sectorLinkTool.getOnPosition(KVector2i.ZERO));
+        Assertions.assertEquals(sectorSlice.sectorLink(), sectorLinkTool.getOnPosition(0, 0));
 
     }
 

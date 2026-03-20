@@ -25,7 +25,9 @@ public interface KReachabilityAreaLayerTool extends KSizedLayerTool {
      * @param dst Destination point
      * @return Whether it is possible to reach destination from source point in this layer
      */
-    boolean isReachable(final KVector2i src, final KVector2i dst);
+    default boolean isReachable(final KVector2i src, final KVector2i dst) {
+        return this.isReachable(src.x(), src.y(), dst.x(), dst.y());
+    }
 
     /**
      * @param srcX X coordinate of source point

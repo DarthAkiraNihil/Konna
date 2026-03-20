@@ -31,7 +31,9 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    KLevelEntityLayerTool placeEntity(int x, int y, final KLevelEntity entity);
+    default KLevelEntityLayerTool placeEntity(int x, int y, final KLevelEntity entity) {
+        return this.placeEntity(new KVector2i(x, y), entity);
+    }
 
     /**
      * Places an entity on this layer.
@@ -48,7 +50,9 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    KLevelEntityLayerTool removeEntity(int x, int y, final KLevelEntity entity);
+    default KLevelEntityLayerTool removeEntity(int x, int y, final KLevelEntity entity) {
+        return this.removeEntity(new KVector2i(x, y), entity);
+    }
 
     /**
      * Removes an entity from this layer.

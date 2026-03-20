@@ -38,6 +38,7 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
         var tool = layer.getTool();
+        Assertions.assertEquals(layer.getSize(), tool.getSize());
         tool.placeTile(0, 0, tileInfo);
         tool.placeTile(0, 1, tileInfo);
         tool.placeTile(1, 0, tileInfo);
@@ -58,6 +59,14 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(tileInfo.getId(), t10.getId());
         Assertions.assertEquals(tileInfo.getId(), t11.getId());
 
+        Assertions.assertEquals(t00, tool.getOnPosition(0, 0));
+        Assertions.assertEquals(t00, tool.getOnPosition(KVector2i.ZERO));
+        Assertions.assertEquals(t01, tool.getOnPosition(0, 1));
+        Assertions.assertEquals(t01, tool.getOnPosition(new KVector2i(0, 1)));
+        Assertions.assertEquals(t10, tool.getOnPosition(1, 0));
+        Assertions.assertEquals(t10, tool.getOnPosition(new KVector2i(1, 0)));
+        Assertions.assertEquals(t11, tool.getOnPosition(1, 1));
+        Assertions.assertEquals(t11, tool.getOnPosition(new KVector2i(1, 1)));
     }
 
     @Test

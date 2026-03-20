@@ -39,10 +39,6 @@ public final class KLevelEntityLayer
         public Tool(final KLevelEntityLayer self) {
             this.self = self;
         }
-        @Override
-        public KLevelEntityLayerTool placeEntity(int x, int y, final KLevelEntity entity) {
-            return this.placeEntity(new KVector2i(x, y), entity);
-        }
 
         @Override
         public KLevelEntityLayerTool placeEntity(final KVector2i position, final KLevelEntity entity) {
@@ -53,11 +49,6 @@ public final class KLevelEntityLayer
             List<KLevelEntity> list = this.self.entities.get(position);
             list.add(entity);
             return this;
-        }
-
-        @Override
-        public KLevelEntityLayerTool removeEntity(int x, int y, final KLevelEntity entity) {
-            return this.removeEntity(new KVector2i(x, y), entity);
         }
 
         @Override

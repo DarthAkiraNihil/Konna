@@ -29,11 +29,16 @@ public class KHeightLayerPositiveTests extends KStandardTestClass {
 
         KHeightLayer layer = new KHeightLayer(new KSize(2, 2));
         Assertions.assertEquals(new KSize(2, 2), layer.getSize());
+        Assertions.assertEquals(layer.getTool().getSize(), layer.getSize());
         Assertions.assertEquals(0, layer.getOnPosition(0, 0));
         Assertions.assertEquals(
             layer.getOnPosition(0, 0),
             layer.getOnPosition(KVector2i.ZERO)
         );
+
+        var tool = layer.getTool();
+        Assertions.assertEquals(layer.getOnPosition(0, 0), tool.getHeight(0, 0));
+        Assertions.assertEquals(layer.getOnPosition(KVector2i.ZERO), tool.getHeight(KVector2i.ZERO));
 
 
     }

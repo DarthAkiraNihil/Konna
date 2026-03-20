@@ -69,11 +69,6 @@ public final class KSectorLinkLayer
         }
 
         @Override
-        public @Nullable KSectorLinkData getOnPosition(int x, int y) {
-            return this.getOnPosition(new KVector2i(x, y));
-        }
-
-        @Override
         public @Nullable KSectorLinkData getOnPosition(final KVector2i position) {
             return this.self.links.get(position);
         }

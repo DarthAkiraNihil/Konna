@@ -45,8 +45,9 @@ public class KVisitedPlacesLayerPositiveTests extends KStandardTestClass {
 
         KVisitedPlacesLayer layer = new KVisitedPlacesLayer(new KSize(2, 2));
         var tool = layer.getTool();
-        
+
         Assertions.assertEquals(new KSize(2, 2), layer.getSize());
+        Assertions.assertEquals(layer.getSize(), tool.getSize());
         tool.visitPlace(0, 0);
         Assertions.assertTrue(tool.isVisited(0, 0));
         Assertions.assertEquals(

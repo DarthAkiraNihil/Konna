@@ -43,11 +43,6 @@ public final class KReachabilityAreaLayer extends KAbstractSizedLayer<KReachabil
         }
 
         @Override
-        public boolean isReachable(final KVector2i src, final KVector2i dst) {
-            return this.isReachable(src.x(), src.y(), dst.x(), dst.y());
-        }
-
-        @Override
         public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
 
             if (srcX >= this.self.size.width() || srcX < 0 || srcY >= this.self.size.height() || srcY < 0) {

@@ -164,6 +164,20 @@ public final class KLevelSector extends KObject {
 
     }
 
+    public KLevelSectorSlice getSlice(
+        final KVector2i position
+    ) {
+        return new KLevelSectorSlice(
+            this.name,
+            position,
+            this.heightLayer.getOnPosition(position),
+            this.tileLayer.getOnPosition(position),
+            this.visitedPlacesLayer.getOnPosition(position),
+            this.sectorLinkLayer.getOnPosition(position),
+            this.entityLayer.getOnPosition(position)
+        );
+    }
+
     /**
      * Returns information of all sector layers that are placed on specific level
      * and marks it as seen.

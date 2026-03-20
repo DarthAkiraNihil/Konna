@@ -51,11 +51,6 @@ public final class KTileLayer
         }
 
         @Override
-        public @Nullable KTileInfo getOnPosition(KVector2i position) {
-            return this.self.getOnPosition(position);
-        }
-
-        @Override
         public KTileLayerTool placeTile(int x, int y, final KTileInfo tile) {
 
             if (x >= this.self.size.width() || x < 0 || y >= this.self.size.height() || y < 0) {
