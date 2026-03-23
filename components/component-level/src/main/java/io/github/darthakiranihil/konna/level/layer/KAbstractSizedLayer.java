@@ -26,8 +26,7 @@ import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public abstract class KAbstractSizedLayer<TOOL
-    extends KLayerTool>
+public abstract class KAbstractSizedLayer<TOOL extends KLayerTool>
     implements KSizedLevelLayer<TOOL> {
 
     /**
