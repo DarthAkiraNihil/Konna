@@ -75,6 +75,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
             var body = new KUniversalMap();
             body.put("level_name", "valid");
+            body.put("sector", "mf2");
             realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
 
             var service = realContext

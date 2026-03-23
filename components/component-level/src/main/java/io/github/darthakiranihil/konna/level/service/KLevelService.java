@@ -57,6 +57,7 @@ public class KLevelService extends KObject {
     private final KSimpleEvent levelUnloaded;
 
     private @Nullable KLevel currentLevel;
+    // todo: do we really need it?
     private @Nullable KLevelSector currentSector;
     private @Nullable KMessenger messenger;
 
@@ -86,10 +87,12 @@ public class KLevelService extends KObject {
      * Loads a level. When it succeeds (level with specified name exists),
      * Level.levelLoaded message is produced.
      * @param levelName Name of the loaded level
+     * @param deploymentSector Name of sector to be set as current sector
      */
     @KServiceEndpoint(route = "loadLevel")
     protected void loadLevel(
-        @KBodyValue("level_name") final String levelName
+        @KBodyValue("level_name") final String levelName,
+        @KBodyValue("sector") final String deploymentSector
     ) {
 
         try {
@@ -108,10 +111,7 @@ public class KLevelService extends KObject {
             return;
         }
 
-        // todo: specify sector to deploy after transition to the level
-        this.currentSector = this.currentLevel.getSector(
-            this.currentLevel.getSectorNames()[0]
-        );
+        this.currentSector = this.currentLevel.getSector(deploymentSector);
 
         this.levelLoaded.invokeSync(this.currentLevel);
 
