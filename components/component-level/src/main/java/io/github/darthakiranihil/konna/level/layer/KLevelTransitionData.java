@@ -29,6 +29,9 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
  * @param type Type of destination level
  * @param destinationSector Destination sector name
  * @param destinationPosition Destination position on sector
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
  */
 public record KLevelTransitionData(
     String levelDescriptor,
