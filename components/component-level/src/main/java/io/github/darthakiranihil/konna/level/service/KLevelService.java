@@ -193,9 +193,10 @@ public class KLevelService extends KObject {
         KUniversalMap body = new KUniversalMap();
         body.put("level", this.currentLevel);
         body.put("sector", this.currentSector);
+        body.put("seed", seed);
 
         this.messenger.sendRegular(
-            "levelLoaded", body
+            "generatedLevelLoaded", body
         );
 
     }
