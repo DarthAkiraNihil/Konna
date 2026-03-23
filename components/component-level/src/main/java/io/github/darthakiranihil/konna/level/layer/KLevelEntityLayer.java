@@ -36,12 +36,15 @@ public final class KLevelEntityLayer
 
         private final KLevelEntityLayer self;
 
-        public Tool(final KLevelEntityLayer self) {
+        Tool(final KLevelEntityLayer self) {
             this.self = self;
         }
 
         @Override
-        public KLevelEntityLayerTool placeEntity(final KVector2i position, final KLevelEntity entity) {
+        public KLevelEntityLayerTool placeEntity(
+            final KVector2i position,
+            final KLevelEntity entity
+        ) {
             if (!this.self.entities.containsKey(position)) {
                 this.self.entities.put(position, new LinkedList<>());
             }
@@ -52,7 +55,10 @@ public final class KLevelEntityLayer
         }
 
         @Override
-        public KLevelEntityLayerTool removeEntity(final KVector2i position, final KLevelEntity entity) {
+        public KLevelEntityLayerTool removeEntity(
+            final KVector2i position,
+            final KLevelEntity entity
+        ) {
             if (!this.self.entities.containsKey(position)) {
                 return this;
             }

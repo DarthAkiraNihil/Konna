@@ -18,6 +18,12 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+/**
+ * Height layer tool interface, providing operations for height processing and manipulation.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KHeightLayerTool extends KSizedLayerTool {
 
     /**

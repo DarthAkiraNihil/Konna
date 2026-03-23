@@ -18,9 +18,14 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.layer.KTileLayer;
-import org.jspecify.annotations.Nullable;
 
+/**
+ * Tile layer tool interface, providing operations for manipulating tiles located on
+ * the layer.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KTileLayerTool extends KReadableObjectLayerTool<KTileInfo>, KSizedLayerTool {
 
     /**
@@ -31,7 +36,7 @@ public interface KTileLayerTool extends KReadableObjectLayerTool<KTileInfo>, KSi
      * @param tile Tile to place
      * @return This layer (for method chaining)
      */
-    KTileLayerTool placeTile(int x, int y, final KTileInfo tile);
+    KTileLayerTool placeTile(int x, int y, KTileInfo tile);
 
     /**
      * Places a tile on this layer. It does not perform such operation of the position
@@ -40,6 +45,6 @@ public interface KTileLayerTool extends KReadableObjectLayerTool<KTileInfo>, KSi
      * @param tile Tile to place
      * @return This layer (for method chaining)
      */
-    KTileLayerTool placeTile(final KVector2i position, final KTileInfo tile);
+    KTileLayerTool placeTile(KVector2i position, KTileInfo tile);
 
 }

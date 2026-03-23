@@ -19,8 +19,15 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 
+/**
+ * Interface that represents layers that have size.
+ * @param <TOOL> Type of layer tool
+ */
 public interface KSizedLevelLayer<TOOL extends KLayerTool> extends KLevelLayer<TOOL> {
 
+    /**
+     * @return Size of this layer
+     */
     KSize getSize();
 
 }

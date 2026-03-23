@@ -39,7 +39,7 @@ public final class KSectorLinkLayer
 
         private final KSectorLinkLayer self;
 
-        public Tool(final KSectorLinkLayer self) {
+        Tool(final KSectorLinkLayer self) {
             this.self = self;
         }
 

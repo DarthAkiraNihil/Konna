@@ -18,6 +18,14 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+/**
+ * Reachability area layer tool interface, providing methods for getting information
+ * for possibilities to get to some point of level sector to another.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ *
+ */
 public interface KReachabilityAreaLayerTool extends KSizedLayerTool {
 
     /**

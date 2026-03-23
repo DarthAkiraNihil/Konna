@@ -20,18 +20,26 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Interface that represents a container of any objects located on specific places.
+ * @param <TOOL> Type of layer tool
+ * @param <OBJ> Type of objects contained in this layer
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KObjectLevelLayer<OBJ, TOOL extends KLayerTool> extends KLevelLayer<TOOL> {
 
     /**
      * @param x X coordinate of placed item
      * @param y Y coordinate of placed item
-     * @return The item located on specified place of {@code null} if it is not found/presented
+     * @return The object located on specified place of {@code null} if it is not found/presented
      */
     @Nullable OBJ getOnPosition(int x, int y);
 
     /**
      * @param position Position of placed item
-     * @return The item located on specified place of {@code null} if it is not found/presented
+     * @return The object located on specified place of {@code null} if it is not found/presented
      */
     default @Nullable OBJ getOnPosition(final KVector2i position) {
         return this.getOnPosition(position.x(), position.y());

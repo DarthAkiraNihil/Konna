@@ -32,24 +32,35 @@ import java.util.*;
  * @since 0.5.0
  * @since Darth Akira Nihil
  */
-public final class KReachabilityAreaLayer extends KAbstractSizedLayer<KReachabilityAreaLayerTool> {
+public final class KReachabilityAreaLayer
+    extends KAbstractSizedLayer<KReachabilityAreaLayerTool> {
 
     private static final class Tool implements KReachabilityAreaLayerTool {
 
         private final KReachabilityAreaLayer self;
 
-        public Tool(final KReachabilityAreaLayer self) {
+        Tool(final KReachabilityAreaLayer self) {
             this.self = self;
         }
 
         @Override
         public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
 
-            if (srcX >= this.self.size.width() || srcX < 0 || srcY >= this.self.size.height() || srcY < 0) {
+            if (
+                    srcX >= this.self.size.width()
+                ||  srcX < 0
+                || srcY >= this.self.size.height()
+                || srcY < 0
+            ) {
                 return false;
             }
 
-            if (dstX >= this.self.size.width() || dstX < 0 || dstY >= this.self.size.height() || dstY < 0) {
+            if (
+                    dstX >= this.self.size.width()
+                ||  dstX < 0
+                ||  dstY >= this.self.size.height()
+                ||  dstY < 0
+            ) {
                 return false;
             }
 

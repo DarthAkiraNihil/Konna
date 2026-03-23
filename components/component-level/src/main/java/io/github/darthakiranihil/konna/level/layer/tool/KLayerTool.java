@@ -16,6 +16,13 @@
 
 package io.github.darthakiranihil.konna.level.layer.tool;
 
-public interface KLayerTool{
+/**
+ * Simple marker interface that specifies this object as a layer tool.
+ * Each tool must extend this interface.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public interface KLayerTool {
 
 }

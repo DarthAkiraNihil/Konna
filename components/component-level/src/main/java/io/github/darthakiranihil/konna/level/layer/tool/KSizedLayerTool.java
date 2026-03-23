@@ -18,8 +18,17 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 
+/**
+ * Interface for layer tools that provide information about size of assigned layer.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KSizedLayerTool extends KLayerTool {
 
-    public KSize getSize();
+    /**
+     * @return Size of assigned layer
+     */
+    KSize getSize();
 
 }

@@ -163,7 +163,7 @@ public class KEngineHypervisor extends KObject {
             ctx.getPackageIndex().size()
         );
 
-        KContainer master = ctx.getContainer();
+        KContainer master = this.ctx.getContainer();
 
         master
             .add(config.serviceLoader())

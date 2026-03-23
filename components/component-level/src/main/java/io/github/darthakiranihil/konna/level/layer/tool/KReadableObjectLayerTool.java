@@ -19,6 +19,13 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Interface for layer tools that provide information about objects located on assigned layer.
+ * @param <OBJ> Type of located object
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KReadableObjectLayerTool<OBJ> extends KLayerTool {
 
     /**

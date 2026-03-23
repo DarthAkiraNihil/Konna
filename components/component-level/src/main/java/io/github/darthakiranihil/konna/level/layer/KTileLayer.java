@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
-import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 import org.jspecify.annotations.Nullable;
 
@@ -41,7 +40,7 @@ public final class KTileLayer
 
         private final KTileLayer self;
 
-        public Tool(final KTileLayer self) {
+        Tool(final KTileLayer self) {
             this.self = self;
         }
 

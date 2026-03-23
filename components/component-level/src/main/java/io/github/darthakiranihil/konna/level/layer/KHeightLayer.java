@@ -29,11 +29,11 @@ public final class KHeightLayer
     extends KAbstractSizedLayer<KHeightLayerTool>
     implements KIntLevelLayer<KHeightLayerTool> {
 
-    private final static class Tool implements KHeightLayerTool {
+    private static final class Tool implements KHeightLayerTool {
 
         private final KHeightLayer self;
 
-        public Tool(final KHeightLayer self) {
+        Tool(final KHeightLayer self) {
             this.self = self;
         }
 

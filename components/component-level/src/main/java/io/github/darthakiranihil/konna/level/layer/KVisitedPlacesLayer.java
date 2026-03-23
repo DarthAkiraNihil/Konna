@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KVisitedPlacesLayerTool;
 
 /**
@@ -36,7 +35,7 @@ public final class KVisitedPlacesLayer
 
         private final KVisitedPlacesLayer self;
 
-        public Tool(final KVisitedPlacesLayer self) {
+        Tool(final KVisitedPlacesLayer self) {
             this.self = self;
         }
 

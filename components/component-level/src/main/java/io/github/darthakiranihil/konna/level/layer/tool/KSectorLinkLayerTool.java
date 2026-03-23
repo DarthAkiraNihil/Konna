@@ -19,11 +19,17 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
-import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * Sector link layer tool interface providing operations for manipulating sector links
+ * and getting information about them.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KSectorLinkLayerTool extends KReadableObjectLayerTool<KSectorLinkData> {
 
     /**
@@ -38,7 +44,7 @@ public interface KSectorLinkLayerTool extends KReadableObjectLayerTool<KSectorLi
     KSectorLinkLayerTool link(
         int x,
         int y,
-        final KLevelSector linkedSector,
+        KLevelSector linkedSector,
         int destinationX,
         int destinationY
     );
@@ -51,9 +57,9 @@ public interface KSectorLinkLayerTool extends KReadableObjectLayerTool<KSectorLi
      * @return This layer (for method chaining)
      */
     KSectorLinkLayerTool link(
-        final KVector2i position,
-        final KLevelSector linkedSector,
-        final KVector2i destination
+        KVector2i position,
+        KLevelSector linkedSector,
+        KVector2i destination
     );
 
     @Override
@@ -61,12 +67,13 @@ public interface KSectorLinkLayerTool extends KReadableObjectLayerTool<KSectorLi
         return this.getOnPosition(new KVector2i(x, y));
     }
 
-    @Nullable KSectorLinkData getOnPosition(final KVector2i position);
+    @Override
+    @Nullable KSectorLinkData getOnPosition(KVector2i position);
 
     /**
      * @param destinationSector Destination sector for found links
      * @return Map of links that points to the destination sector
      */
-    Map<KVector2i, KSectorLinkData> getToSector(final String destinationSector);
+    Map<KVector2i, KSectorLinkData> getToSector(String destinationSector);
 
 }

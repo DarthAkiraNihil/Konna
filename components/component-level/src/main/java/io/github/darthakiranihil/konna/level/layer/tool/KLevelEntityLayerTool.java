@@ -18,10 +18,16 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
-import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 
 import java.util.List;
 
+/**
+ * Level entity layer tool interface, providing operations for manipulating
+ * level entities.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLevelEntity>> {
 
     /**
@@ -41,7 +47,7 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @param entity Entity to place
      * @return This layer (for method chaining)
      */
-    KLevelEntityLayerTool placeEntity(final KVector2i position, final KLevelEntity entity);
+    KLevelEntityLayerTool placeEntity(KVector2i position, KLevelEntity entity);
 
     /**
      * Removes an entity from this layer.
@@ -60,6 +66,6 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @param entity Entity to remove
      * @return This layer (for method chaining)
      */
-    KLevelEntityLayerTool removeEntity(final KVector2i position, final KLevelEntity entity);
+    KLevelEntityLayerTool removeEntity(KVector2i position, KLevelEntity entity);
 
 }

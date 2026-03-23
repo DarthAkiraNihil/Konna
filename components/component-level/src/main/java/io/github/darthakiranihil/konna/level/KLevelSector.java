@@ -29,7 +29,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.*;
-import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -164,6 +163,10 @@ public final class KLevelSector extends KObject {
 
     }
 
+    /**
+     * @param position Coordinates of sliced position
+     * @return Slice of the sector on specific place
+     */
     public KLevelSectorSlice getSlice(
         final KVector2i position
     ) {
@@ -199,8 +202,22 @@ public final class KLevelSector extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Tries to get a layer tool for this sector. The tool may expose
+     *     API that performs operations, that may change the sector. If you do that,
+     *     you know what are you doing!
+     * </p>
+     * <p>
+     *     Since this operation is not that safe, if will throw {@link KInvalidArgumentException}
+     *     if passed tool class is not presented in the sector.
+     * </p>
+     * @param tool Tool class
+     * @return Layer tool with specified class assigned to the sector
+     * @param <T> Type of retrieved layer tool
+     */
     @SuppressWarnings("unchecked")
-    public <T extends KLayerTool> T getTool(Class<T> tool) {
+    public <T extends KLayerTool> T getTool(final Class<T> tool) {
         if (!this.tools.containsKey(tool)) {
             throw new KInvalidArgumentException(
                 String.format(

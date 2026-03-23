@@ -19,14 +19,33 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 
-public abstract class KAbstractSizedLayer<TOOL extends KLayerTool> implements KSizedLevelLayer<TOOL> {
+/**
+ * Base class for all sized layers.
+ * @param <TOOL> Type of layer tool
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public abstract class KAbstractSizedLayer<TOOL
+    extends KLayerTool>
+    implements KSizedLevelLayer<TOOL> {
 
+    /**
+     * Size of this layer.
+     */
     protected final KSize size;
 
+    /**
+     * Constructs the layer.
+     * @param size Size of the layer
+     */
     protected KAbstractSizedLayer(final KSize size) {
         this.size = size;
     }
 
+    /**
+     * @return Size of this layer
+     */
     @Override
     public final KSize getSize() {
         return this.size;
