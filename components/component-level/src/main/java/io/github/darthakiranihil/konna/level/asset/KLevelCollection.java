@@ -34,12 +34,12 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
-import io.github.darthakiranihil.konna.level.entity.*;
+import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;
+import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
+import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
+import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
-import io.github.darthakiranihil.konna.level.layer.tool.KHeightLayerTool;
-import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
-import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
-import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.*;
 import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
 
 import java.util.*;
@@ -62,11 +62,13 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         KHeightLayer heightLayer,
         KSectorLinkLayer sectorLinkLayer,
         KLevelEntityLayer entityLayer,
+        KLevelTransitionLayer levelTransitionLayer,
 
         String[] tiles,
         KAssetDefinition[] sectorLinks,
         KAssetDefinition[] entities,
-        int[] heights
+        int[] heights,
+        KAssetDefinition[] levelTransitions
     ) {
 
     }
@@ -123,6 +125,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             this.fillSectorLinkLayer(rs, rawSectors);
             this.fillEntityLayer(rs, autonomousEntities);
             this.fillHeightLayer(rs);
+            this.fillLevelTransitionLayer(rs);
 
             rs.containedSector.refresh();
 
@@ -156,6 +159,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             KHeightLayer heightLayer = new KHeightLayer(size);
             KSectorLinkLayer sectorLinkLayer = new KSectorLinkLayer();
             KLevelEntityLayer entityLayer = new KLevelEntityLayer();
+            KLevelTransitionLayer levelTransitionLayer = new KLevelTransitionLayer();
 
             KLevelSector createdSector = new KLevelSector(
                 this.eventSystem,
@@ -163,7 +167,8 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                 tileLayer,
                 heightLayer,
                 sectorLinkLayer,
-                entityLayer
+                entityLayer,
+                levelTransitionLayer
             );
 
             rawSectors.put(
@@ -175,10 +180,12 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                     heightLayer,
                     sectorLinkLayer,
                     entityLayer,
+                    levelTransitionLayer,
                     Objects.requireNonNull(rawSector.getStringArray("tiles")),
                     rawSector.getSubdefinitionArray("sector_links"),
                     rawSector.getSubdefinitionArray("entities"),
-                    rawSector.getIntArray("heights")
+                    rawSector.getIntArray("heights"),
+                    rawSector.getSubdefinitionArray("level_transitions")
                 )
             );
         }
@@ -369,6 +376,57 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                 x, y, heights[i]
             );
 
+        }
+
+    }
+
+    private void fillLevelTransitionLayer(
+        final RawSector rawSector
+    ) {
+
+        KLevelTransitionLayer layer = rawSector.levelTransitionLayer;
+        KLevelTransitionLayerTool tool = layer.getTool();
+        KAssetDefinition[] rawTransitions = rawSector.levelTransitions;
+
+        for (var rawTransition: rawTransitions) {
+
+            int x = rawTransition.getSubdefinition("position").getInt("x");
+            int y = rawTransition.getSubdefinition("position").getInt("y");
+
+            if (x > rawSector.size.width() || x < 0 || y > rawSector.size.height() || y < 0) {
+                throw new KAssetLoadingException(
+                    "Level transition is out of bounds of sector space"
+                );
+            }
+
+            String levelDescriptor = Objects.requireNonNull(
+                rawTransition.getString("level_descriptor")
+            );
+            KTransitionedLevelType levelType = rawTransition.getEnum(
+                "level_type",
+                KTransitionedLevelType.class
+            );
+            String destinationSector = Objects.requireNonNull(
+                rawTransition.getString("destination_sector")
+            );
+
+            int destinationX = rawTransition.getSubdefinition("destination_position").getInt("x");
+            int destinationY = rawTransition.getSubdefinition("destination_position").getInt("y");
+            if (destinationX < 0 ||  destinationY < 0) {
+                throw new KAssetLoadingException(
+                    "Level transition destination is not valid!"
+                );
+            }
+
+            tool.makeTransition(
+                x,
+                y,
+                levelDescriptor,
+                levelType,
+                destinationSector,
+                destinationX,
+                destinationY
+            );
         }
 
     }

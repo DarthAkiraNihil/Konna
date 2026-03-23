@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
+import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 
 /**
  * <p>
@@ -130,6 +131,39 @@ import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
  *                                  </li>
  *                              </ul>
  *                          </li>
+ *                          <li>
+ *                              {@code level_transitions} - level_transitions (subdefinition array)
+ *                              <ul>
+ *                                  <li>
+ *                                      {@code position} -
+ *                                      position to place transition on (subdefinition)
+ *                                      <ul>
+ *                                          <li>{@code x} - int</li>
+ *                                          <li>{@code y} - int</li>
+ *                                      </ul>
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code level_descriptor} - level descriptor
+ *                                      (non-null string)
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code level_type} - destination level type
+ *                                      (a valid reference to {@link KTransitionedLevelType})
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code destination_sector} - destination sector name
+ *                                      (non-null string)
+ *                                  </li>
+ *                                  <li>
+ *                                      {@code destination_position} -
+ *                                      destination sector position (subdefinition)
+ *                                      <ul>
+ *                                          <li>{@code x} - int</li>
+ *                                          <li>{@code y} - int</li>
+ *                                      </ul>
+ *                                  </li>
+ *                              </ul>
+ *                          </li>
  *                      </ul>
  *                  </li>
  *              </ul>
@@ -223,6 +257,23 @@ public final class KLevelTypedef implements KAssetTypedef {
                             )
                             .withSubdefinition("params")
                             .build()
+                    )
+                    .build()
+            )
+            .withValidatedSubdefinitionArray(
+                "level_transitions",
+                KCompositeAssetDefinitionRuleBuilder
+                    .create()
+                    .withValidatedSubdefinition(
+                        "position",
+                        positionRule
+                    )
+                    .withNotNullString("level_descriptor")
+                    .withEnum("level_type", KTransitionedLevelType.class)
+                    .withNotNullString("destination_sector")
+                    .withValidatedSubdefinition(
+                        "destination_position",
+                        positionRule
                     )
                     .build()
             )

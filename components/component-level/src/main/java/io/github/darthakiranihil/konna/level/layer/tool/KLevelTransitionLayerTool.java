@@ -1,0 +1,89 @@
+/*
+ * Copyright 2025-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.darthakiranihil.konna.level.layer.tool;
+
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.layer.KLevelTransitionData;
+import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
+import org.jspecify.annotations.Nullable;
+
+/**
+ * Level transition layer tool interface providing operations for manipulating level transitions
+ * and getting information about them.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
+public interface KLevelTransitionLayerTool
+    extends KReadableObjectLayerTool<KLevelTransitionData> {
+
+    /**
+     * Makes a transition to another level.
+     * @param x X coordinate of placed transition
+     * @param y Y coordinate of placed transition
+     * @param levelDescriptor Destination level descriptor
+     * @param levelType Destination level type
+     * @param destinationSector Sector name to be set as current on destination level
+     * @param destinationX X coordinate of destination sector position
+     * @param destinationY Y coordinate of destination sector position
+     * @return This tool (for method chaining)
+     */
+    default KLevelTransitionLayerTool makeTransition(
+        int x,
+        int y,
+        final String levelDescriptor,
+        final KTransitionedLevelType levelType,
+        final String destinationSector,
+        int destinationX,
+        int destinationY
+    ) {
+        return this.makeTransition(
+            new KVector2i(x, y),
+            levelDescriptor,
+            levelType,
+            destinationSector,
+            new KVector2i(destinationX, destinationY)
+        );
+    }
+
+    /**
+     * Makes a transition to another level.
+     * @param position Position of placed transition
+     * @param levelDescriptor Destination level descriptor
+     * @param levelType Destination level type
+     * @param destinationSector Sector name to be set as current on destination level
+     * @param destination Destination sector position
+     * @return This tool (for method chaining)
+     */
+    KLevelTransitionLayerTool makeTransition(
+        KVector2i position,
+        String levelDescriptor,
+        KTransitionedLevelType levelType,
+        String destinationSector,
+        KVector2i destination
+    );
+
+    @Override
+    default @Nullable KLevelTransitionData getOnPosition(int x, int y) {
+        return this.getOnPosition(new KVector2i(x, y));
+    }
+
+    @Override
+    @Nullable KLevelTransitionData getOnPosition(KVector2i position);
+
+
+}

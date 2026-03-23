@@ -75,6 +75,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
             var body = new KUniversalMap();
             body.put("level_name", "valid");
+            body.put("sector", "mf2");
             realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
 
             var service = realContext
@@ -99,4 +100,154 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
     }
 
+    @Test
+    public void testLoadTwice() {
+
+        try {
+
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            konnaWithOnlyDefaultArgs.run();
+
+            TimeUnit.SECONDS.sleep(2);
+            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+
+            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
+            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
+            currentLevel.setAccessible(true);
+            currentSector.setAccessible(true);
+
+            var body = new KUniversalMap();
+            body.put("level_name", "valid");
+            body.put("sector", "mf2");
+            realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
+
+            var service = realContext
+                .listObjects()
+                .stream()
+                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .findFirst();
+
+            Assertions.assertTrue(service.isPresent());
+
+            var cloc = (KLevel) currentLevel.get(service.get().object());
+            var csec = (KLevelSector) currentSector.get(service.get().object());
+
+            Assertions.assertEquals("valid", cloc.name());
+            Assertions.assertEquals(2, cloc.getSectorNames().length);
+
+            Assertions.assertEquals("mf2", csec.name());
+
+            realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
+
+            cloc = (KLevel) currentLevel.get(service.get().object());
+            csec = (KLevelSector) currentSector.get(service.get().object());
+
+            Assertions.assertEquals("valid", cloc.name());
+            Assertions.assertEquals(2, cloc.getSectorNames().length);
+
+            Assertions.assertEquals("mf2", csec.name());
+
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    @Test
+    public void testGenerateAndLoad() {
+
+        try {
+
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            konnaWithOnlyDefaultArgs.run();
+
+            TimeUnit.SECONDS.sleep(2);
+            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+
+            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
+            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
+            currentLevel.setAccessible(true);
+            currentSector.setAccessible(true);
+
+            var body = new KUniversalMap();
+            body.put("generator", "valid");
+            body.put("seed", 123456L);
+            body.put("sector", "mf2");
+            realContext.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+
+            var service = realContext
+                .listObjects()
+                .stream()
+                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .findFirst();
+
+            Assertions.assertTrue(service.isPresent());
+
+            var cloc = (KLevel) currentLevel.get(service.get().object());
+            var csec = (KLevelSector) currentSector.get(service.get().object());
+
+            Assertions.assertEquals("valid", cloc.name());
+            Assertions.assertEquals(2, cloc.getSectorNames().length);
+
+            Assertions.assertEquals("mf2", csec.name());
+
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+
+    }
+
+    @Test
+    public void testGenerateAndLoadTwice() {
+        try {
+
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            konnaWithOnlyDefaultArgs.run();
+
+            TimeUnit.SECONDS.sleep(2);
+            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+
+            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
+            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
+            currentLevel.setAccessible(true);
+            currentSector.setAccessible(true);
+
+            var body = new KUniversalMap();
+            body.put("generator", "valid");
+            body.put("seed", 123456L);
+            body.put("sector", "mf2");
+            realContext.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+
+            var service = realContext
+                .listObjects()
+                .stream()
+                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .findFirst();
+
+            Assertions.assertTrue(service.isPresent());
+
+            var cloc = (KLevel) currentLevel.get(service.get().object());
+            var csec = (KLevelSector) currentSector.get(service.get().object());
+
+            Assertions.assertEquals("valid", cloc.name());
+            Assertions.assertEquals(2, cloc.getSectorNames().length);
+
+            Assertions.assertEquals("mf2", csec.name());
+
+            body.put("seed", 567890L);
+            body.put("sector", "mf2");
+            realContext.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+
+            cloc = (KLevel) currentLevel.get(service.get().object());
+            csec = (KLevelSector) currentSector.get(service.get().object());
+
+            Assertions.assertEquals("valid", cloc.name());
+            Assertions.assertEquals(2, cloc.getSectorNames().length);
+
+            Assertions.assertEquals("mf2", csec.name());
+
+        } catch (Throwable e) {
+            Assertions.fail(e);
+        }
+    }
 }

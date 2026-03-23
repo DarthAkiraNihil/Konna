@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
+import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
@@ -49,6 +50,36 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                         {@code level_name} -
  *                         {@link String} -
  *                         name of loaded level (that is actually its asset id)
+ *                     </li>
+ *                     <li>
+ *                         {@code sector} -
+ *                         {@link String} -
+ *                         name of sector to set as current
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Level.LevelService.generateLevelAndLoad</i> - generates a level and loads it
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code generator} -
+ *                         {@link String} -
+ *                         generator asset id
+ *                     </li>
+ *                     <li>
+ *                         {@code seed} -
+ *                         {@link Long} -
+ *                         initial generator seed
+ *                     </li>
+ *                     <li>
+ *                         {@code sector} -
+ *                         {@link String} -
+ *                         name of sector to set as current
  *                     </li>
  *                 </ul>
  *             </p>
@@ -262,15 +293,57 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *         </li>
  *         <li>
  *             <p>
- *                 <i>Level.controllableEntitiesMoved</i>
+ *                 <i>Level.generatedLevelLoaded</i>
  *             </p>
  *             <p>
  *                 Message schema:
  *                 <ul>
  *                     <li>
- *                         {@code moved} -
+ *                         {@code level} -
+ *                         {@link KLevel} -
+ *                         instance of loaded level
+ *                     </li>
+ *                     <li>
+ *                         {@code sector} -
+ *                         {@link KLevelSector} -
+ *                         instance of sector to be deployed on loaded level
+ *                     </li>
+ *                     <li>
+ *                         {@code seed} -
+ *                         {@link Long} -
+ *                         seed used to generate loaded level
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Level.entitiesMoved</i>
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code moved_controllables} -
  *                         {@link java.util.Set} of {@link java.util.UUID} -
- *                         set of all moved controllable entities
+ *                         set of all moved controllable entities ids
+ *                     </li>
+ *                     <li>
+ *                         {@code controllables_destinations} -
+ *                         {@link java.util.Map} from {@link java.util.UUID} to
+ *                         {@link KLevelSectorSlice} - map of sector slices on controllable
+ *                         entities destinations
+ *                     </li>
+ *                     <li>
+ *                         {@code moved_autonomouses} -
+ *                         {@link java.util.Set} of {@link java.util.UUID} -
+ *                         set of all moved autonomous entities ids
+ *                     </li>
+ *                     <li>
+ *                         {@code autonomouses_destinations} -
+ *                         {@link java.util.Map} from {@link java.util.UUID} to
+ *                         {@link KLevelSectorSlice} - map of sector slices on autonomous
+ *                         entities destinations
  *                     </li>
  *                 </ul>
  *             </p>
@@ -468,6 +541,7 @@ public class KLevelComponent extends KComponent {
             new KTilePropertyTypedef(),
             new KTileTypedef(),
             new KLevelTypedef(),
+            new KLevelGeneratorMetadataTypedef()
         };
     }
 

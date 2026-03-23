@@ -21,10 +21,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
-import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
-import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
-import io.github.darthakiranihil.konna.level.layer.KTileLayer;
+import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
 import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -57,7 +54,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             tl,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KLevelSectorSlice sectorSlice = sector.getSlice(0, 0);
@@ -88,7 +86,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             tl2,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KTileLayer tl = new KTileLayer(2, 2);
@@ -109,7 +108,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             tl2,
             new KHeightLayer(new KSize(2, 2)),
             sll,
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KLevelSectorSlice sectorSlice = sector.getSlice(0, 0);
@@ -152,7 +152,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
@@ -210,7 +211,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
@@ -266,7 +268,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
@@ -325,7 +328,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
             layer,
             new KHeightLayer(new KSize(3, 3)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(

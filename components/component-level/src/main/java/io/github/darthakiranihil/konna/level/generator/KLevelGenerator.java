@@ -137,7 +137,7 @@ public final class KLevelGenerator extends KObject {
      * @param seed The initial seed for generator
      * @return Generated level
      */
-    KLevel generate(long seed) {
+    public KLevel generate(long seed) {
 
         var nodes = this.createNodes();
         this.fillDependencies(nodes, this.metadata.connections());

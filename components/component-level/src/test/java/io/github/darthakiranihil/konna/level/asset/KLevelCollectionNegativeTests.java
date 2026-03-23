@@ -222,4 +222,54 @@ public class KLevelCollectionNegativeTests extends KAssetCollectionTestClass {
         );
 
     }
+
+    @Test
+    public void testLoadWithInvalidLevelTransitions() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+
+        KLevelCollection levelCollection = new KLevelCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> levelCollection.getAsset("invalid_with_level_transition_source_xb")
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> levelCollection.getAsset("invalid_with_level_transition_source_xa")
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> levelCollection.getAsset("invalid_with_level_transition_source_yb")
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> levelCollection.getAsset("invalid_with_level_transition_source_ya")
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> levelCollection.getAsset("invalid_with_level_transition_destination_xb")
+        );
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> levelCollection.getAsset("invalid_with_level_transition_destination_yb")
+        );
+
+    }
 }

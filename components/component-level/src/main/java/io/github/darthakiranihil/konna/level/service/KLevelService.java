@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -30,6 +31,10 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.asset.KLevelGeneratorMetadataCollection;
+import io.github.darthakiranihil.konna.level.except.KGenerationException;
+import io.github.darthakiranihil.konna.level.generator.KLevelGenerator;
+import io.github.darthakiranihil.konna.level.generator.KLevelGeneratorMetadata;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
@@ -52,11 +57,14 @@ import java.util.Objects;
 public class KLevelService extends KObject {
 
     private final KLevelCollection levelCollection;
+    private final KLevelGeneratorMetadataCollection generatorMetadataCollection;
+    private final KActivator activator;
 
     private final KEvent<KLevel> levelLoaded;
     private final KSimpleEvent levelUnloaded;
 
     private @Nullable KLevel currentLevel;
+    // todo: do we really need it?
     private @Nullable KLevelSector currentSector;
     private @Nullable KMessenger messenger;
 
@@ -65,14 +73,21 @@ public class KLevelService extends KObject {
      * @param levelCollection Level collection to get levels from
      * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events to invoke.
+     * @param activator Activator to use to create {@link KLevelGenerator}
+     * @param generatorMetadataCollection Generator metadata collection to get
+     *                                    generator metadata from
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,
-        @KInject final KLevelCollection levelCollection
+        @KInject final KActivator activator,
+        @KInject final KLevelCollection levelCollection,
+        @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
         this.levelCollection = levelCollection;
+        this.generatorMetadataCollection = generatorMetadataCollection;
+        this.activator = activator;
 
         this.levelLoaded = Objects.requireNonNull(
             eventSystem.getEvent("levelLoaded")
@@ -86,19 +101,21 @@ public class KLevelService extends KObject {
      * Loads a level. When it succeeds (level with specified name exists),
      * Level.levelLoaded message is produced.
      * @param levelName Name of the loaded level
+     * @param deploymentSector Name of sector to be set as current sector
      */
     @KServiceEndpoint(route = "loadLevel")
     protected void loadLevel(
-        @KBodyValue("level_name") final String levelName
+        @KBodyValue("level_name") final String levelName,
+        @KBodyValue("sector") final String deploymentSector
     ) {
 
         try {
+            KLevel newLevel = this.levelCollection.getAsset(levelName);
             if (this.currentLevel != null) {
                 this.currentLevel.unload();
                 this.levelUnloaded.invokeSync();
             }
-
-            this.currentLevel = this.levelCollection.getAsset(levelName);
+            this.currentLevel = newLevel;
         } catch (KAssetLoadingException e) {
             KSystemLogger.warning(
                 this.name,
@@ -108,10 +125,7 @@ public class KLevelService extends KObject {
             return;
         }
 
-        // todo: specify sector to deploy after transition to the level
-        this.currentSector = this.currentLevel.getSector(
-            this.currentLevel.getSectorNames()[0]
-        );
+        this.currentSector = this.currentLevel.getSector(deploymentSector);
 
         this.levelLoaded.invokeSync(this.currentLevel);
 
@@ -125,6 +139,74 @@ public class KLevelService extends KObject {
 
         this.messenger.sendRegular(
             "levelLoaded", body
+        );
+
+    }
+
+    /**
+     * Generates a level and loads it.
+     * @param generatorId ID of generator to use
+     * @param seed Initial seed
+     * @param deploymentSector Name of sector to be set as current sector
+     */
+    @KServiceEndpoint(route = "generateLevelAndLoad")
+    protected void generateLevelAndLoad(
+        @KBodyValue("generator") final String generatorId,
+        @KBodyValue("seed") final Long seed,
+        @KBodyValue("sector") final String deploymentSector
+    ) {
+
+        KLevelGeneratorMetadata metadata;
+        try {
+            metadata = this.generatorMetadataCollection.getAsset(generatorId);
+        } catch (KAssetLoadingException e) {
+            KSystemLogger.warning(
+                this.name,
+                "Could not load generator with id %s",
+                generatorId
+            );
+            return;
+        }
+
+        KLevelGenerator generator = new KLevelGenerator(
+            String.format(
+                "generator:%s_%d",
+                generatorId,
+                seed
+            ),
+            this.activator,
+            metadata
+        );
+
+        try {
+            KLevel generated = generator.generate(seed);
+            if (this.currentLevel != null) {
+                this.currentLevel.unload();
+                this.levelUnloaded.invokeSync();
+            }
+            this.currentLevel = generated;
+        } catch (KGenerationException e) {
+            KSystemLogger.warning(
+                this.name,
+                "Could not generate level %s",
+                e
+            );
+            return;
+        }
+
+        this.currentSector = this.currentLevel.getSector(deploymentSector);
+        this.levelLoaded.invokeSync(this.currentLevel);
+        if (this.messenger == null) {
+            return;
+        }
+
+        KUniversalMap body = new KUniversalMap();
+        body.put("level", this.currentLevel);
+        body.put("sector", this.currentSector);
+        body.put("seed", seed);
+
+        this.messenger.sendRegular(
+            "generatedLevelLoaded", body
         );
 
     }

@@ -76,6 +76,7 @@ public final class KLevelSector extends KObject {
     private final KHeightLayer heightLayer;
     private final KSectorLinkLayer sectorLinkLayer;
     private final KLevelEntityLayer entityLayer;
+    private final KLevelTransitionLayer levelTransitionLayer;
 
     private final KReachabilityAreaLayer reachabilityAreaLayer;
     private final KVisitedPlacesLayer visitedPlacesLayer;
@@ -91,6 +92,7 @@ public final class KLevelSector extends KObject {
      * @param heightLayer Height layer, assigned to this sector
      * @param sectorLinkLayer Sector link layer, assigned to this sector
      * @param entityLayer Entity layer, assigned to this sector
+     * @param levelTransitionLayer Level transition layer, assigned to this sector
      */
     public KLevelSector(
         final KEventSystem eventSystem,
@@ -98,7 +100,8 @@ public final class KLevelSector extends KObject {
         final KTileLayer tileLayer,
         final KHeightLayer heightLayer,
         final KSectorLinkLayer sectorLinkLayer,
-        final KLevelEntityLayer entityLayer
+        final KLevelEntityLayer entityLayer,
+        final KLevelTransitionLayer levelTransitionLayer
     ) {
         super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
 
@@ -106,6 +109,7 @@ public final class KLevelSector extends KObject {
         this.heightLayer = heightLayer;
         this.sectorLinkLayer = sectorLinkLayer;
         this.entityLayer = entityLayer;
+        this.levelTransitionLayer = levelTransitionLayer;
 
         this.entityLeftSectorEvent = Objects.requireNonNull(
             eventSystem.getEvent("entityLeftSector")
@@ -128,6 +132,7 @@ public final class KLevelSector extends KObject {
         this.tools.put(KSectorLinkLayerTool.class, this.sectorLinkLayer.getTool());
         this.tools.put(KTileLayerTool.class, this.sectorLinkLayer.getTool());
         this.tools.put(KVisitedPlacesLayerTool.class, this.visitedPlacesLayer.getTool());
+        this.tools.put(KLevelTransitionLayerTool.class, this.levelTransitionLayer.getTool());
 
     }
 
@@ -158,7 +163,8 @@ public final class KLevelSector extends KObject {
             this.tileLayer.getOnPosition(x, y),
             this.visitedPlacesLayer.getOnPosition(x, y),
             this.sectorLinkLayer.getOnPosition(x, y),
-            this.entityLayer.getOnPosition(x, y)
+            this.entityLayer.getOnPosition(x, y),
+            this.levelTransitionLayer.getOnPosition(x, y)
         );
 
     }
@@ -177,7 +183,8 @@ public final class KLevelSector extends KObject {
             this.tileLayer.getOnPosition(position),
             this.visitedPlacesLayer.getOnPosition(position),
             this.sectorLinkLayer.getOnPosition(position),
-            this.entityLayer.getOnPosition(position)
+            this.entityLayer.getOnPosition(position),
+            this.levelTransitionLayer.getOnPosition(position)
         );
     }
 

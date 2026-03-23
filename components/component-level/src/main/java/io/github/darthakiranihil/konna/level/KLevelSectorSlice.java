@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
+import io.github.darthakiranihil.konna.level.layer.KLevelTransitionData;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
 import org.jspecify.annotations.Nullable;
 
@@ -33,6 +34,7 @@ import java.util.List;
  * @param seen Flag indicates if this slice has been visited earlier
  * @param sectorLink Link to the sector assigned to the slice
  * @param entities List of entities located on the slice
+ * @param levelTransition Level transition assigned to the slice
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
@@ -44,7 +46,8 @@ public record KLevelSectorSlice(
     @Nullable KTileInfo tile,
     boolean seen,
     @Nullable KSectorLinkData sectorLink,
-    List<KLevelEntity> entities
+    List<KLevelEntity> entities,
+    @Nullable KLevelTransitionData levelTransition
 ) {
 
 }
