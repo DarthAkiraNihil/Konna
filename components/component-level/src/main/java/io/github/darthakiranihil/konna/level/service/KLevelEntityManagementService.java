@@ -136,10 +136,32 @@ public class KLevelEntityManagementService extends KObject {
         }
 
         KUniversalMap body = new KUniversalMap();
-        body.put("moved", this.controllables.keySet());
+        body.put("moved_controllables", this.controllables.keySet());
+        Map<UUID, KLevelSectorSlice> controllableDestinations = new HashMap<>();
+        for (var entry: this.controllables.entrySet()) {
+            KLevelEntity entity = entry.getValue();
+            KLevelSector sector = entity.getPosition().second();
+            controllableDestinations.put(
+                entry.getKey(),
+                sector.getSlice(entity.getPosition().first())
+            );
+        }
+        body.put("controllables_destinations", controllableDestinations);
+
+        body.put("moved_autonomous", this.autonomouses.keySet());
+        Map<UUID, KLevelSectorSlice> autonomousesDestinations = new HashMap<>();
+        for (var entry: this.autonomouses.entrySet()) {
+            KLevelEntity entity = entry.getValue();
+            KLevelSector sector = entity.getPosition().second();
+            autonomousesDestinations.put(
+                entry.getKey(),
+                sector.getSlice(entity.getPosition().first())
+            );
+        }
+        body.put("autonomouses_destinations", autonomousesDestinations);
 
         this.messenger.sendRegular(
-            "controllableEntitiesMoved",
+            "entitiesMoved",
             body
         );
     }
