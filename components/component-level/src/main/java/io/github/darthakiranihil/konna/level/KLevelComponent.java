@@ -51,6 +51,36 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                         {@link String} -
  *                         name of loaded level (that is actually its asset id)
  *                     </li>
+ *                     <li>
+ *                         {@code sector} -
+ *                         {@link String} -
+ *                         name of sector to set as current
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Level.LevelService.generateLevelAndLoad</i> - generates a level and loads it
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code generator} -
+ *                         {@link String} -
+ *                         generator asset id
+ *                     </li>
+ *                     <li>
+ *                         {@code seed} -
+ *                         {@link Long} -
+ *                         initial generator seed
+ *                     </li>
+ *                     <li>
+ *                         {@code sector} -
+ *                         {@link String} -
+ *                         name of sector to set as current
+ *                     </li>
  *                 </ul>
  *             </p>
  *         </li>
@@ -257,6 +287,31 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                         {@code sector} -
  *                         {@link KLevelSector} -
  *                         instance of sector to be deployed on loaded level
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Level.generatedLevelLoaded</i>
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code level} -
+ *                         {@link KLevel} -
+ *                         instance of loaded level
+ *                     </li>
+ *                     <li>
+ *                         {@code sector} -
+ *                         {@link KLevelSector} -
+ *                         instance of sector to be deployed on loaded level
+ *                     </li>
+ *                     <li>
+ *                         {@code seed} -
+ *                         {@link Long} -
+ *                         seed used to generate loaded level
  *                     </li>
  *                 </ul>
  *             </p>
