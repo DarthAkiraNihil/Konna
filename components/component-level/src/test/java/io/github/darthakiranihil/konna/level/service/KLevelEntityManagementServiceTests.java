@@ -81,6 +81,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         if (!testInfo.getTags().contains("doNotLoadLevel")) {
             var body = new KUniversalMap();
             body.put("level_name", "test_level_entity_management_service");
+            body.put("sector", "mf1");
             this.realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
         }
 

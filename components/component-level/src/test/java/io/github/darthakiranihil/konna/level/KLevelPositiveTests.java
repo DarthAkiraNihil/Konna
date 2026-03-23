@@ -20,10 +20,7 @@ import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
-import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
-import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
-import io.github.darthakiranihil.konna.level.layer.KTileLayer;
+import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,7 +51,8 @@ public class KLevelPositiveTests extends KStandardTestClass {
             tl,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));

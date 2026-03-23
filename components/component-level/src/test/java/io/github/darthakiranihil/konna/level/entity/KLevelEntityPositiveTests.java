@@ -57,7 +57,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
         KStaticEntity staticEntity = new KStaticEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
         mel.getTool().placeEntity(0, 0, staticEntity);
@@ -95,7 +96,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
         mel.getTool().placeEntity(0, 0, controllableEntity);
@@ -139,7 +141,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
         mel.getTool().placeEntity(0, 0, controllableEntity);
@@ -181,7 +184,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
         mel.getTool().placeEntity(0, 0, controllableEntity);
@@ -231,7 +235,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer2,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel2
+            mel2,
+            new KLevelTransitionLayer()
         );
 
         KSectorLinkLayer sll = new KSectorLinkLayer();
@@ -243,7 +248,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             sll,
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
 
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
@@ -288,7 +294,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel2
+            mel2,
+            new KLevelTransitionLayer()
         );
 
         KTileLayer tileLayer2 = new KTileLayer(2, 2);
@@ -307,7 +314,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer2,
             new KHeightLayer(new KSize(2, 2)),
             sll,
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
 
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
@@ -351,7 +359,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
         mel.getTool().placeEntity(0, 0, controllableEntity);
@@ -399,7 +408,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             hl,
             new KSectorLinkLayer(),
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
         mel.getTool().placeEntity(0, 0, controllableEntity);
@@ -451,7 +461,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer2,
             hl,
             new KSectorLinkLayer(),
-            mel2
+            mel2,
+            new KLevelTransitionLayer()
         );
 
         KTileLayer tileLayer = new KTileLayer(2, 2);
@@ -470,7 +481,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             sll,
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
 
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
@@ -524,7 +536,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer2,
             hl,
             new KSectorLinkLayer(),
-            mel2
+            mel2,
+            new KLevelTransitionLayer()
         );
 
         KSectorLinkLayer sll = new KSectorLinkLayer();
@@ -542,7 +555,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             sll,
-            mel
+            mel,
+            new KLevelTransitionLayer()
         );
 
         KAutonomousEntity auto = new KAutonomousEntity(es, "se1", "se1", new KVector2i(0, 0), sector);

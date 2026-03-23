@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
+import io.github.darthakiranihil.konna.level.layer.KLevelTransitionData;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
 import org.jspecify.annotations.Nullable;
 
@@ -44,7 +45,8 @@ public record KLevelSectorSlice(
     @Nullable KTileInfo tile,
     boolean seen,
     @Nullable KSectorLinkData sectorLink,
-    List<KLevelEntity> entities
+    List<KLevelEntity> entities,
+    @Nullable KLevelTransitionData levelTransition
 ) {
 
 }

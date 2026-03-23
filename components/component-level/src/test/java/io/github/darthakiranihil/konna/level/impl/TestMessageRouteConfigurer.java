@@ -30,6 +30,11 @@ public class TestMessageRouteConfigurer implements KMessageRoutesConfigurer {
         );
 
         messageSystem.addMessageRoute(
+            "generateLevelAndLoad",
+            "Level.LevelService.generateLevelAndLoad"
+        );
+
+        messageSystem.addMessageRoute(
             "setDirectionForControllableEntity",
             "Level.LevelEntityManagementService.setDirectionForControllableEntity"
         );

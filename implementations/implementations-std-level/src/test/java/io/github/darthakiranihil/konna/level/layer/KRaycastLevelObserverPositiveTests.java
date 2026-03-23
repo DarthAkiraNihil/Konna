@@ -54,7 +54,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(11, 11)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));
@@ -120,7 +121,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer2,
             new KHeightLayer(new KSize(11, 11)),
             sl2,
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
         KLevelSector sector = new KLevelSector(
             es,
@@ -128,7 +130,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             new KHeightLayer(new KSize(11, 11)),
             sl1,
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         sl1.getTool().link(0, 5, sector2, 10, 5);
@@ -203,7 +206,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             heightLayer,
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));
@@ -281,7 +285,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             tileLayer,
             heightLayer,
             new KSectorLinkLayer(),
-            new KLevelEntityLayer()
+            new KLevelEntityLayer(),
+            new KLevelTransitionLayer()
         );
 
         KLevel level = new KLevel("loc1", List.of(sector));

@@ -31,6 +31,8 @@ import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
+import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
+import io.github.darthakiranihil.konna.level.layer.tool.KLevelTransitionLayerTool;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -270,6 +272,52 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
         entity.move();
         Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
+
+    }
+
+    @Test
+    public void testLoadValidWithLevelTransition() {
+
+        KEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+
+        KLevelCollection levelCollection = new KLevelCollection(
+            this.assetLoader,
+            es,
+            new KTileCollection(
+                this.assetLoader,
+                new KHashMapBasedCache(),
+                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            ),
+            KStandardTestClass.context
+        );
+
+        KLevel level = levelCollection.getAsset("valid_with_level_transition");
+        KLevelSector sector = level.getSector("mf1");
+        KLevelSectorSlice slice = sector.getSlice(0, 0);
+        Assertions.assertNotNull(slice.levelTransition());
+
+        var transition1 = slice.levelTransition();
+        Assertions.assertEquals(KVector2i.ZERO, transition1.destinationPosition());
+        Assertions.assertEquals("aboba123", transition1.levelDescriptor());
+        Assertions.assertEquals(KTransitionedLevelType.GENERATED, transition1.type());
+        Assertions.assertEquals("abiba", transition1.destinationSector());
+
+        KLevelSector sector2 = level.getSector("mf2");
+        KLevelSectorSlice slice2 = sector2.getSlice(0, 0);
+        Assertions.assertNotNull(slice2.levelTransition());
+
+        var transition2 = slice2.levelTransition();
+        Assertions.assertEquals(KVector2i.ZERO, transition2.destinationPosition());
+        Assertions.assertEquals("aboba123", transition2.levelDescriptor());
+        Assertions.assertEquals(KTransitionedLevelType.PREDEFINED, transition2.type());
+        Assertions.assertEquals("abiba", transition2.destinationSector());
+
+        var freakingTool = sector2.getTool(KLevelTransitionLayerTool.class);
+        Assertions.assertEquals(transition2, freakingTool.getOnPosition(KVector2i.ZERO));
+        Assertions.assertEquals(transition2, freakingTool.getOnPosition(0, 0));
+
 
     }
 }

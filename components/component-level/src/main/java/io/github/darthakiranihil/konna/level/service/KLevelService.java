@@ -140,6 +140,7 @@ public class KLevelService extends KObject {
 
     }
 
+    @KServiceEndpoint(route = "generateLevelAndLoad")
     protected void generateLevelAndLoad(
         @KBodyValue("generator") final String generatorId,
         @KBodyValue("seed") final Long seed,

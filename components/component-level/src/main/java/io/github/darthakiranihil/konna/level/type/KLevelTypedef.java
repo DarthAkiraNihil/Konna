@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
+import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 
 /**
  * <p>
@@ -223,6 +224,23 @@ public final class KLevelTypedef implements KAssetTypedef {
                             )
                             .withSubdefinition("params")
                             .build()
+                    )
+                    .build()
+            )
+            .withValidatedSubdefinitionArray(
+                "level_transitions",
+                KCompositeAssetDefinitionRuleBuilder
+                    .create()
+                    .withValidatedSubdefinition(
+                        "position",
+                        positionRule
+                    )
+                    .withNotNullString("level_descriptor")
+                    .withEnum("level_type", KTransitionedLevelType.class)
+                    .withNotNullString("destination_sector")
+                    .withValidatedSubdefinition(
+                        "destination_position",
+                        positionRule
                     )
                     .build()
             )
