@@ -262,15 +262,32 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *         </li>
  *         <li>
  *             <p>
- *                 <i>Level.controllableEntitiesMoved</i>
+ *                 <i>Level.entitiesMoved</i>
  *             </p>
  *             <p>
  *                 Message schema:
  *                 <ul>
  *                     <li>
- *                         {@code moved} -
+ *                         {@code moved_controllables} -
  *                         {@link java.util.Set} of {@link java.util.UUID} -
- *                         set of all moved controllable entities
+ *                         set of all moved controllable entities ids
+ *                     </li>
+ *                     <li>
+ *                         {@code controllables_destinations} -
+ *                         {@link java.util.Map} from {@link java.util.UUID} to
+ *                         {@link KLevelSectorSlice} - map of sector slices on controllable
+ *                         entities destinations
+ *                     </li>
+ *                     <li>
+ *                         {@code moved_autonomouses} -
+ *                         {@link java.util.Set} of {@link java.util.UUID} -
+ *                         set of all moved autonomous entities ids
+ *                     </li>
+ *                     <li>
+ *                         {@code autonomouses_destinations} -
+ *                         {@link java.util.Map} from {@link java.util.UUID} to
+ *                         {@link KLevelSectorSlice} - map of sector slices on autonomous
+ *                         entities destinations
  *                     </li>
  *                 </ul>
  *             </p>
