@@ -92,6 +92,7 @@ public final class KLevelSector extends KObject {
      * @param heightLayer Height layer, assigned to this sector
      * @param sectorLinkLayer Sector link layer, assigned to this sector
      * @param entityLayer Entity layer, assigned to this sector
+     * @param levelTransitionLayer Level transition layer, assigned to this sector
      */
     public KLevelSector(
         final KEventSystem eventSystem,

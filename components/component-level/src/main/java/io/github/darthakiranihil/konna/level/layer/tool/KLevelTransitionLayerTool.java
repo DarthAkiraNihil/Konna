@@ -21,15 +21,33 @@ import io.github.darthakiranihil.konna.level.layer.KLevelTransitionData;
 import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Level transition layer tool interface providing operations for manipulating level transitions
+ * and getting information about them.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KLevelTransitionLayerTool
     extends KReadableObjectLayerTool<KLevelTransitionData> {
 
+    /**
+     * Makes a transition to another level.
+     * @param x X coordinate of placed transition
+     * @param y Y coordinate of placed transition
+     * @param levelDescriptor Destination level descriptor
+     * @param levelType Destination level type
+     * @param destinationSector Sector name to be set as current on destination level
+     * @param destinationX X coordinate of destination sector position
+     * @param destinationY Y coordinate of destination sector position
+     * @return This tool (for method chaining)
+     */
     default KLevelTransitionLayerTool makeTransition(
         int x,
         int y,
-        String levelDescriptor,
-        KTransitionedLevelType levelType,
-        String destinationSector,
+        final String levelDescriptor,
+        final KTransitionedLevelType levelType,
+        final String destinationSector,
         int destinationX,
         int destinationY
     ) {
@@ -42,6 +60,15 @@ public interface KLevelTransitionLayerTool
         );
     }
 
+    /**
+     * Makes a transition to another level.
+     * @param position Position of placed transition
+     * @param levelDescriptor Destination level descriptor
+     * @param levelType Destination level type
+     * @param destinationSector Sector name to be set as current on destination level
+     * @param destination Destination sector position
+     * @return This tool (for method chaining)
+     */
     KLevelTransitionLayerTool makeTransition(
         KVector2i position,
         String levelDescriptor,

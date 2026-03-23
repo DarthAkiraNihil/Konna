@@ -23,6 +23,14 @@ import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Map layer containing information about transitions to other levels
+ * assigned to any map position. Its data is supposed to be handled by developer
+ * of a game.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLevelTransitionLayer
     implements KObjectLevelLayer<KLevelTransitionData, KLevelTransitionLayerTool> {
 

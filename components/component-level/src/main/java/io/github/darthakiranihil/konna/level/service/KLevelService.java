@@ -73,6 +73,9 @@ public class KLevelService extends KObject {
      * @param levelCollection Level collection to get levels from
      * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events to invoke.
+     * @param activator Activator to use to create {@link KLevelGenerator}
+     * @param generatorMetadataCollection Generator metadata collection to get
+     *                                    generator metadata from
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,
@@ -140,6 +143,12 @@ public class KLevelService extends KObject {
 
     }
 
+    /**
+     * Generates a level and loads it.
+     * @param generatorId ID of generator to use
+     * @param seed Initial seed
+     * @param deploymentSector Name of sector to be set as current sector
+     */
     @KServiceEndpoint(route = "generateLevelAndLoad")
     protected void generateLevelAndLoad(
         @KBodyValue("generator") final String generatorId,

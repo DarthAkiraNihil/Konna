@@ -18,6 +18,18 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+/**
+ * Level transition data record.
+ * @param levelDescriptor Transitioned level descriptor.
+ *                        If level is {@link KTransitionedLevelType#PREDEFINED},
+ *                        it represents asset id of destination level.
+ *                        If level is {@link KTransitionedLevelType#GENERATED},
+ *                        it represents asset id of generator to use to generate
+ *                        destination level
+ * @param type Type of destination level
+ * @param destinationSector Destination sector name
+ * @param destinationPosition Destination position on sector
+ */
 public record KLevelTransitionData(
     String levelDescriptor,
     KTransitionedLevelType type,

@@ -34,6 +34,7 @@ import java.util.List;
  * @param seen Flag indicates if this slice has been visited earlier
  * @param sectorLink Link to the sector assigned to the slice
  * @param entities List of entities located on the slice
+ * @param levelTransition Level transition assigned to the slice
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
