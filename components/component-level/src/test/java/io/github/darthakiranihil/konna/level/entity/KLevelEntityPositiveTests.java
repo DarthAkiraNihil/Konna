@@ -44,20 +44,23 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         es.startPolling();
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
         KStaticEntity staticEntity = new KStaticEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, staticEntity);
+        mel.getTool().placeEntity(0, 0, staticEntity);
 
         var previousPos = staticEntity.getPosition();
         staticEntity.move();
@@ -78,20 +81,24 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         es.startPolling();
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         controllableEntity.setNextMoveDirection(new KVector2i(1, 0));
         controllableEntity.move();
@@ -118,20 +125,24 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         es.startPolling();
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, impassableTileInfo)
+            .placeTile(1, 1, tileInfo);
+
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, impassableTileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
         controllableEntity.setNextMoveDirection(new KVector2i(1, 0));
@@ -157,20 +168,23 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         es.startPolling();
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
         controllableEntity.move();
@@ -195,36 +209,45 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelEntityLayer mel2 = new KLevelEntityLayer();
+        KTileLayer tileLayer2 = new KTileLayer(2, 2);
+        tileLayer2
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
 
         KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer2,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel2
         );
 
+        KSectorLinkLayer sll = new KSectorLinkLayer();
+        sll.getTool().link(0, 0, sector2, 1, 1);
+
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
-            (new KSectorLinkLayer())
-                .link(0, 0, sector2, 1, 1),
+            sll,
             mel
         );
 
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
         controllableEntity.move();
@@ -251,36 +274,44 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelEntityLayer mel2 = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, impassableTileInfo)
+            .placeTile(0, 1, impassableTileInfo)
+            .placeTile(1, 0, impassableTileInfo)
+            .placeTile(1, 1, tileInfo);
 
         KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, impassableTileInfo)
-                .placeTile(0, 1, impassableTileInfo)
-                .placeTile(1, 0, impassableTileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel2
         );
 
+        KTileLayer tileLayer2 = new KTileLayer(2, 2);
+        tileLayer2
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+
+        KSectorLinkLayer sll = new KSectorLinkLayer();
+        sll.getTool().link(0, 0, sector2, 1, 1);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer2,
             new KHeightLayer(new KSize(2, 2)),
-            (new KSectorLinkLayer())
-                .link(0, 0, sector2, 1, 1),
+            sll,
             mel
         );
 
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
         controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
@@ -307,20 +338,23 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         es.startPolling();
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
             new KSectorLinkLayer(),
             mel
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
         controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
@@ -346,22 +380,29 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         es.startPolling();
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+
+        KHeightLayer hl = new KHeightLayer(new KSize(2, 2));
+        hl
+            .getTool()
+            .setHeight(0, 1, 2)
+            .setHeight(1, 1, 2);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
-            new KHeightLayer(new KSize(2, 2))
-                .setHeight(0, 1, 2)
-                .setHeight(1, 1, 2),
+            tileLayer,
+            hl,
             new KSectorLinkLayer(),
             mel
         );
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
         controllableEntity.setNextMoveDirection(new KVector2i(0, 1));
@@ -389,40 +430,51 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelEntityLayer mel2 = new KLevelEntityLayer();
+        KTileLayer tileLayer2 = new KTileLayer(2, 2);
+        tileLayer2
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
 
+        KHeightLayer hl = new KHeightLayer(new KSize(2, 2));
+        hl
+            .getTool()
+            .setHeight(0, 0, 2)
+            .setHeight(1, 0, 2)
+            .setHeight(0, 1, 2)
+            .setHeight(1, 1, 2);
         KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
-            new KHeightLayer(new KSize(2, 2))
-                .setHeight(0, 0, 2)
-                .setHeight(1, 0, 2)
-                .setHeight(0, 1, 2)
-                .setHeight(1, 1, 2),
+            tileLayer2,
+            hl,
             new KSectorLinkLayer(),
             mel2
         );
 
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+
+        KSectorLinkLayer sll = new KSectorLinkLayer();
+        sll.getTool().link(0, 0, sector2, 1, 1);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
-            (new KSectorLinkLayer())
-                .link(0, 0, sector2, 1, 1),
+            sll,
             mel
         );
 
         KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, controllableEntity);
+        mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
         controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
@@ -451,40 +503,50 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
         KLevelEntityLayer mel = new KLevelEntityLayer();
         KLevelEntityLayer mel2 = new KLevelEntityLayer();
+        KTileLayer tileLayer2 = new KTileLayer(2, 2);
+        tileLayer2
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
+        KHeightLayer hl = new KHeightLayer(2, 2);
+        hl
+            .getTool()
+            .setHeight(0, 0, 2)
+            .setHeight(1, 0, 2)
+            .setHeight(0, 1, 2)
+            .setHeight(1, 1, 2);
 
         KLevelSector sector2 = new KLevelSector(
             es,
             "sector_2",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
-            new KHeightLayer(new KSize(2, 2))
-                .setHeight(0, 0, 2)
-                .setHeight(1, 0, 2)
-                .setHeight(0, 1, 2)
-                .setHeight(1, 1, 2),
+            tileLayer2,
+            hl,
             new KSectorLinkLayer(),
             mel2
         );
 
+        KSectorLinkLayer sll = new KSectorLinkLayer();
+        sll.getTool().link(0, 0, sector2, 1, 1);
+        KTileLayer tileLayer = new KTileLayer(2, 2);
+        tileLayer
+            .getTool()
+            .placeTile(0, 0, tileInfo)
+            .placeTile(0, 1, tileInfo)
+            .placeTile(1, 0, tileInfo)
+            .placeTile(1, 1, tileInfo);
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
-            (new KTileLayer(2, 2))
-                .placeTile(0, 0, tileInfo)
-                .placeTile(0, 1, tileInfo)
-                .placeTile(1, 0, tileInfo)
-                .placeTile(1, 1, tileInfo),
+            tileLayer,
             new KHeightLayer(new KSize(2, 2)),
-            (new KSectorLinkLayer())
-                .link(0, 0, sector2, 1, 1),
+            sll,
             mel
         );
 
         KAutonomousEntity auto = new KAutonomousEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
-        mel.placeEntity(0, 0, auto);
+        mel.getTool().placeEntity(0, 0, auto);
         auto.move();
         Assertions.assertEquals(new KPair<>(KVector2i.ZERO, sector), auto.getPosition());
 

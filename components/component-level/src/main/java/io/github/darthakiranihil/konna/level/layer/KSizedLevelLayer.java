@@ -16,20 +16,18 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 
 /**
- * Base interface for all level layers.
+ * Interface that represents layers that have size.
  * @param <TOOL> Type of layer tool
- *
- * @since 0.5.0
- * @author Darth Akira Nihil
  */
-public interface KLevelLayer<TOOL extends KLayerTool> {
+public interface KSizedLevelLayer<TOOL extends KLayerTool> extends KLevelLayer<TOOL> {
 
     /**
-     * @return Layer tool assigned to this layer
+     * @return Size of this layer
      */
-    TOOL getTool();
+    KSize getSize();
 
 }

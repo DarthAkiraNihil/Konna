@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.layer;
+package io.github.darthakiranihil.konna.level.layer.tool;
 
-import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 
 /**
- * Base interface for all level layers.
- * @param <TOOL> Type of layer tool
+ * Interface for layer tools that provide information about size of assigned layer.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public interface KLevelLayer<TOOL extends KLayerTool> {
+public interface KSizedLayerTool extends KLayerTool {
 
     /**
-     * @return Layer tool assigned to this layer
+     * @return Size of assigned layer
      */
-    TOOL getTool();
+    KSize getSize();
 
 }

@@ -16,20 +16,31 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
 
 /**
- * Base interface for all level layers.
+ * Interface that represents a container of int data located on specific places.
  * @param <TOOL> Type of layer tool
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public interface KLevelLayer<TOOL extends KLayerTool> {
+public interface KIntLevelLayer<TOOL extends KLayerTool> extends KLevelLayer<TOOL> {
 
     /**
-     * @return Layer tool assigned to this layer
+     * @param x X coordinate of placed item
+     * @param y Y coordinate of placed item
+     * @return The int value located on specified place
      */
-    TOOL getTool();
+    int getOnPosition(int x, int y);
+
+    /**
+     * @param position Position of placed item
+     * @return The int value located on specified place
+     */
+    default int getOnPosition(final KVector2i position) {
+        return this.getOnPosition(position.x(), position.y());
+    }
 
 }

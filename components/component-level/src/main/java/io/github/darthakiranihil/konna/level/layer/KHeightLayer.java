@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.layer.tool.KHeightLayerTool;
 
 /**
  * Map layer containing information about heights in the assigned sector.
@@ -25,10 +25,42 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KHeightLayer {
+public final class KHeightLayer
+    extends KAbstractSizedLayer<KHeightLayerTool>
+    implements KIntLevelLayer<KHeightLayerTool> {
+
+    private static final class Tool implements KHeightLayerTool {
+
+        private final KHeightLayer self;
+
+        Tool(final KHeightLayer self) {
+            this.self = self;
+        }
+
+        @Override
+        public int getHeight(int x, int y) {
+            return this.self.getOnPosition(x, y);
+        }
+
+        @Override
+        public KHeightLayerTool setHeight(int x, int y, int height) {
+            if (x >= this.self.size.width() || x < 0 || y >= this.self.size.height() || y < 0) {
+                return this;
+            }
+
+            this.self.heights[y][x] = height;
+            return this;
+        }
+
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
+    }
+
 
     private final int[][] heights;
-    private final KSize size;
+    private final KHeightLayerTool tool;
 
     /**
      * Constructs a layer with zero height with specific size.
@@ -44,32 +76,12 @@ public final class KHeightLayer {
      * @param size Size of the layer
      */
     public KHeightLayer(final KSize size) {
+        super(size);
         this.heights = new int[size.height()][size.width()];
-        this.size = size;
+        this.tool = new Tool(this);
     }
 
-    /**
-     * @return Size of this layer
-     */
-    public KSize getSize() {
-        return this.size;
-    }
-
-    /**
-     * @param position Position to get height of
-     * @return Height of specific position or {@link Integer#MAX_VALUE} if the position is not
-     *         valid for this layer
-     */
-    public int getOnPosition(final KVector2i position) {
-        return this.getOnPosition(position.x(), position.y());
-    }
-
-    /**
-     * @param x X coordinate of position to get height of
-     * @param y Y coordinate of position to get height of
-     * @return Height of specific position or {@link Integer#MAX_VALUE} if the position is not
-     *         valid for this layer
-     */
+    @Override
     public int getOnPosition(int x, int y) {
         if (x >= this.size.width() || x < 0 || y >= this.size.height() || y < 0) {
             return Integer.MAX_VALUE;
@@ -78,32 +90,8 @@ public final class KHeightLayer {
         return this.heights[y][x];
     }
 
-    /**
-     * Sets height for specific position. It does not have any effect if the position is not valid
-     * for this layer.
-     * @param position Position to set height for
-     * @param height New height value
-     * @return This layer (for method chaining)
-     */
-    public KHeightLayer setHeight(final KVector2i position, int height) {
-        return this.setHeight(position.x(), position.y(), height);
+    @Override
+    public KHeightLayerTool getTool() {
+        return this.tool;
     }
-
-    /**
-     * Sets height for specific position. It does not have any effect if the position is not valid
-     * for this layer.
-     * @param x X coordinate of position to set height for
-     * @param y Y coordinate of position to set height for
-     * @param height New height value
-     * @return This layer (for method chaining)
-     */
-    public KHeightLayer setHeight(int x, int y, int height) {
-        if (x >= this.size.width() || x < 0 || y >= this.size.height() || y < 0) {
-            return this;
-        }
-
-        this.heights[y][x] = height;
-        return this;
-    }
-
 }

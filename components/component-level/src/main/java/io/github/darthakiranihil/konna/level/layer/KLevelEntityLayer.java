@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
+import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 
 import java.util.*;
 
@@ -28,76 +29,76 @@ import java.util.*;
  * @author Darth Akira Nihil
  */
 @SuppressWarnings("UnusedReturnValue")
-public final class KLevelEntityLayer implements KLevelLayer<List<KLevelEntity>> {
+public final class KLevelEntityLayer
+    implements KObjectLevelLayer<List<KLevelEntity>, KLevelEntityLayerTool> {
+
+    private static final class Tool implements KLevelEntityLayerTool {
+
+        private final KLevelEntityLayer self;
+
+        Tool(final KLevelEntityLayer self) {
+            this.self = self;
+        }
+
+        @Override
+        public KLevelEntityLayerTool placeEntity(
+            final KVector2i position,
+            final KLevelEntity entity
+        ) {
+            if (!this.self.entities.containsKey(position)) {
+                this.self.entities.put(position, new LinkedList<>());
+            }
+
+            List<KLevelEntity> list = this.self.entities.get(position);
+            list.add(entity);
+            return this;
+        }
+
+        @Override
+        public KLevelEntityLayerTool removeEntity(
+            final KVector2i position,
+            final KLevelEntity entity
+        ) {
+            if (!this.self.entities.containsKey(position)) {
+                return this;
+            }
+
+            List<KLevelEntity> list = this.self.entities.get(position);
+            Optional<KLevelEntity> deleted = list
+                .stream()
+                .filter(x -> x.id() == entity.id())
+                .findFirst();
+            deleted.ifPresent(list::remove);
+            if (list.isEmpty()) {
+                this.self.entities.remove(position);
+            }
+            return this;
+        }
+
+        @Override
+        public List<KLevelEntity> getOnPosition(int x, int y) {
+            return this.getOnPosition(new KVector2i(x, y));
+        }
+
+        @Override
+        public List<KLevelEntity> getOnPosition(final KVector2i position) {
+            if (!this.self.entities.containsKey(position)) {
+                return List.of();
+            }
+
+            return this.self.entities.get(position);
+        }
+    }
 
     private final Map<KVector2i, List<KLevelEntity>> entities;
+    private final KLevelEntityLayerTool tool;
 
     /**
      * Constructs an empty layer.
      */
     public KLevelEntityLayer() {
         this.entities = new HashMap<>();
-    }
-
-    /**
-     * Places an entity on this layer.
-     * @param x X coordinate to place the entity
-     * @param y Y coordinate to place the entity
-     * @param entity Entity to place
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer placeEntity(int x, int y, final KLevelEntity entity) {
-        return this.placeEntity(new KVector2i(x, y), entity);
-    }
-
-    /**
-     * Places an entity on this layer.
-     * @param position Position to place the entity
-     * @param entity Entity to place
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer placeEntity(final KVector2i position, final KLevelEntity entity) {
-        if (!this.entities.containsKey(position)) {
-            this.entities.put(position, new LinkedList<>());
-        }
-
-        List<KLevelEntity> list = this.entities.get(position);
-        list.add(entity);
-        return this;
-    }
-
-    /**
-     * Removes an entity from this layer.
-     * @param x X coordinate to remove the entity from
-     * @param y Y coordinate to remove the entity from
-     * @param entity Entity to remove
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer removeEntity(int x, int y, final KLevelEntity entity) {
-        return this.removeEntity(new KVector2i(x, y), entity);
-    }
-
-    /**
-     * Removes an entity from this layer.
-     * @param position Position to remove the entity from
-     * @param entity Entity to remove
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer removeEntity(final KVector2i position, final KLevelEntity entity) {
-        if (!this.entities.containsKey(position)) {
-            return this;
-        }
-
-        List<KLevelEntity> list = this.entities.get(position);
-        Optional<KLevelEntity> deleted = list
-            .stream()
-            .filter(x -> x.id() == entity.id())
-            .findFirst();
-        deleted.ifPresent(list::remove);
-        if (list.isEmpty()) {
-            this.entities.remove(position);
-        }
-        return this;
+        this.tool = new Tool(this);
     }
 
     @Override
@@ -112,5 +113,10 @@ public final class KLevelEntityLayer implements KLevelLayer<List<KLevelEntity>> 
         }
 
         return this.entities.get(position);
+    }
+
+    @Override
+    public KLevelEntityLayerTool getTool() {
+        return this.tool;
     }
 }

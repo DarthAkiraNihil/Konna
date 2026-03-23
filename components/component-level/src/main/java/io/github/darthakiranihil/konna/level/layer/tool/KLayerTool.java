@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.layer;
-
-import io.github.darthakiranihil.konna.level.layer.tool.KLayerTool;
+package io.github.darthakiranihil.konna.level.layer.tool;
 
 /**
- * Base interface for all level layers.
- * @param <TOOL> Type of layer tool
+ * Simple marker interface that specifies this object as a layer tool.
+ * Each tool must extend this interface.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public interface KLevelLayer<TOOL extends KLayerTool> {
-
-    /**
-     * @return Layer tool assigned to this layer
-     */
-    TOOL getTool();
+public interface KLayerTool {
 
 }

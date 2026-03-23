@@ -37,10 +37,12 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
 
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
-        layer.placeTile(0, 0, tileInfo);
-        layer.placeTile(0, 1, tileInfo);
-        layer.placeTile(1, 0, tileInfo);
-        layer.placeTile(1, 1, tileInfo);
+        var tool = layer.getTool();
+        Assertions.assertEquals(layer.getSize(), tool.getSize());
+        tool.placeTile(0, 0, tileInfo);
+        tool.placeTile(0, 1, tileInfo);
+        tool.placeTile(1, 0, tileInfo);
+        tool.placeTile(1, 1, tileInfo);
 
         KTileInfo t00 = layer.getOnPosition(0, 0);
         KTileInfo t01 = layer.getOnPosition(0, 1);
@@ -57,6 +59,14 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(tileInfo.getId(), t10.getId());
         Assertions.assertEquals(tileInfo.getId(), t11.getId());
 
+        Assertions.assertEquals(t00, tool.getOnPosition(0, 0));
+        Assertions.assertEquals(t00, tool.getOnPosition(KVector2i.ZERO));
+        Assertions.assertEquals(t01, tool.getOnPosition(0, 1));
+        Assertions.assertEquals(t01, tool.getOnPosition(new KVector2i(0, 1)));
+        Assertions.assertEquals(t10, tool.getOnPosition(1, 0));
+        Assertions.assertEquals(t10, tool.getOnPosition(new KVector2i(1, 0)));
+        Assertions.assertEquals(t11, tool.getOnPosition(1, 1));
+        Assertions.assertEquals(t11, tool.getOnPosition(new KVector2i(1, 1)));
     }
 
     @Test
@@ -86,11 +96,12 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
 
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
-        layer.placeTile(new KVector2i(0, 0), tileInfo);
-        layer.placeTile(new KVector2i(0, 0), tileInfo);
-        layer.placeTile(new KVector2i(0, 1), tileInfo);
-        layer.placeTile(new KVector2i(1, 0), tileInfo);
-        layer.placeTile(new KVector2i(1, 1), tileInfo);
+        var tool = layer.getTool();
+        tool.placeTile(new KVector2i(0, 0), tileInfo);
+        tool.placeTile(new KVector2i(0, 0), tileInfo);
+        tool.placeTile(new KVector2i(0, 1), tileInfo);
+        tool.placeTile(new KVector2i(1, 0), tileInfo);
+        tool.placeTile(new KVector2i(1, 1), tileInfo);
 
         KTileInfo t00 = layer.getOnPosition(new KVector2i(0, 0));
         KTileInfo t01 = layer.getOnPosition(new KVector2i(0, 1));
@@ -116,10 +127,11 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
-        layer.placeTile(-1, 0, tileInfo);
-        layer.placeTile(0, -1, tileInfo);
-        layer.placeTile(2, 0, tileInfo);
-        layer.placeTile(0, 2, tileInfo);
+        var tool = layer.getTool();
+        tool.placeTile(-1, 0, tileInfo);
+        tool.placeTile(0, -1, tileInfo);
+        tool.placeTile(2, 0, tileInfo);
+        tool.placeTile(0, 2, tileInfo);
 
         KTileInfo t00 = layer.getOnPosition(-1, 0);
         KTileInfo t01 = layer.getOnPosition(0, -1);
@@ -142,15 +154,16 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
 
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
-        layer.placeTile(0, 0, tileInfo);
-        layer.placeTile(0, 1, tileInfo);
-        layer.placeTile(1, 0, tileInfo);
-        layer.placeTile(1, 1, tileInfo);
+        var tool = layer.getTool();
+        tool.placeTile(0, 0, tileInfo);
+        tool.placeTile(0, 1, tileInfo);
+        tool.placeTile(1, 0, tileInfo);
+        tool.placeTile(1, 1, tileInfo);
 
-        layer.placeTile(0, 0, tileInfo2);
-        layer.placeTile(0, 1, tileInfo2);
-        layer.placeTile(1, 0, tileInfo2);
-        layer.placeTile(1, 1, tileInfo2);
+        tool.placeTile(0, 0, tileInfo2);
+        tool.placeTile(0, 1, tileInfo2);
+        tool.placeTile(1, 0, tileInfo2);
+        tool.placeTile(1, 1, tileInfo2);
 
         KTileInfo t00 = layer.getOnPosition(0, 0);
         KTileInfo t01 = layer.getOnPosition(0, 1);
@@ -177,10 +190,11 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
 
         int[][] array = Objects.requireNonNull(KReflectionUtils.getFieldValue(KTileLayer.class, layer, "tiles", int[][].class));
 
-        layer.placeTile(0, 0, tileInfo);
-        layer.placeTile(0, 1, tileInfo);
-        layer.placeTile(1, 0, tileInfo);
-        layer.placeTile(1, 1, tileInfo);
+        var tool = layer.getTool();
+        tool.placeTile(0, 0, tileInfo);
+        tool.placeTile(0, 1, tileInfo);
+        tool.placeTile(1, 0, tileInfo);
+        tool.placeTile(1, 1, tileInfo);
 
         array[0][0] = 2;
 

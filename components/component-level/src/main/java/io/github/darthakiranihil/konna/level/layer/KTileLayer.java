@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
+import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -31,7 +32,65 @@ import java.util.Map;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KTileLayer implements KLevelLayer<KTileInfo> {
+public final class KTileLayer
+    extends KAbstractSizedLayer<KTileLayerTool>
+    implements KObjectLevelLayer<KTileInfo, KTileLayerTool> {
+
+    private static final class Tool implements KTileLayerTool {
+
+        private final KTileLayer self;
+
+        Tool(final KTileLayer self) {
+            this.self = self;
+        }
+
+        @Override
+        public @Nullable KTileInfo getOnPosition(int x, int y) {
+            return this.self.getOnPosition(x, y);
+        }
+
+        @Override
+        public KTileLayerTool placeTile(int x, int y, final KTileInfo tile) {
+
+            if (x >= this.self.size.width() || x < 0 || y >= this.self.size.height() || y < 0) {
+                return this;
+            }
+
+            int newTileId = tile.getId();
+            if (!this.self.tileInfos.containsKey(newTileId)) {
+                this.self.tileInfos.put(newTileId, new TileInfo(tile));
+            } else {
+                TileInfo info = this.self.tileInfos.get(newTileId);
+                info.refs++;
+            }
+
+            int oldTileId = this.self.tiles[y][x];
+            this.self.tiles[y][x] = newTileId;
+
+            if (oldTileId == newTileId || oldTileId == 0) {
+                return this;
+            }
+
+            TileInfo oldInfo = this.self.tileInfos.get(oldTileId);
+            oldInfo.refs--;
+            if (oldInfo.refs <= 0) {
+                this.self.tileInfos.remove(oldTileId);
+            }
+
+            return this;
+
+        }
+
+        @Override
+        public KTileLayerTool placeTile(final KVector2i position, final KTileInfo tile) {
+            return this.placeTile(position.x(), position.y(), tile);
+        }
+
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
+    }
 
     private static final class TileInfo {
         private final KTileInfo info;
@@ -45,8 +104,9 @@ public final class KTileLayer implements KLevelLayer<KTileInfo> {
 
     private final int[][] tiles;
     private final Map<Integer, TileInfo> tileInfos;
-
     private final KSize size;
+
+    private final KTileLayerTool tool;
 
     /**
      * Constructs an empty layer with specific size.
@@ -62,9 +122,11 @@ public final class KTileLayer implements KLevelLayer<KTileInfo> {
      * @param size Layer size
      */
     public KTileLayer(final KSize size) {
+        super(size);
         this.size = size;
         this.tiles = new int[size.height()][size.width()];
         this.tileInfos = new HashMap<>();
+        this.tool = new Tool(this);
     }
 
     @Override
@@ -82,60 +144,8 @@ public final class KTileLayer implements KLevelLayer<KTileInfo> {
         return info.info;
     }
 
-    /**
-     * Places a tile on this layer. It does not perform such operation of the position
-     * is out of bounds.
-     * @param x X coordinate to place the tile
-     * @param y Y coordinate to place the tile
-     * @param tile Tile to place
-     * @return This layer (for method chaining)
-     */
-    public KTileLayer placeTile(int x, int y, final KTileInfo tile) {
-
-        if (x >= this.size.width() || x < 0 || y >= this.size.height() || y < 0) {
-            return this;
-        }
-
-        int newTileId = tile.getId();
-        if (!this.tileInfos.containsKey(newTileId)) {
-            this.tileInfos.put(newTileId, new TileInfo(tile));
-        } else {
-            TileInfo info = this.tileInfos.get(newTileId);
-            info.refs++;
-        }
-
-        int oldTileId = this.tiles[y][x];
-        this.tiles[y][x] = newTileId;
-
-        if (oldTileId == newTileId || oldTileId == 0) {
-            return this;
-        }
-
-        TileInfo oldInfo = this.tileInfos.get(oldTileId);
-        oldInfo.refs--;
-        if (oldInfo.refs <= 0) {
-            this.tileInfos.remove(oldTileId);
-        }
-
-        return this;
-
-    }
-
-    /**
-     * Places a tile on this layer. It does not perform such operation of the position
-     * is out of bounds.
-     * @param position Coordinates to place the tile on
-     * @param tile Tile to place
-     * @return This layer (for method chaining)
-     */
-    public KTileLayer placeTile(final KVector2i position, final KTileInfo tile) {
-        return this.placeTile(position.x(), position.y(), tile);
-    }
-
-    /**
-     * @return Size of this layer
-     */
-    public KSize getSize() {
-        return this.size;
+    @Override
+    public KTileLayerTool getTool() {
+        return this.tool;
     }
 }

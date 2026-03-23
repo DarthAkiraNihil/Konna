@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
+import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -31,12 +32,55 @@ import java.util.*;
  * @since 0.5.0
  * @since Darth Akira Nihil
  */
-public final class KReachabilityAreaLayer {
+public final class KReachabilityAreaLayer
+    extends KAbstractSizedLayer<KReachabilityAreaLayerTool> {
+
+    private static final class Tool implements KReachabilityAreaLayerTool {
+
+        private final KReachabilityAreaLayer self;
+
+        Tool(final KReachabilityAreaLayer self) {
+            this.self = self;
+        }
+
+        @Override
+        public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
+
+            if (
+                    srcX >= this.self.size.width()
+                ||  srcX < 0
+                || srcY >= this.self.size.height()
+                || srcY < 0
+            ) {
+                return false;
+            }
+
+            if (
+                    dstX >= this.self.size.width()
+                ||  dstX < 0
+                ||  dstY >= this.self.size.height()
+                ||  dstY < 0
+            ) {
+                return false;
+            }
+
+            int srcArea = this.self.areas[srcY][srcX];
+            int dstArea = this.self.areas[dstY][dstX];
+
+            return srcArea == dstArea;
+
+        }
+
+        @Override
+        public KSize getSize() {
+            return this.self.size;
+        }
+    }
 
     private final int[][] areas;
-    private final KSize size;
     private final KTileLayer tileLayer;
     private final KHeightLayer heightLayer;
+    private final KReachabilityAreaLayerTool tool;
 
     /**
      * Constructs a layer with automatic filling it.
@@ -47,53 +91,13 @@ public final class KReachabilityAreaLayer {
         final KTileLayer tileLayer,
         final KHeightLayer heightLayer
     ) {
-
-        this.size = tileLayer.getSize();
+        super(tileLayer.getSize());
         this.areas = new int[this.size.height()][this.size.width()];
         this.tileLayer = tileLayer;
         this.heightLayer = heightLayer;
+        this.tool = new Tool(this);
 
         this.fillLayer(tileLayer, heightLayer);
-    }
-
-    /**
-     * @param src Source point
-     * @param dst Destination point
-     * @return Whether it is possible to reach destination from source point in this layer
-     */
-    public boolean isReachable(final KVector2i src, final KVector2i dst) {
-        return this.isReachable(src.x(), src.y(), dst.x(), dst.y());
-    }
-
-    /**
-     * @param srcX X coordinate of source point
-     * @param srcY Y coordinate of source point
-     * @param dstX X coordinate of destination point
-     * @param dstY Y coordinate of destination point
-     * @return Whether it is possible to reach destination from source point in this layer
-     */
-    public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
-
-        if (srcX >= this.size.width() || srcX < 0 || srcY >= this.size.height() || srcY < 0) {
-            return false;
-        }
-
-        if (dstX >= this.size.width() || dstX < 0 || dstY >= this.size.height() || dstY < 0) {
-            return false;
-        }
-
-        int srcArea = this.areas[srcY][srcX];
-        int dstArea = this.areas[dstY][dstX];
-
-        return srcArea == dstArea;
-
-    }
-
-    /**
-     * @return Size of this layer
-     */
-    public KSize getSize() {
-        return this.size;
     }
 
     /**
@@ -101,6 +105,11 @@ public final class KReachabilityAreaLayer {
      */
     public void refresh() {
         this.fillLayer(this.tileLayer, this.heightLayer);
+    }
+
+    @Override
+    public KReachabilityAreaLayerTool getTool() {
+        return this.tool;
     }
 
     private void fillLayer(

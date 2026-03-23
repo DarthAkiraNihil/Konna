@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventAction;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -27,8 +28,11 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
+import io.github.darthakiranihil.konna.level.layer.tool.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * The elementary unit of a game level that provides all information
@@ -74,7 +78,9 @@ public final class KLevelSector extends KObject {
     private final KLevelEntityLayer entityLayer;
 
     private final KReachabilityAreaLayer reachabilityAreaLayer;
-    private final KSeenPlacesLayer seenPlacesLayer;
+    private final KVisitedPlacesLayer visitedPlacesLayer;
+
+    private final Map<Class<? extends KLayerTool>, KLayerTool> tools;
 
     /**
      * Standard constructor.
@@ -112,7 +118,17 @@ public final class KLevelSector extends KObject {
         this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
 
         this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer, heightLayer);
-        this.seenPlacesLayer = new KSeenPlacesLayer(tileLayer.getSize());
+        this.visitedPlacesLayer = new KVisitedPlacesLayer(tileLayer.getSize());
+
+        this.tools = new HashMap<>();
+
+        this.tools.put(KHeightLayerTool.class, this.heightLayer.getTool());
+        this.tools.put(KLevelEntityLayerTool.class, this.entityLayer.getTool());
+        this.tools.put(KReachabilityAreaLayerTool.class, this.reachabilityAreaLayer.getTool());
+        this.tools.put(KSectorLinkLayerTool.class, this.sectorLinkLayer.getTool());
+        this.tools.put(KTileLayerTool.class, this.sectorLinkLayer.getTool());
+        this.tools.put(KVisitedPlacesLayerTool.class, this.visitedPlacesLayer.getTool());
+
     }
 
     /**
@@ -140,11 +156,29 @@ public final class KLevelSector extends KObject {
             new KVector2i(x, y),
             this.heightLayer.getOnPosition(x, y),
             this.tileLayer.getOnPosition(x, y),
-            this.seenPlacesLayer.getSeenStatus(x, y),
+            this.visitedPlacesLayer.getOnPosition(x, y),
             this.sectorLinkLayer.getOnPosition(x, y),
             this.entityLayer.getOnPosition(x, y)
         );
 
+    }
+
+    /**
+     * @param position Coordinates of sliced position
+     * @return Slice of the sector on specific place
+     */
+    public KLevelSectorSlice getSlice(
+        final KVector2i position
+    ) {
+        return new KLevelSectorSlice(
+            this.name,
+            position,
+            this.heightLayer.getOnPosition(position),
+            this.tileLayer.getOnPosition(position),
+            this.visitedPlacesLayer.getOnPosition(position),
+            this.sectorLinkLayer.getOnPosition(position),
+            this.entityLayer.getOnPosition(position)
+        );
     }
 
     /**
@@ -161,82 +195,38 @@ public final class KLevelSector extends KObject {
 
         KTileInfo tile = this.tileLayer.getOnPosition(x, y);
         if (tile != null) {
-            this.seenPlacesLayer.seeThePlace(x, y);
+            var tool = this.visitedPlacesLayer.getTool();
+            tool.visitPlace(x, y);
         }
         return this.getSlice(x, y);
 
     }
 
     /**
-     * @param src Source point
-     * @param dst Destination point
-     * @return Whether it is possible to reach destination from source point in this layer
+     * <p>
+     *     Tries to get a layer tool for this sector. The tool may expose
+     *     API that performs operations, that may change the sector. If you do that,
+     *     you know what are you doing!
+     * </p>
+     * <p>
+     *     Since this operation is not that safe, if will throw {@link KInvalidArgumentException}
+     *     if passed tool class is not presented in the sector.
+     * </p>
+     * @param tool Tool class
+     * @return Layer tool with specified class assigned to the sector
+     * @param <T> Type of retrieved layer tool
      */
-    public boolean isReachable(final KVector2i src, final KVector2i dst) {
-        return this.reachabilityAreaLayer.isReachable(src, dst);
-    }
-
-    /**
-     * @param srcX X coordinate of source point
-     * @param srcY Y coordinate of source point
-     * @param dstX X coordinate of destination point
-     * @param dstY Y coordinate of destination point
-     * @return Whether it is possible to reach destination from source point in this layer
-     */
-    public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
-        return this.reachabilityAreaLayer.isReachable(srcX, srcY, dstX, dstY);
-    }
-
-    // todo: remove this disgusting poltergeist shit make a direct access,
-    // but not through layers but something like "tools"
-    /**
-     * Places an entity on this layer.
-     * @param x X coordinate to place the entity
-     * @param y Y coordinate to place the entity
-     * @param entity Entity to place
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer placeEntity(int x, int y, final KLevelEntity entity) {
-        return this.entityLayer.placeEntity(x, y, entity);
-    }
-
-    /**
-     * Places an entity on this layer.
-     * @param position Position to place the entity
-     * @param entity Entity to place
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer placeEntity(final KVector2i position, final KLevelEntity entity) {
-        return this.entityLayer.placeEntity(position, entity);
-    }
-
-    /**
-     * Removes an entity from this layer.
-     * @param x X coordinate to remove the entity from
-     * @param y Y coordinate to remove the entity from
-     * @param entity Entity to remove
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer removeEntity(int x, int y, final KLevelEntity entity) {
-        return this.entityLayer.removeEntity(x, y, entity);
-    }
-
-    /**
-     * Removes an entity from this layer.
-     * @param position Position to remove the entity from
-     * @param entity Entity to remove
-     * @return This layer (for method chaining)
-     */
-    public KLevelEntityLayer removeEntity(final KVector2i position, final KLevelEntity entity) {
-        return this.entityLayer.removeEntity(position, entity);
-    }
-
-    /**
-     * @param destinationSector Name of sector that is destination for found links
-     * @return Map of links to the destination sector in this sector
-     */
-    public Map<KVector2i, KSectorLinkData> getLinksToSector(final String destinationSector) {
-        return this.sectorLinkLayer.getToSector(destinationSector);
+    @SuppressWarnings("unchecked")
+    public <T extends KLayerTool> T getTool(final Class<T> tool) {
+        if (!this.tools.containsKey(tool)) {
+            throw new KInvalidArgumentException(
+                String.format(
+                    "Unknown tool class: %s. Assigned layer is not presented in the sector!",
+                    tool
+                )
+            );
+        }
+        return (T) this.tools.get(tool);
     }
 
     /**
@@ -267,14 +257,16 @@ public final class KLevelSector extends KObject {
 
         this
             .entityLayer
+            .getTool()
             .placeEntity(data.entity.getPosition().first(), data.entity)
             .removeEntity(data.previousPosition.first(), data.entity);
 
     }
 
     private void onEntityLeftSector(final EventData data) {
+        var tool = this.entityLayer.getTool();
         if (data.previousPosition.second() == this) {
-            this.entityLayer.removeEntity(
+            tool.removeEntity(
                 data.previousPosition.first(),
                 data.entity
             );
@@ -286,7 +278,7 @@ public final class KLevelSector extends KObject {
             return;
         }
 
-        this.entityLayer.placeEntity(
+        tool.placeEntity(
             dst.first(),
             data.entity
         );

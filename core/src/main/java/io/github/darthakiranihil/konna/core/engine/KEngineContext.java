@@ -34,7 +34,8 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
  * @author Darth Akira Nihil
  */
 public interface KEngineContext extends
-    KActivator, KContainerAccessor,
+    KActivator,
+    KContainerAccessor,
     KIndex,
     KObjectRegistry,
     KEventSystem,
