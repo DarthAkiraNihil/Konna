@@ -120,7 +120,7 @@ public final class KRenderableTextureCollection
         switch (source) {
             case WHOLE_TEXTURE -> {
                 KTexture texture = this.textureCollection.getAsset(assetId);
-                return KRenderableTexture.wrapIntoRectangle(topLeftCorner, texture, unit);
+                return KRenderableTexture.wrapIntoRectangle(assetId, topLeftCorner, texture, unit);
             }
             case SLICE_SET -> {
                 String sliceSetId = Objects.requireNonNull(definition.getString("slice_set"));
