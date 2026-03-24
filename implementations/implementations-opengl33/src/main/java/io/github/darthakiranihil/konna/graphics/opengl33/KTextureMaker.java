@@ -88,12 +88,12 @@ final class KTextureMaker {
 
     public TextureInfo make(final KRenderableTexture texture, boolean doNotTriangulate) {
 
-        String hash = Integer.toString(KRenderableHasher.hash(texture));
+        String key = String.format("__texture:%s", texture.id());
 
-        if (!this.cache.hasKey(hash)) {
+        if (!this.cache.hasKey(key)) {
 
             this.cache.putToCache(
-                hash,
+                key,
                 this.createTextureInfo(texture, doNotTriangulate),
                 i -> i.free(this.gl),
                 KCache.TTL_EVERLASTING
@@ -101,7 +101,7 @@ final class KTextureMaker {
         }
 
         return Objects.requireNonNull(
-            this.cache.getFromCache(hash, TextureInfo.class)
+            this.cache.getFromCache(key, TextureInfo.class)
         );
 
     }

@@ -152,7 +152,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
                     finalMessage = tunnel.processMessage(finalMessage);
                 }
 
-                v.consumer.accept(v.shortEndpointName, message);
+                v.consumer.accept(v.shortEndpointName, finalMessage);
             });
 
     }

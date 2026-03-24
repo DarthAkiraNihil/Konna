@@ -32,6 +32,7 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
  * @author Darth Akira Nihil
  */
 public record KTexture(
+    String id,
     KImage attachedImage,
     KShaderProgram shader,
     KTextureFiltering minFilter,

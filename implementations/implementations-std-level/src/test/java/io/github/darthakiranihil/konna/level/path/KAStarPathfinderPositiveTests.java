@@ -42,8 +42,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
-        KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
+        KTileInfo impassable = new KTileInfo("tt", 2, false, 0, Map.of());
 
         KTileLayer tl1 = new KTileLayer(5, 5);
         KTileLayer tl2 = new KTileLayer(5, 5);
@@ -301,8 +301,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
-        KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
+        KTileInfo impassable = new KTileInfo("tt", 2, false, 0, Map.of());
 
         KTileLayer tl1 = new KTileLayer(5, 5);
         KTileLayer tl2 = new KTileLayer(5, 5);
@@ -360,8 +360,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
-        KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
+        KTileInfo impassable = new KTileInfo("tt", 2, false, 0, Map.of());
 
         KTileLayer tl1 = new KTileLayer(5, 5);
         KTileLayer tl2 = new KTileLayer(5, 5);
@@ -442,8 +442,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
-        KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
+        KTileInfo impassable = new KTileInfo("tt", 2, false, 0, Map.of());
 
         KTileLayer tl1 = new KTileLayer(5, 5);
         KTileLayer tl2 = new KTileLayer(5, 5);
@@ -506,8 +506,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
-        KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
+        KTileInfo impassable = new KTileInfo("tt", 2, false, 0, Map.of());
 
         KTileLayer tl1 = new KTileLayer(5, 5);
         KTileLayer tl2 = new KTileLayer(5, 5);
@@ -601,8 +601,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
-        KTileInfo impassable = new KTileInfo(2, false, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
+        KTileInfo impassable = new KTileInfo("tt", 2, false, 0, Map.of());
 
         KTileLayer tl1 = new KTileLayer(5, 5);
         KTileLayer tl2 = new KTileLayer(5, 5);

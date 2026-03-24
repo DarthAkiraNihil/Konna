@@ -36,7 +36,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
     @Test
     public void testMoveStaticEntity() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -74,7 +74,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
     @Test
     public void testMoveControllableInsideSector() {
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -118,8 +118,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
     @Test
     public void testMoveControllableInsideSectorThroughImpassable() {
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo impassableTileInfo = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo impassableTileInfo = new KTileInfo("tt", 2, false, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -163,7 +163,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
     @Test
     public void testMoveControllableWithoutMoving() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -204,7 +204,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
     @Test
     public void testMoveControllableTowardsAnotherSector() {
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -270,8 +270,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
 
     @Test
     public void testMoveControllableTowardsAnotherSectorThroughImpassable() {
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo impassableTileInfo = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo impassableTileInfo = new KTileInfo("tt", 2, false, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -338,7 +338,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
     @Test
     public void testMoveControllableTowardsAnotherSectorButThereIsNot() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -381,7 +381,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
     @Test
     public void testMoveControllableEntityButHeightDiffIsTooBig() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -431,7 +431,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
     @Test
     public void testControllableEntityToAnotherSectorButHeightDiffIsTooBig() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
@@ -506,7 +506,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
     @Test
     public void testMoveAutonomousWithoutController() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KStandardEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));

@@ -104,6 +104,7 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
 
 
         KTileInfo tile = new KTileInfo(
+            assetId,
             tileId,
             passable,
             opaqueness,

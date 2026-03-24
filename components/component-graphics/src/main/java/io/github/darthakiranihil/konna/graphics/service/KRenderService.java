@@ -113,6 +113,17 @@ public class KRenderService extends KObject {
         }
     }
 
+    @KServiceEndpoint(
+        route = "bulkAddToRender"
+    )
+    public void addToRender(@KBodyValue("objects") final KRenderable[] renderables) {
+
+        synchronized (this.renderLock) {
+            this.currentRenderables.addAll(List.of(renderables));
+        }
+
+    }
+
     private void render() {
         synchronized (this.renderLock) {
             this.renderFrontend.clear();
