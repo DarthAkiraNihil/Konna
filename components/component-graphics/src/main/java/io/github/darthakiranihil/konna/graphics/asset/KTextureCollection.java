@@ -109,6 +109,7 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         KTextureWrapping vWrapping = wrapping.getEnum("v", KTextureWrapping.class);
 
         KTexture texture = new KTexture(
+            assetId,
             image,
             textureShader,
             minFilter,

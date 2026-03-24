@@ -34,6 +34,7 @@ public class KTiledTextPositiveTests extends KStandardTestClass {
     public KTiledTextPositiveTests() {
 
         this.tex = new KTexture(
+            "ttt",
             new KImage(
                 new byte[0],
                 0,
@@ -45,6 +46,8 @@ public class KTiledTextPositiveTests extends KStandardTestClass {
             KTextureWrapping.REPEAT,
             KTextureWrapping.REPEAT
         );
+
+        Assertions.assertEquals("ttt", tex.id());
 
         this.font = new KTiledFont(
             "test_font",
