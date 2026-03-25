@@ -126,7 +126,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
             return;
         }
 
-        KSystemLogger.debug(
+        KSystemLogger.trace(
             this.name,
             "Delivering message %s",
             message

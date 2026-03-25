@@ -55,6 +55,11 @@ public final class KThreadUtils extends KUninstantiable {
         }
     }
 
+    /**
+     * Sleeps for nanoseconds in the current thread.
+     * @param nanos Nanoseconds to sleep
+     * @since 0.5.0
+     */
     public static void sleepForNano(long nanos) {
         try {
             TimeUnit.NANOSECONDS.sleep(nanos);
