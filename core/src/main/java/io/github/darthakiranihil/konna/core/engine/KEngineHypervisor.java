@@ -39,6 +39,7 @@ import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -330,6 +331,11 @@ public class KEngineHypervisor extends KObject {
                 this.frame.pollEvents();
 
                 var deltaTime = Duration.between(beginTime, Instant.now());
+                long sleepTime = deltaTime.getNano() + this.nanosPerFrame;
+                if (this.maxFps != -1 && sleepTime > 0) {
+                    KThreadUtils.sleepForNano(sleepTime);
+                    deltaTime = Duration.between(beginTime, Instant.now());
+                }
                 var currentFps = ONE_SEC_IN_NANOS / deltaTime.getNano();
                 this.fps.accept(currentFps);
                 this.fpsData.put("fps", currentFps);
@@ -340,11 +346,6 @@ public class KEngineHypervisor extends KObject {
                         this.fpsData
                     )
                 );
-
-//                KSystemLogger.debug(
-//                    "hypervisor", "FPS: %f",
-//                    ONE_SEC_IN_NANOS / deltaTime.getNano()
-//                );
 
                 this.frameFinished.invokeSync();
                 // frame_finished
