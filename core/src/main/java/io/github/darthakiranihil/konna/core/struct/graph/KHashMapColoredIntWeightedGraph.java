@@ -134,6 +134,10 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL>
     @Override
     public List<IDX> getPath(final IDX src, final IDX dst, boolean forceOverwriteSrcCost) {
 
+        if (src.equals(dst)) {
+            return Collections.singletonList(src);
+        }
+
         Map<IDX, DijkstraNode<IDX, COL>> dijkstraNodes = new HashMap<>();
         for (var e: this.nodes.entrySet()) {
             dijkstraNodes.put(
