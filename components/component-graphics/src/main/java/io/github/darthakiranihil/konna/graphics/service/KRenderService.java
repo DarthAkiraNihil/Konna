@@ -113,6 +113,22 @@ public class KRenderService extends KObject {
         }
     }
 
+    /**
+     * Add an array of objects to list of current rendered objects.
+     * @param renderables Object array to be rendered with {@link KRenderFrontend}
+     * @since 0.5.0
+     */
+    @KServiceEndpoint(
+        route = "bulkAddToRender"
+    )
+    public void addToRender(@KBodyValue("objects") final KRenderable[] renderables) {
+
+        synchronized (this.renderLock) {
+            this.currentRenderables.addAll(List.of(renderables));
+        }
+
+    }
+
     private void render() {
         synchronized (this.renderLock) {
             this.renderFrontend.clear();

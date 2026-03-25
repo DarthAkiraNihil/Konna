@@ -38,6 +38,7 @@ public class KTileCollectionPositiveTests extends KAssetCollectionTestClass {
         KTileInfo tile = tc.getAsset("tile_valid");
         tc.getAsset("tile_valid");
 
+        Assertions.assertEquals("tile_valid", tile.getFullId());
         Assertions.assertEquals(1, tile.getId());
         Assertions.assertEquals(10, tile.getOpaqueness());
         Assertions.assertTrue(tile.isPassable());

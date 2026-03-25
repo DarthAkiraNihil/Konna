@@ -165,7 +165,7 @@ public abstract sealed class KLevelEntity
         }
 
         this.position = nextPosition;
-        this.entityMovedEvent.invoke(new KLevelSector.EventData(this, previousPosition));
+        this.entityMovedEvent.invokeSync(new KLevelSector.EventData(this, previousPosition));
     }
 
     /**

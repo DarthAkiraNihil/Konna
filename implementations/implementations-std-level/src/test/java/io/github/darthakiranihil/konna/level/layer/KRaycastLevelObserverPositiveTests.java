@@ -36,7 +36,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
     public void testObservePointRegular() {
 
         KLevelObserver observer = new KRaycastLevelObserver();
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
@@ -99,7 +99,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
     public void testObserveWithSectorLink() {
 
         KLevelObserver observer = new KRaycastLevelObserver();
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
@@ -181,7 +181,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
     public void testObserveWithHeightDecreasing() {
 
         KLevelObserver observer = new KRaycastLevelObserver();
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
@@ -260,7 +260,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
     public void testObserveWithHeightIncreasing() {
 
         KLevelObserver observer = new KRaycastLevelObserver();
-        KTileInfo tileInfo = new KTileInfo(1, true, 0, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 0, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));

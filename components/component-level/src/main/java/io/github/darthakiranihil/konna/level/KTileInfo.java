@@ -30,6 +30,7 @@ import java.util.Map;
  */
 public final class KTileInfo {
 
+    private final String fullId;
     private final int id;
     private final boolean passable;
     private final int opaqueness;
@@ -37,21 +38,31 @@ public final class KTileInfo {
 
     /**
      * Standard constructor.
+     * @param fullId Full tile id (usually its asset id)
      * @param id Numeric tile id
      * @param passable Flag that indicates if this tile can be passed through
      * @param opaqueness Opaqueness value - how strong it reduces an entity vision range
      * @param properties Additional tile properties
      */
     public KTileInfo(
+        final String fullId,
         int id,
         boolean passable,
         int opaqueness,
         final Map<String, KTileProperty> properties
     ) {
+        this.fullId = fullId;
         this.id = id;
         this.passable = passable;
         this.opaqueness = opaqueness;
         this.properties = properties;
+    }
+
+    /**
+     * @return Full id of this tile
+     */
+    public String getFullId() {
+        return this.fullId;
     }
 
     /**

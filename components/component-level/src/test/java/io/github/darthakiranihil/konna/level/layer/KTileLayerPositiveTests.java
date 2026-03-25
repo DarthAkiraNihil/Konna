@@ -33,7 +33,7 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
     public void testGetTileSuccess() {
 
         KTileLayer layer = new KTileLayer(2, 2);
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
@@ -92,7 +92,7 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
     public void testPlaceSelfTwice() {
 
         KTileLayer layer = new KTileLayer(2, 2);
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
@@ -124,7 +124,7 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
     public void testPlaceOutOfBorders() {
 
         KTileLayer layer = new KTileLayer(new KSize(2, 2));
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
         var tool = layer.getTool();
@@ -149,8 +149,8 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
     public void testPlaceNewTileFullReplace() {
 
         KTileLayer layer = new KTileLayer(2, 2);
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo tileInfo2 = new KTileInfo(2, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo("tt", 2, true, 16, Map.of());
 
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
@@ -186,7 +186,7 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
     public void testGetTileButItsNotHere() {
 
         KTileLayer layer = new KTileLayer(2, 2);
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         int[][] array = Objects.requireNonNull(KReflectionUtils.getFieldValue(KTileLayer.class, layer, "tiles", int[][].class));
 

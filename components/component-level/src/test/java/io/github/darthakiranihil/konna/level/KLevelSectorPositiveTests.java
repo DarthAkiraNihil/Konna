@@ -38,7 +38,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
 
         KTileLayer tl = new KTileLayer(2, 2);
         tl
@@ -71,7 +71,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
         KTileLayer tl2 = new KTileLayer(2, 2);
         tl2
             .getTool()
@@ -132,8 +132,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
-        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo1 = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo("tt", 2, false, 16, Map.of());
         layer
             .getTool()
             .placeTile(new KVector2i(0, 0), tileInfo1)
@@ -190,8 +190,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
-        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo1 = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo("tt", 2, false, 16, Map.of());
 
         layer
             .getTool()
@@ -247,8 +247,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
-        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo1 = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo("tt", 2, false, 16, Map.of());
 
         layer
             .getTool()
@@ -307,8 +307,8 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
         KTileLayer layer = new KTileLayer(3, 3);
-        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo1 = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo("tt", 2, false, 16, Map.of());
 
         layer
             .getTool()

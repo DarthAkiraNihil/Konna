@@ -154,6 +154,7 @@ public class KStandardTestClass extends KObject {
         );
         activator.addContext(KStandardTestClass.context);
         KStandardTestClass.msgSystem = messageSystem;
+        KSystemLogger.activateFileLogging();
         KSystemLogger.setLogLevel(KLogLevel.INFO);
     }
 

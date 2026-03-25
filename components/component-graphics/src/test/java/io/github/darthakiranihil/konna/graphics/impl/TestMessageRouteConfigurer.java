@@ -36,5 +36,10 @@ public class TestMessageRouteConfigurer implements KMessageRoutesConfigurer {
             "Graphics.RenderService.bulkRender"
         );
 
+        messageSystem.addMessageRoute(
+            "bulkAddToRender",
+            "Graphics.RenderService.bulkAddToRender"
+        );
+
     }
 }

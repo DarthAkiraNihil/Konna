@@ -34,11 +34,11 @@ public class KStandardInputProcessorTests extends KStandardTestClass {
         public void process(KInputEventData data) {
 
             switch (data.action()) {
-                case "abiba": {
+                case "abiba", "abibar": {
                     this.f = 1;
                     break;
                 }
-                case "abibax": {
+                case "abibax", "abibaxr": {
                     this.f = 3;
                     break;
                 }
@@ -56,22 +56,24 @@ public class KStandardInputProcessorTests extends KStandardTestClass {
         KInputProcessor ip = new KStandardInputProcessor(p);
         KInputControlScheme sc = new KInputControlScheme(
             "test_1",
-            KInputBinding.ofKey("abiba", KKey.A),
-            KInputBinding.ofKey("abibax", KKey.B)
+            KInputBinding.ofKey("abiba", KKey.A, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibax", KKey.B, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibar", KKey.A, KKeyActionType.RELEASE),
+            KInputBinding.ofKey("abibaxr", KKey.B, KKeyActionType.RELEASE)
         );
         ip.addControlScheme(sc);
 
         Assertions.assertEquals(sc, ip.getControlScheme("test_1"));
         Assertions.assertNull(ip.getControlScheme("abiba"));
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
 
-        ip.keyReleased(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.A, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyReleased(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.B, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
 
     }
@@ -82,32 +84,34 @@ public class KStandardInputProcessorTests extends KStandardTestClass {
         KInputProcessor ip = new KStandardInputProcessor(p);
         KInputControlScheme sc = new KInputControlScheme(
             "test_1",
-            KInputBinding.ofKey("abiba", KKey.A),
-            KInputBinding.ofKey("abibax", KKey.B)
+            KInputBinding.ofKey("abiba", KKey.A, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibax", KKey.B, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibar", KKey.A, KKeyActionType.RELEASE),
+            KInputBinding.ofKey("abibaxr", KKey.B, KKeyActionType.RELEASE)
         );
         ip.addControlScheme(sc);
         sc.disable();
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
 
-        ip.keyReleased(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.A, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
-        ip.keyReleased(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.B, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
 
         sc.enable();
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
 
-        ip.keyReleased(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.A, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyReleased(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.B, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
 
     }
@@ -118,32 +122,34 @@ public class KStandardInputProcessorTests extends KStandardTestClass {
         KInputProcessor ip = new KStandardInputProcessor(p);
         KInputControlScheme sc = new KInputControlScheme(
             "test_1",
-            KInputBinding.ofKey("abiba", KKey.A),
-            KInputBinding.ofKey("abibax", KKey.B)
+            KInputBinding.ofKey("abiba", KKey.A, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibax", KKey.B, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibar", KKey.A, KKeyActionType.RELEASE),
+            KInputBinding.ofKey("abibaxr", KKey.B, KKeyActionType.RELEASE)
         );
         ip.addControlScheme(sc);
         ip.disable();
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
 
-        ip.keyReleased(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.A, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
-        ip.keyReleased(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.B, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(0, p.f);
 
         ip.enable();
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
 
-        ip.keyReleased(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.A, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyReleased(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyReleased(new KKeyInputData(KKey.B, KKeyActionType.RELEASE, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
     }
 
@@ -153,17 +159,19 @@ public class KStandardInputProcessorTests extends KStandardTestClass {
         KInputProcessor ip = new KStandardInputProcessor(p);
         KInputControlScheme sc = new KInputControlScheme(
             "test_1",
-            KInputBinding.ofKey("abiba", KKey.A),
-            KInputBinding.ofKey("abibax", KKey.B)
+            KInputBinding.ofKey("abiba", KKey.A, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibax", KKey.B, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibar", KKey.A, KKeyActionType.RELEASE),
+            KInputBinding.ofKey("abibaxr", KKey.B, KKeyActionType.RELEASE)
         );
         ip.addControlScheme(sc);
-        sc.overrideAction(KInputBinding.ofKey("abibax", KKey.Y));
+        sc.overrideAction(KInputBinding.ofKey("abibax", KKey.Y, KKeyActionType.PRESS));
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.Y, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.Y, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
     }
 
@@ -173,17 +181,19 @@ public class KStandardInputProcessorTests extends KStandardTestClass {
         KInputProcessor ip = new KStandardInputProcessor(p);
         KInputControlScheme sc = new KInputControlScheme(
             "test_1",
-            KInputBinding.ofKey("abiba", KKey.A),
-            KInputBinding.ofKey("abibax", KKey.B)
+            KInputBinding.ofKey("abiba", KKey.A, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibax", KKey.B, KKeyActionType.PRESS),
+            KInputBinding.ofKey("abibar", KKey.A, KKeyActionType.RELEASE),
+            KInputBinding.ofKey("abibaxr", KKey.B, KKeyActionType.RELEASE)
         );
         ip.addControlScheme(sc);
-        sc.overrideAction(KInputBinding.ofKey("abibay", KKey.Y));
+        sc.overrideAction(KInputBinding.ofKey("abibay", KKey.Y, KKeyActionType.PRESS));
 
-        ip.keyPressed(new KKeyInputData(KKey.A, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(1, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.B, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
-        ip.keyPressed(new KKeyInputData(KKey.Y, false, false, false, false, false));
+        ip.keyPressed(new KKeyInputData(KKey.Y, KKeyActionType.PRESS, false, false, false, false, false));
         Assertions.assertEquals(3, p.f);
 
     }

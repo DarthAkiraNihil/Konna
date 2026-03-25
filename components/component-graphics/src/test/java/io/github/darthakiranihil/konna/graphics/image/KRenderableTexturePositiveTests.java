@@ -54,6 +54,7 @@ public class KRenderableTexturePositiveTests extends KAssetCollectionTestClass {
         KTexture tex = tc.getAsset("cute_image");
 
         KRenderableTexture rtex = KRenderableTexture.wrapIntoRectangle(
+            "tt",
             new KVector2i(10, 10),
             tex,
             0
@@ -91,6 +92,8 @@ public class KRenderableTexturePositiveTests extends KAssetCollectionTestClass {
             Assertions.assertEquals(uv[i], uvs[i]);
             Assertions.assertEquals(texColors[i], colors[i]);
         }
+
+        Assertions.assertEquals("tt", rtex.id());
     }
 
 }

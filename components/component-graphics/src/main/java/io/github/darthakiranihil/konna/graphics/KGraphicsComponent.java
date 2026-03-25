@@ -72,6 +72,22 @@ import io.github.darthakiranihil.konna.graphics.type.*;
  *                 </ul>
  *             </p>
  *         </li>
+ *         <li>
+ *             <p>
+ *                 <i>Graphics.RenderService.bulkAddToRender</i> - adds array of objects to render
+ *                 (does not erase list of current rendered objects)
+ *             </p>
+ *             <p>
+ *                 Message schema:
+ *                 <ul>
+ *                     <li>
+ *                         {@code objects} -
+ *                         {@link io.github.darthakiranihil.konna.graphics.render.KRenderable}[] -
+ *                         array of objects to render
+ *                     </li>
+ *                 </ul>
+ *             </p>
+ *         </li>
  *     </ul>
  * </p>
  * <p>

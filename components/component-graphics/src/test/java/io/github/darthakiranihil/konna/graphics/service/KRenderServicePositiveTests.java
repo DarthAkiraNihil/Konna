@@ -84,6 +84,13 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
 
             renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
             Assertions.assertEquals(1, renderables.size());
+
+            TimeUnit.SECONDS.sleep(2);
+            KStandardTestClass.context.deliverMessageSync(KMessage.regular("bulkAddToRender", body));
+
+            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            Assertions.assertEquals(2, renderables.size());
+
             Assertions.assertEquals(obj, renderables.getFirst());
 
             Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithOnlyDefaultArgs));

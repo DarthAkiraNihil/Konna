@@ -33,7 +33,7 @@ public class KLevelPositiveTests extends KStandardTestClass {
     @Test
     public void testGetSectorSuccess() {
 
-        KTileInfo tileInfo = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo = new KTileInfo("tt", 1, true, 16, Map.of());
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));

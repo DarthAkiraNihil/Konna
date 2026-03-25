@@ -122,6 +122,10 @@ public class KHashMapIntWeightedGraph<IDX> implements KIntWeightedGraph<IDX> {
     @Override
     public List<IDX> getPath(final IDX src, final IDX dst, boolean forceOverwriteSrcCost) {
 
+        if (src.equals(dst) && !forceOverwriteSrcCost) {
+            return Collections.singletonList(src);
+        }
+
         Map<IDX, DijkstraNode<IDX>> dijkstraNodes = new HashMap<>();
         for (var e: this.nodes.entrySet()) {
             dijkstraNodes.put(

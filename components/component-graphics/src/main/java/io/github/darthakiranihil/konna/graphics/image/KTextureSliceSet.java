@@ -61,6 +61,7 @@ public final class KTextureSliceSet {
         KTextureSliceData sliceData = this.slices.get(sliceName);
 
         return new KRenderableTexture(
+            sliceName,
             sliceData.uv(),
             sliceData.xy(),
             sliceData.colors(),
@@ -94,6 +95,7 @@ public final class KTextureSliceSet {
         }
 
         return new KRenderableTexture(
+            sliceName,
             sliceData.uv(),
             newXy,
             sliceData.colors(),

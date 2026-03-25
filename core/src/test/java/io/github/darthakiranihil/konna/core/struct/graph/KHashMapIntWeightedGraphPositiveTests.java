@@ -205,5 +205,24 @@ public class KHashMapIntWeightedGraphPositiveTests extends KStandardTestClass {
         var p = g.getPath("5", "4");
         Assertions.assertEquals(0, p.size());
     }
+
+    @Test
+    public void testFindPathToSelfAndIsSelf() {
+
+        KIntWeightedGraph<String> g = new KHashMapIntWeightedGraph<>();
+        g.add("1");
+        g.add("2");
+        g.add("3");
+        g.add("4");
+
+        g.connect("1", "2", 1);
+        g.connect("2", "3", 1);
+        g.connect("3", "4", 1);
+        g.connect("3", "1", 1);
+
+        var p = g.getPath("1", "1");
+        Assertions.assertEquals(1, p.size());
+
+    }
     
 }

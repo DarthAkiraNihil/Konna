@@ -88,12 +88,12 @@ final class KTextureMaker {
 
     public TextureInfo make(final KRenderableTexture texture, boolean doNotTriangulate) {
 
-        String hash = Integer.toString(KRenderableHasher.hash(texture));
+        String key = Integer.toString(KRenderableHasher.hash(texture));
 
-        if (!this.cache.hasKey(hash)) {
+        if (!this.cache.hasKey(key)) {
 
             this.cache.putToCache(
-                hash,
+                key,
                 this.createTextureInfo(texture, doNotTriangulate),
                 i -> i.free(this.gl),
                 KCache.TTL_EVERLASTING
@@ -101,7 +101,7 @@ final class KTextureMaker {
         }
 
         return Objects.requireNonNull(
-            this.cache.getFromCache(hash, TextureInfo.class)
+            this.cache.getFromCache(key, TextureInfo.class)
         );
 
     }
@@ -114,16 +114,17 @@ final class KTextureMaker {
         KTexture sourceTexture = texture.texture();
 
         KImage attachedImage = sourceTexture.attachedImage();
-        String imageHash = Integer.toString(attachedImage.hashCode());
+        // String imageHash = Integer.toString(attachedImage.hashCode());
+        String key = String.format("__image#%s", texture.id());
 
         int tex;
-        if (this.cache.hasKey(imageHash)) {
-            tex = Objects.requireNonNull(this.cache.getFromCache(imageHash, Integer.class));
+        if (this.cache.hasKey(key)) {
+            tex = Objects.requireNonNull(this.cache.getFromCache(key, Integer.class));
             this.gl.glBindTexture(KGl33.GL_TEXTURE_2D, tex);
         } else {
             tex = this.createTexture(attachedImage, sourceTexture);
             this.cache.putToCache(
-                imageHash,
+                key,
                 tex,
                 this.gl::glDeleteTextures,
                 KCache.TTL_EVERLASTING

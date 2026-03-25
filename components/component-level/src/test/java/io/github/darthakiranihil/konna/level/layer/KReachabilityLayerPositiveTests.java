@@ -33,8 +33,8 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
     public KReachabilityLayerPositiveTests() {
 
         KTileLayer layer = new KTileLayer(3, 3);
-        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
-        KTileInfo tileInfo2 = new KTileInfo(2, false, 16, Map.of());
+        KTileInfo tileInfo1 = new KTileInfo("tt", 1, true, 16, Map.of());
+        KTileInfo tileInfo2 = new KTileInfo("tt", 2, false, 16, Map.of());
 
         layer
             .getTool()
@@ -166,7 +166,7 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
     public void testUnreachableByHeight() {
 
         KTileLayer layer = new KTileLayer(3, 3);
-        KTileInfo tileInfo1 = new KTileInfo(1, true, 16, Map.of());
+        KTileInfo tileInfo1 = new KTileInfo("tt", 1, true, 16, Map.of());
 
         layer
             .getTool()

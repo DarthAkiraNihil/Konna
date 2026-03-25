@@ -36,8 +36,6 @@ import java.util.List;
 @KSingleton(immortal = true)
 public final class KStandardLogger extends KLogger {
 
-    private static final Object LOG_LOCK = new Object();
-
     /**
      * Standard constructor.
      * @param name Name of the logger object
@@ -112,7 +110,7 @@ public final class KStandardLogger extends KLogger {
         }
 
         for (var handler: this.logHandlers) {
-            synchronized (KStandardLogger.LOG_LOCK) {
+            synchronized (this.logLock) {
                 if (handler.hasFormatter()) {
                     handler.handleLog(level, tag, message, args);
                 } else {

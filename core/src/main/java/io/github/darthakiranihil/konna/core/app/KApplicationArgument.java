@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -54,6 +55,27 @@ public record KApplicationArgument(
             true,
             "false",
             KArgumentValidator.BOOLEAN
+        ),
+        new KApplicationArgument(
+            "log2f",
+            "log-to-file",
+            true,
+            "false",
+            KArgumentValidator.BOOLEAN
+        ),
+        new KApplicationArgument(
+            "logL",
+            "log-level",
+            true,
+            "DEBUG",
+            (v) -> {
+                try {
+                    KLogLevel.valueOf(v);
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    return false;
+                }
+            }
         )
     );
 

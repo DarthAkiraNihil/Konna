@@ -29,11 +29,13 @@ public interface KInputBinding {
      * or something like that.
      * @param action Action name
      * @param ofKey Key that is assigned to the action
+     * @param ofKeyAction Key action that is assigned to the action
      * @return Key binding to the action
      */
     static KInputBinding ofKey(
         final String action,
-        final KKey ofKey
+        final KKey ofKey,
+        final KKeyActionType ofKeyAction
     ) {
         return new KInputBinding() {
             @Override
@@ -48,7 +50,7 @@ public interface KInputBinding {
                 }
 
                 KKeyInputData keyData = (KKeyInputData) data;
-                return keyData.key() == ofKey;
+                return keyData.key() == ofKey && keyData.actionType() == ofKeyAction;
             }
         };
     }

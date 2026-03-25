@@ -53,31 +53,39 @@ public class KRenderableTexture extends KAbstractShape {
     private final KVector2i[] xy;
     private final KColor[] colors;
     private final KTexture texture;
+    private final String id;
 
     private int unit;
 
     /**
      * Does the same job as
-     * {@link KRenderableTexture#wrapIntoRectangle(KVector2i, KTexture, KColor[], int)},
+     * {@link KRenderableTexture#wrapIntoRectangle(String, KVector2i, KTexture, KColor[], int)},
      * but all vertices colors are {@link KColor#WHITE}.
+     * @param id Renderable texture id
+     *           (textures with different ids should be treated
+     *           as different textures)
      * @param leftTopCorner Left top corner coordinate of texture
      * @param texture Attached texture data
      * @param unit Texture unit to be used for its rendering
      * @return Wrapped renderable texture of full image
      */
     public static KRenderableTexture wrapIntoRectangle(
+        final String id,
         final KVector2i leftTopCorner,
         final KTexture texture,
         int unit
     ) {
 
-        return KRenderableTexture.wrapIntoRectangle(leftTopCorner, texture, ALL_WHITES, unit);
+        return KRenderableTexture.wrapIntoRectangle(id, leftTopCorner, texture, ALL_WHITES, unit);
 
     }
 
     /**
      * Wraps texture data into that renderable texture that has full size as its source
      * image, without rotation with specified place of origin and vertices colors.
+     * @param id Renderable texture id
+     *           (textures with different ids should be treated
+     *           as different textures)
      * @param leftTopCorner Left top corner coordinate of texture
      * @param texture Attached texture data
      * @param colors Vertices colors
@@ -85,6 +93,7 @@ public class KRenderableTexture extends KAbstractShape {
      * @return Wrapped renderable texture of full image
      */
     public static KRenderableTexture wrapIntoRectangle(
+        final String id,
         final KVector2i leftTopCorner,
         final KTexture texture,
         final KColor[] colors,
@@ -112,6 +121,7 @@ public class KRenderableTexture extends KAbstractShape {
         };
 
         return new KRenderableTexture(
+            id,
             DEFAULT_UV,
             xy,
             colors,
@@ -123,6 +133,9 @@ public class KRenderableTexture extends KAbstractShape {
 
     /**
      * Standard constructor.
+     * @param id Renderable texture id
+     *           (textures with different ids should be treated
+     *           as different textures)
      * @param uv UV coordinates of this texture
      * @param xy Screen coordinates of texture vertices
      * @param colors Color of texture vertices
@@ -130,6 +143,7 @@ public class KRenderableTexture extends KAbstractShape {
      * @param unit Texture unit to be used for its rendering
      */
     public KRenderableTexture(
+        final String id,
         final KVector2f[] uv,
         final KVector2i[] xy,
         final KColor[] colors,
@@ -142,6 +156,14 @@ public class KRenderableTexture extends KAbstractShape {
         this.colors = colors;
         this.texture = texture;
         this.unit = unit;
+        this.id = id;
+    }
+
+    /**
+     * @return ID of this texture (<i>not source texture!</i>)
+     */
+    public String id() {
+        return this.id;
     }
 
     /**
