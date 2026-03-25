@@ -28,7 +28,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 /**
  * {@link KCache} implementation using {@link ConcurrentHashMap} with automatic
@@ -221,7 +220,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
         long deltaTime = 1;
 
         KSystemLogger.info(
-            "cache_cleaner",
+            "KHashMapBasedCache.cacheCleaner",
             "Cache cleaner thread has been started [host = %s]",
             this
         );
@@ -246,15 +245,11 @@ public class KHashMapBasedCache extends KObject implements KCache {
             }
 
 
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                KSystemLogger.warning("cache_cleaner", e);
-            }
+            KThreadUtils.sleepForSeconds(1);
             deltaTime = Duration.between(beginTime, Instant.now()).getSeconds();
             if (deltaTime > CLEAN_TIME_WARNING) {
                 KSystemLogger.warning(
-                    "cache_cleaner",
+                    "KHashMapBasedCache.cacheCleaner",
                     "Cache clean time tick duration is more than %ds. "
                         +   "Actual: %s. Is cache overflowed?",
                     CLEAN_TIME_WARNING,
@@ -264,7 +259,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
         }
 
         KSystemLogger.info(
-            "cache_cleaner",
+            "KHashMapBasedCache.cacheCleaner",
             "Cache cleaner thread has been stopped [host=%s]",
             this
         );

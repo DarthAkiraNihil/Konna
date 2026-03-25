@@ -133,6 +133,10 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
         );
 
         if (!this.routes.containsKey(message.messageId())) {
+            if (message.type() != KMessageType.REGULAR) {
+                return;
+            }
+
             KSystemLogger.warning(
                 this.name,
                 "Dropped message %s, as no route configured for it",

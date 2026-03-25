@@ -111,7 +111,7 @@ public class KEngineHypervisor extends KObject {
         final KEngineHypervisorConfig config
     ) {
         super(
-            "konna_hypervisor",
+            "KEngineHypervisor",
             KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
         );
 
@@ -340,7 +340,7 @@ public class KEngineHypervisor extends KObject {
                 this.fps.accept(currentFps);
                 this.fpsData.put("fps", currentFps);
                 this.fpsData.put("avg_fps", (float) this.fps.getAverage());
-                this.ctx.deliverMessage(
+                this.ctx.deliverMessageSync(
                     KMessage.metrics(
                         "Konna.fps",
                         this.fpsData

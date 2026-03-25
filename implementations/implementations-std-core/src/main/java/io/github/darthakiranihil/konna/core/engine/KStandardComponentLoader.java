@@ -46,7 +46,7 @@ public class KStandardComponentLoader extends KObject implements KComponentLoade
 
     public KStandardComponentLoader(@KInject final KJsonParser parser) {
         super(
-            "std_component_loader",
+            "KStandardComponentLoader",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD
