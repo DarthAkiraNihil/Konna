@@ -133,24 +133,7 @@ public class KEngineHypervisor extends KObject {
      */
     public void launch(final KApplicationFeatures features) {
 
-        String debugFeature = features.getFeature("debug");
-        if (debugFeature != null && debugFeature.equals("true")) {
-            this.debug = true;
-            KSystemLogger.info(
-                this.name,
-                "Debug mode is enabled"
-            );
-        }
-        String logToFileFeature = features.getFeature("log-to-file");
-        if (logToFileFeature != null && logToFileFeature.equals("true")) {
-            KSystemLogger.activateFileLogging();
-        }
-
-        String logLevel = features.getFeature("log-level");
-        if (logLevel != null) {
-            KSystemLogger.setLogLevel(KLogLevel.valueOf(logLevel));
-        }
-
+        this.processSystemFeatures(features);
         KEngineContextLoader contextLoader;
         try {
             contextLoader = this.config.contextLoader().getDeclaredConstructor().newInstance();
@@ -423,6 +406,26 @@ public class KEngineHypervisor extends KObject {
                 .map(ClassInfo::loadClass)
                 .map(c -> (KEventRegisterer) this.ctx.createObject(c))
                 .forEach(er -> er.registerEvents(this.ctx));
+        }
+    }
+
+    private void processSystemFeatures(final KApplicationFeatures features) {
+        String debugFeature = features.getFeature("debug");
+        if (debugFeature != null && debugFeature.equals("true")) {
+            this.debug = true;
+            KSystemLogger.info(
+                this.name,
+                "Debug mode is enabled"
+            );
+        }
+        String logToFileFeature = features.getFeature("log-to-file");
+        if (logToFileFeature != null && logToFileFeature.equals("true")) {
+            KSystemLogger.activateFileLogging();
+        }
+
+        String logLevel = features.getFeature("log-level");
+        if (logLevel != null) {
+            KSystemLogger.setLogLevel(KLogLevel.valueOf(logLevel));
         }
     }
 

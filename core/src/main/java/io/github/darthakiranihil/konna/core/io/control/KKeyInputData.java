@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 /**
  * Container for key event data.
  * @param key Pressed key
+ * @param actionType Performed key action
  * @param withShift Flag if key is followed with "Shift" modifier
  * @param withAlt Flag if key is followed with "Alt" modifier
  * @param withSuper Flag if key is followed with "Super" modifier

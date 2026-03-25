@@ -21,6 +21,9 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 /**
  * Simple container for texture data that holds data of what to render.
  * However, this is not renderable since does not provide vertices and uvs.
+ * @param id ID of this texture
+ *           (textures with different ids should be treated as
+ *           different textures)
  * @param attachedImage Image attached to this texture
  * @param shader Shader used for rendering this texture
  * @param minFilter Texture min filtering mode

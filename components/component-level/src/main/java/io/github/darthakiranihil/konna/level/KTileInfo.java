@@ -38,6 +38,7 @@ public final class KTileInfo {
 
     /**
      * Standard constructor.
+     * @param fullId Full tile id (usually its asset id)
      * @param id Numeric tile id
      * @param passable Flag that indicates if this tile can be passed through
      * @param opaqueness Opaqueness value - how strong it reduces an entity vision range
@@ -57,6 +58,9 @@ public final class KTileInfo {
         this.properties = properties;
     }
 
+    /**
+     * @return Full id of this tile
+     */
     public String getFullId() {
         return this.fullId;
     }

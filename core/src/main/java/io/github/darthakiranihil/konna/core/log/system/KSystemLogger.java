@@ -22,7 +22,6 @@ import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -68,6 +67,10 @@ public final class KSystemLogger extends KUninstantiable {
         KSystemLogger.enabled = false;
     }
 
+    /**
+     * Activates writing log to a file named {@code konna.system.log}.
+     * @since 0.5.0
+     */
     public static void activateFileLogging() {
         if (KSystemLogger.fileLogEnabled) {
             return;

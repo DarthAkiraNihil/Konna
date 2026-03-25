@@ -16,9 +16,21 @@
 
 package io.github.darthakiranihil.konna.core.io.control;
 
+/**
+ * Enumeration representing possible key action.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public enum KKeyActionType {
 
+    /**
+     * Represents key pressing action.
+     */
     PRESS,
+    /**
+     * Represents key releasing action.
+     */
     RELEASE
 
 }

@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
 import org.jspecify.annotations.Nullable;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

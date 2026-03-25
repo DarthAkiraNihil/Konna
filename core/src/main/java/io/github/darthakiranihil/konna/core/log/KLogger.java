@@ -30,6 +30,10 @@ import java.util.List;
  */
 public abstract class KLogger extends KObject {
 
+    /**
+     * Lock object used for synchronization on adding log handlers,
+     * setting log levels and logging itself.
+     */
     protected final Object logLock = new Object();
 
     /**

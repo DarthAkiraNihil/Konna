@@ -113,6 +113,11 @@ public class KRenderService extends KObject {
         }
     }
 
+    /**
+     * Add an array of objects to list of current rendered objects.
+     * @param renderables Object array to be rendered with {@link KRenderFrontend}
+     * @since 0.5.0
+     */
     @KServiceEndpoint(
         route = "bulkAddToRender"
     )

@@ -29,6 +29,7 @@ public interface KInputBinding {
      * or something like that.
      * @param action Action name
      * @param ofKey Key that is assigned to the action
+     * @param ofKeyAction Key action that is assigned to the action
      * @return Key binding to the action
      */
     static KInputBinding ofKey(
