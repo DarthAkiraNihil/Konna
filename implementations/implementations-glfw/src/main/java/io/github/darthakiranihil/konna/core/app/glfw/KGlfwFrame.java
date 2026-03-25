@@ -20,8 +20,10 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLock;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.io.control.KKey;
+import io.github.darthakiranihil.konna.core.io.control.KKeyActionType;
 import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -29,6 +31,7 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfw;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
+import org.jspecify.annotations.NonNull;
 
 import java.nio.IntBuffer;
 import java.util.AbstractMap;
@@ -325,8 +328,10 @@ public class KGlfwFrame extends KObject implements KFrame {
             this.handle,
             (w, key, scancode, action, mods) -> {
 
+                KKeyActionType keyActionType = KGlfwFrame.getKeyActionType(action);
                 KKeyInputData eventData = new KKeyInputData(
                     KEY_GLFW_TO_KONNA.get(key),
+                    keyActionType,
                     (mods & KGlfw.GLFW_MOD_SHIFT) != 0,
                     (mods & KGlfw.GLFW_MOD_ALT) != 0,
                     (mods & KGlfw.GLFW_MOD_SUPER) != 0,
@@ -344,5 +349,25 @@ public class KGlfwFrame extends KObject implements KFrame {
                 }
             }
         );
+    }
+
+    private static KKeyActionType getKeyActionType(int action) {
+        KKeyActionType keyActionType = null;
+        switch (action) {
+            case KGlfw.GLFW_PRESS -> {
+                keyActionType = KKeyActionType.PRESS;
+            }
+            case KGlfw.GLFW_RELEASE -> {
+                keyActionType = KKeyActionType.RELEASE;
+            }
+        }
+
+        if (keyActionType == null) {
+            throw new KInvalidArgumentException(
+                String.format("Unknown frame action: %s", action)
+            );
+        }
+
+        return keyActionType;
     }
 }

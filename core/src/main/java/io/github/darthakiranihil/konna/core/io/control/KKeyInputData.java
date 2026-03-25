@@ -33,6 +33,7 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 @KExcludeFromGeneratedCoverageReport
 public record KKeyInputData(
     KKey key,
+    KKeyActionType actionType,
     boolean withShift,
     boolean withAlt,
     boolean withSuper,

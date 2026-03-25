@@ -33,7 +33,8 @@ public interface KInputBinding {
      */
     static KInputBinding ofKey(
         final String action,
-        final KKey ofKey
+        final KKey ofKey,
+        final KKeyActionType ofKeyAction
     ) {
         return new KInputBinding() {
             @Override
@@ -48,7 +49,7 @@ public interface KInputBinding {
                 }
 
                 KKeyInputData keyData = (KKeyInputData) data;
-                return keyData.key() == ofKey;
+                return keyData.key() == ofKey && keyData.actionType() == ofKeyAction;
             }
         };
     }

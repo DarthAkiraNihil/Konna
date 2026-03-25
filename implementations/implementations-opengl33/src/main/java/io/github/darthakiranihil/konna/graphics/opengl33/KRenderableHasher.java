@@ -59,7 +59,8 @@ final class KRenderableHasher extends KUninstantiable {
         return Objects.hash(
             Arrays.hashCode(texture.uv()),
             Arrays.hashCode(texture.xy()),
-            texture.texture().id()
+            texture.texture().id(),
+            texture.id()
         );
     }
 

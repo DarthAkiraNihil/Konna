@@ -23,6 +23,8 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Representation of position, rotation and scaling of an object,
@@ -49,7 +51,7 @@ public final class KTransform {
     private KVector2d scaling;
 
     private @Nullable KTransform parent;
-    private final List<KTransform> children;
+    private final Queue<KTransform> children;
 
     private final KVector2i center;
 
@@ -74,7 +76,7 @@ public final class KTransform {
         this.translation = translation;
         this.center = center;
 
-        this.children = new LinkedList<>();
+        this.children = new ConcurrentLinkedQueue<>();
 
         this.matrix = new float[16];
         this.cached = false;
@@ -196,7 +198,7 @@ public final class KTransform {
      * @return Children of this transform
      */
     public List<KTransform> getChildren() {
-        return this.children;
+        return this.children.stream().toList();
     }
 
     /**
@@ -228,9 +230,12 @@ public final class KTransform {
         return this;
     }
 
-    private void invalidateCache() {
+    private synchronized void invalidateCache() {
         this.cached = false;
-        this.children.forEach(KTransform::invalidateCache);
+        for (var child: this.children) {
+            child.invalidateCache();
+            // this.children.forEach(KTransform::invalidateCache);
+        }
     }
 
     /**
