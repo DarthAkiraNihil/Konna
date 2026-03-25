@@ -38,7 +38,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @KSingleton(immortal = true)
 public class KStandardEventSystem extends KObject implements KQueueBasedEventSystem {
 
-    private static final String WATCHER_THREAD_NAME = "event_watcher";
+    private static final String WATCHER_THREAD_NAME = "KStandardEventSystem.watcher";
     private final Queue<Runnable> eventQueue;
 
     private final Map<String, KEvent<?>> events;
@@ -52,7 +52,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
      */
     public KStandardEventSystem() {
         super(
-            "std_event_system",
+            "KStandardEventSystem",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD

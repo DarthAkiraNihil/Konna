@@ -101,7 +101,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
         this.cache = new ConcurrentHashMap<>();
 
         this.cleaner = new Thread(this::clean);
-        this.cleaner.setName("cache_cleaner");
+        this.cleaner.setName("KHashMapBasedCache.cacheCleaner");
         this.cleaner.start();
     }
 
