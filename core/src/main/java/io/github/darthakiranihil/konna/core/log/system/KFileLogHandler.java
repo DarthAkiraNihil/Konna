@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,7 +38,7 @@ import java.io.Writer;
 public class KFileLogHandler extends KObject implements KLogHandler, AutoCloseable {
 
     private final KLogFormatter logFormatter;
-    private final Writer fileWriter;
+    private final @Nullable Writer fileWriter;
 
     /**
      * Constructs handler with opening file with given name and provided formatter.
@@ -86,6 +87,10 @@ public class KFileLogHandler extends KObject implements KLogHandler, AutoCloseab
 
     @Override
     public void close() throws Exception {
+        if (this.fileWriter == null) {
+            return;
+        }
+
         this.fileWriter.close();
     }
 }

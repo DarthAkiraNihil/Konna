@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,18 +40,15 @@ public final class KSystemLogger extends KUninstantiable {
         "system_logger",
         KLogLevel.TRACE,
         new KTimestampLogFormatter(),
-        new LinkedList<>(
+        new ArrayList<>(
             List.of(
-                new KTerminalLogHandler(new KLogcatLikeLogFormatter(false)),
-                new KFileLogHandler(
-                    "konna.system.log",
-                    new KLogcatLikeLogFormatter(true)
-                )
+                new KTerminalLogHandler(new KLogcatLikeLogFormatter(false))
             )
         )
     );
 
     private static boolean enabled = true;
+    private static boolean fileLogEnabled = false;
 
     private KSystemLogger() {
         super();
@@ -68,6 +66,20 @@ public final class KSystemLogger extends KUninstantiable {
      */
     private static void disable() {
         KSystemLogger.enabled = false;
+    }
+
+    public static void activateFileLogging() {
+        if (KSystemLogger.fileLogEnabled) {
+            return;
+        }
+
+        KSystemLogger.PROXIED_LOGGER.addLogHandler(
+            new KFileLogHandler(
+                "konna.system.log",
+                new KLogcatLikeLogFormatter(true)
+            )
+        );
+        KSystemLogger.fileLogEnabled = true;
     }
 
     /**

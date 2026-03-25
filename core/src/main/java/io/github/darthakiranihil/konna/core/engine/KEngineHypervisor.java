@@ -29,6 +29,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
+import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
@@ -139,6 +140,15 @@ public class KEngineHypervisor extends KObject {
                 this.name,
                 "Debug mode is enabled"
             );
+        }
+        String logToFileFeature = features.getFeature("log-to-file");
+        if (logToFileFeature != null && logToFileFeature.equals("true")) {
+            KSystemLogger.activateFileLogging();
+        }
+
+        String logLevel = features.getFeature("log-level");
+        if (logLevel != null) {
+            KSystemLogger.setLogLevel(KLogLevel.valueOf(logLevel));
         }
 
         KEngineContextLoader contextLoader;
