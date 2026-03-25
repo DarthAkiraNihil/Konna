@@ -44,7 +44,7 @@ import java.util.function.Consumer;
 @KSingleton(immortal = true)
 public class KStandardMessageSystem extends KObject implements KQueueBasedMessageSystem {
 
-    private static final String WATCHER_THREAD_NAME = "message_watcher";
+    private static final String WATCHER_THREAD_NAME = "KStandardMessageSystem.watcher";
 
     private record RouteConnectionData(
         BiConsumer<String, KMessage> consumer,
@@ -77,7 +77,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
         @KInject final KActivator activator
     ) {
         super(
-            "std_message_system",
+            "KStandardMessageSystem",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD
@@ -126,13 +126,17 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
             return;
         }
 
-        KSystemLogger.info(
+        KSystemLogger.trace(
             this.name,
             "Delivering message %s",
             message
         );
 
         if (!this.routes.containsKey(message.messageId())) {
+            if (message.type() != KMessageType.REGULAR) {
+                return;
+            }
+
             KSystemLogger.warning(
                 this.name,
                 "Dropped message %s, as no route configured for it",

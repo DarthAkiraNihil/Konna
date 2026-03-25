@@ -41,7 +41,7 @@ public class KStandardServiceLoader extends KObject implements KServiceLoader {
 
     public KStandardServiceLoader() {
         super(
-            "std_service_loader",
+            "KStandardServiceLoader",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD

@@ -178,7 +178,7 @@ public final class Konna extends KObject implements Runnable {
             }
         );
 
-        this.hypervisorThread.setName("konna_hypervisor_thread");
+        this.hypervisorThread.setName("Konna.hypervisor");
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
         this.hypervisorThread.start();
     }

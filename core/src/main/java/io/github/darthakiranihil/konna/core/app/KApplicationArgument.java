@@ -50,6 +50,13 @@ public record KApplicationArgument(
      */
     public static final List<KApplicationArgument> DEFAULT_ARGS = List.of(
         new KApplicationArgument(
+            "FPS",
+            "max-fps",
+            true,
+            "-1",
+            KArgumentValidator.INTEGER
+        ),
+        new KApplicationArgument(
             "D",
             "debug",
             true,
