@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.app.except.KArgumentParseException;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -82,5 +83,22 @@ public class KStandardArgumentParserNegativeTests extends KStandardTestClass {
                 opts
             )
         );
+    }
+
+    @Test
+    public void testLogLevelArgInvalid() {
+
+        List<KApplicationArgument> opts = KApplicationArgument.DEFAULT_ARGS;
+
+        Assertions.assertThrows(
+            KArgumentParseException.class,
+            () -> this.argumentParser.parse(
+                new String[] {
+                    "--Klog-level=asdfsdafsdfsadffsadfsadf",
+                },
+                opts
+            )
+        );
+
     }
 }

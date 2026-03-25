@@ -30,6 +30,8 @@ import java.util.List;
  */
 public abstract class KLogger extends KObject {
 
+    protected final Object logLock = new Object();
+
     /**
      * Minimum level of logged messages.
      */
@@ -67,7 +69,9 @@ public abstract class KLogger extends KObject {
      * @param handler New log handler.
      */
     public void addLogHandler(final KLogHandler handler) {
-        this.logHandlers.add(handler);
+        synchronized (this.logLock) {
+            this.logHandlers.add(handler);
+        }
     }
 
     /**
@@ -75,7 +79,9 @@ public abstract class KLogger extends KObject {
      * @param newLogLevel New minimum log level
      */
     public void setLogLevel(final KLogLevel newLogLevel) {
-        this.logLevel = newLogLevel;
+        synchronized (this.logLock) {
+            this.logLevel = newLogLevel;
+        }
     }
 
     /**

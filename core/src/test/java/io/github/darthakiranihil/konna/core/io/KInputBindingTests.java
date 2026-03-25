@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.io.control.KInputBinding;
-import io.github.darthakiranihil.konna.core.io.control.KInputData;
-import io.github.darthakiranihil.konna.core.io.control.KKey;
-import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
+import io.github.darthakiranihil.konna.core.io.control.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,11 +30,11 @@ public class KInputBindingTests extends KStandardTestClass {
     @Test
     public void testOfKeySuccess() {
 
-        KInputBinding binding = KInputBinding.ofKey("aboba", KKey.A);
+        KInputBinding binding = KInputBinding.ofKey("aboba", KKey.A, KKeyActionType.PRESS);
 
         Assertions.assertEquals("aboba", binding.getActionName());
         Assertions.assertTrue(binding.isActionPerformed(
-            new KKeyInputData(KKey.A, false, false, false, false, false)
+            new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false)
         ));
 
     }
@@ -45,11 +42,18 @@ public class KInputBindingTests extends KStandardTestClass {
     @Test
     public void testOfKeyActionIsNotPerformed() {
 
-        KInputBinding binding = KInputBinding.ofKey("aboba", KKey.A);
+        KInputBinding binding = KInputBinding.ofKey("aboba", KKey.A, KKeyActionType.RELEASE);
 
         Assertions.assertFalse(binding.isActionPerformed(
-            new KKeyInputData(KKey.B, false, false, false, false, false)
+            new KKeyInputData(KKey.A, KKeyActionType.PRESS, false, false, false, false, false)
         ));
+        Assertions.assertFalse(binding.isActionPerformed(
+            new KKeyInputData(KKey.B, KKeyActionType.PRESS, false, false, false, false, false)
+        ));
+        Assertions.assertFalse(binding.isActionPerformed(
+            new KKeyInputData(KKey.B, KKeyActionType.RELEASE, false, false, false, false, false)
+        ));
+
         Assertions.assertFalse(binding.isActionPerformed(new TestInputData()));
 
     }

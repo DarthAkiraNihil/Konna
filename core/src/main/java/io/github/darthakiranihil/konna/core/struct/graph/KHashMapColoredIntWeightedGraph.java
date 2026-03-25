@@ -134,7 +134,7 @@ public class KHashMapColoredIntWeightedGraph<IDX, COL>
     @Override
     public List<IDX> getPath(final IDX src, final IDX dst, boolean forceOverwriteSrcCost) {
 
-        if (src.equals(dst)) {
+        if (src.equals(dst) && !forceOverwriteSrcCost) {
             return Collections.singletonList(src);
         }
 

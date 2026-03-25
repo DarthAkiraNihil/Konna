@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -74,6 +75,22 @@ public class KStandardArgumentParserPositiveTests extends KStandardTestClass {
         Assertions.assertEquals("aboba", features.getFeature("arg3"));
         Assertions.assertEquals("123", features.getFeature("arg4"));
         Assertions.assertEquals("123", features.getFeature("arg5"));
+
+    }
+
+    @Test
+    public void testLogLevelArg() {
+
+        List<KApplicationArgument> opts = KApplicationArgument.DEFAULT_ARGS;
+
+        KApplicationFeatures features = this.argumentParser.parse(
+            new String[] {
+                "--Klog-level=DEBUG",
+            },
+            opts
+        );
+
+        Assertions.assertEquals("DEBUG", features.getFeature("log-level"));
 
     }
 }
