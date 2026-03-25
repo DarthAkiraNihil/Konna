@@ -22,6 +22,7 @@ import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.debug.KDebugger;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -32,6 +33,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
+import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -95,6 +97,10 @@ public class KEngineHypervisor extends KObject {
     private final KSimpleEvent loopLeaving;
 
     private boolean debug;
+    private final DoubleSummaryStatistics fps;
+    private int maxFps;
+    private long nanosPerFrame;
+    private final KUniversalMap fpsData;
 
     /**
      * Constructs hypervisor with provided config.
@@ -122,6 +128,10 @@ public class KEngineHypervisor extends KObject {
         this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
         this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
+
+        this.maxFps = -1;
+        this.fps = new DoubleSummaryStatistics();
+        this.fpsData = new KUniversalMap();
     }
 
     /**
@@ -320,10 +330,21 @@ public class KEngineHypervisor extends KObject {
                 this.frame.pollEvents();
 
                 var deltaTime = Duration.between(beginTime, Instant.now());
-                KSystemLogger.debug(
-                    "hypervisor", "FPS: %f",
-                    ONE_SEC_IN_NANOS / deltaTime.getNano()
+                var currentFps = ONE_SEC_IN_NANOS / deltaTime.getNano();
+                this.fps.accept(currentFps);
+                this.fpsData.put("fps", currentFps);
+                this.fpsData.put("avg_fps", (float) this.fps.getAverage());
+                this.ctx.deliverMessage(
+                    KMessage.metrics(
+                        "Konna.fps",
+                        this.fpsData
+                    )
                 );
+
+//                KSystemLogger.debug(
+//                    "hypervisor", "FPS: %f",
+//                    ONE_SEC_IN_NANOS / deltaTime.getNano()
+//                );
 
                 this.frameFinished.invokeSync();
                 // frame_finished
@@ -427,6 +448,12 @@ public class KEngineHypervisor extends KObject {
         if (logLevel != null) {
             KSystemLogger.setLogLevel(KLogLevel.valueOf(logLevel));
         }
+
+        String maxFpsFeature = features.getFeature("max-fps");
+        if (maxFpsFeature != null) {
+            this.maxFps = Integer.parseInt(maxFpsFeature);
+        }
+        this.nanosPerFrame = (long) (ONE_SEC_IN_NANOS / this.maxFps);
     }
 
 }

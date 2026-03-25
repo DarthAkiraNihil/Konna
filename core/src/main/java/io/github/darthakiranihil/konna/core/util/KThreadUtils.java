@@ -54,4 +54,12 @@ public final class KThreadUtils extends KUninstantiable {
             KSystemLogger.info("sleep", "Could not sleep :(");
         }
     }
+
+    public static void sleepForNano(long nanos) {
+        try {
+            TimeUnit.NANOSECONDS.sleep(nanos);
+        } catch (InterruptedException e) {
+            KSystemLogger.info("sleep", "Could not sleep :(");
+        }
+    }
 }
