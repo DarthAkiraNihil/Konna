@@ -14,41 +14,43 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.generator.constant;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.level.generator.KConstantNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 
 import java.util.Random;
 
 /**
- * Constant generator node containing a string value.
+ * Constant generator node containing an int value.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KStringConstantNode implements KConstantNode {
-    private final String object;
+public final class KIntConstantNode implements KConstantNode {
+
+    private final int object;
 
     /**
      * Constructs the node. Will throw a {@link KInvalidArgumentException} if
-     * the passed object is not a string.
+     * the passed object is not an int.
      * @param object Value to pack into the constant
      */
-    public KStringConstantNode(final Object object) {
-        if (!String.class.isAssignableFrom(object.getClass())) {
-            throw new KInvalidArgumentException("Object must be a string!");
+    public KIntConstantNode(final Object object) {
+        if (!Integer.class.isAssignableFrom(object.getClass())) {
+            throw new KInvalidArgumentException("Object must be an int!");
         }
 
-        this.object = (String) object;
+        this.object = (Integer) object;
     }
 
     @Override
-    @KGeneratorNodeOutputParam(name = "value", type = String.class)
+    @KGeneratorNodeOutputParam(name = "value", type = Integer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
         KUniversalMap result = new KUniversalMap();
         result.put("value", this.object);
         return result;
     }
-
 }

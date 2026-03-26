@@ -18,6 +18,10 @@ package io.github.darthakiranihil.konna.level.generator;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.level.generator.constant.KBooleanConstantNode;
+import io.github.darthakiranihil.konna.level.generator.constant.KFloatConstantNode;
+import io.github.darthakiranihil.konna.level.generator.constant.KIntConstantNode;
+import io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

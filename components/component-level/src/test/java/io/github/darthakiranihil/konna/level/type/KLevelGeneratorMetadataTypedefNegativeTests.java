@@ -105,7 +105,7 @@ public class KLevelGeneratorMetadataTypedefNegativeTests extends KStandardTestCl
             Map.of(
                 "n1", "io.github.darthakiranihil.konna.level.impl.TestLevelNode",
                 "n2", "io.github.darthakiranihil.konna.level.impl.TestLevelNode",
-                "nc1", "io.github.darthakiranihil.konna.level.generator.KStringConstantNode"
+                "nc1", "io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode"
             )));
         source.put("connections", new KAssetDefinition[] {
             new KMapAssetDefinition(

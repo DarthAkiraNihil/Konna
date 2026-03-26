@@ -14,38 +14,40 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.generator.constant;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.level.generator.KConstantNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 
 import java.util.Random;
 
 /**
- * Constant generator node containing a boolean value.
+ * Constant generator node containing a float value.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KBooleanConstantNode implements KConstantNode {
+public final class KFloatConstantNode implements KConstantNode {
 
-    private final boolean object;
+    private final float object;
 
     /**
      * Constructs the node. Will throw a {@link KInvalidArgumentException} if
-     * the passed object is not a boolean.
+     * the passed object is not a float.
      * @param object Value to pack into the constant
      */
-    public KBooleanConstantNode(final Object object) {
-        if (!Boolean.class.isAssignableFrom(object.getClass())) {
+    public KFloatConstantNode(final Object object) {
+        if (!Float.class.isAssignableFrom(object.getClass())) {
             throw new KInvalidArgumentException("Object must be a float!");
         }
 
-        this.object = (Boolean) object;
+        this.object = (Float) object;
     }
 
     @Override
-    @KGeneratorNodeOutputParam(name = "value", type = Boolean.class)
+    @KGeneratorNodeOutputParam(name = "value", type = Float.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
         KUniversalMap result = new KUniversalMap();
         result.put("value", this.object);
