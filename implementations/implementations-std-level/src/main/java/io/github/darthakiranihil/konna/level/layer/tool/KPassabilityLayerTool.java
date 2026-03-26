@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.layer.tool;
 
-public final class KRandomRoomsInPartitionNode {
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
+
+public interface KPassabilityLayerTool
+    extends KReadableObjectLayerTool<KPassabilityState> {
+
+    void setState(int x, int y, KPassabilityState state);
+    void digPassableRectangle(KVector2i topLeft, KSize size);
+
 }

@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.layer;
 
-public final class KRandomStraightConnectNode {
+public enum KPassabilityState {
+
+    VOID,
+    PASSABLE,
+    IMPASSABLE
+
 }
