@@ -14,23 +14,31 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.layer;
+package io.github.darthakiranihil.konna.level.generator;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
-import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
-import io.github.darthakiranihil.konna.level.layer.KLevelTransitionLayer;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelSector;
 
+import java.util.Collections;
 import java.util.Random;
 
-public final class KNewLevelTransitionLayer implements KGeneratorNode {
+public final class KPackSingleSectorToLevelNode implements KGeneratorNode {
 
     @Override
-    @KGeneratorNodeOutputParam(name = "layer", type = KLevelTransitionLayer.class)
-    public KUniversalMap process(final KUniversalMap params, final Random rnd) {
+    @KGeneratorNodeInputParam(name = "name", type = String.class)
+    @KGeneratorNodeInputParam(name = "sector", type = KLevelSector.class)
+    @KGeneratorNodeOutputParam(name = "level", type = KLevel.class)
+    public KUniversalMap process(KUniversalMap params, Random rnd) {
 
+        String name = params.get("name", String.class);
+        KLevelSector sector = params.get("sector", KLevelSector.class);
+
+        KLevel level = new KLevel(
+            name, Collections.singletonList(sector)
+        );
         KUniversalMap result = new KUniversalMap();
-        result.put("layer", new KLevelTransitionLayer());
+        result.put("level", level);
         return result;
 
     }

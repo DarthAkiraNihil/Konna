@@ -16,5 +16,23 @@
 
 package io.github.darthakiranihil.konna.level.generator.layer;
 
-public final class KNewSectorLinkLayerNode {
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
+
+import java.util.Random;
+
+public final class KNewSectorLinkLayerNode implements KGeneratorNode {
+
+    @Override
+    @KGeneratorNodeOutputParam(name = "layer", type = KSectorLinkLayer.class)
+    public KUniversalMap process(final KUniversalMap params, final Random rnd) {
+
+        KUniversalMap result = new KUniversalMap();
+        result.put("layer", new KSectorLinkLayer());
+        return result;
+
+    }
+
 }

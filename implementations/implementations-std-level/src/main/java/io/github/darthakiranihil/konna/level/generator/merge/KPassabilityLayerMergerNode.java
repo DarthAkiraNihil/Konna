@@ -35,6 +35,7 @@ public final class KPassabilityLayerMergerNode implements KGeneratorNode {
     @KGeneratorNodeInputParam(name = "second", type = KPassabilityLayer.class)
     @KGeneratorNodeInputParam(name = "second_layer_offset", type = KVector2i.class)
     @KGeneratorNodeOutputParam(name = "merged", type = KPassabilityLayer.class)
+    @KGeneratorNodeOutputParam(name = "new_size", type = KSize.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KPassabilityLayer first = params.get("first", KPassabilityLayer.class);
@@ -97,6 +98,7 @@ public final class KPassabilityLayerMergerNode implements KGeneratorNode {
 
         KUniversalMap result = new KUniversalMap();
         result.put("merged", merged);
+        result.put("new_size", mergedSize);
         return result;
 
     }

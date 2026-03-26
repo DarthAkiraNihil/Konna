@@ -16,5 +16,40 @@
 
 package io.github.darthakiranihil.konna.level.generator.layer;
 
-public final class KConstantHeightLayerNode {
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
+import io.github.darthakiranihil.konna.level.layer.tool.KHeightLayerTool;
+
+import java.util.Random;
+
+public final class KConstantHeightLayerNode implements KGeneratorNode {
+
+    @Override
+    @KGeneratorNodeInputParam(name = "size", type = KSize.class)
+    @KGeneratorNodeInputParam(name = "height", type = Integer.class)
+    @KGeneratorNodeOutputParam(name = "layer", type = KHeightLayer.class)
+    public KUniversalMap process(final KUniversalMap params, final Random rnd) {
+
+        KSize size = params.get("size", KSize.class);
+        int height = params.get("height", Integer.class);
+
+        KHeightLayer layer = new KHeightLayer(size);
+        KHeightLayerTool tool = layer.getTool();
+
+        for (int x = 0; x < size.width(); x++) {
+            for (int y = 0; y < size.height(); y++) {
+                tool.setHeight(x, y, height);
+            }
+        }
+
+        KUniversalMap result = new KUniversalMap();
+        result.put("layer", layer);
+        return result;
+
+    }
+
 }
