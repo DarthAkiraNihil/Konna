@@ -25,5 +25,6 @@ public interface KPassabilityLayerTool
 
     void setState(int x, int y, KPassabilityState state);
     void digPassableRectangle(KVector2i topLeft, KSize size);
+    void digStraightPassableLine(KVector2i start, int length, KVector2i direction);
 
 }

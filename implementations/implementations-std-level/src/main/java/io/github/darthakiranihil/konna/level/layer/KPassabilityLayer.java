@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
@@ -71,6 +72,42 @@ public class KPassabilityLayer
                     }
 
                 }
+            }
+
+        }
+
+        @Override
+        public void digStraightPassableLine(
+            final KVector2i start,
+            int length,
+            final KVector2i direction
+        ) {
+            if (
+                    !direction.equals(KVector2i.DOWN)
+                ||  !direction.equals(KVector2i.UP)
+                ||  !direction.equals(KVector2i.LEFT)
+                ||  !direction.equals(KVector2i.RIGHT)
+            ) {
+                throw new KInvalidArgumentException(
+                    String.format("Invalid direction: %s", direction)
+                );
+            }
+
+            KVector2i position = start;
+            for (int i = 0; i < length; i++) {
+                int currentX = position.x();
+                int currentY = position.y();
+
+                this.setState(currentX, currentY, KPassabilityState.PASSABLE);
+                if (direction.equals(KVector2i.DOWN) || direction.equals(KVector2i.UP)) {
+                    this.setState(currentX - 1, currentY, KPassabilityState.IMPASSABLE);
+                    this.setState(currentX + 1, currentY, KPassabilityState.IMPASSABLE);
+                } else {
+                    this.setState(currentX, currentY - 1, KPassabilityState.IMPASSABLE);
+                    this.setState(currentX, currentY + 1, KPassabilityState.IMPASSABLE);
+                }
+
+                position = position.add(direction);
             }
 
         }

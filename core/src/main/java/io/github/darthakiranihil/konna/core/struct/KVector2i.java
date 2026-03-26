@@ -34,6 +34,11 @@ public record KVector2i(
      */
     public static final KVector2i ZERO = new KVector2i(0, 0);
 
+    public static final KVector2i RIGHT = new KVector2i(1, 0);
+    public static final KVector2i LEFT = new KVector2i(-1, 0);
+    public static final KVector2i UP = new KVector2i(0, 1);
+    public static final KVector2i DOWN = new KVector2i(0, -1);
+
     /**
      * Adds a vector to this vector.
      * @param other Vector to add
