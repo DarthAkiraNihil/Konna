@@ -170,6 +170,9 @@ public final class KLevelGenerator extends KObject {
             }
 
             try {
+                KSystemLogger.debug(
+                    this.name, "Processing node %s", current.nodeInstance
+                );
                 KUniversalMap input = this.prepareInput(nodes, current);
                 KUniversalMap output = current.nodeInstance.process(input, rnd);
                 current.outputParamsValidator.validate(output);
@@ -192,6 +195,8 @@ public final class KLevelGenerator extends KObject {
                 +   "It must be located by \"level\" key and be a KLevel instance"
             );
         }
+
+        KSystemLogger.info(this.name, "Level has been successfully generated");
         return generatedLevel;
     }
 

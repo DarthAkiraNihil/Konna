@@ -51,21 +51,28 @@ public final class KBspNode implements KGeneratorNode {
     @Override
     @KGeneratorNodeInputParam(name = "size", type = KSize.class)
     @KGeneratorNodeInputParam(name = "iterations", type = Integer.class)
-    @KGeneratorNodeInputParam(name = "vertical_split_ratio", type = Float.class)
-    @KGeneratorNodeInputParam(name = "horizontal_split_ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "vertical_split_min_ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "vertical_split_max_ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "horizontal_split_min_ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "horizontal_split_max_ratio", type = Float.class)
     @KGeneratorNodeOutputParam(name = "partition", type = KPartition.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         int iterations = params.get("iterations", Integer.class);
         KSize size = params.get("size", KSize.class);
-        float verticalSplitRatio = params.get("vertical_split_ratio", Float.class);
-        float horizontalSplitRatio = params.get("horizontal_split_ratio", Float.class);
+
+        float verticalSplitMinRatio = params.get("vertical_split_min_ratio", Float.class);
+        float verticalSplitMaxRatio = params.get("vertical_split_max_ratio", Float.class);
+        float horizontalSplitMinRatio = params.get("horizontal_split_min_ratio", Float.class);
+        float horizontalSplitMaxRatio = params.get("horizontal_split_max_ratio", Float.class);
 
         BspTreeNode root = this.makePartition(
             KVector2i.ZERO,
             size,
-            verticalSplitRatio,
-            horizontalSplitRatio,
+            verticalSplitMinRatio,
+            verticalSplitMaxRatio,
+            horizontalSplitMinRatio,
+            horizontalSplitMaxRatio,
             iterations,
             rnd
         );
@@ -106,8 +113,10 @@ public final class KBspNode implements KGeneratorNode {
     private BspTreeNode makePartition(
         final KVector2i topLeft,
         final KSize size,
-        float verticalSplitRatio,
-        float horizontalSplitRatio,
+        float verticalSplitMinRatio,
+        float verticalSplitMaxRatio,
+        float horizontalSplitMinRatio,
+        float horizontalSplitMaxRatio,
         int iteration,
         final Random rnd
     ) {
@@ -118,23 +127,29 @@ public final class KBspNode implements KGeneratorNode {
             var children = this.split(
                 topLeft,
                 size,
-                verticalSplitRatio,
-                horizontalSplitRatio,
+                verticalSplitMinRatio,
+                verticalSplitMaxRatio,
+                horizontalSplitMinRatio,
+                horizontalSplitMaxRatio,
                 rnd
             );
             root.leftChild = this.makePartition(
                 children.first().topLeft,
                 children.first().size,
-                verticalSplitRatio,
-                horizontalSplitRatio,
+                verticalSplitMinRatio,
+                verticalSplitMaxRatio,
+                horizontalSplitMinRatio,
+                horizontalSplitMaxRatio,
                 iteration - 1,
                 rnd
             );
             root.rightChild = this.makePartition(
                 children.second().topLeft,
                 children.second().size,
-                verticalSplitRatio,
-                horizontalSplitRatio,
+                verticalSplitMinRatio,
+                verticalSplitMaxRatio,
+                horizontalSplitMinRatio,
+                horizontalSplitMaxRatio,
                 iteration - 1,
                 rnd
             );
@@ -148,63 +163,53 @@ public final class KBspNode implements KGeneratorNode {
     private KPair<BspTreeNode, BspTreeNode> split(
         final KVector2i topLeft,
         final KSize size,
-        float verticalSplitRatio,
-        float horizontalSplitRatio,
+        float verticalSplitMinRatio,
+        float verticalSplitMaxRatio,
+        float horizontalSplitMinRatio,
+        float horizontalSplitMaxRatio,
         final Random rnd
     ) {
 
         boolean splitByVertical = rnd.nextBoolean();
         if (splitByVertical) {
 
-            while (true) {
-                int splitPoint = rnd.nextInt(size.width());
-                BspTreeNode first = new BspTreeNode(topLeft, new KSize(splitPoint, size.height()));
-                BspTreeNode second = new BspTreeNode(
-                    topLeft.add(new KVector2i(splitPoint, 0)),
-                    new KSize(
-                    size.width() - splitPoint,
-                        size.height()
-                    )
-                );
-
-                return new KPair<>(first, second);
-
-                /*float firstWidthRatio = (float) first.size.width() / first.size.height();
-                float secondWidthRatio = (float) second.size.width() / second.size.height();
-
-                if (
-                        firstWidthRatio >= verticalSplitRatio
-                    &&  secondWidthRatio >= verticalSplitRatio
-                ) {
-                    return new KPair<>(first, second);
-                }*/
+            float ratio = rnd.nextFloat(verticalSplitMinRatio, verticalSplitMaxRatio);
+            int splitPoint = (int) (size.width() * ratio);
+            while (splitPoint == 0 || splitPoint >= size.width()) {
+                ratio = rnd.nextFloat(verticalSplitMinRatio, verticalSplitMaxRatio);
+                splitPoint = (int) (size.width() * ratio);
             }
+
+            BspTreeNode first = new BspTreeNode(topLeft, new KSize(splitPoint, size.height()));
+            BspTreeNode second = new BspTreeNode(
+                topLeft.add(new KVector2i(splitPoint, 0)),
+                new KSize(
+                size.width() - splitPoint,
+                    size.height()
+                )
+            );
+
+            return new KPair<>(first, second);
 
         } else {
 
-            while (true) {
-                int splitPoint = rnd.nextInt(size.height());
-                BspTreeNode first = new BspTreeNode(topLeft, new KSize(size.width(), splitPoint));
-                BspTreeNode second = new BspTreeNode(
-                    topLeft.add(new KVector2i(0, splitPoint)),
-                    new KSize(
-                        size.width(),
-                        size.height() - splitPoint
-                    )
-                );
-
-                return new KPair<>(first, second);
-
-                /*float firstHeightRatio = (float) first.size.height() / first.size.width();
-                float secondHeightRatio = (float) second.size.height() / second.size.width();
-
-                if (
-                        firstHeightRatio >= horizontalSplitRatio
-                    &&  secondHeightRatio >= horizontalSplitRatio
-                ) {
-                    return new KPair<>(first, second);
-                }*/
+            float ratio = rnd.nextFloat(horizontalSplitMinRatio, horizontalSplitMaxRatio);
+            int splitPoint = (int) (size.height() * ratio);
+            while (splitPoint == 0 || splitPoint >= size.height()) {
+                ratio = rnd.nextFloat(verticalSplitMinRatio, verticalSplitMaxRatio);
+                splitPoint = (int) (size.height() * ratio);
             }
+
+            BspTreeNode first = new BspTreeNode(topLeft, new KSize(size.width(), splitPoint));
+            BspTreeNode second = new BspTreeNode(
+                topLeft.add(new KVector2i(0, splitPoint)),
+                new KSize(
+                    size.width(),
+                    size.height() - splitPoint
+                )
+            );
+
+            return new KPair<>(first, second);
 
         }
     }

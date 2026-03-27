@@ -31,14 +31,19 @@ import java.util.Random;
 
 public final class KRandomRectangularRoomsInPartitionNode implements KGeneratorNode {
 
+    // todo
     @Override
     @KGeneratorNodeInputParam(name = "partition", type = KPartition.class)
-    @KGeneratorNodeInputParam(name = "ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "min_ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "max_ratio", type = Float.class)
+    @KGeneratorNodeInputParam(name = "min_greater_side", type = Integer.class)
     @KGeneratorNodeOutputParam(name = "layer", type = KPassabilityLayer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KPartition partition = params.get("partition", KPartition.class);
-        float ratio = params.get("ratio", Float.class); // todo: ratio
+        float minRatio = params.get("min_ratio", Float.class);
+        float maxRatio = params.get("max_ratio", Float.class);
+        float minGreaterSide = params.get("min_greater_side", Integer.class);
 
         KPassabilityLayer layer = new KPassabilityLayer(partition.getFramingSize());
         KPassabilityLayerTool tool = layer.getTool();
@@ -48,10 +53,20 @@ public final class KRandomRectangularRoomsInPartitionNode implements KGeneratorN
             KVector2i topLeft = node.topLeft();
             KSize size = node.size();
 
+            float ratio = rnd.nextFloat(minRatio, maxRatio);
+            boolean useWidthToHeightRatio = rnd.nextBoolean();
+
+            if (useWidthToHeightRatio) {
+
+            }
+
             KVector2i newTopLeft = new KVector2i(
                 rnd.nextInt(topLeft.x(), topLeft.x() + size.width()),
                 rnd.nextInt(topLeft.y(), topLeft.y() + size.height())
             );
+
+            int newWidth = rnd.nextInt(size.width() - (newTopLeft.x() - topLeft.x()));
+
             KSize newSize = new KSize(
                 rnd.nextInt(size.width() - (newTopLeft.x() - topLeft.x())),
                 rnd.nextInt(size.height() - (newTopLeft.y() - topLeft.y()))
