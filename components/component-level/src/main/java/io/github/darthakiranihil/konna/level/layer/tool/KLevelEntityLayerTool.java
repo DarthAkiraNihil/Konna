@@ -68,4 +68,6 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      */
     KLevelEntityLayerTool removeEntity(KVector2i position, KLevelEntity entity);
 
+    List<KLevelEntity> findEntitiesWithDescriptor(String descriptor);
+
 }

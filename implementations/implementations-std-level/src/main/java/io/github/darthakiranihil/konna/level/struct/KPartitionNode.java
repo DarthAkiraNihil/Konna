@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
 public record KPartitionNode(
     KVector2i topLeft,
-    KSize size
+    KSize size,
+    KVector2i center
 ) {
 }

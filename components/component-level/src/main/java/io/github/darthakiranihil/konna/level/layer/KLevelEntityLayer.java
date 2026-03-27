@@ -35,6 +35,7 @@ public final class KLevelEntityLayer
     private static final class Tool implements KLevelEntityLayerTool {
 
         private final KLevelEntityLayer self;
+        private int totalEntities;
 
         Tool(final KLevelEntityLayer self) {
             this.self = self;
@@ -51,6 +52,7 @@ public final class KLevelEntityLayer
 
             List<KLevelEntity> list = this.self.entities.get(position);
             list.add(entity);
+            this.totalEntities++;
             return this;
         }
 
@@ -72,7 +74,26 @@ public final class KLevelEntityLayer
             if (list.isEmpty()) {
                 this.self.entities.remove(position);
             }
+            this.totalEntities--;
             return this;
+        }
+
+        @Override
+        public List<KLevelEntity> findEntitiesWithDescriptor(final String descriptor) {
+            ArrayList<KLevelEntity> found = new ArrayList<>(this.totalEntities);
+
+            for (var entities: this.self.entities.values()) {
+                for (var entity: entities) {
+                    if (!entity.getDescriptor().equals(descriptor)) {
+                        continue;
+                    }
+
+                    found.add(entity);
+                }
+            }
+
+            found.trimToSize();
+            return found;
         }
 
         @Override

@@ -96,7 +96,11 @@ public final class KBspNode implements KGeneratorNode {
                 partitionNodes.add(
                     new KPartitionNode(
                         node.topLeft,
-                        node.size
+                        node.size,
+                        new KVector2i(
+                            node.topLeft.x() + (int) (node.size.width() / 2.0f),
+                            node.topLeft.y() + (int) (node.size.height() / 2.0f)
+                        )
                     )
                 );
             }
