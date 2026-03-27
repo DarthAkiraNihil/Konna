@@ -53,8 +53,8 @@ public final class KRandomRectangularRoomsInPartitionNode implements KGeneratorN
                 rnd.nextInt(topLeft.y(), topLeft.y() + size.height())
             );
             KSize newSize = new KSize(
-                rnd.nextInt(size.width() - topLeft.x()),
-                rnd.nextInt(size.height() - topLeft.y())
+                rnd.nextInt(size.width() - (newTopLeft.x() - topLeft.x())),
+                rnd.nextInt(size.height() - (newTopLeft.y() - topLeft.y()))
             );
 
             tool.digPassableRectangle(newTopLeft, newSize);

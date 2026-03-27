@@ -167,7 +167,9 @@ public final class KBspNode implements KGeneratorNode {
                     )
                 );
 
-                float firstWidthRatio = (float) first.size.width() / first.size.height();
+                return new KPair<>(first, second);
+
+                /*float firstWidthRatio = (float) first.size.width() / first.size.height();
                 float secondWidthRatio = (float) second.size.width() / second.size.height();
 
                 if (
@@ -175,7 +177,7 @@ public final class KBspNode implements KGeneratorNode {
                     &&  secondWidthRatio >= verticalSplitRatio
                 ) {
                     return new KPair<>(first, second);
-                }
+                }*/
             }
 
         } else {
@@ -191,7 +193,9 @@ public final class KBspNode implements KGeneratorNode {
                     )
                 );
 
-                float firstHeightRatio = (float) first.size.height() / first.size.width();
+                return new KPair<>(first, second);
+
+                /*float firstHeightRatio = (float) first.size.height() / first.size.width();
                 float secondHeightRatio = (float) second.size.height() / second.size.width();
 
                 if (
@@ -199,7 +203,7 @@ public final class KBspNode implements KGeneratorNode {
                     &&  secondHeightRatio >= horizontalSplitRatio
                 ) {
                     return new KPair<>(first, second);
-                }
+                }*/
             }
 
         }

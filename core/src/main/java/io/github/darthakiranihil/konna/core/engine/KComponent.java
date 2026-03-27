@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
+import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
@@ -132,8 +133,13 @@ public abstract class KComponent extends KObject {
         } catch (KEndpointRoutingException e) {
             KSystemLogger.warning(
                 this.name,
-                "%s: Unexpected error occurred when accepting message: %s",
-                this.getClass().getCanonicalName(),
+                "Unexpected error occurred when accepting message: %s",
+                e
+            );
+        } catch (KException e) {
+            KSystemLogger.error(
+                this.name,
+                "Unexpected error occurred when accepting message: %s",
                 e
             );
         }

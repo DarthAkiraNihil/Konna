@@ -419,7 +419,12 @@ public class KJsonAssetDefinition implements KAssetDefinition {
 
     @Override
     public @Nullable Object getObject(final String property) {
-        return this.value.getProperty(property).getRawObject();
+        var raw = this.value.getProperty(property);
+        if (raw.getType() == KJsonValueType.OBJECT) {
+            return new KJsonAssetDefinition(raw);
+        }
+
+        return raw.getRawObject();
     }
 
     @Override

@@ -169,10 +169,15 @@ public final class KLevelGenerator extends KObject {
                 ultimate = current;
             }
 
-            KUniversalMap input = this.prepareInput(nodes, current);
-            KUniversalMap output = current.nodeInstance.process(input, rnd);
-            current.outputParamsValidator.validate(output);
-            current.outputParams = output;
+            try {
+                KUniversalMap input = this.prepareInput(nodes, current);
+                KUniversalMap output = current.nodeInstance.process(input, rnd);
+                current.outputParamsValidator.validate(output);
+                current.outputParams = output;
+            } catch (Throwable e) {
+                KSystemLogger.error(this.name, e);
+                throw new KGenerationException(e.getMessage());
+            }
 
         }
 
@@ -324,7 +329,7 @@ public final class KLevelGenerator extends KObject {
         } catch (KClassNotFoundException e) {
             KSystemLogger.warning(
                 this.name,
-            "Could not find input params validator for node %s."
+            "Could not find input params validator for node %s. "
                 +   "Validation will be skipped!",
                 nodeClass.getCanonicalName()
             );

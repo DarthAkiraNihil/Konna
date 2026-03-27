@@ -84,9 +84,9 @@ public class KPassabilityLayer
         ) {
             if (
                     !direction.equals(KVector2i.DOWN)
-                ||  !direction.equals(KVector2i.UP)
-                ||  !direction.equals(KVector2i.LEFT)
-                ||  !direction.equals(KVector2i.RIGHT)
+                &&  !direction.equals(KVector2i.UP)
+                &&  !direction.equals(KVector2i.LEFT)
+                &&  !direction.equals(KVector2i.RIGHT)
             ) {
                 throw new KInvalidArgumentException(
                     String.format("Invalid direction: %s", direction)
