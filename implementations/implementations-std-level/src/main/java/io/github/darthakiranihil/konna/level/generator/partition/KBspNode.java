@@ -24,29 +24,11 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.struct.KPartition;
-import io.github.darthakiranihil.konna.level.struct.KPartitionNode;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
 public final class KBspNode implements KGeneratorNode {
-
-    private static final class BspTreeNode {
-
-        private final KVector2i topLeft;
-        private final KSize size;
-
-        private @Nullable BspTreeNode leftChild;
-        private @Nullable BspTreeNode rightChild;
-
-        public BspTreeNode(
-            final KVector2i topLeft,
-            final KSize size
-        ) {
-            this.topLeft = topLeft;
-            this.size = size;
-        }
-    }
 
     @Override
     @KGeneratorNodeInputParam(name = "size", type = KSize.class)
@@ -66,7 +48,7 @@ public final class KBspNode implements KGeneratorNode {
         float horizontalSplitMinRatio = params.get("horizontal_split_min_ratio", Float.class);
         float horizontalSplitMaxRatio = params.get("horizontal_split_max_ratio", Float.class);
 
-        BspTreeNode root = this.makePartition(
+        KPartition root = this.makePartition(
             KVector2i.ZERO,
             size,
             verticalSplitMinRatio,
@@ -77,44 +59,13 @@ public final class KBspNode implements KGeneratorNode {
             rnd
         );
 
-        ArrayList<KPartitionNode> partitionNodes = new ArrayList<>(1 << iterations);
-        Queue<BspTreeNode> nodeQueue = new ArrayDeque<>(1 << iterations);
-        nodeQueue.add(root);
-
-        while (!nodeQueue.isEmpty()) {
-            BspTreeNode node = nodeQueue.poll();
-
-            if (node.rightChild != null) {
-                nodeQueue.add(node.rightChild);
-            }
-
-            if (node.leftChild != null) {
-                nodeQueue.add(node.leftChild);
-            }
-
-            if (node.leftChild == null && node.rightChild == null) {
-                partitionNodes.add(
-                    new KPartitionNode(
-                        node.topLeft,
-                        node.size,
-                        new KVector2i(
-                            node.topLeft.x() + (int) (node.size.width() / 2.0f),
-                            node.topLeft.y() + (int) (node.size.height() / 2.0f)
-                        )
-                    )
-                );
-            }
-        }
-
-        partitionNodes.trimToSize();
-
         KUniversalMap result = new KUniversalMap();
-        result.put("partition", new KPartition(partitionNodes));
+        result.put("partition", root);
         return result;
 
     }
 
-    private BspTreeNode makePartition(
+    private KPartition makePartition(
         final KVector2i topLeft,
         final KSize size,
         float verticalSplitMinRatio,
@@ -125,46 +76,53 @@ public final class KBspNode implements KGeneratorNode {
         final Random rnd
     ) {
 
-        BspTreeNode root = new BspTreeNode(topLeft, size);
-
-        if (iteration != 0) {
-            var children = this.split(
-                topLeft,
-                size,
-                verticalSplitMinRatio,
-                verticalSplitMaxRatio,
-                horizontalSplitMinRatio,
-                horizontalSplitMaxRatio,
-                rnd
-            );
-            root.leftChild = this.makePartition(
-                children.first().topLeft,
-                children.first().size,
-                verticalSplitMinRatio,
-                verticalSplitMaxRatio,
-                horizontalSplitMinRatio,
-                horizontalSplitMaxRatio,
-                iteration - 1,
-                rnd
-            );
-            root.rightChild = this.makePartition(
-                children.second().topLeft,
-                children.second().size,
-                verticalSplitMinRatio,
-                verticalSplitMaxRatio,
-                horizontalSplitMinRatio,
-                horizontalSplitMaxRatio,
-                iteration - 1,
-                rnd
-            );
-
+        // BspTreeNode root = new BspTreeNode(topLeft, size);
+        if (iteration == 0) {
+            return new KPartition(topLeft, size, List.of());
         }
+
+        List<KPartition> children = new ArrayList<>(2);
+        KPartition root = new KPartition(topLeft, size, children);
+
+        var split = this.split(
+            topLeft,
+            size,
+            verticalSplitMinRatio,
+            verticalSplitMaxRatio,
+            horizontalSplitMinRatio,
+            horizontalSplitMaxRatio,
+            rnd
+        );
+
+        children.add(this.makePartition(
+            split.first().first(),
+            split.first().second(),
+            verticalSplitMinRatio,
+            verticalSplitMaxRatio,
+            horizontalSplitMinRatio,
+            horizontalSplitMaxRatio,
+            iteration - 1,
+            rnd
+        ));
+        children.add(this.makePartition(
+            split.second().first(),
+            split.second().second(),
+            verticalSplitMinRatio,
+            verticalSplitMaxRatio,
+            horizontalSplitMinRatio,
+            horizontalSplitMaxRatio,
+            iteration - 1,
+            rnd
+        ));
 
         return root;
 
     }
 
-    private KPair<BspTreeNode, BspTreeNode> split(
+    private KPair<
+        KPair<KVector2i, KSize>,
+        KPair<KVector2i, KSize>
+    > split(
         final KVector2i topLeft,
         final KSize size,
         float verticalSplitMinRatio,
@@ -184,8 +142,8 @@ public final class KBspNode implements KGeneratorNode {
                 splitPoint = (int) (size.width() * ratio);
             }
 
-            BspTreeNode first = new BspTreeNode(topLeft, new KSize(splitPoint, size.height()));
-            BspTreeNode second = new BspTreeNode(
+            var first = new KPair<>(topLeft, new KSize(splitPoint, size.height()));
+            var second = new KPair<>(
                 topLeft.add(new KVector2i(splitPoint, 0)),
                 new KSize(
                 size.width() - splitPoint,
@@ -204,8 +162,8 @@ public final class KBspNode implements KGeneratorNode {
                 splitPoint = (int) (size.height() * ratio);
             }
 
-            BspTreeNode first = new BspTreeNode(topLeft, new KSize(size.width(), splitPoint));
-            BspTreeNode second = new BspTreeNode(
+            var first = new KPair<>(topLeft, new KSize(size.width(), splitPoint));
+            var second = new KPair<>(
                 topLeft.add(new KVector2i(0, splitPoint)),
                 new KSize(
                     size.width(),

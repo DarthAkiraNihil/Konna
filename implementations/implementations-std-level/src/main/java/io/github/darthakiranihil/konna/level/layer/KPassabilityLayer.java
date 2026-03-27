@@ -50,25 +50,34 @@ public class KPassabilityLayer
         }
 
         @Override
+        public void setImpassableIfVoid(int x, int y) {
+            if (this.getOnPosition(x, y) == KPassabilityState.VOID) {
+                this.setState(x, y, KPassabilityState.IMPASSABLE);
+            }
+        }
+
+        @Override
         public void digPassableRectangle(final KVector2i topLeft, final KSize size) {
 
             // todo: size check
-            int finalX = topLeft.x() + size.width();
-            int finalY = topLeft.y() + size.height();
+            int finalX = topLeft.x() + size.width() + 1;
+            int finalY = topLeft.y() + size.height() + 1;
 
-            for (int y = topLeft.y(); y < finalY; y++) {
-                for (int x = topLeft.x(); x < finalX; x++) {
+            int startX = topLeft.x() - 1;
+            int startY = topLeft.y() - 1;
 
-                    if (y == topLeft.y() || y == finalY - 1) {
-                        this.setState(x, y, KPassabilityState.IMPASSABLE);
+
+            for (int y = startY; y < finalY; y++) {
+                for (int x = startX; x < finalX; x++) {
+
+                    if (y == startY || y == finalY - 1) {
+                        this.setImpassableIfVoid(x, y);
                     } else {
-                        this.setState(
-                            x,
-                            y,
-                            ( x == topLeft.x() || x == finalX - 1 )
-                                ? KPassabilityState.IMPASSABLE
-                                : KPassabilityState.PASSABLE
-                        );
+                        if (x == startX || x == finalX - 1) {
+                            this.setImpassableIfVoid(x, y);
+                        } else {
+                            this.setState(x, y, KPassabilityState.PASSABLE);
+                        }
                     }
 
                 }
@@ -100,11 +109,11 @@ public class KPassabilityLayer
 
                 this.setState(currentX, currentY, KPassabilityState.PASSABLE);
                 if (direction.equals(KVector2i.DOWN) || direction.equals(KVector2i.UP)) {
-                    this.setState(currentX - 1, currentY, KPassabilityState.IMPASSABLE);
-                    this.setState(currentX + 1, currentY, KPassabilityState.IMPASSABLE);
+                    this.setImpassableIfVoid(currentX - 1, currentY);
+                    this.setImpassableIfVoid(currentX + 1, currentY);
                 } else {
-                    this.setState(currentX, currentY - 1, KPassabilityState.IMPASSABLE);
-                    this.setState(currentX, currentY + 1, KPassabilityState.IMPASSABLE);
+                    this.setImpassableIfVoid(currentX, currentY - 1);
+                    this.setImpassableIfVoid(currentX, currentY + 1);
                 }
 
                 position = position.add(direction);
@@ -113,8 +122,12 @@ public class KPassabilityLayer
         }
 
         @Override
-        public @Nullable KPassabilityState getOnPosition(int x, int y) {
-            return this.self.states[x][y];
+        public KPassabilityState getOnPosition(int x, int y) {
+            if (x < 0 || x >= this.self.size.width() || y < 0 || y >= this.self.size.height()) {
+                return KPassabilityState.VOID;
+            }
+
+            return this.self.states[y][x];
         }
     }
 
@@ -134,7 +147,7 @@ public class KPassabilityLayer
     }
 
     @Override
-    public @Nullable KPassabilityState getOnPosition(int x, int y) {
+    public KPassabilityState getOnPosition(int x, int y) {
         return this.states[y][x];
     }
 

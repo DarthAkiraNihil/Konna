@@ -19,40 +19,54 @@ package io.github.darthakiranihil.konna.level.struct;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 
+import java.util.Collections;
 import java.util.List;
 
 public final class KPartition {
 
-    private final List<KPartitionNode> nodes;
-    private final KSize framingSize;
+    private final KVector2i topLeft;
+    private final KVector2i bottomRight;
+    private final KSize size;
+    private final KVector2i center;
+    private final List<KPartition> subpartitions;
 
-    public KPartition(final List<KPartitionNode> nodes) {
-        this.nodes = nodes;
+    public KPartition(
+        final KVector2i topLeft,
+        final KSize size,
+        final List<KPartition> subpartitions
+    ) {
+        this.topLeft = topLeft;
+        this.size = size;
+        this.subpartitions = Collections.unmodifiableList(subpartitions);
+        this.center = new KVector2i(
+            topLeft.x() + (int) (size.width() / 2.0f),
+            topLeft.y() + (int) (size.height() / 2.0f)
+        );
+        this.bottomRight = new KVector2i(
+            topLeft.x() + size.width(),
+            topLeft.y() + size.height()
+        );
 
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        int maxX = Integer.MIN_VALUE;
-        int maxY = Integer.MIN_VALUE;
-
-        for (KPartitionNode node: nodes) {
-            KVector2i topLeft = node.topLeft();
-            KSize size = node.size();
-
-            minX = Math.min(topLeft.x(), minX);
-            minY = Math.min(topLeft.y(), minY);
-            maxX = Math.max(topLeft.x() + size.width(), maxX);
-            maxY = Math.max(topLeft.y() + size.height(), maxY);
-        }
-
-        this.framingSize = new KSize(maxX - minX, maxY - minY);
     }
 
-    public KSize getFramingSize() {
-        return this.framingSize;
+    public KVector2i getTopLeft() {
+        return this.topLeft;
     }
 
-    public List<KPartitionNode> getNodes() {
-        return this.nodes;
+    public KSize getSize() {
+        return this.size;
+    }
+
+    public KVector2i getCenter() {
+        return this.center;
+    }
+
+    public KVector2i getBottomRight() {
+        return bottomRight;
+    }
+
+    public List<KPartition> getSubpartitions() {
+        return this.subpartitions;
     }
 
 }

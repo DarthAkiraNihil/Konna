@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.generator.partition;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
@@ -31,67 +31,62 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-public final class KRandomRectangularCenteredRoomsInPartitionNode implements KGeneratorNode {
+public final class KStraightPathsBetweenBinaryPartitionCentersNode implements KGeneratorNode {
 
     @Override
     @KGeneratorNodeInputParam(name = "partition", type = KPartition.class)
-    @KGeneratorNodeInputParam(name = "min_filling", type = Float.class)
     @KGeneratorNodeOutputParam(name = "layer", type = KPassabilityLayer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KPartition partition = params.get("partition", KPartition.class);
-        float minFilling = params.get("min_filling", Float.class);
 
         KPassabilityLayer layer = new KPassabilityLayer(partition.getSize());
         KPassabilityLayerTool tool = layer.getTool();
 
-        List<KPartition> leaves = new LinkedList<>();
-
-        if (partition.getSubpartitions().isEmpty()) {
-            leaves.add(partition);
-        } else {
-            Queue<KPartition> leafSearchQueue = new LinkedList<>(partition.getSubpartitions());
-            while (!leafSearchQueue.isEmpty()) {
-                KPartition child = leafSearchQueue.poll();
-                if (child.getSubpartitions().isEmpty()) {
-                    leaves.add(child);
-                } else {
-                    leafSearchQueue.addAll(child.getSubpartitions());
-                }
-            }
+        if (partition.getSubpartitions().size() != 2) {
+            throw new KInvalidArgumentException(
+                "This node requires partitions to have exact two subpartitions!"
+            );
         }
-
-        for (KPartition leaf: leaves) {
-            boolean dug = false;
-            while (!dug) {
-                KVector2i topLeft = leaf.getTopLeft();
-                KVector2i center = leaf.getCenter();
-                KVector2i bottomRight = leaf.getBottomRight();
-                KSize size = leaf.getSize();
-
-                KSize diggingBoxSize = size.reduce(2, 2);
-
-                KVector2i newTopLeft = new KVector2i(
-                    rnd.nextInt(topLeft.x(), center.x() + 1),
-                    rnd.nextInt(topLeft.y(), center.y() + 1)
+        Queue<List<KPartition>> queue = new LinkedList<>();
+        queue.add(partition.getSubpartitions());
+        while (!queue.isEmpty()) {
+            List<KPartition> connected = queue.poll();
+            if (connected.size() != 2) {
+                throw new KInvalidArgumentException(
+                    "This node requires partitions to have exact two subpartitions!"
                 );
-
-                KVector2i newBottomRight = new KVector2i(
-                    rnd.nextInt(center.x(), bottomRight.x() + 1),
-                    rnd.nextInt(center.y(), bottomRight.y() + 1)
-                );
-
-                KSize newSize = new KSize(
-                    newBottomRight.x() - newTopLeft.x(),
-                    newBottomRight.y() - newTopLeft.y()
-                );
-
-                if (newSize.area() >= minFilling * diggingBoxSize.area()) {
-                    tool.digPassableRectangle(newTopLeft, newSize);
-                    dug = true;
-                }
-
             }
+
+            var first = connected.getFirst();
+            var second = connected.getLast();
+
+            KVector2i firstCenter = first.getCenter();
+            KVector2i secondCenter = second.getCenter();
+
+            if (firstCenter.x() == secondCenter.x()) {
+                int yDiff = firstCenter.y() - secondCenter.y();
+                tool.digStraightPassableLine(
+                    firstCenter,
+                    Math.abs(yDiff),
+                    yDiff > 0 ? KVector2i.UP : KVector2i.DOWN
+                );
+            } else if (firstCenter.y() == secondCenter.y()) {
+                int xDiff = firstCenter.x() - secondCenter.x();
+                tool.digStraightPassableLine(
+                    firstCenter,
+                    Math.abs(xDiff),
+                    xDiff > 0 ? KVector2i.LEFT : KVector2i.RIGHT
+                );
+            }
+
+            if (!first.getSubpartitions().isEmpty()) {
+                queue.add(first.getSubpartitions());
+            }
+            if (!second.getSubpartitions().isEmpty()) {
+                queue.add(second.getSubpartitions());
+            }
+
         }
 
         KUniversalMap result = new KUniversalMap();

@@ -56,4 +56,16 @@ public record KSize(
     public KVector2f asFloatVector() {
         return new KVector2f(this.width, this.height);
     }
+
+    public KSize reduce(int width, int height) {
+        return new KSize(this.width - width, this.height - height);
+    }
+
+    public KSize expand(int width, int height) {
+        return new KSize(this.width + width, this.height + height);
+    }
+
+    public int area() {
+        return this.width * this.height;
+    }
 }

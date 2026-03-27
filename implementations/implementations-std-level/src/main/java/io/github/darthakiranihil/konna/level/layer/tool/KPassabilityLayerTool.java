@@ -24,6 +24,7 @@ public interface KPassabilityLayerTool
     extends KReadableObjectLayerTool<KPassabilityState> {
 
     void setState(int x, int y, KPassabilityState state);
+    void setImpassableIfVoid(int x, int y);
     void digPassableRectangle(KVector2i topLeft, KSize size);
     void digStraightPassableLine(KVector2i start, int length, KVector2i direction);
 
