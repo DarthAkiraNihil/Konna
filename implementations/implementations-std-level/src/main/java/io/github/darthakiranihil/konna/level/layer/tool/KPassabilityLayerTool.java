@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
+import org.jspecify.annotations.Nullable;
 
 public interface KPassabilityLayerTool
     extends KReadableObjectLayerTool<KPassabilityState> {
@@ -27,5 +28,13 @@ public interface KPassabilityLayerTool
     void setImpassableIfVoid(int x, int y);
     void digPassableRectangle(KVector2i topLeft, KSize size);
     void digStraightPassableLine(KVector2i start, int length, KVector2i direction);
+
+    @Override
+    KPassabilityState getOnPosition(int x, int y);
+
+    @Override
+    default KPassabilityState getOnPosition(final KVector2i position) {
+        return this.getOnPosition(position.x(), position.y());
+    }
 
 }
