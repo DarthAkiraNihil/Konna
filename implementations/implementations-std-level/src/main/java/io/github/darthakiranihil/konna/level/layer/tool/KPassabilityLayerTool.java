@@ -28,6 +28,7 @@ public interface KPassabilityLayerTool
     void setImpassableIfVoid(int x, int y);
     void digPassableRectangle(KVector2i topLeft, KSize size);
     void digStraightPassableLine(KVector2i start, int length, KVector2i direction);
+    int getReachabilityArea(int x, int y);
 
     @Override
     KPassabilityState getOnPosition(int x, int y);

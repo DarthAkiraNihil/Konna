@@ -134,19 +134,19 @@ public final class KPassabilityLayer
         public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
 
             if (
-                srcX >= this.self.size.width()
-                    ||  srcX < 0
-                    || srcY >= this.self.size.height()
-                    || srcY < 0
+                    srcX >= this.self.size.width()
+                ||  srcX < 0
+                ||  srcY >= this.self.size.height()
+                ||  srcY < 0
             ) {
                 return false;
             }
 
             if (
-                dstX >= this.self.size.width()
-                    ||  dstX < 0
-                    ||  dstY >= this.self.size.height()
-                    ||  dstY < 0
+                    dstX >= this.self.size.width()
+                ||  dstX < 0
+                ||  dstY >= this.self.size.height()
+                ||  dstY < 0
             ) {
                 return false;
             }
@@ -156,6 +156,20 @@ public final class KPassabilityLayer
 
             return srcArea == dstArea;
 
+        }
+
+        @Override
+        public int getReachabilityArea(int x, int y) {
+            if (
+                    x < 0
+                ||  x >= this.self.size.width()
+                ||  y < 0
+                ||  y >= this.self.size.height()
+            ) {
+                return 0;
+            }
+
+            return this.self.areas[y][x];
         }
 
         @Override
