@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.partition;
+package io.github.darthakiranihil.konna.level.generator.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -93,6 +93,8 @@ public final class KRandomRectangularCenteredRoomsInPartitionNode implements KGe
 
             }
         }
+
+        layer.refresh();
 
         KUniversalMap result = new KUniversalMap();
         result.put("layer", layer);

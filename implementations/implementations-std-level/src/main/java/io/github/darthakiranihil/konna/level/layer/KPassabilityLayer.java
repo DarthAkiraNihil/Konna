@@ -22,7 +22,12 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 import org.jspecify.annotations.Nullable;
 
-public class KPassabilityLayer
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
+public final class KPassabilityLayer
     extends KAbstractSizedLayer<KPassabilityLayerTool>
     implements KObjectLevelLayer<KPassabilityState, KPassabilityLayerTool> {
 
@@ -59,7 +64,6 @@ public class KPassabilityLayer
         @Override
         public void digPassableRectangle(final KVector2i topLeft, final KSize size) {
 
-            // todo: size check
             int finalX = topLeft.x() + size.width() + 1;
             int finalY = topLeft.y() + size.height() + 1;
 
@@ -123,15 +127,45 @@ public class KPassabilityLayer
 
         @Override
         public KPassabilityState getOnPosition(int x, int y) {
-            if (x < 0 || x >= this.self.size.width() || y < 0 || y >= this.self.size.height()) {
-                return KPassabilityState.VOID;
+            return this.self.getOnPosition(x, y);
+        }
+
+        @Override
+        public boolean isReachable(int srcX, int srcY, int dstX, int dstY) {
+
+            if (
+                srcX >= this.self.size.width()
+                    ||  srcX < 0
+                    || srcY >= this.self.size.height()
+                    || srcY < 0
+            ) {
+                return false;
             }
 
-            return this.self.states[y][x];
+            if (
+                dstX >= this.self.size.width()
+                    ||  dstX < 0
+                    ||  dstY >= this.self.size.height()
+                    ||  dstY < 0
+            ) {
+                return false;
+            }
+
+            int srcArea = this.self.areas[srcY][srcX];
+            int dstArea = this.self.areas[dstY][dstX];
+
+            return srcArea == dstArea;
+
+        }
+
+        @Override
+        public KSize getSize() {
+            return this.self.size;
         }
     }
 
     private final KPassabilityState[][] states;
+    private final int[][] areas;
     private final KPassabilityLayerTool tool;
 
     public KPassabilityLayer(final KSize size) {
@@ -143,16 +177,137 @@ public class KPassabilityLayer
             }
         }
 
+        this.areas = new int[size.height()][size.width()];
         this.tool = new Tool(this);
+        this.fillLayer();
     }
 
     @Override
     public KPassabilityState getOnPosition(int x, int y) {
+        if (x < 0 || x >= this.size.width() || y < 0 || y >= this.size.height()) {
+            return KPassabilityState.VOID;
+        }
+
         return this.states[y][x];
     }
 
     @Override
     public KPassabilityLayerTool getTool() {
         return this.tool;
+    }
+
+    public void refresh() {
+        this.fillLayer();
+    }
+
+    private void fillLayer() {
+
+        KVector2i start = this.getNextFreeTilePosition();
+        int area = 1;
+        while (start != null) {
+
+            Set<KVector2i> seen = new HashSet<>();
+            Deque<KVector2i> toVisit = new LinkedList<>();
+            toVisit.add(start);
+            while (!toVisit.isEmpty()) {
+                KVector2i visited = toVisit.pop();
+
+                int visitedX = visited.x();
+                int visitedY = visited.y();
+
+                this.areas[visitedY][visitedX] = area;
+
+                this.testNeighborTile(
+                    visitedX - 1,
+                    visitedY,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX + 1,
+                    visitedY,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX - 1,
+                    visitedY - 1,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX,
+                    visitedY - 1,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX + 1,
+                    visitedY - 1,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX - 1,
+                    visitedY + 1,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX,
+                    visitedY + 1,
+                    toVisit,
+                    seen
+                );
+                this.testNeighborTile(
+                    visitedX + 1,
+                    visitedY + 1,
+                    toVisit,
+                    seen
+                );
+
+            }
+
+            start = this.getNextFreeTilePosition();
+            area++;
+
+        }
+
+    }
+
+    private @Nullable KVector2i getNextFreeTilePosition() {
+
+        for (int i = 0; i < this.size.width(); i++) {
+            for (int j = 0; j < this.size.height(); j++) {
+
+                KPassabilityState state = this.states[j][i];
+                if (state == KPassabilityState.IMPASSABLE && this.areas[j][i] == 0) {
+                    return new KVector2i(i, j);
+                }
+
+            }
+        }
+
+        return null;
+    }
+
+    private void testNeighborTile(
+        int x,
+        int y,
+        final Deque<KVector2i> visitedQueue,
+        final Set<KVector2i> seen
+    ) {
+
+        KPassabilityState state = this.getOnPosition(x, y);
+        KVector2i pos = new KVector2i(x, y);
+        if (
+                state == KPassabilityState.PASSABLE
+            &&  this.areas[y][x] == 0
+            &&  !seen.contains(pos)
+        ) {
+            visitedQueue.push(pos);
+            seen.add(pos);
+        }
+
     }
 }

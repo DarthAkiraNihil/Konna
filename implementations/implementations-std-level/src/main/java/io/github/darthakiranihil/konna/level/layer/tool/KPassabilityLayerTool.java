@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import org.jspecify.annotations.Nullable;
 
 public interface KPassabilityLayerTool
-    extends KReadableObjectLayerTool<KPassabilityState> {
+    extends KReadableObjectLayerTool<KPassabilityState>, KReachabilityAreaLayerTool {
 
     void setState(int x, int y, KPassabilityState state);
     void setImpassableIfVoid(int x, int y);

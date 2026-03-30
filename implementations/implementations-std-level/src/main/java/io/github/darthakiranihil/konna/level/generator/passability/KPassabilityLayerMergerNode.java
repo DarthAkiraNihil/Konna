@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.merge;
+package io.github.darthakiranihil.konna.level.generator.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -95,6 +95,8 @@ public final class KPassabilityLayerMergerNode implements KGeneratorNode {
                 }
             }
         }
+
+        merged.refresh();
 
         KUniversalMap result = new KUniversalMap();
         result.put("merged", merged);

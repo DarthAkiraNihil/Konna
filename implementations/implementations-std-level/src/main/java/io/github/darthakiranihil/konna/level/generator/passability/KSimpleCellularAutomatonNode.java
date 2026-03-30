@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.partition;
+package io.github.darthakiranihil.konna.level.generator.passability;
 
 public final class KSimpleCellularAutomatonNode {
 }

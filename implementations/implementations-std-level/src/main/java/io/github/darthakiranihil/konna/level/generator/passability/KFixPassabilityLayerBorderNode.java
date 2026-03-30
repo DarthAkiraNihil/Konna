@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.generator.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
@@ -45,6 +48,8 @@ public final class KFixPassabilityLayerBorderNode implements KGeneratorNode {
             this.setImpassableIfPassable(0, y, tool);
             this.setImpassableIfPassable(size.width() - 1, y, tool);
         }
+
+        layer.refresh();
 
         // since output param is the same
         return params;
