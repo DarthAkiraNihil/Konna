@@ -33,6 +33,7 @@ import io.github.darthakiranihil.konna.level.layer.tool.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * The elementary unit of a game level that provides all information
@@ -53,6 +54,8 @@ import java.util.Objects;
     type = KLevelSector.EventData.class
 )
 public final class KLevelSector extends KObject {
+
+    private static final int RANDOM_POSITION_SELECTION_ATTEMPTS = 1024;
 
     /**
      * Event data record for {@code entityLeftSector} and {@code entityMoved} events.
@@ -253,6 +256,30 @@ public final class KLevelSector extends KObject {
     public void refresh() {
 
         this.reachabilityAreaLayer.refresh();
+
+    }
+
+    public KVector2i randomPosition(final Random rnd) {
+
+        int attempts = 0;
+        while (attempts < RANDOM_POSITION_SELECTION_ATTEMPTS) {
+            KVector2i point = new KVector2i(
+                rnd.nextInt(0, this.getSize().width()),
+                rnd.nextInt(0, this.getSize().height())
+            );
+
+            var tile = this.tileLayer.getOnPosition(point);
+            if (tile == null || !tile.isPassable()) {
+                attempts++;
+            } else {
+                return point;
+            }
+        }
+
+        return new KVector2i(
+            rnd.nextInt(0, this.getSize().width()),
+            rnd.nextInt(0, this.getSize().height())
+        );
 
     }
 
