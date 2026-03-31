@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.level.generator.layer;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
@@ -28,13 +27,11 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
-import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
+import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
 public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNode {
-
-    private static final int RANDOM_POSITION_SELECTION_ATTEMPTS = 1024;
 
     private final KEventSystem eventSystem;
 
@@ -59,55 +56,25 @@ public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNod
         String descriptor = params.get("descriptor", String.class);
         KLevelSector sector = params.get("sector", KLevelSector.class);
 
-        KSize size = passabilityLayer.getSize();
-        KVector2i position = new KVector2i(
-            rnd.nextInt(0, size.width()),
-            rnd.nextInt(0, size.height())
+        KPassabilityLayerTool passabilityLayerTool = passabilityLayer.getTool();
+        if (!passabilityLayerTool.hasPassable()) {
+            KUniversalMap result = new KUniversalMap();
+            result.put("entity_layer", entityLayer);
+            result.put("passability_layer", passabilityLayer);
+            result.put("sector", sector);
+            return result;
+        }
+
+        KVector2i position = passabilityLayerTool.getRandomPassablePosition(rnd);
+        KControllableEntity entity = new KControllableEntity(
+            this.eventSystem,
+            name,
+            descriptor,
+            position,
+            sector
         );
 
-        int attempts = 0;
-        while (
-                passabilityLayer.getOnPosition(position) != KPassabilityState.PASSABLE
-            &&  attempts < RANDOM_POSITION_SELECTION_ATTEMPTS
-        ) {
-            position = new KVector2i(
-                rnd.nextInt(0, size.width()),
-                rnd.nextInt(0, size.height())
-            );
-            attempts++;
-        }
-
-        if (attempts == RANDOM_POSITION_SELECTION_ATTEMPTS) {
-
-            boolean found = false;
-
-            outer:
-            for (int x = 0; x < size.width(); x++) {
-                for (int y = 0; y < size.height(); y++) {
-                    if (passabilityLayer.getOnPosition(x, y) == KPassabilityState.PASSABLE) {
-                        position = new KVector2i(x, y);
-                        found = true;
-                        break outer;
-                    }
-                }
-            }
-
-            if (!found) {
-                position = null;
-            }
-        }
-
-        if (position != null) {
-            KControllableEntity entity = new KControllableEntity(
-                this.eventSystem,
-                name,
-                descriptor,
-                position,
-                sector
-            );
-
-            entityLayer.getTool().placeEntity(position, entity);
-        }
+        entityLayer.getTool().placeEntity(position, entity);
 
         KUniversalMap result = new KUniversalMap();
         result.put("entity_layer", entityLayer);

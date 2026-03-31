@@ -21,6 +21,8 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Random;
+
 public interface KPassabilityLayerTool
     extends KReadableObjectLayerTool<KPassabilityState>, KReachabilityAreaLayerTool {
 
@@ -37,5 +39,8 @@ public interface KPassabilityLayerTool
     default KPassabilityState getOnPosition(final KVector2i position) {
         return this.getOnPosition(position.x(), position.y());
     }
+
+    KVector2i getRandomPassablePosition(Random rnd);
+    boolean hasPassable();
 
 }

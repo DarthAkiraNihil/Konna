@@ -34,6 +34,7 @@ public record KVector2i(
      */
     public static final KVector2i ZERO = new KVector2i(0, 0);
     public static final KVector2i ONE = new KVector2i(1, 1);
+    public static final KVector2i MINUS_ONE = new KVector2i(-1, -1);
 
     public static final KVector2i RIGHT = new KVector2i(1, 0);
     public static final KVector2i LEFT = new KVector2i(-1, 0);

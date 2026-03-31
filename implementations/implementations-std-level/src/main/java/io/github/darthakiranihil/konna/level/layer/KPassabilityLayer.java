@@ -22,10 +22,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public final class KPassabilityLayer
     extends KAbstractSizedLayer<KPassabilityLayerTool>
@@ -34,6 +31,7 @@ public final class KPassabilityLayer
     private static final class Tool implements KPassabilityLayerTool {
 
         private final KPassabilityLayer self;
+        private int totalPassable;
 
         public Tool(KPassabilityLayer self) {
             this.self = self;
@@ -51,7 +49,24 @@ public final class KPassabilityLayer
                 return;
             }
 
+            KPassabilityState previous = this.self.states[y][x];
             this.self.states[y][x] = state;
+            if (previous == state) {
+                return;
+            }
+
+            if (
+                    (previous == KPassabilityState.VOID && state == KPassabilityState.IMPASSABLE)
+                ||  (previous == KPassabilityState.IMPASSABLE && state == KPassabilityState.VOID)
+            ) {
+                return;
+            }
+
+            if (state == KPassabilityState.PASSABLE) {
+                this.totalPassable++;
+            } else {
+                this.totalPassable--;
+            }
         }
 
         @Override
@@ -175,6 +190,31 @@ public final class KPassabilityLayer
         @Override
         public KSize getSize() {
             return this.self.size;
+        }
+
+        @Override
+        public KVector2i getRandomPassablePosition(final Random rnd) {
+            if (!this.hasPassable()) {
+                return KVector2i.MINUS_ONE;
+            }
+
+            KVector2i position = new KVector2i(
+                rnd.nextInt(0, this.self.size.width()),
+                rnd.nextInt(0, this.self.size.height())
+            );
+
+            while (this.getOnPosition(position) != KPassabilityState.PASSABLE) {
+                position = new KVector2i(
+                    rnd.nextInt(0, this.self.size.width()),
+                    rnd.nextInt(0, this.self.size.height())
+                );
+            }
+            return position;
+        }
+
+        @Override
+        public boolean hasPassable() {
+            return this.totalPassable > 0;
         }
     }
 
