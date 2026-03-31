@@ -80,14 +80,14 @@ public abstract class KAutonomousEntityController extends KObject {
      * Sets a level for this controller.
      * @param level Level for this controller
      */
-    public void setLevel(final KLevel level) {
+    public final void setLevel(final KLevel level) {
         this.level = level;
     }
 
     /**
      * @return Level assigned to this controller
      */
-    protected KLevel getLevel() {
+    protected final KLevel getLevel() {
         if (this.level == null) {
             throw new KIllegalStateException(
                 "Autonomous entity controller must be assigned to a level, which is not presented"
@@ -101,14 +101,14 @@ public abstract class KAutonomousEntityController extends KObject {
      * Sets an assigned entity to this controller.
      * @param entity Assigned entity for this controller
      */
-    public void setAssignedEntity(final KLevelEntity entity) {
+    public final void setAssignedEntity(final KLevelEntity entity) {
         this.assignedEntity = entity;
     }
 
     /**
      * @return Entity assigned to this controller
      */
-    protected KLevelEntity getAssignedEntity() {
+    protected final KLevelEntity getAssignedEntity() {
         if (this.assignedEntity == null) {
             throw new KIllegalStateException(
                 "Autonomous entity controller must be assigned to an entity, which is not presented"

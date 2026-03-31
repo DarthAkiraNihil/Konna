@@ -224,8 +224,8 @@ public final class KLevelGenerator extends KObject {
                 throw new KGenerationException(
                     String.format(
                         "Attempted to get output parameter %s of node %s, which is not presented",
-                        dependency.first(),
-                        dependency.second()
+                        dependency.second(),
+                        dependency.first()
                     )
                 );
             }

@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 
@@ -69,6 +70,7 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      */
     KLevelEntityLayerTool removeEntity(KVector2i position, KLevelEntity entity);
 
+    List<KLevelEntity> getAllContainedEntities();
     List<KLevelEntity> findEntitiesWithDescriptor(String descriptor);
 
     /**
@@ -79,6 +81,6 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @param sector Sector to set
      * @return This layer (for method chaining)
      */
-    KLevelEntityLayerTool setSectorForAll(KLevelSector sector);
+    void setSectorForAll(KLevelSector sector);
 
 }

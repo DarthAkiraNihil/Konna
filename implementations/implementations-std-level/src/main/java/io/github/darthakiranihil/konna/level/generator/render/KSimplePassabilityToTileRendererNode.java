@@ -50,7 +50,7 @@ public final class KSimplePassabilityToTileRendererNode implements KGeneratorNod
             for (int y = 0; y < sourceSize.height(); y++) {
 
                 KPassabilityState state = source.getOnPosition(x, y);
-                if (state == null) {
+                if (state == KPassabilityState.VOID) {
                     continue;
                 }
 

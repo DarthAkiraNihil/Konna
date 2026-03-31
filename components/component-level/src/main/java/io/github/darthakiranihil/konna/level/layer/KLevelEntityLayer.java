@@ -17,7 +17,10 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;
+import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 
@@ -114,13 +117,23 @@ public final class KLevelEntityLayer
         }
 
         @Override
-        public KLevelEntityLayerTool setSectorForAll(final KLevelSector sector) {
+        public void setSectorForAll(final KLevelSector sector) {
             for (var entry: this.self.entities.entrySet()) {
                 KVector2i position = entry.getKey();
                 List<KLevelEntity> entitiesOnPosition = entry.getValue();
                 entitiesOnPosition.forEach(e -> e.setPosition(sector, position));
             }
-            return this;
+        }
+
+        @Override
+        public List<KLevelEntity> getAllContainedEntities() {
+            List<KLevelEntity> found = new ArrayList<>(this.totalEntities);
+
+            for (var entities: this.self.entities.values()) {
+                found.addAll(entities);
+            }
+
+            return found;
         }
     }
 

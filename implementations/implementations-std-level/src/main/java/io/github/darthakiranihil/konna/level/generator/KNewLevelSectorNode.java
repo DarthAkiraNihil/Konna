@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.layer.*;
-import io.github.darthakiranihil.konna.level.layer.tool.KHeightLayerTool;
+import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 
 import java.util.Random;
 
@@ -61,6 +61,9 @@ public final class KNewLevelSectorNode implements KGeneratorNode {
             entityLayer,
             levelTransitionLayer
         );
+
+        KLevelEntityLayerTool tool = entityLayer.getTool();
+        tool.setSectorForAll(sector);
 
         KUniversalMap result = new KUniversalMap();
         result.put("sector", sector);

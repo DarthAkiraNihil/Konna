@@ -44,24 +44,20 @@ public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNod
     @KGeneratorNodeInputParam(name = "passability_layer", type = KPassabilityLayer.class)
     @KGeneratorNodeInputParam(name = "name", type = String.class)
     @KGeneratorNodeInputParam(name = "descriptor", type = String.class)
-    @KGeneratorNodeInputParam(name = "sector", type = KLevelSector.class)
     @KGeneratorNodeOutputParam(name = "entity_layer", type = KLevelEntityLayer.class)
     @KGeneratorNodeOutputParam(name = "passability_layer", type = KPassabilityLayer.class)
-    @KGeneratorNodeOutputParam(name = "sector", type = KLevelSector.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KLevelEntityLayer entityLayer = params.get("entity_layer", KLevelEntityLayer.class);
         KPassabilityLayer passabilityLayer = params.get("passability_layer", KPassabilityLayer.class);
         String name = params.get("name", String.class);
         String descriptor = params.get("descriptor", String.class);
-        KLevelSector sector = params.get("sector", KLevelSector.class);
 
         KPassabilityLayerTool passabilityLayerTool = passabilityLayer.getTool();
         if (!passabilityLayerTool.hasPassable()) {
             KUniversalMap result = new KUniversalMap();
             result.put("entity_layer", entityLayer);
             result.put("passability_layer", passabilityLayer);
-            result.put("sector", sector);
             return result;
         }
 
@@ -69,9 +65,7 @@ public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNod
         KControllableEntity entity = new KControllableEntity(
             this.eventSystem,
             name,
-            descriptor,
-            position,
-            sector
+            descriptor
         );
 
         entityLayer.getTool().placeEntity(position, entity);
@@ -79,7 +73,6 @@ public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNod
         KUniversalMap result = new KUniversalMap();
         result.put("entity_layer", entityLayer);
         result.put("passability_layer", passabilityLayer);
-        result.put("sector", sector);
         return result;
 
     }
