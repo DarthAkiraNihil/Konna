@@ -270,10 +270,12 @@ public class KLevelEntityManagementService extends KObject {
             .activator
             .createObject(
                 controller,
-                entity,
-                Objects.requireNonNull(this.currentLevel),
+                controller.getSimpleName(),
                 controllerParams
             );
+
+        controllerInstance.setLevel(Objects.requireNonNull(this.currentLevel));
+        controllerInstance.setAssignedEntity(entity);
 
         entity.setController(controllerInstance);
         var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);

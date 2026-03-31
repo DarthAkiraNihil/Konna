@@ -474,11 +474,12 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                 .activator
                 .createObject(
                     controllerClass,
-                    entity,
-                    level,
+                    controllerClass.getSimpleName(),
                     controllerParams
                 );
 
+            controller.setLevel(level);
+            controller.setAssignedEntity(entity);
             entity.setController(controller);
         }
     }
