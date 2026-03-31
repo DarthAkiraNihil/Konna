@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.mutator.passability;
+package io.github.darthakiranihil.konna.level.generator.maker.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
