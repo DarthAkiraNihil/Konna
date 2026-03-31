@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.KLevelSector;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -35,11 +34,9 @@ public final class KAutonomousEntity extends KLevelEntity {
     public KAutonomousEntity(
         final KEventSystem eventSystem,
         final String name,
-        final String descriptor,
-        final KVector2i position,
-        final KLevelSector currentSector
+        final String descriptor
     ) {
-        super(eventSystem, name, descriptor, position, currentSector);
+        super(eventSystem, name, descriptor);
     }
 
     /**
@@ -61,5 +58,12 @@ public final class KAutonomousEntity extends KLevelEntity {
      */
     public void setController(final KAutonomousEntityController controller) {
         this.controller = controller;
+    }
+
+    /**
+     * @return Controller assigned to this entity.
+     */
+    public @Nullable KAutonomousEntityController getController() {
+        return controller;
     }
 }

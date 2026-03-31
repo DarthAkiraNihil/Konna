@@ -27,16 +27,10 @@ import org.jspecify.annotations.NullMarked;
 public class FalseValidatedController extends KAutonomousEntityController {
 
     public FalseValidatedController(
-        KLevelEntity assignedEntity,
-        KLevel level,
+        String qualifier,
         KAssetDefinition params
     ) {
-        super(assignedEntity, level, params);
-    }
-
-    @Override
-    protected void applyParams(KAssetDefinition params) {
-
+        super(qualifier, params);
     }
 
     @Override

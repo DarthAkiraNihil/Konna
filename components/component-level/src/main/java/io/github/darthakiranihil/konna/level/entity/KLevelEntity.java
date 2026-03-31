@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
+import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
@@ -25,6 +26,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -60,8 +62,8 @@ public abstract sealed class KLevelEntity
     private final KEvent<KLevelSector.EventData> entityLeftSectorEvent;
     private final KEvent<KLevelSector.EventData> entityMovedEvent;
 
-    private KVector2i position;
-    private KLevelSector currentSector;
+    private @Nullable KVector2i position;
+    private @Nullable KLevelSector currentSector;
 
     private final String descriptor;
 
@@ -72,23 +74,15 @@ public abstract sealed class KLevelEntity
      * @param name Entity name
      * @param descriptor Entity descriptor, representing it (maybe an asset id,
      *                   referencing created entity)
-     * @param position Initial position
-     * @param currentSector Initial sector that is entity attached to
      */
     public KLevelEntity(
         final KEventSystem eventSystem,
         final String name,
-        final String descriptor,
-        final KVector2i position,
-        final KLevelSector currentSector
+        final String descriptor
     ) {
         super(name);
 
-        this.position = position;
-        this.currentSector = currentSector;
-
         this.descriptor = descriptor;
-
         this.entityLeftSectorEvent = Objects.requireNonNull(
             eventSystem.getEvent("entityLeftSector")
         );
@@ -105,6 +99,10 @@ public abstract sealed class KLevelEntity
      * by adding it to the destination sector and removing it from the source sector).
      */
     public final void move() {
+
+        if (this.currentSector == null || this.position == null) {
+            return;
+        }
 
         var previousPosition = this.getPosition();
         KVector2i nextDirection = this.getNextMoveDirection();
@@ -177,7 +175,16 @@ public abstract sealed class KLevelEntity
      * @return Current sector of this entity and the position inside it
      */
     public final KPair<KVector2i, KLevelSector> getPosition() {
-        return new KPair<>(this.position, this.currentSector);
+        if (this.currentSector == null || this.position == null) {
+            throw new KIllegalStateException(
+                "Cannot get position of entity that is not assigned to any sector"
+            );
+        }
+
+        KLevelSector unmarked = this.currentSector;
+        KVector2i unmarkedPosition = this.position;
+
+        return new KPair<>(unmarkedPosition, unmarked);
     }
 
     /**
@@ -193,7 +200,8 @@ public abstract sealed class KLevelEntity
      * @param mapSector New map sector
      * @param newPosition Position inside the sector
      */
-    public final void setCurrentSector(final KLevelSector mapSector, final KVector2i newPosition) {
+    public final void setPosition(final KLevelSector mapSector, final KVector2i newPosition) {
         this.currentSector = mapSector;
+        this.position = newPosition;
     }
 }

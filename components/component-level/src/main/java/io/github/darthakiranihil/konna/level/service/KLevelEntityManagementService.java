@@ -224,10 +224,9 @@ public class KLevelEntityManagementService extends KObject {
         KAutonomousEntity entity = new KAutonomousEntity(
             this.eventSystem,
             entityName,
-            descriptor,
-            position,
-            deploymentSector
+            descriptor
         );
+        entity.setPosition(deploymentSector, position);
 
         try {
             var paramsValidator = KClassUtils
@@ -271,10 +270,12 @@ public class KLevelEntityManagementService extends KObject {
             .activator
             .createObject(
                 controller,
-                entity,
-                Objects.requireNonNull(this.currentLevel),
+                controller.getSimpleName(),
                 controllerParams
             );
+
+        controllerInstance.setLevel(Objects.requireNonNull(this.currentLevel));
+        controllerInstance.setAssignedEntity(entity);
 
         entity.setController(controllerInstance);
         var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
@@ -357,10 +358,9 @@ public class KLevelEntityManagementService extends KObject {
         KStaticEntity entity = new KStaticEntity(
             this.eventSystem,
             entityName,
-            descriptor,
-            position,
-            deploymentSector
+            descriptor
         );
+        entity.setPosition(deploymentSector, position);
 
         var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
         tool.placeEntity(position, entity);
@@ -445,10 +445,9 @@ public class KLevelEntityManagementService extends KObject {
         KControllableEntity entity = new KControllableEntity(
             this.eventSystem,
             entityName,
-            descriptor,
-            position,
-            deploymentSector
+            descriptor
         );
+        entity.setPosition(deploymentSector, position);
 
         var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
         tool.placeEntity(position, entity);
