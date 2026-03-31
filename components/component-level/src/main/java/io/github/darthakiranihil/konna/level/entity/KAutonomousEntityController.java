@@ -67,7 +67,7 @@ public abstract class KAutonomousEntityController extends KObject {
      * Applies params to this controller.
      * @param params Params to apply
      */
-    protected void applyParams(KAssetDefinition params) {
+    protected void applyParams(final KAssetDefinition params) {
 
     }
 
@@ -98,7 +98,7 @@ public abstract class KAutonomousEntityController extends KObject {
     }
 
     /**
-     * Sets an assigned entity to this controller
+     * Sets an assigned entity to this controller.
      * @param entity Assigned entity for this controller
      */
     public void setAssignedEntity(final KLevelEntity entity) {

@@ -91,7 +91,7 @@ public final class KLevelEntityLayer
         }
 
         @Override
-        public KLevelEntityLayerTool setSectorForAll(KLevelSector sector) {
+        public KLevelEntityLayerTool setSectorForAll(final KLevelSector sector) {
             for (var entry: this.self.entities.entrySet()) {
                 KVector2i position = entry.getKey();
                 List<KLevelEntity> entitiesOnPosition = entry.getValue();
