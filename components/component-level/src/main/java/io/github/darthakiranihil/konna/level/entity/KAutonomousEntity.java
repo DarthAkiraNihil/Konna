@@ -59,4 +59,11 @@ public final class KAutonomousEntity extends KLevelEntity {
     public void setController(final KAutonomousEntityController controller) {
         this.controller = controller;
     }
+
+    /**
+     * @return Controller assigned to this entity.
+     */
+    public @Nullable KAutonomousEntityController getController() {
+        return controller;
+    }
 }
