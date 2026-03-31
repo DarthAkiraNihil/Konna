@@ -14,33 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.entity;
-
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+package io.github.darthakiranihil.konna.core.except;
 
 /**
- * Representation of a static entity that is not moved during its existence. It can be moved
- * manually though.
+ * Exception thrown when requested operation is attempted to be performed
+ * on object in illegal state.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KStaticEntity extends KLevelEntity {
+public class KIllegalStateException extends KException {
 
-    public KStaticEntity(
-        final KEventSystem eventSystem,
-        final String name,
-        final String descriptor
-    ) {
-        super(eventSystem, name, descriptor);
+    public KIllegalStateException(final String message) {
+        super(message);
     }
 
-    /**
-     * @return Always {@link KVector2i#ZERO}
-     */
-    @Override
-    protected KVector2i getNextMoveDirection() {
-        return KVector2i.ZERO;
-    }
 }

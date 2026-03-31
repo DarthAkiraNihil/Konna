@@ -30,7 +30,6 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
@@ -111,7 +110,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
 
         KAssetDefinition rawSectorsDefinitions = definition.getSubdefinition("sectors");
         Map<String, RawSector> rawSectors = this.createRawSectors(rawSectorsDefinitions);
-        List<KLevelSector> filledSectors = new LinkedList<>();
+        List<KLevelSector> filledSectors = new ArrayList<>(rawSectors.size());
         List<KTriplet<
             KAutonomousEntity,
             Class<? extends KAutonomousEntityController>,
@@ -128,6 +127,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             this.fillLevelTransitionLayer(rs);
 
             rs.containedSector.refresh();
+            this.finalizeSector(rs.containedSector);
 
             filledSectors.add(
                 rs.containedSector()
@@ -298,17 +298,15 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
             KAssetDefinition[] autonomousEntities = data.getSubdefinitionArray("autonomous");
 
             var tool = layer.getTool();
-            this.placeSimpleEntities(tool, controllables, x, y, rawSector.containedSector, false);
-            this.placeSimpleEntities(tool, staticEntities, x, y, rawSector.containedSector, true);
+            this.placeSimpleEntities(tool, controllables, x, y, false);
+            this.placeSimpleEntities(tool, staticEntities, x, y, true);
 
             for (var autonomous: autonomousEntities) {
 
                 var auto = new KAutonomousEntity(
                     this.eventSystem,
                     Objects.requireNonNull(autonomous.getString("name")),
-                    Objects.requireNonNull(autonomous.getString("descriptor")),
-                    new KVector2i(x, y),
-                    rawSector.containedSector
+                    Objects.requireNonNull(autonomous.getString("descriptor"))
                 );
 
                 tool.placeEntity(x, y, auto);
@@ -332,7 +330,6 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
         final KAssetDefinition[] entities,
         int x,
         int y,
-        final KLevelSector containedSector,
         boolean areStatic
     ) {
         for (var entity: entities) {
@@ -343,16 +340,12 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
                     ? new KStaticEntity(
                         this.eventSystem,
                         Objects.requireNonNull(entity.getString("name")),
-                        Objects.requireNonNull(entity.getString("descriptor")),
-                        new KVector2i(x, y),
-                        containedSector
+                        Objects.requireNonNull(entity.getString("descriptor"))
                     )
                     : new KControllableEntity(
                         this.eventSystem,
                         Objects.requireNonNull(entity.getString("name")),
-                        Objects.requireNonNull(entity.getString("descriptor")),
-                        new KVector2i(x, y),
-                        containedSector
+                        Objects.requireNonNull(entity.getString("descriptor"))
                     )
             );
         }
@@ -488,5 +481,10 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
 
             entity.setController(controller);
         }
+    }
+
+    private void finalizeSector(final KLevelSector sector) {
+        KLevelEntityLayerTool tool = sector.getTool(KLevelEntityLayerTool.class);
+        tool.setSectorForAll(sector);
     }
 }

@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
+import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
@@ -60,7 +61,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             mel,
             new KLevelTransitionLayer()
         );
-        KStaticEntity staticEntity = new KStaticEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KStaticEntity staticEntity = new KStaticEntity(es, "se1", "se1");
+        staticEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, staticEntity);
 
         var previousPos = staticEntity.getPosition();
@@ -99,7 +101,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             mel,
             new KLevelTransitionLayer()
         );
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         controllableEntity.setNextMoveDirection(new KVector2i(1, 0));
@@ -144,7 +147,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             mel,
             new KLevelTransitionLayer()
         );
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
@@ -187,7 +191,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             mel,
             new KLevelTransitionLayer()
         );
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
@@ -252,7 +257,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             new KLevelTransitionLayer()
         );
 
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
@@ -318,7 +324,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             new KLevelTransitionLayer()
         );
 
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
@@ -362,7 +369,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             mel,
             new KLevelTransitionLayer()
         );
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
@@ -411,7 +419,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             mel,
             new KLevelTransitionLayer()
         );
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
@@ -485,7 +494,8 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             new KLevelTransitionLayer()
         );
 
-        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KControllableEntity controllableEntity = new KControllableEntity(es, "se1", "se1");
+        controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
@@ -559,10 +569,31 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
             new KLevelTransitionLayer()
         );
 
-        KAutonomousEntity auto = new KAutonomousEntity(es, "se1", "se1", new KVector2i(0, 0), sector);
+        KAutonomousEntity auto = new KAutonomousEntity(es, "se1", "se1");
+        auto.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, auto);
         auto.move();
         Assertions.assertEquals(new KPair<>(KVector2i.ZERO, sector), auto.getPosition());
+
+    }
+
+    @Test
+    public void moveEntityWithoutValidPosition() {
+
+        KStandardEventSystem es = new KStandardEventSystem();
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
+        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        es.startPolling();
+        KStaticEntity staticEntity = new KStaticEntity(
+            es,
+            "static",
+            "static"
+        );
+        staticEntity.move();
+        Assertions.assertThrows(
+            KIllegalStateException.class, staticEntity::getPosition
+        );
+        es.stopPolling();
 
     }
 }
