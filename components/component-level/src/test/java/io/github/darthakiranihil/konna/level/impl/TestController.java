@@ -30,8 +30,8 @@ public class TestController extends KAutonomousEntityController {
     private int test;
 
     @KAutonomousEntityControllerParam(name = "test", type = KAutonomousEntityControllerParam.Metatype.INT)
-    public TestController(KLevelEntity assignedEntity, KLevel level, KAssetDefinition params) {
-        super(assignedEntity, level, params);
+    public TestController(String qualifier, KAssetDefinition params) {
+        super(qualifier, params);
     }
 
     @Override

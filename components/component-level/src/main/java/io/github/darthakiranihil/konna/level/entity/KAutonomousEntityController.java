@@ -16,12 +16,14 @@
 
 package io.github.darthakiranihil.konna.level.entity;
 
+import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import io.github.darthakiranihil.konna.level.KLevel;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Provides for assigned autonomous entity next move directions in order
@@ -32,14 +34,8 @@ import io.github.darthakiranihil.konna.level.KLevel;
  */
 public abstract class KAutonomousEntityController extends KObject {
 
-    /**
-     * Entity assigned to this controller.
-     */
-    protected final KLevelEntity assignedEntity;
-    /**
-     * Level the assigned entity belongs to.
-     */
-    protected final KLevel level;
+    private @Nullable KLevelEntity assignedEntity;
+    private @Nullable KLevel level;
 
     /**
      * <p>
@@ -50,27 +46,19 @@ public abstract class KAutonomousEntityController extends KObject {
      *     its constructor should be annotated with {@link KAutonomousEntityControllerParam}
      *     or {@link KAutonomousEntityControllerParams} annotations.
      * </p>
-     * @param assignedEntity Entity assigned to this controller
-     *                       (that should be autonomous entity, also the controller should
-     *                       be assigned to that entity)
-     * @param level Level the assigned entity belongs to
+     * @param qualifier Controller qualifier
      * @param params Controller parameters
      */
     public KAutonomousEntityController(
-        final KLevelEntity assignedEntity,
-        final KLevel level,
+        final String qualifier,
         final KAssetDefinition params
     ) {
         super(
             String.format(
-                "controller_%s:%s",
-                assignedEntity.name(),
-                assignedEntity.getDescriptor()
+                "controller_%s", qualifier
             ),
             KStructUtils.setOfTags(KLevelComponentTags.CONTROLLER)
         );
-        this.assignedEntity = assignedEntity;
-        this.level = level;
 
         this.applyParams(params);
     }
@@ -79,11 +67,54 @@ public abstract class KAutonomousEntityController extends KObject {
      * Applies params to this controller.
      * @param params Params to apply
      */
-    protected abstract void applyParams(KAssetDefinition params);
+    protected void applyParams(final KAssetDefinition params) {
+
+    }
 
     /**
      * @return Next move direction for assigned entity
      */
     public abstract KVector2i getNextMoveDirection();
 
+    /**
+     * Sets a level for this controller.
+     * @param level Level for this controller
+     */
+    public void setLevel(final KLevel level) {
+        this.level = level;
+    }
+
+    /**
+     * @return Level assigned to this controller
+     */
+    protected KLevel getLevel() {
+        if (this.level == null) {
+            throw new KIllegalStateException(
+                "Autonomous entity controller must be assigned to a level, which is not presented"
+            );
+        }
+
+        return this.level;
+    }
+
+    /**
+     * Sets an assigned entity to this controller.
+     * @param entity Assigned entity for this controller
+     */
+    public void setAssignedEntity(final KLevelEntity entity) {
+        this.assignedEntity = entity;
+    }
+
+    /**
+     * @return Entity assigned to this controller
+     */
+    protected KLevelEntity getAssignedEntity() {
+        if (this.assignedEntity == null) {
+            throw new KIllegalStateException(
+                "Autonomous entity controller must be assigned to an entity, which is not presented"
+            );
+        }
+
+        return this.assignedEntity;
+    }
 }
