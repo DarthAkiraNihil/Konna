@@ -98,7 +98,9 @@ public final class KLevelEntityLayer
 
         @Override
         public List<KLevelEntity> getOnPosition(int x, int y) {
-            return this.getOnPosition(new KVector2i(x, y));
+            // todo: mark entity to remove and return here only unmarked
+            // all marked entities must be deleted after an event or something
+            return List.copyOf(this.getOnPosition(new KVector2i(x, y)));
         }
 
         @Override
