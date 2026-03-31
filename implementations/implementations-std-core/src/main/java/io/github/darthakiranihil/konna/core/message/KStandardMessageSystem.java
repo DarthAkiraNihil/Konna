@@ -311,7 +311,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     private void watch() {
 
         KSystemLogger.info(
-            "message_watcher",
+            "KStandardMessageSystem.messageWatcher",
             "Message watcher thread has been started. Now polling messages [host = %s]",
             this
         );
@@ -327,7 +327,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
         }
 
         KSystemLogger.info(
-            "message_watcher",
+            "KStandardMessageSystem.messageWatcher",
             "Message watcher thread has been stopped [host = %s]",
             this
         );
