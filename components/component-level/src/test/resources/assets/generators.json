@@ -2,7 +2,7 @@
     "valid": {
         "Level.generatorMetadata": {
             "nodes": {
-                "assetIdConst": "io.github.darthakiranihil.konna.level.generator.KStringConstantNode",
+                "assetIdConst": "io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode",
                 "levelNode": "io.github.darthakiranihil.konna.level.impl.TestLevelNode"
             },
             "connections": [
