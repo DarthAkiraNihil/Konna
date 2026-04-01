@@ -40,8 +40,8 @@ public final class KExtrudeBorderByFirstAndLastImpassableNode implements KGenera
         KPassabilityLayer layer = params.get("layer", KPassabilityLayer.class);
         KSize size = layer.getSize();
 
-        List<KPair<Integer, Integer>> horizontal = new LinkedList<>();
-        List<KPair<Integer, Integer>> vertical = new LinkedList<>();
+        List<KPair<Integer, KPair<Integer, Integer>>> horizontal = new LinkedList<>();
+        List<KPair<Integer, KPair<Integer, Integer>>> vertical = new LinkedList<>();
 
         for (int x = 0; x < size.width(); x++) {
             int firstY = -1;
@@ -62,7 +62,7 @@ public final class KExtrudeBorderByFirstAndLastImpassableNode implements KGenera
             }
 
             if (firstY != -1 && lastY != size.height()) {
-                vertical.add(new KPair<>(firstY, lastY));
+                vertical.add(new KPair<>(x, new KPair<>(firstY, lastY)));
             }
         }
 
@@ -85,31 +85,40 @@ public final class KExtrudeBorderByFirstAndLastImpassableNode implements KGenera
             }
 
             if (firstX != -1 && lastX != size.width()) {
-                horizontal.add(new KPair<>(firstX, lastX));
+                horizontal.add(new KPair<>(y, new KPair<>(firstX, lastX)));
             }
         }
 
         KPassabilityLayerTool tool = layer.getTool();
-        for (int y = 0; y < size.height(); y++) {
-            var h = horizontal.get(y);
+        for (var hp: horizontal) {
+            int y = hp.first();
+            var h = hp.second();
 
+            tool.setState(h.first(), y, KPassabilityState.IMPASSABLE);
             int start = h.first() + 1;
             int finish = h.second();
 
             for (int x = start; x < finish; x++) {
                 tool.setState(x, y, KPassabilityState.PASSABLE);
             }
+            tool.setState(finish, y, KPassabilityState.IMPASSABLE);
         }
 
-        for (int x = 0; x < size.width(); x++) {
-            var v = vertical.get(x);
+        for (var vp: vertical) {
+            int x = vp.first();
+            var v = vp.second();
 
+            tool.setState(x, v.first(), KPassabilityState.IMPASSABLE);
             int start = v.first() + 1;
             int finish = v.second();
 
             for (int y = start; y < finish; y++) {
+                if (tool.getOnPosition(x, y) == KPassabilityState.IMPASSABLE) {
+                    continue;
+                }
                 tool.setState(x, y, KPassabilityState.PASSABLE);
             }
+            tool.setState(x, finish, KPassabilityState.IMPASSABLE);
         }
 
         return params;

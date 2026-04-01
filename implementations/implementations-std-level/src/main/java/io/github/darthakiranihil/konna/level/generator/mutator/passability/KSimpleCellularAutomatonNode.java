@@ -59,9 +59,13 @@ public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
                     int alive = this.countAliveNeighbours(x, y, current);
 
                     if (currentState == KPassabilityState.IMPASSABLE) {
-                        if (!parsedRule.second().contains(alive)) {
-                            nextTool.setState(x, y, KPassabilityState.VOID);
-                        }
+                        nextTool.setState(
+                            x,
+                            y,
+                            parsedRule.second().contains(alive)
+                                ? currentState
+                                : KPassabilityState.VOID
+                        );
                     } else {
                         if (parsedRule.first().contains(alive)) {
                             nextTool.setState(x, y, KPassabilityState.IMPASSABLE);

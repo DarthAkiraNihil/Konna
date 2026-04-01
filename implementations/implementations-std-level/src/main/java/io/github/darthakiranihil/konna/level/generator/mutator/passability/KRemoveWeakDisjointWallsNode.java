@@ -38,8 +38,8 @@ public final class KRemoveWeakDisjointWallsNode implements KGeneratorNode {
         KPassabilityLayerTool tool = layer.getTool();
 
         KSize size = layer.getSize();
-        for (int x = 1; x < size.width() - 1; x++) {
-            for (int y = 1; y < size.height() - 1; y++) {
+        for (int x = 0; x < size.width(); x++) {
+            for (int y = 0; y < size.height(); y++) {
 
                 KPassabilityState nNW = tool.getOnPosition(x - 1, y - 1);
                 KPassabilityState nN = tool.getOnPosition(x, y - 1);

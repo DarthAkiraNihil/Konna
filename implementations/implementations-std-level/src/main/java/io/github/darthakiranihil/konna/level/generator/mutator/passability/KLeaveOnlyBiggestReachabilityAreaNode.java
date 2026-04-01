@@ -75,24 +75,19 @@ public final class KLeaveOnlyBiggestReachabilityAreaNode implements KGeneratorNo
             for (int y = 0; y < size.height(); y++) {
 
                 int area = tool.getReachabilityArea(x, y);
-                if (area == 0 && tool.getOnPosition(x, y) == KPassabilityState.IMPASSABLE) {
-                    processedTool.setState(x, y, KPassabilityState.IMPASSABLE);
-                }
-
-                if (area != maxArea) {
+                if (area != maxArea || tool.getOnPosition(x, y) != KPassabilityState.PASSABLE) {
                     continue;
                 }
 
                 processedTool.setState(x, y, KPassabilityState.PASSABLE);
-
-                processedTool.setImpassableIfVoid(x - 1, y - 1);
-                processedTool.setImpassableIfVoid(x, y - 1);
-                processedTool.setImpassableIfVoid(x + 1, y - 1);
-                processedTool.setImpassableIfVoid(x - 1, y);
-                processedTool.setImpassableIfVoid(x + 1, y);
-                processedTool.setImpassableIfVoid(x - 1, y + 1);
-                processedTool.setImpassableIfVoid(x, y + 1);
-                processedTool.setImpassableIfVoid(x + 1, y + 1);
+                this.setImpassableIfSourceIsImpassable(x - 1, y - 1, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x, y - 1, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x + 1, y - 1, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x - 1, y, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x + 1, y, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x - 1, y + 1, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x, y + 1, layer, processedTool);
+                this.setImpassableIfSourceIsImpassable(x + 1, y + 1, layer, processedTool);
 
             }
         }
@@ -102,6 +97,19 @@ public final class KLeaveOnlyBiggestReachabilityAreaNode implements KGeneratorNo
         KUniversalMap result = new KUniversalMap();
         result.put("layer", processed);
         return result;
+    }
+
+    private void setImpassableIfSourceIsImpassable(
+        int x,
+        int y,
+        final KPassabilityLayer sourceLayer,
+        final KPassabilityLayerTool processedTool
+    ) {
+        if (sourceLayer.getOnPosition(x, y) != KPassabilityState.IMPASSABLE) {
+            return;
+        }
+
+        processedTool.setImpassableIfVoid(x, y);
     }
 
 }

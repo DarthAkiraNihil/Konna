@@ -251,6 +251,12 @@ public final class KPassabilityLayer
     }
 
     public void refresh() {
+        for (int y = 0; y < this.size.height(); y++) {
+            for (int x = 0; x < this.size.width(); x++) {
+                this.areas[y][x] = 0;
+            }
+        }
+
         this.fillLayer();
     }
 
@@ -335,7 +341,7 @@ public final class KPassabilityLayer
             for (int j = 0; j < this.size.height(); j++) {
 
                 KPassabilityState state = this.states[j][i];
-                if (state == KPassabilityState.IMPASSABLE && this.areas[j][i] == 0) {
+                if (state == KPassabilityState.PASSABLE && this.areas[j][i] == 0) {
                     return new KVector2i(i, j);
                 }
 

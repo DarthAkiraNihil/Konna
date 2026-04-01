@@ -55,21 +55,7 @@ public final class KPassabilityLayerAddNode implements KGeneratorNode {
 
         for (int x = 0; x < firstSize.width(); x++) {
             for (int y = 0; y < firstSize.height(); y++) {
-
-                KPassabilityState firstState = first.getOnPosition(x, y);
-                KPassabilityState resultState = resultLayer.getOnPosition(x, y);
-
-                if (
-                        resultState == KPassabilityState.VOID
-                    &&  firstState != KPassabilityState.VOID
-                ) {
-                    tool.setState(x, y, firstState);
-                } else if (
-                        resultState == KPassabilityState.IMPASSABLE
-                    &&  firstState == KPassabilityState.PASSABLE
-                ) {
-                    tool.setState(x, y, firstState);
-                }
+                tool.setState(x, y, first.getOnPosition(x, y));
             }
         }
 
@@ -79,7 +65,7 @@ public final class KPassabilityLayerAddNode implements KGeneratorNode {
                 int dstX = x + offset.x();
                 int dstY = y + offset.y();
 
-                KPassabilityState secondState = second.getOnPosition(dstX, dstY);
+                KPassabilityState secondState = first.getOnPosition(x, y);
                 KPassabilityState resultState = resultLayer.getOnPosition(dstX, dstY);
 
                 if (
