@@ -28,44 +28,44 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
-public final class KPassabilityLayerMergerNode implements KGeneratorNode {
+public final class KPassabilityLayerAddNode implements KGeneratorNode {
 
     @Override
     @KGeneratorNodeInputParam(name = "first", type = KPassabilityLayer.class)
     @KGeneratorNodeInputParam(name = "second", type = KPassabilityLayer.class)
-    @KGeneratorNodeInputParam(name = "second_layer_offset", type = KVector2i.class)
-    @KGeneratorNodeOutputParam(name = "merged", type = KPassabilityLayer.class)
-    @KGeneratorNodeOutputParam(name = "new_size", type = KSize.class)
+    @KGeneratorNodeInputParam(name = "offset", type = KVector2i.class)
+    @KGeneratorNodeOutputParam(name = "result", type = KPassabilityLayer.class)
+    @KGeneratorNodeOutputParam(name = "result_size", type = KSize.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KPassabilityLayer first = params.get("first", KPassabilityLayer.class);
         KPassabilityLayer second = params.get("second", KPassabilityLayer.class);
-        KVector2i secondLayerOffset = params.get("second_layer_offset", KVector2i.class);
+        KVector2i offset = params.get("offset", KVector2i.class);
 
         KSize firstSize = first.getSize();
         KSize secondSize = second.getSize();
 
-        KSize mergedSize = new KSize(
-            Math.max(firstSize.width(), secondSize.width() + secondLayerOffset.x()),
-            Math.max(firstSize.height(), secondSize.height() + secondLayerOffset.y())
+        KSize resultSize = new KSize(
+            Math.max(firstSize.width(), secondSize.width() + offset.x()),
+            Math.max(firstSize.height(), secondSize.height() + offset.y())
         );
 
-        KPassabilityLayer merged = new KPassabilityLayer(mergedSize);
-        KPassabilityLayerTool tool = merged.getTool();
+        KPassabilityLayer resultLayer = new KPassabilityLayer(resultSize);
+        KPassabilityLayerTool tool = resultLayer.getTool();
 
         for (int x = 0; x < firstSize.width(); x++) {
             for (int y = 0; y < firstSize.height(); y++) {
 
                 KPassabilityState firstState = first.getOnPosition(x, y);
-                KPassabilityState mergedState = merged.getOnPosition(x, y);
+                KPassabilityState resultState = resultLayer.getOnPosition(x, y);
 
                 if (
-                        mergedState == KPassabilityState.VOID
+                        resultState == KPassabilityState.VOID
                     &&  firstState != KPassabilityState.VOID
                 ) {
                     tool.setState(x, y, firstState);
                 } else if (
-                        mergedState == KPassabilityState.IMPASSABLE
+                        resultState == KPassabilityState.IMPASSABLE
                     &&  firstState == KPassabilityState.PASSABLE
                 ) {
                     tool.setState(x, y, firstState);
@@ -76,19 +76,19 @@ public final class KPassabilityLayerMergerNode implements KGeneratorNode {
         for (int x = 0; x < secondSize.width(); x++) {
             for (int y = 0; y < secondSize.height(); y++) {
 
-                int dstX = x + secondLayerOffset.x();
-                int dstY = y + secondLayerOffset.y();
+                int dstX = x + offset.x();
+                int dstY = y + offset.y();
 
                 KPassabilityState secondState = second.getOnPosition(dstX, dstY);
-                KPassabilityState mergedState = merged.getOnPosition(dstX, dstY);
+                KPassabilityState resultState = resultLayer.getOnPosition(dstX, dstY);
 
                 if (
-                        mergedState == KPassabilityState.VOID
+                        resultState == KPassabilityState.VOID
                     &&  secondState != KPassabilityState.VOID
                 ) {
                     tool.setState(dstX, dstY, secondState);
                 } else if (
-                        mergedState == KPassabilityState.IMPASSABLE
+                        resultState == KPassabilityState.IMPASSABLE
                     &&  secondState == KPassabilityState.PASSABLE
                 ) {
                     tool.setState(dstX, dstY, secondState);
@@ -96,11 +96,11 @@ public final class KPassabilityLayerMergerNode implements KGeneratorNode {
             }
         }
 
-        merged.refresh();
+        resultLayer.refresh();
 
         KUniversalMap result = new KUniversalMap();
-        result.put("merged", merged);
-        result.put("new_size", mergedSize);
+        result.put("result", resultLayer);
+        result.put("result_size", resultSize);
         return result;
 
     }

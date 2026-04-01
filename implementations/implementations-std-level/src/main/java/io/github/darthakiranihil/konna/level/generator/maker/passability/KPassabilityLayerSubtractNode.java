@@ -28,45 +28,43 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
-public final class KPassabilityLayerMaskNode implements KGeneratorNode {
+public final class KPassabilityLayerSubtractNode implements KGeneratorNode {
 
     @Override
-    @KGeneratorNodeInputParam(name = "source", type = KPassabilityLayer.class)
-    @KGeneratorNodeInputParam(name = "mask", type = KPassabilityLayer.class)
+    @KGeneratorNodeInputParam(name = "first", type = KPassabilityLayer.class)
+    @KGeneratorNodeInputParam(name = "second", type = KPassabilityLayer.class)
     @KGeneratorNodeInputParam(name = "offset", type = KVector2i.class)
-    @KGeneratorNodeOutputParam(name = "masked", type = KPassabilityLayer.class)
+    @KGeneratorNodeOutputParam(name = "result", type = KPassabilityLayer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
-        KPassabilityLayer source = params.get("source", KPassabilityLayer.class);
-        KPassabilityLayer mask = params.get("mask", KPassabilityLayer.class);
+        KPassabilityLayer first = params.get("first", KPassabilityLayer.class);
+        KPassabilityLayer second = params.get("second", KPassabilityLayer.class);
         KVector2i offset = params.get("offset", KVector2i.class);
 
-        KPassabilityLayer masked = new KPassabilityLayer(source.getSize());
-        KPassabilityLayerTool tool = masked.getTool();
+        KPassabilityLayer resultLayer = new KPassabilityLayer(first.getSize());
+        KPassabilityLayerTool tool = resultLayer.getTool();
 
-        KSize maskSize = mask.getSize();
-        for (int x = 0; x < maskSize.width(); x++) {
-            for (int y = 0; y < maskSize.height(); y++) {
+        KSize secondSize = second.getSize();
+        for (int x = 0; x < secondSize.width(); x++) {
+            for (int y = 0; y < secondSize.height(); y++) {
 
-                KPassabilityState maskState = mask.getOnPosition(x, y);
-                if (maskState != KPassabilityState.VOID) {
-                    tool
-                        .setState(
-                            offset.x() + x,
-                            offset.y() + y,
-                            source.getOnPosition(
-                                offset.x() + x,
-                                offset.y() + y
-                            )
-                        );
+                KPassabilityState secondState = second.getOnPosition(x, y);
+                if (secondState == KPassabilityState.VOID) {
+                    continue;
                 }
+
+                tool.setState(
+                    offset.x() + x,
+                    offset.y() + y,
+                    KPassabilityState.VOID
+                );
             }
         }
 
-        masked.refresh();
+        resultLayer.refresh();
 
         KUniversalMap result = new KUniversalMap();
-        result.put("masked", masked);
+        result.put("result", resultLayer);
         return result;
 
     }
