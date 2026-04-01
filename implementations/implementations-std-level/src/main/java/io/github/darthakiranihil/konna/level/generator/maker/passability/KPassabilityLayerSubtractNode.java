@@ -41,8 +41,15 @@ public final class KPassabilityLayerSubtractNode implements KGeneratorNode {
         KPassabilityLayer second = params.get("second", KPassabilityLayer.class);
         KVector2i offset = params.get("offset", KVector2i.class);
 
-        KPassabilityLayer resultLayer = new KPassabilityLayer(first.getSize());
+        KSize firstSize = first.getSize();
+        KPassabilityLayer resultLayer = new KPassabilityLayer(firstSize);
         KPassabilityLayerTool tool = resultLayer.getTool();
+
+        for (int x = 0; x < firstSize.width(); x++) {
+            for (int y = 0; y < firstSize.height(); y++) {
+                tool.setState(x, y, first.getOnPosition(x, y));
+            }
+        }
 
         KSize secondSize = second.getSize();
         for (int x = 0; x < secondSize.width(); x++) {

@@ -35,19 +35,19 @@ public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
 
     @Override
     @KGeneratorNodeInputParam(name = "init_state_layer", type = KPassabilityLayer.class)
-    @KGeneratorNodeInputParam(name = "size", type = KSize.class)
     @KGeneratorNodeInputParam(name = "rule", type = String.class)
     @KGeneratorNodeInputParam(name = "iterations", type = Integer.class)
     @KGeneratorNodeOutputParam(name = "layer", type = KPassabilityLayer.class)
     // B2/S123
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
-        KSize size = params.get("size", KSize.class);
         String rule = params.get("rule", String.class);
         int iterations = params.get("iterations", Integer.class);
 
         var parsedRule = this.parseRule(rule);
         KPassabilityLayer current = params.get("init_state_layer", KPassabilityLayer.class);
+        KSize size = current.getSize();
+
         KPassabilityLayer next = new KPassabilityLayer(size);
 
         for (int it = 0; it < iterations; it++) {
@@ -103,7 +103,7 @@ public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
         }
 
         String stayRule = parts[1];
-        if (stayRule.charAt(0) != 'B') {
+        if (stayRule.charAt(0) != 'S') {
             throw new KInvalidArgumentException(
                 String.format(
                     "The first char of \"stay\" must be S, but got %s",

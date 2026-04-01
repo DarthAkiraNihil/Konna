@@ -14,43 +14,34 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.maker.layer;
+package io.github.darthakiranihil.konna.level.generator.maker;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
-import io.github.darthakiranihil.konna.level.layer.KNoiseLayer;
-import io.github.darthakiranihil.konna.level.layer.tool.KNoiseLayerTool;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 
 import java.util.Random;
 
-public final class KRandomNormalizedNoiseLayerNode implements KGeneratorNode {
-
-    private static final long MIN = -1_000_000_000L;
-    private static final long MAX = 1_000_000_001L;
-    private static final float DENOMINATOR = 1_000_000_000.0f;
+public final class KRandomPointOnPassabilityLayerNode implements KGeneratorNode {
 
     @Override
-    @KGeneratorNodeInputParam(name = "size", type = KSize.class)
-    @KGeneratorNodeOutputParam(name = "layer", type = KNoiseLayer.class)
+    @KGeneratorNodeInputParam(name = "layer", type = KPassabilityLayer.class)
+    @KGeneratorNodeOutputParam(name = "point", type = KVector2i.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
-        KSize size = params.get("size", KSize.class);
-        KNoiseLayer layer = new KNoiseLayer(size);
-        KNoiseLayerTool tool = layer.getTool();
-
-        for (int x = 0; x < size.width(); x++) {
-            for (int y = 0; y < size.height(); y++) {
-                long base = rnd.nextLong(MIN, MAX);
-                tool.setNoiseValue(x, y, base / DENOMINATOR);
-            }
-        }
-
+        KPassabilityLayer layer = params.get("layer", KPassabilityLayer.class);
         KUniversalMap result = new KUniversalMap();
-        result.put("layer", layer);
+        result.put(
+            "point",
+            new KVector2i(
+                rnd.nextInt(0, layer.getSize().width()),
+                rnd.nextInt(0, layer.getSize().height())
+            )
+        );
         return result;
-    }
 
+    }
 }

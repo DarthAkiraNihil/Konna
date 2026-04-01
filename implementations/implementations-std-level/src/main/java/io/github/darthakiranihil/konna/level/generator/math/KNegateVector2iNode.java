@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam
 
 import java.util.Random;
 
-public class KNegateVector2iNode implements KGeneratorNode {
+public final class KNegateVector2iNode implements KGeneratorNode {
 
     @Override
     @KGeneratorNodeInputParam(name = "value", type = KVector2i.class)
