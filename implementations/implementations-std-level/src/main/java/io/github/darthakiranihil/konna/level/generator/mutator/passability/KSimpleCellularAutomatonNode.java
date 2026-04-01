@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.maker.passability;
+package io.github.darthakiranihil.konna.level.generator.mutator.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
@@ -24,6 +24,8 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
+import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,19 +34,51 @@ import java.util.Random;
 public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
 
     @Override
+    @KGeneratorNodeInputParam(name = "init_state_layer", type = KPassabilityLayer.class)
     @KGeneratorNodeInputParam(name = "size", type = KSize.class)
     @KGeneratorNodeInputParam(name = "rule", type = String.class)
+    @KGeneratorNodeInputParam(name = "iterations", type = Integer.class)
     @KGeneratorNodeOutputParam(name = "layer", type = KPassabilityLayer.class)
     // B2/S123
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KSize size = params.get("size", KSize.class);
         String rule = params.get("rule", String.class);
+        int iterations = params.get("iterations", Integer.class);
 
         var parsedRule = this.parseRule(rule);
-        KPassabilityLayer layer = new KPassabilityLayer(size);
+        KPassabilityLayer current = params.get("init_state_layer", KPassabilityLayer.class);
+        KPassabilityLayer next = new KPassabilityLayer(size);
 
-        return null;
+        for (int it = 0; it < iterations; it++) {
+            KPassabilityLayerTool nextTool = next.getTool();
+
+            for (int x = 0; x < size.width(); x++) {
+                for (int y = 0; y < size.height(); y++) {
+                    KPassabilityState currentState = current.getOnPosition(x, y);
+                    int alive = this.countAliveNeighbours(x, y, current);
+
+                    if (currentState == KPassabilityState.IMPASSABLE) {
+                        if (!parsedRule.second().contains(alive)) {
+                            nextTool.setState(x, y, KPassabilityState.VOID);
+                        }
+                    } else {
+                        if (parsedRule.first().contains(alive)) {
+                            nextTool.setState(x, y, KPassabilityState.IMPASSABLE);
+                        }
+                    }
+                }
+            }
+
+            KPassabilityLayer temp = current;
+            current = next;
+            next = temp;
+
+        }
+
+        KUniversalMap result = new KUniversalMap();
+        result.put("layer", current);
+        return result;
     }
 
     private KPair<List<Integer>, List<Integer>> parseRule(final String rule) {
@@ -94,5 +128,23 @@ public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
         return new KPair<>(
             born, stay
         );
+    }
+
+    private int countAliveNeighbours(int x, int y, final KPassabilityLayer layer) {
+        int alive = 0;
+
+        for (int xd = -1; xd <= 1; xd++) {
+            for (int yd = -1; yd <= 1; yd++) {
+                if (xd == 0 && yd == 0) {
+                    continue;
+                }
+
+                if (layer.getOnPosition(x + xd, y + yd) == KPassabilityState.IMPASSABLE) {
+                    alive++;
+                }
+            }
+        }
+
+        return alive;
     }
 }
