@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator.maker.layer;
+package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -22,35 +22,39 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.layer.KNoiseLayer;
-import io.github.darthakiranihil.konna.level.layer.tool.KNoiseLayerTool;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
+import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
-public final class KRandomNormalizedNoiseLayerNode implements KGeneratorNode {
-
-    private static final long MIN = -1_000_000_000L;
-    private static final long MAX = -1_000_000_001L;
-    private static final float DENOMINATOR = 1_000_000_000.0f;
+public final class KMapNormalizedNoiseToImpassableNode implements KGeneratorNode {
 
     @Override
-    @KGeneratorNodeInputParam(name = "size", type = KSize.class)
-    @KGeneratorNodeOutputParam(name = "layer", type = KNoiseLayer.class)
+    @KGeneratorNodeInputParam(name = "noise", type = KNoiseLayer.class)
+    @KGeneratorNodeInputParam(name = "min_limit", type = Float.class)
+    @KGeneratorNodeOutputParam(name = "layer", type = KPassabilityLayer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
-        KSize size = params.get("size", KSize.class);
-        KNoiseLayer layer = new KNoiseLayer(size);
-        KNoiseLayerTool tool = layer.getTool();
+        KNoiseLayer noise = params.get("noise", KNoiseLayer.class);
+        float minLimit = params.get("min_limit", Float.class);
+
+        KSize size = noise.getSize();
+        KPassabilityLayer passabilityLayer = new KPassabilityLayer(size);
+        KPassabilityLayerTool tool = passabilityLayer.getTool();
 
         for (int x = 0; x < size.width(); x++) {
             for (int y = 0; y < size.height(); y++) {
-                long base = rnd.nextLong(MIN, MAX);
-                tool.setNoiseValue(x, y, base / DENOMINATOR);
+                if (noise.getOnPosition(x, y) < minLimit) {
+                    continue;
+                }
+
+                tool.setState(x, y, KPassabilityState.IMPASSABLE);
             }
         }
 
         KUniversalMap result = new KUniversalMap();
-        result.put("layer", layer);
+        result.put("layer", passabilityLayer);
         return result;
     }
-
 }
