@@ -41,12 +41,12 @@ public final class KPassabilityLayer
         private final KPassabilityLayer self;
         private int totalPassable;
 
-        public Tool(KPassabilityLayer self) {
+        Tool(final KPassabilityLayer self) {
             this.self = self;
         }
 
         @Override
-        public void setState(int x, int y, KPassabilityState state) {
+        public void setState(int x, int y, final KPassabilityState state) {
 
             if (
                     x < 0
@@ -262,6 +262,9 @@ public final class KPassabilityLayer
         return this.tool;
     }
 
+    /**
+     * Recalculates reachability areas of this layer.
+     */
     public void refresh() {
         for (int y = 0; y < this.size.height(); y++) {
             for (int x = 0; x < this.size.width(); x++) {

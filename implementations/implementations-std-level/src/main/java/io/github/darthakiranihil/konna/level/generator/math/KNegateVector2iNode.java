@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
-import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 
 import java.util.Random;
 

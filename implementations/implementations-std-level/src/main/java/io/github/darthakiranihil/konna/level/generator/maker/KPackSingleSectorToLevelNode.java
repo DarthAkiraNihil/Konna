@@ -17,13 +17,11 @@
 package io.github.darthakiranihil.konna.level.generator.maker;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
-import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 
 import java.util.Collections;
 import java.util.Random;
@@ -53,7 +51,7 @@ public final class KPackSingleSectorToLevelNode implements KGeneratorNode {
     @KGeneratorNodeInputParam(name = "name", type = String.class)
     @KGeneratorNodeInputParam(name = "sector", type = KLevelSector.class)
     @KGeneratorNodeOutputParam(name = "level", type = KLevel.class)
-    public KUniversalMap process(KUniversalMap params, Random rnd) {
+    public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         String name = params.get("name", String.class);
         KLevelSector sector = params.get("sector", KLevelSector.class);

@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
-import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
 import io.github.darthakiranihil.konna.level.layer.KNoiseLayer;
 import io.github.darthakiranihil.konna.level.layer.tool.KNoiseLayerTool;
 

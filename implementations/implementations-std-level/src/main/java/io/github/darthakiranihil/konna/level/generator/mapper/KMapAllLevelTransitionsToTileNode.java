@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
@@ -64,7 +63,9 @@ public final class KMapAllLevelTransitionsToTileNode implements KGeneratorNode {
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KTileLayer tileLayer = params.get("tile_layer", KTileLayer.class);
-        KLevelTransitionLayer levelTransitionLayer = params.get("level_transition_layer", KLevelTransitionLayer.class);
+        KLevelTransitionLayer levelTransitionLayer = params.get(
+            "level_transition_layer", KLevelTransitionLayer.class
+        );
         KTileInfo transitionTile = params.get("transition_tile", KTileInfo.class);
 
         KSize tileLayerSize = tileLayer.getSize();

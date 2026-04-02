@@ -64,7 +64,7 @@ public final class KRandomlyPlaceStaticEntitiesNode implements KGeneratorNode {
      * Constructs this node.
      * @param eventSystem Event system to inject into placed entities
      */
-    public KRandomlyPlaceStaticEntitiesNode(@KInject KEventSystem eventSystem) {
+    public KRandomlyPlaceStaticEntitiesNode(@KInject final KEventSystem eventSystem) {
         this.eventSystem = eventSystem;
     }
 
@@ -79,7 +79,9 @@ public final class KRandomlyPlaceStaticEntitiesNode implements KGeneratorNode {
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KLevelEntityLayer entityLayer = params.get("entity_layer", KLevelEntityLayer.class);
-        KPassabilityLayer passabilityLayer = params.get("passability_layer", KPassabilityLayer.class);
+        KPassabilityLayer passabilityLayer = params.get(
+            "passability_layer", KPassabilityLayer.class
+        );
         String name = params.get("name", String.class);
         String descriptor = params.get("descriptor", String.class);
         int amount = params.get("amount", Integer.class);

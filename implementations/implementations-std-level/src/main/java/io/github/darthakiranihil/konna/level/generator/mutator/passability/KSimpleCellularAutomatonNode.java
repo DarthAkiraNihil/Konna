@@ -42,7 +42,8 @@ import java.util.Random;
  *         {@code init_state_layer} - {@link KPassabilityLayer}
  *         - initial passability layer state
  *     </li>
- *     <li>{@code rule} - {@link String} - automaton rule</li>
+ *     <li>{@code rule} - {@link String} - automaton rule
+ *     (must be in format {@code B<digits>/S<digits>})</li>
  *     <li>{@code iterations} - {@link Integer} - automaton processing iterations</li>
  * </ul>
  * <h3>Outputs:</h3>
@@ -56,6 +57,8 @@ import java.util.Random;
  * @author Darth Akira Nihil
  */
 public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
+
+    private static final int NEIGHBOURS_COUNT = 8;
 
     @Override
     @KGeneratorNodeInputParam(name = "init_state_layer", type = KPassabilityLayer.class)
@@ -140,12 +143,12 @@ public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
             );
         }
 
-        ArrayList<Integer> born = new ArrayList<>(8);
+        ArrayList<Integer> born = new ArrayList<>(NEIGHBOURS_COUNT);
         for (int i = 1; i < bornRule.length(); i++) {
             born.add(Character.getNumericValue(bornRule.charAt(i)));
         }
 
-        ArrayList<Integer> stay = new ArrayList<>(8);
+        ArrayList<Integer> stay = new ArrayList<>(NEIGHBOURS_COUNT);
         for (int i = 1; i < stayRule.length(); i++) {
             stay.add(Character.getNumericValue(stayRule.charAt(i)));
         }

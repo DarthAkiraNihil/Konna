@@ -62,7 +62,7 @@ public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNod
      * Constructs this node.
      * @param eventSystem Event system to inject into placed entity
      */
-    public KRandomlyPlaceControllableEntityNode(@KInject KEventSystem eventSystem) {
+    public KRandomlyPlaceControllableEntityNode(@KInject final KEventSystem eventSystem) {
         this.eventSystem = eventSystem;
     }
 
@@ -76,7 +76,9 @@ public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNod
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
 
         KLevelEntityLayer entityLayer = params.get("entity_layer", KLevelEntityLayer.class);
-        KPassabilityLayer passabilityLayer = params.get("passability_layer", KPassabilityLayer.class);
+        KPassabilityLayer passabilityLayer = params.get(
+            "passability_layer", KPassabilityLayer.class
+        );
         String name = params.get("name", String.class);
         String descriptor = params.get("descriptor", String.class);
 

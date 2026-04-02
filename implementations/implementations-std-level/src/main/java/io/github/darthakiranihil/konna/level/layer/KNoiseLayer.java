@@ -34,7 +34,7 @@ public final class KNoiseLayer
 
         private final KNoiseLayer self;
 
-        public Tool(final KNoiseLayer self) {
+        Tool(final KNoiseLayer self) {
             this.self = self;
         }
 

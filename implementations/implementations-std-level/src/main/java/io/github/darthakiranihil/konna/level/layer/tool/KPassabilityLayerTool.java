@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.level.layer.tool;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
-import org.jspecify.annotations.Nullable;
 
 import java.util.Random;
 
