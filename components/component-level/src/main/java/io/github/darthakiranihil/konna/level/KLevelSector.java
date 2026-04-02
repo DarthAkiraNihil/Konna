@@ -54,8 +54,6 @@ import java.util.Objects;
 )
 public final class KLevelSector extends KObject {
 
-    private static final int RANDOM_POSITION_SELECTION_ATTEMPTS = 1024;
-
     /**
      * Event data record for {@code entityLeftSector} and {@code entityMoved} events.
      * @param entity Affected entity

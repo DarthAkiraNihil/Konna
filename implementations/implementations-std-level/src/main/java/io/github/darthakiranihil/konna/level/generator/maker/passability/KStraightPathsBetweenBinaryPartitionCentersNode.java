@@ -44,7 +44,7 @@ import java.util.Random;
  * <h3>Outputs:</h3>
  * <ul>
  *     <li>
- *         {@code result} - {@link KPassabilityLayer} - passability layer containing all dug paths
+ *         {@code layer} - {@link KPassabilityLayer} - passability layer containing all dug paths
  *     </li>
  * </ul>
  *
