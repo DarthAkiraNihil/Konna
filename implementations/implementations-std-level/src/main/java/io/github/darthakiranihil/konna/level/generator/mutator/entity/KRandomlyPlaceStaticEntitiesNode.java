@@ -33,8 +33,6 @@ import java.util.Random;
 
 public final class KRandomlyPlaceStaticEntitiesNode implements KGeneratorNode {
 
-    private static final int RANDOM_POSITION_SELECTION_ATTEMPTS = 1024;
-
     private final KEventSystem eventSystem;
 
     public KRandomlyPlaceStaticEntitiesNode(@KInject KEventSystem eventSystem) {
