@@ -175,16 +175,16 @@ import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KLevelTypedef implements KAssetTypedef {
+public final class KLevelMetadataTypedef implements KAssetTypedef {
 
     /**
-     * Constant for level type inside Level component.
+     * Constant for level metadata type inside Level component.
      */
-    public static final String LEVEL_ASSET_TYPE = "Level.level";
+    public static final String LEVEL_METADATA_ASSET_TYPE = "Level.levelMetadata";
 
     @Override
     public String getName() {
-        return LEVEL_ASSET_TYPE;
+        return LEVEL_METADATA_ASSET_TYPE;
     }
 
     @Override

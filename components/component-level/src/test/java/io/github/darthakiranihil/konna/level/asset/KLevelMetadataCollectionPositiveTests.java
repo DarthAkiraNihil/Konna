@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("ExtractMethodRecommender")
-public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
+public class KLevelMetadataCollectionPositiveTests extends KAssetCollectionTestClass {
 
     @Test
     public void testLoadValidLevel() {
@@ -47,7 +47,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -115,7 +115,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -156,7 +156,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -200,7 +200,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -241,7 +241,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
             this.assetLoader,
             es,
             new KTileCollection(
@@ -282,7 +282,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
             this.assetLoader,
             es,
             new KTileCollection(

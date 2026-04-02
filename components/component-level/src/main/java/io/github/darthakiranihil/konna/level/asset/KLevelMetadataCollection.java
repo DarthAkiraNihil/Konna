@@ -39,19 +39,19 @@ import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.*;
-import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
+import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 
 import java.util.*;
 
 /**
  * Collection of level assets of type
- * {@link KLevelTypedef#LEVEL_ASSET_TYPE}.
+ * {@link KLevelMetadataTypedef#LEVEL_METADATA_ASSET_TYPE}.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
 @KSingleton
-public final class KLevelCollection extends KObject implements KAssetCollection<KLevel> {
+public final class KLevelMetadataCollection extends KObject implements KAssetCollection<KLevel> {
 
     private record RawSector(
         KLevelSector containedSector,
@@ -84,7 +84,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
      * @param tileCollection Tile collection to get tiles for loaded level
      * @param activator Activator to create autonomous entity controllers
      */
-    public KLevelCollection(
+    public KLevelMetadataCollection(
         @KInject final KAssetLoader assetLoader,
         @KInject final KEventSystem eventSystem,
         @KInject final KTileCollection tileCollection,
@@ -105,7 +105,7 @@ public final class KLevelCollection extends KObject implements KAssetCollection<
     @Override
     public KLevel getAsset(final String assetId) {
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KLevelTypedef.LEVEL_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(assetId, KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE);
         KAssetDefinition definition = asset.definition();
 
         KAssetDefinition rawSectorsDefinitions = definition.getSubdefinition("sectors");

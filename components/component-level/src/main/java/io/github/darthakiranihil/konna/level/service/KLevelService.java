@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
+import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.asset.KLevelGeneratorMetadataCollection;
@@ -56,7 +56,7 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class KLevelService extends KObject {
 
-    private final KLevelCollection levelCollection;
+    private final KLevelMetadataCollection levelCollection;
     private final KLevelGeneratorMetadataCollection generatorMetadataCollection;
     private final KActivator activator;
 
@@ -80,7 +80,7 @@ public class KLevelService extends KObject {
     public KLevelService(
         @KInject final KEventSystem eventSystem,
         @KInject final KActivator activator,
-        @KInject final KLevelCollection levelCollection,
+        @KInject final KLevelMetadataCollection levelCollection,
         @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
