@@ -324,41 +324,68 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
             )
             .returns(TypeName.VOID);
 
+        var paramsArrayBuilder = CodeBlock
+            .builder()
+            .add("var paramNames = new $T[] {", String.class);
+
+        var paramsTypesArrayBuilder = CodeBlock
+            .builder()
+            .add("var paramTypes = new $T[] {", Class.class);
+
         int i = 0;
         for (Param param: params) {
-
-            builder
-                .beginControlFlow("if (!value.containsKey($S))", param.name)
-                .addStatement(
-                    "throw new $T($S)",
-                    INVALID_ARG_EXCEPTION_CLASS_NAME,
-                    String.format(
-                        "Parameter %s is not presented in %s parameters!",
-                        param.name,
-                        paramTypeQualifier.toLowerCase()
-                    )
-                )
-                .endControlFlow()
-                .addStatement(
-                    String.format("var p%d = value.getSafe($S, $T.class)", i),
-                    param.name,
-                    param.type
-                )
-                .beginControlFlow(String.format("if (p%d == null)", i))
-                .addStatement("var real = value.get($S)", param.name)
-                .addStatement(
-                    "throw new $T(String.format($S, real.getClass()))",
-                    INVALID_ARG_EXCEPTION_CLASS_NAME,
-                    String.format(
-                        "%s parameter type mismatch for %s. Expected %s but got",
-                        paramTypeQualifier,
-                        param.name,
-                        param.type
-                    ) + " %s"
-                )
-                .endControlFlow();
+            paramsArrayBuilder.add("$S", param.name);
+            paramsTypesArrayBuilder.add("$T.class", param.type);
+            if (i < params.size() - 1) {
+                paramsArrayBuilder.add(", ");
+                paramsTypesArrayBuilder.add(", ");
+            }
             i++;
         }
+
+        paramsArrayBuilder.add("}");
+        paramsTypesArrayBuilder.add("}");
+
+        builder
+            .addStatement(paramsArrayBuilder.build())
+            .addStatement(paramsTypesArrayBuilder.build())
+            .beginControlFlow("for (int i = $L; i < $L; i++)", 0, params.size())
+            .beginControlFlow("if (!value.containsKey(paramNames[i]))")
+            .addStatement(
+                CodeBlock
+                    .builder()
+                    .add("throw new $T(", INVALID_ARG_EXCEPTION_CLASS_NAME)
+                    .add(
+                        CodeBlock
+                            .builder()
+                            .add(
+                                    "String.format("
+                                +   "\"Parameter %s is not presented in %s parameters!\", "
+                            )
+                            .add("paramNames[i]")
+                            .add(")")
+                            .build()
+                    )
+                    .add(")")
+                    .build()
+            )
+            .endControlFlow()
+            .addStatement("var param = value.getSafe(paramNames[i], paramTypes[i])")
+            .beginControlFlow("if (param == null)")
+            .addStatement("var real = value.get(paramNames[i])")
+            .addStatement(
+                CodeBlock
+                    .builder()
+                    .add("throw new $T(", INVALID_ARG_EXCEPTION_CLASS_NAME)
+                    .add("String.format(\"")
+                    .add(paramTypeQualifier)
+                    .add(" parameter type mismatch for %s. Expected %s but got %s\", ")
+                    .add("paramNames[i], paramTypes[i], real.getClass()")
+                    .add("))")
+                    .build()
+            )
+            .endControlFlow()
+            .endControlFlow();
 
         return builder.build();
     }

@@ -293,26 +293,42 @@ public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationPr
         builder.addStatement("var body = message.body()");
         builder.addStatement("Object[] args = new Object[$L]", params.size());
 
-        for (int i = 0; i < params.size(); i++) {
-            var param = params.get(i);
-            String paramValue = param.value();
+        var paramsArrayBuilder = CodeBlock
+            .builder()
+            .add("var paramNames = new $T[] {", String.class);
 
-            builder
-                .beginControlFlow(
-                    "if (!body.containsKey($S))",
-                    paramValue
-                )
-                .addStatement(
-                    "throw new $T($S)",
-                    INVALID_MESSAGE_EXCEPTION_CLASS,
-                    String.format(
-                        "Could not get %s from the message",
-                        paramValue
-                    )
-                )
-                .endControlFlow()
-                .addStatement("args[$L] = body.get($S)", i, paramValue);
+        for (int i = 0; i < params.size(); i++) {
+            paramsArrayBuilder.add("$S", params.get(i).value());
+            if (i < params.size() - 1) {
+                paramsArrayBuilder.add(", ");
+            }
         }
+        paramsArrayBuilder.add("}");
+
+        builder
+            .addStatement(paramsArrayBuilder.build())
+            .beginControlFlow("for (int i = $L; i < $L; i++)", 0, params.size())
+            .beginControlFlow(
+                "if (!body.containsKey(paramNames[i]))"
+            )
+            .addStatement(
+                CodeBlock
+                    .builder()
+                    .add("throw new $T(", INVALID_MESSAGE_EXCEPTION_CLASS)
+                    .add(
+                        CodeBlock
+                            .builder()
+                            .add("String.format(\"Could not get %s from the message\", ")
+                            .add("paramNames[i]")
+                            .add(")")
+                            .build()
+                    )
+                    .add(")")
+                    .build()
+            )
+            .endControlFlow()
+            .addStatement("args[i] = body.get(paramNames[i])")
+            .endControlFlow();
 
         builder.addStatement("return args");
 
