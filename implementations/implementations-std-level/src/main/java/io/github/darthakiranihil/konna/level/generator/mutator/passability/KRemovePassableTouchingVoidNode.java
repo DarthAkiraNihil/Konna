@@ -28,6 +28,25 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that replaces all passable cells, that touch void, to impassable cells.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - source passability layer</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer}
+ *         - mutated passability layer with removed passable touching void
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRemovePassableTouchingVoidNode implements KGeneratorNode {
 
     @Override

@@ -25,6 +25,22 @@ import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that returns a random point on a passability layer.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - layer to pick point from</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code point} - {@link KVector2i} - coordinates of random point on passed layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRandomPointOnPassabilityLayerNode implements KGeneratorNode {
 
     @Override

@@ -23,6 +23,21 @@ import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
 
 import java.util.Random;
 
+
+/**
+ * <p>
+ *     Generator node that constructs an empty {@link KSectorLinkLayer}.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <p>none</p>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KSectorLinkLayer} - constructed empty layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KNewSectorLinkLayerNode implements KGeneratorNode {
 
     @Override

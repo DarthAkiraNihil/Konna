@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
@@ -28,6 +29,30 @@ import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that maps all tiles, located on level transition, to specific tile.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code tile_layer} - {@link KTileLayer} - layer to perform mapping on</li>
+ *     <li>
+ *         {@code level_transition_layer} - {@link KLevelTransitionLayer} - level transition layer
+ *     </li>
+ *     <li>{@code transition_tile} - {@link KTileInfo} - tile to map all level transitions</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code tile_layer} - {@link KTileLayer} - mapped tile layer</li>
+ *     <li>
+ *         {@code level_transition_layer} - {@link KLevelTransitionLayer}
+ *         - original level transition layer
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KMapAllLevelTransitionsToTileNode implements KGeneratorNode {
 
     @Override

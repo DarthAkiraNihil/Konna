@@ -17,15 +17,36 @@
 package io.github.darthakiranihil.konna.level.generator.maker;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that creates a new level from a single sector.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code name} - {@link String} - level name</li>
+ *     <li>{@code sector} - {@link KLevelSector} - sector to assign to the level</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code level} - {@link KLevel} - constructed level consisting of the only passed sector
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KPackSingleSectorToLevelNode implements KGeneratorNode {
 
     @Override

@@ -27,6 +27,27 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that replaces impassable cells, disconnecting two reachability areas,
+ *     to passable cells. In order for impassable cell to be removed, it must be located
+ *     between two passable cells of different reachability ares.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - source passability layer</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer}
+ *         - mutated passability layer with removed walls
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRemoveWeakDisjointWallsNode implements KGeneratorNode {
 
     @Override

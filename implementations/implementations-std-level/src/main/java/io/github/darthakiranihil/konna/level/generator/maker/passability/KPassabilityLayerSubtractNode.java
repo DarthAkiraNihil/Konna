@@ -28,6 +28,29 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that performs subtract operation to two passability layers
+ *     and returns subtraction result as a new layer.
+ * </p>
+ * <p>
+ *     Subtraction is performed by the rule that if a cell of second layer is not a void,
+ *     corresponding cell on the first layer will be made void.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code first} - {@link KPassabilityLayer} - first passability layer</li>
+ *     <li>{@code second} - {@link KPassabilityLayer} - second passability layer</li>
+ *     <li>{@code offset} - {@link KVector2i} - offset of second layer overlapping</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code result} - {@link KPassabilityLayer} - subtraction result layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KPassabilityLayerSubtractNode implements KGeneratorNode {
 
     @Override

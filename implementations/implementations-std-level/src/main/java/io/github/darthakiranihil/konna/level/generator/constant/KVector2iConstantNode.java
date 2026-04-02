@@ -25,6 +25,12 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam
 
 import java.util.Random;
 
+/**
+ * Constant generator node containing a {@link KVector2i} value.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KVector2iConstantNode implements KConstantNode {
 
     private final KVector2i object;

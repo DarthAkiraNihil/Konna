@@ -28,10 +28,48 @@ import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that creates a new sector from all required layers.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code name} - {@link String} - sector name</li>
+ *     <li>
+ *         {@code tile_layer} - {@link KTileLayer} - tile layer to assign to the sector
+ *     </li>
+ *     <li>
+ *         {@code height_layer} - {@link KHeightLayer} - height layer to assign to the sector
+ *     </li>
+ *     <li>
+ *         {@code sector_link_layer} - {@link KSectorLinkLayer}
+ *         - sector link layer to assign to the sector
+ *     </li>
+ *     <li>
+ *         {@code entity_layer} - {@link KLevelEntityLayer}
+ *         - entity layer to assign to the sector
+ *     </li>
+ *     <li>
+ *         {@code level_transition_layer} - {@link KLevelTransitionLayer}
+ *         - level transition layer to assign to the sector
+ *     </li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code sector} - {@link KLevelSector} - constructed sector</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KNewLevelSectorNode implements KGeneratorNode {
 
     private final KEventSystem eventSystem;
 
+    /**
+     * Constructs this node.
+     * @param eventSystem Event system to inject into created sectors
+     */
     public KNewLevelSectorNode(@KInject KEventSystem eventSystem) {
         this.eventSystem = eventSystem;
     }

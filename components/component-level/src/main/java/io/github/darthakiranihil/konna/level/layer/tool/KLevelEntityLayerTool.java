@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 
@@ -70,7 +69,15 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      */
     KLevelEntityLayerTool removeEntity(KVector2i position, KLevelEntity entity);
 
+    /**
+     * @return List of all entities contained in this layer
+     */
     List<KLevelEntity> getAllContainedEntities();
+
+    /**
+     * @param descriptor Descriptor of entities to find
+     * @return List of all entities contained in this layer with specific descriptor
+     */
     List<KLevelEntity> findEntitiesWithDescriptor(String descriptor);
 
     /**
@@ -79,7 +86,6 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * on late setting entities' current sector on level loading and generating.
      * Entities' positions will be copied from layer.
      * @param sector Sector to set
-     * @return This layer (for method chaining)
      */
     void setSectorForAll(KLevelSector sector);
 

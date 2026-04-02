@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
@@ -28,6 +29,24 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that maps all noise values to impassable cells on a passability layer,
+ *     if they are greater than some another value. Other cells become void.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code noise} - {@link KNoiseLayer} - source noise layer</li>
+ *     <li>{@code min_limit} - {@link Float} - min noise value to make a cell impassable</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - mapped passability layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KMapNormalizedNoiseToImpassableNode implements KGeneratorNode {
 
     @Override

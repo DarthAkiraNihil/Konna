@@ -45,6 +45,10 @@ public final class KFov {
         return this.observedSlices;
     }
 
+    /**
+     * @param descriptor Descriptor of entities to find
+     * @return List of observed entities with specified descriptor inside this FOV
+     */
     public List<KLevelEntity> getEntitiesWithDescriptor(final String descriptor) {
         return
             this.observedSlices

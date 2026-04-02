@@ -25,6 +25,12 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam
 
 import java.util.Random;
 
+/**
+ * Constant generator node containing a {@link KSize} value.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KSizeConstantNode implements KConstantNode {
 
     private final KSize object;

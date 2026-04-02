@@ -23,6 +23,20 @@ import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that constructs an empty {@link KLevelEntityLayer}.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <p>none</p>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KLevelEntityLayer} - constructed empty layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KNewLevelEntitiesLayer implements KGeneratorNode {
 
     @Override

@@ -28,6 +28,31 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that performs add operation to two passability layers
+ *     and returns addition result as a new layer.
+ * </p>
+ * <p>
+ *     Addition is performed by the rule that all passable cells from second layer
+ *     will overwrite all cells on the first layer (i.e. that are copy of the first layer), but
+ *     all impassable will overwrite only voids.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code first} - {@link KPassabilityLayer} - first passability layer</li>
+ *     <li>{@code second} - {@link KPassabilityLayer} - second passability layer</li>
+ *     <li>{@code offset} - {@link KVector2i} - offset of second layer overlapping</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code result} - {@link KPassabilityLayer} - addition result layer</li>
+ *     <li>{@code result_size} - {@link KSize} - size of addition result</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KPassabilityLayerAddNode implements KGeneratorNode {
 
     @Override

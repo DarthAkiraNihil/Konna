@@ -24,6 +24,14 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * Special layer to be used in level generation, that contains passability states of layer cells.
+ * The layer is immutable by size.
+ * Also extends some functionality from {@link KReachabilityAreaLayer}
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KPassabilityLayer
     extends KAbstractSizedLayer<KPassabilityLayerTool>
     implements KObjectLevelLayer<KPassabilityState, KPassabilityLayerTool> {
@@ -222,6 +230,10 @@ public final class KPassabilityLayer
     private final int[][] areas;
     private final KPassabilityLayerTool tool;
 
+    /**
+     * Constructs an empty layer with specific size.
+     * @param size Layer size
+     */
     public KPassabilityLayer(final KSize size) {
         super(size);
         this.states = new KPassabilityState[size.height()][size.width()];

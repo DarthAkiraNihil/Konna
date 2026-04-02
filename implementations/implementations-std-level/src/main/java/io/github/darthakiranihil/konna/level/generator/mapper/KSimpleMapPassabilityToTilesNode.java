@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
@@ -29,6 +30,25 @@ import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that maps a passability layer to a tile layer by replacing
+ *     impassable and passable cells to corresponding tiles.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code passability_layer} - {@link KPassabilityLayer} - source passability layer</li>
+ *     <li>{@code passable_tile} - {@link KTileInfo} - tile to replace passable cells to</li>
+ *     <li>{@code impassable_tile} - {@link KTileInfo} - tile to replace impassable cells to</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KTileLayer} - mapped tile layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KSimpleMapPassabilityToTilesNode implements KGeneratorNode {
 
     @Override

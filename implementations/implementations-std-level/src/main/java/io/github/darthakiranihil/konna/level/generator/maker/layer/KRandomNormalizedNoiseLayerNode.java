@@ -21,11 +21,31 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KHeightLayer;
 import io.github.darthakiranihil.konna.level.layer.KNoiseLayer;
 import io.github.darthakiranihil.konna.level.layer.tool.KNoiseLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that returns a new {@link KNoiseLayer} with specified
+ *     size where all values are set randomly without any specific distribution
+ *     (i.e. fully randomly). Noise values are between {@code -1.0} and {@code 1.0},
+ *     both inclusive.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code size} - {@link KSize} - size of the layer</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KNoiseLayer} - constructed noise layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRandomNormalizedNoiseLayerNode implements KGeneratorNode {
 
     private static final long MIN = -1_000_000_000L;

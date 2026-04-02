@@ -57,14 +57,34 @@ public record KSize(
         return new KVector2f(this.width, this.height);
     }
 
-    public KSize reduce(int width, int height) {
-        return new KSize(this.width - width, this.height - height);
+    /**
+     * Reduces this size dimensions on specific value.
+     * @param widthDelta Value to reduce width on
+     * @param heightDelta Value to reduce height on
+     * @return New size with dimensions reduced by passed values from original size
+     *
+     * @since 0.5.0
+     */
+    public KSize reduce(int widthDelta, int heightDelta) {
+        return new KSize(this.width - widthDelta, this.height - heightDelta);
     }
 
-    public KSize expand(int width, int height) {
-        return new KSize(this.width + width, this.height + height);
+    /**
+     * Expands this size dimensions on specific value.
+     * @param widthDelta Value to expand width on
+     * @param heightDelta Value to expand height on
+     * @return New size with dimensions expanded by passed values from original size
+     *
+     * @since 0.5.0
+     */
+    public KSize expand(int widthDelta, int heightDelta) {
+        return new KSize(this.width + widthDelta, this.height + heightDelta);
     }
 
+    /**
+     * @return Area covered by this size
+     * @since 0.5.0
+     */
     public int area() {
         return this.width * this.height;
     }

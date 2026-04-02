@@ -31,6 +31,29 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that digs random rooms rectangular in all partition leaves.
+ * </p>
+ * <p>
+ *     Each room is placed that way it always intersects partition leaf center
+ *     and fills required percentage of leaf space.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code partition} - {@link KPartition} - partition to place rooms in</li>
+ *     <li>{@code min_filling} - {@link Float} - min percentage of rooms filling leaf space</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer} - passability layer containing placed rooms
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRandomRectangularCenteredRoomsInPartitionNode implements KGeneratorNode {
 
     @Override

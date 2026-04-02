@@ -31,6 +31,26 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that digs straight paths between sibling partition nodes,
+ *     but it can be only applied it there always none or exact two children
+ *     of all partition nodes (typically on using on partition created from BSP).
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code partition} - {@link KPartition} - partition to dig paths in</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code result} - {@link KPassabilityLayer} - passability layer containing all dug paths
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KStraightPathsBetweenBinaryPartitionCentersNode implements KGeneratorNode {
 
     @Override

@@ -26,12 +26,33 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that returns a tile asset from {@link KTileCollection}
+ *     by its id.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code asset_id} - {@link String} - asset id of tile</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code tile} - {@link KTileInfo} - corresponding tile asset</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KGetTileAssetNode implements KGeneratorNode {
 
     private final KTileCollection tileCollection;
 
+    /**
+     * Constructs this node.
+     * @param tileCollection Tile collection to retrieve tiles from
+     */
     public KGetTileAssetNode(
-        @KInject KTileCollection tileCollection
+        @KInject final KTileCollection tileCollection
     ) {
         this.tileCollection = tileCollection;
     }

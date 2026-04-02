@@ -25,8 +25,47 @@ import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.struct.KPartition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that returns a {@link KPartition}, created from applying
+ *     binary space partitioning to area of specific size.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>
+ *     {@code size} - {@link KSize} -
+ *     size the root partition (that will be split into subpartitions
+ *     </li>
+ *     <li>{@code iterations} - {@link Integer} - max depth of BSP tree</li>
+ *     <li>
+ *         {@code vectical_split_min_ratio} - {@link Float}
+ *         - min ratio of widths of subpartitions, appeared as result of vertical split
+ *     </li>
+ *     <li>
+ *         {@code vectical_split_max_ratio} - {@link Float}
+ *         - max ratio of widths of subpartitions, appeared as result of vertical split
+ *     </li>
+ *     <li>
+ *         {@code horizontal_split_min_ratio} - {@link Float}
+ *         - min ratio of heights of subpartitions, appeared as result of horizontal split
+ *     </li>
+ *     <li>
+ *         {@code horizontal_split_max_ratio} - {@link Float}
+ *         - max ratio of heights of subpartitions, appeared as result of horizontal split
+ *     </li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code partition} - {@link KPartition} - resulting BSP partition instance</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KBspNode implements KGeneratorNode {
 
     @Override

@@ -16,10 +16,25 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
+/**
+ * Enumeration representing passability state.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public enum KPassabilityState {
 
+    /**
+     * Indicates that this cell contains nothing.
+     */
     VOID,
+    /**
+     * Indicates that this cell is passable.
+     */
     PASSABLE,
+    /**
+     * Indicates that this cell is impassable.
+     */
     IMPASSABLE
 
 }

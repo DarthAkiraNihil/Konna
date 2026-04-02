@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.mutator.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
@@ -27,6 +28,25 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that replaces all passable cells,
+ *     located on layer border, to impassable cells.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - source passability layer</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer} - mutated passability layer with fixed border
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KFixPassabilityLayerBorderNode implements KGeneratorNode {
 
 

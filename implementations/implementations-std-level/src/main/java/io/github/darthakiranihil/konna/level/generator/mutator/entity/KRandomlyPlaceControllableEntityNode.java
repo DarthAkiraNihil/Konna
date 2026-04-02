@@ -30,10 +30,38 @@ import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that randomly places one controllable entity on any passable cell.
+ *     However, if there is no passable cells, the node will not place entity.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code entity_layer} - {@link KLevelEntityLayer} - level entity layer to place on</li>
+ *     <li>{@code passability_layer} - {@link KPassabilityLayer} - passability layer</li>
+ *     <li>{@code name} - {@link String} - name of placed entity</li>
+ *     <li>{@code descriptor} - {@link String} - descriptor of placed entity</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code entity_layer} - {@link KLevelEntityLayer}
+ *         - source entity layer with placed entity
+ *     </li>
+ *     <li>{@code passability_layer} - {@link KPassabilityLayer} - source passability layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KRandomlyPlaceControllableEntityNode implements KGeneratorNode {
 
     private final KEventSystem eventSystem;
 
+    /**
+     * Constructs this node.
+     * @param eventSystem Event system to inject into placed entity
+     */
     public KRandomlyPlaceControllableEntityNode(@KInject KEventSystem eventSystem) {
         this.eventSystem = eventSystem;
     }

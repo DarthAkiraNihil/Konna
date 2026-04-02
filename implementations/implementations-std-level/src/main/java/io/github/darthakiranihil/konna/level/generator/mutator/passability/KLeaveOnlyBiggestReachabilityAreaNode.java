@@ -30,6 +30,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that leaves only that passable cells, that belong to reachability zone
+ *     with the biggest area (also touching impassable tiles), others will be replaced with void.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - source passability layer</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer}
+ *         - mutated passability layer with only one area left
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KLeaveOnlyBiggestReachabilityAreaNode implements KGeneratorNode {
 
     @Override

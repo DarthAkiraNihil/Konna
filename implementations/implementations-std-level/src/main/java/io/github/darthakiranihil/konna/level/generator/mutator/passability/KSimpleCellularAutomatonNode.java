@@ -31,6 +31,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that runs a simple cellular automaton (Game-of-Life) on a passability layer.
+ *     There a void cell is considered dead and impassable is considered alive.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code init_state_layer} - {@link KPassabilityLayer}
+ *         - initial passability layer state
+ *     </li>
+ *     <li>{@code rule} - {@link String} - automaton rule</li>
+ *     <li>{@code iterations} - {@link Integer} - automaton processing iterations</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer} - processed layer
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KSimpleCellularAutomatonNode implements KGeneratorNode {
 
     @Override

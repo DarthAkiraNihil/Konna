@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.*;
+import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("ExtractMethodRecommender")
 public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
     @Test
@@ -48,13 +48,16 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
             }
         }
 
+        KLevelEntityLayer entityLayer = new KLevelEntityLayer();
+        entityLayer.getTool().placeEntity(5,4, new KStaticEntity(es, "ste", "ste"));
+
         KLevelSector sector = new KLevelSector(
             es,
             "sector_1",
             tileLayer,
             new KHeightLayer(new KSize(11, 11)),
             new KSectorLinkLayer(),
-            new KLevelEntityLayer(),
+            entityLayer,
             new KLevelTransitionLayer()
         );
 
@@ -64,6 +67,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         KFov fov2 = observer.observePoint(level, "sector_1", new KVector2i(5, 5), 3);
         Assertions.assertEquals(21, fov.getObservedSlices().size());
         Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());
+        Assertions.assertEquals(1, fov.getEntitiesWithDescriptor("ste").size());
         var positions = fov.getObservedSlices().stream().map(KLevelSectorSlice::position).toList();
         Assertions.assertTrue(
             positions.containsAll(

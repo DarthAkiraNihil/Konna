@@ -29,6 +29,22 @@ import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that finalizes passed level, making it valid for real use.
+ *     Should be used in the end if there is no node that does the same job.
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code level} - {@link KLevel} - level to finalize</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code level} - {@link KLevel} - finalized level</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KFinalizeLevelNode implements KGeneratorNode {
 
     @Override

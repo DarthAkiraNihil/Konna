@@ -22,6 +22,13 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Utility data structure containing information about space partition element.
+ * This is an immutable structure.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KPartition {
 
     private final KVector2i topLeft;
@@ -30,6 +37,14 @@ public final class KPartition {
     private final KVector2i center;
     private final List<KPartition> subpartitions;
 
+    /**
+     * Constructs a new partition.
+     * @param topLeft Top left coordinate of partitioned space
+     * @param size Size of partitioned space
+     * @param subpartitions Subpartitions of this partition
+     *                      (should give this partition in sum,
+     *                      but it is not required)
+     */
     public KPartition(
         final KVector2i topLeft,
         final KSize size,
@@ -49,22 +64,37 @@ public final class KPartition {
 
     }
 
+    /**
+     * @return Top left coordinate of this partition
+     */
     public KVector2i getTopLeft() {
         return this.topLeft;
     }
 
+    /**
+     * @return Size of this partition
+     */
     public KSize getSize() {
         return this.size;
     }
 
+    /**
+     * @return Center coordinate of this partition
+     */
     public KVector2i getCenter() {
         return this.center;
     }
 
+    /**
+     * @return Bottom right coordinate of this partition
+     */
     public KVector2i getBottomRight() {
         return bottomRight;
     }
 
+    /**
+     * @return Immutable list of subpartitions of this partition
+     */
     public List<KPartition> getSubpartitions() {
         return this.subpartitions;
     }

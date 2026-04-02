@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.generator.mutator.passability;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
@@ -30,6 +31,28 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that digs a room with border, consisting of first and last impassable
+ *     tiles on all horizontal and vertical lines (all cells between will be passable).
+ * </p>
+ * <p>
+ *     If there is no impassable cells on a line, nothing will be dug.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KPassabilityLayer} - source passability layer</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>
+ *         {@code layer} - {@link KPassabilityLayer} - mutated passability layer with dug area
+ *     </li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KExtrudeBorderByFirstAndLastImpassableNode implements KGeneratorNode {
 
     @Override

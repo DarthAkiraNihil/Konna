@@ -21,9 +21,25 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that negates passed vector.
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code value} - {@link KVector2i} - vector to negate</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code value} - {@link KVector2i} - negated source vector</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KNegateVector2iNode implements KGeneratorNode {
 
     @Override

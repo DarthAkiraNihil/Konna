@@ -28,6 +28,25 @@ import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 
 import java.util.Random;
 
+/**
+ * <p>
+ *     Generator node that injects tiles from one tile layer to another by replacing all non-null
+ *     tiles on positions, according to the injected layer.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <ul>
+ *     <li>{@code destination} - {@link KTileLayer} - layer to inject tiles into</li>
+ *     <li>{@code injected} - {@link KTileLayer} - layer to inject</li>
+ *     <li>{@code offset} - {@link KVector2i} - offset of injected layer overlapping</li>
+ * </ul>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code result} - {@link KTileLayer} - injection result layer</li>
+ * </ul>
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public final class KInjectTilesNode implements KGeneratorNode {
 
     @Override

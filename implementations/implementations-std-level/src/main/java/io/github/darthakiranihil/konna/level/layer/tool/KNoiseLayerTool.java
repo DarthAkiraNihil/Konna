@@ -16,9 +16,28 @@
 
 package io.github.darthakiranihil.konna.level.layer.tool;
 
+/**
+ * Noise layer tool interface, providing operations for manipulating noise values
+ * located on this layer.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 public interface KNoiseLayerTool extends KLayerTool {
 
+    /**
+     * @param x X coordinate of set noise value
+     * @param y Y coordinate of set noise value
+     * @return Noise value contained by specified place
+     */
     float getNoiseValue(int x, int y);
+
+    /**
+     * Sets a noise value on specific place.
+     * @param x X coordinate to set noise value on
+     * @param y Y coordinate to set noise value on
+     * @param value Noise value to set
+     */
     void setNoiseValue(int x, int y, float value);
 
 }
