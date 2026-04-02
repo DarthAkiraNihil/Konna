@@ -33,6 +33,31 @@ public record KVector2i(
      * Zero vector - (0,0).
      */
     public static final KVector2i ZERO = new KVector2i(0, 0);
+    /**
+     * Uniform vector - (1,1).
+     */
+    public static final KVector2i ONE = new KVector2i(1, 1);
+    /**
+     * Negative uniform vector - (-1,-1).
+     */
+    public static final KVector2i MINUS_ONE = new KVector2i(-1, -1);
+
+    /**
+     * Vector representation of right direction - (1, 0).
+     */
+    public static final KVector2i RIGHT = new KVector2i(1, 0);
+    /**
+     * Vector representation of left direction - (1, 0).
+     */
+    public static final KVector2i LEFT = new KVector2i(-1, 0);
+    /**
+     * Vector representation of up direction - (0, 1).
+     */
+    public static final KVector2i UP = new KVector2i(0, 1);
+    /**
+     * Vector representation of down direction - (0, -1).
+     */
+    public static final KVector2i DOWN = new KVector2i(0, -1);
 
     /**
      * Adds a vector to this vector.

@@ -186,10 +186,10 @@ public class KLevelService extends KObject {
             }
             this.currentLevel = generated;
         } catch (KGenerationException e) {
-            KSystemLogger.warning(
+            KSystemLogger.error(
                 this.name,
-                "Could not generate level %s",
-                e
+                "Could not generate level: %s",
+                e.getMessage()
             );
             return;
         }

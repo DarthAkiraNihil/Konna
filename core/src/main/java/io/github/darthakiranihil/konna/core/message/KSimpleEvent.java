@@ -22,8 +22,8 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 /**
  * Representation of an event - a simple message that should be delivered
@@ -34,7 +34,9 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public class KSimpleEvent extends KObject {
-    private final List<KSimpleEventAction> listeners;
+    private static final int INITIAL_LISTENERS_CAPACITY = 4;
+
+    private final Queue<KSimpleEventAction> listeners;
     private @Nullable KEventQueue eventQueue;
 
     /**
@@ -43,7 +45,7 @@ public class KSimpleEvent extends KObject {
      */
     public KSimpleEvent(final String name) {
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.EVENT));
-        this.listeners = new LinkedList<>();
+        this.listeners = new ArrayDeque<>(INITIAL_LISTENERS_CAPACITY);
     }
 
     /**

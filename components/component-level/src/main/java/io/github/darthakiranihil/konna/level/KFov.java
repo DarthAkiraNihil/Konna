@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
+
 import java.util.List;
 
 /**
@@ -41,6 +43,19 @@ public final class KFov {
      */
     public List<KLevelSectorSlice> getObservedSlices() {
         return this.observedSlices;
+    }
+
+    /**
+     * @param descriptor Descriptor of entities to find
+     * @return List of observed entities with specified descriptor inside this FOV
+     */
+    public List<KLevelEntity> getEntitiesWithDescriptor(final String descriptor) {
+        return
+            this.observedSlices
+                .stream()
+                .flatMap(x -> x.entities().stream())
+                .filter(x -> x.getDescriptor().equals(descriptor))
+                .toList();
     }
 
 }

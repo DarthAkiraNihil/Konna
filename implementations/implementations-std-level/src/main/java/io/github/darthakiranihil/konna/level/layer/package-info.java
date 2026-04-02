@@ -1,5 +1,5 @@
 /**
- * Provides standard implementation of classes connected with level maps.
+ * Provides standard implementation of classes connected with levels.
  *
  * @since 0.5.0
  * @author Darth Akira Nihil

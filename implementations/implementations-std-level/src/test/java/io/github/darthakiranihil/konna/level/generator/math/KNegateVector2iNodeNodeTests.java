@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.layer;
+package io.github.darthakiranihil.konna.level.generator.math;
 
-import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.level.KLevel;
-import io.github.darthakiranihil.konna.level.KLevelObserver;
+import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Random;
 
-public class KRaycastLevelObserverNegativeTests extends KStandardTestClass {
+public class KNegateVector2iNodeNodeTests extends KStandardTestClass {
 
     @Test
-    public void testObserveUnknownSector() {
+    public void testProcessSuccess() {
 
-        KLevelObserver observer = new KRaycastLevelObserver();
-        KLevel level = new KLevel("loc1", List.of());
-
-        Assertions.assertThrows(
-            KInvalidArgumentException.class,
-            () -> observer.observePoint(level, "sector_1", 1, 1, 2)
-        );
+        KUniversalMap params = new KUniversalMap();
+        params.put("value", new KVector2i(2, -2));
+        var node = new KNegateVector2iNode();
+        KUniversalMap result = node.process(params, new Random(42069L));
+        Assertions.assertNotNull(result.getSafe("value", KVector2i.class));
+        Assertions.assertEquals(new KVector2i(-2, 2), result.get("value", KVector2i.class));
 
     }
-
 }

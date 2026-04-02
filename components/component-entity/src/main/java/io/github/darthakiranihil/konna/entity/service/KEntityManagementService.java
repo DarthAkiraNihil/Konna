@@ -365,6 +365,7 @@ public class KEntityManagementService extends KObject {
         body.put("id", entity.id());
         body.put("type", entity.name());
         body.put("name", entity.type());
+        body.put("instance", entity);
 
         this.messenger.sendRegular(
             messageId,

@@ -18,10 +18,16 @@ package io.github.darthakiranihil.konna.level.generator;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.level.generator.constant.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.Random;
 
 public class KConstantNodesTests extends KStandardTestClass {
@@ -106,5 +112,77 @@ public class KConstantNodesTests extends KStandardTestClass {
 
     }
 
+    @Test
+    public void testVector2iConstantNodeProcessSuccess() {
 
+        KAssetDefinition def = new KMapAssetDefinition(
+            Map.of("x", 1, "y", 1)
+        );
+        KVector2iConstantNode node = new KVector2iConstantNode(def);
+        KUniversalMap result = node.process(new KUniversalMap(), new Random());
+        Assertions.assertTrue(result.containsKey("value"));
+        Assertions.assertEquals(new KVector2i(1, 1), result.get("value"));
+
+    }
+
+    @Test
+    public void testVector2iConstantNodeConstructionFailedBecauseOfArgType() {
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KVector2iConstantNode(1)
+        );
+    }
+
+    @Test
+    public void testVector2iConstantNodeNodeConstructionFailedBecauseOfInvalidDefinition() {
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KVector2iConstantNode(new KMapAssetDefinition(Map.of()))
+        );
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KVector2iConstantNode(new KMapAssetDefinition(Map.of("x", 1)))
+        );
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KVector2iConstantNode(new KMapAssetDefinition(Map.of("y", 1)))
+        );
+    }
+
+    @Test
+    public void testSizeConstantNodeProcessSuccess() {
+
+        KAssetDefinition def = new KMapAssetDefinition(
+            Map.of("width", 1, "height", 1)
+        );
+        KSizeConstantNode node = new KSizeConstantNode(def);
+        KUniversalMap result = node.process(new KUniversalMap(), new Random());
+        Assertions.assertTrue(result.containsKey("value"));
+        Assertions.assertEquals(new KSize(1, 1), result.get("value"));
+
+    }
+
+    @Test
+    public void testSizeConstantNodeConstructionFailedBecauseOfArgType() {
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KSizeConstantNode(1)
+        );
+    }
+
+    @Test
+    public void testSizeConstantNodeNodeConstructionFailedBecauseOfInvalidDefinition() {
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KSizeConstantNode(new KMapAssetDefinition(Map.of()))
+        );
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KSizeConstantNode(new KMapAssetDefinition(Map.of("width", 1)))
+        );
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> new KSizeConstantNode(new KMapAssetDefinition(Map.of("height", 1)))
+        );
+    }
 }

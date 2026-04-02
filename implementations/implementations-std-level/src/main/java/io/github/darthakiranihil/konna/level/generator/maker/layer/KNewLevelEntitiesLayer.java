@@ -14,42 +14,38 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.generator.maker.layer;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KLevelEntityLayer;
 
 import java.util.Random;
 
 /**
- * Constant generator node containing a boolean value.
+ * <p>
+ *     Generator node that constructs an empty {@link KLevelEntityLayer}.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <p>none</p>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KLevelEntityLayer} - constructed empty layer</li>
+ * </ul>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KBooleanConstantNode implements KConstantNode {
-
-    private final boolean object;
-
-    /**
-     * Constructs the node. Will throw a {@link KInvalidArgumentException} if
-     * the passed object is not a boolean.
-     * @param object Value to pack into the constant
-     */
-    public KBooleanConstantNode(final Object object) {
-        if (!Boolean.class.isAssignableFrom(object.getClass())) {
-            throw new KInvalidArgumentException("Object must be a float!");
-        }
-
-        this.object = (Boolean) object;
-    }
+public final class KNewLevelEntitiesLayer implements KGeneratorNode {
 
     @Override
-    @KGeneratorNodeOutputParam(name = "value", type = Boolean.class)
+    @KGeneratorNodeOutputParam(name = "layer", type = KLevelEntityLayer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
-        KUniversalMap result = new KUniversalMap();
-        result.put("value", this.object);
-        return result;
-    }
 
+        KUniversalMap result = new KUniversalMap();
+        result.put("layer", new KLevelEntityLayer());
+        return result;
+
+    }
 }

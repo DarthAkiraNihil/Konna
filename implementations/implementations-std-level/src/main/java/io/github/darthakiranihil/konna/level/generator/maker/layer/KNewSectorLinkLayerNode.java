@@ -14,41 +14,40 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.generator;
+package io.github.darthakiranihil.konna.level.generator.maker.layer;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
+import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
+import io.github.darthakiranihil.konna.level.layer.KSectorLinkLayer;
 
 import java.util.Random;
 
+
 /**
- * Constant generator node containing an int value.
+ * <p>
+ *     Generator node that constructs an empty {@link KSectorLinkLayer}.
+ * </p>
+ * <h3>Inputs:</h3>
+ * <p>none</p>
+ * <h3>Outputs:</h3>
+ * <ul>
+ *     <li>{@code layer} - {@link KSectorLinkLayer} - constructed empty layer</li>
+ * </ul>
  *
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-public final class KIntConstantNode implements KConstantNode {
-
-    private final int object;
-
-    /**
-     * Constructs the node. Will throw a {@link KInvalidArgumentException} if
-     * the passed object is not an int.
-     * @param object Value to pack into the constant
-     */
-    public KIntConstantNode(final Object object) {
-        if (!Integer.class.isAssignableFrom(object.getClass())) {
-            throw new KInvalidArgumentException("Object must be an int!");
-        }
-
-        this.object = (Integer) object;
-    }
+public final class KNewSectorLinkLayerNode implements KGeneratorNode {
 
     @Override
-    @KGeneratorNodeOutputParam(name = "value", type = Integer.class)
+    @KGeneratorNodeOutputParam(name = "layer", type = KSectorLinkLayer.class)
     public KUniversalMap process(final KUniversalMap params, final Random rnd) {
+
         KUniversalMap result = new KUniversalMap();
-        result.put("value", this.object);
+        result.put("layer", new KSectorLinkLayer());
         return result;
+
     }
+
 }

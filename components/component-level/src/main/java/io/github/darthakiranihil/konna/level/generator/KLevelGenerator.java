@@ -169,10 +169,18 @@ public final class KLevelGenerator extends KObject {
                 ultimate = current;
             }
 
-            KUniversalMap input = this.prepareInput(nodes, current);
-            KUniversalMap output = current.nodeInstance.process(input, rnd);
-            current.outputParamsValidator.validate(output);
-            current.outputParams = output;
+            try {
+                KSystemLogger.debug(
+                    this.name, "Processing node %s", current.nodeInstance
+                );
+                KUniversalMap input = this.prepareInput(nodes, current);
+                KUniversalMap output = current.nodeInstance.process(input, rnd);
+                current.outputParamsValidator.validate(output);
+                current.outputParams = output;
+            } catch (Throwable e) {
+                KSystemLogger.error(this.name, e);
+                throw new KGenerationException(e.getMessage());
+            }
 
         }
 
@@ -187,6 +195,8 @@ public final class KLevelGenerator extends KObject {
                 +   "It must be located by \"level\" key and be a KLevel instance"
             );
         }
+
+        KSystemLogger.info(this.name, "Level has been successfully generated");
         return generatedLevel;
     }
 
@@ -214,8 +224,8 @@ public final class KLevelGenerator extends KObject {
                 throw new KGenerationException(
                     String.format(
                         "Attempted to get output parameter %s of node %s, which is not presented",
-                        dependency.first(),
-                        dependency.second()
+                        dependency.second(),
+                        dependency.first()
                     )
                 );
             }
@@ -324,7 +334,7 @@ public final class KLevelGenerator extends KObject {
         } catch (KClassNotFoundException e) {
             KSystemLogger.warning(
                 this.name,
-            "Could not find input params validator for node %s."
+            "Could not find input params validator for node %s. "
                 +   "Validation will be skipped!",
                 nodeClass.getCanonicalName()
             );

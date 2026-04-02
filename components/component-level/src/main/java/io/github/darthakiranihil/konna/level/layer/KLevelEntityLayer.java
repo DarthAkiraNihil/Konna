@@ -36,6 +36,7 @@ public final class KLevelEntityLayer
     private static final class Tool implements KLevelEntityLayerTool {
 
         private final KLevelEntityLayer self;
+        private int totalEntities;
 
         Tool(final KLevelEntityLayer self) {
             this.self = self;
@@ -52,6 +53,7 @@ public final class KLevelEntityLayer
 
             List<KLevelEntity> list = this.self.entities.get(position);
             list.add(entity);
+            this.totalEntities++;
             return this;
         }
 
@@ -73,12 +75,33 @@ public final class KLevelEntityLayer
             if (list.isEmpty()) {
                 this.self.entities.remove(position);
             }
+            this.totalEntities--;
             return this;
         }
 
         @Override
+        public List<KLevelEntity> findEntitiesWithDescriptor(final String descriptor) {
+            ArrayList<KLevelEntity> found = new ArrayList<>(this.totalEntities);
+
+            for (var entities: this.self.entities.values()) {
+                for (var entity: entities) {
+                    if (!entity.getDescriptor().equals(descriptor)) {
+                        continue;
+                    }
+
+                    found.add(entity);
+                }
+            }
+
+            found.trimToSize();
+            return found;
+        }
+
+        @Override
         public List<KLevelEntity> getOnPosition(int x, int y) {
-            return this.getOnPosition(new KVector2i(x, y));
+            // todo: mark entity to remove and return here only unmarked
+            // all marked entities must be deleted after an event or something
+            return List.copyOf(this.getOnPosition(new KVector2i(x, y)));
         }
 
         @Override
@@ -91,13 +114,23 @@ public final class KLevelEntityLayer
         }
 
         @Override
-        public KLevelEntityLayerTool setSectorForAll(final KLevelSector sector) {
+        public void setSectorForAll(final KLevelSector sector) {
             for (var entry: this.self.entities.entrySet()) {
                 KVector2i position = entry.getKey();
                 List<KLevelEntity> entitiesOnPosition = entry.getValue();
                 entitiesOnPosition.forEach(e -> e.setPosition(sector, position));
             }
-            return this;
+        }
+
+        @Override
+        public List<KLevelEntity> getAllContainedEntities() {
+            List<KLevelEntity> found = new ArrayList<>(this.totalEntities);
+
+            for (var entities: this.self.entities.values()) {
+                found.addAll(entities);
+            }
+
+            return found;
         }
     }
 
