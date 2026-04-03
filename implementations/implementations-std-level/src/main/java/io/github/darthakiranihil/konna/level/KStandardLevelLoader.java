@@ -112,7 +112,9 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
         return level;
     }
 
-    private Map<String, RawSector> createRawSectors(final Map<String, KLevelSectorMetadata> metadata) {
+    private Map<String, RawSector> createRawSectors(
+        final Map<String, KLevelSectorMetadata> metadata
+    ) {
         Map<String, RawSector> rawSectors = new HashMap<>();
 
         for (KLevelSectorMetadata sector: metadata.values()) {

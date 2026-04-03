@@ -69,11 +69,15 @@ public final class KLevelMetadataCollection
     @Override
     public KLevelMetadata getAsset(final String assetId) {
 
-        KAsset asset = this.assetLoader.loadAsset(assetId, KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE);
+        KAsset asset = this.assetLoader.loadAsset(
+            assetId, KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE
+        );
         KAssetDefinition definition = asset.definition();
 
         KAssetDefinition rawSectorsDefinitions = definition.getSubdefinition("sectors");
-        Map<String, KLevelSectorMetadata> sectorMetadata = this.readSectorMetadata(rawSectorsDefinitions);
+        Map<String, KLevelSectorMetadata>
+            sectorMetadata = this.readSectorMetadata(rawSectorsDefinitions);
+
         return new KLevelMetadata(
             assetId,
             sectorMetadata

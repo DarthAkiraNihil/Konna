@@ -109,7 +109,7 @@ public record KLevelSectorMetadata(
     }
 
     /**
-     * Container for autonomous entities' metadata
+     * Container for autonomous entities' metadata.
      * @param name Entity's name
      * @param descriptor Entity's descriptor
      * @param controller Controller class

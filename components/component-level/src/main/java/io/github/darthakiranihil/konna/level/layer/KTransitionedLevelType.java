@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
-import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
-
 /**
  * Enumeration describing possible level types, assigned to a level transition.
  *
@@ -28,7 +26,7 @@ public enum KTransitionedLevelType {
 
     /**
      * Level needs to be loaded from
-     * {@link KLevelMetadataCollection}
+     * {@link io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection}
      * from assigned asset.
      */
     PREDEFINED,
