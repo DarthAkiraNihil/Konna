@@ -112,6 +112,7 @@ The foundation that is essential for the whole engine
 - [ ] Implement new container system that is Dagger-like
 - [ ] Eliminate KIndex and replace it to KClasspathSearchEngine
 - [ ] Add something-something to be used in Konna Editor 
+- [ ] Weaken log levels of some messages
 
 ### v. 0.7.0 - Level - Part II
 
