@@ -43,6 +43,12 @@ import io.github.darthakiranihil.konna.level.layer.tool.*;
 
 import java.util.*;
 
+/**
+ * Standard implementation of {@link KLevelLoader}.
+ *
+ * @since 0.5.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton
 public class KStandardLevelLoader extends KObject implements KLevelLoader {
 
@@ -63,6 +69,12 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
     private final KActivator activator;
     private final KTileCollection tileCollection;
 
+    /**
+     * Standard constructor.
+     * @param eventSystem Event system to inject into entities
+     * @param activator Activator to create controllers
+     * @param tileCollection Tile collection
+     */
     public KStandardLevelLoader(
         @KInject final KEventSystem eventSystem,
         @KInject final KActivator activator,
