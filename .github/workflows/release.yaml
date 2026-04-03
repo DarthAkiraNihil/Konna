@@ -45,7 +45,7 @@ jobs:
                     TAG: ${{ github.ref_name }} # The name of the tag (e.g., v1.0.0)
                 run: |
                     gh release create "$TAG" \
-                        ./build/libs/Konna.bundle-*.jar
+                        ./build/distributions/Konna.bundle-*.jar
                         --repo="$GITHUB_REPOSITORY" \
                         --title="${GITHUB_REPOSITORY#*/} $TAG" \
                         --generate-notes # Automatically generates release notes

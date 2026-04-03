@@ -30,6 +30,11 @@ ext {
 
 group = 'io.github.darthakiranihil.konna'
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 subprojects {
     if (it.name != "konna-bom") {
         apply plugin: 'java'
