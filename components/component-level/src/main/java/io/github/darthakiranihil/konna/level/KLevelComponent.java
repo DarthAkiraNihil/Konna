@@ -16,19 +16,22 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
+import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
@@ -540,13 +543,25 @@ public class KLevelComponent extends KComponent {
         return new KAssetTypedef[] {
             new KTilePropertyTypedef(),
             new KTileTypedef(),
-            new KLevelTypedef(),
+            new KLevelMetadataTypedef(),
             new KLevelGeneratorMetadataTypedef()
         };
     }
 
     @Override
     protected void applyConfig(final KJsonValue config) {
+        KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
+        KLevelComponentConfig.getSchema().validate(config);
+        KLevelComponentConfig deserializedConfig = deserializer.deserialize(
+            config,
+            KLevelComponentConfig.class
+        );
+        if (deserializedConfig == null) {
+            throw new KComponentLoadingException("Could not read component config");
+        }
+
+        KContainer container = this.ctx.getContainer();
+        container.add(KLevelLoader.class, deserializedConfig.levelLoaderClass());
 
     }
 

@@ -1,1 +1,3 @@
-{}
+{
+    "level_loader": "io.github.darthakiranihil.konna.level.KStandardLevelLoader"
+}

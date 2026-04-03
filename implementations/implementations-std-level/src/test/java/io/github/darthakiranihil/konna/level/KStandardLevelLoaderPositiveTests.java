@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.level.asset;
+package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
@@ -24,41 +28,67 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
+import io.github.darthakiranihil.konna.level.asset.KTileCollection;
+import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;
 import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
 import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
-import io.github.darthakiranihil.konna.level.KLevel;
-import io.github.darthakiranihil.konna.level.KLevelSector;
-import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelTransitionLayerTool;
+import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
+import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
+import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-@SuppressWarnings("ExtractMethodRecommender")
-public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
+import java.util.Map;
 
-    @Test
-    public void testLoadValidLevel() {
+public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
+
+    private final KLevelMetadataCollection levelCollection;
+    private final KLevelLoader levelLoader;
+
+    public KStandardLevelLoaderPositiveTests() {
 
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KLevelCollection levelCollection = new KLevelCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
+        KAssetLoader assetLoader = new KJsonSubtypeBasedAssetLoader(
+            KStandardTestClass.context, Map.of(
+            "tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[]{ KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
+                new String[]{ "classpath:assets/props.json" }
+            ), "tile", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[]{ KTileTypedef.TILE_ASSET_TYPE },
+                new String[]{ "classpath:assets/tiles.json" }
+            ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
+                new String[]{ KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE },
+                new String[]{ "classpath:assets/levels.json" }
+            )
+        ), new KStandardJsonParser(new KStandardJsonTokenizer())
         );
 
-        KLevel loaded = levelCollection.getAsset("valid");
+        assetLoader.addAssetTypedef(new KTilePropertyTypedef());
+        assetLoader.addAssetTypedef(new KTileTypedef());
+        assetLoader.addAssetTypedef(new KLevelMetadataTypedef());
+
+        this.levelCollection = new KLevelMetadataCollection(assetLoader);
+        this.levelLoader = new KStandardLevelLoader(
+            es, KStandardTestClass.context, new KTileCollection(
+            assetLoader,
+            new KHashMapBasedCache(),
+            new KTilePropertyCollection(assetLoader, KStandardTestClass.context)
+        ));
+    }
+
+    @Test
+    public void testLoadValidLevel() {
+
+        KLevel loaded = this.levelLoader.load(levelCollection.getAsset("valid"));
         Assertions.assertArrayEquals(
             new String[] {
                 "mf2", "mf1"
@@ -111,22 +141,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     @SuppressWarnings("unchecked")
     public void testLoadAndCheckConnectivityGraph() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelCollection levelCollection = new KLevelCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel loaded = levelCollection.getAsset("connectivity_graph_test");
+        KLevel loaded = this.levelLoader.load(levelCollection.getAsset("connectivity_graph_test"));
         KIntWeightedGraph<String> graph = (KIntWeightedGraph<String>) KReflectionUtils.getFieldValue(
             KLevel.class,
             loaded,
@@ -152,22 +167,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     @Test
     public void testLoadWithValidatedAutonomousEntity() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelCollection levelCollection = new KLevelCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel level = levelCollection.getAsset("valid_only_autonomous");
+        KLevel level = this.levelLoader.load(levelCollection.getAsset("valid_only_autonomous"));
         KLevelSector sector = level.getSector("mf1");
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
@@ -196,22 +196,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     @Test
     public void testLoadFalseValidatedAutonomousEntity() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelCollection levelCollection = new KLevelCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel level = levelCollection.getAsset("valid_validator_is_not_a_rule");
+        KLevel level = this.levelLoader.load(levelCollection.getAsset("valid_validator_is_not_a_rule"));
         KLevelSector sector = level.getSector("mf1");
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
@@ -237,29 +222,13 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     @Test
     public void testLoadAutonomousEntityWithoutValidation() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelCollection levelCollection = new KLevelCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel level = levelCollection.getAsset("valid_no_validator");
+        KLevel level = this.levelLoader.load(levelCollection.getAsset("valid_no_validator"));
         KLevelSector sector = level.getSector("mf1");
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertEquals(1, slice.entities().size());
 
         KLevelEntity entity = slice.entities().getFirst();
         Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
-
         KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
             KAutonomousEntity.class,
             entity,
@@ -278,22 +247,7 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
     @Test
     public void testLoadValidWithLevelTransition() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelCollection levelCollection = new KLevelCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel level = levelCollection.getAsset("valid_with_level_transition");
+        KLevel level = this.levelLoader.load(levelCollection.getAsset("valid_with_level_transition"));
         KLevelSector sector = level.getSector("mf1");
         KLevelSectorSlice slice = sector.getSlice(0, 0);
         Assertions.assertNotNull(slice.levelTransition());
@@ -320,4 +274,5 @@ public class KLevelCollectionPositiveTests extends KAssetCollectionTestClass {
 
 
     }
+
 }

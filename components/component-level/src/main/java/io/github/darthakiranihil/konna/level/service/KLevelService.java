@@ -28,7 +28,9 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
+import io.github.darthakiranihil.konna.level.KLevelLoader;
+import io.github.darthakiranihil.konna.level.KLevelMetadata;
+import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.asset.KLevelGeneratorMetadataCollection;
@@ -56,9 +58,10 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class KLevelService extends KObject {
 
-    private final KLevelCollection levelCollection;
+    private final KLevelMetadataCollection levelCollection;
     private final KLevelGeneratorMetadataCollection generatorMetadataCollection;
     private final KActivator activator;
+    private final KLevelLoader levelLoader;
 
     private final KEvent<KLevel> levelLoaded;
     private final KSimpleEvent levelUnloaded;
@@ -76,18 +79,21 @@ public class KLevelService extends KObject {
      * @param activator Activator to use to create {@link KLevelGenerator}
      * @param generatorMetadataCollection Generator metadata collection to get
      *                                    generator metadata from
+     * @param levelLoader Level loader to load levels from metadata
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,
         @KInject final KActivator activator,
-        @KInject final KLevelCollection levelCollection,
-        @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection
+        @KInject final KLevelMetadataCollection levelCollection,
+        @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection,
+        @KInject final KLevelLoader levelLoader
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
         this.levelCollection = levelCollection;
         this.generatorMetadataCollection = generatorMetadataCollection;
         this.activator = activator;
+        this.levelLoader = levelLoader;
 
         this.levelLoaded = Objects.requireNonNull(
             eventSystem.getEvent("levelLoaded")
@@ -110,7 +116,8 @@ public class KLevelService extends KObject {
     ) {
 
         try {
-            KLevel newLevel = this.levelCollection.getAsset(levelName);
+            KLevelMetadata levelMetadata = this.levelCollection.getAsset(levelName);
+            KLevel newLevel = this.levelLoader.load(levelMetadata);
             if (this.currentLevel != null) {
                 this.currentLevel.unload();
                 this.levelUnloaded.invokeSync();

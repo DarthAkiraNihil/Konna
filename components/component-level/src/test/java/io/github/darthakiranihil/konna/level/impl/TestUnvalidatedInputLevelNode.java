@@ -25,15 +25,17 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelLoader;
 import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.KStandardLevelLoader;
 import io.github.darthakiranihil.konna.level.asset.KAssetCollectionTestClass;
-import io.github.darthakiranihil.konna.level.asset.KLevelCollection;
+import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
 import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
+import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -45,7 +47,8 @@ import java.util.Random;
 @NullMarked
 public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
 
-    private final KLevelCollection levelCollection;
+    private final KLevelMetadataCollection levelCollection;
+    private final KLevelLoader levelLoader;
 
     public TestUnvalidatedInputLevelNode() {
         // I hate this
@@ -58,7 +61,7 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
                 new String[] { KTileTypedef.TILE_ASSET_TYPE},
                 new String[] {"classpath:assets/tiles.json"}
             ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[] { KLevelTypedef.LEVEL_ASSET_TYPE },
+                new String[] { KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE },
                 new String[] {"classpath:assets/levels.json"}
             ), "generator", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE },
@@ -69,22 +72,23 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
 
         assetLoader.addAssetTypedef(new KTilePropertyTypedef());
         assetLoader.addAssetTypedef(new KTileTypedef());
-        assetLoader.addAssetTypedef(new KLevelTypedef());
+        assetLoader.addAssetTypedef(new KLevelMetadataTypedef());
         assetLoader.addAssetTypedef(new KLevelGeneratorMetadataTypedef());
 
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        this.levelCollection = new KLevelCollection(
-            assetLoader,
+        this.levelCollection = new KLevelMetadataCollection(assetLoader);
+
+        this.levelLoader = new KStandardLevelLoader(
             es,
+            KStandardTestClass.getContext(),
             new KTileCollection(
                 assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(assetLoader, KAssetCollectionTestClass.getContext())
-            ),
-            KStandardTestClass.getContext()
+            )
         );
     }
 
@@ -94,7 +98,7 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
 
         String assetId = params.get("asset_id", String.class);
         KUniversalMap result = new KUniversalMap();
-        result.put("level", this.levelCollection.getAsset(assetId));
+        result.put("level", this.levelLoader.load(this.levelCollection.getAsset(assetId)));
         return result;
 
     }

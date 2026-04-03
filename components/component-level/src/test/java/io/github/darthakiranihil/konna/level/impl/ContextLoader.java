@@ -38,7 +38,7 @@ import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.core.util.KStandardIndex;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
+import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
@@ -87,7 +87,7 @@ public class ContextLoader implements KEngineContextLoader {
                 new String[] { KTileTypedef.TILE_ASSET_TYPE},
                 new String[] {"classpath:assets/tiles.json"}
             ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[] { KLevelTypedef.LEVEL_ASSET_TYPE },
+                new String[] { KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE },
                 new String[] {"classpath:assets/levels.json"}
             ), "generator", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE },

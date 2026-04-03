@@ -282,6 +282,12 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addSuperinterface(validatorInterface)
                 .addAnnotation(KGenerated.class)
+                .addAnnotation(
+                    AnnotationSpec
+                        .builder(SuppressWarnings.class)
+                        .addMember("value", "$S", "unchecked")
+                        .build()
+                )
                 .addMethod(this.brewValidateMethod(nodeParams, paramTypeQualifier))
                 .build();
 

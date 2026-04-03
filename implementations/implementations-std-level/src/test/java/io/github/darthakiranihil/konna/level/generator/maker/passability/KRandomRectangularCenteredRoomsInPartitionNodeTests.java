@@ -57,7 +57,7 @@ public class KRandomRectangularCenteredRoomsInPartitionNodeTests extends KStanda
         params.put("min_filling", 0.5f);
 
         var node = new KRandomRectangularCenteredRoomsInPartitionNode();
-        KUniversalMap result = node.process(params, new Random());
+        KUniversalMap result = node.process(params, new Random(42069L));
 
         Assertions.assertNotNull(result.getSafe("layer", KPassabilityLayer.class));
         KPassabilityLayer layer = result.get("layer", KPassabilityLayer.class);

@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelTypedef;
+import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -44,7 +44,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
                 new String[] { KTileTypedef.TILE_ASSET_TYPE},
                 new String[] {"classpath:assets/tiles.json"}
             ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[] { KLevelTypedef.LEVEL_ASSET_TYPE },
+                new String[] { KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE },
                 new String[] {"classpath:assets/levels.json"}
             ), "generator", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE },
@@ -55,7 +55,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
 
         this.assetLoader.addAssetTypedef(new KTilePropertyTypedef());
         this.assetLoader.addAssetTypedef(new KTileTypedef());
-        this.assetLoader.addAssetTypedef(new KLevelTypedef());
+        this.assetLoader.addAssetTypedef(new KLevelMetadataTypedef());
         this.assetLoader.addAssetTypedef(new KLevelGeneratorMetadataTypedef());
     }
 }
