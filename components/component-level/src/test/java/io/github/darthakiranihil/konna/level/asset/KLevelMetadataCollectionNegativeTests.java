@@ -17,59 +17,15 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
-import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.level.KLevelSector;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KLevelMetadataCollectionNegativeTests extends KAssetCollectionTestClass {
 
     @Test
-    public void testLoadInvalidByTileLocation() {
-
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        Assertions.assertThrows(
-            KAssetLoadingException.class,
-            () -> levelCollection.getAsset("invalid_by_tile")
-        );
-
-    }
-
-    @Test
     public void testLoadInvalidByLinkLocation() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
@@ -96,20 +52,7 @@ public class KLevelMetadataCollectionNegativeTests extends KAssetCollectionTestC
     @Test
     public void testLoadInvalidByLinkName() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
@@ -121,20 +64,7 @@ public class KLevelMetadataCollectionNegativeTests extends KAssetCollectionTestC
     @Test
     public void testLoadByInvalidLinkDestination() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
@@ -161,20 +91,7 @@ public class KLevelMetadataCollectionNegativeTests extends KAssetCollectionTestC
     @Test
     public void testLoadInvalidByEntityPosition() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
         Assertions.assertThrows(
             KAssetLoadingException.class,
@@ -199,47 +116,9 @@ public class KLevelMetadataCollectionNegativeTests extends KAssetCollectionTestC
     }
 
     @Test
-    public void testLoadWithAutonomousButValidationFailed() {
-
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        Assertions.assertThrows(
-            KAssetLoadingException.class,
-            () -> levelCollection.getAsset("invalid_validation_failed")
-        );
-
-    }
-
-    @Test
     public void testLoadWithInvalidLevelTransitions() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
         Assertions.assertThrows(
             KAssetLoadingException.class,

@@ -16,308 +16,163 @@
 
 package io.github.darthakiranihil.konna.level.asset;
 
-import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.level.entity.*;
+import io.github.darthakiranihil.konna.level.KLevelMetadata;
+import io.github.darthakiranihil.konna.level.KLevelSectorMetadata;
 import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
 import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
-import io.github.darthakiranihil.konna.level.KLevel;
-import io.github.darthakiranihil.konna.level.KLevelSector;
-import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
-import io.github.darthakiranihil.konna.level.layer.tool.KLevelTransitionLayerTool;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-@SuppressWarnings("ExtractMethodRecommender")
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class KLevelMetadataCollectionPositiveTests extends KAssetCollectionTestClass {
 
     @Test
     public void testLoadValidLevel() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel loaded = levelCollection.getAsset("valid");
+        KLevelMetadata loaded = levelCollection.getAsset("valid");
+        Assertions.assertEquals("valid", loaded.name());
         Assertions.assertArrayEquals(
             new String[] {
                 "mf2", "mf1"
             },
-            loaded.getSectorNames()
+            loaded.sectorMetadata().keySet().toArray(new String[0])
         );
 
-        KLevelSector mf1 = loaded.getSector("mf1");
-        KLevelSector mf2 = loaded.getSector("mf2");
+        KLevelSectorMetadata mf1 = loaded.sectorMetadata().get("mf1");
+        KLevelSectorMetadata mf2 = loaded.sectorMetadata().get("mf2");
 
-        KLevelSectorSlice sl1 = mf1.getSlice(0, 0);
-        KLevelSectorSlice sl2 = mf2.getSlice(1, 1);
+        var l1 = Arrays.stream(mf1.sectorLinkMetadata())
+            .findFirst()
+            .filter(x -> x.position().equals(KVector2i.ZERO));
+        Assertions.assertTrue(l1.isPresent());
 
-        Assertions.assertNotNull(sl1.sectorLink());
-        Assertions.assertNotNull(sl2.sectorLink());
+        var l2 = Arrays.stream(mf2.sectorLinkMetadata())
+            .findFirst()
+            .filter(x -> x.position().equals(KVector2i.ONE));
+        Assertions.assertTrue(l2.isPresent());
 
-        Assertions.assertNotNull(sl1.tile());
-        Assertions.assertNotNull(sl2.tile());
+        Assertions.assertEquals("tile_valid", mf1.tileAssetIds()[0][0]);
+        Assertions.assertEquals("tile_valid", mf2.tileAssetIds()[0][0]);
 
-        Assertions.assertEquals(mf2, sl1.sectorLink().linkedSector());
-        Assertions.assertEquals(mf1, sl2.sectorLink().linkedSector());
+        Assertions.assertEquals(mf2.name(), l1.get().destinationSectorName());
+        Assertions.assertEquals(mf1.name(), l2.get().destinationSectorName());
 
-        Assertions.assertEquals(1, sl1.tile().getId());
-        Assertions.assertEquals(1, sl2.tile().getId());
+        List<KLevelSectorMetadata.SimpleLevelEntityMetadata> entities = new ArrayList<>(2);
+        entities.addAll(mf1.entities().staticEntities().get(KVector2i.ZERO));
+        entities.addAll(mf1.entities().controllableEntities().get(KVector2i.ZERO));
 
-        Assertions.assertEquals(2, sl1.entities().size());
-        var c1 = sl1
-            .entities()
+        Assertions.assertEquals(2, entities.size());
+        var c1 = entities
             .stream()
-            .filter(x -> x.getDescriptor().equals("c1") && KControllableEntity.class.isAssignableFrom(x.getClass()))
+            .filter(x -> x.descriptor().equals("c1") && x.name().equals("c1"))
             .findAny();
 
-        var s1 = sl1
-            .entities()
+        var s1 = entities
             .stream()
-            .filter(x -> x.getDescriptor().equals("s1") && KStaticEntity.class.isAssignableFrom(x.getClass()))
+            .filter(x -> x.descriptor().equals("s1") && x.name().equals("s1"))
             .findAny();
 
         Assertions.assertTrue(c1.isPresent());
         Assertions.assertTrue(s1.isPresent());
-
-        loaded.unload();
-
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), mf1), c1.get().getPosition());
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), mf1), s1.get().getPosition());
-
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testLoadAndCheckConnectivityGraph() {
-
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
-
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
-
-        KLevel loaded = levelCollection.getAsset("connectivity_graph_test");
-        KIntWeightedGraph<String> graph = (KIntWeightedGraph<String>) KReflectionUtils.getFieldValue(
-            KLevel.class,
-            loaded,
-            "sectorConnectivityGraph",
-            KIntWeightedGraph.class
-        );
-
-        Assertions.assertNotNull(graph);
-        Assertions.assertTrue(graph.has("mf1"));
-        Assertions.assertTrue(graph.has("mf2"));
-        Assertions.assertTrue(graph.has("mf3"));
-        Assertions.assertTrue(graph.has("mf4"));
-
-        var p = graph.getPath("mf1", "mf4");
-        Assertions.assertEquals(4, p.size());
-        Assertions.assertEquals("mf1", p.get(0));
-        Assertions.assertEquals("mf2", p.get(1));
-        Assertions.assertEquals("mf3", p.get(2));
-        Assertions.assertEquals("mf4", p.get(3));
 
     }
 
     @Test
     public void testLoadWithValidatedAutonomousEntity() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadata level = levelCollection.getAsset("valid_only_autonomous");
+        Assertions.assertEquals("valid_only_autonomous", level.name());
 
-        KLevel level = levelCollection.getAsset("valid_only_autonomous");
-        KLevelSector sector = level.getSector("mf1");
-        KLevelSectorSlice slice = sector.getSlice(0, 0);
-        Assertions.assertEquals(1, slice.entities().size());
+        KLevelSectorMetadata sector = level.sectorMetadata().get("mf1");
+        var entities = sector.entities().autonomousEntities().get(KVector2i.ZERO);
+        Assertions.assertEquals(1, entities.size());
 
-        KLevelEntity entity = slice.entities().getFirst();
-        Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
-
-        KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
-            KAutonomousEntity.class,
-            entity,
-            "controller",
-            KAutonomousEntityController.class
-        );
-        Assertions.assertNotNull(controller);
-
-        Assertions.assertEquals(TestController.class, controller.getClass());
-        TestController tc = (TestController) controller;
-        Assertions.assertEquals(42069, tc.getTest());
-
-        Assertions.assertEquals(new KVector2i(1, 0), controller.getNextMoveDirection());
-        entity.move();
-        Assertions.assertEquals(new KPair<>(new KVector2i(1, 0), sector), entity.getPosition());
+        var entity = entities.getFirst();
+        Assertions.assertEquals("s1", entity.name());
+        Assertions.assertEquals("s2", entity.descriptor());
+        Assertions.assertEquals(TestController.class, entity.controller());
 
     }
 
     @Test
     public void testLoadFalseValidatedAutonomousEntity() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadata level = levelCollection.getAsset("valid_validator_is_not_a_rule");
+        Assertions.assertEquals("valid_validator_is_not_a_rule", level.name());
 
-        KLevel level = levelCollection.getAsset("valid_validator_is_not_a_rule");
-        KLevelSector sector = level.getSector("mf1");
-        KLevelSectorSlice slice = sector.getSlice(0, 0);
-        Assertions.assertEquals(1, slice.entities().size());
+        KLevelSectorMetadata sector = level.sectorMetadata().get("mf1");
+        var entities = sector.entities().autonomousEntities().get(KVector2i.ZERO);
+        Assertions.assertEquals(1, entities.size());
+        var entity = entities.getFirst();
 
-        KLevelEntity entity = slice.entities().getFirst();
-        Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
-
-        KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
-            KAutonomousEntity.class,
-            entity,
-            "controller",
-            KAutonomousEntityController.class
-        );
-        Assertions.assertNotNull(controller);
-
-        Assertions.assertEquals(FalseValidatedController.class, controller.getClass());
-        Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
-        entity.move();
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
+        Assertions.assertEquals("s1", entity.name());
+        Assertions.assertEquals("s2", entity.descriptor());
+        Assertions.assertEquals(FalseValidatedController.class, entity.controller());
 
     }
 
     @Test
     public void testLoadAutonomousEntityWithoutValidation() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadata level = levelCollection.getAsset("valid_no_validator");
+        Assertions.assertEquals("valid_no_validator", level.name());
 
-        KLevel level = levelCollection.getAsset("valid_no_validator");
-        KLevelSector sector = level.getSector("mf1");
-        KLevelSectorSlice slice = sector.getSlice(0, 0);
-        Assertions.assertEquals(1, slice.entities().size());
+        KLevelSectorMetadata sector = level.sectorMetadata().get("mf1");
+        var entities = sector.entities().autonomousEntities().get(KVector2i.ZERO);
+        Assertions.assertEquals(1, entities.size());
+        var entity = entities.getFirst();
 
-        KLevelEntity entity = slice.entities().getFirst();
-        Assertions.assertTrue(KAutonomousEntity.class.isAssignableFrom(entity.getClass()));
-
-        KAutonomousEntityController controller = KReflectionUtils.getFieldValue(
-            KAutonomousEntity.class,
-            entity,
-            "controller",
-            KAutonomousEntityController.class
-        );
-        Assertions.assertNotNull(controller);
-
-        Assertions.assertEquals(TestControllerWithoutValidator.class, controller.getClass());
-        Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
-        entity.move();
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
+        Assertions.assertEquals("s1", entity.name());
+        Assertions.assertEquals("s2", entity.descriptor());
+        Assertions.assertEquals(TestControllerWithoutValidator.class, entity.controller());
 
     }
 
     @Test
     public void testLoadValidWithLevelTransition() {
 
-        KEventSystem es = new KStandardEventSystem();
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
-        es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
+        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
 
-        KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(
-            this.assetLoader,
-            es,
-            new KTileCollection(
-                this.assetLoader,
-                new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
-            ),
-            KStandardTestClass.context
-        );
+        KLevelMetadata level = levelCollection.getAsset("valid_with_level_transition");
+        Assertions.assertEquals("valid_with_level_transition", level.name());
 
-        KLevel level = levelCollection.getAsset("valid_with_level_transition");
-        KLevelSector sector = level.getSector("mf1");
-        KLevelSectorSlice slice = sector.getSlice(0, 0);
-        Assertions.assertNotNull(slice.levelTransition());
+        KLevelSectorMetadata sector = level.sectorMetadata().get("mf1");
+        var transition = Arrays.stream(sector.levelTransitionMetadata())
+            .filter(x -> x.position().equals(KVector2i.ZERO))
+            .findFirst();
+        Assertions.assertTrue(transition.isPresent());
 
-        var transition1 = slice.levelTransition();
+        var transition1 = transition.get();
         Assertions.assertEquals(KVector2i.ZERO, transition1.destinationPosition());
         Assertions.assertEquals("aboba123", transition1.levelDescriptor());
-        Assertions.assertEquals(KTransitionedLevelType.GENERATED, transition1.type());
+        Assertions.assertEquals(KTransitionedLevelType.GENERATED, transition1.levelType());
         Assertions.assertEquals("abiba", transition1.destinationSector());
 
-        KLevelSector sector2 = level.getSector("mf2");
-        KLevelSectorSlice slice2 = sector2.getSlice(0, 0);
-        Assertions.assertNotNull(slice2.levelTransition());
+        KLevelSectorMetadata sector2 = level.sectorMetadata().get("mf2");
+        var transitionOfSector2 = Arrays.stream(sector2.levelTransitionMetadata())
+            .filter(x -> x.position().equals(KVector2i.ZERO))
+            .findFirst();
+        Assertions.assertTrue(transitionOfSector2.isPresent());
 
-        var transition2 = slice2.levelTransition();
+        var transition2 = transitionOfSector2.get();
         Assertions.assertEquals(KVector2i.ZERO, transition2.destinationPosition());
         Assertions.assertEquals("aboba123", transition2.levelDescriptor());
-        Assertions.assertEquals(KTransitionedLevelType.PREDEFINED, transition2.type());
+        Assertions.assertEquals(KTransitionedLevelType.PREDEFINED, transition2.levelType());
         Assertions.assertEquals("abiba", transition2.destinationSector());
-
-        var freakingTool = sector2.getTool(KLevelTransitionLayerTool.class);
-        Assertions.assertEquals(transition2, freakingTool.getOnPosition(KVector2i.ZERO));
-        Assertions.assertEquals(transition2, freakingTool.getOnPosition(0, 0));
-
 
     }
 }

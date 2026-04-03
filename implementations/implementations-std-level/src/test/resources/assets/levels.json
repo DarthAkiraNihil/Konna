@@ -1,0 +1,2528 @@
+{
+    "valid": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_tile": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid123",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_link_position_xb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": -1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_link_position_xa": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": -1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 3,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_link_position_yb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": -1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": -1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_link_position_ya": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 1,
+                                "y": 3
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_linked_sector": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf3",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf3",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_sector_destination_xa": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 3,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_sector_destination_xb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": -1,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_sector_destination_ya": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 3
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_sector_destination_yb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": -1
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_entity_position_xb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": -1,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": -1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": -1,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_entity_position_xa": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 3,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 3,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 3,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_entity_position_ya": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 3
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 3
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_by_entity_position_yb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": -1
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": -1
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "connectivity_graph_test": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf3": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        },
+                        {
+                            "sector": "mf4",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf4": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [],
+                    "entities": [],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf3",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "valid_only_autonomous": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestController",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "valid_no_validator": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "valid_validator_is_not_a_rule": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.FalseValidatedController",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "invalid_validation_failed": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [],
+                            "static": [],
+                            "autonomous": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s2",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestController",
+                                    "params": {
+                                        "test1": 42069
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "test_level_entity_management_service": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 3,
+                        "height": 3
+                    },
+                    "heights": [
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 2,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [],
+                            "autonomous": []
+                        },
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "static": [],
+                            "controllable": [],
+                            "autonomous": [
+                                {
+                                    "name": "a1",
+                                    "descriptor": "a1",
+                                    "controller": "io.github.darthakiranihil.konna.level.impl.TestController",
+                                    "params": {
+                                        "test": 42069
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "controllable": [],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": []
+                }
+            }
+        }
+    },
+    "valid_with_level_transition": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "GENERATED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ]
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "invalid_with_level_transition_source_xb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": -1,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "invalid_with_level_transition_source_xa": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 4,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "invalid_with_level_transition_source_yb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": -1
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "invalid_with_level_transition_source_ya": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 4
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "invalid_with_level_transition_destination_xb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": -1,
+                                "y": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "invalid_with_level_transition_destination_yb": {
+        "Level.levelMetadata": {
+            "sectors": {
+                "mf1": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf2",
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "controllable": [
+                                {
+                                    "name": "c1",
+                                    "descriptor": "c1"
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "s1",
+                                    "descriptor": "s1"
+                                }
+                            ],
+                            "autonomous": []
+                        }
+                    ],
+                    "level_transitions": []
+                },
+                "mf2": {
+                    "size": {
+                        "width": 2,
+                        "height": 2
+                    },
+                    "tiles": [
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid",
+                        "tile_valid"
+                    ],
+                    "heights": [
+                        0, 0,
+                        0, 0
+                    ],
+                    "sector_links": [
+                        {
+                            "sector": "mf1",
+                            "position": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "destination": {
+                                "x": 0,
+                                "y": 0
+                            }
+                        }
+                    ],
+                    "entities": [],
+                    "level_transitions": [
+                        {
+                            "position": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "level_descriptor": "aboba123",
+                            "level_type": "PREDEFINED",
+                            "destination_sector": "abiba",
+                            "destination_position": {
+                                "x": 0,
+                                "y": -1
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

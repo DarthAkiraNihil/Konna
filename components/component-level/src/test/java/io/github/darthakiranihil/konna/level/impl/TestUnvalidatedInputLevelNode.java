@@ -25,7 +25,9 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelLoader;
 import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.KStandardLevelLoader;
 import io.github.darthakiranihil.konna.level.asset.KAssetCollectionTestClass;
 import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
@@ -46,6 +48,7 @@ import java.util.Random;
 public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
 
     private final KLevelMetadataCollection levelCollection;
+    private final KLevelLoader levelLoader;
 
     public TestUnvalidatedInputLevelNode() {
         // I hate this
@@ -76,15 +79,16 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        this.levelCollection = new KLevelMetadataCollection(
-            assetLoader,
+        this.levelCollection = new KLevelMetadataCollection(assetLoader);
+
+        this.levelLoader = new KStandardLevelLoader(
             es,
+            KStandardTestClass.getContext(),
             new KTileCollection(
                 assetLoader,
                 new KHashMapBasedCache(),
                 new KTilePropertyCollection(assetLoader, KAssetCollectionTestClass.getContext())
-            ),
-            KStandardTestClass.getContext()
+            )
         );
     }
 
@@ -94,7 +98,7 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
 
         String assetId = params.get("asset_id", String.class);
         KUniversalMap result = new KUniversalMap();
-        result.put("level", this.levelCollection.getAsset(assetId));
+        result.put("level", this.levelLoader.load(this.levelCollection.getAsset(assetId)));
         return result;
 
     }
