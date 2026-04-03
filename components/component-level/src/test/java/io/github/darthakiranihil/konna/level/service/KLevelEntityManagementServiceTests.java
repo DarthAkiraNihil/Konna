@@ -145,7 +145,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("direction", new KVector2i(0, 1));
         this.realContext.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
         this.realContext.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
-
+        KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(new KVector2i(2, 1),  this.controllables.get(id).getPosition().first());
 
         var autoId = (UUID) autonomouses.keySet().toArray()[0];
@@ -301,6 +301,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         var previousPosition = this.autonomouses.get(deletedId).getPosition();
 
         this.realContext.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+        KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(0, this.autonomouses.size());
         Assertions.assertEquals(0, previousPosition
             .second()
@@ -361,6 +362,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         var previousPosition = this.controllables.get(deletedId).getPosition();
 
         this.realContext.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+        KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(0, this.controllables.size());
         Assertions.assertEquals(0, previousPosition
             .second()
@@ -420,6 +422,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         var previousPosition = this.statics.get(deletedId).getPosition();
 
         this.realContext.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+        KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(0, this.statics.size());
         Assertions.assertEquals(0, previousPosition
             .second()
@@ -521,6 +524,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         this.realContext.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
         this.realContext.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
 
+        KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(previousPosition,  this.controllables.get(id).getPosition());
 
         var autoId = (UUID) autonomouses.keySet().toArray()[0];
