@@ -380,33 +380,6 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *         </li>
  *         <li>
  *             <p>
- *                 <i>Level.autonomousEntityDestroyed</i>
- *             </p>
- *             <p>
- *                 Message schema:
- *                 <ul>
- *                     <li>
- *                         {@code id} -
- *                         {@link java.util.UUID} -
- *                         id of destroyed entity
- *                     </li>
- *                     <li>
- *                         {@code position} -
- *                         {@link io.github.darthakiranihil.konna.core.struct.KPair}
- *                         of {@link io.github.darthakiranihil.konna.core.struct.KVector2i}
- *                         and {@link KLevelSector} -
- *                         absolute position of destroyed entity
- *                     </li>
- *                     <li>
- *                         {@code instance} -
- *                         {@link io.github.darthakiranihil.konna.level.entity.KLevelEntity} -
- *                         instance of destroyed entity
- *                     </li>
- *                 </ul>
- *             </p>
- *         </li>
- *         <li>
- *             <p>
  *                 <i>Level.staticEntityCreated</i>
  *             </p>
  *             <p>
@@ -428,33 +401,6 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                         {@code instance} -
  *                         {@link io.github.darthakiranihil.konna.level.entity.KLevelEntity} -
  *                         instance of created entity
- *                     </li>
- *                 </ul>
- *             </p>
- *         </li>
- *         <li>
- *             <p>
- *                 <i>Level.staticEntityDestroyed</i>
- *             </p>
- *             <p>
- *                 Message schema:
- *                 <ul>
- *                     <li>
- *                         {@code id} -
- *                         {@link java.util.UUID} -
- *                         id of destroyed entity
- *                     </li>
- *                     <li>
- *                         {@code position} -
- *                         {@link io.github.darthakiranihil.konna.core.struct.KPair}
- *                         of {@link io.github.darthakiranihil.konna.core.struct.KVector2i}
- *                         and {@link KLevelSector} -
- *                         absolute position of destroyed entity
- *                     </li>
- *                     <li>
- *                         {@code instance} -
- *                         {@link io.github.darthakiranihil.konna.level.entity.KLevelEntity} -
- *                         instance of destroyed entity
  *                     </li>
  *                 </ul>
  *             </p>
@@ -488,27 +434,16 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *         </li>
  *         <li>
  *             <p>
- *                 <i>Level.controllableEntityDestroyed</i>
+ *                 <i>Level.entitiesDestroyed</i>
  *             </p>
  *             <p>
  *                 Message schema:
  *                 <ul>
  *                     <li>
- *                         {@code id} -
- *                         {@link java.util.UUID} -
- *                         id of destroyed entity
- *                     </li>
- *                     <li>
- *                         {@code position} -
- *                         {@link io.github.darthakiranihil.konna.core.struct.KPair}
- *                         of {@link io.github.darthakiranihil.konna.core.struct.KVector2i}
- *                         and {@link KLevelSector} -
- *                         absolute position of destroyed entity
- *                     </li>
- *                     <li>
- *                         {@code instance} -
+ *                         {@code instances} -
+ *                         {@link java.util.List} of
  *                         {@link io.github.darthakiranihil.konna.level.entity.KLevelEntity} -
- *                         instance of destroyed entity
+ *                         list of all destroyed entities
  *                     </li>
  *                 </ul>
  *             </p>

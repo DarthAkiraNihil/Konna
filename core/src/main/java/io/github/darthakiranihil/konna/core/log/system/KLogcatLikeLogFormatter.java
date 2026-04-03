@@ -28,7 +28,7 @@ import java.util.Arrays;
 /**
  * Implementation of {@link KLogFormatter} that formats given message
  * like it was written by LogCat from Android. It does not look absolutely the
- * same as the real LogCat message but it is similar
+ * same as the real LogCat message, but it is similar
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -144,7 +144,7 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
     ) {
         if (this.doNotColorize) {
             return String.format(
-                "[%30s]\t%24s\t%64s\t%s %s",
+                "[%30s]\t%36s\t%80s\t%s %s",
                 Instant.now(),
                 tag,
                 this.getCallerPackage(),
@@ -154,7 +154,7 @@ public class KLogcatLikeLogFormatter extends KObject implements KLogFormatter {
         }
 
         return String.format(
-            "[%30s]%s\t%24s\033[m\t%64s\t%s%s %s \033[0m %s%s\033[0m",
+            "[%30s]%s\t%36s\033[m\t%80s\t%s%s %s \033[0m %s%s\033[0m",
             Instant.now(),
             this.getTagColor(tag),
             tag,

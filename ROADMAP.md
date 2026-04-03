@@ -92,20 +92,47 @@ The foundation that is essential for the whole engine
     
 ### v. 0.5.0 - The beginning of Level
 
-- [ ] Implement Level component
-  - [ ] Add abstractions for representing a game level
-  - [ ] Add support for getting pre-defined levels from assets
-  - [ ] Add level generators
-  - [ ] Add support for moving from a pre-defined level to generated and vice versa
-  - [ ] Add abstractions for tiles, map entities etc.
+- [x] Implement Level component
+  - [x] Add abstractions for representing a game level
+  - [x] Add support for getting pre-defined levels from assets
+  - [x] Add level generators
+  - [x] Add support for moving from a pre-defined level to generated and vice versa
+  - [x] Add abstractions for tiles, map entities etc.
 
-### v. 0.6.0 - Monsters and Combat
+### v. 0.6.0 - Valhalla - The Epic Refactoring
 
-### v. 0.7.0 - Item system
+- [ ] Rework frame events by replacing them with frame tasks
+  - [ ] Add support for scheduling persistent and temporal tasks
+  - [ ] Add task prioritization
+  - [ ] Add KFrameTaskScheduler interface
+- [ ] Split acquired events to EventSubscriber and EventInvoker
+- [ ] Rework component and service loading
+- [ ] Make bootstrap config a record so there can be more than one Konna instance
+- [ ] Add opportunity to start hypervisor in the first thread
+- [ ] Implement new container system that is Dagger-like
+- [ ] Eliminate KIndex and replace it to KClasspathSearchEngine
+- [ ] Add something-something to be used in Konna Editor 
+- [ ] Weaken log levels of some messages
 
-### v. 0.8.0 - Kreaktive - the GUI component
+### v. 0.7.0 - Level - Part II
 
-### v. 0.9.0 - Saving
+- [ ] Add vararg support for generator nodes
+- [ ] Add flow nodes
+- [ ] Add support for rejecting generation result on some criteria
+- [ ] Make level structure flexible
+
+### v. 0.9.0 - Graphics - Part II
+
+- [ ] Add support for framebuffers
+- [ ] Add support for instanced rendering
+
+### v. 0.8.0 - Monsters and Combat ???
+
+### v. 0.9.0 - Item system
+
+### v. 0.10.0 - Kreaktive - the GUI component
+
+### v. 0.11.0 - Saving
 
 ### v. 1.0.0 - To be continued...
 
