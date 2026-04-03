@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.service;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
@@ -41,10 +42,8 @@ import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Level entity management service for handling game entities
@@ -64,16 +63,24 @@ public class KLevelEntityManagementService extends KObject {
 
     private final KEventAction<KLevel> onLeveLoadedConsumer = this::onLevelLoaded;
     private final KSimpleEventAction onLevelUnloadedConsumer = this::onLevelUnloaded;
+    private final KSimpleEventAction
+        deleteDestroyedEntitiesConsumer = this::deleteDestroyedEntities;
+    private final KSimpleEventAction
+        performEntitiesMovementConsumer = this::performEntitiesMovement;
 
     private final Map<UUID, KControllableEntity> controllables;
     private final Map<UUID, KStaticEntity> statics;
     private final Map<UUID, KAutonomousEntity> autonomouses;
+
+    private final Queue<KLevelEntity> deletionQueue;
 
     private final KEventSystem eventSystem;
     private final KActivator activator;
 
     private @Nullable KMessenger messenger;
     private @Nullable KLevel currentLevel;
+
+    private volatile boolean movementScheduled;
 
     /**
      * Standard constructor.
@@ -100,12 +107,21 @@ public class KLevelEntityManagementService extends KObject {
         levelUnloaded.subscribe(this.onLevelUnloadedConsumer);
         levelLoaded.subscribe(this.onLeveLoadedConsumer);
 
+        KSimpleEvent frameFinished = Objects.requireNonNull(
+            eventSystem.getSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME)
+        );
+        frameFinished.subscribe(this.deleteDestroyedEntitiesConsumer);
+        frameFinished.subscribe(this.performEntitiesMovementConsumer);
+
         this.controllables = new HashMap<>();
         this.statics = new HashMap<>();
         this.autonomouses = new HashMap<>();
 
         this.activator = activator;
         this.eventSystem = eventSystem;
+
+        // todo: maybe array deque instead
+        this.deletionQueue = new ConcurrentLinkedQueue<>();
     }
 
     /**
@@ -118,51 +134,23 @@ public class KLevelEntityManagementService extends KObject {
 
     /**
      * <p>
-     *     Moves all entities presented at the current moment.
+     *     Schedules movement of all entities presented at the current moment.
      *     Autonomous entities are moved first, then controllable entities.
      * </p>
      * <p>
      *     If service has an assigned messenger, it sends {@code controllableEntities}
      *     message with list of all controllable entities located by {@code moved} key.
      * </p>
+     * <p>
+     *     All operations above will be executed on frame finishing.
+     * </p>
      */
     @KServiceEndpoint(route = "moveAllEntities")
     protected void moveAllEntities() {
-        this.autonomouses.values().forEach(KLevelEntity::move);
-        this.controllables.values().forEach(KLevelEntity::move);
-
-        if (this.messenger == null) {
-            return;
-        }
-
-        KUniversalMap body = new KUniversalMap();
-        body.put("moved_controllables", this.controllables.keySet());
-        Map<UUID, KLevelSectorSlice> controllableDestinations = new HashMap<>();
-        for (var entry: this.controllables.entrySet()) {
-            KLevelEntity entity = entry.getValue();
-            KLevelSector sector = entity.getPosition().second();
-            controllableDestinations.put(
-                entry.getKey(),
-                sector.getSlice(entity.getPosition().first())
-            );
-        }
-        body.put("controllables_destinations", controllableDestinations);
-
-        body.put("moved_autonomous", this.autonomouses.keySet());
-        Map<UUID, KLevelSectorSlice> autonomousesDestinations = new HashMap<>();
-        for (var entry: this.autonomouses.entrySet()) {
-            KLevelEntity entity = entry.getValue();
-            KLevelSector sector = entity.getPosition().second();
-            autonomousesDestinations.put(
-                entry.getKey(),
-                sector.getSlice(entity.getPosition().first())
-            );
-        }
-        body.put("autonomouses_destinations", autonomousesDestinations);
-
-        this.messenger.sendRegular(
-            "entitiesMoved",
-            body
+        this.movementScheduled = true;
+        KSystemLogger.debug(
+            this.name,
+            "Movement of entities has been scheduled"
         );
     }
 
@@ -319,12 +307,9 @@ public class KLevelEntityManagementService extends KObject {
             return;
         }
 
-        KAutonomousEntity entity = this.autonomouses.remove(entityId);
-        var position = entity.getPosition();
-        var tool = position.second().getTool(KLevelEntityLayerTool.class);
-        tool.removeEntity(position.first(), entity);
+        KAutonomousEntity entity = this.autonomouses.get(entityId);
+        this.deletionQueue.add(entity);
 
-        this.sendMessage(entity, "autonomousEntityDestroyed");
     }
 
     /**
@@ -403,12 +388,8 @@ public class KLevelEntityManagementService extends KObject {
             return;
         }
 
-        KStaticEntity entity = this.statics.remove(entityId);
-        var position = entity.getPosition();
-        var tool = position.second().getTool(KLevelEntityLayerTool.class);
-        tool.removeEntity(position.first(), entity);
-
-        this.sendMessage(entity, "staticEntityDestroyed");
+        KStaticEntity entity = this.statics.get(entityId);
+        this.deletionQueue.add(entity);
 
     }
 
@@ -490,12 +471,9 @@ public class KLevelEntityManagementService extends KObject {
             return;
         }
 
-        KControllableEntity entity = this.controllables.remove(entityId);
-        var position = entity.getPosition();
-        var tool = position.second().getTool(KLevelEntityLayerTool.class);
-        tool.removeEntity(position.first(), entity);
+        KControllableEntity entity = this.controllables.get(entityId);
+        this.deletionQueue.add(entity);
 
-        this.sendMessage(entity, "controllableEntityDestroyed");
     }
 
     /**
@@ -600,6 +578,91 @@ public class KLevelEntityManagementService extends KObject {
         this.messenger.sendRegular(
             messageId, body
         );
+    }
+
+    private void deleteDestroyedEntities() {
+
+        if (this.deletionQueue.isEmpty()) {
+            return;
+        }
+
+        List<KLevelEntity> deleted = new ArrayList<>(this.deletionQueue.size());
+        while (!this.deletionQueue.isEmpty()) {
+            KLevelEntity entity = this.deletionQueue.poll();
+
+            switch (entity) {
+                case KStaticEntity s -> this.statics.remove(s.id());
+                case KControllableEntity c -> this.controllables.remove(c.id());
+                case KAutonomousEntity a -> this.autonomouses.remove(a.id());
+            }
+
+            var position = entity.getPosition();
+            var tool = position.second().getTool(KLevelEntityLayerTool.class);
+            tool.removeEntity(position.first(), entity);
+            deleted.add(entity);
+        }
+
+        KSystemLogger.debug(
+            this.name,
+            "Deleted %d entities", deleted.size()
+        );
+
+        if (this.messenger == null) {
+            return;
+        }
+
+        KUniversalMap body = new KUniversalMap();
+        body.put("instances", deleted);
+        this.messenger.sendRegular(
+            "entitiesDestroyed",
+            body
+        );
+
+    }
+
+    private void performEntitiesMovement() {
+        if (!this.movementScheduled) {
+            return;
+        }
+
+        this.autonomouses.values().forEach(KLevelEntity::move);
+        this.controllables.values().forEach(KLevelEntity::move);
+
+        if (this.messenger == null) {
+            return;
+        }
+
+        KUniversalMap body = new KUniversalMap();
+        body.put("moved_controllables", this.controllables.keySet());
+        Map<UUID, KLevelSectorSlice> controllableDestinations = new HashMap<>();
+        for (var entry: this.controllables.entrySet()) {
+            KLevelEntity entity = entry.getValue();
+            KLevelSector sector = entity.getPosition().second();
+            controllableDestinations.put(
+                entry.getKey(),
+                sector.getSlice(entity.getPosition().first())
+            );
+        }
+        body.put("controllables_destinations", controllableDestinations);
+
+        body.put("moved_autonomous", this.autonomouses.keySet());
+        Map<UUID, KLevelSectorSlice> autonomousesDestinations = new HashMap<>();
+        for (var entry: this.autonomouses.entrySet()) {
+            KLevelEntity entity = entry.getValue();
+            KLevelSector sector = entity.getPosition().second();
+            autonomousesDestinations.put(
+                entry.getKey(),
+                sector.getSlice(entity.getPosition().first())
+            );
+        }
+        body.put("autonomouses_destinations", autonomousesDestinations);
+
+        this.messenger.sendRegular(
+            "entitiesMoved",
+            body
+        );
+
+        this.movementScheduled = false;
     }
 
 
