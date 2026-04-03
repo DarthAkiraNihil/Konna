@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,9 +89,9 @@ public record KLevelSectorMetadata(
      * @param autonomousEntities Autonomous entities assigned to entity layer
      */
     public record EntityLayerMetadata(
-        Map<KVector2i, SimpleLevelEntityMetadata> staticEntities,
-        Map<KVector2i, SimpleLevelEntityMetadata> controllableEntities,
-        Map<KVector2i, AutonomousLevelEntityMetadata> autonomousEntities
+        Map<KVector2i, List<SimpleLevelEntityMetadata>> staticEntities,
+        Map<KVector2i, List<SimpleLevelEntityMetadata>> controllableEntities,
+        Map<KVector2i, List<AutonomousLevelEntityMetadata>> autonomousEntities
     ) {
 
     }
@@ -118,7 +119,7 @@ public record KLevelSectorMetadata(
         String name,
         String descriptor,
         Class<? extends KAutonomousEntityController> controller,
-        KAssetDefinition[] params
+        KAssetDefinition params
     ) {
 
     }
