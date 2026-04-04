@@ -31,6 +31,12 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of {@link KClasspathSearchEngine} using ClassGraph library.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton(immortal = true)
 public final class KClassGraphClasspathSearchEngine
     extends KObject
@@ -56,7 +62,7 @@ public final class KClassGraphClasspathSearchEngine
         private final List<Class<? extends Annotation>> filteredAnnotations;
         private final List<Class<?>> implementingInterfaces;
 
-        public Query() {
+        Query() {
             this.searchPackages = new ArrayList<>(INITIAL_LIST_PARAMS_CAPACITY);
             this.filteredAnnotations = new ArrayList<>(INITIAL_LIST_PARAMS_CAPACITY);
             this.implementingInterfaces = new ArrayList<>(INITIAL_LIST_PARAMS_CAPACITY);
@@ -137,7 +143,7 @@ public final class KClassGraphClasspathSearchEngine
 
         private final ClassInfo source;
 
-        public ClassGraphClassInfo(final ClassInfo source) {
+        ClassGraphClassInfo(final ClassInfo source) {
             this.source = source;
         }
 
@@ -169,7 +175,7 @@ public final class KClassGraphClasspathSearchEngine
         private final List<KClassInfo> classes;
         private @Nullable List<Class<?>> loaded;
 
-        public SearchResult(
+        SearchResult(
             final ScanResult parent,
             final List<KClassInfo> classes
         ) {

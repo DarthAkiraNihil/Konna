@@ -19,11 +19,29 @@ package io.github.darthakiranihil.konna.core.util;
 import java.io.Closeable;
 import java.util.List;
 
+/**
+ * Resource interface for classpath search results.
+ */
 public interface KClasspathSearchResult extends Closeable {
 
+    /**
+     * @return List of class infos of all found classes
+     */
     List<KClassInfo> getClasses();
+
+    /**
+     * Loads all classes that have been found. Alternatively you can call
+     * {@link KClasspathSearchResult#getClasses()} and call {@link KClassInfo#load()}
+     * on all elements. Should be used only if you really need loaded classes, not
+     * just their information.
+     * @return List of all found loaded classes
+     */
     List<Class<?>> loadClasses();
 
+    /**
+     * Cleans all temporal resources, that might be used by search engine
+     * when looking for classes.
+     */
     @Override
     void close();
 }

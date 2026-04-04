@@ -16,11 +16,34 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+/**
+ * Interface that packs essential class information in a simple container
+ * that does not contain immediately loaded class.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KClassInfo {
 
+    /**
+     * @return Class' simple name
+     */
     String getSimpleName();
+
+    /**
+     * @return Class' canonical name (full name)
+     */
     String getCanonicalName();
+
+    /**
+     * @return Package name the class is located in
+     */
     String getPackageName();
+
+    /**
+     * Loads packed class and returns its {@link Class} instance.
+     * @return Loaded class
+     */
     Class<?> load();
 
 }

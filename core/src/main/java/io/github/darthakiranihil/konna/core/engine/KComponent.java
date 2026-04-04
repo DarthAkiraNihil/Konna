@@ -166,6 +166,7 @@ public abstract class KComponent extends KObject {
      * Loads services for the engine component. By default, it instantiates all
      * classes that are defined in the servicesPackage, provided by {@link KComponentMetaInfo}.
      * @param ctx Current engine context
+     * @param classpath Application's classpath searcher
      * @param servicesPackage Name of component's services package
      * @param serviceLoader Engine service loader
      * @return Mapping "Service name -> Service entry" that contain information

@@ -16,11 +16,33 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+/**
+ * Interface that provides methods for searching classes inside classpath.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KClasspathSearchEngine {
 
+    /**
+     * Name of package prefix, where all generated classes should be located.
+     * It's not required, though.
+     */
     String GENERATED_CLASSES_PACKAGE = "konna.generated";
 
+    /**
+     * Creates a general search query.
+     * @return New search query
+     */
     KClasspathSearchQuery query();
+
+    /**
+     * Creates a search query to find classes in
+     * {@link KClasspathSearchEngine#GENERATED_CLASSES_PACKAGE}.
+     * All queries constructed with this method will search classes only in generated
+     * classes package and the only (if others are not passes explicitly)
+     * @return New search query
+     */
     KClasspathSearchQuery queryGenerated();
 
 }

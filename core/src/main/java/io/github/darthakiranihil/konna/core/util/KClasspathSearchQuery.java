@@ -18,12 +18,40 @@ package io.github.darthakiranihil.konna.core.util;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * Interface providing a fluent interface for constructing classpath
+ * search queries.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KClasspathSearchQuery {
 
+    /**
+     * Adds a filter to find classes in specified packages.
+     * @param packages Packages to find classes in
+     * @return This query (for method chaining)
+     */
     KClasspathSearchQuery inPackages(String... packages);
+
+    /**
+     * Adds a filter to find classes that contain specified annotation.
+     * @param annotation Annotation to be contained in found classes
+     * @return This query (for method chaining)
+     */
     KClasspathSearchQuery withAnnotation(Class<? extends Annotation> annotation);
+
+    /**
+     * Adds a filter to find classes that implement specific interface.
+     * @param interfaceClass Interface to be implemented by found classes
+     * @return This query (for method chaining)
+     */
     KClasspathSearchQuery implementsInterface(Class<?> interfaceClass);
 
+    /**
+     * Executes search.
+     * @return Search result
+     */
     KClasspathSearchResult execute();
 
 }

@@ -16,15 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Class that provides different useful class utils.
@@ -54,6 +48,15 @@ public final class KClassUtils extends KUninstantiable {
         }
     }
 
+    /**
+     * Convenience method to get class by its name without forced
+     * checked exception. It will all {@link KClasspathSearchEngine#GENERATED_CLASSES_PACKAGE}
+     * prefix to passed class name.
+     * @param name Name of the class
+     * @return Class object by passed name
+     * @throws KClassNotFoundException if class is not found
+     * @since 0.6.0
+     */
     public static Class<?> getGeneratedForName(final @Nullable String name) {
         return KClassUtils.getForName(
             String.format(
