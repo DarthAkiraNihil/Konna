@@ -26,6 +26,7 @@ package io.github.darthakiranihil.konna.core.di;
  *
  * @see KContainerModifier
  */
+@Deprecated(forRemoval = true)
 public interface KContainerAccessor {
 
     /**
