@@ -20,6 +20,7 @@ public interface KClassInfo {
 
     String getSimpleName();
     String getCanonicalName();
+    String getPackageName();
     Class<?> load();
 
 }

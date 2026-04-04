@@ -16,9 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import java.io.Closeable;
 import java.util.List;
 
-public interface KClasspathSearchResult {
+public interface KClasspathSearchResult extends Closeable {
 
     List<KClassInfo> getClasses();
 
