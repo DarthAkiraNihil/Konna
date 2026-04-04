@@ -20,8 +20,6 @@ java {
 
 dependencies {
     implementation "org.jspecify:jspecify:1.0.0"
-    implementation 'io.github.classgraph:classgraph:4.8.181'
-    implementation 'io.github.toolfactory:jvm-driver:9.9.10'
 
     implementation project(":annotations-core")
 

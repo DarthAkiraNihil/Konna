@@ -338,9 +338,9 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
 
             try {
                 var paramsValidator = KClassUtils
-                    .getForName(
+                    .getGeneratedForName(
                         String.format(
-                            "konna.generated.level.entity.%s$$ParamValidator",
+                            "level.entity.%s$$ParamValidator",
                             controllerClass.getSimpleName()
                         )
                     );

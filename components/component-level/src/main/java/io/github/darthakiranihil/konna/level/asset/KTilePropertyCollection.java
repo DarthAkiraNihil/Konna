@@ -131,7 +131,7 @@ public final class KTilePropertyCollection
 
         boolean isArray = type.endsWith("[]");
         String factoryClassName = String.format(
-            "konna.generated.level.props.%s$$%s",
+            "level.props.%s$$%s",
             isArray ? type.substring(0, type.lastIndexOf('[')) : type,
             isArray ? "ArrayFactory" : "Factory"
         );
@@ -139,12 +139,12 @@ public final class KTilePropertyCollection
         if (isArray) {
             return this.activator.createObject(
                 (Class<? extends KObjectArrayPropertyFactory<?>>)
-                    KClassUtils.getForName(factoryClassName)
+                    KClassUtils.getGeneratedForName(factoryClassName)
             );
         } else {
             return this.activator.createObject(
                 (Class<? extends KObjectPropertyFactory<?>>)
-                    KClassUtils.getForName(factoryClassName)
+                    KClassUtils.getGeneratedForName(factoryClassName)
             );
         }
 

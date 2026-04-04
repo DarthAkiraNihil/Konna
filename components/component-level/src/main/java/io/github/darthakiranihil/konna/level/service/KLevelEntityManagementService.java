@@ -218,9 +218,9 @@ public class KLevelEntityManagementService extends KObject {
 
         try {
             var paramsValidator = KClassUtils
-                .getForName(
+                .getGeneratedForName(
                     String.format(
-                        "konna.generated.level.entity.%s$$ParamValidator",
+                        "level.entity.%s$$ParamValidator",
                         controller.getSimpleName()
                     )
                 );

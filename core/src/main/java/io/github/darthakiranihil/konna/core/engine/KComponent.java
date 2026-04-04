@@ -29,7 +29,8 @@ import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchResult;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,9 @@ public abstract class KComponent extends KObject {
         KSystemLogger.info(name, "Applying config for %s", componentClass);
         this.applyConfig(config);
 
-        this.services = this.loadServices(ctx, servicesPackage, serviceLoader);
+        // todo: remove after new component loading pipeline will be released
+        KClasspathSearchEngine classpath = ctx.createObject(KClasspathSearchEngine.class);
+        this.services = this.loadServices(ctx, classpath, servicesPackage, serviceLoader);
         KSystemLogger.info(
             name,
             "Loaded %d services of component %s",
@@ -163,6 +166,7 @@ public abstract class KComponent extends KObject {
      * Loads services for the engine component. By default, it instantiates all
      * classes that are defined in the servicesPackage, provided by {@link KComponentMetaInfo}.
      * @param ctx Current engine context
+     * @param classpath Application's classpath searcher
      * @param servicesPackage Name of component's services package
      * @param serviceLoader Engine service loader
      * @return Mapping "Service name -> Service entry" that contain information
@@ -172,37 +176,42 @@ public abstract class KComponent extends KObject {
      */
     protected Map<String, KServiceEntry> loadServices(
         final KEngineContext ctx,
+        final KClasspathSearchEngine classpath,
         final String servicesPackage,
         final KServiceLoader serviceLoader
     ) {
 
-        List<Class<?>> serviceClasses = KAnnotationUtils.findAnnotatedClasses(
-            ctx,
-            servicesPackage,
-            KComponentServiceMetaInfo.class
-        );
-        KSystemLogger.info(
-            this.name,
-            "Found %d services of component %s",
-            serviceClasses.size(),
-            this.getClass().getCanonicalName()
-        );
-
         Map<String, KServiceEntry> instantiatedServices = new HashMap<>();
-        try {
-            for (var serviceClass: serviceClasses) {
-                serviceLoader.load(
-                    ctx,
-                    serviceClass,
-                    instantiatedServices
-                );
-            }
-        } catch (
-            KServiceLoadingException e
+        try (KClasspathSearchResult result = classpath
+            .query()
+            .inPackages(servicesPackage)
+            .withAnnotation(KComponentServiceMetaInfo.class)
+            .execute()
         ) {
-            KSystemLogger.fatal(this.name, e);
-            throw new KComponentLoadingException(e);
+
+            List<Class<?>> serviceClasses = result.loadClasses();
+            KSystemLogger.info(
+                this.name,
+                "Found %d services",
+                serviceClasses.size()
+            );
+
+            try {
+                for (var serviceClass: serviceClasses) {
+                    serviceLoader.load(
+                        ctx,
+                        serviceClass,
+                        instantiatedServices
+                    );
+                }
+            } catch (
+                KServiceLoadingException e
+            ) {
+                KSystemLogger.fatal(this.name, e);
+                throw new KComponentLoadingException(e);
+            }
         }
+
         return instantiatedServices;
 
     }

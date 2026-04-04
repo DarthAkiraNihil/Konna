@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -25,7 +24,6 @@ import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KDisposer;
-import io.github.darthakiranihil.konna.core.util.KIndex;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -47,7 +45,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
 
     private final KActivator activator;
     private final KContainerAccessor containerResolver;
-    private final KIndex index;
     private final KObjectRegistry objectRegistry;
     private final KQueueBasedEventSystem eventSystem;
     private final KQueueBasedMessageSystem messageSystem;
@@ -59,7 +56,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * Standard constructor.
      * @param activator Activator of the context
      * @param containerAccessor Container accessor of the context
-     * @param index Index of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
@@ -70,7 +66,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     public KProxiedEngineContext(
         final KActivator activator,
         final KContainerAccessor containerAccessor,
-        final KIndex index,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
@@ -81,7 +76,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
         this.containerResolver = containerAccessor;
-        this.index = index;
         this.objectRegistry = objectRegistry;
         this.eventSystem = eventSystem;
         this.messageSystem = messageSystem;
@@ -94,7 +88,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * Standard constructor, but without disposer.
      * @param activator Activator of the context
      * @param containerAccessor Container accessor of the context
-     * @param index Index of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
@@ -104,7 +97,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     public KProxiedEngineContext(
         final KActivator activator,
         final KContainerAccessor containerAccessor,
-        final KIndex index,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
@@ -114,7 +106,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         this(
             activator,
             containerAccessor,
-            index,
             objectRegistry,
             eventSystem,
             messageSystem,
@@ -296,16 +287,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     @Override
     public Set<KObjectRegistryRecord> listObjects() {
         return this.objectRegistry.listObjects();
-    }
-
-    @Override
-    public List<Class<?>> getClassIndex() {
-        return this.index.getClassIndex();
-    }
-
-    @Override
-    public List<Package> getPackageIndex() {
-        return this.index.getPackageIndex();
     }
 
     @Override

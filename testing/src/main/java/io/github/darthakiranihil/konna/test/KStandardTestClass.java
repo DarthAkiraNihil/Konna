@@ -29,22 +29,13 @@ import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessenger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator;
-import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.message.*;
+import io.github.darthakiranihil.konna.core.object.*;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KCache;
+import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KStandardIndex;
 import org.jetbrains.annotations.TestOnly;
 import org.jspecify.annotations.Nullable;
 
@@ -101,9 +92,8 @@ public class KStandardTestClass extends KObject {
     protected static @Nullable KQueueBasedMessageSystem msgSystem;
 
     static {
-        var index = new KStandardIndex();
-
-        var containerResolver = new KStandardContainerAccessor(index);
+        var classpath = new KClassGraphClasspathSearchEngine();
+        var containerResolver = new KStandardContainerAccessor();
         containerResolver
             .getContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)
@@ -116,10 +106,11 @@ public class KStandardTestClass extends KObject {
             .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class)
+            .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator(containerResolver, objectRegistry, index);
+        var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -142,7 +133,6 @@ public class KStandardTestClass extends KObject {
         KStandardTestClass.context = new KProxiedEngineContext(
             activator,
             containerResolver,
-            index,
             objectRegistry,
             eventSystem,
             messageSystem,

@@ -22,10 +22,6 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.core.util.KIndex;
-
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Standard implementation of {@link KContainerAccessor}.
@@ -36,8 +32,6 @@ import java.util.List;
 public final class KStandardContainerAccessor extends KObject implements KContainerAccessor {
 
     private static final int CLASS_BEFORE_ACTIVATOR = 3;
-
-    private final KIndex index;
     private final KContainer rootContainer;
     private final KImmutableContainer lockedRootContainer;
 
@@ -48,9 +42,8 @@ public final class KStandardContainerAccessor extends KObject implements KContai
      * an environment, then it continues with processing empty environments, the resolver
      * define a new environment for each subpackage of the top-level packages. Then it
      * groups all records by environment name and builds container according to group result.
-     * @param index Built system index (must contain complete package and class list)
      */
-    public KStandardContainerAccessor(final KIndex index) {
+    public KStandardContainerAccessor() {
         super(
             "container_accessor",
             KStructUtils.setOfTags(
@@ -59,8 +52,7 @@ public final class KStandardContainerAccessor extends KObject implements KContai
             )
         );
 
-        this.index = index;
-        this.rootContainer = this.buildContainer();
+        this.rootContainer = new KContainer();
         this.lockedRootContainer = new KImmutableContainer(this.rootContainer);
 
     }
@@ -101,21 +93,4 @@ public final class KStandardContainerAccessor extends KObject implements KContai
         }
     }
 
-    private KContainer buildContainer() {
-        KContainer root = new KContainer("root_container");
-        List<String> packages = this.collectIndexedPackages();
-        KClassUtils
-            .getRealClassesInPackages(new HashSet<>(packages))
-            .forEach(root::add);
-        return root;
-    }
-
-    private List<String> collectIndexedPackages() {
-        return this
-            .index
-            .getPackageIndex()
-            .stream()
-            .map(Package::getName)
-            .toList();
-    }
 }

@@ -16,25 +16,34 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
-import java.util.List;
-
 /**
- * Interface for a utility class which purpose is to index
- * almost everything system related.
+ * Interface that packs essential class information in a simple container
+ * that does not contain immediately loaded class.
  *
- * @since 0.2.0
+ * @since 0.6.0
  * @author Darth Akira Nihil
  */
-public interface KIndex {
-    /**
-     * Returns system class index.
-     * @return List of indexed classes
-     */
-    List<Class<?>> getClassIndex();
+public interface KClassInfo {
 
     /**
-     * Returns system package index.
-     * @return List of indexed packages.
+     * @return Class' simple name
      */
-    List<Package> getPackageIndex();
+    String getSimpleName();
+
+    /**
+     * @return Class' canonical name (full name)
+     */
+    String getCanonicalName();
+
+    /**
+     * @return Package name the class is located in
+     */
+    String getPackageName();
+
+    /**
+     * Loads packed class and returns its {@link Class} instance.
+     * @return Loaded class
+     */
+    Class<?> load();
+
 }

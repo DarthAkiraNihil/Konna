@@ -16,19 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.classgraph.ClassGraph;
 import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
-import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.core.util.KIndex;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -66,12 +64,12 @@ public final class KStandardActivator extends KObject implements KActivator {
      * object pools for them, other types of instantiation are ignored at this moment.
      * @param containerResolver Container resolver
      * @param objectRegistry Object registry
-     * @param index System index
+     * @param classpath Application's classpath search engine
      */
     public KStandardActivator(
         final KContainerAccessor containerResolver,
         final KObjectRegistry objectRegistry,
-        final KIndex index
+        final KClasspathSearchEngine classpath
     ) {
         super(
             "std_activator",
@@ -81,7 +79,6 @@ public final class KStandardActivator extends KObject implements KActivator {
             )
         );
 
-        ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
         this.containerResolver = containerResolver;
         this.objectRegistry = objectRegistry;
 
@@ -92,35 +89,37 @@ public final class KStandardActivator extends KObject implements KActivator {
         this.objectInstantiationTypes = new HashMap<>();
         this.cachedDependencies = new HashMap<>();
 
-        List<Class<?>> poolableClasses;
+        try (
+            var result = classpath
+                .query()
+                .withAnnotation(KPoolable.class)
+                .execute()
+        ) {
+            List<Class<?>> poolableClasses = result.loadClasses();
+            for (var poolableClass: poolableClasses) {
+                KPoolable poolableMeta = poolableClass.getAnnotation(KPoolable.class);
+                int initialSize = poolableMeta.initialPoolSize();
 
-        poolableClasses = KClassUtils.getAnnotatedClasses(
-            index,
-            KPoolable.class
-        );
-
-        for (var poolableClass: poolableClasses) {
-            KPoolable poolableMeta = poolableClass.getAnnotation(KPoolable.class);
-            int initialSize = poolableMeta.initialPoolSize();
-
-            if (poolableMeta.weak()) {
-                KWeakObjectPool<?> pool = new KWeakObjectPool<>(
-                    (Class<? extends KObject>) poolableClass,
-                    initialSize,
-                    this,
-                    this.objectRegistry
-                );
-                this.weakPools.put(poolableClass, pool);
-            } else {
-                KObjectPool<?> pool = new KObjectPool<>(
-                    (Class<? extends KObject>) poolableClass,
-                    initialSize,
-                    this,
-                    this.objectRegistry
-                );
-                this.pools.put(poolableClass, pool);
+                if (poolableMeta.weak()) {
+                    KWeakObjectPool<?> pool = new KWeakObjectPool<>(
+                        (Class<? extends KObject>) poolableClass,
+                        initialSize,
+                        this,
+                        this.objectRegistry
+                    );
+                    this.weakPools.put(poolableClass, pool);
+                } else {
+                    KObjectPool<?> pool = new KObjectPool<>(
+                        (Class<? extends KObject>) poolableClass,
+                        initialSize,
+                        this,
+                        this.objectRegistry
+                    );
+                    this.pools.put(poolableClass, pool);
+                }
             }
         }
+
     }
 
     /**
