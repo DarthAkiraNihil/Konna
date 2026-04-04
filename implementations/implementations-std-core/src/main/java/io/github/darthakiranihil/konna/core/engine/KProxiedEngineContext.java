@@ -299,16 +299,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public List<Class<?>> getClassIndex() {
-        return this.index.getClassIndex();
-    }
-
-    @Override
-    public List<Package> getPackageIndex() {
-        return this.index.getPackageIndex();
-    }
-
-    @Override
     public void handleShutdown() {
         this.messageSystem.stopPolling();
         this.eventSystem.stopPolling();

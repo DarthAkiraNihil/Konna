@@ -20,6 +20,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ public final class KClassGraphClasspathSearchEngine implements KClasspathSearchE
 
         private final ScanResult parent;
         private final List<KClassInfo> classes;
-
+        private @Nullable List<Class<?>> loaded;
 
         public SearchResult(
             final ScanResult parent,
@@ -141,6 +142,19 @@ public final class KClassGraphClasspathSearchEngine implements KClasspathSearchE
         @Override
         public List<KClassInfo> getClasses() {
             return this.classes;
+        }
+
+        @Override
+        public List<Class<?>> loadClasses() {
+
+            if (this.loaded != null) {
+                return this.loaded;
+            }
+
+            this.loaded = new ArrayList<>(this.classes.size());
+            this.classes.forEach(x -> this.loaded.add(x.load()));
+            return this.loaded;
+
         }
 
         @Override

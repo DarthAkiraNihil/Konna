@@ -39,6 +39,7 @@ import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
@@ -160,12 +161,6 @@ public class KEngineHypervisor extends KObject {
         this.registerSystemEvents();
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
-        KSystemLogger.info(
-            this.name,
-            "index: indexed %d classes in %d packages",
-            ctx.getClassIndex().size(),
-            ctx.getPackageIndex().size()
-        );
 
         KContainer master = this.ctx.getContainer();
 
@@ -246,29 +241,33 @@ public class KEngineHypervisor extends KObject {
         );
 
         if (this.debug) {
-            var debuggers = this
-                .ctx
-                .getClassIndex()
-                .stream()
-                .filter(c -> c.isAnnotationPresent(KDebugger.class))
-                .toList();
 
-            KSystemLogger.info(
-                this.name,
-                "Found %d debuggers",
-                debuggers.size()
-            );
+            KClasspathSearchEngine classpath = ctx.createObject(KClasspathSearchEngine.class);
 
-            for (var debugger: debuggers) {
+            try (
+                var debuggersSearchResult = classpath
+                    .query()
+                    .withAnnotation(KDebugger.class)
+                    .execute()
+            ) {
+                var debuggers = debuggersSearchResult.loadClasses();
                 KSystemLogger.info(
                     this.name,
-                    "Loading debugger %s",
-                    debugger.getCanonicalName()
+                    "Found %d debuggers",
+                    debuggers.size()
                 );
-                this.loadedDebuggers.put(
-                    debugger.getCanonicalName(),
-                    this.ctx.createObject(debugger)
-                );
+
+                for (var debugger: debuggers) {
+                    KSystemLogger.info(
+                        this.name,
+                        "Loading debugger %s",
+                        debugger.getCanonicalName()
+                    );
+                    this.loadedDebuggers.put(
+                        debugger.getCanonicalName(),
+                        this.ctx.createObject(debugger)
+                    );
+                }
             }
 
         }

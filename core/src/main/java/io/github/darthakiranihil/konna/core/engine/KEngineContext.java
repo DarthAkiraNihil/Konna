@@ -36,7 +36,6 @@ import io.github.darthakiranihil.konna.core.util.KIndex;
 public interface KEngineContext extends
     KActivator,
     KContainerAccessor,
-    KIndex,
     KObjectRegistry,
     KEventSystem,
     KMessageSystem,

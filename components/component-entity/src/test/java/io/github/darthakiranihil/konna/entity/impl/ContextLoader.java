@@ -46,6 +46,8 @@ import io.github.darthakiranihil.konna.core.message.KStandardMessenger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KStandardIndex;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.jspecify.annotations.NullMarked;
@@ -74,6 +76,7 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
+            .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();

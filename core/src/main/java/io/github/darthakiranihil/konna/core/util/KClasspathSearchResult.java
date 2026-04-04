@@ -17,10 +17,14 @@
 package io.github.darthakiranihil.konna.core.util;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 
 public interface KClasspathSearchResult extends Closeable {
 
     List<KClassInfo> getClasses();
+    List<Class<?>> loadClasses();
 
+    @Override
+    void close();
 }

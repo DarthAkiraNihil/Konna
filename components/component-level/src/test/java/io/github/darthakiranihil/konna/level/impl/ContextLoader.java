@@ -34,17 +34,17 @@ import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KStandardIndex;
+import io.github.darthakiranihil.konna.core.util.*;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.Map;
 
+@NullMarked
 @KContainerModifier
 public class ContextLoader implements KEngineContextLoader {
 
@@ -65,6 +65,7 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class)
+            .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();

@@ -42,9 +42,7 @@ import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KStandardIndex;
+import io.github.darthakiranihil.konna.core.util.*;
 import org.jetbrains.annotations.TestOnly;
 import org.jspecify.annotations.Nullable;
 
@@ -116,6 +114,7 @@ public class KStandardTestClass extends KObject {
             .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class)
+            .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
