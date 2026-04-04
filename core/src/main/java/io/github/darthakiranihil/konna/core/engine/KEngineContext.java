@@ -23,7 +23,6 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KIndex;
 
 /**
  * Interface for the essential part of Konna Engine - the engine context.

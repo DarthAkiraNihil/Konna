@@ -34,7 +34,10 @@ import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.*;
+import io.github.darthakiranihil.konna.core.util.KCache;
+import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
@@ -50,9 +53,8 @@ public class ContextLoader implements KEngineContextLoader {
 
     @Override
     public KEngineContext load(KApplicationFeatures features) {
-        var index = new KStandardIndex();
         var classpath = new KClassGraphClasspathSearchEngine();
-        var containerResolver = new KStandardContainerAccessor(index);
+        var containerResolver = new KStandardContainerAccessor();
         containerResolver
             .getContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)

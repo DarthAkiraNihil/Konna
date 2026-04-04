@@ -17,14 +17,7 @@
 package io.github.darthakiranihil.konna.entity.impl;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.KJsonSerializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
-import io.github.darthakiranihil.konna.core.data.json.KStandardJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.KStandardJsonSerializer;
-import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -37,18 +30,12 @@ import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessenger;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
-import io.github.darthakiranihil.konna.core.util.KStandardIndex;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.jspecify.annotations.NullMarked;
 
@@ -62,10 +49,9 @@ public class ContextLoader implements KEngineContextLoader {
     @Override
     public KEngineContext load(KApplicationFeatures features) {
 
-        var index = new KStandardIndex();
         var classpath = new KClassGraphClasspathSearchEngine();
 
-        var containerResolver = new KStandardContainerAccessor(index);
+        var containerResolver = new KStandardContainerAccessor();
         containerResolver
             .getContainer()
             .add(KJsonParser.class, KStandardJsonParser.class)
