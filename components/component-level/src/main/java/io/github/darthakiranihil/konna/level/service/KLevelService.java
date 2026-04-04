@@ -28,18 +28,16 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelLoader;
 import io.github.darthakiranihil.konna.level.KLevelMetadata;
-import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
-import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.asset.KLevelGeneratorMetadataCollection;
+import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.except.KGenerationException;
 import io.github.darthakiranihil.konna.level.generator.KLevelGenerator;
 import io.github.darthakiranihil.konna.level.generator.KLevelGeneratorMetadata;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Level service for handling current active level like loading a new level,
@@ -63,8 +61,8 @@ public class KLevelService extends KObject {
     private final KActivator activator;
     private final KLevelLoader levelLoader;
 
-    private final KEvent<KLevel> levelLoaded;
-    private final KSimpleEvent levelUnloaded;
+    private final KEventInvoker<KLevel> levelLoaded;
+    private final KSimpleEventInvoker levelUnloaded;
 
     private @Nullable KLevel currentLevel;
     // todo: do we really need it?
@@ -95,12 +93,8 @@ public class KLevelService extends KObject {
         this.activator = activator;
         this.levelLoader = levelLoader;
 
-        this.levelLoaded = Objects.requireNonNull(
-            eventSystem.getEvent("levelLoaded")
-        );
-        this.levelUnloaded = Objects.requireNonNull(
-            eventSystem.getSimpleEvent("levelUnloaded")
-        );
+        this.levelLoaded = eventSystem.getEventInvoker("levelLoaded");
+        this.levelUnloaded = eventSystem.getSimpleEventInvoker("levelUnloaded");
     }
 
     /**

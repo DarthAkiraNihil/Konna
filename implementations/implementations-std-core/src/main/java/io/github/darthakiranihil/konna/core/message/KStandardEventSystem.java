@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.except.KNotFoundException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -89,24 +90,27 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
         KSystemLogger.debug(this.name, "Registered simple event name=%s", event.name());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> @Nullable KEvent<T> getEvent(final String eventName) {
-        if (this.events.containsKey(eventName)) {
-            return (KEvent<T>) this.events.get(eventName);
-        }
-
-        return null;
+    public <T> KEventInvoker<T> getEventInvoker(final String eventName) {
+        return this.getEvent(eventName);
     }
 
     @Override
-    public @Nullable KSimpleEvent getSimpleEvent(final String eventName) {
-        if (this.simpleEvents.containsKey(eventName)) {
-            return this.simpleEvents.get(eventName);
-        }
-
-        return null;
+    public KSimpleEventInvoker getSimpleEventInvoker(final String eventName) {
+        return this.getSimpleEvent(eventName);
     }
+
+    @Override
+    public <T> KEventSubscriber<T> getEventSubscriber(final String eventName) {
+        return this.getEvent(eventName);
+    }
+
+    @Override
+    public KSimpleEventSubscriber getSimpleEventSubscriber(final String eventName) {
+        return this.getSimpleEvent(eventName);
+    }
+
+
 
     @Override
     public <T> void queueEvent(final KEvent<T> event, final T arg) {
@@ -138,6 +142,27 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
         this.watcher = null;
     }
 
+    @SuppressWarnings("unchecked")
+    private  <T> KEvent<T> getEvent(final String eventName) {
+        if (this.events.containsKey(eventName)) {
+            return (KEvent<T>) this.events.get(eventName);
+        }
+
+        throw new KNotFoundException(
+            String.format("Event not found: %s", eventName)
+        );
+    }
+
+    private KSimpleEvent getSimpleEvent(final String eventName) {
+        if (this.simpleEvents.containsKey(eventName)) {
+            return this.simpleEvents.get(eventName);
+        }
+
+        throw new KNotFoundException(
+            String.format("Simple event not found: %s", eventName)
+        );
+    }
+
     private void watch() {
 
         KSystemLogger.info(
@@ -161,4 +186,5 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
             this
         );
     }
+
 }

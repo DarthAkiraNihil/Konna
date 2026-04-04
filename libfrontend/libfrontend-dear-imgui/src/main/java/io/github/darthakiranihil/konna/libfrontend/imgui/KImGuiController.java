@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.libfrontend.imgui;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.message.KSimpleEventSubscriber;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -55,20 +55,17 @@ public abstract class KImGuiController extends KObject {
         super("imgui_capsule", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.imGui = imGui;
 
-        KSimpleEvent newFrame = eventSystem.getSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
-        if (newFrame != null) {
-            newFrame.subscribe(this::onNewFrame);
-        }
+        KSimpleEventSubscriber
+            newFrame = eventSystem.getSimpleEventSubscriber(KFrame.NEW_FRAME_EVENT_NAME);
+        newFrame.subscribe(this::onNewFrame);
 
-        KSimpleEvent preSwap = eventSystem.getSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
-        if (preSwap != null) {
-            preSwap.subscribe(this::onFrameFinished);
-        }
+        KSimpleEventSubscriber
+            preSwap = eventSystem.getSimpleEventSubscriber(KFrame.PRE_SWAP_EVENT_NAME);
+        preSwap.subscribe(this::onFrameFinished);
 
-        KSimpleEvent loopLeaving = eventSystem.getSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
-        if (loopLeaving != null) {
-            loopLeaving.subscribe(this::onDestroy);
-        }
+        KSimpleEventSubscriber
+            loopLeaving = eventSystem.getSimpleEventSubscriber(KFrame.LOOP_LEAVING_EVENT_NAME);
+        loopLeaving.subscribe(this::onDestroy);
     }
 
     /**

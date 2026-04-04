@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-import org.jspecify.annotations.Nullable;
-
 /**
  * Represents an event system - a service that holds all created events
  * and provides opportunity to get them so the caller class will be able
@@ -42,19 +40,47 @@ public interface KEventSystem {
     void registerEvent(KSimpleEvent event);
 
     /**
-     * Returns an event, registered in the system, by its name. If it is not presented
-     * in the system, {@code null} will be returned.
+     * Returns an event invoker, registered in the system, by its name.
+     * If it's not presented,
+     * {@link io.github.darthakiranihil.konna.core.except.KNotFoundException} will be thrown.
      * @param eventName Name of the event.
-     * @return The event with given name or {@code null}, if not presented
+     * @return The event with given name or {@code null}
      * @param <T> Type of the event argument.
+     *
+     * @since 0.6.0
      */
-    <T> @Nullable KEvent<T> getEvent(String eventName);
+    <T> KEventInvoker<T> getEventInvoker(String eventName);
     /**
-     * Returns a simple event, registered in the system, by its name. If it is not presented
-     * in the system, {@code null} will be returned.
-     * @param eventName Name of the event.
-     * @return The event with given name or {@code null}, if not presented
+     * Returns a simple event invoker, registered in the system, by its name.
+     * If it's not presented,
+     * {@link io.github.darthakiranihil.konna.core.except.KNotFoundException} will be thrown.
+     * @param eventName Name of the event
+     * @return The event with given name
+     *
+     * @since 0.6.0
      */
-    @Nullable KSimpleEvent getSimpleEvent(String eventName);
+    KSimpleEventInvoker getSimpleEventInvoker(String eventName);
+
+    /**
+     * Returns an event subscriber, registered in the system, by its name.
+     * If it's not presented,
+     * {@link io.github.darthakiranihil.konna.core.except.KNotFoundException} will be thrown.
+     * @param eventName Name of the event.
+     * @return The event with given name or {@code null}
+     * @param <T> Type of the event argument.
+     *
+     * @since 0.6.0
+     */
+    <T> KEventSubscriber<T> getEventSubscriber(String eventName);
+    /**
+     * Returns a simple event subscriber, registered in the system, by its name.
+     * If it's not presented,
+     * {@link io.github.darthakiranihil.konna.core.except.KNotFoundException} will be thrown.
+     * @param eventName Name of the event
+     * @return The event with given name
+     *
+     * @since 0.6.0
+     */
+    KSimpleEventSubscriber getSimpleEventSubscriber(String eventName);
 
 }
