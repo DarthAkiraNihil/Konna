@@ -20,16 +20,30 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class KClassGraphClasspathSearchEngine implements KClasspathSearchEngine {
+@KSingleton(immortal = true)
+public final class KClassGraphClasspathSearchEngine
+    extends KObject
+    implements KClasspathSearchEngine {
 
     static {
         ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
+    }
+
+    public KClassGraphClasspathSearchEngine() {
+        super(
+            "ClassGraphClasspathSearchEngine",
+            KStructUtils.setOfTags(KTag.DefaultTags.STD, KTag.DefaultTags.SYSTEM)
+        );
     }
 
     private static final class Query

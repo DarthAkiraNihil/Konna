@@ -99,8 +99,8 @@ public class KStandardTestClass extends KObject {
     protected static @Nullable KQueueBasedMessageSystem msgSystem;
 
     static {
+        var classpath = new KClassGraphClasspathSearchEngine();
         var index = new KStandardIndex();
-
         var containerResolver = new KStandardContainerAccessor(index);
         containerResolver
             .getContainer()
@@ -118,7 +118,7 @@ public class KStandardTestClass extends KObject {
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator(containerResolver, objectRegistry, index);
+        var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -141,7 +141,6 @@ public class KStandardTestClass extends KObject {
         KStandardTestClass.context = new KProxiedEngineContext(
             activator,
             containerResolver,
-            index,
             objectRegistry,
             eventSystem,
             messageSystem,

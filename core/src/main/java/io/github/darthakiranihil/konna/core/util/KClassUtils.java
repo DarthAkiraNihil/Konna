@@ -22,7 +22,6 @@ import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,23 +36,6 @@ public final class KClassUtils extends KUninstantiable {
 
     private KClassUtils() {
         super();
-    }
-
-    /**
-     * Returns a list of annotated classes from the class index.
-     * @param index Index
-     * @param annotation Annotation to look for
-     * @return List of classes with specified annotation
-     */
-    public static List<Class<?>> getAnnotatedClasses(
-        final KIndex index,
-        final Class<? extends Annotation> annotation
-    ) {
-        return index
-            .getClassIndex()
-            .stream()
-            .filter((c) -> c.isAnnotationPresent(annotation))
-            .toList();
     }
 
     /**

@@ -63,6 +63,7 @@ public class ContextLoader implements KEngineContextLoader {
     public KEngineContext load(KApplicationFeatures features) {
 
         var index = new KStandardIndex();
+        var classpath = new KClassGraphClasspathSearchEngine();
 
         var containerResolver = new KStandardContainerAccessor(index);
         containerResolver
@@ -80,7 +81,8 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator(containerResolver, objectRegistry, index);
+
+        var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -107,7 +109,6 @@ public class ContextLoader implements KEngineContextLoader {
         var ctx = new KProxiedEngineContext(
             activator,
             containerResolver,
-            index,
             objectRegistry,
             eventSystem,
             messageSystem,

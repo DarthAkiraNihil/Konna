@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.util;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.List;
 
 public interface KClasspathSearchResult extends Closeable {
