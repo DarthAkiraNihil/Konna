@@ -414,17 +414,16 @@ public class KEngineHypervisor extends KObject {
         this.ctx.registerEvent(this.ready);
         this.ctx.registerEvent(this.loopLeaving);
 
-        KSystemLogger.info(this.name, "Executing generated event registerers");
-        try (ScanResult scanResult = new ClassGraph()
-            .enableAllInfo()
-            .acceptPackages("konna.generated")
-            .scan()
+        KClasspathSearchEngine classpath = this.ctx.createObject(KClasspathSearchEngine.class);
+        try (
+            var result = classpath
+                .queryGenerated()
+                .implementsInterface(KEventRegisterer.class)
+                .execute()
         ) {
-            scanResult
-                .getAllClasses()
+            result
+                .loadClasses()
                 .stream()
-                .filter((c) -> c.implementsInterface(KEventRegisterer.class))
-                .map(ClassInfo::loadClass)
                 .map(c -> (KEventRegisterer) this.ctx.createObject(c))
                 .forEach(er -> er.registerEvents(this.ctx));
         }

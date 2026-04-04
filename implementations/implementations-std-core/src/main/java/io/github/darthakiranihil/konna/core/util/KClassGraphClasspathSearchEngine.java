@@ -20,6 +20,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -53,21 +54,38 @@ public final class KClassGraphClasspathSearchEngine
 
         private final List<String> searchPackages;
         private final List<Class<? extends Annotation>> filteredAnnotations;
+        private final List<Class<?>> implementingInterfaces;
 
         public Query() {
             this.searchPackages = new ArrayList<>(INITIAL_LIST_PARAMS_CAPACITY);
             this.filteredAnnotations = new ArrayList<>(INITIAL_LIST_PARAMS_CAPACITY);
+            this.implementingInterfaces = new ArrayList<>(INITIAL_LIST_PARAMS_CAPACITY);
         }
 
         @Override
-        public KClasspathSearchQuery inPackages(String... packages) {
+        public KClasspathSearchQuery inPackages(final String... packages) {
             this.searchPackages.addAll(List.of(packages));
             return this;
         }
 
         @Override
-        public KClasspathSearchQuery withAnnotation(Class<? extends Annotation> annotation) {
+        public KClasspathSearchQuery withAnnotation(final Class<? extends Annotation> annotation) {
             this.filteredAnnotations.add(annotation);
+            return this;
+        }
+
+        @Override
+        public KClasspathSearchQuery implementsInterface(final Class<?> interfaceClass) {
+            if (!interfaceClass.isInterface()) {
+                throw new KInvalidArgumentException(
+                    String.format(
+                        "%s in not an interface",
+                        interfaceClass
+                    )
+                );
+            }
+
+            this.implementingInterfaces.add(interfaceClass);
             return this;
         }
 
@@ -98,6 +116,12 @@ public final class KClassGraphClasspathSearchEngine
 
         @Override
         public boolean accept(final ClassInfo classInfo) {
+
+            for (var interfaceClass: this.implementingInterfaces) {
+                if (!classInfo.implementsInterface(interfaceClass)) {
+                    return false;
+                }
+            }
 
             for (var annotation: this.filteredAnnotations) {
                 if (!classInfo.hasAnnotation(annotation)) {

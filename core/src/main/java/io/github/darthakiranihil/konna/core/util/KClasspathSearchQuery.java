@@ -22,6 +22,7 @@ public interface KClasspathSearchQuery {
 
     KClasspathSearchQuery inPackages(String... packages);
     KClasspathSearchQuery withAnnotation(Class<? extends Annotation> annotation);
+    KClasspathSearchQuery implementsInterface(Class<?> interfaceClass);
 
     KClasspathSearchResult execute();
 

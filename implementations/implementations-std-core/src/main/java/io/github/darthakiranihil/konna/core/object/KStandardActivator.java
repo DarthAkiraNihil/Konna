@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.classgraph.ClassGraph;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KInject;
@@ -80,7 +79,6 @@ public final class KStandardActivator extends KObject implements KActivator {
             )
         );
 
-        ClassGraph.CIRCUMVENT_ENCAPSULATION = ClassGraph.CircumventEncapsulationMethod.JVM_DRIVER;
         this.containerResolver = containerResolver;
         this.objectRegistry = objectRegistry;
 
