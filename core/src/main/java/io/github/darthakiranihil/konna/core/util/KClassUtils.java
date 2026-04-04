@@ -39,34 +39,6 @@ public final class KClassUtils extends KUninstantiable {
     }
 
     /**
-     * Returns a list of real classes in specific packages. A real class is not abstract,
-     * an interface, an annotation, a record or an enum.
-     * @param packages Packages where to look for.
-     * @return List of real classes.
-     */
-    public static List<Class<?>> getRealClassesInPackages(final Set<String> packages) {
-        try (ScanResult scanResult = new ClassGraph()
-            .enableAllInfo()
-            .acceptPackages(packages.toArray(new String[0]))
-            .scan()
-        ) {
-            List<Class<?>> classes = new ArrayList<>();
-            scanResult
-                .getAllClasses()
-                .stream()
-                .filter((c) -> !(
-                    c.isInterface()
-                        ||  c.isAbstract()
-                        ||  c.isAnnotation()
-                        ||  c.isRecord()
-                        ||  c.isEnum()
-                ))
-                .forEach((c) -> classes.add(c.loadClass()));
-            return classes;
-        }
-    }
-
-    /**
      * Convenience method to get class by its name without forced
      * checked exception catching.
      * @param name Name of the class
@@ -80,6 +52,16 @@ public final class KClassUtils extends KUninstantiable {
         } catch (ClassNotFoundException e) {
             throw new KClassNotFoundException(e.getMessage());
         }
+    }
+
+    public static Class<?> getGeneratedForName(final @Nullable String name) {
+        return KClassUtils.getForName(
+            String.format(
+                "%s.%s",
+                KClasspathSearchEngine.GENERATED_CLASSES_PACKAGE,
+                name
+            )
+        );
     }
 
 }
