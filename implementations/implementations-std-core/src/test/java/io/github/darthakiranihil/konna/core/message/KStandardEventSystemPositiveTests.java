@@ -22,6 +22,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @NullMarked
@@ -34,8 +35,8 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
     private int changeableField;
 
-    private final KEventAction<Integer> action1 = this::handleEvent1;
-    private final KSimpleEventAction action2 = this::handleEvent2;
+    private final UUID action1token;
+    private final UUID action2token;
 
     public KStandardEventSystemPositiveTests() {
 
@@ -48,8 +49,8 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
         this.eventSystem.registerEvent(this.testEvent1);
         this.eventSystem.registerEvent(this.testEvent2);
 
-        this.testEvent1.subscribe(this.action1);
-        this.testEvent2.subscribe(this.action2);
+        this.action1token = this.testEvent1.subscribe(this::handleEvent1);
+        this.action2token = this.testEvent2.subscribe(this::handleEvent2);
 
     }
 
@@ -69,11 +70,11 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
     @Test
     public void testGetEvent() {
 
-        var registeredTestEvent1 = this.eventSystem.getEvent("testEvent1");
-        var registeredTestEvent2 = this.eventSystem.getSimpleEvent("testEvent2");
+        Assertions.assertDoesNotThrow(() -> this.eventSystem.getEventInvoker("testEvent1"));
+        Assertions.assertDoesNotThrow(() -> this.eventSystem.getEventSubscriber("testEvent1"));
+        Assertions.assertDoesNotThrow(() -> this.eventSystem.getSimpleEventInvoker("testEvent2"));
+        Assertions.assertDoesNotThrow(() -> this.eventSystem.getSimpleEventSubscriber("testEvent2"));
 
-        Assertions.assertNotNull(registeredTestEvent1);
-        Assertions.assertNotNull(registeredTestEvent2);
     }
 
     @Test
@@ -103,11 +104,11 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
     @Test
     public void testUnsubscribeEvent() {
 
-        this.testEvent1.unsubscribe(this.action1);
+        this.testEvent1.unsubscribe(this.action1token);
         this.testEvent1.invokeSync(10);
         Assertions.assertNotEquals(10, this.changeableField);
 
-        this.testEvent2.unsubscribe(this.action2);
+        this.testEvent2.unsubscribe(this.action2token);
         this.testEvent2.invokeSync();
         Assertions.assertNotEquals(-1, this.changeableField);
 

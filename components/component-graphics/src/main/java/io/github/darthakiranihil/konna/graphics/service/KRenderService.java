@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.message.KSimpleEventSubscriber;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -74,10 +74,8 @@ public class KRenderService extends KObject {
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
-        KSimpleEvent tick = eventSystem.getSimpleEvent(KFrame.TICK_EVENT_NAME);
-        if (tick != null) {
-            tick.subscribe(this::render);
-        }
+        KSimpleEventSubscriber tick = eventSystem.getSimpleEventSubscriber(KFrame.TICK_EVENT_NAME);
+        tick.subscribe(this::render);
 
         this.renderFrontend.setViewportSize(frame.getSize());
     }

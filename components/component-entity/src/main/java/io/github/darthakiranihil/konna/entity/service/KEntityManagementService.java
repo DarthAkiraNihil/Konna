@@ -34,7 +34,10 @@ import io.github.darthakiranihil.konna.entity.KEntityBehaviour;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Service for handling entities that are active during this frame
@@ -107,7 +110,7 @@ public class KEntityManagementService extends KObject {
     private final Map<UUID, KEntity> activeEntities;
     private final Map<UUID, KEntity> inactiveEntities;
 
-    private final KEvent<BehaviourProcessingData> behaviourProcessingRequested;
+    private final KEventInvoker<BehaviourProcessingData> behaviourProcessingRequested;
 
     private @Nullable KMessenger messenger;
 
@@ -136,14 +139,16 @@ public class KEntityManagementService extends KObject {
         this.activeEntities = new HashMap<>();
         this.inactiveEntities = new HashMap<>();
 
-        this.behaviourProcessingRequested = Objects.requireNonNull(
-            eventSystem.getEvent(BEHAVIOUR_PROCESSING_EVENT_NAME)
-        );
-        this.behaviourProcessingRequested.subscribe(this::onBehaviourProcessing);
+        // todo: rewrite on frame tasks on something like that
+        KEventSubscriber<BehaviourProcessingData> behaviourProcessor = eventSystem
+            .getEventSubscriber(BEHAVIOUR_PROCESSING_EVENT_NAME);
+        behaviourProcessor.subscribe(this::onBehaviourProcessing);
 
-        KSimpleEvent tickEvent = Objects.requireNonNull(
-            eventSystem.getSimpleEvent(KFrame.TICK_EVENT_NAME)
-        );
+        this.behaviourProcessingRequested = eventSystem
+            .getEventInvoker(BEHAVIOUR_PROCESSING_EVENT_NAME);
+
+        KSimpleEventSubscriber
+            tickEvent = eventSystem.getSimpleEventSubscriber(KFrame.TICK_EVENT_NAME);
         tickEvent.subscribe(this::onTick);
 
     }

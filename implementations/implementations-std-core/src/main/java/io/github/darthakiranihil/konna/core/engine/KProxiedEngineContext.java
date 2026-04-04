@@ -189,13 +189,23 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public @Nullable <T> KEvent<T> getEvent(final String eventName) {
-        return this.eventSystem.getEvent(eventName);
+    public <T> KEventInvoker<T> getEventInvoker(final String eventName) {
+        return this.eventSystem.getEventInvoker(eventName);
     }
 
     @Override
-    public @Nullable KSimpleEvent getSimpleEvent(final String eventName) {
-        return this.eventSystem.getSimpleEvent(eventName);
+    public KSimpleEventInvoker getSimpleEventInvoker(final String eventName) {
+        return this.eventSystem.getSimpleEventInvoker(eventName);
+    }
+
+    @Override
+    public <T> KEventSubscriber<T> getEventSubscriber(final String eventName) {
+        return this.eventSystem.getEventSubscriber(eventName);
+    }
+
+    @Override
+    public KSimpleEventSubscriber getSimpleEventSubscriber(final String eventName) {
+        return this.eventSystem.getSimpleEventSubscriber(eventName);
     }
 
     @Override

@@ -97,19 +97,16 @@ public class KLevelEntityManagementService extends KObject {
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
-        KEvent<KLevel> levelLoaded = Objects.requireNonNull(
-            eventSystem.getEvent("levelLoaded")
-        );
-        KSimpleEvent levelUnloaded = Objects.requireNonNull(
-            eventSystem.getSimpleEvent("levelUnloaded")
-        );
+        KEventSubscriber<KLevel> levelLoaded = eventSystem
+            .getEventSubscriber("levelLoaded");
+        KSimpleEventSubscriber levelUnloaded = eventSystem
+                .getSimpleEventSubscriber("levelUnloaded");
 
         levelUnloaded.subscribe(this.onLevelUnloadedConsumer);
         levelLoaded.subscribe(this.onLeveLoadedConsumer);
 
-        KSimpleEvent frameFinished = Objects.requireNonNull(
-            eventSystem.getSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME)
-        );
+        KSimpleEventSubscriber frameFinished = eventSystem
+            .getSimpleEventSubscriber(KFrame.FRAME_FINISHED_EVENT_NAME);
         frameFinished.subscribe(this.deleteDestroyedEntitiesConsumer);
         frameFinished.subscribe(this.performEntitiesMovementConsumer);
 
