@@ -18,9 +18,27 @@ package io.github.darthakiranihil.konna.core.message;
 
 import java.util.UUID;
 
+/**
+ * Interface encapsulation simple event subscription-unsubscription logic.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KSimpleEventSubscriber {
 
+    /**
+     * Adds a new subscriber to the event.
+     * @param action Method reference to be called on event invocation
+     * @return Subscription token (don't lose it, it's needed for unsubscription)
+     */
     UUID subscribe(KSimpleEventAction action);
+
+    /**
+     * Removes a subscriber from the event.
+     * @param subscriptionToken Subscription token,
+     *                          retrieved from
+     *                          {@link KSimpleEventSubscriber#subscribe(KSimpleEventAction)}
+     */
     void unsubscribe(UUID subscriptionToken);
 
 }

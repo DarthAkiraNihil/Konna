@@ -16,9 +16,29 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-public interface KSimpleEventInvoker<T> {
+/**
+ * Interface encapsulation simple event invocation logic.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
+public interface KSimpleEventInvoker {
 
+    /**
+     * Invokes the event, calling all methods that have been subscribed to the event
+     * asynchronously.
+     */
     void invoke();
+
+    /**
+     * Invokes the event, calling all methods that have been subscribed to the event.
+     * Each subscriber will be invoked synchronously, so each listener will be called
+     * in the same thread of the method. It's not recommended to call it if subscribers' methods
+     * are complex and its execution time is huge or the number of listeners is enormous, since it
+     * will cause a long time of execution locking. However, this method is useful in tests because
+     * them often require assertions of values if they are affected, and with async invocation
+     * there is no guarantee that values will change before assertions.
+     */
     void invokeSync();
 
 }
