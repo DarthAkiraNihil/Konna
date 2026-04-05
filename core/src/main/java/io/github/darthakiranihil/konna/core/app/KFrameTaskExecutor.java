@@ -25,5 +25,6 @@ public interface KFrameTaskExecutor {
     @Unmodifiable
     List<KScheduledFrameTask> getScheduledTasks(KFrameEvent event);
     void executeScheduledTasks(KFrameEvent event);
+    void setIsDebug(boolean flag);
 
 }

@@ -22,6 +22,7 @@ public interface KScheduledFrameTask {
     KFrameEvent getEvent();
     int getPriority();
     int getFrequency();
+    boolean isTemporal();
     boolean isDebug();
 
 }

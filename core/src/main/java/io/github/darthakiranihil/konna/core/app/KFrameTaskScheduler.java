@@ -30,8 +30,8 @@ public interface KFrameTaskScheduler {
     void scheduleTemporalTask(
         String taskId,
         KFrameEvent event,
-        int priority,
-        int frequency,
+        int initialPriority,
+        int delay,
         Runnable task,
         boolean isDebug
     );
