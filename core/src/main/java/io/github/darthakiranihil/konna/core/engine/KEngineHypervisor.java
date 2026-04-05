@@ -88,10 +88,8 @@ public class KEngineHypervisor extends KObject {
     protected @Nullable KFrameTaskSystem frameTaskSystem;
 
     private final KSimpleEvent tick;
-    private final KSimpleEvent newFrame;
     private final KSimpleEvent frameFinished;
     private final KSimpleEvent ready;
-    private final KSimpleEvent loopLeaving;
 
     private boolean debug;
     private final DoubleSummaryStatistics fps;
@@ -118,10 +116,8 @@ public class KEngineHypervisor extends KObject {
         this.ctx = null;
 
         this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
-        this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
         this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
-        this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
 
         this.maxFps = -1;
         this.fps = new DoubleSummaryStatistics();
@@ -314,7 +310,6 @@ public class KEngineHypervisor extends KObject {
 
                 Instant beginTime = Instant.now();
                 // new_frame
-                this.newFrame.invokeSync();
                 this.frameTaskSystem.executeScheduledTasks(KFrameEvent.NEW_FRAME);
 
                 this.tick.invokeSync();
@@ -371,7 +366,6 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
-        this.loopLeaving.invokeSync();
         this.frameTaskSystem.executeScheduledTasks(KFrameEvent.SHUTDOWN);
         this.shutdown();
 
@@ -408,10 +402,8 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx.registerEvent(this.tick);
-        this.ctx.registerEvent(this.newFrame);
         this.ctx.registerEvent(this.frameFinished);
         this.ctx.registerEvent(this.ready);
-        this.ctx.registerEvent(this.loopLeaving);
 
         KClasspathSearchEngine classpath = this.ctx.createObject(KClasspathSearchEngine.class);
         try (

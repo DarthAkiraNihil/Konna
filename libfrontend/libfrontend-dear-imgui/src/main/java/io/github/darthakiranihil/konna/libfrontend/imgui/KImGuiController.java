@@ -48,8 +48,8 @@ public abstract class KImGuiController extends KObject {
     protected final KImGui imGui;
 
     /**
-     * Standard constructor. Also subscribes to {@link KFrame#NEW_FRAME_EVENT_NAME} and
-     * {@link KFrame#FRAME_FINISHED_EVENT_NAME} events.
+     * Standard constructor. Also schedules tasks on {@link KFrameEvent#NEW_FRAME},
+     * {@link KFrameEvent#PRE_SWAP} and {@link KFrameEvent#SHUTDOWN} events.
      * @param imGui Dear ImGui
      * @param frameTaskScheduler Frame task scheduler
      */
