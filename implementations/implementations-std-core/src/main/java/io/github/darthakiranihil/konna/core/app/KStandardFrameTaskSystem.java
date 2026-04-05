@@ -18,8 +18,11 @@ package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
@@ -135,15 +138,22 @@ public class KStandardFrameTaskSystem
         }
     }
 
+    private static final int TOO_MANY_TASKS_WARNING_LIMIT = 64;
+
     private final KFrameTaskPrioritizer prioritizer;
     private final Map<KFrameEvent, FrameTaskQueue> queues;
 
     private boolean debug;
+    private boolean frameEntered;
 
     @KInjectedConstructor
     public KStandardFrameTaskSystem(
         @KInject KFrameTaskPrioritizer prioritizer
     ) {
+        super(
+            "FrameTaskSystem",
+            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.SYSTEM)
+        );
         this.prioritizer = prioritizer;
 
         KFrameEvent[] frameEvents = KFrameEvent.values();
@@ -170,7 +180,20 @@ public class KStandardFrameTaskSystem
     @Override
     public void executeScheduledTasks(final KFrameEvent event) {
         FrameTaskQueue queue = this.queues.get(event);
+        int scheduled = queue.current.size();
         queue.executeAll();
+        if (event == KFrameEvent.ENTER) {
+            this.frameEntered = true;
+        }
+
+        if (scheduled > TOO_MANY_TASKS_WARNING_LIMIT) {
+            KSystemLogger.warning(
+                this.name,
+                "Too many tasks (%d) have been executed on event %s",
+                scheduled,
+                event
+            );
+        }
     }
 
     @Override
@@ -211,6 +234,14 @@ public class KStandardFrameTaskSystem
         boolean temporal,
         boolean isDebug
     ) {
+        if (event == KFrameEvent.ENTER && this.frameEntered) {
+            KSystemLogger.warning(
+                this.name,
+                "Frame loop is entered so %s cannot happen. Task %s is not scheduled",
+                KFrameEvent.ENTER,
+                taskId
+            );
+        }
         if (!this.debug && isDebug) {
             return;
         }
@@ -227,6 +258,18 @@ public class KStandardFrameTaskSystem
                 isDebug,
                 task
             )
+        );
+
+        KSystemLogger.debug(
+            this.name,
+            "Scheduled %s task %s [event=%s,priority=%d,%s=%d,debug=%b]",
+            temporal ? "temporal" : "persistent",
+            taskId,
+            event,
+            priority,
+            temporal ? "delay" : "frequency",
+            frequency,
+            isDebug
         );
     }
 }
