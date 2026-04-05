@@ -90,7 +90,6 @@ public class KEngineHypervisor extends KObject {
     private final KSimpleEvent tick;
     private final KSimpleEvent newFrame;
     private final KSimpleEvent frameFinished;
-    private final KSimpleEvent preSwap;
     private final KSimpleEvent ready;
     private final KSimpleEvent loopLeaving;
 
@@ -121,7 +120,6 @@ public class KEngineHypervisor extends KObject {
         this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
         this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
         this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
-        this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
         this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
 
@@ -327,7 +325,6 @@ public class KEngineHypervisor extends KObject {
                 }
 
                 // pre_swap
-                this.preSwap.invokeSync();
                 this.frameTaskSystem.executeScheduledTasks(KFrameEvent.PRE_SWAP);
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
@@ -413,7 +410,6 @@ public class KEngineHypervisor extends KObject {
         this.ctx.registerEvent(this.tick);
         this.ctx.registerEvent(this.newFrame);
         this.ctx.registerEvent(this.frameFinished);
-        this.ctx.registerEvent(this.preSwap);
         this.ctx.registerEvent(this.ready);
         this.ctx.registerEvent(this.loopLeaving);
 

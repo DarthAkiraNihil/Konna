@@ -17,8 +17,8 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEventSubscriber;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -37,6 +37,11 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 @KExcludeFromGeneratedCoverageReport
 public abstract class KImGuiController extends KObject {
 
+    private static final String ON_NEW_FRAME_TASK_ID = "DearImGui.prepareForNewFrame";
+    private static final String ON_PRE_SWAP_TASK_ID = "DearImGui.finishCurrentFrame";
+    private static final String ON_SHUTDOWN_FRAME_TASK_ID = "DearImGui.destroyDearImGui";
+    private static final int PRIORITY = 16;
+
     /**
      * Dear ImGui reference.
      */
@@ -46,26 +51,24 @@ public abstract class KImGuiController extends KObject {
      * Standard constructor. Also subscribes to {@link KFrame#NEW_FRAME_EVENT_NAME} and
      * {@link KFrame#FRAME_FINISHED_EVENT_NAME} events.
      * @param imGui Dear ImGui
-     * @param eventSystem Event system
+     * @param frameTaskScheduler Frame task scheduler
      */
     public KImGuiController(
         final KImGui imGui,
-        final KEventSystem eventSystem
+        final KFrameTaskScheduler frameTaskScheduler
     ) {
         super("imgui_capsule", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.imGui = imGui;
 
-        KSimpleEventSubscriber
-            newFrame = eventSystem.getSimpleEventSubscriber(KFrame.NEW_FRAME_EVENT_NAME);
-        newFrame.subscribe(this::onNewFrame);
-
-        KSimpleEventSubscriber
-            preSwap = eventSystem.getSimpleEventSubscriber(KFrame.PRE_SWAP_EVENT_NAME);
-        preSwap.subscribe(this::onFrameFinished);
-
-        KSimpleEventSubscriber
-            loopLeaving = eventSystem.getSimpleEventSubscriber(KFrame.LOOP_LEAVING_EVENT_NAME);
-        loopLeaving.subscribe(this::onDestroy);
+        frameTaskScheduler.scheduleTask(
+            ON_NEW_FRAME_TASK_ID, KFrameEvent.NEW_FRAME, PRIORITY, this::onNewFrame
+        );
+        frameTaskScheduler.scheduleTask(
+            ON_PRE_SWAP_TASK_ID, KFrameEvent.PRE_SWAP, PRIORITY, this::onFrameFinished
+        );
+        frameTaskScheduler.scheduleTask(
+            ON_SHUTDOWN_FRAME_TASK_ID, KFrameEvent.SHUTDOWN, PRIORITY, this::onDestroy
+        );
     }
 
     /**
