@@ -87,7 +87,6 @@ public class KEngineHypervisor extends KObject {
     protected @Nullable KFrame frame;
     protected @Nullable KFrameTaskSystem frameTaskSystem;
 
-    private final KSimpleEvent tick;
     private final KSimpleEvent ready;
 
     private boolean debug;
@@ -114,7 +113,6 @@ public class KEngineHypervisor extends KObject {
         this.loadedDebuggers = new HashMap<>();
         this.ctx = null;
 
-        this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
 
         this.maxFps = -1;
@@ -310,7 +308,6 @@ public class KEngineHypervisor extends KObject {
                 // new_frame
                 this.frameTaskSystem.executeScheduledTasks(KFrameEvent.NEW_FRAME);
 
-                this.tick.invokeSync();
                 this.frameTaskSystem.executeScheduledTasks(KFrameEvent.TICK);
 
                 while (this.frame.isLocked()) {
@@ -398,7 +395,6 @@ public class KEngineHypervisor extends KObject {
             return; // will be checked on entering frame loop
         }
 
-        this.ctx.registerEvent(this.tick);
         this.ctx.registerEvent(this.ready);
 
         KClasspathSearchEngine classpath = this.ctx.createObject(KClasspathSearchEngine.class);

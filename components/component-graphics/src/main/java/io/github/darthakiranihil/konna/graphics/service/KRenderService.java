@@ -17,13 +17,13 @@
 package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEventSubscriber;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -55,12 +55,11 @@ public class KRenderService extends KObject {
     /**
      * Standard constructor.
      * @param renderFrontend Render frontend to use for rendering objects
-     * @param eventSystem Event system that contain the registered tick event.
      * @param frame The frame of the current context
      */
     public KRenderService(
         @KInject final KRenderFrontend renderFrontend,
-        @KInject final KEventSystem eventSystem,
+        @KInject final KFrameTaskScheduler frameTaskScheduler,
         @KInject final KFrame frame
     ) {
         super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
@@ -74,8 +73,12 @@ public class KRenderService extends KObject {
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
-        KSimpleEventSubscriber tick = eventSystem.getSimpleEventSubscriber(KFrame.TICK_EVENT_NAME);
-        tick.subscribe(this::render);
+        frameTaskScheduler.scheduleTask(
+            "RenderService.render",
+            KFrameEvent.PRE_SWAP,
+            Integer.MAX_VALUE,
+            this::render
+        );
 
         this.renderFrontend.setViewportSize(frame.getSize());
     }

@@ -29,14 +29,6 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 public interface KFrame {
 
     /**
-     * Tick event name. It is used by
-     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to
-     * create the tick event that one should subscribe if its action is required
-     * to be executed in the frame loop (since it is invoked in it).
-     */
-    String TICK_EVENT_NAME = "tick";
-
-    /**
      * @return Handle of this frame
      */
     long handle();
