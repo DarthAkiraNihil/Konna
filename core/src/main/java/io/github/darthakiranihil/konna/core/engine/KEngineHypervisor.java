@@ -90,8 +90,6 @@ public class KEngineHypervisor extends KObject {
     private final KSimpleEvent tick;
     private final KSimpleEvent newFrame;
     private final KSimpleEvent frameFinished;
-    private final KSimpleEvent debugTick;
-    private final KSimpleEvent loopEnter;
     private final KSimpleEvent preSwap;
     private final KSimpleEvent ready;
     private final KSimpleEvent loopLeaving;
@@ -123,8 +121,6 @@ public class KEngineHypervisor extends KObject {
         this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
         this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
         this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
-        this.debugTick = new KSimpleEvent(KFrame.DEBUG_TICK_EVENT_NAME);
-        this.loopEnter = new KSimpleEvent(KFrame.LOOP_ENTER_EVENT_NAME);
         this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
         this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
@@ -313,7 +309,6 @@ public class KEngineHypervisor extends KObject {
             this.frame.getClass().getCanonicalName()
         );
 
-        this.loopEnter.invokeSync();
         this.frameTaskSystem.executeScheduledTasks(KFrameEvent.ENTER);
         while (!this.frame.shouldClose()) {
 
@@ -326,9 +321,6 @@ public class KEngineHypervisor extends KObject {
 
                 this.tick.invokeSync();
                 this.frameTaskSystem.executeScheduledTasks(KFrameEvent.TICK);
-                if (this.debug) {
-                    this.debugTick.invokeSync();
-                }
 
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
@@ -421,9 +413,7 @@ public class KEngineHypervisor extends KObject {
         this.ctx.registerEvent(this.tick);
         this.ctx.registerEvent(this.newFrame);
         this.ctx.registerEvent(this.frameFinished);
-        this.ctx.registerEvent(this.debugTick);
         this.ctx.registerEvent(this.preSwap);
-        this.ctx.registerEvent(this.loopEnter);
         this.ctx.registerEvent(this.ready);
         this.ctx.registerEvent(this.loopLeaving);
 
