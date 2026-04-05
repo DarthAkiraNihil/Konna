@@ -35,11 +35,6 @@ public interface KFrame {
      * to be executed in the frame loop (since it is invoked in it).
      */
     String TICK_EVENT_NAME = "tick";
-    /**
-     * Name of the event that is invoked at the end of the current frame.
-     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
-     */
-    String FRAME_FINISHED_EVENT_NAME = "frame_finished";
 
     /**
      * @return Handle of this frame

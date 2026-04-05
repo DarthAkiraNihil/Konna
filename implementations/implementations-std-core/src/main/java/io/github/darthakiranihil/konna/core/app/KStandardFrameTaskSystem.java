@@ -241,12 +241,18 @@ public class KStandardFrameTaskSystem
                 KFrameEvent.ENTER,
                 taskId
             );
-        }
-        if (!this.debug && isDebug) {
             return;
         }
 
         FrameTaskQueue queue = this.queues.get(event);
+        // don't schedule already scheduled tasks
+        if (
+                (!this.debug && isDebug)
+            ||  queue.next.stream().anyMatch(x -> x.id.equals(taskId))
+        ) {
+            return;
+        }
+
         int priority = this.prioritizer.getPriority(taskId, event, initialPriority, isDebug);
         queue.next.add(
             new FrameTask(
