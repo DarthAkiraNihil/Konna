@@ -36,4 +36,42 @@ public interface KFrameTaskScheduler {
         boolean isDebug
     );
 
+    default void scheduleTask(
+        String taskId,
+        KFrameEvent event,
+        int initialPriority,
+        Runnable task,
+        boolean isDebug
+    ) {
+        this.scheduleTask(taskId, event, initialPriority, 0, task, isDebug);
+    }
+
+    default void scheduleTemporalTask(
+        String taskId,
+        KFrameEvent event,
+        int initialPriority,
+        Runnable task,
+        boolean isDebug
+    ) {
+        this.scheduleTemporalTask(taskId, event, initialPriority, 0, task, isDebug);
+    }
+
+    default void scheduleTask(
+        String taskId,
+        KFrameEvent event,
+        int initialPriority,
+        Runnable task
+    ) {
+        this.scheduleTask(taskId, event, initialPriority, 0, task, false);
+    }
+
+    default void scheduleTemporalTask(
+        String taskId,
+        KFrameEvent event,
+        int initialPriority,
+        Runnable task
+    ) {
+        this.scheduleTemporalTask(taskId, event, initialPriority, 0, task, false);
+    }
+
 }
