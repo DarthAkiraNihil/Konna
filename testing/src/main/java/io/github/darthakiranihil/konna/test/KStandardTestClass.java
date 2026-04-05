@@ -108,10 +108,10 @@ public class KStandardTestClass extends KObject {
             .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
-            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class)
             .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
+            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
             .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
             .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
             .add(KCache.class, KHashMapBasedCache.class);

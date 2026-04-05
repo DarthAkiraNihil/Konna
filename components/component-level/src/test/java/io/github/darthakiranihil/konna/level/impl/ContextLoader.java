@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.impl;
 
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
@@ -66,6 +66,9 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
+            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
+            .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
+            .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
             .add(KLogger.class, KStandardLogger.class)
             .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KCache.class, KHashMapBasedCache.class);
@@ -101,7 +104,7 @@ public class ContextLoader implements KEngineContextLoader {
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
-
+        var frameTaskSystem = new KStandardFrameTaskSystem();
         var ctx = new KProxiedEngineContext(
             activator,
             containerResolver,
@@ -110,7 +113,7 @@ public class ContextLoader implements KEngineContextLoader {
             messageSystem,
             resourceLoader,
             assetLoader,
-            null
+            frameTaskSystem
         );
         activator.addContext(ctx);
         return ctx;
