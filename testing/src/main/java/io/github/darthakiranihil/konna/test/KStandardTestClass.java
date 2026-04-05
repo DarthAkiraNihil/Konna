@@ -16,6 +16,10 @@
 
 package io.github.darthakiranihil.konna.test;
 
+import io.github.darthakiranihil.konna.core.app.KFrameTaskExecutor;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskPrioritizer;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
+import io.github.darthakiranihil.konna.core.app.KStandardFrameTaskSystem;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
@@ -104,9 +108,12 @@ public class KStandardTestClass extends KObject {
             .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
+            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
             .add(KLogger.class, KStandardLogger.class)
             .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
+            .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
+            .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
@@ -125,6 +132,7 @@ public class KStandardTestClass extends KObject {
             Map.of(),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
+        var frameTaskSystem = new KStandardFrameTaskSystem();
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
@@ -138,6 +146,7 @@ public class KStandardTestClass extends KObject {
             messageSystem,
             resourceLoader,
             assetLoader,
+            frameTaskSystem,
             ctx -> {
                 eventSystem.stopPolling();
             }

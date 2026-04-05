@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
@@ -39,7 +40,8 @@ public interface KEngineContext extends
     KEventSystem,
     KMessageSystem,
     KResourceLoader,
-    KAssetLoader {
+    KAssetLoader,
+    KFrameTaskScheduler {
 
     /**
      * Executes graceful shutdown for this context.

@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
@@ -50,6 +52,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     private final KQueueBasedMessageSystem messageSystem;
     private final KResourceLoader resourceLoader;
     private final KAssetLoader assetLoader;
+    private final KFrameTaskScheduler frameTaskScheduler;
     private final @Nullable KDisposer<KEngineContext> disposer;
 
     /**
@@ -61,6 +64,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param messageSystem Message system of the context
      * @param resourceLoader Resource loader of the context
      * @param assetLoader Asset loader of the context
+     * @param frameTaskScheduler Frame task scheduler of the context
      * @param disposer Additional disposer for this context when it shuts down
      */
     public KProxiedEngineContext(
@@ -71,8 +75,9 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final KQueueBasedMessageSystem messageSystem,
         final KResourceLoader resourceLoader,
         final KAssetLoader assetLoader,
+        final KFrameTaskScheduler frameTaskScheduler,
         final @Nullable KDisposer<KEngineContext> disposer
-        ) {
+    ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
         this.containerResolver = containerAccessor;
@@ -81,6 +86,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         this.messageSystem = messageSystem;
         this.resourceLoader = resourceLoader;
         this.assetLoader = assetLoader;
+        this.frameTaskScheduler = frameTaskScheduler;
         this.disposer = disposer;
     }
 
@@ -93,6 +99,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param messageSystem Message system of the context
      * @param resourceLoader Resource loader of the context
      * @param assetLoader Asset loader of the context
+     * @param frameTaskScheduler Frame task scheduler of the context
      */
     public KProxiedEngineContext(
         final KActivator activator,
@@ -101,7 +108,8 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
         final KResourceLoader resourceLoader,
-        final KAssetLoader assetLoader
+        final KAssetLoader assetLoader,
+        final KFrameTaskScheduler frameTaskScheduler
     ) {
         this(
             activator,
@@ -111,6 +119,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
             messageSystem,
             resourceLoader,
             assetLoader,
+            frameTaskScheduler,
             null
         );
     }
@@ -297,6 +306,44 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     @Override
     public Set<KObjectRegistryRecord> listObjects() {
         return this.objectRegistry.listObjects();
+    }
+
+    @Override
+    public void scheduleTask(
+        final String taskId,
+        final KFrameEvent event,
+        int initialPriority,
+        int frequency,
+        final Runnable task,
+        boolean isDebug
+    ) {
+        this.frameTaskScheduler.scheduleTask(
+            taskId,
+            event,
+            initialPriority,
+            frequency,
+            task,
+            isDebug
+        );
+    }
+
+    @Override
+    public void scheduleTemporalTask(
+        final String taskId,
+        final KFrameEvent event,
+        int initialPriority,
+        int delay,
+        final Runnable task,
+        boolean isDebug
+    ) {
+        this.frameTaskScheduler.scheduleTemporalTask(
+            taskId,
+            event,
+            initialPriority,
+            delay,
+            task,
+            isDebug
+        );
     }
 
     @Override
