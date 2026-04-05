@@ -31,7 +31,7 @@ import java.util.List;
 @KSingleton(immortal = true)
 public class KStandardFrameTaskSystem
     extends KObject
-    implements KFrameTaskScheduler, KFrameTaskExecutor {
+    implements KFrameTaskSystem {
 
     private static final class FrameTask implements KScheduledFrameTask {
 

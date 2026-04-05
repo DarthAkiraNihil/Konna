@@ -66,13 +66,14 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
             .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
             .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
+            .add(KFrameTaskSystem.class, KStandardFrameTaskSystem.class)
             .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var frameTaskSystem = new KStandardFrameTaskSystem();
 
         var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
+        var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(

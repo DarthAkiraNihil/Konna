@@ -69,6 +69,7 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
             .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
             .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
+            .add(KFrameTaskSystem.class, KStandardFrameTaskSystem.class)
             .add(KLogger.class, KStandardLogger.class)
             .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KCache.class, KHashMapBasedCache.class);
@@ -104,7 +105,7 @@ public class ContextLoader implements KEngineContextLoader {
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
-        var frameTaskSystem = new KStandardFrameTaskSystem();
+        var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
         var ctx = new KProxiedEngineContext(
             activator,
             containerResolver,
