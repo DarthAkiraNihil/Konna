@@ -5,8 +5,6 @@
  * @since 0.3.0
  */
 @NullMarked
-@KIndexedPackage
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
-import io.github.darthakiranihil.konna.core.util.KIndexedPackage;
 import org.jspecify.annotations.NullMarked;
