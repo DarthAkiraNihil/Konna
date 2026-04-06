@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
@@ -46,6 +47,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 )
 public class KRenderService extends KObject {
 
+    public static final KFrameTaskDescription RENDER_TASK = KFrameTaskDescription.ofPersistent(
+        "RenderService.render",
+        KFrameEvent.PRE_SWAP,
+        Integer.MAX_VALUE
+    );
+
     private final Object renderLock = new Object();
 
     private final KRenderFrontend renderFrontend;
@@ -73,13 +80,7 @@ public class KRenderService extends KObject {
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
-        frameTaskScheduler.scheduleTask(
-            "RenderService.render",
-            KFrameEvent.PRE_SWAP,
-            Integer.MAX_VALUE,
-            this::render
-        );
-
+        frameTaskScheduler.scheduleTask(RENDER_TASK, this::render);
         this.renderFrontend.setViewportSize(frame.getSize());
     }
 

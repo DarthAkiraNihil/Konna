@@ -29,14 +29,13 @@ public record KFrameTaskDescription(
     public static KFrameTaskDescription ofPersistent(
         final String taskId,
         final KFrameEvent event,
-        int priority,
-        int delay
+        int priority
     ) {
         return new KFrameTaskDescription(
             taskId,
             event,
             priority,
-            delay,
+            0,
             false,
             false,
             false
@@ -60,16 +59,17 @@ public record KFrameTaskDescription(
         );
     }
 
-    public static KFrameTaskDescription ofImmediatePersistent(
+    public static KFrameTaskDescription ofDelayedPersistent(
         final String taskId,
         final KFrameEvent event,
-        int priority
+        int priority,
+        int delay
     ) {
         return new KFrameTaskDescription(
             taskId,
             event,
             priority,
-            0,
+            delay,
             false,
             false,
             false

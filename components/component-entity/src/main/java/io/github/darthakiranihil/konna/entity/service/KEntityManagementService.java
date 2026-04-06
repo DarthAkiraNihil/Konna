@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.entity.service;
 
 import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
@@ -51,11 +52,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 )
 public class KEntityManagementService extends KObject {
 
-    private static final String ON_TICK_TASK_ID = "EntityManagementService.updateEntiies";
-    private static final String
-        PROCESS_BEHAVIOURS_TASK_ID = "EntityManagementService.updateEntiies";
+    public static final KFrameTaskDescription ON_TICK_TASK = KFrameTaskDescription.ofPersistent(
+        "EntityManagementService.updateEntiies",
+        KFrameEvent.TICK,
+        2
+    );
 
-    private static final int PRIORITY = 2;
+    public static final KFrameTaskDescription
+        PROCESS_BEHAVIOURS_TASK = KFrameTaskDescription.ofImmediateTemporal(
+        "EntityManagementService.processBehaviours",
+        KFrameEvent.FRAME_FINISHED,
+        3
+    );
 
     private enum BehaviourProcessingAction {
         CREATE,
@@ -108,9 +116,7 @@ public class KEntityManagementService extends KObject {
         this.behaviourProcessingQueue = new ConcurrentLinkedQueue<>();
 
         this.frameTaskScheduler.scheduleTask(
-            ON_TICK_TASK_ID,
-            KFrameEvent.TICK,
-            PRIORITY,
+            ON_TICK_TASK,
             this::updateEntities
         );
 
@@ -370,10 +376,9 @@ public class KEntityManagementService extends KObject {
                 entity, action
             )
         );
-        this.frameTaskScheduler.scheduleTemporalTask(
-            PROCESS_BEHAVIOURS_TASK_ID,
-            KFrameEvent.TICK,
-            PRIORITY + 1,
+
+        this.frameTaskScheduler.scheduleTask(
+            PROCESS_BEHAVIOURS_TASK,
             this::runExtraBehaviourMethods
         );
     }

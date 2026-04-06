@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
@@ -62,12 +63,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @SuppressWarnings("FieldCanBeLocal,unused")
 public class KLevelEntityManagementService extends KObject {
 
-    private static final String
-        MOVE_ENTITIES_TASK_ID = "LevelEntitiyManagementService.moveEntities";
-    private static final String
-        CLEAN_DESTROYED_ENTITIES_TASK_ID = "LevelEntitiyManagementService.cleanDestroyedEntities";
+    public static final KFrameTaskDescription MOVE_ENTITIES_TASK = KFrameTaskDescription.ofRepeatableTemporal(
+        "LevelEntitiyManagementService.moveEntities",
+        KFrameEvent.FRAME_FINISHED,
+        1
+    );
 
-    private static final int PRIORITY = 1;
+    public static final KFrameTaskDescription CLEAN_DESTROYED_ENTITIES_TASK = KFrameTaskDescription.ofImmediateTemporal(
+        "LevelEntitiyManagementService.cleanDestroyedEntities",
+        KFrameEvent.FRAME_FINISHED,
+        2
+    );
 
     private final KEventAction<KLevel> onLeveLoadedConsumer = this::onLevelLoaded;
     private final KSimpleEventAction onLevelUnloadedConsumer = this::onLevelUnloaded;
@@ -143,11 +149,9 @@ public class KLevelEntityManagementService extends KObject {
      */
     @KServiceEndpoint(route = "moveAllEntities")
     protected void moveAllEntities() {
-        this.frameTaskScheduler.scheduleTemporalTask(
-            MOVE_ENTITIES_TASK_ID,
-            KFrameEvent.FRAME_FINISHED,
-            PRIORITY,
-            this::moveEntities
+        this.frameTaskScheduler.scheduleTask(
+            MOVE_ENTITIES_TASK,
+            this::moveAllEntities
         );
     }
 
@@ -658,10 +662,8 @@ public class KLevelEntityManagementService extends KObject {
     }
 
     private void scheduleCleaning() {
-        this.frameTaskScheduler.scheduleTemporalTask(
-            CLEAN_DESTROYED_ENTITIES_TASK_ID,
-            KFrameEvent.FRAME_FINISHED,
-            PRIORITY,
+        this.frameTaskScheduler.scheduleTask(
+            CLEAN_DESTROYED_ENTITIES_TASK,
             this::cleanDestroyedEntities
         );
     }
