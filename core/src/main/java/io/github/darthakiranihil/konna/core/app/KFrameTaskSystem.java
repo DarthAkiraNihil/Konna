@@ -16,5 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
-public interface KFrameTaskSystem extends KFrameTaskScheduler, KFrameTaskExecutor {
+/**
+ * Interface combining functionality of frame task scheduler and executor.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
+public interface KFrameTaskSystem
+    extends KFrameTaskScheduler, KFrameTaskExecutor {
+
 }

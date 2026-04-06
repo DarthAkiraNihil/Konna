@@ -85,6 +85,9 @@ public class KEngineHypervisor extends KObject {
      * Spawned application's frame.
      */
     protected @Nullable KFrame frame;
+    /**
+     * Applications's fra,e task system.
+     */
     protected @Nullable KFrameTaskSystem frameTaskSystem;
 
     private final KSimpleEvent ready;

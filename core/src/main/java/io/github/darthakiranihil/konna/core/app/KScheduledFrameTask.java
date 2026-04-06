@@ -16,13 +16,42 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+/**
+ * Interface for scheduled frame task information.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KScheduledFrameTask {
 
+    /**
+     * @return ID of this task
+     */
     String getId();
+
+    /**
+     * @return Event the task is executed on
+     */
     KFrameEvent getEvent();
+
+    /**
+     * @return Real task priority
+     */
     int getPriority();
+
+    /**
+     * @return Delay of this task
+     */
     int getDelay();
+
+    /**
+     * @return Whether this task is temporal or not
+     */
     boolean isTemporal();
+
+    /**
+     * @return Whether this task is debug or not
+     */
     boolean isDebug();
 
 }

@@ -20,11 +20,32 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
+/**
+ * Interface providing methods for executing scheduled frame tasks and
+ * retrieving information about them.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KFrameTaskExecutor {
 
+    /**
+     * @param event Event the tasks are scheduled for
+     * @return List for all scheduled tasks for specific event
+     */
     @Unmodifiable
     List<KScheduledFrameTask> getScheduledTasks(KFrameEvent event);
+
+    /**
+     * Executes all tasks, scheduled for specific event.
+     * @param event Assigned task event to execute
+     */
     void executeScheduledTasks(KFrameEvent event);
+
+    /**
+     * Sets debug mode status for this executor.
+     * @param flag Flag of active debug mode
+     */
     void setIsDebug(boolean flag);
 
 }

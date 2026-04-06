@@ -16,8 +16,33 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+/**
+ * <p>
+ *     Interface for scheduling frame tasks.
+ * </p>
+ * <p>
+ *     The core principle for frame tasks is "If task can be executed,
+ *     it will be executed eventually". I.e. a scheduled task may not be completed during the next
+ *     frame, but will be completed during following frames,
+ *     so it will be executed sooner or later.
+ * </p>
+ * <p>
+ *     However, a scheduler must reject all tasks that are not suitable for it.
+ *     For example, if debug mode is disabled, no debug tasks should be scheduled;
+ *     or non-repeatable temporal task that has been scheduled twice should be rejected
+ *     on the second scheduling attempt.
+ * </p>
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KFrameTaskScheduler {
 
+    /**
+     * Schedules a frame task to be completed on next frames.
+     * @param description Task description
+     * @param task Task executable object to run
+     */
     void scheduleTask(KFrameTaskDescription description, Runnable task);
 
 }

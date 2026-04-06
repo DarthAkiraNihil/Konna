@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
-import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameEvent;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
@@ -38,17 +37,33 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 @KExcludeFromGeneratedCoverageReport
 public abstract class KImGuiController extends KObject {
 
-    public static final KFrameTaskDescription ON_NEW_FRAME_TASK = KFrameTaskDescription.ofPersistent(
+    /**
+     * Description of task that prepares ImGui for a new frame.
+     */
+    public static final KFrameTaskDescription
+        ON_NEW_FRAME_TASK = KFrameTaskDescription.ofPersistent(
         "DearImGui.prepareForNewFrame",
         KFrameEvent.NEW_FRAME,
         16
     );
-    public static final KFrameTaskDescription ON_PRE_SWAP_TASK = KFrameTaskDescription.ofPersistent(
+
+    /**
+     * Description of task that finalizes ImGui in the current frame in order
+     * to render itself correctly.
+     */
+    public static final KFrameTaskDescription
+        ON_PRE_SWAP_TASK = KFrameTaskDescription.ofPersistent(
         "DearImGui.finishCurrentFrame",
         KFrameEvent.PRE_SWAP,
         16
     );
-    public static final KFrameTaskDescription ON_SHUTDOWN_FRAME_TASK = KFrameTaskDescription.ofPersistent(
+
+    /**
+     * Description of task that finalizes ImGui in this application by destroying
+     * its context.
+     */
+    public static final KFrameTaskDescription
+        ON_SHUTDOWN_FRAME_TASK = KFrameTaskDescription.ofPersistent(
         "DearImGui.destroyDearImGui",
         KFrameEvent.SHUTDOWN,
         16

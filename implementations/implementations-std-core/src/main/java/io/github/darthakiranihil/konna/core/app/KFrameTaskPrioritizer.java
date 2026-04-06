@@ -19,8 +19,18 @@ package io.github.darthakiranihil.konna.core.app;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Interface for frame task prioritizer that returns a new priority
+ * for passed task description.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KFrameTaskPrioritizer {
 
+    /**
+     * Prioritizer passed on FIFO principle i.e.
+     */
     final class Fifo implements KFrameTaskPrioritizer {
 
         private final Map<KFrameEvent, Integer> priorities;
@@ -35,7 +45,7 @@ public interface KFrameTaskPrioritizer {
         }
 
         @Override
-        public int getPriority(KFrameTaskDescription description) {
+        public int getPriority(final KFrameTaskDescription description) {
             KFrameEvent event = description.event();
             int priority = this.priorities.get(event);
             this.priorities.put(event, priority + 1);
@@ -43,15 +53,22 @@ public interface KFrameTaskPrioritizer {
         }
     }
 
+    /**
+     * Prioritizer that just takes task priority from its description.
+     */
     final class LeaveAsIs implements KFrameTaskPrioritizer {
 
         @Override
-        public int getPriority(KFrameTaskDescription description) {
+        public int getPriority(final KFrameTaskDescription description) {
             return description.priority();
         }
 
     }
 
+    /**
+     * @param description Task description
+     * @return Priority for this task
+     */
     int getPriority(KFrameTaskDescription description);
 
 }

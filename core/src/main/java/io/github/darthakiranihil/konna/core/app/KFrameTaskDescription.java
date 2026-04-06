@@ -16,6 +16,25 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+/**
+ * Record containing frame task description to be handled by {@link KFrameTaskScheduler}.
+ * @param taskId Unique task id
+ * @param event Event the task is executed on
+ * @param priority Initial task priority. May be overridden by scheduler
+ * @param delay Number of frame loop iterations that must complete before this task is executed
+ * @param temporal Flag that indicates if task should be executed in every frame
+ *                 or only in the current frame
+ * @param mayBeRepeated Flag that indicates if a temporal task may be scheduler more than one
+ *                      time during current frame. {@link KFrameTaskScheduler} should ignore
+ *                      this component if task is not temporal (i.e. persistent). However,
+ *                      repeated tasks may not complete in the current frame,
+ *                      but eventually guaranteed to be completed in the next frames.
+ * @param debug Flag that indicates if the task should be scheduled only if application
+ *              is running in debug mode
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public record KFrameTaskDescription(
     String taskId,
     KFrameEvent event,
@@ -26,6 +45,14 @@ public record KFrameTaskDescription(
     boolean debug
 ) {
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed
+     * in each frame.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a persistent task
+     */
     public static KFrameTaskDescription ofPersistent(
         final String taskId,
         final KFrameEvent event,
@@ -42,6 +69,16 @@ public record KFrameTaskDescription(
         );
     }
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed
+     * only once, cannot be scheduled multiple times during one frame loop iteration and
+     * executed only after specified amount of completed frames.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @param delay Number of frame loop iterations that must complete before this task is executed
+     * @return Description of a temporal delayed task
+     */
     public static KFrameTaskDescription ofTemporal(
         final String taskId,
         final KFrameEvent event,
@@ -59,6 +96,15 @@ public record KFrameTaskDescription(
         );
     }
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed
+     * always once in specified amount of frames.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @param delay Number of frame loop iterations that must complete before this task is executed
+     * @return Description of a persistent delayed task
+     */
     public static KFrameTaskDescription ofDelayedPersistent(
         final String taskId,
         final KFrameEvent event,
@@ -76,6 +122,15 @@ public record KFrameTaskDescription(
         );
     }
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed
+     * only once, cannot be scheduled multiple times during one frame loop iteration and
+     * executed in the next frame.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a temporal immediate task
+     */
     public static KFrameTaskDescription ofImmediateTemporal(
         final String taskId,
         final KFrameEvent event,
@@ -92,6 +147,15 @@ public record KFrameTaskDescription(
         );
     }
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed
+     * only once, can be scheduled multiple times during one frame loop iteration and
+     * executed in the next frame.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a temporal immediate repeatable task
+     */
     public static KFrameTaskDescription ofRepeatableTemporal(
         final String taskId,
         final KFrameEvent event,

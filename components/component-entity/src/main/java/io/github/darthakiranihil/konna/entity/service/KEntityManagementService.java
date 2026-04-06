@@ -25,7 +25,8 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.message.*;
+import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import io.github.darthakiranihil.konna.core.message.KMessenger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -52,12 +53,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 )
 public class KEntityManagementService extends KObject {
 
+    /**
+     * Description of task that runs {@link KEntityBehaviour#update()} method of all active
+     * entities.
+     */
     public static final KFrameTaskDescription ON_TICK_TASK = KFrameTaskDescription.ofPersistent(
         "EntityManagementService.updateEntiies",
         KFrameEvent.TICK,
         2
     );
 
+    /**
+     * Description of task that runs extra
+     * behavior methods on all entities that have requested this.
+     * The extra methods are {@link KEntityBehaviour#awake()}, {@link KEntityBehaviour#onEnable()},
+     * {@link KEntityBehaviour#onDisable()} and {@link KEntityBehaviour#onDestroy()}.
+     */
     public static final KFrameTaskDescription
         PROCESS_BEHAVIOURS_TASK = KFrameTaskDescription.ofImmediateTemporal(
         "EntityManagementService.processBehaviours",
@@ -95,6 +106,7 @@ public class KEntityManagementService extends KObject {
      * Standard constructor.
      * @param activator Activator to delete entities
      * @param entityFactory Entity factory for create entities
+     * @param frameTaskScheduler Frame task scheduler to schedule its tasks.
      */
     public KEntityManagementService(
         @KInject final KActivator activator,

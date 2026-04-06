@@ -47,6 +47,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 )
 public class KRenderService extends KObject {
 
+    /**
+     * Description of task that renders all objects that is contained by the service.
+     * By default, it is supposed to be executed in the very last order before buffers' swapping.
+     */
     public static final KFrameTaskDescription RENDER_TASK = KFrameTaskDescription.ofPersistent(
         "RenderService.render",
         KFrameEvent.PRE_SWAP,
@@ -63,6 +67,7 @@ public class KRenderService extends KObject {
      * Standard constructor.
      * @param renderFrontend Render frontend to use for rendering objects
      * @param frame The frame of the current context
+     * @param frameTaskScheduler Frame task scheduler to schedule render task
      */
     public KRenderService(
         @KInject final KRenderFrontend renderFrontend,

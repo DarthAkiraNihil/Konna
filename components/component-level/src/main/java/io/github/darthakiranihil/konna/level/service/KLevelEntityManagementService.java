@@ -63,13 +63,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @SuppressWarnings("FieldCanBeLocal,unused")
 public class KLevelEntityManagementService extends KObject {
 
-    public static final KFrameTaskDescription MOVE_ENTITIES_TASK = KFrameTaskDescription.ofRepeatableTemporal(
+    /**
+     * Description of task that moves all entities, active on the current moment.
+     */
+    public static final KFrameTaskDescription
+        MOVE_ENTITIES_TASK = KFrameTaskDescription.ofRepeatableTemporal(
         "LevelEntitiyManagementService.moveEntities",
         KFrameEvent.FRAME_FINISHED,
         1
     );
 
-    public static final KFrameTaskDescription CLEAN_DESTROYED_ENTITIES_TASK = KFrameTaskDescription.ofImmediateTemporal(
+    /**
+     * Description of task that cleans all entities that have been destroyed.
+     */
+    public static final KFrameTaskDescription
+        CLEAN_DESTROYED_ENTITIES_TASK = KFrameTaskDescription.ofImmediateTemporal(
         "LevelEntitiyManagementService.cleanDestroyedEntities",
         KFrameEvent.FRAME_FINISHED,
         2
@@ -96,6 +104,7 @@ public class KLevelEntityManagementService extends KObject {
      * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events
      * @param activator Activator to create autonomous entities' controllers
+     * @param frameTaskScheduler Frame task scheduler to schedule its additional tasks
      */
     public KLevelEntityManagementService(
         @KInject final KEventSystem eventSystem,

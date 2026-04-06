@@ -28,6 +28,13 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Standard implementation of {@link KFrameTaskSystem}, based of prioritizer
+ * to define frame task execution order.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 @KSingleton(immortal = true)
 public class KStandardFrameTaskSystem
     extends KObject
@@ -116,7 +123,7 @@ public class KStandardFrameTaskSystem
         private Queue<KScheduledFrameTask> current;
         private Queue<KScheduledFrameTask> next;
 
-        public FrameTaskQueue() {
+        FrameTaskQueue() {
             this.executionChains = new HashMap<>(INITIAL_QUEUE_CAPACITY);
 
             this.current = new PriorityQueue<>(
@@ -130,9 +137,6 @@ public class KStandardFrameTaskSystem
         public void executeAll() {
             while (!this.current.isEmpty()) {
                 KScheduledFrameTask currentScheduledTask = this.current.poll();
-                if (currentScheduledTask.getId().equals("LevelEntitiyManagementService.moveEntities")) {
-                    System.out.println("GOTCHA");
-                }
                 String currentTaskId = currentScheduledTask.getId();
 
                 Queue<FrameTask>
@@ -142,14 +146,12 @@ public class KStandardFrameTaskSystem
                     ? executionChain.poll()
                     : executionChain.peek()
                 );
-
-                if (executionChain.isEmpty()) {
-                    this.executionChains.remove(currentTaskId);
-                }
-
                 currentTask.tryExecute();
                 if (currentTask.temporal) {
                     continue;
+                }
+                if (executionChain.isEmpty()) {
+                    this.executionChains.remove(currentTaskId);
                 }
                 this.addTask(currentTask);
             }
@@ -163,6 +165,14 @@ public class KStandardFrameTaskSystem
             this.executionChains.putIfAbsent(task.id, new ArrayDeque<>(INITIAL_CHAIN_CAPACITY));
             Queue<FrameTask> executionChain = this.executionChains.get(task.id);
             executionChain.add(task);
+            // we can't schedule more than 1 task with same id
+            if (
+                this.next
+                    .stream()
+                    .anyMatch(x -> x.getId().equals(task.id))
+            ) {
+                return;
+            }
             this.next.add(task);
         }
     }
@@ -175,9 +185,13 @@ public class KStandardFrameTaskSystem
     private boolean debug;
     private boolean frameEntered;
 
+    /**
+     * Standard constructor.
+     * @param prioritizer Prioritizer to use to assign task priorities
+     */
     @KInjectedConstructor
     public KStandardFrameTaskSystem(
-        @KInject KFrameTaskPrioritizer prioritizer
+        @KInject final KFrameTaskPrioritizer prioritizer
     ) {
         super(
             "FrameTaskSystem",
@@ -192,12 +206,17 @@ public class KStandardFrameTaskSystem
         }
     }
 
+    /**
+     * Creates a new task system with
+     * {@link io.github.darthakiranihil.konna.core.app.KFrameTaskPrioritizer.LeaveAsIs}
+     * prioritizer.
+     */
     public KStandardFrameTaskSystem() {
         this(new KFrameTaskPrioritizer.LeaveAsIs());
     }
 
     @Override
-    public @Unmodifiable List<KScheduledFrameTask> getScheduledTasks(KFrameEvent event) {
+    public @Unmodifiable List<KScheduledFrameTask> getScheduledTasks(final KFrameEvent event) {
         FrameTaskQueue queue = this.queues.get(event);
         return queue
             .current
