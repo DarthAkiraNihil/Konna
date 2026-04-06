@@ -172,4 +172,21 @@ public record KFrameTaskDescription(
         );
     }
 
+    public static KFrameTaskDescription ofDelayedRepeatableTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority,
+        int delay
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            delay,
+            true,
+            true,
+            false
+        );
+    }
+
 }

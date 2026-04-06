@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.List;
@@ -46,6 +47,7 @@ public class KStandardFrameTaskSystem
         private final KFrameEvent event;
         private final int priority;
         private final int delay;
+        private final boolean repeatable;
         private final boolean temporal;
         private final boolean debug;
         private final Runnable task;
@@ -53,20 +55,17 @@ public class KStandardFrameTaskSystem
         private int currentDelay;
 
         FrameTask(
-            final String id,
-            final KFrameEvent event,
+            final KFrameTaskDescription description,
             int priority,
-            int delay,
-            boolean temporal,
-            boolean debug,
             final Runnable task
         ) {
-            this.id = id;
-            this.event = event;
+            this.id = description.taskId();
+            this.event = description.event();
             this.priority = priority;
-            this.delay = delay;
-            this.temporal = temporal;
-            this.debug = debug;
+            this.delay = description.delay();
+            this.temporal = description.temporal();
+            this.debug = description.debug();
+            this.repeatable = description.mayBeRepeated();
             this.task = task;
 
             this.currentDelay = delay;
@@ -102,29 +101,36 @@ public class KStandardFrameTaskSystem
             return this.debug;
         }
 
-        public void tryExecute() {
-            if (this.currentDelay > 0) {
+        public boolean tryExecute() {
+            if (this.currentDelay > 1) {
                 this.currentDelay--;
-                return;
+                return false;
             }
 
             this.currentDelay = this.delay;
             this.task.run();
+            return true;
         }
     }
 
     private static final class FrameTaskQueue {
 
         private static final int INITIAL_QUEUE_CAPACITY = 8;
-        private static final int INITIAL_CHAIN_CAPACITY = 2;
+        private static final int INITIAL_WAITLIST_CAPACITY = 2;
 
-        private final Map<String, Queue<FrameTask>> executionChains;
+        private final Object lock = new Object();
 
-        private Queue<KScheduledFrameTask> current;
-        private Queue<KScheduledFrameTask> next;
+        private final Map<String, Queue<FrameTask>> executionWaitlists;
+        private final Set<String> nextTaskIds;
+
+        private Queue<FrameTask> current;
+        private Queue<FrameTask> next;
+
+        private boolean executedOnce;
 
         FrameTaskQueue() {
-            this.executionChains = new HashMap<>(INITIAL_QUEUE_CAPACITY);
+            this.executionWaitlists = new HashMap<>(INITIAL_QUEUE_CAPACITY);
+            this.nextTaskIds = new HashSet<>(INITIAL_QUEUE_CAPACITY);
 
             this.current = new PriorityQueue<>(
                 INITIAL_QUEUE_CAPACITY, Comparator.comparing(KScheduledFrameTask::getPriority)
@@ -135,46 +141,85 @@ public class KStandardFrameTaskSystem
         }
 
         public void executeAll() {
-            while (!this.current.isEmpty()) {
-                KScheduledFrameTask currentScheduledTask = this.current.poll();
-                String currentTaskId = currentScheduledTask.getId();
-
-                Queue<FrameTask>
-                    executionChain = this.executionChains.get(currentTaskId);
-
-                FrameTask currentTask = Objects.requireNonNull(currentScheduledTask.isTemporal()
-                    ? executionChain.poll()
-                    : executionChain.peek()
-                );
-                currentTask.tryExecute();
-                if (currentTask.temporal) {
-                    continue;
-                }
-                if (executionChain.isEmpty()) {
-                    this.executionChains.remove(currentTaskId);
-                }
-                this.addTask(currentTask);
+            if (!this.executedOnce) {
+                this.executedOnce = true;
             }
 
-            Queue<KScheduledFrameTask> temp = this.current;
+            synchronized (this.lock) {
+                this.nextTaskIds.clear();
+            }
+
+            while (!this.current.isEmpty()) {
+                FrameTask currentTask = this.current.poll();
+                boolean temporal = currentTask.temporal;
+                boolean repeatable = currentTask.repeatable;
+                boolean executed = currentTask.tryExecute();
+
+                if (!temporal || !executed) {
+                    synchronized (this.lock) {
+                        this.next.add(currentTask);
+                        this.nextTaskIds.add(currentTask.id);
+                    }
+                    continue;
+                }
+
+                if (!repeatable) {
+                    continue;
+                }
+
+                Queue<FrameTask> waitlist = this.executionWaitlists.get(currentTask.id);
+                FrameTask awaited = waitlist.poll();
+                if (awaited != null) {
+                    synchronized (this.lock) {
+                        this.nextTaskIds.add(awaited.id);
+                        this.next.add(awaited);
+                    }
+                }
+
+            }
+
+            Queue<FrameTask> temp = this.current;
             this.current = this.next;
             this.next = temp;
         }
 
-        public void addTask(final FrameTask task) {
-            this.executionChains.putIfAbsent(task.id, new ArrayDeque<>(INITIAL_CHAIN_CAPACITY));
-            Queue<FrameTask> executionChain = this.executionChains.get(task.id);
-            executionChain.add(task);
-            // we can't schedule more than 1 task with same id
-            if (
-                this.next
-                    .stream()
-                    .anyMatch(x -> x.getId().equals(task.id))
-            ) {
-                return;
+        public @Nullable KScheduledFrameTask enqueueTask(
+            final KFrameTaskDescription description,
+            final Runnable task,
+            final KFrameTaskPrioritizer prioritizer
+        ) {
+            boolean temporal = description.temporal();
+            boolean repeatable = description.mayBeRepeated();
+
+            String taskId = description.taskId();
+            if (!this.nextTaskIds.contains(taskId)) {
+                // add to q...
+                int priority = prioritizer.getPriority(description);
+                FrameTask enqueuedTask = new FrameTask(description, priority, task);
+                synchronized (this.lock) {
+                    this.nextTaskIds.add(taskId);
+                    if (this.executedOnce) {
+                        this.next.add(enqueuedTask);
+                    } else {
+                        this.current.add(enqueuedTask);
+                    }
+                }
+
+                return enqueuedTask;
             }
-            this.next.add(task);
+
+            if (!temporal || !repeatable) {
+                return null;
+            }
+
+            int priority = prioritizer.getPriority(description);
+            this.executionWaitlists.put(taskId, new ArrayDeque<>(INITIAL_WAITLIST_CAPACITY));
+            Queue<FrameTask> waitlist = this.executionWaitlists.get(taskId);
+            FrameTask enqueuedTask = new FrameTask(description, priority, task);
+            waitlist.add(enqueuedTask);
+            return enqueuedTask;
         }
+
     }
 
     private static final int TOO_MANY_TASKS_WARNING_LIMIT = 64;
@@ -221,6 +266,7 @@ public class KStandardFrameTaskSystem
         return queue
             .current
             .stream()
+            .map(x -> (KScheduledFrameTask) x)
             .toList();
     }
 
@@ -230,6 +276,8 @@ public class KStandardFrameTaskSystem
         int scheduled = queue.current.size();
         queue.executeAll();
         if (event == KFrameEvent.ENTER) {
+            queue.next.clear();
+            queue.current.clear();
             this.frameEntered = true;
         }
 
@@ -252,7 +300,6 @@ public class KStandardFrameTaskSystem
     public void scheduleTask(final KFrameTaskDescription description, final Runnable task) {
         String taskId = description.taskId();
         KFrameEvent event = description.event();
-
         if (event == KFrameEvent.ENTER && this.frameEntered) {
             KSystemLogger.warning(
                 this.name,
@@ -264,35 +311,23 @@ public class KStandardFrameTaskSystem
         }
 
         boolean isDebug = description.debug();
-        FrameTaskQueue queue = this.queues.get(event);
-        if (
-                (!this.debug && isDebug)
-            ||  (queue.executionChains.containsKey(taskId) && !description.mayBeRepeated())
-        ) {
+        if (isDebug && !this.debug) {
             return;
         }
 
-        int priority = this.prioritizer.getPriority(description);
-        boolean temporal = description.temporal();
-        queue.addTask(
-            new FrameTask(
-                taskId,
-                event,
-                priority,
-                description.delay(),
-                temporal,
-                isDebug,
-                task
-            )
-        );
+        FrameTaskQueue queue = this.queues.get(event);
+        KScheduledFrameTask enqueued = queue.enqueueTask(description, task, this.prioritizer);
+        if (enqueued == null) {
+            return;
+        }
 
         KSystemLogger.debug(
             this.name,
             "Scheduled %s task %s [event=%s,priority=%d,delay=%d,debug=%b]",
-            temporal ? "temporal" : "persistent",
+            enqueued.isTemporal() ? "temporal" : "persistent",
             taskId,
             event,
-            priority,
+            enqueued.getPriority(),
             description.delay(),
             isDebug
         );
