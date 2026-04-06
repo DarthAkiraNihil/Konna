@@ -25,4 +25,87 @@ public record KFrameTaskDescription(
     boolean mayBeRepeated,
     boolean debug
 ) {
+
+    public static KFrameTaskDescription ofPersistent(
+        final String taskId,
+        final KFrameEvent event,
+        int priority,
+        int delay
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            delay,
+            false,
+            false,
+            false
+        );
+    }
+
+    public static KFrameTaskDescription ofTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority,
+        int delay
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            delay,
+            true,
+            false,
+            false
+        );
+    }
+
+    public static KFrameTaskDescription ofImmediatePersistent(
+        final String taskId,
+        final KFrameEvent event,
+        int priority
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            0,
+            false,
+            false,
+            false
+        );
+    }
+
+    public static KFrameTaskDescription ofImmediateTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            0,
+            true,
+            false,
+            false
+        );
+    }
+
+    public static KFrameTaskDescription ofRepeatableTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            0,
+            true,
+            true,
+            false
+        );
+    }
+
 }
