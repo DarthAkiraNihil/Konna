@@ -41,6 +41,18 @@ public class KStandardFrameTaskSystem
     extends KObject
     implements KFrameTaskSystem {
 
+    /**
+     * Description of task to remove all empty waitlists created for repeatable
+     * temporal tasks.
+     */
+    public static final KFrameTaskDescription
+        REMOVE_DEAD_WAITLISTS_TASK = KFrameTaskDescription.ofDelayedPersistent(
+        "FrameTaskSystem.removeDeadWaitlists",
+        KFrameEvent.FRAME_FINISHED,
+        Integer.MAX_VALUE,
+        3600
+    );
+
     private static final class FrameTask implements KScheduledFrameTask {
 
         private final String id;
@@ -249,6 +261,11 @@ public class KStandardFrameTaskSystem
         for (var frameEvent: frameEvents) {
             this.queues.put(frameEvent, new FrameTaskQueue());
         }
+
+        this.scheduleTask(
+            REMOVE_DEAD_WAITLISTS_TASK,
+            this::removeDeadWaitlists
+        );
     }
 
     /**
@@ -331,6 +348,23 @@ public class KStandardFrameTaskSystem
             description.delay(),
             isDebug
         );
+    }
+
+    private void removeDeadWaitlists() {
+
+        for (var queue: this.queues.values()) {
+            var dead = queue.executionWaitlists
+                .entrySet()
+                .stream()
+                .filter(x -> x.getValue().isEmpty())
+                .map(Map.Entry::getKey)
+                .toList();
+
+            for (var deadWaitlist: dead) {
+                queue.executionWaitlists.remove(deadWaitlist);
+            }
+        }
+
     }
 
 }
