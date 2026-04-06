@@ -151,7 +151,7 @@ public class KLevelEntityManagementService extends KObject {
     protected void moveAllEntities() {
         this.frameTaskScheduler.scheduleTask(
             MOVE_ENTITIES_TASK,
-            this::moveAllEntities
+            this::moveEntities
         );
     }
 

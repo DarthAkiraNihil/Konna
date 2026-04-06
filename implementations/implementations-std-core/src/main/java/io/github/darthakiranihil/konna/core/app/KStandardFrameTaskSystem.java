@@ -130,6 +130,9 @@ public class KStandardFrameTaskSystem
         public void executeAll() {
             while (!this.current.isEmpty()) {
                 KScheduledFrameTask currentScheduledTask = this.current.poll();
+                if (currentScheduledTask.getId().equals("LevelEntitiyManagementService.moveEntities")) {
+                    System.out.println("GOTCHA");
+                }
                 String currentTaskId = currentScheduledTask.getId();
 
                 Queue<FrameTask>
@@ -199,7 +202,6 @@ public class KStandardFrameTaskSystem
         return queue
             .current
             .stream()
-            .map(x -> (KScheduledFrameTask) x)
             .toList();
     }
 
@@ -228,30 +230,6 @@ public class KStandardFrameTaskSystem
     }
 
     @Override
-    public void scheduleTask(
-        final String taskId,
-        final KFrameEvent event,
-        int initialPriority,
-        int frequency,
-        final Runnable task,
-        boolean isDebug
-    ) {
-        this.scheduleTask(taskId, event, initialPriority, frequency, task, false, isDebug);
-    }
-
-    @Override
-    public void scheduleTemporalTask(
-        final String taskId,
-        final KFrameEvent event,
-        int initialPriority,
-        int delay,
-        final Runnable task,
-        boolean isDebug
-    ) {
-        this.scheduleTask(taskId, event, initialPriority, delay, task, true, isDebug);
-    }
-
-    @Override
     public void scheduleTask(final KFrameTaskDescription description, final Runnable task) {
         String taskId = description.taskId();
         KFrameEvent event = description.event();
@@ -277,7 +255,7 @@ public class KStandardFrameTaskSystem
 
         int priority = this.prioritizer.getPriority(description);
         boolean temporal = description.temporal();
-        queue.next.add(
+        queue.addTask(
             new FrameTask(
                 taskId,
                 event,
@@ -301,57 +279,4 @@ public class KStandardFrameTaskSystem
         );
     }
 
-    private void scheduleTask(
-        final String taskId,
-        final KFrameEvent event,
-        int initialPriority,
-        int frequency,
-        final Runnable task,
-        boolean temporal,
-        boolean isDebug
-    ) {
-        if (event == KFrameEvent.ENTER && this.frameEntered) {
-            KSystemLogger.warning(
-                this.name,
-                "Frame loop is entered so %s cannot happen. Task %s is not scheduled",
-                KFrameEvent.ENTER,
-                taskId
-            );
-            return;
-        }
-
-        FrameTaskQueue queue = this.queues.get(event);
-        // don't schedule already scheduled tasks
-        if (
-                (!this.debug && isDebug)
-            ||  queue.next.stream().anyMatch(x -> x.id.equals(taskId))
-        ) {
-            return;
-        }
-
-        int priority = this.prioritizer.getPriority(taskId, event, initialPriority, isDebug);
-        queue.next.add(
-            new FrameTask(
-                taskId,
-                event,
-                priority,
-                frequency,
-                temporal,
-                isDebug,
-                task
-            )
-        );
-
-        KSystemLogger.debug(
-            this.name,
-            "Scheduled %s task %s [event=%s,priority=%d,%s=%d,debug=%b]",
-            temporal ? "temporal" : "persistent",
-            taskId,
-            event,
-            priority,
-            temporal ? "delay" : "frequency",
-            frequency,
-            isDebug
-        );
-    }
 }

@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
@@ -310,40 +311,10 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
 
     @Override
     public void scheduleTask(
-        final String taskId,
-        final KFrameEvent event,
-        int initialPriority,
-        int frequency,
-        final Runnable task,
-        boolean isDebug
+        final KFrameTaskDescription description,
+        final Runnable task
     ) {
-        this.frameTaskScheduler.scheduleTask(
-            taskId,
-            event,
-            initialPriority,
-            frequency,
-            task,
-            isDebug
-        );
-    }
-
-    @Override
-    public void scheduleTemporalTask(
-        final String taskId,
-        final KFrameEvent event,
-        int initialPriority,
-        int delay,
-        final Runnable task,
-        boolean isDebug
-    ) {
-        this.frameTaskScheduler.scheduleTemporalTask(
-            taskId,
-            event,
-            initialPriority,
-            delay,
-            task,
-            isDebug
-        );
+        this.frameTaskScheduler.scheduleTask(description, task);
     }
 
     @Override
