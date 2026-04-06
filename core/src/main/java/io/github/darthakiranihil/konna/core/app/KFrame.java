@@ -29,47 +29,6 @@ import io.github.darthakiranihil.konna.core.struct.KSize;
 public interface KFrame {
 
     /**
-     * Name of the event that is invoked on entering the frame loop.
-     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
-     */
-    String LOOP_ENTER_EVENT_NAME = "loop_enter";
-    /**
-     * Tick event name. It is used by
-     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to
-     * create the tick event that one should subscribe if its action is required
-     * to be executed in the frame loop (since it is invoked in it).
-     */
-    String TICK_EVENT_NAME = "tick";
-    /**
-     * Debug tick event name. It is used by
-     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to
-     * create the debug tick event that is supposed to be used by
-     * {@link io.github.darthakiranihil.konna.core.debug.KDebugger}s. It won't be invoked
-     * if debug mode is disabled.
-     */
-    String DEBUG_TICK_EVENT_NAME = "debug_tick";
-    /**
-     * Name of the event that is invoked on the beginning of a new frame.
-     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
-     */
-    String NEW_FRAME_EVENT_NAME = "new_frame";
-    /**
-     * Name of the event that is invoked at the end of the current frame.
-     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
-     */
-    String FRAME_FINISHED_EVENT_NAME = "frame_finished";
-    /**
-     * Name of the event that is invoked before swapping frame buffers.
-     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
-     */
-    String PRE_SWAP_EVENT_NAME = "pre_swap";
-    /**
-     * Name of the event that is invoked on frame loop leaving.
-     * Used by {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor}.
-     */
-    String LOOP_LEAVING_EVENT_NAME = "loop_leaving";
-
-    /**
      * @return Handle of this frame
      */
     long handle();

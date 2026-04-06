@@ -19,13 +19,13 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 /**
  * ImGui controller implementation using SpaiR bindings.
@@ -44,11 +44,11 @@ public class KImGuiControllerSpair extends KImGuiController {
 
     public KImGuiControllerSpair(
         @KInject final KImGui imGui,
-        @KInject final KEventSystem eventSystem,
+        @KInject final KFrameTaskScheduler frameTaskScheduler,
         @KInject final KFrame frame,
         @KInject final KContainerAccessor containerAccessor
     ) {
-        super(imGui, eventSystem);
+        super(imGui, frameTaskScheduler);
 
         this.imGuiImplGl3 = new ImGuiImplGl3();
         this.imGuiImplGlfw = new ImGuiImplGlfw();
