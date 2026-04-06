@@ -172,6 +172,15 @@ public record KFrameTaskDescription(
         );
     }
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed
+     * only once, can be scheduled multiple times during one frame loop iteration and
+     * executed only after specified amount of completed frames.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a temporal immediate repeatable task
+     */
     public static KFrameTaskDescription ofDelayedRepeatableTemporal(
         final String taskId,
         final KFrameEvent event,
