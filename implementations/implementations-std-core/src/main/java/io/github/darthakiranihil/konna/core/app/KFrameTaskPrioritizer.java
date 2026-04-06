@@ -35,12 +35,8 @@ public interface KFrameTaskPrioritizer {
         }
 
         @Override
-        public int getPriority(
-            final String taskId,
-            final KFrameEvent event,
-            int initialPriority,
-            boolean isDebug
-        ) {
+        public int getPriority(KFrameTaskDescription description) {
+            KFrameEvent event = description.event();
             int priority = this.priorities.get(event);
             this.priorities.put(event, priority + 1);
             return priority;
@@ -50,17 +46,12 @@ public interface KFrameTaskPrioritizer {
     final class LeaveAsIs implements KFrameTaskPrioritizer {
 
         @Override
-        public int getPriority(
-            String taskId,
-            KFrameEvent event,
-            int initialPriority,
-            boolean isDebug
-        ) {
-            return initialPriority;
+        public int getPriority(KFrameTaskDescription description) {
+            return description.priority();
         }
 
     }
 
-    int getPriority(String taskId, KFrameEvent event, int initialPriority, boolean isDebug);
+    int getPriority(KFrameTaskDescription description);
 
 }

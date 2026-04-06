@@ -16,13 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
-public interface KScheduledFrameTask {
-
-    String getId();
-    KFrameEvent getEvent();
-    int getPriority();
-    int getDelay();
-    boolean isTemporal();
-    boolean isDebug();
-
+public record KFrameTaskDescription(
+    String taskId,
+    KFrameEvent event,
+    int priority,
+    int delay,
+    boolean temporal,
+    boolean mayBeRepeated,
+    boolean debug
+) {
 }

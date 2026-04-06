@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.app;
 
 public interface KFrameTaskScheduler {
 
+    void scheduleTask(KFrameTaskDescription description, Runnable task);
+
     void scheduleTask(
         String taskId,
         KFrameEvent event,
