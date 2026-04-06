@@ -17,10 +17,7 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -256,21 +253,420 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Test
     public void testScheduleDelayedRepeatableTemporal() {
 
+        KFrameTaskDescription description = KFrameTaskDescription.ofDelayedRepeatableTemporal("pt1", KFrameEvent.TICK, 0,  8);
+        TestObject object = new TestObject();
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            if (i < 7) {
+                Assertions.assertEquals(1, tasks.size());
+                KScheduledFrameTask task = tasks.getFirst();
+                Assertions.assertEquals("pt1", task.getId());
+                Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+                Assertions.assertEquals(0, task.getPriority());
+                Assertions.assertEquals(8, task.getDelay());
+                Assertions.assertTrue(task.isTemporal());
+                Assertions.assertFalse(task.isDebug());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(0, object.field);
+            } else if (i == 7) {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(1, object.field);
+            } else if (i == 15) {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(2, object.field);
+                Assertions.assertEquals(0, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
+            } else {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(1, object.field);
+            }
+
+        }
+
     }
 
     @Test
     public void testScheduleDebugTemporal() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "pt1", KFrameEvent.TICK, 0, 0, true, false, true
+        );
+        this.taskSystem.setIsDebug(true);
+        this.taskSystem.scheduleTask(
+            description,
+            () -> object.field++
+        );
 
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, tasks.size());
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, object.field);
+        }
     }
 
     @Test
     public void testScheduleDebugTemporalButItsNotDebug() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "pt1", KFrameEvent.TICK, 0, 0, true, false, true
+        );
+        this.taskSystem.scheduleTask(
+            description,
+            () -> object.field++
+        );
 
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, object.field);
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, tasks.size());
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, object.field);
+        }
     }
 
     @Test
     public void testScheduleTemporalForEnterEventButItsCompleted() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.ENTER, 0);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        Assertions.assertEquals(1, object.field);
 
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, tasks.size());
+        this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        Assertions.assertEquals(1, object.field);
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testSchedulePersistentWithFifo() {
+        TestObject object = new TestObject();
+        this.taskSystem.scheduleTask(
+            KFrameTaskDescription.ofPersistent("pt1", KFrameEvent.TICK, 0),
+            () -> object.field++
+        );
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, tasks.size());
+            KScheduledFrameTask task = tasks.getFirst();
+            Assertions.assertEquals("pt1", task.getId());
+            Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            Assertions.assertEquals(0, task.getPriority());
+            Assertions.assertEquals(0, task.getDelay());
+            Assertions.assertFalse(task.isTemporal());
+            Assertions.assertFalse(task.isDebug());
+
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(i + 2, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDelayedPersistentWithFifo() {
+        TestObject object = new TestObject();
+        this.taskSystem.scheduleTask(
+            KFrameTaskDescription.ofDelayedPersistent("pt1", KFrameEvent.TICK, 0, 16),
+            () -> object.field++
+        );
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, object.field);
+        for (int i = 0; i < 15; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, tasks.size());
+            KScheduledFrameTask task = tasks.getFirst();
+            Assertions.assertEquals("pt1", task.getId());
+            Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            Assertions.assertEquals(0, task.getPriority());
+            Assertions.assertEquals(16, task.getDelay());
+            Assertions.assertFalse(task.isTemporal());
+            Assertions.assertFalse(task.isDebug());
+
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(i == 14 ? 1 : 0, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleRepeatedPersistentWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "prt1", KFrameEvent.TICK, 0, 0, false, true, false
+        );
+
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, tasks.size());
+            KScheduledFrameTask task = tasks.getFirst();
+            Assertions.assertEquals("prt1", task.getId());
+            Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            Assertions.assertEquals(0, task.getPriority());
+            Assertions.assertEquals(0, task.getDelay());
+            Assertions.assertFalse(task.isTemporal());
+            Assertions.assertFalse(task.isDebug());
+
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(i + 2, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDebugPersistentWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "pdt1", KFrameEvent.TICK, 0, 0, false, false, true
+        );
+
+        this.taskSystem.setIsDebug(true);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, tasks.size());
+            KScheduledFrameTask task = tasks.getFirst();
+            Assertions.assertEquals("pdt1", task.getId());
+            Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            Assertions.assertEquals(0, task.getPriority());
+            Assertions.assertEquals(0, task.getDelay());
+            Assertions.assertFalse(task.isTemporal());
+            Assertions.assertTrue(task.isDebug());
+
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(i + 2, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDebugPersistentButItsNotDebugWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "pdt1", KFrameEvent.TICK, 0, 0, false, false, true
+        );
+
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, object.field);
+
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, tasks.size());
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testSchedulePersistentForEnterEventButItsCompletedWithFifo() {
+
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = KFrameTaskDescription.ofPersistent("pt1", KFrameEvent.ENTER, 0);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        Assertions.assertEquals(1, object.field);
+
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, tasks.size());
+        this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        Assertions.assertEquals(1, object.field);
+
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleTemporalWithFifo() {
+        TestObject object = new TestObject();
+        this.taskSystem.scheduleTask(
+            KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.TICK, 0),
+            () -> object.field++
+        );
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, tasks.size());
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDelayedTemporalWithFifo() {
+        TestObject object = new TestObject();
+        this.taskSystem.scheduleTask(
+            KFrameTaskDescription.ofTemporal("pt1", KFrameEvent.TICK, 0,  8),
+            () -> object.field++
+        );
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            if (i < 7) {
+                Assertions.assertEquals(1, tasks.size());
+                KScheduledFrameTask task = tasks.getFirst();
+                Assertions.assertEquals("pt1", task.getId());
+                Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+                Assertions.assertEquals(0, task.getPriority());
+                Assertions.assertEquals(8, task.getDelay());
+                Assertions.assertTrue(task.isTemporal());
+                Assertions.assertFalse(task.isDebug());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(0, object.field);
+            } else if (i == 7) {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(1, object.field);
+            } else {
+                Assertions.assertEquals(0, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(1, object.field);
+            }
+
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleRepeatedTemporalWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = KFrameTaskDescription.ofRepeatableTemporal(
+            "trt1", KFrameEvent.TICK, 0
+        );
+
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        Assertions.assertEquals(1, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+        Assertions.assertEquals(1, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(2, object.field);
+
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDelayedRepeatableTemporalWithFifo() {
+
+        KFrameTaskDescription description = KFrameTaskDescription.ofDelayedRepeatableTemporal("pt1", KFrameEvent.TICK, 0,  8);
+        TestObject object = new TestObject();
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            if (i < 7) {
+                Assertions.assertEquals(1, tasks.size());
+                KScheduledFrameTask task = tasks.getFirst();
+                Assertions.assertEquals("pt1", task.getId());
+                Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+                Assertions.assertEquals(0, task.getPriority());
+                Assertions.assertEquals(8, task.getDelay());
+                Assertions.assertTrue(task.isTemporal());
+                Assertions.assertFalse(task.isDebug());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(0, object.field);
+            } else if (i == 7) {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(1, object.field);
+            } else if (i == 15) {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(2, object.field);
+                Assertions.assertEquals(0, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
+            } else {
+                Assertions.assertEquals(1, tasks.size());
+                this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                Assertions.assertEquals(1, object.field);
+            }
+
+        }
+
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDebugTemporalWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "pt1", KFrameEvent.TICK, 0, 0, true, false, true
+        );
+        this.taskSystem.setIsDebug(true);
+        this.taskSystem.scheduleTask(
+            description,
+            () -> object.field++
+        );
+
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(1, object.field);
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, tasks.size());
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(1, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleDebugTemporalButItsNotDebugWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = new KFrameTaskDescription(
+            "pt1", KFrameEvent.TICK, 0, 0, true, false, true
+        );
+        this.taskSystem.scheduleTask(
+            description,
+            () -> object.field++
+        );
+
+        this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, object.field);
+        for (int i = 0; i < 16; i++) {
+            List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, tasks.size());
+            this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            Assertions.assertEquals(0, object.field);
+        }
+    }
+
+    @Test
+    @Tag("runWithFifo")
+    public void testScheduleTemporalForEnterEventButItsCompletedWithFifo() {
+        TestObject object = new TestObject();
+        KFrameTaskDescription description = KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.ENTER, 0);
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        Assertions.assertEquals(1, object.field);
+
+        this.taskSystem.scheduleTask(description, () -> object.field++);
+        List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
+        Assertions.assertEquals(0, tasks.size());
+        this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        Assertions.assertEquals(1, object.field);
     }
 
 
