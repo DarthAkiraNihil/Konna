@@ -16,7 +16,9 @@
 
 package io.github.darthakiranihil.konna.level.service;
 
-import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
@@ -61,12 +63,28 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @SuppressWarnings("FieldCanBeLocal,unused")
 public class KLevelEntityManagementService extends KObject {
 
+    /**
+     * Description of task that moves all entities, active on the current moment.
+     */
+    public static final KFrameTaskDescription
+        MOVE_ENTITIES_TASK = KFrameTaskDescription.ofRepeatableTemporal(
+        "LevelEntitiyManagementService.moveEntities",
+        KFrameEvent.FRAME_FINISHED,
+        1
+    );
+
+    /**
+     * Description of task that cleans all entities that have been destroyed.
+     */
+    public static final KFrameTaskDescription
+        CLEAN_DESTROYED_ENTITIES_TASK = KFrameTaskDescription.ofImmediateTemporal(
+        "LevelEntitiyManagementService.cleanDestroyedEntities",
+        KFrameEvent.FRAME_FINISHED,
+        2
+    );
+
     private final KEventAction<KLevel> onLeveLoadedConsumer = this::onLevelLoaded;
     private final KSimpleEventAction onLevelUnloadedConsumer = this::onLevelUnloaded;
-    private final KSimpleEventAction
-        deleteDestroyedEntitiesConsumer = this::deleteDestroyedEntities;
-    private final KSimpleEventAction
-        performEntitiesMovementConsumer = this::performEntitiesMovement;
 
     private final Map<UUID, KControllableEntity> controllables;
     private final Map<UUID, KStaticEntity> statics;
@@ -76,20 +94,21 @@ public class KLevelEntityManagementService extends KObject {
 
     private final KEventSystem eventSystem;
     private final KActivator activator;
+    private final KFrameTaskScheduler frameTaskScheduler;
 
     private @Nullable KMessenger messenger;
     private @Nullable KLevel currentLevel;
-
-    private volatile boolean movementScheduled;
 
     /**
      * Standard constructor.
      * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events
      * @param activator Activator to create autonomous entities' controllers
+     * @param frameTaskScheduler Frame task scheduler to schedule its additional tasks
      */
     public KLevelEntityManagementService(
         @KInject final KEventSystem eventSystem,
+        @KInject final KFrameTaskScheduler frameTaskScheduler,
         @KInject final KActivator activator
     ) {
         super(
@@ -105,19 +124,14 @@ public class KLevelEntityManagementService extends KObject {
         levelUnloaded.subscribe(this.onLevelUnloadedConsumer);
         levelLoaded.subscribe(this.onLeveLoadedConsumer);
 
-        KSimpleEventSubscriber frameFinished = eventSystem
-            .getSimpleEventSubscriber(KFrame.FRAME_FINISHED_EVENT_NAME);
-        frameFinished.subscribe(this.deleteDestroyedEntitiesConsumer);
-        frameFinished.subscribe(this.performEntitiesMovementConsumer);
-
         this.controllables = new HashMap<>();
         this.statics = new HashMap<>();
         this.autonomouses = new HashMap<>();
 
         this.activator = activator;
         this.eventSystem = eventSystem;
+        this.frameTaskScheduler = frameTaskScheduler;
 
-        // todo: maybe array deque instead
         this.deletionQueue = new ConcurrentLinkedQueue<>();
     }
 
@@ -144,10 +158,9 @@ public class KLevelEntityManagementService extends KObject {
      */
     @KServiceEndpoint(route = "moveAllEntities")
     protected void moveAllEntities() {
-        this.movementScheduled = true;
-        KSystemLogger.debug(
-            this.name,
-            "Movement of entities has been scheduled"
+        this.frameTaskScheduler.scheduleTask(
+            MOVE_ENTITIES_TASK,
+            this::moveEntities
         );
     }
 
@@ -306,6 +319,7 @@ public class KLevelEntityManagementService extends KObject {
 
         KAutonomousEntity entity = this.autonomouses.get(entityId);
         this.deletionQueue.add(entity);
+        this.scheduleCleaning();
 
     }
 
@@ -387,6 +401,7 @@ public class KLevelEntityManagementService extends KObject {
 
         KStaticEntity entity = this.statics.get(entityId);
         this.deletionQueue.add(entity);
+        this.scheduleCleaning();
 
     }
 
@@ -470,6 +485,7 @@ public class KLevelEntityManagementService extends KObject {
 
         KControllableEntity entity = this.controllables.get(entityId);
         this.deletionQueue.add(entity);
+        this.scheduleCleaning();
 
     }
 
@@ -577,11 +593,7 @@ public class KLevelEntityManagementService extends KObject {
         );
     }
 
-    private void deleteDestroyedEntities() {
-
-        if (this.deletionQueue.isEmpty()) {
-            return;
-        }
+    private void cleanDestroyedEntities() {
 
         List<KLevelEntity> deleted = new ArrayList<>(this.deletionQueue.size());
         while (!this.deletionQueue.isEmpty()) {
@@ -617,10 +629,7 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
-    private void performEntitiesMovement() {
-        if (!this.movementScheduled) {
-            return;
-        }
+    private void moveEntities() {
 
         this.autonomouses.values().forEach(KLevelEntity::move);
         this.controllables.values().forEach(KLevelEntity::move);
@@ -659,7 +668,13 @@ public class KLevelEntityManagementService extends KObject {
             body
         );
 
-        this.movementScheduled = false;
+    }
+
+    private void scheduleCleaning() {
+        this.frameTaskScheduler.scheduleTask(
+            CLEAN_DESTROYED_ENTITIES_TASK,
+            this::cleanDestroyedEntities
+        );
     }
 
 

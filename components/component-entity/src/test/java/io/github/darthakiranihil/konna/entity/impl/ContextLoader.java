@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.entity.impl;
 
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
@@ -63,12 +63,17 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
             .add(KMessenger.class, KStandardMessenger.class)
+            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
+            .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
+            .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
+            .add(KFrameTaskSystem.class, KStandardFrameTaskSystem.class)
             .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
             .add(KLogger.class, KStandardLogger.class);
 
         var objectRegistry = new KStandardObjectRegistry();
 
         var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
+        var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -100,7 +105,7 @@ public class ContextLoader implements KEngineContextLoader {
             messageSystem,
             resourceLoader,
             assetLoader,
-            null
+            frameTaskSystem
         );
         activator.addContext(ctx);
         return ctx;

@@ -16,9 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
-import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KFrameLoader;
+import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.debug.KDebugger;
 import io.github.darthakiranihil.konna.core.di.KContainer;
@@ -87,15 +85,12 @@ public class KEngineHypervisor extends KObject {
      * Spawned application's frame.
      */
     protected @Nullable KFrame frame;
+    /**
+     * Applications's fra,e task system.
+     */
+    protected @Nullable KFrameTaskSystem frameTaskSystem;
 
-    private final KSimpleEvent tick;
-    private final KSimpleEvent newFrame;
-    private final KSimpleEvent frameFinished;
-    private final KSimpleEvent debugTick;
-    private final KSimpleEvent loopEnter;
-    private final KSimpleEvent preSwap;
     private final KSimpleEvent ready;
-    private final KSimpleEvent loopLeaving;
 
     private boolean debug;
     private final DoubleSummaryStatistics fps;
@@ -121,14 +116,7 @@ public class KEngineHypervisor extends KObject {
         this.loadedDebuggers = new HashMap<>();
         this.ctx = null;
 
-        this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
-        this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
-        this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
-        this.debugTick = new KSimpleEvent(KFrame.DEBUG_TICK_EVENT_NAME);
-        this.loopEnter = new KSimpleEvent(KFrame.LOOP_ENTER_EVENT_NAME);
-        this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
-        this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
 
         this.maxFps = -1;
         this.fps = new DoubleSummaryStatistics();
@@ -157,6 +145,9 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.ctx = contextLoader.load(features);
+        this.frameTaskSystem = this.ctx.createObject(KFrameTaskSystem.class);
+        this.frameTaskSystem.setIsDebug(this.debug);
+
         this.registerSystemEvents();
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
@@ -297,6 +288,12 @@ public class KEngineHypervisor extends KObject {
             );
         }
 
+        if (this.frameTaskSystem == null) {
+            throw new KHypervisorInitializationException(
+                "Cannot enter frame loop: frame task system is null!"
+            );
+        }
+
         this.frame.show();
 
         KSystemLogger.info(
@@ -305,26 +302,23 @@ public class KEngineHypervisor extends KObject {
             this.frame.getClass().getCanonicalName()
         );
 
-        this.loopEnter.invokeSync();
+        this.frameTaskSystem.executeScheduledTasks(KFrameEvent.ENTER);
         while (!this.frame.shouldClose()) {
 
             try {
 
                 Instant beginTime = Instant.now();
                 // new_frame
-                this.newFrame.invokeSync();
+                this.frameTaskSystem.executeScheduledTasks(KFrameEvent.NEW_FRAME);
 
-                this.tick.invokeSync();
-                if (this.debug) {
-                    this.debugTick.invokeSync();
-                }
+                this.frameTaskSystem.executeScheduledTasks(KFrameEvent.TICK);
 
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
                 }
 
                 // pre_swap
-                this.preSwap.invokeSync();
+                this.frameTaskSystem.executeScheduledTasks(KFrameEvent.PRE_SWAP);
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
@@ -345,7 +339,7 @@ public class KEngineHypervisor extends KObject {
                     )
                 );
 
-                this.frameFinished.invokeSync();
+                this.frameTaskSystem.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
                 // frame_finished
 
             } catch (KException kex) {
@@ -369,7 +363,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
-        this.loopLeaving.invokeSync();
+        this.frameTaskSystem.executeScheduledTasks(KFrameEvent.SHUTDOWN);
         this.shutdown();
 
     }
@@ -404,14 +398,7 @@ public class KEngineHypervisor extends KObject {
             return; // will be checked on entering frame loop
         }
 
-        this.ctx.registerEvent(this.tick);
-        this.ctx.registerEvent(this.newFrame);
-        this.ctx.registerEvent(this.frameFinished);
-        this.ctx.registerEvent(this.debugTick);
-        this.ctx.registerEvent(this.preSwap);
-        this.ctx.registerEvent(this.loopEnter);
         this.ctx.registerEvent(this.ready);
-        this.ctx.registerEvent(this.loopLeaving);
 
         KClasspathSearchEngine classpath = this.ctx.createObject(KClasspathSearchEngine.class);
         try (
