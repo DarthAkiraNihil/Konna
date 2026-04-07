@@ -25,6 +25,9 @@ import org.jspecify.annotations.Nullable;
  * @param revision Revision number
  * @param name Additional version name
  * @param postfix Additional version postfix
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
  */
 public record KVersion(
     int major,
