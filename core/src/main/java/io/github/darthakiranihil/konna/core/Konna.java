@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core;
 import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
+import io.github.darthakiranihil.konna.core.app.KVersion;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
@@ -50,6 +51,8 @@ import java.util.Objects;
  * @author Darth Akira Nihil
  */
 public final class Konna extends KObject implements Runnable {
+
+    public static final KVersion VERSION = new KVersion(0, 5, 0, "dev");
 
     private static final String BOOTSTRAP_CONFIG = "bootstrap.json";
 
@@ -132,6 +135,8 @@ public final class Konna extends KObject implements Runnable {
      */
     @Override
     public void run() {
+
+        KSystemLogger.info(this.name, "Starting Konna. Version: %s", VERSION);
 
         KApplicationFeatures features;
         try (InputStream bootstrapConfig = ClassLoader
