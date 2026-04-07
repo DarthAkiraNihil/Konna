@@ -51,172 +51,178 @@ public final class KAsset implements KAssetDefinition {
     }
 
     @Override
-    public int getInt(String property) {
+    public int getInt(final String property) {
         return this.definition.getInt(property);
     }
 
     @Override
-    public float getFloat(String property) {
+    public float getFloat(final String property) {
         return this.definition.getFloat(property);
     }
 
     @Override
-    public boolean getBoolean(String property) {
+    public boolean getBoolean(final String property) {
         return this.definition.getBoolean(property);
     }
 
     @Override
-    public @Nullable String getString(String property) {
+    public @Nullable String getString(final String property) {
         return this.definition.getString(property);
     }
 
     @Override
-    public KAssetDefinition getSubdefinition(String property) {
+    public KAssetDefinition getSubdefinition(final String property) {
         return this.definition.getSubdefinition(property);
     }
 
     @Override
-    public <T extends Enum<T>> T getEnum(String property, Class<T> enumClass) {
+    public <T extends Enum<T>> T getEnum(final String property, final Class<T> enumClass) {
         return this.definition.getEnum(property, enumClass);
     }
 
     @Override
-    public Class<?> getClassObject(String property) {
+    public Class<?> getClassObject(final String property) {
         return this.definition.getClassObject(property);
     }
 
     @Override
-    public <T> Class<? extends T> getClassObject(String property, Class<T> targetClass) {
+    public <T> Class<? extends T> getClassObject(
+        final String property,
+        final Class<T> targetClass
+    ) {
         return this.definition.getClassObject(property, targetClass);
     }
 
     @Override
-    public @Nullable Object getObject(String property) {
+    public @Nullable Object getObject(final String property) {
         return this.definition.getObject(property);
     }
 
     @Override
-    public int[] getIntArray(String property) {
+    public int[] getIntArray(final String property) {
         return this.definition.getIntArray(property);
     }
 
     @Override
-    public float[] getFloatArray(String property) {
+    public float[] getFloatArray(final String property) {
         return this.definition.getFloatArray(property);
     }
 
     @Override
-    public boolean[] getBooleanArray(String property) {
+    public boolean[] getBooleanArray(final String property) {
         return this.definition.getBooleanArray(property);
     }
 
     @Override
-    public String @Nullable [] getStringArray(String property) {
+    public String @Nullable [] getStringArray(final String property) {
         return this.definition.getStringArray(property);
     }
 
     @Override
-    public KAssetDefinition[] getSubdefinitionArray(String property) {
+    public KAssetDefinition[] getSubdefinitionArray(final String property) {
         return this.definition.getSubdefinitionArray(property);
     }
 
     @Override
-    public Class<?>[] getClassObjectArray(String property) {
+    public Class<?>[] getClassObjectArray(final String property) {
         return this.definition.getClassObjectArray(property);
     }
 
     @Override
-    public <T> Class<? extends T>[] getClassObjectArray(String property, Class<T> targetClass) {
+    public <T> Class<? extends T>[] getClassObjectArray(
+        final String property,
+        final Class<T> targetClass
+    ) {
         return this.definition.getClassObjectArray(property, targetClass);
     }
 
     @Override
-    public @Nullable Object[] getObjectArray(String property) {
+    public @Nullable Object[] getObjectArray(final String property) {
         return this.definition.getObjectArray(property);
     }
 
     @Override
-    public boolean hasInt(String property) {
+    public boolean hasInt(final String property) {
         return this.definition.hasInt(property);
     }
 
     @Override
-    public boolean hasFloat(String property) {
+    public boolean hasFloat(final String property) {
         return this.definition.hasFloat(property);
     }
 
     @Override
-    public boolean hasBoolean(String property) {
+    public boolean hasBoolean(final String property) {
         return this.definition.hasBoolean(property);
     }
 
     @Override
-    public boolean hasString(String property) {
+    public boolean hasString(final String property) {
         return this.definition.hasString(property);
     }
 
     @Override
-    public boolean hasSubdefinition(String property) {
+    public boolean hasSubdefinition(final String property) {
         return this.definition.hasSubdefinition(property);
     }
 
     @Override
-    public <T extends Enum<T>> boolean hasEnum(String property, Class<T> enumClass) {
+    public <T extends Enum<T>> boolean hasEnum(final String property, final Class<T> enumClass) {
         return this.definition.hasEnum(property, enumClass);
     }
 
     @Override
-    public boolean hasClassObject(String property) {
+    public boolean hasClassObject(final String property) {
         return this.definition.hasClassObject(property);
     }
 
     @Override
-    public <T> boolean hasClassObject(String property, Class<T> targetClass) {
+    public <T> boolean hasClassObject(final String property, final Class<T> targetClass) {
         return this.definition.hasClassObject(property, targetClass);
     }
 
     @Override
-    public boolean hasObject(String property) {
+    public boolean hasObject(final String property) {
         return this.definition.hasObject(property);
     }
 
     @Override
-    public boolean hasIntArray(String property) {
+    public boolean hasIntArray(final String property) {
         return this.definition.hasIntArray(property);
     }
 
     @Override
-    public boolean hasFloatArray(String property) {
+    public boolean hasFloatArray(final String property) {
         return this.definition.hasFloatArray(property);
     }
 
     @Override
-    public boolean hasBooleanArray(String property) {
+    public boolean hasBooleanArray(final String property) {
         return this.definition.hasBooleanArray(property);
     }
 
     @Override
-    public boolean hasStringArray(String property) {
+    public boolean hasStringArray(final String property) {
         return this.definition.hasStringArray(property);
     }
 
     @Override
-    public boolean hasSubdefinitionArray(String property) {
+    public boolean hasSubdefinitionArray(final String property) {
         return this.definition.hasSubdefinitionArray(property);
     }
 
     @Override
-    public boolean hasClassObjectArray(String property) {
+    public boolean hasClassObjectArray(final String property) {
         return this.definition.hasClassObjectArray(property);
     }
 
     @Override
-    public <T> boolean hasClassObjectArray(String property, Class<T> targetClass) {
+    public <T> boolean hasClassObjectArray(final String property, final Class<T> targetClass) {
         return this.definition.hasClassObjectArray(property, targetClass);
     }
 
     @Override
-    public boolean hasObjectArray(String property) {
+    public boolean hasObjectArray(final String property) {
         return this.definition.hasObjectArray(property);
     }
 }
