@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
@@ -61,7 +62,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @KRequiresEvent(name = "levelLoaded", simple = false, type = KLevel.class)
 @KRequiresEvent(name = "levelUnloaded")
 @SuppressWarnings("FieldCanBeLocal,unused")
-public class KLevelEntityManagementService extends KObject {
+public class KLevelEntityManagementService extends KObject implements KService {
 
     /**
      * Description of task that moves all entities, active on the current moment.
@@ -96,7 +97,7 @@ public class KLevelEntityManagementService extends KObject {
     private final KActivator activator;
     private final KFrameTaskScheduler frameTaskScheduler;
 
-    private @Nullable KMessenger messenger;
+    private final KMessenger messenger;
     private @Nullable KLevel currentLevel;
 
     /**
@@ -109,7 +110,8 @@ public class KLevelEntityManagementService extends KObject {
     public KLevelEntityManagementService(
         @KInject final KEventSystem eventSystem,
         @KInject final KFrameTaskScheduler frameTaskScheduler,
-        @KInject final KActivator activator
+        @KInject final KActivator activator,
+        final KMessenger messenger
     ) {
         super(
             "Level.LevelEntityManagementService",
@@ -131,16 +133,9 @@ public class KLevelEntityManagementService extends KObject {
         this.activator = activator;
         this.eventSystem = eventSystem;
         this.frameTaskScheduler = frameTaskScheduler;
+        this.messenger = messenger;
 
         this.deletionQueue = new ConcurrentLinkedQueue<>();
-    }
-
-    /**
-     * Sets a messenger for this service.
-     * @param messenger Messenger to set
-     */
-    public void setMessenger(final KMessenger messenger) {
-        this.messenger = messenger;
     }
 
     /**

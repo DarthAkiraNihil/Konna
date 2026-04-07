@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.service;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
@@ -54,7 +55,7 @@ import org.jspecify.annotations.Nullable;
 @KRequiresEvent(name = "levelLoaded", simple = false, type = KLevel.class)
 @KRequiresEvent(name = "levelUnloaded")
 @SuppressWarnings("FieldCanBeLocal")
-public class KLevelService extends KObject {
+public class KLevelService extends KObject implements KService {
 
     private final KLevelMetadataCollection levelCollection;
     private final KLevelGeneratorMetadataCollection generatorMetadataCollection;
@@ -67,7 +68,7 @@ public class KLevelService extends KObject {
     private @Nullable KLevel currentLevel;
     // todo: do we really need it?
     private @Nullable KLevelSector currentSector;
-    private @Nullable KMessenger messenger;
+    private final KMessenger messenger;
 
     /**
      * Standard constructor.
@@ -84,7 +85,8 @@ public class KLevelService extends KObject {
         @KInject final KActivator activator,
         @KInject final KLevelMetadataCollection levelCollection,
         @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection,
-        @KInject final KLevelLoader levelLoader
+        @KInject final KLevelLoader levelLoader,
+        final KMessenger messenger
     ) {
         super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
@@ -92,6 +94,7 @@ public class KLevelService extends KObject {
         this.generatorMetadataCollection = generatorMetadataCollection;
         this.activator = activator;
         this.levelLoader = levelLoader;
+        this.messenger = messenger;
 
         this.levelLoaded = eventSystem.getEventInvoker("levelLoaded");
         this.levelUnloaded = eventSystem.getSimpleEventInvoker("levelUnloaded");
@@ -129,10 +132,6 @@ public class KLevelService extends KObject {
         this.currentSector = this.currentLevel.getSector(deploymentSector);
 
         this.levelLoaded.invokeSync(this.currentLevel);
-
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("level", this.currentLevel);
@@ -197,9 +196,6 @@ public class KLevelService extends KObject {
 
         this.currentSector = this.currentLevel.getSector(deploymentSector);
         this.levelLoaded.invokeSync(this.currentLevel);
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("level", this.currentLevel);
@@ -210,14 +206,6 @@ public class KLevelService extends KObject {
             "generatedLevelLoaded", body
         );
 
-    }
-
-    /**
-     * Sets messenger for this service.
-     * @param messenger Messenger of Entity component
-     */
-    public void setMessenger(final KMessenger messenger) {
-        this.messenger = messenger;
     }
 
 }

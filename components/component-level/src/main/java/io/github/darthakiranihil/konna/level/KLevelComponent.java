@@ -21,10 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -463,14 +460,16 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 )
 public class KLevelComponent extends KComponent {
 
+    protected final KLevelComponentConfig config;
+
     public KLevelComponent(
-        @KInject final KServiceLoader serviceLoader,
-        final String name,
         final KEngineContext ctx,
-        final String servicesPackage,
-        final KJsonValue config
+        final KLevelService levelService,
+        final KLevelEntityManagementService levelEntityManagementService,
+        final KLevelComponentConfig config
     ) {
-        super(serviceLoader, name, ctx, servicesPackage, config);
+        super("Level", ctx, new KService[] {levelService, levelEntityManagementService} );
+        this.config = config;
     }
 
     @Override
@@ -483,33 +482,4 @@ public class KLevelComponent extends KComponent {
         };
     }
 
-    @Override
-    protected void applyConfig(final KJsonValue config) {
-        KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
-        KLevelComponentConfig.getSchema().validate(config);
-        KLevelComponentConfig deserializedConfig = deserializer.deserialize(
-            config,
-            KLevelComponentConfig.class
-        );
-        if (deserializedConfig == null) {
-            throw new KComponentLoadingException("Could not read component config");
-        }
-
-        KContainer container = this.ctx.getContainer();
-        container.add(KLevelLoader.class, deserializedConfig.levelLoaderClass());
-
-    }
-
-    @Override
-    public void postInit() {
-        KLevelService levelService = this.ctx.createObject(
-            KLevelService.class
-        );
-        KLevelEntityManagementService levelEntityManagementService = this.ctx.createObject(
-            KLevelEntityManagementService.class
-        );
-
-        levelService.setMessenger(this.messenger);
-        levelEntityManagementService.setMessenger(this.messenger);
-    }
 }
