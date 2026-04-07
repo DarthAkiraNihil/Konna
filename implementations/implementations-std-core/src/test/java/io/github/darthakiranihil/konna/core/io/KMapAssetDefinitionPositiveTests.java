@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
-import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,7 @@ import java.util.Map;
 
 public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
 
-    private final KAssetDefinition definition;
+    private final KAsset definition;
 
     @SuppressWarnings("UnnecessaryBoxing")
     public KMapAssetDefinitionPositiveTests() {
@@ -83,9 +82,7 @@ public class KMapAssetDefinitionPositiveTests extends KStandardTestClass {
         source.put("empty_class_array_as_class_array_property", new Class[0]);
         source.put("array_as_list", List.of("aboba"));
 
-        this.definition = new KMapAssetDefinition(
-            source
-        );
+        this.definition = new KAsset("abiba", "aboba", new KMapAssetDefinition(source));
     }
 
     @Test
