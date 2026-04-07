@@ -48,8 +48,8 @@ public class KGraphicsComponentPositiveTests extends KStandardTestClass {
                 "event_registerers": [
                     "io.github.darthakiranihil.konna.test.KEmptyEventRegisterer"
                 ],
-                "components": [
-                    "io.github.darthakiranihil.konna.graphics.KGraphicsComponent"
+                "component_loaders": [
+                    "io.github.darthakiranihil.konna.graphics.KGraphicsComponentLoader"
                 ],
                 "frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {

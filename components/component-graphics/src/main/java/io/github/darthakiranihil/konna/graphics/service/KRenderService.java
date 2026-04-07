@@ -75,14 +75,14 @@ public class KRenderService extends KObject implements KService {
         @KInject final KFrameTaskScheduler frameTaskScheduler,
         @KInject final KFrame frame
     ) {
-        super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super("RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
 
         this.currentRenderables = new CopyOnWriteArrayList<>();
 
 
         KSystemLogger.debug(
-            "Graphics.RenderService",
+            this.name,
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
