@@ -16,14 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.engine.impl;
 
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import org.jspecify.annotations.NonNull;
 
-@KComponentServiceMetaInfo(
-    name = "TestService"
-)
 public class TestService implements KService {
 
     @Override

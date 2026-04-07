@@ -453,11 +453,6 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  */
 @KContainerModifier
 @KSingleton
-@KComponentMetaInfo(
-    name = "Level",
-    configFilename = "classpath:config/level.json",
-    servicesPackage = "io.github.darthakiranihil.konna.level.service"
-)
 public class KLevelComponent extends KComponent {
 
     protected final KLevelComponentConfig config;

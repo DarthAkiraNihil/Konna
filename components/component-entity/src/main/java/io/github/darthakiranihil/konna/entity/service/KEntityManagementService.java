@@ -22,7 +22,6 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
@@ -48,9 +47,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Darth Akira Nihil
  */
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "EntityManagementService"
-)
 public class KEntityManagementService extends KObject implements KService {
 
     /**

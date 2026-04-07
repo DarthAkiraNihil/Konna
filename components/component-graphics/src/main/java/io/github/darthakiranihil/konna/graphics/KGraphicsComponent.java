@@ -97,11 +97,6 @@ import io.github.darthakiranihil.konna.graphics.type.*;
  */
 @KContainerModifier
 @KSingleton
-@KComponentMetaInfo(
-    name = "Graphics",
-    configFilename = "classpath:config/graphics.json",
-    servicesPackage = "io.github.darthakiranihil.konna.graphics.service"
-)
 public class KGraphicsComponent extends KComponent {
 
     protected final KGraphicsComponentConfig config;

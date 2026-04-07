@@ -20,7 +20,6 @@ package io.github.darthakiranihil.konna.compiler.core;
 import com.google.auto.service.AutoService;
 import com.palantir.javapoet.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KMessageItself;
@@ -46,7 +45,7 @@ import java.util.Set;
  * <p>
  * Additionally, it validates occurrance of the endpoint method. The processor will fail
  * if the endpoint is located in a non-service class
- * (not annotated with {@link KComponentServiceMetaInfo}) or its parameters are not annotated
+ * (not implementing KService interface) or its parameters are not annotated
  * with {@link KBodyValue} or {@link KInject}.
  * </p>
  * <p>

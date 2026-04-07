@@ -242,11 +242,6 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  */
 @KContainerModifier
 @KSingleton
-@KComponentMetaInfo(
-    name = "Entity",
-    configFilename = "classpath:config/entity.json",
-    servicesPackage = "io.github.darthakiranihil.konna.entity.service"
-)
 public class KEntityComponent extends KComponent {
 
     protected final KEntityComponentConfig config;

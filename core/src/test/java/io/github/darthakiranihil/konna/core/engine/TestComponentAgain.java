@@ -20,11 +20,6 @@ import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherServi
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import org.jspecify.annotations.NullMarked;
 
-@KComponentMetaInfo(
-    name = "TestComponentAgain",
-    configFilename = "classpath:test_config.json",
-    servicesPackage = "io.github.darthakiranihil.konna.core.engine.impl"
-)
 @NullMarked
 public class TestComponentAgain extends KComponent {
     public TestComponentAgain(

@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.app.KFrameEvent;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
@@ -43,9 +42,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Darth Akira Nihil
  */
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "RenderService"
-)
 public class KRenderService extends KObject implements KService {
 
     /**

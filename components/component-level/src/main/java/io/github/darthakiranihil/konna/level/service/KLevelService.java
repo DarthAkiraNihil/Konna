@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
@@ -49,9 +48,6 @@ import org.jspecify.annotations.Nullable;
  */
 
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "LevelService"
-)
 @KRequiresEvent(name = "levelLoaded", simple = false, type = KLevel.class)
 @KRequiresEvent(name = "levelUnloaded")
 @SuppressWarnings("FieldCanBeLocal")
