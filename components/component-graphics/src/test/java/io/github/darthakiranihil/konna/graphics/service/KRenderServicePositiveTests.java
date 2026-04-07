@@ -68,7 +68,7 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
             var renderServiceResult = KStandardTestClass.context
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Graphics.RenderService"))
+                .filter(o -> o.object().name().equals("RenderService"))
                 .findFirst();
 
             Assertions.assertTrue(renderServiceResult.isPresent());

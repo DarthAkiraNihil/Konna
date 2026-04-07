@@ -88,7 +88,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         var serviceOpt =  this.realContext
             .listObjects()
             .stream()
-            .filter(o -> o.object().name().equals("Level.LevelEntityManagementService"))
+            .filter(o -> o.object().name().equals("LevelEntityManagementService"))
             .findFirst();
 
         Assertions.assertTrue(serviceOpt.isPresent());

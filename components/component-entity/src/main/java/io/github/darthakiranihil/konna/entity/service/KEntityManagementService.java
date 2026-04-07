@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
@@ -35,7 +35,6 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityBehaviour;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
-import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -48,10 +47,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Darth Akira Nihil
  */
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "EntityManagementService"
-)
-public class KEntityManagementService extends KObject {
+public class KEntityManagementService extends KObject implements KService {
 
     /**
      * Description of task that runs {@link KEntityBehaviour#update()} method of all active
@@ -98,8 +94,7 @@ public class KEntityManagementService extends KObject {
     private final Queue<BehaviourProcessingData> behaviourProcessingQueue;
 
     private final KFrameTaskScheduler frameTaskScheduler;
-
-    private @Nullable KMessenger messenger;
+    private final KMessenger messenger;
 
 
     /**
@@ -107,21 +102,26 @@ public class KEntityManagementService extends KObject {
      * @param activator Activator to delete entities
      * @param entityFactory Entity factory for create entities
      * @param frameTaskScheduler Frame task scheduler to schedule its tasks.
+     * @param messenger Messenger created inside
+     *                  {@link io.github.darthakiranihil.konna.entity.KEntityComponent}
+     *                  to send messages
      */
     public KEntityManagementService(
         @KInject final KActivator activator,
         @KInject final KEntityFactory entityFactory,
-        @KInject final KFrameTaskScheduler frameTaskScheduler
+        @KInject final KFrameTaskScheduler frameTaskScheduler,
+        final KMessenger messenger
     ) {
 
         super(
-            "Entity.EntityManagementService",
+            "EntityManagementService",
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
         this.activator = activator;
         this.entityFactory = entityFactory;
         this.frameTaskScheduler = frameTaskScheduler;
+        this.messenger = messenger;
 
         this.activeEntities = new HashMap<>();
         this.inactiveEntities = new HashMap<>();
@@ -310,22 +310,10 @@ public class KEntityManagementService extends KObject {
 
     }
 
-    /**
-     * Sets messenger for this service.
-     * @param messenger Messenger of Entity component
-     */
-    public void setMessenger(final KMessenger messenger) {
-        this.messenger = messenger;
-    }
-
     private void sendEntityMessage(
         final KEntity entity,
         final String messageId
     ) {
-
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("id", entity.id());

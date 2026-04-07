@@ -48,8 +48,8 @@ public class KLevelComponentPositiveTests extends KStandardTestClass {
                 "event_registerers": [
                     "io.github.darthakiranihil.konna.test.KEmptyEventRegisterer"
                 ],
-                "components": [
-                    "io.github.darthakiranihil.konna.level.KLevelComponent"
+                "component_loaders": [
+                    "io.github.darthakiranihil.konna.level.KLevelComponentLoader"
                 ],
                 "frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {

@@ -16,16 +16,10 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
@@ -456,21 +450,28 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  */
 @KContainerModifier
 @KSingleton
-@KComponentMetaInfo(
-    name = "Level",
-    configFilename = "classpath:config/level.json",
-    servicesPackage = "io.github.darthakiranihil.konna.level.service"
-)
 public class KLevelComponent extends KComponent {
 
+    /**
+     * Component's configuration.
+     */
+    protected final KLevelComponentConfig config;
+
+    /**
+     * Constructs the component.
+     * @param ctx Engine context
+     * @param levelService Level service instance
+     * @param levelEntityManagementService Level entity management service instance
+     * @param config Component's configuration
+     */
     public KLevelComponent(
-        @KInject final KServiceLoader serviceLoader,
-        final String name,
         final KEngineContext ctx,
-        final String servicesPackage,
-        final KJsonValue config
+        final KLevelService levelService,
+        final KLevelEntityManagementService levelEntityManagementService,
+        final KLevelComponentConfig config
     ) {
-        super(serviceLoader, name, ctx, servicesPackage, config);
+        super("Level", ctx, new KService[] {levelService, levelEntityManagementService});
+        this.config = config;
     }
 
     @Override
@@ -483,33 +484,4 @@ public class KLevelComponent extends KComponent {
         };
     }
 
-    @Override
-    protected void applyConfig(final KJsonValue config) {
-        KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
-        KLevelComponentConfig.getSchema().validate(config);
-        KLevelComponentConfig deserializedConfig = deserializer.deserialize(
-            config,
-            KLevelComponentConfig.class
-        );
-        if (deserializedConfig == null) {
-            throw new KComponentLoadingException("Could not read component config");
-        }
-
-        KContainer container = this.ctx.getContainer();
-        container.add(KLevelLoader.class, deserializedConfig.levelLoaderClass());
-
-    }
-
-    @Override
-    public void postInit() {
-        KLevelService levelService = this.ctx.createObject(
-            KLevelService.class
-        );
-        KLevelEntityManagementService levelEntityManagementService = this.ctx.createObject(
-            KLevelEntityManagementService.class
-        );
-
-        levelService.setMessenger(this.messenger);
-        levelEntityManagementService.setMessenger(this.messenger);
-    }
 }

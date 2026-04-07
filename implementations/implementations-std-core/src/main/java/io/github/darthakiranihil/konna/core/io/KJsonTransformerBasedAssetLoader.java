@@ -23,8 +23,9 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Implementation of {@link KAssetLoader} that uses JSON files to read asset definitions from,
@@ -112,11 +113,7 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
         for (KResource assetResource: assetsResources) {
 
             if (!assetResource.name().endsWith(".json")) {
-                try {
-                    assetResource.close();
-                } catch (IOException e) {
-                    // ...
-                }
+                assetResource.close();
                 continue;
             }
 
@@ -154,11 +151,7 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
                 def
             );
 
-            try {
-                assetResource.close();
-            } catch (IOException e) {
-                KSystemLogger.warning("asset_loader", e);
-            }
+            assetResource.close();
             indexedAssets++;
         }
 

@@ -37,8 +37,8 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
             "route_configurers": [],\
             "event_registerers": [],\
             "event_queue": "io.github.darthakiranihil.konna.core.message.KStandardEventQueue",\
-            "components": [\
-            "io.github.darthakiranihil.konna.core.engine.TestComponent"\
+            "component_loaders": [\
+            "io.github.darthakiranihil.konna.core.engine.TestComponentLoader"\
             ],"frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {
                     "size": {
@@ -64,9 +64,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
             );
 
             Assertions.assertNotNull(loadedConfig);
-            Assertions.assertEquals(TestComponent.class, loadedConfig.components()[0]);
-            Assertions.assertEquals(KStandardComponentLoader.class, loadedConfig.componentLoader());
-            Assertions.assertEquals(KStandardServiceLoader.class, loadedConfig.serviceLoader());
+            Assertions.assertEquals(TestComponentLoader.class, loadedConfig.componentLoaders()[0]);
             Assertions.assertEquals(KTestContextLoader.class, loadedConfig.contextLoader());
             Assertions.assertEquals(0, loadedConfig.eventRegisterers().size());
             Assertions.assertEquals(0, loadedConfig.messageRoutesConfigurers().size());

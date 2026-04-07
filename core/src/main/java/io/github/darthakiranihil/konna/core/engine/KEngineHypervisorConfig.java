@@ -28,11 +28,9 @@ import java.util.List;
 /**
  * Record class of initial Konna hypervisor configuration.
  * @param contextLoader Class of engine context loader
- * @param componentLoader Class of engine component loader
- * @param serviceLoader Class of component services loader
  * @param messageRoutesConfigurers List of engine message routes configurers
  * @param eventRegisterers List of engine event registerers
- * @param components List of engine components classes to load
+ * @param componentLoaders List of engine components classes to load
  * @param frameLoader Class of application's frame loader
  * @param frameSpawnOptions Initial spawn options of application's frame
  *
@@ -43,12 +41,6 @@ public record KEngineHypervisorConfig(
     @KJsonSerialized @KJsonCustomName(name = ENGINE_CONTEXT_LOADER_KEY)
     Class<? extends KEngineContextLoader> contextLoader,
 
-    @KJsonSerialized @KJsonCustomName(name = COMPONENT_LOADER_KEY)
-    Class<? extends KComponentLoader> componentLoader,
-
-    @KJsonSerialized @KJsonCustomName(name = SERVICE_LOADER_KEY)
-    Class<? extends KServiceLoader> serviceLoader,
-
     @KJsonSerialized @KJsonCustomName(name = MESSAGE_ROUTE_CONFIGURERS_KEY)
     @KJsonArray(elementType = Class.class)
     List<Class<? extends KMessageRoutesConfigurer>> messageRoutesConfigurers,
@@ -57,9 +49,9 @@ public record KEngineHypervisorConfig(
     @KJsonArray(elementType = Class.class)
     List<Class<? extends KEventRegisterer>> eventRegisterers,
 
-    @KJsonSerialized @KJsonCustomName(name = COMPONENTS_KEY)
+    @KJsonSerialized @KJsonCustomName(name = COMPONENTS_LOADERS_KEY)
     @KJsonArray(elementType = Class.class)
-    Class<? extends KComponent>[] components,
+    Class<? extends KComponentLoader>[] componentLoaders,
 
     @KJsonSerialized @KJsonCustomName(name = FRAME_LOADER_KEY)
     Class<? extends KFrameLoader> frameLoader,
@@ -69,9 +61,7 @@ public record KEngineHypervisorConfig(
 ) {
 
     private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";
-    private static final String COMPONENT_LOADER_KEY = "component_loader";
-    private static final String SERVICE_LOADER_KEY = "service_loader";
-    private static final String COMPONENTS_KEY = "components";
+    private static final String COMPONENTS_LOADERS_KEY = "component_loaders";
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
     private static final String FRAME_LOADER_KEY = "frame_loader";
@@ -85,12 +75,6 @@ public record KEngineHypervisorConfig(
         return KJsonObjectValidatorBuilder
             .create()
             .withField(ENGINE_CONTEXT_LOADER_KEY, KJsonValueType.STRING)
-            .withValidator(new KJsonValueIsClassValidator())
-            .finishField()
-            .withField(COMPONENT_LOADER_KEY, KJsonValueType.STRING)
-            .withValidator(new KJsonValueIsClassValidator())
-            .finishField()
-            .withField(SERVICE_LOADER_KEY, KJsonValueType.STRING)
             .withValidator(new KJsonValueIsClassValidator())
             .finishField()
             .withField(MESSAGE_ROUTE_CONFIGURERS_KEY, KJsonValueType.ARRAY)
@@ -109,7 +93,7 @@ public record KEngineHypervisorConfig(
                     .build()
             )
             .finishField()
-            .withField(COMPONENTS_KEY, KJsonValueType.ARRAY)
+            .withField(COMPONENTS_LOADERS_KEY, KJsonValueType.ARRAY)
             .withValidator(
                 KJsonArrayValidatorBuilder
                     .create(KJsonValueType.STRING)

@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
-import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -29,7 +28,6 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -108,8 +106,6 @@ public final class KShaderCollection extends KObject implements KAssetCollection
 
             return compiledShader;
 
-        } catch (IOException e) {
-            throw new KIoException(e);
         }
 
     }

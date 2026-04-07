@@ -17,8 +17,10 @@
 package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.engine.*;
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
+import io.github.darthakiranihil.konna.core.engine.TestComponent;
+import io.github.darthakiranihil.konna.core.engine.TestComponentAgain;
 import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.impl.TestService;
@@ -27,7 +29,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -43,21 +44,15 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     public KStandardMessengerNegativeTests() {
 
-        KServiceLoader serviceLoader = new KStandardServiceLoader();
-
         try {
-            this.component1 = new TestComponent(serviceLoader,
-                "TestComponent",
+            this.component1 = new TestComponent(
                 KStandardTestClass.context,
-                "io.github.darthakiranihil.konna.core.engine.impl",
-                KJsonValue.fromMap(new HashMap<>())
+                new TestService()
             );
 
-            this.component2 = new TestComponentAgain(serviceLoader,
-                "TestComponentAgain",
+            this.component2 = new TestComponentAgain(
                 KStandardTestClass.context,
-                "io.github.darthakiranihil.konna.core.engine.another_impl",
-                KJsonValue.fromMap(new HashMap<>())
+                new TestAnotherService()
             );
 
             this.messageSystem = KStandardTestClass.context;

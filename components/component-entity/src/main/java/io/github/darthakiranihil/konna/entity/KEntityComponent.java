@@ -16,16 +16,10 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
@@ -79,7 +73,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                     </li>
  *                     <li>
  *                         {@code data} -
- *                         {@link KJsonValue} -
+ *                         {@link io.github.darthakiranihil.konna.core.data.json.KJsonValue} -
  *                         data of entity to be restored
  *                     </li>
  *                 </ul>
@@ -245,21 +239,26 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  */
 @KContainerModifier
 @KSingleton
-@KComponentMetaInfo(
-    name = "Entity",
-    configFilename = "classpath:config/entity.json",
-    servicesPackage = "io.github.darthakiranihil.konna.entity.service"
-)
 public class KEntityComponent extends KComponent {
 
+    /**
+     * Component's config.
+     */
+    protected final KEntityComponentConfig config;
+
+    /**
+     * Constructs this component.
+     * @param ctx Engine context
+     * @param entityManagementService Entity management service instance
+     * @param config Component's config
+     */
     public KEntityComponent(
-        @KInject final KServiceLoader serviceLoader,
-        final String name,
         final KEngineContext ctx,
-        final String servicesPackage,
-        final KJsonValue config
+        final KEntityManagementService entityManagementService,
+        final KEntityComponentConfig config
     ) {
-        super(serviceLoader, name, ctx, servicesPackage, config);
+        super("Entity", ctx, new KService[] {entityManagementService});
+        this.config = config;
     }
 
     @Override
@@ -269,30 +268,4 @@ public class KEntityComponent extends KComponent {
         };
     }
 
-    @Override
-    protected void applyConfig(final KJsonValue config) {
-
-        KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
-        KEntityComponentConfig.getSchema().validate(config);
-        KEntityComponentConfig cfg = deserializer.deserialize(config, KEntityComponentConfig.class);
-        if (cfg == null) {
-            throw new KComponentLoadingException("Could not read component config");
-        }
-
-        KContainer container = this.ctx.getContainer();
-
-        container.add(KEntityFactory.class, cfg.entityFactoryClass());
-
-    }
-
-    @Override
-    public void postInit() {
-
-        KEntityManagementService activeEntitiesService = this.ctx.createObject(
-            KEntityManagementService.class
-        );
-
-        activeEntitiesService.setMessenger(this.messenger);
-
-    }
 }

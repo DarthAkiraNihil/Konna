@@ -20,7 +20,6 @@ package io.github.darthakiranihil.konna.compiler.core;
 import com.google.auto.service.AutoService;
 import com.palantir.javapoet.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KMessageItself;
@@ -29,10 +28,7 @@ import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.tools.Diagnostic;
@@ -49,7 +45,7 @@ import java.util.Set;
  * <p>
  * Additionally, it validates occurrance of the endpoint method. The processor will fail
  * if the endpoint is located in a non-service class
- * (not annotated with {@link KComponentServiceMetaInfo}) or its parameters are not annotated
+ * (not implementing KService interface) or its parameters are not annotated
  * with {@link KBodyValue} or {@link KInject}.
  * </p>
  * <p>
@@ -84,6 +80,15 @@ public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationPr
         "io.github.darthakiranihil.konna.core.message.except",
         "KInvalidMessageException"
     );
+
+    private TypeElement serviceInterface;
+
+    @Override
+    public synchronized void init(final ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        this.serviceInterface = this.elementUtils
+            .getTypeElement("io.github.darthakiranihil.konna.core.engine.KService");
+    }
 
     @Override
     public boolean process(
@@ -135,9 +140,7 @@ public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationPr
     ) {
 
         TypeElement enclosedType = (TypeElement) endpoint.getEnclosingElement();
-        KComponentServiceMetaInfo metaInfo = enclosedType
-            .getAnnotation(KComponentServiceMetaInfo.class);
-        if (metaInfo == null) {
+        if (!this.typeUtils.isAssignable(enclosedType.asType(), this.serviceInterface.asType())) {
             this.messager.printMessage(
                 Diagnostic.Kind.ERROR,
                 String.format(
@@ -145,14 +148,14 @@ public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationPr
                     enclosedType.getQualifiedName(),
                     endpoint.getSimpleName(),
                         "endpoint method does not belong to a component service"
-                    +   "(that must be annotated with KComponentServiceMetaInfo)."
+                    +   "(that must implement KService interface)."
                 )
             );
             return null;
         }
 
         return new String[] {
-            metaInfo.name(),
+            enclosedType.getSimpleName().toString(),
             this
                 .elementUtils
                 .getPackageOf(enclosedType)
@@ -226,7 +229,7 @@ public final class KServiceEndpointAnnotationProcessor extends KBaseAnnotationPr
                     route
                 )
             )
-            .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+            .addModifiers(Modifier.FINAL)
             .addSuperinterface(
                 ClassName.get(
                     "io.github.darthakiranihil.konna.core.engine",

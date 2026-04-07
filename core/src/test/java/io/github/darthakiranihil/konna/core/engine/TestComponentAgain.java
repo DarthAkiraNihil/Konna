@@ -16,36 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.struct.KPair;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.List;
-
-@KComponentMetaInfo(
-    name = "TestComponentAgain",
-    configFilename = "classpath:test_config.json",
-    servicesPackage = "io.github.darthakiranihil.konna.core.engine.impl"
-)
 @NullMarked
 public class TestComponentAgain extends KComponent {
     public TestComponentAgain(
-        @KInject KServiceLoader serviceLoader,
-        String name,
         KEngineContext ctx,
-        String servicesPackage,
-        KJsonValue config
+        TestAnotherService anotherService
     ) {
-        super(serviceLoader, name, ctx, servicesPackage, config);
-    }
-
-    @Override
-    protected void applyConfig(KJsonValue config) {
-
+        super("TestComponentAgain", ctx, new KService[]{ anotherService });
     }
 
     @Override

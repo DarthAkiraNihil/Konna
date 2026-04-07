@@ -47,8 +47,8 @@ public class KEntityComponentPositiveTests extends KStandardTestClass {
                 "event_registerers": [
                     "io.github.darthakiranihil.konna.test.KEmptyEventRegisterer"
                 ],
-                "components": [
-                    "io.github.darthakiranihil.konna.entity.KEntityComponent"
+                "component_loaders": [
+                    "io.github.darthakiranihil.konna.entity.KEntityComponentLoader"
                 ],
                 "frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {

@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.app.KFrameEvent;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
@@ -42,10 +42,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Darth Akira Nihil
  */
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "RenderService"
-)
-public class KRenderService extends KObject {
+public class KRenderService extends KObject implements KService {
 
     /**
      * Description of task that renders all objects that is contained by the service.
@@ -74,14 +71,14 @@ public class KRenderService extends KObject {
         @KInject final KFrameTaskScheduler frameTaskScheduler,
         @KInject final KFrame frame
     ) {
-        super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super("RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
 
         this.currentRenderables = new CopyOnWriteArrayList<>();
 
 
         KSystemLogger.debug(
-            "Graphics.RenderService",
+            this.name,
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
