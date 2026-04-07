@@ -88,7 +88,7 @@ public class KLevelService extends KObject implements KService {
         @KInject final KLevelLoader levelLoader,
         final KMessenger messenger
     ) {
-        super("Level.LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super("LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
         this.levelCollection = levelCollection;
         this.generatorMetadataCollection = generatorMetadataCollection;

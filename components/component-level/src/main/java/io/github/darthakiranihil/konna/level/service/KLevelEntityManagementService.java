@@ -114,7 +114,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
         final KMessenger messenger
     ) {
         super(
-            "Level.LevelEntityManagementService",
+            "LevelEntityManagementService",
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 

@@ -81,7 +81,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .filter(o -> o.object().name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -124,7 +124,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .filter(o -> o.object().name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -178,7 +178,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .filter(o -> o.object().name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -221,7 +221,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Level.LevelService"))
+                .filter(o -> o.object().name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
