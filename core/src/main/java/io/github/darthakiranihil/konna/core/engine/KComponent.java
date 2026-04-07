@@ -52,7 +52,7 @@ public abstract class KComponent extends KObject {
         return packed;
     }
 
-    private final Map<String, KServiceEntry> services;
+    protected final Map<String, KServiceEntry> services;
 
     /**
      * Engine context in which this component has been created.

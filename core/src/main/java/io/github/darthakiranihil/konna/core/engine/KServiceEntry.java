@@ -38,7 +38,7 @@ import java.util.Objects;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-final class KServiceEntry {
+public final class KServiceEntry {
 
     @SuppressWarnings("unchecked")
     private static Map<String, KPair<KMessageToEndpointConverter, Method>> getServiceEndpoints(

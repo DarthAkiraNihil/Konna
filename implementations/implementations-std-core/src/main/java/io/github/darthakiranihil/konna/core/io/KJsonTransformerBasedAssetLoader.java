@@ -112,11 +112,7 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
         for (KResource assetResource: assetsResources) {
 
             if (!assetResource.name().endsWith(".json")) {
-                try {
-                    assetResource.close();
-                } catch (IOException e) {
-                    // ...
-                }
+                assetResource.close();
                 continue;
             }
 
@@ -154,11 +150,7 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
                 def
             );
 
-            try {
-                assetResource.close();
-            } catch (IOException e) {
-                KSystemLogger.warning("asset_loader", e);
-            }
+            assetResource.close();
             indexedAssets++;
         }
 

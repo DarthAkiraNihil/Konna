@@ -17,13 +17,20 @@
 package io.github.darthakiranihil.konna.core.engine.another_impl;
 
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import org.jspecify.annotations.NonNull;
 
 @KComponentServiceMetaInfo(
     name = "TestAnotherService"
 )
-public class TestAnotherService {
+public class TestAnotherService implements KService {
+
+    @Override
+    public @NonNull String name() {
+        return "TestAnotherService";
+    }
 
     private int testVar = -1;
 

@@ -248,7 +248,7 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
                     loadedDefinitionsOfType.put(dataEntry.getKey(), def);
                 }
 
-            } catch (IOException | KJsonParseException e) {
+            } catch (KJsonParseException e) {
                 throw new KAssetDefinitionError(e.getMessage());
             }
 

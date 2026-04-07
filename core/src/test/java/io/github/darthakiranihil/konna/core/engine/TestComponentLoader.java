@@ -16,26 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherService;
-import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import org.jspecify.annotations.NullMarked;
 
-@KComponentMetaInfo(
-    name = "TestComponentAgain",
-    configFilename = "classpath:test_config.json",
-    servicesPackage = "io.github.darthakiranihil.konna.core.engine.impl"
-)
 @NullMarked
-public class TestComponentAgain extends KComponent {
-    public TestComponentAgain(
-        KEngineContext ctx,
-        TestAnotherService anotherService
-    ) {
-        super("TestComponentAgain", ctx, new KService[]{ anotherService });
-    }
+public class TestComponentLoader implements KComponentLoader {
 
     @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[0];
+    public KComponent load(
+        KEngineContext ctx,
+        KApplicationFeatures features,
+        KSystemFeatures systemConfig
+    ) {
+        return new TestComponent(
+            ctx,
+            new TestService()
+        );
     }
 }

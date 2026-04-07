@@ -108,8 +108,6 @@ public final class KShaderCollection extends KObject implements KAssetCollection
 
             return compiledShader;
 
-        } catch (IOException e) {
-            throw new KIoException(e);
         }
 
     }

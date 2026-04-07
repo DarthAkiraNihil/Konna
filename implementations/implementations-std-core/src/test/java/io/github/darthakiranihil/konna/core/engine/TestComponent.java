@@ -16,8 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import org.jspecify.annotations.NullMarked;
 
@@ -30,18 +29,10 @@ import org.jspecify.annotations.NullMarked;
 public class TestComponent extends KComponent {
 
     public TestComponent(
-        @KInject KServiceLoader serviceLoader,
-        String name,
         KEngineContext ctx,
-        String servicesPackage,
-        KJsonValue config
+        TestService testService
     ) {
-        super(serviceLoader, name, ctx, servicesPackage, config);
-    }
-
-    @Override
-    protected void applyConfig(KJsonValue config) {
-
+        super("TestComponent", ctx, new KService[]{ testService });
     }
 
     @Override

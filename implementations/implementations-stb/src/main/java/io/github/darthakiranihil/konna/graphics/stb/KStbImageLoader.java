@@ -92,8 +92,6 @@ public class KStbImageLoader extends KObject implements KImageLoader {
 
             return new KImage(loaded, width.get(), height.get());
 
-        } catch (IOException e) {
-            throw new KIoException(e);
         }
 
     }
