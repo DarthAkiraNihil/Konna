@@ -18,14 +18,19 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
+import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Convenience wrapper for a component service.
@@ -33,20 +38,69 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KServiceEntry {
+final class KServiceEntry {
 
-    private final Object service;
-    private final KActivator activator;
+    @SuppressWarnings("unchecked")
+    private static Map<String, KPair<KMessageToEndpointConverter, Method>> getServiceEndpoints(
+        final KService service
+    ) {
+        Class<? extends KService> serviceClass = service.getClass();
+        String serviceName = service.name();
+
+        Method[] methods = serviceClass.getDeclaredMethods();
+        Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints = new HashMap<>();
+
+        for (var method: methods) {
+            if (!method.isAnnotationPresent(KServiceEndpoint.class)) {
+                continue;
+            }
+
+            method.setAccessible(true);
+            KServiceEndpoint endpointMeta = method.getAnnotation(KServiceEndpoint.class);
+            var rawConverterClass = KClassUtils
+                .getForName(
+                    String.format(
+                        "%s.generated.%s$$EndpointConverter_%s",
+                        serviceClass.getPackageName(),
+                        serviceName,
+                        endpointMeta.route()
+                    )
+                );
+
+            if (!KMessageToEndpointConverter.class.isAssignableFrom(rawConverterClass)) {
+                throw new KServiceLoadingException(
+                    "Found converter class is not a valid converter."
+                );
+            }
+
+            Class<? extends KMessageToEndpointConverter>
+                converterClass = (Class<? extends KMessageToEndpointConverter>) rawConverterClass;
+
+            KMessageToEndpointConverter converter = KReflectionUtils.newInstance(
+                Objects.requireNonNull(KReflectionUtils.getConstructor(converterClass))
+            );
+
+            endpoints.put(
+                endpointMeta.route(),
+                new KPair<>(converter, method)
+            );
+        }
+
+        return endpoints;
+    }
+
+    private final KService service;
     private final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints;
+    private final KActivator activator;
 
     public KServiceEntry(
-        final Object service,
-        final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints,
+        final KService service,
         final KActivator activator
     ) {
         this.service = service;
-        this.endpoints = endpoints;
         this.activator = activator;
+
+        this.endpoints = KServiceEntry.getServiceEndpoints(service);
     }
 
     /**
@@ -59,7 +113,7 @@ public final class KServiceEntry {
     public void callEndpoint(
         final String route,
         final KMessage message
-        ) {
+    ) {
         if (!this.endpoints.containsKey(route)) {
             throw new KEndpointRoutingException(
                 String.format(

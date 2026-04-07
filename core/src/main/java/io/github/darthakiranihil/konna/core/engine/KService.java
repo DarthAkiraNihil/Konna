@@ -16,13 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import java.util.List;
-
 public interface KService {
-
-    static List<String> endpointsOf() {
-        return List.of();
-    }
 
     String name();
 
