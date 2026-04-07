@@ -77,7 +77,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
         @KInject final KActivator activator
     ) {
         super(
-            "KStandardMessageSystem",
+            "StandardMessageSystem",
             KStructUtils.setOfTags(
                 KTag.DefaultTags.SYSTEM,
                 KTag.DefaultTags.STD

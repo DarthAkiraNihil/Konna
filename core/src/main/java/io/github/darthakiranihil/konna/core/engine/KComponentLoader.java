@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+
 import java.util.Map;
 
 /**
@@ -44,5 +47,13 @@ public interface KComponentLoader {
         KServiceLoader serviceLoader,
         Map<String, KComponent> loadedComponentMap
     );
+
+    default KComponent load(
+        KEngineContext ctx,
+        KApplicationFeatures features,
+        KSystemFeatures systemConfig
+    ) {
+        return null;
+    }
 
 }
