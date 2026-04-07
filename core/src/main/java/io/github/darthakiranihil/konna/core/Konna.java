@@ -70,6 +70,7 @@ public final class Konna extends KObject implements Runnable {
      * Standard constructor.
      * @param args Application args provided by {@code main}
      *             method.
+     * @param bootstrap Bootstrap config
      * @see Konna#run()
      */
     public Konna(final String[] args, final KonnaBootstrapConfig bootstrap) {
@@ -87,6 +88,7 @@ public final class Konna extends KObject implements Runnable {
      *             method.
      * @param customArgs Options of custom args that will be used by {@link KArgumentParser}
      *                   to parse them into application features
+     * @param bootstrap Bootstrap config
      * @see Konna#run()
      */
     public Konna(
