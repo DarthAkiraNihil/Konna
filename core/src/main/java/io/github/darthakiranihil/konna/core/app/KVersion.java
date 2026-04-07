@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.app;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Simple container for version data (based on semantic versioning)
+ * Simple container for version data (based on semantic versioning).
  * @param major Major version number
  * @param minor Minor version number
  * @param revision Revision number
@@ -63,7 +63,7 @@ public record KVersion(
         int major,
         int minor,
         int revision,
-        String postfix
+        final String postfix
     ) {
         this(major, minor, revision, null, postfix);
     }

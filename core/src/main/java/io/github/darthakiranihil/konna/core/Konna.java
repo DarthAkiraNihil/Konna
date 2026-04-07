@@ -52,6 +52,9 @@ import java.util.Objects;
  */
 public final class Konna extends KObject implements Runnable {
 
+    /**
+     * Konna's version.
+     */
     public static final KVersion VERSION = new KVersion(0, 5, 0, "dev");
 
     private static final String BOOTSTRAP_CONFIG = "bootstrap.json";
