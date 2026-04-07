@@ -25,7 +25,6 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessage;
@@ -92,11 +91,11 @@ public class KEngineHypervisor extends KObject {
 
     private final KSimpleEvent ready;
 
-    private boolean debug;
-    private final DoubleSummaryStatistics fps;
-    private int maxFps;
-    private long nanosPerFrame;
+    private KSystemFeatures systemFeatures;
+
+    private final DoubleSummaryStatistics fpsStats;
     private final KUniversalMap fpsData;
+    private long nanosPerFrame;
 
     /**
      * Constructs hypervisor with provided config.
@@ -117,9 +116,9 @@ public class KEngineHypervisor extends KObject {
         this.ctx = null;
 
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
+        this.systemFeatures = new KSystemFeatures();
 
-        this.maxFps = -1;
-        this.fps = new DoubleSummaryStatistics();
+        this.fpsStats = new DoubleSummaryStatistics();
         this.fpsData = new KUniversalMap();
     }
 
@@ -132,7 +131,9 @@ public class KEngineHypervisor extends KObject {
      */
     public void launch(final KApplicationFeatures features) {
 
-        this.processSystemFeatures(features);
+        this.systemFeatures = new KSystemFeatures(features);
+        this.processSystemFeatures();
+
         KEngineContextLoader contextLoader;
         try {
             contextLoader = this.config.contextLoader().getDeclaredConstructor().newInstance();
@@ -146,7 +147,7 @@ public class KEngineHypervisor extends KObject {
 
         this.ctx = contextLoader.load(features);
         this.frameTaskSystem = this.ctx.createObject(KFrameTaskSystem.class);
-        this.frameTaskSystem.setIsDebug(this.debug);
+        this.frameTaskSystem.setIsDebug(this.systemFeatures.isDebugEnabled());
 
         this.registerSystemEvents();
 
@@ -230,7 +231,7 @@ public class KEngineHypervisor extends KObject {
             "Components' post-init is completed"
         );
 
-        if (this.debug) {
+        if (this.systemFeatures.isDebugEnabled()) {
 
             KClasspathSearchEngine classpath = ctx.createObject(KClasspathSearchEngine.class);
 
@@ -324,14 +325,14 @@ public class KEngineHypervisor extends KObject {
 
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 long sleepTime = deltaTime.getNano() + this.nanosPerFrame;
-                if (this.maxFps != -1 && sleepTime > 0) {
+                if (this.systemFeatures.getMaxFps() != -1 && sleepTime > 0) {
                     KThreadUtils.sleepForNano(sleepTime);
                     deltaTime = Duration.between(beginTime, Instant.now());
                 }
                 var currentFps = ONE_SEC_IN_NANOS / deltaTime.getNano();
-                this.fps.accept(currentFps);
+                this.fpsStats.accept(currentFps);
                 this.fpsData.put("fps", currentFps);
-                this.fpsData.put("avg_fps", (float) this.fps.getAverage());
+                this.fpsData.put("avg_fps", (float) this.fpsStats.getAverage());
                 this.ctx.deliverMessageSync(
                     KMessage.metrics(
                         "Konna.fps",
@@ -415,30 +416,20 @@ public class KEngineHypervisor extends KObject {
         }
     }
 
-    private void processSystemFeatures(final KApplicationFeatures features) {
-        String debugFeature = features.getFeature("debug");
-        if (debugFeature != null && debugFeature.equals("true")) {
-            this.debug = true;
+    private void processSystemFeatures() {
+        if (this.systemFeatures.isDebugEnabled()) {
             KSystemLogger.info(
                 this.name,
                 "Debug mode is enabled"
             );
         }
-        String logToFileFeature = features.getFeature("log-to-file");
-        if (logToFileFeature != null && logToFileFeature.equals("true")) {
+
+        if (this.systemFeatures.isFileLoggingActive()) {
             KSystemLogger.activateFileLogging();
         }
 
-        String logLevel = features.getFeature("log-level");
-        if (logLevel != null) {
-            KSystemLogger.setLogLevel(KLogLevel.valueOf(logLevel));
-        }
-
-        String maxFpsFeature = features.getFeature("max-fps");
-        if (maxFpsFeature != null) {
-            this.maxFps = Integer.parseInt(maxFpsFeature);
-        }
-        this.nanosPerFrame = (long) (ONE_SEC_IN_NANOS / this.maxFps);
+        KSystemLogger.setLogLevel(this.systemFeatures.getLogLevel());
+        this.nanosPerFrame = (long) (ONE_SEC_IN_NANOS / this.systemFeatures.getMaxFps());
     }
 
 }

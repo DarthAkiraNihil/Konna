@@ -40,6 +40,8 @@ public class KStandardArgumentParser implements KArgumentParser {
 
         for (var option: options) {
 
+            String value = null;
+            String featureName = option.longKey();
             for (String arg: args) {
                 String shortQualifier = String.format(
                     "-%s%s",
@@ -50,10 +52,9 @@ public class KStandardArgumentParser implements KArgumentParser {
                 String longQualifier = String.format(
                     "--%s%s",
                     option.kQualified() ? "K" : "",
-                    option.longKey()
+                    featureName
                 );
 
-                String value;
                 if (arg.startsWith(shortQualifier)) {
                     value = arg.substring(shortQualifier.length());
                 } else if (arg.startsWith(longQualifier)) {
@@ -67,24 +68,25 @@ public class KStandardArgumentParser implements KArgumentParser {
                     continue;
                 }
 
-                if (value.isEmpty()) {
-                    if (option.defaultValue() == null) {
-                        throw KArgumentParseException.fieldIsRequired(arg);
-                    } else {
-                        value = option.defaultValue();
-                    }
-                }
-
-                if (!option.validator().validate(value)) {
-                    throw KArgumentParseException.validationFailed(arg);
-                }
-                if (features.containsKey(option.longKey())) {
-                    throw KArgumentParseException.argumentAlreadyParsed(arg);
-                }
-                features.put(option.longKey(), value);
                 break;
 
             }
+
+            if (value == null || value.isEmpty()) {
+                if (option.defaultValue() == null) {
+                    throw KArgumentParseException.fieldIsRequired(featureName);
+                } else {
+                    value = option.defaultValue();
+                }
+            }
+
+            if (!option.validator().validate(value)) {
+                throw KArgumentParseException.validationFailed(featureName);
+            }
+            if (features.containsKey(featureName)) {
+                throw KArgumentParseException.argumentAlreadyParsed(featureName);
+            }
+            features.put(featureName, value);
 
         }
 

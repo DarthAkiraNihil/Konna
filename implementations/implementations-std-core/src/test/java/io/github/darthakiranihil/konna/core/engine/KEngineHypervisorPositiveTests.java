@@ -75,7 +75,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
         Assertions.assertNotNull(loadedConfig);
         KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
-        hypervisor.launch(new KStandardApplicationFeatures(new HashMap<>()));
+        hypervisor.launch(new KStandardApplicationFeatures(Map.of("log-level", "INFO", "max-fps", "-1")));
         try {
             Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
 
@@ -134,7 +134,7 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
         Assertions.assertNotNull(loadedConfig);
         KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
-        hypervisor.launch(new KStandardApplicationFeatures(Map.of("debug", "true")));
+        hypervisor.launch(new KStandardApplicationFeatures(Map.of("debug", "true", "log-level", "INFO", "max-fps", "-1")));
         try {
             Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
             Field loadedDebuggers = KEngineHypervisor.class.getDeclaredField("loadedDebuggers");
