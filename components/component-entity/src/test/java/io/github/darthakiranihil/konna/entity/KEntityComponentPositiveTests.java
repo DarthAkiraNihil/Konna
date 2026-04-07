@@ -81,7 +81,7 @@ public class KEntityComponentPositiveTests extends KStandardTestClass {
 
         Assertions.assertNotNull(loadedConfig);
         KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
-        hypervisor.launch(new KStandardApplicationFeatures(new HashMap<>()));
+        hypervisor.launch(new KStandardApplicationFeatures(Map.of("log-level", "INFO", "max-fps", "-1")));
         try {
             Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
 

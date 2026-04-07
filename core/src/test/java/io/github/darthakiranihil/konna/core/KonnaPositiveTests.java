@@ -55,7 +55,7 @@ public class KonnaPositiveTests extends KStandardTestClass {
             Assertions.assertNotNull(hypervisorThread.get(konnaWithOnlyDefaultArgs));
             Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithOnlyDefaultArgs));
 
-            Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa")));
+            Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa", "wawa")));
             konnaWithCustomArgs.run();
             Assertions.assertNotNull(hypervisorThread.get(konnaWithCustomArgs));
 
