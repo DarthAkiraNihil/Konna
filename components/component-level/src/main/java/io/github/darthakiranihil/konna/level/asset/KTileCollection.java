@@ -93,13 +93,12 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
                 )
             );
         }
+        
+        int tileId = asset.getInt("tile_id");
+        int opaqueness = asset.getInt("opaqueness");
+        boolean passable = asset.getBoolean("passable");
 
-        KAssetDefinition tileDefinition = asset.definition();
-        int tileId = tileDefinition.getInt("tile_id");
-        int opaqueness = tileDefinition.getInt("opaqueness");
-        boolean passable = tileDefinition.getBoolean("passable");
-
-        KAssetDefinition props = tileDefinition.getSubdefinition("properties");
+        KAssetDefinition props = asset.getSubdefinition("properties");
         Map<String, KTileProperty> readProps = this.readProps(props);
 
 

@@ -92,23 +92,22 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
             assetId,
             KTiledFontTypedef.TILED_FONT_ASSET_TYPE
         );
-        KAssetDefinition fontDefinition = asset.definition();
 
-        String name = Objects.requireNonNull(fontDefinition.getString("name"));
+        String name = Objects.requireNonNull(asset.getString("name"));
 
-        KAssetDefinition glyphSizeData = fontDefinition.getSubdefinition("glyph_size");
+        KAssetDefinition glyphSizeData = asset.getSubdefinition("glyph_size");
         KSize glyphSize = new KSize(
             glyphSizeData.getInt("width"),
             glyphSizeData.getInt("height")
         );
 
-        String faceId = Objects.requireNonNull(fontDefinition.getString("face"));
+        String faceId = Objects.requireNonNull(asset.getString("face"));
         KTexture face = this.textureCollection.getAsset(faceId);
 
         KTiledFontFormat fontFormat = this
             .activator
             .createObject(
-                fontDefinition.getClassObject(
+                asset.getClassObject(
                     "format",
                     KTiledFontFormat.class
                 )

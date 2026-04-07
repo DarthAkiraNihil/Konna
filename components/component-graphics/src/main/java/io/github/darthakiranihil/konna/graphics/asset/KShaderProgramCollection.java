@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -95,10 +94,8 @@ public final class KShaderProgramCollection
             KShaderProgramTypedef.SHADER_PROGRAM_ASSET_TYPE
         );
 
-        KAssetDefinition shaderProgramDefinition = asset.definition();
-
-        String vertexShaderAssetId = shaderProgramDefinition.getString("vertex");
-        String fragmentShaderAssetId = shaderProgramDefinition.getString("fragment");
+        String vertexShaderAssetId = asset.getString("vertex");
+        String fragmentShaderAssetId = asset.getString("fragment");
 
         KShaderProgram linkedProgram;
 

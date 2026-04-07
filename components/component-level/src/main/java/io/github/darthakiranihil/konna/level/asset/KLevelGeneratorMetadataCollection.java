@@ -56,11 +56,10 @@ public final class KLevelGeneratorMetadataCollection
             assetId,
             KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        KAssetDefinition rawNodes = definition.getSubdefinition("nodes");
-        KAssetDefinition[] rawConnections = definition.getSubdefinitionArray("connections");
-        KAssetDefinition rawConstants = definition.getSubdefinition("constants");
+        KAssetDefinition rawNodes = asset.getSubdefinition("nodes");
+        KAssetDefinition[] rawConnections = asset.getSubdefinitionArray("connections");
+        KAssetDefinition rawConstants = asset.getSubdefinition("constants");
 
         Map<String, Class<? extends KGeneratorNode>>
             nodes = new HashMap<>(rawNodes.getProperties().size());

@@ -89,10 +89,9 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
             assetId,
             KTextureTypedef.TEXTURE_ASSET_TYPE
         );
-        KAssetDefinition textureDefinition = asset.definition();
 
-        String imageFile = Objects.requireNonNull(textureDefinition.getString("image"));
-        String shaderId = Objects.requireNonNull(textureDefinition.getString("shader"));
+        String imageFile = Objects.requireNonNull(asset.getString("image"));
+        String shaderId = Objects.requireNonNull(asset.getString("shader"));
 
         KShaderProgram textureShader = shaderId.equals("default")
             ? this.shaderProgramCollection.getDefaultTextureShader()
@@ -100,8 +99,8 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         KImage image = this.imageLoader.load(imageFile);
 
-        KAssetDefinition filtering = textureDefinition.getSubdefinition("filtering");
-        KAssetDefinition wrapping = textureDefinition.getSubdefinition("wrapping");
+        KAssetDefinition filtering = asset.getSubdefinition("filtering");
+        KAssetDefinition wrapping = asset.getSubdefinition("wrapping");
 
         KTextureFiltering minFilter = filtering.getEnum("min", KTextureFiltering.class);
         KTextureFiltering magFilter = filtering.getEnum("mag", KTextureFiltering.class);

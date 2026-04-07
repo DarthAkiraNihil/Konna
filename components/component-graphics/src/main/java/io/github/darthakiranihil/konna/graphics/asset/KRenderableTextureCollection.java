@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -111,9 +110,8 @@ public final class KRenderableTextureCollection
             assetId,
             KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        KRenderableTextureSource source = definition.getEnum(
+        KRenderableTextureSource source = asset.getEnum(
             "source",
             KRenderableTextureSource.class
         );
@@ -123,7 +121,7 @@ public final class KRenderableTextureCollection
                 return KRenderableTexture.wrapIntoRectangle(assetId, topLeftCorner, texture, unit);
             }
             case SLICE_SET -> {
-                String sliceSetId = Objects.requireNonNull(definition.getString("slice_set"));
+                String sliceSetId = Objects.requireNonNull(asset.getString("slice_set"));
                 KTextureSliceSet set = this.textureSliceSetCollection.getAsset(sliceSetId);
                 return set.getTexture(assetId, topLeftCorner, unit);
             }
