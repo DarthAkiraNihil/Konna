@@ -102,6 +102,9 @@ public class KLevelEntityManagementService extends KObject implements KService {
      *                    events
      * @param activator Activator to create autonomous entities' controllers
      * @param frameTaskScheduler Frame task scheduler to schedule its additional tasks
+     * @param messenger Messenger created inside
+     *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
+     *                  to send messages
      */
     public KLevelEntityManagementService(
         @KInject final KEventSystem eventSystem,

@@ -75,6 +75,9 @@ public class KLevelService extends KObject implements KService {
      * @param generatorMetadataCollection Generator metadata collection to get
      *                                    generator metadata from
      * @param levelLoader Level loader to load levels from metadata
+     * @param messenger Messenger created inside
+     *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
+     *                  to send messages
      */
     public KLevelService(
         @KInject final KEventSystem eventSystem,

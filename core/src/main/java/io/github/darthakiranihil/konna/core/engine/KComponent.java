@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
@@ -52,6 +51,9 @@ public abstract class KComponent extends KObject {
         return packed;
     }
 
+    /**
+     * List of component services.
+     */
     protected final Map<String, KServiceEntry> services;
 
     /**
@@ -60,11 +62,10 @@ public abstract class KComponent extends KObject {
     protected final KEngineContext ctx;
 
     /**
-     * Base constructor, that performs all essential tasks to create a component:
-     * loading services, creating assigned messenger and so on.
+     * Standard constructor.
      * @param name Name of the component
      * @param ctx Current engine context
-     * @throws KComponentLoadingException If any exception is thrown on component instantiation
+     * @param services Array of services used by this component
      */
     protected KComponent(
         final String name,

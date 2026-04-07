@@ -33,11 +33,22 @@ import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 
 import java.io.InputStream;
 
+/**
+ * Default loader for {@link KEntityComponent}.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public class KEntityComponentLoader implements KComponentLoader {
 
     private final KJsonParser parser;
     private final KJsonDeserializer deserializer;
 
+    /**
+     * Standard constructor.
+     * @param parser Json parser to parse config
+     * @param deserializer Json deserializer to deserialize config
+     */
     public KEntityComponentLoader(
         @KInject final KJsonParser parser,
         @KInject final KJsonDeserializer deserializer
@@ -68,7 +79,9 @@ public class KEntityComponentLoader implements KComponentLoader {
         }
 
         KEntityComponentConfig.getSchema().validate(parsedConfig);
-        KEntityComponentConfig cfg = deserializer.deserialize(parsedConfig, KEntityComponentConfig.class);
+        KEntityComponentConfig cfg = deserializer.deserialize(
+            parsedConfig, KEntityComponentConfig.class
+        );
         if (cfg == null) {
             throw new KComponentLoadingException("Could not read component config");
         }

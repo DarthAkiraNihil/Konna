@@ -16,21 +16,14 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.*;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.type.*;
 
 /**
@@ -99,14 +92,23 @@ import io.github.darthakiranihil.konna.graphics.type.*;
 @KSingleton
 public class KGraphicsComponent extends KComponent {
 
+    /**
+     * Component's config.
+     */
     protected final KGraphicsComponentConfig config;
 
+    /**
+     * Constructs this component.
+     * @param ctx Engine context
+     * @param renderService Render service instance
+     * @param config Component's config
+     */
     public KGraphicsComponent(
         final KEngineContext ctx,
         final KRenderService renderService,
         final KGraphicsComponentConfig config
     ) {
-        super("Graphics", ctx, new KService[]{ renderService });
+        super("Graphics", ctx, new KService[]{renderService});
         this.config = config;
     }
 

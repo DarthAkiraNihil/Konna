@@ -34,11 +34,22 @@ import io.github.darthakiranihil.konna.level.service.KLevelService;
 
 import java.io.InputStream;
 
+/**
+ * Default loader for {@link KLevelComponent}.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public class KLevelComponentLoader implements KComponentLoader {
 
     private final KJsonParser parser;
     private final KJsonDeserializer deserializer;
 
+    /**
+     * Standard constructor.
+     * @param parser Json parser to parse config
+     * @param deserializer Json deserializer to deserialize config
+     */
     public KLevelComponentLoader(
         @KInject final KJsonParser parser,
         @KInject final KJsonDeserializer deserializer

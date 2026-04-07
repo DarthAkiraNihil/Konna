@@ -19,8 +19,6 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 
-import java.util.Map;
-
 /**
  * Interface for a component loader - class which task is to instantiate and initialize
  * given component that is prepared for subsequent configuring.
@@ -30,6 +28,15 @@ import java.util.Map;
  */
 public interface KComponentLoader {
 
+    /**
+     * Loads a new component according to provided configuration.
+     * @param ctx Current engine context
+     * @param features Application features
+     * @param systemConfig System features configured by hypervisor
+     * @return A loaded component
+     *
+     * @since 0.6.0
+     */
     KComponent load(
         KEngineContext ctx,
         KApplicationFeatures features,

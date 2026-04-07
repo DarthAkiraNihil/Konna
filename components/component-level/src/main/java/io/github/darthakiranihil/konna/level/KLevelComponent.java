@@ -16,13 +16,10 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.*;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
@@ -455,15 +452,25 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 @KSingleton
 public class KLevelComponent extends KComponent {
 
+    /**
+     * Component's configuration.
+     */
     protected final KLevelComponentConfig config;
 
+    /**
+     * Constructs the component.
+     * @param ctx Engine context
+     * @param levelService Level service instance
+     * @param levelEntityManagementService Level entity management service instance
+     * @param config Component's configuration
+     */
     public KLevelComponent(
         final KEngineContext ctx,
         final KLevelService levelService,
         final KLevelEntityManagementService levelEntityManagementService,
         final KLevelComponentConfig config
     ) {
-        super("Level", ctx, new KService[] {levelService, levelEntityManagementService} );
+        super("Level", ctx, new KService[] {levelService, levelEntityManagementService});
         this.config = config;
     }
 

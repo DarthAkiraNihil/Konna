@@ -102,6 +102,9 @@ public class KEntityManagementService extends KObject implements KService {
      * @param activator Activator to delete entities
      * @param entityFactory Entity factory for create entities
      * @param frameTaskScheduler Frame task scheduler to schedule its tasks.
+     * @param messenger Messenger created inside
+     *                  {@link io.github.darthakiranihil.konna.entity.KEntityComponent}
+     *                  to send messages
      */
     public KEntityManagementService(
         @KInject final KActivator activator,

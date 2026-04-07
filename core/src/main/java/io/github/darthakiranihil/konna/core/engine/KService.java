@@ -16,8 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+/**
+ * Interface of a component service.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KService {
 
+    /**
+     * @return Name of this service
+     */
     String name();
 
 }

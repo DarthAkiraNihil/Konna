@@ -37,11 +37,22 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 
 import java.io.InputStream;
 
+/**
+ * Default loader for {@link KGraphicsComponent}.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public class KGraphicsComponentLoader implements KComponentLoader {
 
     private final KJsonParser parser;
     private final KJsonDeserializer deserializer;
 
+    /**
+     * Standard constructor.
+     * @param parser Json parser to parse config
+     * @param deserializer Json deserializer to deserialize config
+     */
     public KGraphicsComponentLoader(
         @KInject final KJsonParser parser,
         @KInject final KJsonDeserializer deserializer
@@ -52,9 +63,9 @@ public class KGraphicsComponentLoader implements KComponentLoader {
 
     @Override
     public KComponent load(
-        KEngineContext ctx,
-        KApplicationFeatures features,
-        KSystemFeatures systemConfig
+        final KEngineContext ctx,
+        final KApplicationFeatures features,
+        final KSystemFeatures systemConfig
     ) {
         KJsonValue parsedConfig;
         try (KResource config = ctx.loadResource("classpath:config/graphics.json")) {

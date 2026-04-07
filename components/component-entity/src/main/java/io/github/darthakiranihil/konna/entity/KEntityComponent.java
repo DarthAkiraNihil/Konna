@@ -16,13 +16,10 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.*;
-import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.KComponent;
+import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
@@ -76,7 +73,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                     </li>
  *                     <li>
  *                         {@code data} -
- *                         {@link KJsonValue} -
+ *                         {@link io.github.darthakiranihil.konna.core.data.json.KJsonValue} -
  *                         data of entity to be restored
  *                     </li>
  *                 </ul>
@@ -244,14 +241,23 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 @KSingleton
 public class KEntityComponent extends KComponent {
 
+    /**
+     * Component's config.
+     */
     protected final KEntityComponentConfig config;
 
+    /**
+     * Constructs this component.
+     * @param ctx Engine context
+     * @param entityManagementService Entity management service instance
+     * @param config Component's config
+     */
     public KEntityComponent(
         final KEngineContext ctx,
         final KEntityManagementService entityManagementService,
         final KEntityComponentConfig config
     ) {
-        super("Entity", ctx, new KService[] {entityManagementService} );
+        super("Entity", ctx, new KService[] {entityManagementService});
         this.config = config;
     }
 
