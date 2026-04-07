@@ -17,32 +17,50 @@
 package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
+import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
+import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
+import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
-import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
-import io.github.darthakiranihil.konna.level.impl.TestController;
-import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
-import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.impl.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class KLevelEntityManagementServiceTests extends KStandardTestClass {
+
+    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
+        KStandardArgumentParser.class,
+        KEngineHypervisor.class,
+        new KEngineHypervisorConfig(
+            ContextLoader.class,
+            List.of(TestMessageRouteConfigurer.class),
+            List.of(),
+            List.of(KLevelComponentLoader.class),
+            TestFrameLoader.class,
+            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+        )
+    );
 
     private final Method shutdown;
     private final Field hypervisor;
@@ -64,7 +82,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
     @BeforeEach
     void setUp(final TestInfo testInfo) {
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
         konnaWithOnlyDefaultArgs.run();
         KThreadUtils.sleepForSeconds(2);
         this.realContext = KReflectionUtils.getFieldValue(

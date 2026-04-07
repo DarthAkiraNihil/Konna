@@ -17,26 +17,45 @@
 package io.github.darthakiranihil.konna.entity.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
+import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
+import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.entity.KEntity;
-import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
-import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2;
+import io.github.darthakiranihil.konna.entity.KEntityComponentLoader;
+import io.github.darthakiranihil.konna.entity.impl.*;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class KEntityManagementServicePositiveTests extends KStandardTestClass {
+    
+    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
+        KStandardArgumentParser.class,
+        KEngineHypervisor.class,
+        new KEngineHypervisorConfig(
+            ContextLoader.class,
+            List.of(TestMessageRouteConfigurer.class),
+            List.of(),
+            List.of(KEntityComponentLoader.class),
+            TestFrameLoader.class,
+            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+        )
+    );
 
     private final Method shutdown;
     private final Field hypervisor;
@@ -67,7 +86,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(2);
@@ -118,7 +137,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);
@@ -197,7 +216,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);
@@ -272,7 +291,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);
@@ -329,7 +348,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);
@@ -390,7 +409,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);

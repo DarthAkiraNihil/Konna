@@ -51,7 +51,7 @@ public record KEngineHypervisorConfig(
 
     @KJsonSerialized @KJsonCustomName(name = COMPONENTS_LOADERS_KEY)
     @KJsonArray(elementType = Class.class)
-    Class<? extends KComponentLoader>[] componentLoaders,
+    List<Class<? extends KComponentLoader>> componentLoaders,
 
     @KJsonSerialized @KJsonCustomName(name = FRAME_LOADER_KEY)
     Class<? extends KFrameLoader> frameLoader,
