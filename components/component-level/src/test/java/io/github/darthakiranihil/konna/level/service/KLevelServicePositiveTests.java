@@ -17,22 +17,45 @@
 package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
+import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
+import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.KLevelSector;
+import io.github.darthakiranihil.konna.level.impl.ContextLoader;
+import io.github.darthakiranihil.konna.level.impl.TestFrameLoader;
+import io.github.darthakiranihil.konna.level.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class KLevelServicePositiveTests extends KStandardTestClass {
+
+    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
+        KStandardArgumentParser.class,
+        KEngineHypervisor.class,
+        new KEngineHypervisorConfig(
+            ContextLoader.class,
+            List.of(TestMessageRouteConfigurer.class),
+            List.of(),
+            List.of(KLevelComponentLoader.class),
+            TestFrameLoader.class,
+            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+        )
+    );
 
     private final Method shutdown;
     private final Field hypervisor;
@@ -62,7 +85,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(2);
@@ -105,7 +128,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(2);
@@ -158,7 +181,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(2);
@@ -201,7 +224,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
     public void testGenerateAndLoadTwice() {
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(2);

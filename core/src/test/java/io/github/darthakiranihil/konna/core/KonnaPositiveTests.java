@@ -17,8 +17,14 @@
 package io.github.darthakiranihil.konna.core;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
+import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.TestComponentLoader;
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.test.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +34,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class KonnaPositiveTests extends KStandardTestClass {
+
+    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
+        KStandardArgumentParser.class,
+        KEngineHypervisor.class,
+        new KEngineHypervisorConfig(
+            KTestContextLoader.class,
+            List.of(KEmptyRouteConfigurer.class),
+            List.of(KEmptyEventRegisterer.class),
+            List.of(TestComponentLoader.class),
+            KTestFrameLoader.class,
+            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+        )
+    );
 
     private final Method shutdown;
     private final Field hypervisorThread;
@@ -50,12 +69,12 @@ public class KonnaPositiveTests extends KStandardTestClass {
     public void testStartKonna() {
 
         try {
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
             Assertions.assertNotNull(hypervisorThread.get(konnaWithOnlyDefaultArgs));
             Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithOnlyDefaultArgs));
 
-            Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa", "wawa")));
+            Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa", "wawa")), BOOTSTRAP);
             konnaWithCustomArgs.run();
             Assertions.assertNotNull(hypervisorThread.get(konnaWithCustomArgs));
 

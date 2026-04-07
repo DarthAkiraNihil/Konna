@@ -17,12 +17,22 @@
 package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
+import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
+import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.graphics.KGraphicsComponentLoader;
+import io.github.darthakiranihil.konna.graphics.impl.TestFrameLoader;
+import io.github.darthakiranihil.konna.graphics.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
+import io.github.darthakiranihil.konna.test.KTestContextLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +42,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class KRenderServicePositiveTests extends KStandardTestClass {
+
+    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
+        KStandardArgumentParser.class,
+        KEngineHypervisor.class,
+        new KEngineHypervisorConfig(
+            KTestContextLoader.class,
+            List.of(TestMessageRouteConfigurer.class),
+            List.of(),
+            List.of(KGraphicsComponentLoader.class),
+            TestFrameLoader.class,
+            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+        )
+    );
 
     private final Method shutdown;
 
@@ -52,7 +75,7 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             Field currentRenderables = KRenderService.class.getDeclaredField("currentRenderables");
