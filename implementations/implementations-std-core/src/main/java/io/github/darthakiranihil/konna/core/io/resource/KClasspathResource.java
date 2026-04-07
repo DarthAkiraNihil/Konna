@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.io.resource;
 
 import io.github.darthakiranihil.konna.core.io.KResource;
+import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.io.except.KResourceException;
 import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
@@ -139,8 +140,12 @@ public class KClasspathResource implements KResource {
     }
 
     @Override
-    public void close() throws IOException {
-        this.chan.close();
-        this.stream.close();
+    public void close() {
+        try {
+            this.chan.close();
+            this.stream.close();
+        } catch (IOException e) {
+            throw new KIoException(e.getMessage());
+        }
     }
 }

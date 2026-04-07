@@ -155,10 +155,7 @@ public class KEngineHypervisor extends KObject {
 
         KContainer master = this.ctx.getContainer();
 
-        master
-            .add(config.serviceLoader())
-            .add(config.componentLoader())
-            .add(KFrameLoader.class, config.frameLoader());
+        master.add(KFrameLoader.class, config.frameLoader());
 
         KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
         this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());

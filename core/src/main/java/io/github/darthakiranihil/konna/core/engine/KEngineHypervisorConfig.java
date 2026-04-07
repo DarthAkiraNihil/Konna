@@ -28,8 +28,6 @@ import java.util.List;
 /**
  * Record class of initial Konna hypervisor configuration.
  * @param contextLoader Class of engine context loader
- * @param componentLoader Class of engine component loader
- * @param serviceLoader Class of component services loader
  * @param messageRoutesConfigurers List of engine message routes configurers
  * @param eventRegisterers List of engine event registerers
  * @param componentLoaders List of engine components classes to load
@@ -42,12 +40,6 @@ import java.util.List;
 public record KEngineHypervisorConfig(
     @KJsonSerialized @KJsonCustomName(name = ENGINE_CONTEXT_LOADER_KEY)
     Class<? extends KEngineContextLoader> contextLoader,
-
-    @KJsonSerialized @KJsonCustomName(name = COMPONENT_LOADER_KEY)
-    Class<? extends KComponentLoader> componentLoader,
-
-    @KJsonSerialized @KJsonCustomName(name = SERVICE_LOADER_KEY)
-    Class<? extends KServiceLoader> serviceLoader,
 
     @KJsonSerialized @KJsonCustomName(name = MESSAGE_ROUTE_CONFIGURERS_KEY)
     @KJsonArray(elementType = Class.class)
