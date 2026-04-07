@@ -20,28 +20,19 @@ import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.app.KVersion;
-import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
-import io.github.darthakiranihil.konna.core.data.json.KJsonTokenizer;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
-import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Konna. The heart of a game application that performs
@@ -55,15 +46,15 @@ public final class Konna extends KObject implements Runnable {
     /**
      * Konna's version.
      */
-    public static final KVersion VERSION = new KVersion(0, 5, 0, "dev");
-
-    private static final String BOOTSTRAP_CONFIG = "bootstrap.json";
+    public static final KVersion VERSION = new KVersion(0, 6, 0, "dev");
 
     private final Thread shutdownHook;
     private @Nullable Thread hypervisorThread;
 
+    private final KonnaBootstrapConfig bootstrapConfig;
     private final List<KApplicationArgument> applicationArgsOptions;
     private final String[] args;
+
     private @Nullable KEngineHypervisor hypervisor;
 
     private static List<KApplicationArgument> defaultAndCustom(
@@ -81,11 +72,12 @@ public final class Konna extends KObject implements Runnable {
      *             method.
      * @see Konna#run()
      */
-    public Konna(final String[] args) {
+    public Konna(final String[] args, final KonnaBootstrapConfig bootstrap) {
         super("Konna", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.args = args;
         this.shutdownHook = new Thread(this::shutdown);
+        this.bootstrapConfig = bootstrap;
     }
 
     /**
@@ -97,81 +89,40 @@ public final class Konna extends KObject implements Runnable {
      *                   to parse them into application features
      * @see Konna#run()
      */
-    public Konna(final String[] args, final List<KApplicationArgument> customArgs) {
+    public Konna(
+        final String[] args,
+        final List<KApplicationArgument> customArgs,
+        final KonnaBootstrapConfig bootstrap
+    ) {
         super("Konna", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.args = args;
         this.shutdownHook = new Thread(this::shutdown);
+        this.bootstrapConfig = bootstrap;
     }
 
     /**
-     * Starts Konna and its subsystems.
-     * It is important that for correct startup it needs file
-     * bootstrap.json, located in root of java application resources and
-     * nowhere else. If required file is not found, an error will be thrown.
-     * Same for situations when config is presented, but not valid according to
-     * specified schema, consisting of following components:
-     * <ul>
-     *
-     *     <li>Argument parser class ({@code arg_parser} key)</li>
-     *     <li>
-     *         Hypervisor data ({@code hypervisor} key)
-     *         <ul>
-     *             <li>Hypervisor class ({@code class} key)</li>
-     *             <li>
-     *             Hypervisor configuration ({@code config} key). It follows
-     *             another schema, specified in
-     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig#getSchema()}
-     *             </li>
-     *         </ul>
-     *     </li>
-     *
-     * </ul>
-     *
-     * For correct starting up argument parser must contain only a zero-arg constructor,
-     * and hypervisor must have only that constructor accepting hypervisor config, presented by
-     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig}.
-     * No matter what kind of error is, it will be wrapped in {@link KBootstrapException}.
-     * Application is launched in a detached thread,
-     * so in order to graceful shutdown it the Konna thread
-     * must be stopped.
+     * <p>
+     *     Starts Konna and its subsystems.
+     * </p>
+     * <p>
+     *     For correct starting up argument parser must contain only a zero-arg constructor,
+     *     and hypervisor must have only that constructor accepting hypervisor config, presented by
+     *     {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig}.
+     *     No matter what kind of error is, it will be wrapped in {@link KBootstrapException}.
+     *     Application is launched in a detached thread,
+     *     so in order to graceful shutdown it the Konna thread
+     *     must be stopped.
+     * </p>
      */
     @Override
     public void run() {
 
         KSystemLogger.info(this.name, "Starting Konna. Version: %s", VERSION);
 
-        KApplicationFeatures features;
-        try (InputStream bootstrapConfig = ClassLoader
-            .getSystemClassLoader()
-            .getResourceAsStream(BOOTSTRAP_CONFIG)
-        ) {
-
-            if (bootstrapConfig == null) {
-                throw new KBootstrapException(
-                    String.format(
-                        "Cannot read bootstrap config file %s from resources",
-                        BOOTSTRAP_CONFIG
-                    )
-                );
-            }
-
-            KJsonParser parser = this.createParser();
-            KJsonValue config = parser.parse(bootstrapConfig);
-            KonnaBootstrap.getSchema().validate(config);
-            KonnaBootstrap bootstrap = new KonnaBootstrap(config);
-
-            KArgumentParser argParser = bootstrap.getArgumentParser();
-            features = argParser.parse(this.args, this.applicationArgsOptions);
-            this.hypervisor = bootstrap.createHypervisor();
-
-
-        } catch (IOException e) {
-            return;
-        } catch (KJsonValidationError e) {
-            KSystemLogger.fatal(this.name, e);
-            return;
-        }
+        KArgumentParser argParser = this.createArgumentParser();
+        KApplicationFeatures features = argParser.parse(this.args, this.applicationArgsOptions);
+        this.hypervisor = this.createHypervisor();
 
         this.hypervisorThread = new Thread(
             () -> {
@@ -202,47 +153,52 @@ public final class Konna extends KObject implements Runnable {
         KSystemLogger.info(this.name, "Shutdown finished");
     }
 
-    @SuppressWarnings("unchecked")
-    private KJsonParser createParser() {
+    private KArgumentParser createArgumentParser() {
+        var constructor = KReflectionUtils.getConstructor(
+            this.bootstrapConfig.argParser()
+        );
+
+        if (constructor == null) {
+            throw new KBootstrapException(
+                String.format(
+                    "Argument parser (%s) does not provide a zero-arg constructor",
+                    this.bootstrapConfig.argParser()
+                )
+            );
+        }
 
         try {
-            Class<? extends KJsonTokenizer> tokenizer = (Class<? extends KJsonTokenizer>)
-                KClassUtils.getForName(
-                    "io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer"
-                );
-            Class<? extends KJsonParser> parser = (Class<? extends KJsonParser>)
-                KClassUtils.getForName(
-                    "io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser"
-                );
+            return KReflectionUtils.newInstance(constructor);
+        } catch (Throwable e) {
+            throw new KBootstrapException("Could not get argument parser", e);
+        }
+    }
 
+    private KEngineHypervisor createHypervisor() {
+        var constructor = KReflectionUtils.getConstructor(
+            this.bootstrapConfig.hypervisor(),
+            KEngineHypervisorConfig.class
+        );
+
+        if (constructor == null) {
+            throw new KBootstrapException(
+                String.format(
+                        "Hypervisor class (%s) does not provide a constructor "
+                    +   "with the only argument of type KEngineHypervisor",
+                    this.bootstrapConfig.hypervisor()
+                )
+            );
+        }
+
+        try {
             return KReflectionUtils.newInstance(
-                Objects.requireNonNull(
-                    KReflectionUtils.getConstructor(parser, KJsonTokenizer.class)
-                ),
-                KReflectionUtils.newInstance(Objects.requireNonNull(
-                    KReflectionUtils.getConstructor(tokenizer))
-                )
+                constructor,
+                this.bootstrapConfig.hypervisorConfig()
             );
-
-        } catch (KClassNotFoundException e) {
+        } catch (Throwable e) {
             throw new KBootstrapException(
-                String.format(
-                    "%s: %s. %s",
-                    "Could not get standard JSON tokenizer and/or parser",
-                    e,
-                        "So far they are required for Konna starting up so please add"
-                    +   "konna.implementations-std-core to your project"
-                )
-
-            );
-        } catch (NullPointerException | KInstantiationException e) {
-            throw new KBootstrapException(
-                String.format(
-                    "%s: %s. %s",
-                    "Could not instantiate JSON tokenizer and/or parser",
-                    e,
-                    "Please check their constructors signature"
-                )
+                "Could not create engine hypervisor",
+                e
             );
         }
     }
