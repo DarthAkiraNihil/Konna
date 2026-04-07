@@ -43,8 +43,8 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             "route_configurers": [],\
             "event_registerers": [],\
             "event_queue": "io.github.darthakiranihil.konna.core.message.KStandardEventQueue",\
-            "components": [\
-            "io.github.darthakiranihil.konna.core.engine.TestComponent"\
+            "component_loaders": [\
+            "io.github.darthakiranihil.konna.core.engine.TestComponentLoader"\
             ],"frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {
                     "size": {
@@ -102,8 +102,8 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
             "route_configurers": [],\
             "event_registerers": [],\
             "event_queue": "io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue",\
-            "components": [\
-            "io.github.darthakiranihil.konna.core.engine.TestComponent"\
+            "component_loaders": [\
+            "io.github.darthakiranihil.konna.core.engine.TestComponentLoader"\
             ],"frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
                   "frame_options": {
                     "size": {

@@ -12,8 +12,8 @@
       "event_registerers": [
           "io.github.darthakiranihil.konna.test.KEmptyEventRegisterer"
       ],
-      "components": [
-        "io.github.darthakiranihil.konna.core.engine.TestComponent"
+      "component_loaders": [
+        "io.github.darthakiranihil.konna.core.engine.TestComponentLoader"
       ],
       "frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
       "frame_options": {

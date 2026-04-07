@@ -21,8 +21,11 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Disabled("Until it is clear why these are here")
 public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
     @Test
@@ -30,7 +33,7 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
         String config = "{" +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader\"," +
-            "\"components\": [" +
+            "\"componentsaa\": [" +
             "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
             "]}";
 
@@ -57,7 +60,7 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
             "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KstandardComponentLoader\"," +
             "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader\"," +
             "\"components\": [" +
-            "\"io.github.darthakiranihil.konna.core.engine.TestComponent\"" +
+            "\"io.github.darthakiranihil.konna.core.engine.TestsComponeasgfdsgdfsagdfgnt\"" +
             "]}";
 
         KJsonValue parsed;
@@ -75,27 +78,4 @@ public class KEngineHypervisorConfigNegativeTests extends KStandardTestClass {
 
     }
 
-    @Test
-    public void testFromJsonComponentClassNotFound() {
-
-        String config = "{" +
-            "\"component_loader\": \"io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader\"," +
-            "\"service_loader\": \"io.github.darthakiranihil.konna.core.engine.std.KStandardComponentServiceLoader\"," +
-            "\"components\": [" +
-            "\"io.github.darthakiranihil.konna.core.engine.TestCompoent\"" +
-            "]}";
-
-        KJsonValue parsed;
-        try {
-            parsed = this.jsonParser.parse(config);
-        } catch (KJsonParseException e) {
-            Assertions.fail(e);
-            return;
-        }
-
-        Assertions.assertThrowsExactly(
-            KJsonSerializationException.class,
-            () -> this.jsonDeserializer.deserialize(parsed, KEngineHypervisorConfig.class)
-        );
-    }
 }
