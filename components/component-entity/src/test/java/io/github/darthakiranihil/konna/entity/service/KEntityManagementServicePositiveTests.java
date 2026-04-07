@@ -89,7 +89,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Entity.EntityManagementService"))
+                .filter(o -> o.object().name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -160,7 +160,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Entity.EntityManagementService"))
+                .filter(o -> o.object().name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -220,7 +220,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Entity.EntityManagementService"))
+                .filter(o -> o.object().name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -293,7 +293,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Entity.EntityManagementService"))
+                .filter(o -> o.object().name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -350,7 +350,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Entity.EntityManagementService"))
+                .filter(o -> o.object().name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
@@ -404,7 +404,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             var service = realContext
                 .listObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Entity.EntityManagementService"))
+                .filter(o -> o.object().name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());

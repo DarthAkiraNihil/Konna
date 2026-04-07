@@ -115,7 +115,7 @@ public class KEntityManagementService extends KObject implements KService {
     ) {
 
         super(
-            "Entity.EntityManagementService",
+            "EntityManagementService",
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 

@@ -61,8 +61,6 @@ public record KEngineHypervisorConfig(
 ) {
 
     private static final String ENGINE_CONTEXT_LOADER_KEY = "context_loader";
-    private static final String COMPONENT_LOADER_KEY = "component_loader";
-    private static final String SERVICE_LOADER_KEY = "service_loader";
     private static final String COMPONENTS_LOADERS_KEY = "component_loaders";
     private static final String MESSAGE_ROUTE_CONFIGURERS_KEY = "route_configurers";
     private static final String EVENT_REGISTERERS_KEY = "event_registerers";
@@ -77,12 +75,6 @@ public record KEngineHypervisorConfig(
         return KJsonObjectValidatorBuilder
             .create()
             .withField(ENGINE_CONTEXT_LOADER_KEY, KJsonValueType.STRING)
-            .withValidator(new KJsonValueIsClassValidator())
-            .finishField()
-            .withField(COMPONENT_LOADER_KEY, KJsonValueType.STRING)
-            .withValidator(new KJsonValueIsClassValidator())
-            .finishField()
-            .withField(SERVICE_LOADER_KEY, KJsonValueType.STRING)
             .withValidator(new KJsonValueIsClassValidator())
             .finishField()
             .withField(MESSAGE_ROUTE_CONFIGURERS_KEY, KJsonValueType.ARRAY)

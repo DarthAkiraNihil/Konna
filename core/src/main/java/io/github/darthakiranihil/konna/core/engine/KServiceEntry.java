@@ -45,7 +45,6 @@ public final class KServiceEntry {
         final KService service
     ) {
         Class<? extends KService> serviceClass = service.getClass();
-        String serviceName = service.name();
 
         Method[] methods = serviceClass.getDeclaredMethods();
         Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints = new HashMap<>();
@@ -62,7 +61,7 @@ public final class KServiceEntry {
                     String.format(
                         "%s.generated.%s$$EndpointConverter_%s",
                         serviceClass.getPackageName(),
-                        serviceName,
+                        serviceClass.getSimpleName(),
                         endpointMeta.route()
                     )
                 );
