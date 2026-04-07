@@ -30,30 +30,10 @@ import java.util.Map;
  */
 public interface KComponentLoader {
 
-    /**
-     * Loads engine component with given class and puts it in loadedComponentMap.
-     * @param ctx Engine execution context
-     * @param component Class of component to load
-     * @param serviceLoader Instance of component services loader
-     * @param loadedComponentMap Map of loaded components. Used to prevent loading two components
-     *                           with the same name, provided by {@link KComponentMetaInfo}
-     *                           annotation
-     * @throws io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException
-     *         when component failed to be loaded (see cause for details)
-     */
-    void load(
-        KEngineContext ctx,
-        Class<? extends KComponent> component,
-        KServiceLoader serviceLoader,
-        Map<String, KComponent> loadedComponentMap
-    );
-
-    default KComponent load(
+    KComponent load(
         KEngineContext ctx,
         KApplicationFeatures features,
         KSystemFeatures systemConfig
-    ) {
-        return null;
-    }
+    );
 
 }

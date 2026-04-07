@@ -176,18 +176,10 @@ public class KEngineHypervisor extends KObject {
 
         try {
 
-            KComponentLoader componentLoader = ctx.createObject(config.componentLoader());
-            KSystemLogger.info(this.name, "Created component loader %s", config.componentLoader());
-            KServiceLoader serviceLoader = ctx.createObject(config.serviceLoader());
-            KSystemLogger.info(this.name, "Created service loader %s", config.serviceLoader());
-
-            for (var component: config.components()) {
-                componentLoader.load(
-                    ctx,
-                    component,
-                    serviceLoader,
-                    this.engineComponents
-                );
+            for (var componentLoaderClass: config.componentLoaders()) {
+                KComponentLoader componentLoader = ctx.createObject(componentLoaderClass);
+                KComponent loaded = componentLoader.load(ctx, features, this.systemFeatures);
+                this.engineComponents.put(loaded.name(), loaded);
             }
 
             KSystemLogger.info(this.name, "Loaded %d components", engineComponents.size());
