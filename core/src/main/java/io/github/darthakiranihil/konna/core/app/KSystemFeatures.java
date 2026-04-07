@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.util.Objects;
 
@@ -56,10 +58,19 @@ public final class KSystemFeatures extends KObject {
     private final int maxFps;
 
     public KSystemFeatures(final KApplicationFeatures features) {
+        super("SystemFeatures", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.debugEnabled = KSystemFeatures.getDebug(features);
         this.fileLoggingActive = KSystemFeatures.getFileLoggingActive(features);
         this.logLevel = KSystemFeatures.getLogLevel(features);
         this.maxFps = KSystemFeatures.getMaxFps(features);
+    }
+
+    public KSystemFeatures() {
+        super("SystemFeatures", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        this.debugEnabled = false;
+        this.fileLoggingActive = false;
+        this.logLevel = KLogLevel.WARNING;
+        this.maxFps = -1;
     }
 
     public boolean isDebugEnabled() {
