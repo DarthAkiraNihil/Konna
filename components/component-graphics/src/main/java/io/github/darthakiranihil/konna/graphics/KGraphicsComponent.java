@@ -21,10 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KComponentMetaInfo;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KServiceLoader;
+import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -32,6 +29,7 @@ import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
+import io.github.darthakiranihil.konna.graphics.service.KRenderService;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.type.*;
 
@@ -106,14 +104,15 @@ import io.github.darthakiranihil.konna.graphics.type.*;
 )
 public class KGraphicsComponent extends KComponent {
 
+    protected final KGraphicsComponentConfig config;
+
     public KGraphicsComponent(
-        @KInject final KServiceLoader serviceLoader,
-        final String name,
         final KEngineContext ctx,
-        final String servicesPackage,
-        final KJsonValue config
+        final KRenderService renderService,
+        final KGraphicsComponentConfig config
     ) {
-        super(serviceLoader, name, ctx, servicesPackage, config);
+        super("Graphics", ctx, new KService[]{ renderService });
+        this.config = config;
     }
 
     @Override
@@ -126,46 +125,6 @@ public class KGraphicsComponent extends KComponent {
             new KTextureSliceSetTypedef(),
             new KRenderableTextureTypedef(),
         };
-    }
-
-    @Override
-    protected void applyConfig(final KJsonValue config) {
-
-        KJsonDeserializer deserializer = this.ctx.createObject(KJsonDeserializer.class);
-        KGraphicsComponentConfig.getSchema().validate(config);
-        KGraphicsComponentConfig deserializedConfig = deserializer.deserialize(
-            config,
-            KGraphicsComponentConfig.class
-        );
-        if (deserializedConfig == null) {
-            throw new KComponentLoadingException("Could not read component config");
-        }
-
-        KContainer container = this.ctx.getContainer();
-        container
-            .add(KRenderFrontend.class, deserializedConfig.renderFrontendClass())
-            .add(KShaderCompiler.class, deserializedConfig.shaderCompilerClass())
-            .add(KImageLoader.class, deserializedConfig.imageLoaderClass())
-            .add(
-                KTransformMatrixCalculator.class,
-                deserializedConfig.transformMatrixCalculatorClass()
-            );
-
-        KTransformMatrixCalculator calculator = this
-            .ctx
-            .createObject(KTransformMatrixCalculator.class);
-        KTransform.setTransformMatrixCalculator(calculator);
-
-        // A test that transform matrix calculator is really set
-        (
-            new KTransform(
-                0.0,
-                new KVector2i(1, 1),
-                new KVector2d(0.0, 0.0),
-                KVector2i.ZERO
-            )
-        ).getMatrix();
-
     }
 
     @Override

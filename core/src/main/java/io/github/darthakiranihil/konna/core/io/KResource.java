@@ -3,6 +3,7 @@ package io.github.darthakiranihil.konna.core.io;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.ReadableByteChannel;
 
@@ -125,4 +126,9 @@ public interface KResource extends Closeable {
      */
     byte[] bytes();
 
+    /**
+     * Closes this resource.
+     */
+    @Override
+    void close();
 }

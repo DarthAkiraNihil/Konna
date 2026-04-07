@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
@@ -45,7 +46,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @KComponentServiceMetaInfo(
     name = "RenderService"
 )
-public class KRenderService extends KObject {
+public class KRenderService extends KObject implements KService {
 
     /**
      * Description of task that renders all objects that is contained by the service.
