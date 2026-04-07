@@ -135,8 +135,7 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
             String assetId = jsonDefinition.getProperty("asset_id").getString();
             String type = jsonDefinition.getProperty("type").getString();
 
-            // check if transformers execute successfully for this type
-            Map<String, AssetTransformer> transformers = this.assetTypeData.get(type);
+            // ?? check if transformers execute successfully for this type?
             if (this.indexedDefinitions.containsKey(assetId)) {
                 throw new KAssetLoadingException(
                     String.format(
@@ -202,7 +201,6 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
 
         return new KAsset(
             assetId,
-            new KAssetType(actualType),
             typeAlias,
             transformed
         );

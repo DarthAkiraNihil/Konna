@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.level.asset;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -27,7 +26,6 @@ import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.level.property.factory.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
@@ -92,9 +90,7 @@ public final class KTilePropertyCollection
         KAsset asset = this.assetLoader.loadAsset(
             assetId, KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
-
-        String type = Objects.requireNonNull(definition.getString("property_type"));
+        String type = Objects.requireNonNull(asset.getString("property_type"));
         return this.getFactory(type);
 
     }

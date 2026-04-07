@@ -85,10 +85,8 @@ public final class KShaderCollection extends KObject implements KAssetCollection
         }
 
         KAsset asset = this.assetLoader.loadAsset(assetId, KShaderTypedef.SHADER_ASSET_TYPE);
-
-        KAssetDefinition shaderDefinition = asset.definition();
-        KShaderType type = shaderDefinition.getEnum("type", KShaderType.class);
-        String sourcePath = Objects.requireNonNull(shaderDefinition.getString("source"));
+        KShaderType type = asset.getEnum("type", KShaderType.class);
+        String sourcePath = Objects.requireNonNull(asset.getString("source"));
 
         try (KResource shaderSource = this.resourceLoader.loadResource(sourcePath)) {
 

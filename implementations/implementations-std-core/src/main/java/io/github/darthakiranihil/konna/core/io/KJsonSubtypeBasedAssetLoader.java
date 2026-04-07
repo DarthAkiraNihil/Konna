@@ -56,7 +56,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
     private final KJsonParser jsonParser;
 
     private final Map<String, KJsonSubtypeBasedAssetLoader.AssetTypeData> assetTypeData;
-    private final Map<String, KAssetType> builtAssetTypes;
     private final Map<String, String> reverseAssetTypeMap;
 
     private final Map<String, Map<String, KAssetDefinition>> loadedRawAssetDefinitions;
@@ -84,7 +83,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
         this.loadedRawAssetDefinitions = new HashMap<>();
 
         this.assetTypeData = assetTypesData;
-        this.builtAssetTypes = new HashMap<>();
         this.reverseAssetTypeMap = new HashMap<>();
 
         for (var entry: assetTypesData.entrySet()) {
@@ -101,11 +99,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
                     internalType,
                     entry.getValue()
                 )
-            );
-
-            this.builtAssetTypes.put(
-                internalType,
-                new KAssetType(internalType)
             );
 
         }
@@ -126,7 +119,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
             );
         }
 
-        KAssetType builtType = this.builtAssetTypes.get(internalType);
         KAssetDefinition raw = this
             .loadedRawAssetDefinitions
             .get(internalType)
@@ -142,7 +134,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
 
         return new KAsset(
             assetId,
-            builtType,
             typeAlias,
             raw
         );

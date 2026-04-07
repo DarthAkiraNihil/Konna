@@ -84,12 +84,11 @@ public final class KTextureSliceSetCollection
             assetId,
             KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        String baseTextureId = Objects.requireNonNull(definition.getString("base_texture"));
+        String baseTextureId = Objects.requireNonNull(asset.getString("base_texture"));
         KTexture baseTexture = this.textureCollection.getAsset(baseTextureId);
 
-        KAssetDefinition[] slices = definition.getSubdefinitionArray("slices");
+        KAssetDefinition[] slices = asset.getSubdefinitionArray("slices");
         Map<String, KTextureSliceData> slicesData = new HashMap<>();
 
         for (var slice: slices) {

@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.entity.asset;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KSingleton;
@@ -68,22 +67,21 @@ public final class KEntityMetadataCollection
         KAsset asset = this.assetLoader.loadAsset(
             assetId, KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE
         );
-        KAssetDefinition metadataDefinition = asset.definition();
 
-        String typeName = Objects.requireNonNull(metadataDefinition.getString("type_name"));
+        String typeName = Objects.requireNonNull(asset.getString("type_name"));
 
         String[] dataExtensions = Objects.requireNonNull(
-            metadataDefinition.getStringArray("data_extensions")
+            asset.getStringArray("data_extensions")
         );
 
-        Class<? extends KEntityDataComponent>[] dataComponents = metadataDefinition
+        Class<? extends KEntityDataComponent>[] dataComponents = asset
             .getClassObjectArray("data_components", KEntityDataComponent.class);
 
         String[] behaviourExtensions = Objects.requireNonNull(
-            metadataDefinition.getStringArray("behaviour_extensions")
+            asset.getStringArray("behaviour_extensions")
         );
 
-        Class<? extends KEntityBehaviour>[] behaviours = metadataDefinition
+        Class<? extends KEntityBehaviour>[] behaviours = asset
             .getClassObjectArray("behaviours", KEntityBehaviour.class);
 
         KEntityMetadata metadata = new KEntityMetadata(

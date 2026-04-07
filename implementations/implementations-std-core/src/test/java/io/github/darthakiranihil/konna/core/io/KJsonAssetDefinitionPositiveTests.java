@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
-import io.github.darthakiranihil.konna.core.io.KJsonAssetDefinition;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,17 +35,19 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
         KAssetDefinition def = new KJsonAssetDefinition(
             KJsonValue.fromMap(Map.of()), v -> {}
         );
+        KAsset asset = new KAsset("abiba", "aboba", def);
 
-        Assertions.assertFalse(def.hasIntArray("array"));
-        Assertions.assertFalse(def.hasFloatArray("array"));
-        Assertions.assertFalse(def.hasBooleanArray("array"));
-        Assertions.assertFalse(def.hasStringArray("array"));
-        Assertions.assertFalse(def.hasSubdefinitionArray("array"));
+        Assertions.assertFalse(asset.hasIntArray("array"));
+        Assertions.assertFalse(asset.hasFloatArray("array"));
+        Assertions.assertFalse(asset.hasBooleanArray("array"));
+        Assertions.assertFalse(asset.hasStringArray("array"));
+        Assertions.assertFalse(asset.hasSubdefinitionArray("array"));
 
         KAssetDefinition def2 = new KJsonAssetDefinition(
             KJsonValue.fromMap(Map.of("aboba", KJsonValue.fromNumber(1))), v -> {}
         );
-        Assertions.assertFalse(def2.hasIntArray("aboba"));
+        KAsset asset2 = new KAsset("abiba2", "aboba2", def2);
+        Assertions.assertFalse(asset2.hasIntArray("aboba"));
 
     }
 
@@ -66,12 +67,13 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             ),
             v -> {}
         );
+        KAsset asset = new KAsset("abiba", "aboba", def);
+        
+        Assertions.assertEquals(KStandardJsonParser.class, asset.getClassObject("class_property"));
+        Assertions.assertEquals(KStandardJsonParser.class, asset.getClassObject("class_property", KJsonParser.class));
 
-        Assertions.assertEquals(KStandardJsonParser.class, def.getClassObject("class_property"));
-        Assertions.assertEquals(KStandardJsonParser.class, def.getClassObject("class_property", KJsonParser.class));
-
-        Assertions.assertEquals(1, def.getClassObjectArray("class_array_property").length);
-        Assertions.assertEquals(1, def.getClassObjectArray("class_array_property", KJsonParser.class).length);
+        Assertions.assertEquals(1, asset.getClassObjectArray("class_array_property").length);
+        Assertions.assertEquals(1, asset.getClassObjectArray("class_array_property", KJsonParser.class).length);
 
     }
 
@@ -91,12 +93,13 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             ),
             v -> {}
         );
+        
+        KAsset asset = new KAsset("abiba", "aboba", def);
+        Assertions.assertTrue(asset.hasClassObject("class_property"));
+        Assertions.assertTrue(asset.hasClassObject("class_property", KJsonParser.class));
 
-        Assertions.assertTrue(def.hasClassObject("class_property"));
-        Assertions.assertTrue(def.hasClassObject("class_property", KJsonParser.class));
-
-        Assertions.assertTrue(def.hasClassObjectArray("class_array_property"));
-        Assertions.assertTrue(def.hasClassObjectArray("class_array_property", KJsonParser.class));
+        Assertions.assertTrue(asset.hasClassObjectArray("class_array_property"));
+        Assertions.assertTrue(asset.hasClassObjectArray("class_array_property", KJsonParser.class));
 
     }
 
@@ -116,15 +119,16 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             ),
             v -> {}
         );
+        
+        KAsset asset = new KAsset("abiba", "aboba", def);
+        Assertions.assertEquals(2, asset.getProperties().size());
+        Assertions.assertFalse(asset.hasClassObject("proppp"));
+        Assertions.assertFalse(asset.hasClassObject("proppp", KJsonParser.class));
+        Assertions.assertFalse(asset.hasClassObject("class_property", KJsonValidator.class));
 
-        Assertions.assertEquals(2, def.getProperties().size());
-        Assertions.assertFalse(def.hasClassObject("proppp"));
-        Assertions.assertFalse(def.hasClassObject("proppp", KJsonParser.class));
-        Assertions.assertFalse(def.hasClassObject("class_property", KJsonValidator.class));
-
-        Assertions.assertFalse(def.hasClassObjectArray("dfdf"));
-        Assertions.assertFalse(def.hasClassObjectArray("dfdfdf", KJsonParser.class));
-        Assertions.assertFalse(def.hasClassObjectArray("class_array_property", KJsonValidator.class));
+        Assertions.assertFalse(asset.hasClassObjectArray("dfdf"));
+        Assertions.assertFalse(asset.hasClassObjectArray("dfdfdf", KJsonParser.class));
+        Assertions.assertFalse(asset.hasClassObjectArray("class_array_property", KJsonValidator.class));
 
     }
 
@@ -144,9 +148,10 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             ),
             v -> {}
         );
-
-        Assertions.assertNotNull(def.getObject("class_property"));
-        Assertions.assertEquals(1, def.getObjectArray("class_array_property").length);
+        
+        KAsset asset = new KAsset("abiba", "aboba", def);
+        Assertions.assertNotNull(asset.getObject("class_property"));
+        Assertions.assertEquals(1, asset.getObjectArray("class_array_property").length);
 
     }
 
@@ -167,8 +172,9 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             v -> {}
         );
 
-        Assertions.assertTrue(def.hasObject("class_property"));
-        Assertions.assertTrue(def.hasObjectArray("class_array_property"));
+        KAsset asset = new KAsset("abiba", "aboba", def);
+        Assertions.assertTrue(asset.hasObject("class_property"));
+        Assertions.assertTrue(asset.hasObjectArray("class_array_property"));
 
     }
 
@@ -189,11 +195,12 @@ public class KJsonAssetDefinitionPositiveTests extends KStandardTestClass {
             v -> {}
         );
 
-        Assertions.assertEquals(2, def.getProperties().size());
-        Assertions.assertFalse(def.hasObject("proppp"));
+        KAsset asset = new KAsset("abiba", "aboba", def);
+        Assertions.assertEquals(2, asset.getProperties().size());
+        Assertions.assertFalse(asset.hasObject("proppp"));
 
-        Assertions.assertFalse(def.hasObjectArray("proppp"));
-        Assertions.assertFalse(def.hasObjectArray("class_property"));
+        Assertions.assertFalse(asset.hasObjectArray("proppp"));
+        Assertions.assertFalse(asset.hasObjectArray("class_property"));
 
     }
 }

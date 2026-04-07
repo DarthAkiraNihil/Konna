@@ -72,9 +72,8 @@ public final class KLevelMetadataCollection
         KAsset asset = this.assetLoader.loadAsset(
             assetId, KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        KAssetDefinition rawSectorsDefinitions = definition.getSubdefinition("sectors");
+        KAssetDefinition rawSectorsDefinitions = asset.getSubdefinition("sectors");
         Map<String, KLevelSectorMetadata>
             sectorMetadata = this.readSectorMetadata(rawSectorsDefinitions);
 
