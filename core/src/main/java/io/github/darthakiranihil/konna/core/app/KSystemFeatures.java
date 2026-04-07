@@ -23,6 +23,13 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.util.Objects;
 
+/**
+ * Special container object for application features parsed based on
+ * {@link KApplicationArgument#DEFAULT_ARGS}.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public final class KSystemFeatures extends KObject {
 
     private static boolean getDebug(final KApplicationFeatures features) {
@@ -57,6 +64,10 @@ public final class KSystemFeatures extends KObject {
     private final KLogLevel logLevel;
     private final int maxFps;
 
+    /**
+     * Constructs system features based on parsed application features.
+     * @param features Parsed application features
+     */
     public KSystemFeatures(final KApplicationFeatures features) {
         super("SystemFeatures", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.debugEnabled = KSystemFeatures.getDebug(features);
@@ -65,6 +76,12 @@ public final class KSystemFeatures extends KObject {
         this.maxFps = KSystemFeatures.getMaxFps(features);
     }
 
+    /**
+     * Special mock constructor that creates system features with default parameters.
+     * It's only to be used by
+     * {@link io.github.darthakiranihil.konna.core.engine.KEngineHypervisor} to bypass
+     * nullability check requirements.
+     */
     public KSystemFeatures() {
         super("SystemFeatures", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
         this.debugEnabled = false;
@@ -73,18 +90,31 @@ public final class KSystemFeatures extends KObject {
         this.maxFps = -1;
     }
 
+    /**
+     * @return Whether the application is stared in debug mode or not
+     */
     public boolean isDebugEnabled() {
         return this.debugEnabled;
     }
 
+    /**
+     * @return Whether {@link io.github.darthakiranihil.konna.core.log.system.KSystemLogger}
+     * should activate file logging or not.
+     */
     public boolean isFileLoggingActive() {
         return this.fileLoggingActive;
     }
 
+    /**
+     * @return Log level for {@link io.github.darthakiranihil.konna.core.log.system.KSystemLogger}
+     */
     public KLogLevel getLogLevel() {
         return this.logLevel;
     }
 
+    /**
+     * @return Max FPS for application's frame
+     */
     public int getMaxFps() {
         return this.maxFps;
     }
