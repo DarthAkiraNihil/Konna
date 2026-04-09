@@ -82,8 +82,14 @@ public final class KModuleContainerBrewer {
                     .build()
             );
 
-        int singletons = 0;
         for (var provider: module.providers()) {
+            String mainSimpleName = ((DeclaredType) provider.mainProvidedClass())
+                .asElement()
+                .getSimpleName()
+                .toString();
+
+            builder.addMethod(this.brewProviderMethod(provider, mainSimpleName));
+
             if (!provider.isSingleton()) {
                 continue;
             }
@@ -92,7 +98,7 @@ public final class KModuleContainerBrewer {
                 FieldSpec
                     .builder(
                         TypeName.get(provider.mainProvidedClass()),
-                        String.format("s%d", singletons)
+                        String.format("singleton%s", mainSimpleName)
                     )
                     .addAnnotation(Nullable.class)
                     .addModifiers(Modifier.PRIVATE)
@@ -204,6 +210,31 @@ public final class KModuleContainerBrewer {
         builder.addStatement(moduleInstantiationStatement.build());
 
         return builder.build();
+    }
+
+    private MethodSpec brewProviderMethod(
+        final KModuleMetadata.ProviderDescription providerDescription,
+        final String simpleProvidedClassName
+    ) {
+
+        String methodName = String.format("get%s", simpleProvidedClassName);
+        var builder = MethodSpec
+            .methodBuilder(methodName)
+            .addModifiers(Modifier.PRIVATE);
+
+        if (providerDescription.isSingleton()) {
+            String singletonField = String.format("this.singleton%s", simpleProvidedClassName);
+            builder
+                .beginControlFlow(String.format("if (%s == null)", singletonField))
+                .addStatement(String.format("%s = this.%s", singletonField, methodName))
+                .endControlFlow()
+                .addStatement(String.format("return %s", singletonField));
+        } else {
+            builder.addStatement(String.format("return %s", methodName));
+        }
+
+        return builder.build();
+
     }
 
 }
