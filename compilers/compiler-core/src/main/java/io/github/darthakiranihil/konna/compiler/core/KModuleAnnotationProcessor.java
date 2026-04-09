@@ -17,13 +17,15 @@
 package io.github.darthakiranihil.konna.compiler.core;
 
 import com.google.auto.service.AutoService;
+import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadata;
+import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadataReader;
+import io.github.darthakiranihil.konna.core.di.KModule;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
-import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
@@ -32,14 +34,45 @@ import java.util.Set;
     "io.github.darthakiranihil.konna.core.di.KModule"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
+@SuppressWarnings("unused")
 public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
+
+    private KModuleMetadataReader moduleMetadataReader;
+
+    @Override
+    public synchronized void init(final ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+
+        this.moduleMetadataReader = new KModuleMetadataReader(
+            this.typeUtils,
+            this.elementUtils,
+            this.messager
+        );
+    }
 
     @Override
     public boolean process(
         final Set<? extends TypeElement> annotations,
         final RoundEnvironment roundEnv
     ) {
-        return false;
+        for (Element element : roundEnv.getElementsAnnotatedWith(
+            KModule.class
+        )) {
+
+            if (element.getKind() != ElementKind.CLASS) {
+                this.messager.printWarning(
+                    "KModule only works for standard classes. Class is skipped",
+                    element
+                );
+                continue;
+            }
+
+            TypeElement classElement = (TypeElement) element;
+            KModuleMetadata moduleMetadata = this.moduleMetadataReader.read(classElement);
+
+        }
+
+        return true;
     }
 
 }
