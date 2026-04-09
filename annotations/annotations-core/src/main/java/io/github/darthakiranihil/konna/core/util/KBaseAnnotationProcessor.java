@@ -23,12 +23,8 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import java.lang.annotation.Annotation;
 
 /**
  * Base class for all annotation processors.
@@ -68,47 +64,4 @@ public abstract class KBaseAnnotationProcessor extends AbstractProcessor {
 
     }
 
-    /**
-     * Returns a type mirror for value of annotation, that returns {@link Class} instances.
-     * @param element Element containing annotation
-     * @param annotation Annotation to extract class field from
-     * @param field Name of field that returns {@link Class}
-     * @return Type mirror for annotation field returning {@link Class}
-     */
-    @SuppressWarnings("SameParameterValue")
-    protected final TypeMirror getClassValueFromAnnotation(
-        final Element element,
-        final Class<? extends Annotation> annotation,
-        final String field
-    ) {
-        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
-            if (!annotationMirror
-                .getAnnotationType()
-                .asElement()
-                .toString()
-                .contentEquals(annotation.getName())
-            ) {
-                continue;
-            }
-
-            for (var entry : annotationMirror
-                .getElementValues()
-                .entrySet()
-            ) {
-                if (!entry.getKey().getSimpleName().contentEquals(field)) {
-                    continue;
-                }
-
-                return (TypeMirror) entry.getValue().getValue();
-            }
-
-        }
-
-        throw new IllegalArgumentException(
-            String.format(
-                "Unknown annotation field: %s",
-                field
-            )
-        );
-    }
 }
