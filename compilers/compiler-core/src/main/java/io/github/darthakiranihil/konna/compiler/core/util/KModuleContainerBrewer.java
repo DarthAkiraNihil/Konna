@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.compiler.core.util;
 
 import com.palantir.javapoet.*;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import javax.lang.model.element.Modifier;
@@ -207,7 +208,9 @@ public final class KModuleContainerBrewer {
         }
 
         if (!module.moduleDependencies().isEmpty()) {
-            moduleInstantiationStatement.add(",");
+            if (module.hasApplicationFeatures() || module.hasSystemFeatures()) {
+                moduleInstantiationStatement.add(",");
+            }
             var deps = module.moduleDependencies();
             for (int i = 0; i < deps.size(); i++) {
                 KModuleMetadata.ModuleDependency depDesc = deps.get(i);
@@ -286,12 +289,17 @@ public final class KModuleContainerBrewer {
             .addAnnotation(Override.class)
             .addAnnotation(Nullable.class)
             .addParameter(
-                ParameterizedTypeName.get(
-                    ClassName.get(Class.class),
-                    WildcardTypeName.subtypeOf(Object.class)
-                ),
-                "clazz",
-                Modifier.FINAL
+                ParameterSpec
+                    .builder(
+                        ParameterizedTypeName.get(
+                            ClassName.get(Class.class),
+                            WildcardTypeName.subtypeOf(Object.class)
+                        ),
+                        "clazz",
+                        Modifier.FINAL
+                    )
+                    .addAnnotation(NonNull.class)
+                    .build()
             )
             .addStatement("var supplier = this.mapping.get(clazz)")
             .addStatement("return supplier == null ? null : supplier.get()")
