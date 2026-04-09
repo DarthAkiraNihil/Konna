@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.compiler.core.util;
 
 import com.palantir.javapoet.*;
+import org.jspecify.annotations.Nullable;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.DeclaredType;
@@ -81,7 +82,33 @@ public final class KModuleContainerBrewer {
                     .build()
             );
 
-        builder.addMethod(this.brewContainerConstructor(module, generatedContainers));
+        int singletons = 0;
+        for (var provider: module.providers()) {
+            if (!provider.isSingleton()) {
+                continue;
+            }
+
+            builder.addField(
+                FieldSpec
+                    .builder(
+                        TypeName.get(provider.mainProvidedClass()),
+                        String.format("s%d", singletons)
+                    )
+                    .addAnnotation(Nullable.class)
+                    .addModifiers(Modifier.PRIVATE)
+                    .build()
+            );
+        }
+
+        if (
+                module.hasSystemFeatures()
+            ||  module.hasApplicationFeatures()
+            ||  !module.moduleDependencies().isEmpty()
+        ) {
+            builder.addMethod(this.brewContainerConstructor(module, generatedContainers));
+        }
+
+
 
         return builder.build();
     }
@@ -153,8 +180,11 @@ public final class KModuleContainerBrewer {
             moduleInstantiationStatement.add(",");
             var deps = module.moduleDependencies();
             for (int i = 0; i < deps.size(); i++) {
+                KModuleMetadata.ModuleDependency depDesc = deps.get(i);
                 moduleInstantiationStatement.add(
-                    String.format("c%d", i)
+                    String.format("c%d.getInstance($T.class, $S)", i),
+                    depDesc.requiredType(),
+                    depDesc.qualifier()
                 );
 
                 if (i < deps.size() - 1) {

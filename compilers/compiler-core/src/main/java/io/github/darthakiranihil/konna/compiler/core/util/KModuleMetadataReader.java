@@ -205,6 +205,7 @@ public final class KModuleMetadataReader {
 
         builder.addProvider(
             providerMethod.getSimpleName().toString(),
+            providerMethod.getReturnType(),
             providedClasses,
             isSingleton,
             qualifier

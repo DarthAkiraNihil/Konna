@@ -42,6 +42,7 @@ public record KModuleMetadata(
 
     public record ProviderDescription(
         String methodName,
+        TypeMirror mainProvidedClass,
         List<TypeMirror> providedClasses,
         boolean isSingleton,
         @Nullable String qualifier
@@ -84,6 +85,7 @@ public record KModuleMetadata(
 
         public void addProvider(
             final String methodName,
+            final TypeMirror mainProvidedClass,
             final List<TypeMirror> providedClasses,
             boolean isSingleton,
             final String qualifier
@@ -91,6 +93,7 @@ public record KModuleMetadata(
             this.providers.add(
                 new ProviderDescription(
                     methodName,
+                    mainProvidedClass,
                     providedClasses,
                     isSingleton,
                     qualifier
