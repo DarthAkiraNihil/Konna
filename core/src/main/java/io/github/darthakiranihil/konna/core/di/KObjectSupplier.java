@@ -16,25 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.function.Supplier;
 
 /**
- * Marks that this parameter should be taken from another module.
- * Must be used only inside modules' constructors.
+ * Special interface that provides only one method to get
+ * objects of unknown type.
  *
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.PARAMETER)
-public @interface KTakeFrom {
-
-    /**
-     * @return Module class to take implementation from
-     */
-    Class<?> module();
-
+public interface KObjectSupplier extends Supplier<Object> {
 }

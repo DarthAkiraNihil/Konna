@@ -16,17 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
+import org.jspecify.annotations.Nullable;
+
 /**
- * String-based qualifier to be used by DI system, depending on its implementation.
- *
- * @since 0.6.0
- * @author Darth Akira Nihil
+ * Alternative container (to be renamed).
  */
-public @interface KQualifier {
+public interface KContainer2 {
 
     /**
-     * @return Qualifier's value
+     * @param clazz CLAZZ
+     * @return INSTANCE
      */
-    String value();
+    @Nullable Object getInstance(Class<?> clazz);
 
 }

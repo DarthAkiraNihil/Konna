@@ -14,27 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.di;
+package io.github.darthakiranihil.konna.compiler.core.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.palantir.javapoet.TypeSpec;
 
-/**
- * Marks that this parameter should be taken from another module.
- * Must be used only inside modules' constructors.
- *
- * @since 0.6.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.PARAMETER)
-public @interface KTakeFrom {
-
-    /**
-     * @return Module class to take implementation from
-     */
-    Class<?> module();
+public record KModuleContainerMetadata(
+    KModuleMetadata module,
+    String containerClassName,
+    TypeSpec containerSpec
+) {
 
 }

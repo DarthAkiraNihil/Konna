@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.compiler.level;
 
 import com.google.auto.service.AutoService;
 import com.palantir.javapoet.*;
+import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 import io.github.darthakiranihil.konna.core.util.KGenerated;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
@@ -169,7 +170,7 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
             KGeneratorNodeInputParam param = Objects.requireNonNull(
                 element.getAnnotation(KGeneratorNodeInputParam.class)
             );
-            TypeMirror paramType = this.getClassValueFromAnnotation(
+            TypeMirror paramType = KAnnotationUtils.getClassValueFromAnnotation(
                 element,
                 KGeneratorNodeInputParam.class,
                 "type"
@@ -243,7 +244,7 @@ public final class KGeneratorNodeParamsAnnotationProcessor extends KBaseAnnotati
             KGeneratorNodeOutputParam param = Objects.requireNonNull(
                 element.getAnnotation(KGeneratorNodeOutputParam.class)
             );
-            TypeMirror paramType = this.getClassValueFromAnnotation(
+            TypeMirror paramType = KAnnotationUtils.getClassValueFromAnnotation(
                 element,
                 KGeneratorNodeOutputParam.class,
                 "type"
