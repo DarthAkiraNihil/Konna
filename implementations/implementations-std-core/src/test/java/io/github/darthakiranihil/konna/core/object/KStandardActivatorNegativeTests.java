@@ -38,9 +38,6 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
         TestSingleton singleton = new TestSingleton();
         Assertions.assertThrowsExactly(KDeletionException.class, () -> this.activator.deleteObject(singleton));
 
-        TestWeakSingleton weakSingleton = new TestWeakSingleton();
-        Assertions.assertThrowsExactly(KDeletionException.class, () -> this.activator.deleteObject(weakSingleton));
-
     }
 
     @Test

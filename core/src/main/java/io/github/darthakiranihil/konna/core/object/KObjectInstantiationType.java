@@ -42,14 +42,6 @@ public enum KObjectInstantiationType {
      */
     SINGLETON,
     /**
-     * Created object is a weak singleton.
-     * Just like singleton,
-     * but {@link KActivator} references it through a weak reference.
-     *
-     * @see KSingleton
-     */
-    WEAK_SINGLETON,
-    /**
      * Created object is a poolable object.
      * Poolable objects are created in {@link KObjectPool}s.
      * When {@link KActivator} tries to create a poolable object,

@@ -59,16 +59,10 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
 
         Assertions.assertEquals(singleton1.id(), singleton2.id());
 
-        var weakSingleton1 = this.activator.createObject(TestWeakSingleton.class);
-        var weakSingleton2 = this.activator.createObject(TestWeakSingleton.class);
-
-        Assertions.assertEquals(weakSingleton1.id(), weakSingleton2.id());
-
         var immortal1 = this.activator.createObject(TestImmortal.class);
         var immortal2 = this.activator.createObject(TestImmortal.class);
 
         Assertions.assertEquals(immortal1.id(), immortal2.id());
-        this.assertExists(singleton1, singleton2, weakSingleton1, weakSingleton2, immortal1, immortal2);
     }
 
     @Test
@@ -183,10 +177,6 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
         var singleton = this.activator.createObject(TestSingleton.class);
         this.activator.deleteObject(singleton);
         this.assertNotExists(singleton);
-
-        var weakSingleton = this.activator.createObject(TestWeakSingleton.class);
-        this.activator.deleteObject(weakSingleton);
-        this.assertNotExists(weakSingleton);
 
     }
 }

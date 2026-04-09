@@ -29,7 +29,6 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -51,7 +50,6 @@ public final class KStandardActivator extends KObject implements KActivator {
     private final KObjectRegistry objectRegistry;
 
     private final Map<Class<?>, KObject> singletons;
-    private final Map<Class<?>, WeakReference<KObject>> weakSingletons;
     private final Map<Class<?>, KObjectPool<?>> pools;
     private final Map<Class<?>, KWeakObjectPool<?>> weakPools;
 
@@ -83,7 +81,6 @@ public final class KStandardActivator extends KObject implements KActivator {
         this.objectRegistry = objectRegistry;
 
         this.singletons = new HashMap<>();
-        this.weakSingletons = new HashMap<>();
         this.pools = new HashMap<>();
         this.weakPools = new HashMap<>();
         this.objectInstantiationTypes = new HashMap<>();
@@ -161,13 +158,6 @@ public final class KStandardActivator extends KObject implements KActivator {
             case SINGLETON, IMMORTAL -> this.createSingleton(
                 klass,
                 container,
-                false,
-                nonInjectedArgs
-            );
-            case WEAK_SINGLETON -> this.createSingleton(
-                klass,
-                container,
-                true,
                 nonInjectedArgs
             );
             case POOLABLE -> this.createPoolable(
@@ -244,8 +234,7 @@ public final class KStandardActivator extends KObject implements KActivator {
 
         switch (instantiationType) {
             case IMMORTAL -> throw new KDeletionException(object, "object is immortal");
-            case SINGLETON -> this.deleteSingleton(object, (Class<T>) klass, false);
-            case WEAK_SINGLETON -> this.deleteSingleton(object, (Class<T>) klass, true);
+            case SINGLETON -> this.deleteSingleton(object, (Class<T>) klass);
             case POOLABLE -> this.deletePoolable(object, (Class<T>) klass, false);
             case WEAK_POOLABLE -> this.deletePoolable(object, (Class<T>) klass, true);
         }
@@ -270,12 +259,7 @@ public final class KStandardActivator extends KObject implements KActivator {
 
         var clazz = ctx.getClass();
         if (clazz.isAnnotationPresent(KSingleton.class)) {
-            KSingleton meta = clazz.getAnnotation(KSingleton.class);
-            if (meta.weak()) {
-                this.weakSingletons.put(clazz, new WeakReference<>((KObject) ctx));
-            } else {
-                this.singletons.put(clazz, (KObject) ctx);
-            }
+            this.singletons.put(clazz, (KObject) ctx);
         }
 
         this.objectRegistry.pushObjectToRegistry((KObject) ctx, this.getInstantiationType(clazz));
@@ -327,9 +311,7 @@ public final class KStandardActivator extends KObject implements KActivator {
                 return KObjectInstantiationType.IMMORTAL;
             }
 
-            return meta.weak()
-                ? KObjectInstantiationType.WEAK_SINGLETON
-                : KObjectInstantiationType.SINGLETON;
+            return KObjectInstantiationType.SINGLETON;
         }
 
         if (clazz.isAnnotationPresent(KPoolable.class)) {
@@ -410,23 +392,8 @@ public final class KStandardActivator extends KObject implements KActivator {
     private <T> T createSingleton(
         final Class<T> clazz,
         final KContainer container,
-        boolean weak,
         final Object... nonResolvedArgs
     ) {
-        if (weak) {
-            if (this.weakSingletons.containsKey(clazz)) {
-                var ref = this.weakSingletons.get(clazz);
-                KObject object = ref.get();
-                if (object != null) {
-                    return (T) object;
-                }
-            }
-
-            var object = this.createNewObject(clazz, container, nonResolvedArgs);
-            this.weakSingletons.put(clazz, new WeakReference<>((KObject) object));
-            return object;
-        }
-
         if (this.singletons.containsKey(clazz)) {
             return (T) this.singletons.get(clazz);
         }
@@ -459,10 +426,6 @@ public final class KStandardActivator extends KObject implements KActivator {
         switch (instantiationType) {
             case IMMORTAL -> object.addTag(KTag.DefaultTags.IMMORTAL);
             case SINGLETON -> object.addTag(KTag.DefaultTags.SINGLETON);
-            case WEAK_SINGLETON -> object.addTags(
-                KTag.DefaultTags.SINGLETON,
-                KTag.DefaultTags.WEAK
-            );
             case POOLABLE -> object.addTag(KTag.DefaultTags.POOLABLE);
             case WEAK_POOLABLE -> object.addTags(
                 KTag.DefaultTags.POOLABLE,
@@ -472,24 +435,7 @@ public final class KStandardActivator extends KObject implements KActivator {
         }
     }
 
-    private <T> void deleteSingleton(final T object, final Class<T> clazz, boolean weak) {
-        if (weak) {
-            if (!this.weakSingletons.containsKey(clazz)) {
-                throw new KDeletionException(
-                    object,
-                    "cannot delete a non-instantiated weak singleton"
-                );
-            }
-
-            var ref = this.weakSingletons.get(clazz);
-            KObject deleted = ref.get();
-            if (deleted != null) {
-                this.weakSingletons.remove(clazz);
-            }
-
-            return;
-        }
-
+    private <T> void deleteSingleton(final T object, final Class<T> clazz) {
         if (!this.singletons.containsKey(clazz)) {
             throw new KDeletionException(
                 object,
