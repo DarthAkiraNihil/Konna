@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.compiler.core;
 
 import com.google.auto.service.AutoService;
+import com.palantir.javapoet.JavaFile;
+import io.github.darthakiranihil.konna.compiler.core.util.KModuleContainerBrewer;
 import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadata;
 import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadataReader;
 import io.github.darthakiranihil.konna.compiler.core.util.KModuleProcessingQueueBuilder;
@@ -28,6 +30,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -43,6 +47,7 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
 
     private KModuleMetadataReader moduleMetadataReader;
     private KModuleProcessingQueueBuilder queueBuilder;
+    private KModuleContainerBrewer brewer;
 
     @Override
     public synchronized void init(final ProcessingEnvironment processingEnv) {
@@ -55,7 +60,7 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
         );
 
         this.queueBuilder = new KModuleProcessingQueueBuilder();
-
+        this.brewer = new KModuleContainerBrewer();
     }
 
     @Override
@@ -83,6 +88,24 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
         }
 
         Queue<KModuleMetadata> moduleMetadataQueue = this.queueBuilder.buildQueue(modules);
+        var containers = this.brewer.brewJava(moduleMetadataQueue);
+
+        for (var container: containers) {
+            JavaFile javaFile = JavaFile.builder(
+                "konna.generated.core.modules",
+                container.containerSpec()
+            ).indent("    ").addFileComment(
+                "Generated with Konna annotation processor. Do not edit!").build();
+
+            try {
+                javaFile.writeTo(this.filer);
+            } catch (IOException e) {
+                this.messager.printMessage(
+                    Diagnostic.Kind.ERROR,
+                    String.format("Could not generate registerer class: %s", e)
+                );
+            }
+        }
 
         return true;
     }

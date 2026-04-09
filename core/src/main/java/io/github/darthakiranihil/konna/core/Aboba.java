@@ -14,26 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.di;
+package io.github.darthakiranihil.konna.core;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.darthakiranihil.konna.core.di.KModule;
+import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
+import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 
-/**
- * String-based qualifier to be used by DI system, depending on its implementation.
- *
- * @since 0.6.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.PARAMETER})
-public @interface KQualifier {
+@KModule
+public class Aboba {
 
-    /**
-     * @return Qualifier's value
-     */
-    String value();
+    public KIntWeightedGraph<String> getGrapg() {
+        return new KHashMapIntWeightedGraph<>();
+    }
 
 }

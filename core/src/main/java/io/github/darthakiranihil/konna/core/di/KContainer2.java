@@ -16,8 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.di;
 
+import org.jspecify.annotations.Nullable;
+
 public interface KContainer2 {
 
-    Object getInstance(Class<?> clazz, String qualifier);
+    @Nullable Object getInstance(Class<?> clazz, String qualifier);
 
 }

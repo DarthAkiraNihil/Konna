@@ -21,10 +21,7 @@ import org.jspecify.annotations.Nullable;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.DeclaredType;
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public final class KModuleContainerBrewer {
 
@@ -50,13 +47,14 @@ public final class KModuleContainerBrewer {
         while (!modules.isEmpty()) {
             KModuleMetadata current = modules.poll();
             TypeSpec container = this.brewModuleContainer(current, generatedContainers);
-            containerQueue.add(
-                new KModuleContainerMetadata(
-                    current,
-                    container.name(),
-                    container
-                )
+            KModuleContainerMetadata metadata = new KModuleContainerMetadata(
+                current,
+                container.name(),
+                container
             );
+
+            containerQueue.add(metadata);
+            generatedContainers.put(current.className(), metadata);
         }
 
         return containerQueue;
@@ -69,6 +67,12 @@ public final class KModuleContainerBrewer {
     ) {
         var builder = TypeSpec
             .classBuilder(String.format("%s$$ModuleContainer", module.className()))
+            .addAnnotation(
+                AnnotationSpec
+                    .builder(SuppressWarnings.class)
+                    .addMember("value", "$S", "unchecked")
+                    .build()
+            )
             .addSuperinterface(CONTAINER_CLASS_NAME)
             .addModifiers(Modifier.FINAL)
             .addField(
@@ -106,15 +110,9 @@ public final class KModuleContainerBrewer {
             );
         }
 
-        if (
-                module.hasSystemFeatures()
-            ||  module.hasApplicationFeatures()
-            ||  !module.moduleDependencies().isEmpty()
-        ) {
-            builder.addMethod(this.brewContainerConstructor(module, generatedContainers));
-        }
-
-
+        builder
+            .addMethod(this.brewContainerConstructor(module, generatedContainers))
+            .addMethod(this.brewSwitch(module.providers()));
 
         return builder.build();
     }
@@ -173,7 +171,7 @@ public final class KModuleContainerBrewer {
         }
 
         var moduleInstantiationStatement = CodeBlock.builder();
-        moduleInstantiationStatement.addStatement("this.module = new $T(").indent();
+        moduleInstantiationStatement.add("this.module = new $T(", module.type()).indent();
         if (module.hasApplicationFeatures()) {
             moduleInstantiationStatement.add("applicationFeatures,");
         }
@@ -187,20 +185,28 @@ public final class KModuleContainerBrewer {
             var deps = module.moduleDependencies();
             for (int i = 0; i < deps.size(); i++) {
                 KModuleMetadata.ModuleDependency depDesc = deps.get(i);
-                moduleInstantiationStatement.add(
-                    String.format("c%d.getInstance($T.class, $S)", i),
-                    depDesc.requiredType(),
-                    depDesc.qualifier()
-                );
+
+                TypeName requiredTypeName = TypeName.get(depDesc.requiredType());
+                if (requiredTypeName instanceof ParameterizedTypeName) {
+                    moduleInstantiationStatement.add(
+                        String.format("($T) c%d.getInstance($T.class, $S)", i),
+                        ((ParameterizedTypeName) requiredTypeName).rawType(),
+                        ((ParameterizedTypeName) requiredTypeName).rawType(),
+                        depDesc.qualifier()
+                    );
+                } else {
+                    moduleInstantiationStatement.add(
+                        String.format("($T) c%d.getInstance($T.class, $S)", i),
+                        requiredTypeName,
+                        requiredTypeName,
+                        depDesc.qualifier()
+                    );
+                }
 
                 if (i < deps.size() - 1) {
                     moduleInstantiationStatement.add(",");
                 }
             }
-
-            moduleInstantiationStatement
-                .unindent()
-                .add(")");
         }
 
         moduleInstantiationStatement
@@ -220,21 +226,78 @@ public final class KModuleContainerBrewer {
         String methodName = String.format("get%s", simpleProvidedClassName);
         var builder = MethodSpec
             .methodBuilder(methodName)
+            .returns(TypeName.get(providerDescription.mainProvidedClass()))
             .addModifiers(Modifier.PRIVATE);
 
         if (providerDescription.isSingleton()) {
             String singletonField = String.format("this.singleton%s", simpleProvidedClassName);
             builder
                 .beginControlFlow(String.format("if (%s == null)", singletonField))
-                .addStatement(String.format("%s = this.%s", singletonField, methodName))
+                .addStatement(String.format("%s = this.module.%s()", singletonField, providerDescription.methodName()))
                 .endControlFlow()
                 .addStatement(String.format("return %s", singletonField));
         } else {
-            builder.addStatement(String.format("return %s", methodName));
+            builder.addStatement(String.format("return this.module.%s()", providerDescription.methodName()));
         }
 
         return builder.build();
 
+    }
+
+    private MethodSpec brewSwitch(final List<KModuleMetadata.ProviderDescription> providers) {
+
+        var builder = MethodSpec
+            .methodBuilder("getInstance")
+            .returns(Object.class)
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Override.class)
+            .addAnnotation(Nullable.class)
+            .addParameter(Class.class, "clazz", Modifier.FINAL)
+            .addParameter(String.class, "qualifier", Modifier.FINAL);
+
+        return builder.addStatement("return null").build();
+//        var greatSwitch = CodeBlock
+//            .builder()
+//            .beginControlFlow("switch (clazz)");
+//
+
+//        for (var provider: providers) {
+//            var providedClasses = provider.providedClasses();
+//            for (int i = 0; i < providedClasses.size(); i++) {
+//                var providedClass = providedClasses.get(i);
+//                greatSwitch.add("case $T.class", providedClass);
+//
+//                if (i == provider.providedClasses().size() - 1) {
+//                    greatSwitch.addStatement(":");
+//                } else {
+//                    greatSwitch.addStatement(",");
+//                }
+//            }
+//
+//            String mainSimpleName = ((DeclaredType) provider.mainProvidedClass())
+//                .asElement()
+//                .getSimpleName()
+//                .toString();
+//
+//            builder.a
+//
+//            builder.addMethod(this.brewProviderMethod(provider, mainSimpleName));
+//
+//            if (!provider.isSingleton()) {
+//                continue;
+//            }
+//
+//            builder.addField(
+//                FieldSpec
+//                    .builder(
+//                        TypeName.get(provider.mainProvidedClass()),
+//                        String.format("singleton%s", mainSimpleName)
+//                    )
+//                    .addAnnotation(Nullable.class)
+//                    .addModifiers(Modifier.PRIVATE)
+//                    .build()
+//            );
+//        }
     }
 
 }
