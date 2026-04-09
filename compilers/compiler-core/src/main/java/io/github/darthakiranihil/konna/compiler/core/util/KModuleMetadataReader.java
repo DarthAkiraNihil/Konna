@@ -30,8 +30,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public final class KModuleMetadataReader {
 
@@ -97,7 +99,8 @@ public final class KModuleMetadataReader {
             }
         }
 
-        return builder.build();
+        KModuleMetadata metadata = builder.build();
+        return this.validate(metadata.className(), metadata) ? metadata : null;
 
     }
 
@@ -204,6 +207,33 @@ public final class KModuleMetadataReader {
         );
 
         return true;
+    }
+
+    private boolean validate(
+        final String moduleClassName,
+        final KModuleMetadata metadata
+    ) {
+        Set<TypeMirror> providedTypes = new HashSet<>(metadata.providers().size());
+        boolean ok = true;
+        for (KModuleMetadata.ProviderDescription provider: metadata.providers()) {
+            for (TypeMirror providedType: provider.providedClasses()) {
+                if (providedTypes.add(providedType)) {
+                    this.messager.printError(
+                        String.format(
+                            "%s: Conflict: type %s has been already provided by this module",
+                            moduleClassName,
+                            providedType
+                        )
+                    );
+                }
+                ok = false;
+
+                providedTypes.add(providedType);
+            }
+
+        }
+
+        return ok;
     }
 
 }

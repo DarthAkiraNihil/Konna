@@ -20,6 +20,6 @@ import org.jspecify.annotations.Nullable;
 
 public interface KContainer2 {
 
-    @Nullable Object getInstance(Class<?> clazz, String qualifier);
+    @Nullable Object getInstance(Class<?> clazz);
 
 }

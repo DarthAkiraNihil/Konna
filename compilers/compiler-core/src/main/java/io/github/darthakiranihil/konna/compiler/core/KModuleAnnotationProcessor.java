@@ -30,12 +30,10 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
@@ -70,6 +68,8 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
     ) {
 
         List<KModuleMetadata> modules = new LinkedList<>();
+        Set<TypeMirror> allProvidedTypes = new HashSet<>();
+
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KModule.class
         )) {
@@ -82,8 +82,33 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
                 continue;
             }
 
+            boolean hasConflict = false;
             TypeElement classElement = (TypeElement) element;
             KModuleMetadata moduleMetadata = this.moduleMetadataReader.read(classElement);
+            if (moduleMetadata == null) {
+                continue;
+            }
+
+            for (KModuleMetadata.ProviderDescription provider: moduleMetadata.providers()) {
+                for (TypeMirror providedType: provider.providedClasses()) {
+                    if (allProvidedTypes.contains(providedType)) {
+                        this.messager.printError(
+                            String.format(
+                                "Conflict: type %s has been already by other modules",
+                                providedType
+                            )
+                        );
+                        hasConflict = true;
+                    }
+
+                    allProvidedTypes.add(providedType);
+                }
+            }
+
+            if (hasConflict) {
+                return true;
+            }
+
             modules.add(moduleMetadata);
         }
 

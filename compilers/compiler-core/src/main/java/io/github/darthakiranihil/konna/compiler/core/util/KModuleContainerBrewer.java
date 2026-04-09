@@ -189,17 +189,15 @@ public final class KModuleContainerBrewer {
                 TypeName requiredTypeName = TypeName.get(depDesc.requiredType());
                 if (requiredTypeName instanceof ParameterizedTypeName) {
                     moduleInstantiationStatement.add(
-                        String.format("($T) c%d.getInstance($T.class, $S)", i),
+                        String.format("($T) c%d.getInstance($T.class)", i),
                         ((ParameterizedTypeName) requiredTypeName).rawType(),
-                        ((ParameterizedTypeName) requiredTypeName).rawType(),
-                        depDesc.qualifier()
+                        ((ParameterizedTypeName) requiredTypeName).rawType()
                     );
                 } else {
                     moduleInstantiationStatement.add(
-                        String.format("($T) c%d.getInstance($T.class, $S)", i),
+                        String.format("($T) c%d.getInstance($T.class)", i),
                         requiredTypeName,
-                        requiredTypeName,
-                        depDesc.qualifier()
+                        requiredTypeName
                     );
                 }
 
@@ -252,8 +250,7 @@ public final class KModuleContainerBrewer {
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
             .addAnnotation(Nullable.class)
-            .addParameter(Class.class, "clazz", Modifier.FINAL)
-            .addParameter(String.class, "qualifier", Modifier.FINAL);
+            .addParameter(Class.class, "clazz", Modifier.FINAL);
 
         return builder.addStatement("return null").build();
 //        var greatSwitch = CodeBlock

@@ -28,20 +28,6 @@ import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 @KModule
 public class Abibus {
 
-    private final KApplicationFeatures features;
-    private final KSystemFeatures systemFeatures;
-    private final KIntWeightedGraph<String> gagag;
-
-    public Abibus(
-        KApplicationFeatures features,
-        KSystemFeatures systemFeatures,
-        @KTakeFrom(module = Aboba.class) KIntWeightedGraph<String> gagag
-    ) {
-        this.features = features;
-        this.systemFeatures = systemFeatures;
-        this.gagag = gagag;
-    }
-
     public KJsonValidator getValidator() {
         return KJsonObjectValidatorBuilder.create().build();
     }

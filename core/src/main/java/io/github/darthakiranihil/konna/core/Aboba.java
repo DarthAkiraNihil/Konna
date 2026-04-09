@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core;
 
+import io.github.darthakiranihil.konna.core.data.json.KJsonObjectValidatorBuilder;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.di.KModule;
 import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
@@ -23,8 +25,12 @@ import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 @KModule
 public class Aboba {
 
-    public KIntWeightedGraph<String> getGrapg() {
-        return new KHashMapIntWeightedGraph<>();
+    public KJsonValidator getValidator() {
+        return KJsonObjectValidatorBuilder.create().build();
     }
+    public KJsonValidator getValidator2() {
+        return KJsonObjectValidatorBuilder.create().build();
+    }
+
 
 }
