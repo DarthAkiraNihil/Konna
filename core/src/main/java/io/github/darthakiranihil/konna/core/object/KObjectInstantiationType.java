@@ -16,9 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.di.KTransient;
-
 /**
  * Enumeration that represents the way {@link KActivator} creating a new object
  * of given class. Normally, it is used only by {@link KActivator}
@@ -41,7 +38,7 @@ public enum KObjectInstantiationType {
      * actual creation, {@link KActivator} will return the created instance
      * instead of instantiating a new object.
      *
-     * @see KSingleton
+     * @see io.github.darthakiranihil.konna.core.di.KSingleton
      */
     SINGLETON,
     /**
@@ -68,10 +65,11 @@ public enum KObjectInstantiationType {
      * Created object is a transient object.
      * When {@link KActivator} creates a transient object, it will create
      * a new instance for each call. Default type if instantiation type is
-     * not specified by corresponding annotations ({@link KSingleton}, {@link KPoolable}
-     * or {@link KTransient} with temporal flag set true)
+     * not specified by corresponding annotations
+     * ({@link io.github.darthakiranihil.konna.core.di.KSingleton}, {@link KPoolable}
+     * or {@link io.github.darthakiranihil.konna.core.di.KTransient} with temporal flag set true)
      *
-     * @see KTransient
+     * @see io.github.darthakiranihil.konna.core.di.KTransient
      */
     TRANSIENT,
     /**
