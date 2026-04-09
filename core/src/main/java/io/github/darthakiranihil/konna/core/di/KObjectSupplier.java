@@ -18,5 +18,12 @@ package io.github.darthakiranihil.konna.core.di;
 
 import java.util.function.Supplier;
 
+/**
+ * Special interface that provides only one method to get
+ * objects of unknown type.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KObjectSupplier extends Supplier<Object> {
 }
