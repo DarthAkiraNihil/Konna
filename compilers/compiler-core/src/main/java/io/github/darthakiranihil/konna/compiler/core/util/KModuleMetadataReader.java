@@ -35,10 +35,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class that reads metadata of a module. For internal use only.
+ */
 public final class KModuleMetadataReader {
 
     private final Types typeUtils;
-    private final Elements elementUtils;
     private final Messager messager;
 
     private final TypeMirror appFeaturesType;
@@ -50,18 +52,22 @@ public final class KModuleMetadataReader {
         final Messager messager
     ) {
         this.typeUtils = typeUtils;
-        this.elementUtils = elementUtils;
         this.messager = messager;
 
-        this.appFeaturesType = this.elementUtils
+        this.appFeaturesType = elementUtils
             .getTypeElement("io.github.darthakiranihil.konna.core.app.KApplicationFeatures")
             .asType();
 
-        this.systemFeaturesType = this.elementUtils
+        this.systemFeaturesType = elementUtils
             .getTypeElement("io.github.darthakiranihil.konna.core.app.KSystemFeatures")
             .asType();
     }
 
+    /**
+     * Reads module metadata for provided type element.
+     * @param clazz Module's type element
+     * @return Read module metadata or {@link null} if it failed
+     */
     public @Nullable KModuleMetadata read(final TypeElement clazz) {
 
         var builder = new KModuleMetadata.Builder(
@@ -190,7 +196,7 @@ public final class KModuleMetadataReader {
         if (providerMethod.getAnnotation(KAlsoProvides.class) != null) {
             providedClasses.addAll(
                 List.of(
-                    KAnnotationUtils.getAnnotationArrayValue(
+                    KAnnotationUtils.getClassArrayValueFromAnnotation(
                         providerMethod,
                         KAlsoProvides.class,
                         "value"

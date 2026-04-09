@@ -35,6 +35,50 @@ import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * <p>
+ *     Annotation processor that handles {@link KModule} annotation to generate module containers
+ *     to be used in the new DI system.
+ * </p>
+ * <p>
+ *     There are some limitations applied to module classes (annotated with {@link KModule}):
+ *     <ul>
+ *         <li>
+ *             A module class can have at most one of these constructors
+ *             <ul>
+ *                 <li>
+ *                     A zero-arg constructor (or default)
+ *                 </li>
+ *                 <li>
+ *                     A constructor with the only KApplicationFeatures parameter
+ *                 </li>
+ *                 <li>
+ *                     A constructor with KApplicationFeatures and KSystemFeatures
+ *                     parameters (in exact given order)
+ *                 </li>
+ *                 <li>
+ *                     A constructor with the only KSystemFeatures parameter
+ *                 </li>
+ *                 <li>
+ *                     A constructor with KApplicationFeatures, KSystemFeatures
+ *                     and other parameters (in exact given order). Other parameters
+ *                     must be annotated with
+ *                     {@link io.github.darthakiranihil.konna.core.di.KTakeFrom}
+ *                 </li>
+ *             </ul>
+ *         </li>
+ *         <li>
+ *             There have to be no repeating providers that return objects with same types.
+ *         </li>
+ *         <li>
+ *             Module's methods must not have any parameters
+ *         </li>
+ *     </ul>
+ * </p>
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
     "io.github.darthakiranihil.konna.core.di.KModule"

@@ -23,9 +23,11 @@ import org.jspecify.annotations.Nullable;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * Code Generator for module containers. For internal use only.
+ */
 public final class KModuleContainerBrewer {
 
     private static final ClassName CONTAINER_CLASS_NAME = ClassName.get(
@@ -48,8 +50,11 @@ public final class KModuleContainerBrewer {
         "KSystemFeatures"
     );
 
-
-
+    /**
+     * Generates Java files for provided modules.
+     * @param modules Queue of modules to generate code for
+     * @return Queue of containers metadata to use to generate app container
+     */
     public Queue<KModuleContainerMetadata> brewJava(final Queue<KModuleMetadata> modules) {
 
         Map<String, KModuleContainerMetadata> generatedContainers = new HashMap<>(modules.size());
@@ -139,7 +144,7 @@ public final class KModuleContainerBrewer {
 
         builder
             .addMethod(this.brewContainerConstructor(module, generatedContainers))
-            .addMethod(this.brewSwitch(module.providers()));
+            .addMethod(this.brewSwitch());
 
         return builder.build();
     }
@@ -269,18 +274,26 @@ public final class KModuleContainerBrewer {
             String singletonField = String.format("this.singleton%s", simpleProvidedClassName);
             builder
                 .beginControlFlow(String.format("if (%s == null)", singletonField))
-                .addStatement(String.format("%s = this.module.%s()", singletonField, providerDescription.methodName()))
+                .addStatement(
+                    String.format(
+                        "%s = this.module.%s()",
+                        singletonField,
+                        providerDescription.methodName()
+                    )
+                )
                 .endControlFlow()
                 .addStatement(String.format("return %s", singletonField));
         } else {
-            builder.addStatement(String.format("return this.module.%s()", providerDescription.methodName()));
+            builder.addStatement(
+                String.format("return this.module.%s()", providerDescription.methodName())
+            );
         }
 
         return builder.build();
 
     }
 
-    private MethodSpec brewSwitch(final List<KModuleMetadata.ProviderDescription> providers) {
+    private MethodSpec brewSwitch() {
 
         return MethodSpec
             .methodBuilder("getInstance")

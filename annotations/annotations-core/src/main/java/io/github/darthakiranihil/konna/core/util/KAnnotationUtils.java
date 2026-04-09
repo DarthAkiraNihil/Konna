@@ -24,7 +24,17 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides different useful annotation utils.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public final class KAnnotationUtils {
+
+    private KAnnotationUtils() {
+
+    }
 
     /**
      * Returns a type mirror for value of annotation, that returns {@link Class} instances.
@@ -70,8 +80,16 @@ public final class KAnnotationUtils {
         );
     }
 
+    /**
+     * Returns an array of type mirrors for value of annotation, that returns array of
+     * {@link Class} instances.
+     * @param element Element containing annotation
+     * @param annotation Annotation to extract class field from
+     * @param field Name of field that returns {@link Class}
+     * @return Array of ype mirrors for annotation field returning {@link Class}
+     */
     @SuppressWarnings("unchecked")
-    public static TypeMirror[] getAnnotationArrayValue(
+    public static TypeMirror[] getClassArrayValueFromAnnotation(
         final Element element,
         final Class<? extends Annotation> annotation,
         final String field

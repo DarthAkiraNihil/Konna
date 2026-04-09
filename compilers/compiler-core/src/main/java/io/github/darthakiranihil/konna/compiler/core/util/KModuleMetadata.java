@@ -16,13 +16,10 @@
 
 package io.github.darthakiranihil.konna.compiler.core.util;
 
-import org.jspecify.annotations.Nullable;
-
 import javax.lang.model.type.TypeMirror;
 import java.util.LinkedList;
 import java.util.List;
 
-// todo: require strict constructor parameter ordering
 public record KModuleMetadata(
     TypeMirror type,
     String className,
@@ -58,7 +55,7 @@ public record KModuleMetadata(
         private final List<ModuleDependency> moduleDependencies;
         private final List<ProviderDescription> providers;
 
-        public Builder(final TypeMirror type, final String className) {
+        Builder(final TypeMirror type, final String className) {
             this.type = type;
             this.className = className;
             this.moduleDependencies = new LinkedList<>();

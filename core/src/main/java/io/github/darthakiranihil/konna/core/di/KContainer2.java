@@ -18,8 +18,15 @@ package io.github.darthakiranihil.konna.core.di;
 
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Alternative container (to be renamed).
+ */
 public interface KContainer2 {
 
+    /**
+     * @param clazz CLAZZ
+     * @return INSTANCE
+     */
     @Nullable Object getInstance(Class<?> clazz);
 
 }

@@ -20,8 +20,17 @@ import javax.lang.model.type.DeclaredType;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class that build module generation queue. For internal use only.
+ */
 public final class KModuleProcessingQueueBuilder {
 
+    /**
+     * Builds to processing queue for specifies modules.
+     * @param modules List of modules
+     * @return Created processing queue in order that guarantees that each module's
+     *         dependencies are processed
+     */
     public Queue<KModuleMetadata> buildQueue(
         final List<KModuleMetadata> modules
     ) {
