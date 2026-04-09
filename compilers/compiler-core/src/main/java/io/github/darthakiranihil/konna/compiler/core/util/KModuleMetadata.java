@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public record KModuleMetadata(
+    String className,
     boolean hasApplicationFeatures,
     boolean hasSystemFeatures,
     List<ModuleDependency> moduleDependencies,
@@ -47,12 +48,14 @@ public record KModuleMetadata(
 
     static final class Builder {
 
+        private final String className;
         private boolean hasApplicationFeatures;
         private boolean hasSystemFeatures;
         private final List<ModuleDependency> moduleDependencies;
         private final List<ProviderDescription> providers;
 
-        public Builder() {
+        public Builder(final String className) {
+            this.className = className;
             this.moduleDependencies = new LinkedList<>();
             this.providers = new LinkedList<>();
         }
@@ -87,6 +90,7 @@ public record KModuleMetadata(
 
         public KModuleMetadata build() {
             return new KModuleMetadata(
+                this.className,
                 this.hasApplicationFeatures,
                 this.hasSystemFeatures,
                 this.moduleDependencies,

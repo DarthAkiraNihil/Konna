@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.compiler.core;
 import com.google.auto.service.AutoService;
 import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadata;
 import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadataReader;
+import io.github.darthakiranihil.konna.compiler.core.util.KModuleProcessingQueueBuilder;
 import io.github.darthakiranihil.konna.core.di.KModule;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
@@ -27,6 +28,9 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 @AutoService(Processor.class)
@@ -38,6 +42,7 @@ import java.util.Set;
 public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
 
     private KModuleMetadataReader moduleMetadataReader;
+    private KModuleProcessingQueueBuilder queueBuilder;
 
     @Override
     public synchronized void init(final ProcessingEnvironment processingEnv) {
@@ -49,6 +54,8 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             this.messager
         );
 
+        this.queueBuilder = new KModuleProcessingQueueBuilder();
+
     }
 
     @Override
@@ -56,6 +63,8 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
         final Set<? extends TypeElement> annotations,
         final RoundEnvironment roundEnv
     ) {
+
+        List<KModuleMetadata> modules = new LinkedList<>();
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KModule.class
         )) {
@@ -70,8 +79,10 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
 
             TypeElement classElement = (TypeElement) element;
             KModuleMetadata moduleMetadata = this.moduleMetadataReader.read(classElement);
-
+            modules.add(moduleMetadata);
         }
+
+        Queue<KModuleMetadata> moduleMetadataQueue = this.queueBuilder.buildQueue(modules);
 
         return true;
     }

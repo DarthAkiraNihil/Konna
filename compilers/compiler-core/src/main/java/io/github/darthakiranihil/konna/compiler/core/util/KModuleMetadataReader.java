@@ -63,7 +63,7 @@ public final class KModuleMetadataReader {
 
     public @Nullable KModuleMetadata read(final TypeElement clazz) {
 
-        KModuleMetadata.Builder builder = new KModuleMetadata.Builder();
+        var builder = new KModuleMetadata.Builder(clazz.getSimpleName().toString());
         boolean constructorAcquired  = false;
 
         for (Element enclosed: clazz.getEnclosedElements()) {
