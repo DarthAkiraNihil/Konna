@@ -37,9 +37,4 @@ public @interface KTakeFrom {
      */
     Class<?> module();
 
-    /**
-     * @return Qualifier of module dependency
-     */
-    String qualifier() default "";
-
 }

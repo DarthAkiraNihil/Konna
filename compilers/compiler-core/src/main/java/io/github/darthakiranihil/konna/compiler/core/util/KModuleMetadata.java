@@ -34,8 +34,7 @@ public record KModuleMetadata(
 
     public record ModuleDependency(
         TypeMirror module,
-        TypeMirror requiredType,
-        String qualifier
+        TypeMirror requiredType
     ) {
 
     }
@@ -44,8 +43,7 @@ public record KModuleMetadata(
         String methodName,
         TypeMirror mainProvidedClass,
         List<TypeMirror> providedClasses,
-        boolean isSingleton,
-        @Nullable String qualifier
+        boolean isSingleton
     ) {
 
     }
@@ -77,26 +75,23 @@ public record KModuleMetadata(
 
         public void addModuleDependency(
             final TypeMirror dep,
-            final TypeMirror requiredClass,
-            final String qualifier
+            final TypeMirror requiredClass
         ) {
-            this.moduleDependencies.add(new ModuleDependency(dep, requiredClass, qualifier));
+            this.moduleDependencies.add(new ModuleDependency(dep, requiredClass));
         }
 
         public void addProvider(
             final String methodName,
             final TypeMirror mainProvidedClass,
             final List<TypeMirror> providedClasses,
-            boolean isSingleton,
-            final String qualifier
+            boolean isSingleton
         ) {
             this.providers.add(
                 new ProviderDescription(
                     methodName,
                     mainProvidedClass,
                     providedClasses,
-                    isSingleton,
-                    qualifier
+                    isSingleton
                 )
             );
         }

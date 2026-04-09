@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.compiler.core.util;
 
 import io.github.darthakiranihil.konna.core.di.KAlsoProvides;
-import io.github.darthakiranihil.konna.core.di.KQualifier;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.di.KTakeFrom;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
@@ -156,7 +155,7 @@ public final class KModuleMetadataReader {
                     KTakeFrom.class,
                     "module"
                 );
-                builder.addModuleDependency(moduleDepClass, paramType, src.qualifier());
+                builder.addModuleDependency(moduleDepClass, paramType);
             }
         }
 
@@ -183,12 +182,6 @@ public final class KModuleMetadataReader {
 
         boolean isSingleton = providerMethod.getAnnotation(KSingleton.class) != null;
 
-        String qualifier = null;
-        KQualifier qualifierAnnotation = providerMethod.getAnnotation(KQualifier.class);
-        if (qualifierAnnotation != null) {
-            qualifier = qualifierAnnotation.value();
-        }
-
         List<TypeMirror> providedClasses = new LinkedList<>();
         providedClasses.add(providerMethod.getReturnType());
         if (providerMethod.getAnnotation(KAlsoProvides.class) != null) {
@@ -207,8 +200,7 @@ public final class KModuleMetadataReader {
             providerMethod.getSimpleName().toString(),
             providerMethod.getReturnType(),
             providedClasses,
-            isSingleton,
-            qualifier
+            isSingleton
         );
 
         return true;
