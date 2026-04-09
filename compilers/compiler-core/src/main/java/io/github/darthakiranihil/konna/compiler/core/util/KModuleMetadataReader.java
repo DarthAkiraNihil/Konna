@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.compiler.core.util;
 
+import io.github.darthakiranihil.konna.core.di.KAlsoProvides;
+import io.github.darthakiranihil.konna.core.di.KQualifier;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.di.KTakeFrom;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import org.jspecify.annotations.Nullable;
@@ -28,6 +31,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class KModuleMetadataReader {
 
@@ -79,10 +84,13 @@ public final class KModuleMetadataReader {
                     }
 
                     constructorAcquired = true;
-                    break;
                 }
-                default -> {
-                    continue;
+                case METHOD -> {
+                    ExecutableElement providerMethod = (ExecutableElement) enclosed;
+                    boolean ok = this.readProvider(providerMethod, builder, clazz);
+                    if (!ok) {
+                        return null;
+                    }
                 }
             }
         }
@@ -148,6 +156,56 @@ public final class KModuleMetadataReader {
                 builder.addModuleDependency(moduleDepClass, paramType);
             }
         }
+
+        return true;
+    }
+
+    private boolean readProvider(
+        final ExecutableElement providerMethod,
+        final KModuleMetadata.Builder builder,
+        final TypeElement moduleClassElement
+    ) {
+
+        var params = providerMethod.getParameters();
+        if (!params.isEmpty()) {
+            this.messager.printError(
+                String.format(
+                    "%s: Provider method cannot have arguments",
+                    providerMethod.getSimpleName()
+                ),
+                moduleClassElement
+            );
+            return false;
+        }
+
+        boolean isSingleton = providerMethod.getAnnotation(KSingleton.class) != null;
+
+        String qualifier = null;
+        KQualifier qualifierAnnotation = providerMethod.getAnnotation(KQualifier.class);
+        if (qualifierAnnotation != null) {
+            qualifier = qualifierAnnotation.value();
+        }
+
+        List<TypeMirror> providedClasses = new LinkedList<>();
+        providedClasses.add(providerMethod.getReturnType());
+        if (providerMethod.getAnnotation(KAlsoProvides.class) != null) {
+            providedClasses.addAll(
+                List.of(
+                    KAnnotationUtils.getAnnotationArrayValue(
+                        providerMethod,
+                        KAlsoProvides.class,
+                        "value"
+                    )
+                )
+            );
+        }
+
+        builder.addProvider(
+            providerMethod.getSimpleName().toString(),
+            providedClasses,
+            isSingleton,
+            qualifier
+        );
 
         return true;
     }

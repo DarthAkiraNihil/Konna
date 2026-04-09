@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.compiler.core.util;
 
+import org.jspecify.annotations.Nullable;
+
 import javax.lang.model.type.TypeMirror;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +25,8 @@ import java.util.List;
 public record KModuleMetadata(
     boolean hasApplicationFeatures,
     boolean hasSystemFeatures,
-    List<ModuleDependency> moduleDependencies
+    List<ModuleDependency> moduleDependencies,
+    List<ProviderDescription> providers
 ) {
 
     public record ModuleDependency(
@@ -33,14 +36,25 @@ public record KModuleMetadata(
 
     }
 
+    public record ProviderDescription(
+        String methodName,
+        List<TypeMirror> providedClasses,
+        boolean isSingleton,
+        @Nullable String qualifier
+    ) {
+
+    }
+
     static final class Builder {
 
         private boolean hasApplicationFeatures;
         private boolean hasSystemFeatures;
         private final List<ModuleDependency> moduleDependencies;
+        private final List<ProviderDescription> providers;
 
         public Builder() {
             this.moduleDependencies = new LinkedList<>();
+            this.providers = new LinkedList<>();
         }
 
         public void setThatHasApplicationFeatures() {
@@ -55,11 +69,28 @@ public record KModuleMetadata(
             this.moduleDependencies.add(new ModuleDependency(dep, requiredClass));
         }
 
+        public void addProvider(
+            final String methodName,
+            final List<TypeMirror> providedClasses,
+            boolean isSingleton,
+            final String qualifier
+        ) {
+            this.providers.add(
+                new ProviderDescription(
+                    methodName,
+                    providedClasses,
+                    isSingleton,
+                    qualifier
+                )
+            );
+        }
+
         public KModuleMetadata build() {
             return new KModuleMetadata(
                 this.hasApplicationFeatures,
                 this.hasSystemFeatures,
-                this.moduleDependencies
+                this.moduleDependencies,
+                this.providers
             );
         }
 
