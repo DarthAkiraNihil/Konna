@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.compiler.core.util;
 
 import com.palantir.javapoet.*;
+import io.github.darthakiranihil.konna.core.util.KGenerated;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -65,7 +66,21 @@ public final class KModuleContainerBrewer {
             KModuleContainerMetadata metadata = new KModuleContainerMetadata(
                 current,
                 container.name(),
-                container
+                container,
+                current.moduleDependencies()
+                    .stream()
+                    .map(
+                    x -> ClassName.get(
+                        "konna.generated.core.modules",
+                        String.format(
+                            "%s$$ModuleContainer", ((DeclaredType) x.module())
+                                .asElement()
+                                .getSimpleName()
+                        )
+                    ))
+                    .toList(),
+                current.hasApplicationFeatures(),
+                current.hasSystemFeatures()
             );
 
             containerQueue.add(metadata);
@@ -82,6 +97,7 @@ public final class KModuleContainerBrewer {
     ) {
         var builder = TypeSpec
             .classBuilder(String.format("%s$$ModuleContainer", module.className()))
+            .addAnnotation(KGenerated.class)
             .addAnnotation(
                 AnnotationSpec
                     .builder(SuppressWarnings.class)
@@ -205,16 +221,19 @@ public final class KModuleContainerBrewer {
         var moduleInstantiationStatement = CodeBlock.builder();
         moduleInstantiationStatement.add("this.module = new $T(", module.type()).indent();
         if (module.hasApplicationFeatures()) {
-            moduleInstantiationStatement.add("applicationFeatures,");
+            moduleInstantiationStatement.add("applicationFeatures");
         }
 
         if (module.hasSystemFeatures()) {
+            if (module.hasApplicationFeatures()) {
+                moduleInstantiationStatement.add(", ");
+            }
             moduleInstantiationStatement.add("systemFeatures");
         }
 
         if (!module.moduleDependencies().isEmpty()) {
             if (module.hasApplicationFeatures() || module.hasSystemFeatures()) {
-                moduleInstantiationStatement.add(",");
+                moduleInstantiationStatement.add(", ");
             }
             var deps = module.moduleDependencies();
             for (int i = 0; i < deps.size(); i++) {

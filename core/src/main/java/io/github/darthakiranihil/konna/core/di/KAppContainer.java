@@ -19,11 +19,29 @@ package io.github.darthakiranihil.konna.core.di;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 
+/**
+ * Abstract class for app container that is supposed to be used
+ * across the whole application.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public abstract class KAppContainer implements KContainer2 {
 
+    /**
+     * Application features assigned to this container.
+     */
     protected final KApplicationFeatures applicationFeatures;
+    /**
+     * System features assigned to this container.
+     */
     protected final KSystemFeatures systemFeatures;
 
+    /**
+     * Constructs this container.
+     * @param applicationFeatures Application features assigned to this container
+     * @param systemFeatures System features assigned to this container
+     */
     protected KAppContainer(
         final KApplicationFeatures applicationFeatures,
         final KSystemFeatures systemFeatures
@@ -32,4 +50,6 @@ public abstract class KAppContainer implements KContainer2 {
         this.systemFeatures = systemFeatures;
     }
 
+    @Override
+    public abstract Object getInstance(Class<?> clazz);
 }
