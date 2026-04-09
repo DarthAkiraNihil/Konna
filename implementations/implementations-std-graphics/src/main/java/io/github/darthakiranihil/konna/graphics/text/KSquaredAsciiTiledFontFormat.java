@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.text;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 
 /**

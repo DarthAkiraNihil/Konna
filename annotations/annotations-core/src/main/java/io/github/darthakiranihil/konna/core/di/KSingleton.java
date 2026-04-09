@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
+package io.github.darthakiranihil.konna.core.di;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,19 +22,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Explicitly marks class as transient, so on each instantiation
- * requires a new instance for each creation.
+ * Marks class as a singleton so there should be created only one
+ * instance of it.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface KTransient {
+public @interface KSingleton {
+
     /**
-     * Flag that indicated if object should be temporal, that handling depends
-     * on implementation.
-     * @return Flag of object temporality
+     * Flag that indicates if singleton is immortal, so it cannot be "deleted"
+     * and only application termination can destroy immortal objects. Has priority above
+     * weak flag, so if both weak and immortal are true, weak flag will be ignored.
+     * @return Flag of object immortality
      */
-    boolean temporal() default false;
+    boolean immortal() default false;
 }

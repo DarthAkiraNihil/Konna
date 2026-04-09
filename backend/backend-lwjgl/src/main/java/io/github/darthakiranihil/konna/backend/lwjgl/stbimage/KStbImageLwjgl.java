@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.backend.lwjgl.stbimage;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.stb.KStbImage;
 import io.github.darthakiranihil.konna.libfrontend.stb.KStbIoCallbacks;

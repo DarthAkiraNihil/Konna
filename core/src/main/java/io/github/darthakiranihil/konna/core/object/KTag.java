@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.core.di.KSingleton;
+import io.github.darthakiranihil.konna.core.di.KTransient;
+
 /**
  * Convenience wrapper for immutable string tag (typically used for {@link KObject}).
  * @param name Name of the tag
