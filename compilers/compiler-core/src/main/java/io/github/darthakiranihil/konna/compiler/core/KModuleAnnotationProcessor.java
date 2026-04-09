@@ -17,18 +17,18 @@
 package io.github.darthakiranihil.konna.compiler.core;
 
 import com.google.auto.service.AutoService;
-import com.palantir.javapoet.JavaFile;
-import io.github.darthakiranihil.konna.compiler.core.util.KModuleContainerBrewer;
-import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadata;
-import io.github.darthakiranihil.konna.compiler.core.util.KModuleMetadataReader;
-import io.github.darthakiranihil.konna.compiler.core.util.KModuleProcessingQueueBuilder;
+import com.palantir.javapoet.*;
+import io.github.darthakiranihil.konna.compiler.core.util.*;
 import io.github.darthakiranihil.konna.core.di.KModule;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
+import io.github.darthakiranihil.konna.core.util.KGenerated;
+import org.jspecify.annotations.NonNull;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
@@ -86,6 +86,31 @@ import java.util.*;
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
 public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
+
+    private static final ClassName APP_CONTAINER_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.di",
+        "KAppContainer"
+    );
+
+    private static final ClassName APPLICATION_FEATURES_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.app",
+        "KApplicationFeatures"
+    );
+
+    private static final ClassName SYSTEM_FEATURES_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.app",
+        "KSystemFeatures"
+    );
+
+    private static final ClassName CONTAINER_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.di",
+        "KContainer2"
+    );
+
+    private static final ClassName DEPENDENCY_RESOLVE_EXCEPTION_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.di.except",
+        "KDependencyResolveException"
+    );
 
     private KModuleMetadataReader moduleMetadataReader;
     private KModuleProcessingQueueBuilder queueBuilder;
@@ -157,6 +182,9 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
         }
 
         Queue<KModuleMetadata> moduleMetadataQueue = this.queueBuilder.buildQueue(modules);
+        if (moduleMetadataQueue.isEmpty()) {
+            return true;
+        }
         var containers = this.brewer.brewJava(moduleMetadataQueue);
 
         for (var container: containers) {
@@ -176,7 +204,151 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             }
         }
 
+        JavaFile javaFile = JavaFile.builder(
+            "konna.generated.core.modules",
+            this.brewAppContainer(containers)
+        )
+            .indent("    ")
+            .addFileComment("Generated with Konna annotation processor. Do not edit!")
+            .build();
+
+        try {
+            javaFile.writeTo(this.filer);
+        } catch (IOException e) {
+            this.messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                String.format("Could not generate registerer class: %s", e)
+            );
+        }
+
         return true;
+    }
+
+    private TypeSpec brewAppContainer(
+        final Queue<KModuleContainerMetadata> containerQueue
+    ) {
+
+        var builder = TypeSpec
+            .classBuilder("kGeneratedAppContainer")
+            .superclass(APP_CONTAINER_CLASS_NAME)
+            .addModifiers(Modifier.FINAL)
+            .addAnnotation(KGenerated.class)
+            .addField(
+                ParameterizedTypeName.get(
+                    ClassName.get(List.class),
+                    CONTAINER_CLASS_NAME
+                ),
+                "modules",
+                Modifier.PRIVATE,
+                Modifier.FINAL
+            );
+
+        var constructor = MethodSpec
+            .constructorBuilder()
+            .addParameter(
+                ParameterSpec
+                    .builder(
+                        APPLICATION_FEATURES_CLASS_NAME,
+                        "applicationFeatures",
+                        Modifier.FINAL
+                    )
+                    .addAnnotation(NonNull.class)
+                    .build()
+            )
+            .addParameter(
+                ParameterSpec
+                    .builder(
+                        SYSTEM_FEATURES_CLASS_NAME,
+                        "systemFeatures",
+                        Modifier.FINAL
+                    )
+                    .addAnnotation(NonNull.class)
+                    .build()
+            )
+            .addStatement("super(applicationFeatures, systemFeatures)")
+            .addStatement("this.modules = new $T<>($L)", ArrayList.class, containerQueue.size());
+
+        Map<String, KModuleContainerMetadata> processedContainers = new HashMap<>();
+        Map<String, String> containerVarNames = new HashMap<>();
+
+        int createdModules = 0;
+        while (!containerQueue.isEmpty()) {
+            KModuleContainerMetadata current = containerQueue.poll();
+            var moduleCreationStatement = CodeBlock
+                .builder()
+                .add(
+                    String.format("var module%d = new $T(", createdModules),
+                    ClassName.get("konna.generated.core.modules", current.containerSpec().name())
+                );
+
+            if (current.withApplicationFeatures()) {
+                moduleCreationStatement.add("this.applicationFeatures");
+            }
+
+            if (current.withSystemFeatures()) {
+                if (current.withApplicationFeatures()) {
+                    moduleCreationStatement.add(", ");
+                }
+                moduleCreationStatement.add("this.systemFeatures");
+            }
+
+            if (current.withSystemFeatures() || current.withApplicationFeatures()) {
+                moduleCreationStatement.add(", ");
+            }
+            var dependencies = current.dependencies();
+            for (int i = 0; i < dependencies.size(); i++) {
+                var dependency = dependencies.get(i);
+                moduleCreationStatement.add(containerVarNames.get(dependency.simpleName()));
+                if (i < dependencies.size() - 1) {
+                    moduleCreationStatement.add(", ");
+                }
+            }
+            moduleCreationStatement.add(")");
+            constructor
+                .addStatement(moduleCreationStatement.build())
+                .addStatement(String.format("this.modules.add(module%d)", createdModules));
+
+            containerVarNames.put(
+                current.containerSpec().name(),
+                String.format("module%d", createdModules)
+            );
+            createdModules++;
+        }
+
+        return builder
+            .addMethod(constructor.build())
+            .addMethod(
+                MethodSpec
+                    .methodBuilder("getInstance")
+                    .returns(Object.class)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addAnnotation(Override.class)
+                    .addParameter(
+                        ParameterSpec
+                            .builder(
+                                ParameterizedTypeName.get(
+                                    ClassName.get(Class.class),
+                                    WildcardTypeName.subtypeOf(Object.class)
+                                ),
+                                "clazz",
+                                Modifier.FINAL
+                            )
+                            .addAnnotation(NonNull.class)
+                            .build()
+                        )
+                        .beginControlFlow("for (var module: this.modules)")
+                        .addStatement("var instance = module.getInstance(clazz)")
+                        .beginControlFlow("if (instance != null)")
+                        .addStatement("return instance")
+                        .endControlFlow()
+                        .endControlFlow()
+                        .addStatement(
+                            "throw new $T(clazz)",
+                            DEPENDENCY_RESOLVE_EXCEPTION_CLASS_NAME
+                        )
+                        .build()
+            )
+            .build();
     }
 
 }
