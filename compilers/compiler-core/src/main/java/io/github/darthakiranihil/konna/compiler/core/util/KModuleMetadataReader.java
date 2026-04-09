@@ -217,7 +217,7 @@ public final class KModuleMetadataReader {
         boolean ok = true;
         for (KModuleMetadata.ProviderDescription provider: metadata.providers()) {
             for (TypeMirror providedType: provider.providedClasses()) {
-                if (providedTypes.add(providedType)) {
+                if (providedTypes.contains(providedType)) {
                     this.messager.printError(
                         String.format(
                             "%s: Conflict: type %s has been already provided by this module",
@@ -225,8 +225,8 @@ public final class KModuleMetadataReader {
                             providedType
                         )
                     );
+                    ok = false;
                 }
-                ok = false;
 
                 providedTypes.add(providedType);
             }

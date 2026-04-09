@@ -21,6 +21,8 @@ import org.jspecify.annotations.Nullable;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public final class KModuleContainerBrewer {
@@ -28,6 +30,11 @@ public final class KModuleContainerBrewer {
     private static final ClassName CONTAINER_CLASS_NAME = ClassName.get(
         "io.github.darthakiranihil.konna.core.di",
         "KContainer2"
+    );
+
+    private static final ClassName OBJECT_SUPPLIER_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.di",
+        "KObjectSupplier"
     );
 
     private static final ClassName APPLICATION_FEATURES_CLASS_NAME = ClassName.get(
@@ -39,6 +46,8 @@ public final class KModuleContainerBrewer {
         "io.github.darthakiranihil.konna.core.app",
         "KSystemFeatures"
     );
+
+
 
     public Queue<KModuleContainerMetadata> brewJava(final Queue<KModuleMetadata> modules) {
 
@@ -80,6 +89,23 @@ public final class KModuleContainerBrewer {
                     .builder(
                         TypeName.get(module.type()),
                         "module",
+                        Modifier.FINAL,
+                        Modifier.PRIVATE
+                    )
+                    .build()
+            )
+            .addField(
+                FieldSpec
+                    .builder(
+                        ParameterizedTypeName.get(
+                            ClassName.get(Map.class),
+                            ParameterizedTypeName.get(
+                                ClassName.get(Class.class),
+                                WildcardTypeName.subtypeOf(Object.class)
+                            ),
+                            OBJECT_SUPPLIER_CLASS_NAME
+                        ),
+                        "mapping",
                         Modifier.FINAL,
                         Modifier.PRIVATE
                     )
@@ -211,7 +237,18 @@ public final class KModuleContainerBrewer {
             .unindent()
             .add(")");
 
-        builder.addStatement(moduleInstantiationStatement.build());
+        builder
+            .addStatement(moduleInstantiationStatement.build())
+            .addStatement("this.mapping = new $T<>()", HashMap.class);
+
+        for (KModuleMetadata.ProviderDescription provider: module.providers()) {
+            for (TypeMirror providedType: provider.providedClasses()) {
+                builder.addStatement(
+                    String.format("this.mapping.put($T.class, this::%s)", provider.methodName()),
+                    providedType
+                );
+            }
+        }
 
         return builder.build();
     }
@@ -220,10 +257,8 @@ public final class KModuleContainerBrewer {
         final KModuleMetadata.ProviderDescription providerDescription,
         final String simpleProvidedClassName
     ) {
-
-        String methodName = String.format("get%s", simpleProvidedClassName);
         var builder = MethodSpec
-            .methodBuilder(methodName)
+            .methodBuilder(providerDescription.methodName())
             .returns(TypeName.get(providerDescription.mainProvidedClass()))
             .addModifiers(Modifier.PRIVATE);
 
@@ -244,57 +279,23 @@ public final class KModuleContainerBrewer {
 
     private MethodSpec brewSwitch(final List<KModuleMetadata.ProviderDescription> providers) {
 
-        var builder = MethodSpec
+        return MethodSpec
             .methodBuilder("getInstance")
             .returns(Object.class)
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
             .addAnnotation(Nullable.class)
-            .addParameter(Class.class, "clazz", Modifier.FINAL);
+            .addParameter(
+                ParameterizedTypeName.get(
+                    ClassName.get(Class.class),
+                    WildcardTypeName.subtypeOf(Object.class)
+                ),
+                "clazz",
+                Modifier.FINAL
+            )
+            .addStatement("var supplier = this.mapping.get(clazz)")
+            .addStatement("return supplier == null ? null : supplier.get()")
+            .build();
 
-        return builder.addStatement("return null").build();
-//        var greatSwitch = CodeBlock
-//            .builder()
-//            .beginControlFlow("switch (clazz)");
-//
-
-//        for (var provider: providers) {
-//            var providedClasses = provider.providedClasses();
-//            for (int i = 0; i < providedClasses.size(); i++) {
-//                var providedClass = providedClasses.get(i);
-//                greatSwitch.add("case $T.class", providedClass);
-//
-//                if (i == provider.providedClasses().size() - 1) {
-//                    greatSwitch.addStatement(":");
-//                } else {
-//                    greatSwitch.addStatement(",");
-//                }
-//            }
-//
-//            String mainSimpleName = ((DeclaredType) provider.mainProvidedClass())
-//                .asElement()
-//                .getSimpleName()
-//                .toString();
-//
-//            builder.a
-//
-//            builder.addMethod(this.brewProviderMethod(provider, mainSimpleName));
-//
-//            if (!provider.isSingleton()) {
-//                continue;
-//            }
-//
-//            builder.addField(
-//                FieldSpec
-//                    .builder(
-//                        TypeName.get(provider.mainProvidedClass()),
-//                        String.format("singleton%s", mainSimpleName)
-//                    )
-//                    .addAnnotation(Nullable.class)
-//                    .addModifiers(Modifier.PRIVATE)
-//                    .build()
-//            );
-//        }
     }
-
 }
