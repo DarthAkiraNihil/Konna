@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
+package io.github.darthakiranihil.konna.core.di;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.backend.lwjgl.opengl;
 
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
 import org.jspecify.annotations.Nullable;

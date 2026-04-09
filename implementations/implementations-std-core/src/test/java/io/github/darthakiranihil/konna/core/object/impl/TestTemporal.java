@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object.impl;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTransient;
+import io.github.darthakiranihil.konna.core.di.KTransient;
 
 @KTransient(temporal = true)
 public class TestTemporal extends KObject {

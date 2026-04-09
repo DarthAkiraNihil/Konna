@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.object.KTransient;
+import io.github.darthakiranihil.konna.core.di.KTransient;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 /**

@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object.impl;
+package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@KSingleton
-public class TestSingleton extends KObject {
-
-    public int wawa() {
-        return 10;
-    }
-
+/**
+ * Marks that this class is a module that provides implementations for services and other
+ * types of classes.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.TYPE)
+public @interface KModule {
 }

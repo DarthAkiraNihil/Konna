@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.message;
+package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.di.KSingleton;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Represents, literally, a message translator, that transforms
- * one message to another.
+ * Marks that a module method should be called if another class is requested.
+ * This situation typically occurs when module returns a standard class,
+ * but this class is supposed to be some interface's implementation.
  *
- * @since 0.2.0
+ * @since 0.6.0
  * @author Darth Akira Nihil
  */
-@KSingleton
-public interface KTunnel {
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.METHOD)
+public @interface KAlsoProvides {
 
     /**
-     * Processes a message and returns its processed copy (actually this behaviour
-     * depends on implementation).
-     * @param message Message to process
-     * @return Processed message
+     * @return Classes that are additionally provided by this module method
      */
-    default KMessage processMessage(final KMessage message) {
-        return message;
-    }
+    Class<?>[] value();
 
 }

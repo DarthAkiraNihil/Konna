@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object.impl;
+package io.github.darthakiranihil.konna.core.di;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
+/**
+ * String-based qualifier to be used by DI system, depending on its implementation.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
+public @interface KQualifier {
 
-@KSingleton
-public class TestSingleton extends KObject {
-
-    public int wawa() {
-        return 10;
-    }
+    /**
+     * @return Qualifier's value
+     */
+    String value();
 
 }

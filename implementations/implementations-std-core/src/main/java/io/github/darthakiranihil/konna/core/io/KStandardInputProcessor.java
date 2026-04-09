@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.core.io;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.control.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;

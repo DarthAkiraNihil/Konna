@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
+package io.github.darthakiranihil.konna.core.di;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,21 +22,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks class as a singleton so there should be created only one
- * instance of it.
+ * Marks that this parameter should be taken from another module.
+ * Must be used only inside modules' constructors.
  *
- * @since 0.2.0
+ * @since 0.6.0
  * @author Darth Akira Nihil
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface KSingleton {
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.PARAMETER)
+public @interface KTakeFrom {
 
     /**
-     * Flag that indicates if singleton is immortal, so it cannot be "deleted"
-     * and only application termination can destroy immortal objects. Has priority above
-     * weak flag, so if both weak and immortal are true, weak flag will be ignored.
-     * @return Flag of object immortality
+     * @return Module class to take implementation from
      */
-    boolean immortal() default false;
+    Class<?> value();
+
 }

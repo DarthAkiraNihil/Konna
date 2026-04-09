@@ -49,13 +49,13 @@ public record KTag(String name) {
         /**
          * Marks that the object is immortal.
          * @see KObjectInstantiationType
-         * @see KSingleton
+         * @see io.github.darthakiranihil.konna.core.di.KSingleton
          */
         public static final KTag IMMORTAL = new KTag("immortal");
         /**
          * Marks that the object is a singleton.
          * @see KObjectInstantiationType
-         * @see KSingleton
+         * @see io.github.darthakiranihil.konna.core.di.KSingleton
          */
         public static final KTag SINGLETON = new KTag("singleton");
         /**
@@ -67,13 +67,13 @@ public record KTag(String name) {
         /**
          * Marks that the object is transient.
          * @see KObjectInstantiationType
-         * @see KTransient
+         * @see io.github.darthakiranihil.konna.core.di.KTransient
          */
         public static final KTag TRANSIENT = new KTag("transient");
         /**
          * Marks that the object is hold by a weak reference.
          * @see KObjectInstantiationType
-         * @see KSingleton
+         * @see io.github.darthakiranihil.konna.core.di.KSingleton
          * @see KPoolable
          */
         public static final KTag WEAK = new KTag("weak");
