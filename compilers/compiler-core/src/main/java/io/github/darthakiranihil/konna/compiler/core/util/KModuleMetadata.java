@@ -16,15 +16,32 @@
 
 package io.github.darthakiranihil.konna.compiler.core.util;
 
+import javax.lang.model.type.TypeMirror;
+import java.util.LinkedList;
+import java.util.List;
+
 public record KModuleMetadata(
     boolean hasApplicationFeatures,
-    boolean hasSystemFeatures
+    boolean hasSystemFeatures,
+    List<ModuleDependency> moduleDependencies
 ) {
+
+    public record ModuleDependency(
+        TypeMirror module,
+        TypeMirror requiredType
+    ) {
+
+    }
 
     static final class Builder {
 
         private boolean hasApplicationFeatures;
         private boolean hasSystemFeatures;
+        private final List<ModuleDependency> moduleDependencies;
+
+        public Builder() {
+            this.moduleDependencies = new LinkedList<>();
+        }
 
         public void setThatHasApplicationFeatures() {
             this.hasApplicationFeatures = true;
@@ -34,10 +51,15 @@ public record KModuleMetadata(
             this.hasSystemFeatures = true;
         }
 
+        public void addModuleDependency(final TypeMirror dep, final TypeMirror requiredClass) {
+            this.moduleDependencies.add(new ModuleDependency(dep, requiredClass));
+        }
+
         public KModuleMetadata build() {
             return new KModuleMetadata(
                 this.hasApplicationFeatures,
-                this.hasSystemFeatures
+                this.hasSystemFeatures,
+                this.moduleDependencies
             );
         }
 

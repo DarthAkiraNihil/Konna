@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.compiler.core.util;
 
+import io.github.darthakiranihil.konna.core.di.KTakeFrom;
+import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.Messager;
@@ -71,7 +73,11 @@ public final class KModuleMetadataReader {
                     }
 
                     ExecutableElement constructor = (ExecutableElement) enclosed;
-                    this.readConstructor(constructor, builder);
+                    boolean ok = this.readConstructor(constructor, builder, clazz);
+                    if (!ok) {
+                        return null;
+                    }
+
                     constructorAcquired = true;
                     break;
                 }
@@ -85,15 +91,16 @@ public final class KModuleMetadataReader {
 
     }
 
-    private void readConstructor(
+    private boolean readConstructor(
         final ExecutableElement constructorElement,
-        final KModuleMetadata.Builder builder
+        final KModuleMetadata.Builder builder,
+        final TypeElement moduleClassElement
     ) {
 
         boolean gotAppFeatures = false;
         boolean gotSystemFeatures = false;
 
-        var params = constructorElement.getTypeParameters();
+        var params = constructorElement.getParameters();
         for (var param: params) {
             TypeMirror paramType = param.asType();
             if (this.typeUtils.isSameType(paramType, this.appFeaturesType)) {
@@ -123,9 +130,26 @@ public final class KModuleMetadataReader {
 
                 builder.setThatHasSystemFeatures();
                 gotSystemFeatures = true;
+            } else {
+                KTakeFrom src = param.getAnnotation(KTakeFrom.class);
+                if (src == null) {
+                    this.messager.printError(
+                        String.format("Cannot provide parameter %s", param),
+                        moduleClassElement
+                    );
+                    return false;
+                }
+
+                TypeMirror moduleDepClass = KAnnotationUtils.getClassValueFromAnnotation(
+                    param,
+                    KTakeFrom.class,
+                    "value"
+                );
+                builder.addModuleDependency(moduleDepClass, paramType);
             }
         }
 
+        return true;
     }
 
 }

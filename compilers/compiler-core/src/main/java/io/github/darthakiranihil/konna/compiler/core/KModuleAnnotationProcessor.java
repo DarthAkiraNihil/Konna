@@ -48,6 +48,7 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             this.elementUtils,
             this.messager
         );
+
     }
 
     @Override
