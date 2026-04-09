@@ -63,7 +63,10 @@ public final class KModuleMetadataReader {
 
     public @Nullable KModuleMetadata read(final TypeElement clazz) {
 
-        var builder = new KModuleMetadata.Builder(clazz.getSimpleName().toString());
+        var builder = new KModuleMetadata.Builder(
+            clazz.asType(),
+            clazz.getSimpleName().toString()
+        );
         boolean constructorAcquired  = false;
 
         for (Element enclosed: clazz.getEnclosedElements()) {
@@ -151,9 +154,9 @@ public final class KModuleMetadataReader {
                 TypeMirror moduleDepClass = KAnnotationUtils.getClassValueFromAnnotation(
                     param,
                     KTakeFrom.class,
-                    "value"
+                    "module"
                 );
-                builder.addModuleDependency(moduleDepClass, paramType);
+                builder.addModuleDependency(moduleDepClass, paramType, src.qualifier());
             }
         }
 

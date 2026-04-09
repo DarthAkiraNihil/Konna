@@ -22,7 +22,9 @@ import javax.lang.model.type.TypeMirror;
 import java.util.LinkedList;
 import java.util.List;
 
+// todo: require strict constructor parameter ordering
 public record KModuleMetadata(
+    TypeMirror type,
     String className,
     boolean hasApplicationFeatures,
     boolean hasSystemFeatures,
@@ -32,7 +34,8 @@ public record KModuleMetadata(
 
     public record ModuleDependency(
         TypeMirror module,
-        TypeMirror requiredType
+        TypeMirror requiredType,
+        String qualifier
     ) {
 
     }
@@ -48,13 +51,16 @@ public record KModuleMetadata(
 
     static final class Builder {
 
+        private final TypeMirror type;
         private final String className;
+
         private boolean hasApplicationFeatures;
         private boolean hasSystemFeatures;
         private final List<ModuleDependency> moduleDependencies;
         private final List<ProviderDescription> providers;
 
-        public Builder(final String className) {
+        public Builder(final TypeMirror type, final String className) {
+            this.type = type;
             this.className = className;
             this.moduleDependencies = new LinkedList<>();
             this.providers = new LinkedList<>();
@@ -68,8 +74,12 @@ public record KModuleMetadata(
             this.hasSystemFeatures = true;
         }
 
-        public void addModuleDependency(final TypeMirror dep, final TypeMirror requiredClass) {
-            this.moduleDependencies.add(new ModuleDependency(dep, requiredClass));
+        public void addModuleDependency(
+            final TypeMirror dep,
+            final TypeMirror requiredClass,
+            final String qualifier
+        ) {
+            this.moduleDependencies.add(new ModuleDependency(dep, requiredClass, qualifier));
         }
 
         public void addProvider(
@@ -90,6 +100,7 @@ public record KModuleMetadata(
 
         public KModuleMetadata build() {
             return new KModuleMetadata(
+                this.type,
                 this.className,
                 this.hasApplicationFeatures,
                 this.hasSystemFeatures,
