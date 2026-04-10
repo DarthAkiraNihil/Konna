@@ -51,50 +51,35 @@ public final class KModuleContainerBrewer {
         "KSystemFeatures"
     );
 
+    private static final ClassName APPLICATION_CONTAINER_CLASS_NAME = ClassName.get(
+        "io.github.darthakiranihil.konna.core.di",
+        "KAppContainer"
+    );
+
     /**
      * Generates Java files for provided modules.
      * @param modules Queue of modules to generate code for
      * @return Queue of containers metadata to use to generate app container
      */
-    public Queue<KModuleContainerMetadata> brewJava(final Queue<KModuleMetadata> modules) {
+    public Queue<KModuleContainerMetadata> brewJava(final List<KModuleMetadata> modules) {
 
-        Map<String, KModuleContainerMetadata> generatedContainers = new HashMap<>(modules.size());
         Queue<KModuleContainerMetadata> containerQueue = new ArrayDeque<>(modules.size());
-        while (!modules.isEmpty()) {
-            KModuleMetadata current = modules.poll();
-            TypeSpec container = this.brewModuleContainer(current, generatedContainers);
+        for (var current: modules) {
+            TypeSpec container = this.brewModuleContainer(current);
             KModuleContainerMetadata metadata = new KModuleContainerMetadata(
                 current,
                 container.name(),
-                container,
-                current.moduleDependencies()
-                    .stream()
-                    .map(
-                    x -> ClassName.get(
-                        "konna.generated.core.modules",
-                        String.format(
-                            "%s$$ModuleContainer", ((DeclaredType) x.module())
-                                .asElement()
-                                .getSimpleName()
-                        )
-                    ))
-                    .toList(),
-                current.hasApplicationFeatures(),
-                current.hasSystemFeatures()
+                container
             );
 
             containerQueue.add(metadata);
-            generatedContainers.put(current.className(), metadata);
         }
 
         return containerQueue;
 
     }
 
-    private TypeSpec brewModuleContainer(
-        final KModuleMetadata module,
-        final Map<String, KModuleContainerMetadata> generatedContainers
-    ) {
+    private TypeSpec brewModuleContainer(final KModuleMetadata module) {
         var builder = TypeSpec
             .classBuilder(String.format("%s$$ModuleContainer", module.className()))
             .addAnnotation(KGenerated.class)
@@ -159,113 +144,35 @@ public final class KModuleContainerBrewer {
         }
 
         builder
-            .addMethod(this.brewContainerConstructor(module, generatedContainers))
+            .addMethod(this.brewContainerConstructor(module))
             .addMethod(this.brewSwitch());
 
         return builder.build();
     }
 
-    private MethodSpec brewContainerConstructor(
-        final KModuleMetadata module,
-        final Map<String, KModuleContainerMetadata> generatedContainers
-    ) {
+    private MethodSpec brewContainerConstructor(final KModuleMetadata module) {
 
-        var builder = MethodSpec.constructorBuilder();
-        if (module.hasApplicationFeatures()) {
-            builder.addParameter(
+        var builder = MethodSpec
+            .constructorBuilder()
+            .addParameter(
                 APPLICATION_FEATURES_CLASS_NAME,
                 "applicationFeatures",
                 Modifier.FINAL
-            );
-        }
-
-        if (module.hasSystemFeatures()) {
-            builder.addParameter(
+            )
+            .addParameter(
                 SYSTEM_FEATURES_CLASS_NAME,
                 "systemFeatures",
                 Modifier.FINAL
-            );
-        }
-
-        int depModuleNumber = 0;
-        for (var dep: module.moduleDependencies()) {
-            String depSimpleName = ((DeclaredType) dep.module())
-                .asElement()
-                .getSimpleName()
-                .toString();
-
-            KModuleContainerMetadata depContainer = generatedContainers.get(depSimpleName);
-
-            if (depContainer == null) {
-                throw new IllegalStateException(
-                    String.format(
-                            "Module %s has requested module %s, which has not generated yet. "
-                        +   "Maybe a circular dependency?",
-                        module.className(),
-                            depSimpleName
-                    )
-                );
-            }
-
-            builder.addParameter(
-                ClassName.get(
-                    "konna.generated.core.modules",
-                    depContainer.containerClassName()
-                ),
-                String.format("c%d", depModuleNumber),
+            )
+            .addParameter(
+                APPLICATION_CONTAINER_CLASS_NAME,
+                "appContainer",
                 Modifier.FINAL
-            );
-            depModuleNumber++;
-        }
-
-        var moduleInstantiationStatement = CodeBlock.builder();
-        moduleInstantiationStatement.add("this.module = new $T(", module.type()).indent();
-        if (module.hasApplicationFeatures()) {
-            moduleInstantiationStatement.add("applicationFeatures");
-        }
-
-        if (module.hasSystemFeatures()) {
-            if (module.hasApplicationFeatures()) {
-                moduleInstantiationStatement.add(", ");
-            }
-            moduleInstantiationStatement.add("systemFeatures");
-        }
-
-        if (!module.moduleDependencies().isEmpty()) {
-            if (module.hasApplicationFeatures() || module.hasSystemFeatures()) {
-                moduleInstantiationStatement.add(", ");
-            }
-            var deps = module.moduleDependencies();
-            for (int i = 0; i < deps.size(); i++) {
-                KModuleMetadata.ModuleDependency depDesc = deps.get(i);
-
-                TypeName requiredTypeName = TypeName.get(depDesc.requiredType());
-                if (requiredTypeName instanceof ParameterizedTypeName) {
-                    moduleInstantiationStatement.add(
-                        String.format("($T) c%d.getInstance($T.class)", i),
-                        ((ParameterizedTypeName) requiredTypeName).rawType(),
-                        ((ParameterizedTypeName) requiredTypeName).rawType()
-                    );
-                } else {
-                    moduleInstantiationStatement.add(
-                        String.format("($T) c%d.getInstance($T.class)", i),
-                        requiredTypeName,
-                        requiredTypeName
-                    );
-                }
-
-                if (i < deps.size() - 1) {
-                    moduleInstantiationStatement.add(",");
-                }
-            }
-        }
-
-        moduleInstantiationStatement
-            .unindent()
-            .add(")");
-
-        builder
-            .addStatement(moduleInstantiationStatement.build())
+            )
+            .addStatement(
+                "this.module = new $T(applicationFeatures, systemFeatures, appContainer)",
+                module.type()
+            )
             .addStatement("this.mapping = new $T<>()", HashMap.class);
 
         for (KModuleMetadata.ProviderDescription provider: module.providers()) {
