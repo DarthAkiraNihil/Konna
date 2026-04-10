@@ -32,7 +32,7 @@ import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
+import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.jspecify.annotations.NullMarked;
@@ -49,7 +49,7 @@ public class ContextLoader implements KEngineContextLoader {
 
         var objectRegistry = new KStandardObjectRegistry();
 
-        var activator2 = new KStandardActivator2(container, objectRegistry);
+        var activator2 = new KStandardActivator(container, objectRegistry);
         var frameTaskSystem = activator2.createObject(KFrameTaskSystem.class);
         var messageSystem = new KStandardMessageSystem(activator2);
         var eventSystem = new KStandardEventSystem();

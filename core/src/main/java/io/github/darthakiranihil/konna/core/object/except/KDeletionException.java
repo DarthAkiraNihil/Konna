@@ -18,9 +18,10 @@ package io.github.darthakiranihil.konna.core.object.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 
 /**
- * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KActivator2}
+ * Exception thrown when {@link KActivator}
  * failed to "delete" an object.
  * By default, the exception is a warning
  *

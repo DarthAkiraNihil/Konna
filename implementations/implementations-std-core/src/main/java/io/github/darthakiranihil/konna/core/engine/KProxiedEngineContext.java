@@ -43,7 +43,7 @@ import java.util.function.Consumer;
 @KContainerModifier
 public final class KProxiedEngineContext extends KObject implements KEngineContext {
 
-    private final KActivator2 activator;
+    private final KActivator activator;
     private final KObjectRegistry objectRegistry;
     private final KQueueBasedEventSystem eventSystem;
     private final KQueueBasedMessageSystem messageSystem;
@@ -63,7 +63,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param disposer Additional disposer for this context when it shuts down
      */
     public KProxiedEngineContext(
-        final KActivator2 activator,
+        final KActivator activator,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
@@ -93,7 +93,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param frameTaskScheduler Frame task scheduler of the context
      */
     public KProxiedEngineContext(
-        final KActivator2 activator,
+        final KActivator activator,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,

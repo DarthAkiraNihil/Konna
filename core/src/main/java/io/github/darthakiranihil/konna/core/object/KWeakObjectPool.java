@@ -37,12 +37,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
 
     private final Queue<WeakReference<T>> unusedObjects;
-    private final KActivator2 activator;
+    private final KActivator activator;
 
     public KWeakObjectPool(
         final Class<T> clazz,
         int initialSize,
-        final KActivator2 activator,
+        final KActivator activator,
         final KObjectRegistry objectRegistry
     ) {
         super(clazz, initialSize);
@@ -123,7 +123,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
 
     /**
      * Returns object back to the pool, making it available to be taken
-     * by another requester class (through {@link KActivator2}).
+     * by another requester class (through {@link KActivator}).
      * @param object Object to return
      */
     @Override

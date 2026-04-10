@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.core.util.KClassUtils;
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
-public abstract class KAppContainer implements KContainer2 {
+public abstract class KAppContainer implements KContainer {
 
     @SuppressWarnings("unchecked")
     public static Class<? extends KAppContainer> useGenerated() {

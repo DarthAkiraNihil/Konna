@@ -32,7 +32,7 @@ import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
+import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import org.jetbrains.annotations.TestOnly;
 
@@ -53,7 +53,7 @@ public final class KTestContextLoader implements KEngineContextLoader {
     public KEngineContext load(final KApplicationFeatures features, final KAppContainer container) {
 
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator2(container, objectRegistry);
+        var activator = new KStandardActivator(container, objectRegistry);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -68,7 +68,7 @@ public final class KTestContextLoader implements KEngineContextLoader {
             Map.of(),
             new KStandardJsonParser(new KStandardJsonTokenizer())
         );
-        var activator2 = new KStandardActivator2(container, objectRegistry);
+        var activator2 = new KStandardActivator(container, objectRegistry);
         var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));

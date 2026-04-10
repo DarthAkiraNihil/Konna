@@ -32,7 +32,7 @@ import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
+import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
@@ -50,7 +50,7 @@ public class ContextLoader implements KEngineContextLoader {
     @Override
     public KEngineContext load(KApplicationFeatures features, KAppContainer container) {
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator2(container, objectRegistry);
+        var activator = new KStandardActivator(container, objectRegistry);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(

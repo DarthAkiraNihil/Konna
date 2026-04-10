@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -47,7 +47,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
 
     private final KAssetLoader assetLoader;
     private final KTextureCollection textureCollection;
-    private final KActivator2 activator;
+    private final KActivator activator;
 
     private final Map<String, KTiledFont> loadedFonts;
 
@@ -61,7 +61,7 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
     public KTiledFontCollection(
         final KAssetLoader assetLoader,
         final KTextureCollection textureCollection,
-        final KActivator2 activator
+        final KActivator activator
     ) {
         super(
             "Graphics.tiledFontCollection",

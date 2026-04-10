@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -46,7 +46,7 @@ public final class KTilePropertyCollection
     implements KAssetCollection<KTilePropertyFactory<?>> {
 
     private final KAssetLoader assetLoader;
-    private final KActivator2 activator;
+    private final KActivator activator;
 
     private final KIntPropertyFactory intPropertyFactory;
     private final KIntArrayPropertyFactory intArrayPropertyFactory;
@@ -65,7 +65,7 @@ public final class KTilePropertyCollection
     @KInject
     public KTilePropertyCollection(
         final KAssetLoader assetLoader,
-        final KActivator2 activator
+        final KActivator activator
     ) {
         super(
             "Level.tilePropertyCollection",

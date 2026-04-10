@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -39,7 +39,7 @@ public abstract class KComponent extends KObject {
 
     private static Map<String, KServiceEntry> packServices(
         final KService[] services,
-        final KActivator2 activator
+        final KActivator activator
     ) {
         Map<String, KServiceEntry> packed = new HashMap<>(services.length);
         for (KService service: services) {

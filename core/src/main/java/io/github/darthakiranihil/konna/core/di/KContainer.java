@@ -19,13 +19,26 @@ package io.github.darthakiranihil.konna.core.di;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Alternative container (to be renamed).
+ * <p>
+ *     Interface for a supplier of objects with different types.
+ * </p>
+ * <p>
+ *     Actually it is not strictly defined how to resolve an instance of object with passed type.
+ *     It can be pretty simple (like if-else and get explicitly created instance), or more complex,
+ *     including delegating the job to other classes or containers.
+ * </p>
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
  */
-public interface KContainer2 {
+public interface KContainer {
 
     /**
-     * @param clazz CLAZZ
-     * @return INSTANCE
+     * @param clazz Class of object to get
+     * @return Instance of object with specified class or {@code null}
+     *         if corresponding class is not found
+     *
+     * @since 0.6.0
      */
     @Nullable Object getInstance(Class<?> clazz);
 

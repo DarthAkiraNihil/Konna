@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 
 /**
@@ -32,8 +32,7 @@ import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public interface KEngineContext extends
-    KActivator2,
+public interface KEngineContext extends KActivator,
     KObjectRegistry,
     KEventSystem,
     KMessageSystem,

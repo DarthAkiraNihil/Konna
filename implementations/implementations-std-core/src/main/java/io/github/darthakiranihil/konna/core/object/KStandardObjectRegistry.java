@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  * Utility class that stores records about all objects, created with
- * {@link io.github.darthakiranihil.konna.core.object.KActivator2} (excluding temporal). Should be
+ * {@link KActivator} (excluding temporal). Should be
  * used in debugging, though it is possible to use it in other way.
  *
  * @since 0.2.0

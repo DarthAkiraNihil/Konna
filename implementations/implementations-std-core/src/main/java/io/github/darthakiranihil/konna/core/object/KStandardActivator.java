@@ -26,13 +26,24 @@ import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
+/**
+ * Standard implementation of {@link KActivator}.
+ *
+ * @since 0.2.0
+ * @author Darth Akira Nihil
+ */
 @SuppressWarnings("unchecked")
-public class KStandardActivator2 extends KObject implements KActivator2 {
+public class KStandardActivator extends KObject implements KActivator {
 
     private final KAppContainer appContainer;
     private final KObjectRegistry objectRegistry;
 
-    public KStandardActivator2(
+    /**
+     * Standard constructor.
+     * @param container Application container to resolve dependencies from
+     * @param objectRegistry Object registry to put created objects
+     */
+    public KStandardActivator(
         final KAppContainer container,
         final KObjectRegistry objectRegistry
     ) {
@@ -49,6 +60,29 @@ public class KStandardActivator2 extends KObject implements KActivator2 {
 
     }
 
+    /**
+     * <p>
+     *     Tries to get instance of specified class <i>or</i> creates an object of that class.
+     * </p>
+     * <p>
+     *     Firstly, it checks if passed class is neither abstract nor an interface.
+     * </p>
+     * <p>
+     *     Secondly, it reads {@link KInjectable} annotation to check if an object with that class
+     *     has been previously created by looking in {@link KObjectRegistry}.
+     *     If it is true, then gets object from the registry.
+     * </p>
+     * <p>
+     *     Else, if passed class is an interface or an abstract class, it gets its instance from
+     *     {@link KAppContainer}. If it is not, then, creates an object with constructor,
+     *     field, and method injection.
+     * </p>
+     *
+     * @param clazz Class to instantiate or to get
+     * @return Instance of specified class
+     * @param <T> Type of instantiated object
+     *
+     */
     @Override
     public <T> T createObject(final Class<? extends T> clazz) {
         // todo: more registry methods
@@ -75,6 +109,22 @@ public class KStandardActivator2 extends KObject implements KActivator2 {
 
     }
 
+    /**
+     * <p>
+     *     Creates an object of specified class.
+     * </p>
+     * <p>
+     *     Instantiated object's constructor args must be in that order in which
+     *     all explicit args come first, then all injected. Gaps are not allowed!
+     * </p>
+     * @param clazz Class to instantiate
+     * @param explicitArgs Explicit instantiation args
+     * @return Instance of specified class
+     * @param <T> Type of instantiated object
+     * @throws KInvalidArgumentException if clazz is an interface or abstract
+     *
+     * @since 0.6.0
+     */
     @Override
     public <T> T createObject(final Class<? extends T> clazz, final KArgs explicitArgs) {
         if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {

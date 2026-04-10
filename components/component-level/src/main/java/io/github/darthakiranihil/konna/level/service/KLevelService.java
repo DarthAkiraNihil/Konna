@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -55,7 +55,7 @@ public class KLevelService extends KObject implements KService {
 
     private final KLevelMetadataCollection levelCollection;
     private final KLevelGeneratorMetadataCollection generatorMetadataCollection;
-    private final KActivator2 activator;
+    private final KActivator activator;
     private final KLevelLoader levelLoader;
 
     private final KEventInvoker<KLevel> levelLoaded;
@@ -82,7 +82,7 @@ public class KLevelService extends KObject implements KService {
     @KInject
     public KLevelService(
         final KEventSystem eventSystem,
-        final KActivator2 activator,
+        final KActivator activator,
         final KLevelMetadataCollection levelCollection,
         final KLevelGeneratorMetadataCollection generatorMetadataCollection,
         final KLevelLoader levelLoader,

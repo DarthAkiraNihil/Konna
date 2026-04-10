@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
@@ -90,7 +90,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
     private final Queue<KLevelEntity> deletionQueue;
 
     private final KEventSystem eventSystem;
-    private final KActivator2 activator;
+    private final KActivator activator;
     private final KFrameTaskScheduler frameTaskScheduler;
 
     private final KMessenger messenger;
@@ -110,7 +110,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
     public KLevelEntityManagementService(
         final KEventSystem eventSystem,
         final KFrameTaskScheduler frameTaskScheduler,
-        final KActivator2 activator,
+        final KActivator activator,
         final KMessenger messenger
     ) {
         super(

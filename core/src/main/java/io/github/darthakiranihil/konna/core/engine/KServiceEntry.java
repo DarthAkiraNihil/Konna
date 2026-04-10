@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingExcept
 import io.github.darthakiranihil.konna.core.engine.except.KServiceLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.object.KActivator2;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
@@ -90,11 +90,11 @@ public final class KServiceEntry {
 
     private final KService service;
     private final Map<String, KPair<KMessageToEndpointConverter, Method>> endpoints;
-    private final KActivator2 activator;
+    private final KActivator activator;
 
     public KServiceEntry(
         final KService service,
-        final KActivator2 activator
+        final KActivator activator
     ) {
         this.service = service;
         this.activator = activator;
