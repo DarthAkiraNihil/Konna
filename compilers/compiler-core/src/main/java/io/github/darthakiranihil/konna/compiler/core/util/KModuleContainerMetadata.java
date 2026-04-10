@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.compiler.core.util;
 
-import com.palantir.javapoet.ClassName;
 import com.palantir.javapoet.TypeSpec;
-
-import java.util.List;
 
 public record KModuleContainerMetadata(
     KModuleMetadata module,

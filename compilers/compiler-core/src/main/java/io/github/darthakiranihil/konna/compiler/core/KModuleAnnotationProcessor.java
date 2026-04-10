@@ -276,7 +276,10 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
                         .builder()
                         .add(
                             String.format("var module%d = new $T(", createdModules),
-                            ClassName.get("konna.generated.core.modules", current.containerSpec().name())
+                            ClassName.get(
+                                "konna.generated.core.modules",
+                                current.containerSpec().name()
+                            )
                         )
                         .add("this.applicationFeatures, ")
                         .add("this.systemFeatures, ")
