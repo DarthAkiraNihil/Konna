@@ -43,10 +43,6 @@ public class KGlfwFrameLoader implements KFrameLoader {
                 KGlfwFrame.class
             );
 
-        return ctx.createObject(
-            KGlfwFrame.class,
-            spawnOptions.title(),
-            spawnOptions.size()
-        );
+        return ctx.createObject(KGlfwFrame.class);
     }
 }

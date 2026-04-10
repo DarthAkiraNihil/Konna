@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
+package io.github.darthakiranihil.konna.core.di;
 
-public interface KActivator2 {
-
-    <T> T createObject(Class<? extends T> clazz);
-    <T> T createObject(Class<? extends T> clazz, KArgs explicitArgs);
-
+public @interface KPartialInject {
 }

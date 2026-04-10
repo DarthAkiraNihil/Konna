@@ -33,7 +33,6 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public class KEntity extends KObject {
-
     /**
      * Default tag, used to mark all created entity objects.
      */

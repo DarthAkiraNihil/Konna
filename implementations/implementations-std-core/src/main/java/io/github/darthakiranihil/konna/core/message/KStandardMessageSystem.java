@@ -17,11 +17,11 @@
 package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KActivator2;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -61,7 +61,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
         }
     }
 
-    private final KActivator activator;
+    private final KActivator2 activator;
     private final Map<String, KComponent> components;
     private final Map<String, RouteData> routes;
 
@@ -75,7 +75,7 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
      */
     @KInject
     public KStandardMessageSystem(
-        final KActivator activator
+        final KActivator2 activator
     ) {
         super(
             "StandardMessageSystem",

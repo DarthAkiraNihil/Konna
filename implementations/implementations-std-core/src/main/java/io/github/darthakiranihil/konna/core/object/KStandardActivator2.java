@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KInjectable;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
@@ -74,6 +75,20 @@ public class KStandardActivator2 extends KObject implements KActivator2 {
 
     }
 
+    @Override
+    public <T> T createObject(final Class<? extends T> clazz, final KArgs explicitArgs) {
+        if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+            throw new KInvalidArgumentException(
+                "Cannot create object: class is and interface or abstract"
+            );
+        }
+
+        Object instantiated = this.injectConstructorAndCreate(clazz, explicitArgs);
+        this.injectFields(instantiated, clazz);
+        this.injectMethods(instantiated, clazz);
+        return (T) instantiated;
+    }
+
     private Object injectConstructorAndCreate(final Class<?> clazz) {
         var injectedConstructor = Arrays.stream(clazz.getConstructors())
             .filter(x -> x.isAnnotationPresent(KInject.class))
@@ -90,6 +105,29 @@ public class KStandardActivator2 extends KObject implements KActivator2 {
         Object[] args = new Object[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
             args[i] = this.createObject(parameterTypes[i]);
+        }
+
+        return KReflectionUtils.newInstance(injectedConstructor, args);
+    }
+
+    private Object injectConstructorAndCreate(final Class<?> clazz, final KArgs explicitArgs) {
+        var injectedConstructor = Arrays.stream(clazz.getConstructors())
+            .filter(x -> x.isAnnotationPresent(KInject.class))
+            .findFirst()
+            .orElse(null);
+
+        if (injectedConstructor == null) {
+            injectedConstructor = clazz.getConstructors()[0];
+        }
+
+        injectedConstructor.setAccessible(true);
+        var parameterTypes = injectedConstructor.getParameterTypes();
+
+        Object[] args = new Object[parameterTypes.length];
+        Object[] explicit = explicitArgs.unpack();
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            args[i] = (i < explicit.length) ? explicit[i] : this.createObject(parameterTypes[i]);
         }
 
         return KReflectionUtils.newInstance(injectedConstructor, args);

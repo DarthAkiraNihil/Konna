@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.entity.impl;
 
 import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -33,6 +34,7 @@ import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
+import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
@@ -47,7 +49,7 @@ import java.util.Map;
 public class ContextLoader implements KEngineContextLoader {
 
     @Override
-    public KEngineContext load(KApplicationFeatures features) {
+    public KEngineContext load(KApplicationFeatures features, KAppContainer container) {
 
         var classpath = new KClassGraphClasspathSearchEngine();
 
@@ -73,8 +75,9 @@ public class ContextLoader implements KEngineContextLoader {
         var objectRegistry = new KStandardObjectRegistry();
 
         var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
+        var activator2 = new KStandardActivator2(container, objectRegistry);
         var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
-        var messageSystem = new KStandardMessageSystem(activator);
+        var messageSystem = new KStandardMessageSystem(activator2);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
             List.of(
@@ -99,6 +102,7 @@ public class ContextLoader implements KEngineContextLoader {
 
         var ctx = new KProxiedEngineContext(
             activator,
+            activator2,
             containerResolver,
             objectRegistry,
             eventSystem,

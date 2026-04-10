@@ -294,6 +294,11 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
+    public <T> T createObject(Class<? extends T> clazz, KArgs explicitArgs) {
+        return this.activator.createObject(clazz, explicitArgs);
+    }
+
+    @Override
     public <T> void deleteObject(final T object) {
         this.activator.deleteObject(object);
     }

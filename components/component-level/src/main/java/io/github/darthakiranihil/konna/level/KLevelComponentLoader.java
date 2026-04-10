@@ -91,11 +91,10 @@ public class KLevelComponentLoader implements KComponentLoader {
         KContainer container = ctx.getContainer();
         container.add(KLevelLoader.class, deserializedConfig.levelLoaderClass());
 
-        KMessenger messenger = ctx.createObject(KMessenger.class, "Level");
         return new KLevelComponent(
             ctx,
-            ctx.createObject(KLevelService.class, messenger),
-            ctx.createObject(KLevelEntityManagementService.class, messenger),
+            ctx.createObject(KLevelService.class),
+            ctx.createObject(KLevelEntityManagementService.class),
             deserializedConfig
         );
     }

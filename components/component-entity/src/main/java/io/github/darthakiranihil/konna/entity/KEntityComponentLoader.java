@@ -90,7 +90,7 @@ public class KEntityComponentLoader implements KComponentLoader {
         KContainer container = ctx.getContainer();
         container.add(KEntityFactory.class, cfg.entityFactoryClass());
 
-        KMessenger messenger = ctx.createObject(KMessenger.class, "Entity");
+        KMessenger messenger = ctx.createObject(KMessenger.class);
         return new KEntityComponent(
             ctx,
             ctx.createObject(KEntityManagementService.class, messenger),

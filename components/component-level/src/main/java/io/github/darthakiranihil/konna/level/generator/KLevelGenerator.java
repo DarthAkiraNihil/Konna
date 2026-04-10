@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KActivator2;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
@@ -110,7 +111,7 @@ public final class KLevelGenerator extends KObject {
         }
     }
 
-    private final KActivator activator;
+    private final KActivator2 activator;
     private final KLevelGeneratorMetadata metadata;
 
     /**
@@ -121,7 +122,7 @@ public final class KLevelGenerator extends KObject {
      */
     public KLevelGenerator(
         final String name,
-        final KActivator activator,
+        final KActivator2 activator,
         final KLevelGeneratorMetadata metadata
     ) {
         super(name);
@@ -284,7 +285,7 @@ public final class KLevelGenerator extends KObject {
             );
         }
 
-        var instance = this.activator.createObject(nodeClass, constant);
+        var instance = this.activator.createObject(nodeClass, KConstantNode.args(constant));
         String nodeClassName = nodeClass.getSimpleName();
 
         KValidator<KUniversalMap> outputParamsValidator;

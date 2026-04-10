@@ -20,11 +20,12 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
-import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.libfrontend.imgui.*;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGui;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiController;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiIo;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 /**
@@ -46,8 +47,7 @@ public class KImGuiControllerSpair extends KImGuiController {
     public KImGuiControllerSpair(
         final KImGui imGui,
         final KFrameTaskScheduler frameTaskScheduler,
-        final KFrame frame,
-        final KContainerAccessor containerAccessor
+        final KFrame frame
     ) {
         super(imGui, frameTaskScheduler);
 
@@ -66,14 +66,15 @@ public class KImGuiControllerSpair extends KImGuiController {
         this.imGuiImplGl3.init("#version 330 core");
 
         // maybe there are more of them but idk
-        containerAccessor
-            .getContainer()
-            .add(KImFontConfig.class, KImFontConfigSpair.class)
-            .add(KImFontGlyph.class, KImFontGlyphSpair.class)
-            .add(KImGuiIo.class, KImGuiIoSpair.class)
-            .add(KImGuiStorage.class, KImGuiStorageSpair.class)
-            .add(KImGuiStyle.class, KImGuiStyleSpair.class)
-            .add(KImGuiKeyData.class, KImGuiKeyDataSpair.class);
+        // todo: manually setting this is boring, need to add runtime modules or smth like that
+        //        containerAccessor
+        //            .getContainer()
+        //            .add(KImFontConfig.class, KImFontConfigSpair.class)
+        //            .add(KImFontGlyph.class, KImFontGlyphSpair.class)
+        //            .add(KImGuiIo.class, KImGuiIoSpair.class)
+        //            .add(KImGuiStorage.class, KImGuiStorageSpair.class)
+        //            .add(KImGuiStyle.class, KImGuiStyleSpair.class)
+        //            .add(KImGuiKeyData.class, KImGuiKeyDataSpair.class);
 
         this.frame = frame;
 

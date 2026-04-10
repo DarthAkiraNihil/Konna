@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
@@ -29,18 +30,17 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
-import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KActivator2;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
+import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 import org.jspecify.annotations.Nullable;
 
@@ -90,7 +90,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
     private final Queue<KLevelEntity> deletionQueue;
 
     private final KEventSystem eventSystem;
-    private final KActivator activator;
+    private final KActivator2 activator;
     private final KFrameTaskScheduler frameTaskScheduler;
 
     private final KMessenger messenger;
@@ -110,7 +110,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
     public KLevelEntityManagementService(
         final KEventSystem eventSystem,
         final KFrameTaskScheduler frameTaskScheduler,
-        final KActivator activator,
+        final KActivator2 activator,
         final KMessenger messenger
     ) {
         super(
@@ -263,8 +263,10 @@ public class KLevelEntityManagementService extends KObject implements KService {
             .activator
             .createObject(
                 controller,
-                controller.getSimpleName(),
-                controllerParams
+                KAutonomousEntityController.args(
+                    controller.getSimpleName(),
+                    controllerParams
+                )
             );
 
         controllerInstance.setLevel(Objects.requireNonNull(this.currentLevel));
@@ -574,9 +576,6 @@ public class KLevelEntityManagementService extends KObject implements KService {
     }
 
     private void sendMessage(final KLevelEntity entity, final String messageId) {
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("id", entity.id());
@@ -611,10 +610,6 @@ public class KLevelEntityManagementService extends KObject implements KService {
             "Deleted %d entities", deleted.size()
         );
 
-        if (this.messenger == null) {
-            return;
-        }
-
         KUniversalMap body = new KUniversalMap();
         body.put("instances", deleted);
         this.messenger.sendRegular(
@@ -628,10 +623,6 @@ public class KLevelEntityManagementService extends KObject implements KService {
 
         this.autonomouses.values().forEach(KLevelEntity::move);
         this.controllables.values().forEach(KLevelEntity::move);
-
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("moved_controllables", this.controllables.keySet());

@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
+import io.github.darthakiranihil.konna.core.object.KArgs;
+
 /**
  * <p>
  *     Special marker interface for type of nodes that does not take any input parameters
@@ -31,5 +33,9 @@ package io.github.darthakiranihil.konna.level.generator;
  * @author Darth Akira Nihil
  */
 public interface KConstantNode extends KGeneratorNode {
+
+    static KArgs args(final Object constant) {
+        return () -> new Object[] { constant };
+    }
 
 }

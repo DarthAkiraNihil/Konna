@@ -16,9 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-public interface KActivator2 {
+@FunctionalInterface
+public interface KArgs {
 
-    <T> T createObject(Class<? extends T> clazz);
-    <T> T createObject(Class<? extends T> clazz, KArgs explicitArgs);
+    Object[] unpack();
 
 }

@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KActivator2;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -66,7 +67,7 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
     }
 
     private final KEventSystem eventSystem;
-    private final KActivator activator;
+    private final KActivator2 activator;
     private final KTileCollection tileCollection;
 
     /**
@@ -78,7 +79,7 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
     @KInject
     public KStandardLevelLoader(
         final KEventSystem eventSystem,
-        final KActivator activator,
+        final KActivator2 activator,
         final KTileCollection tileCollection
     ) {
         super(
@@ -373,8 +374,10 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
                 .activator
                 .createObject(
                     controllerClass,
-                    controllerClass.getSimpleName(),
-                    controllerParams
+                    KAutonomousEntityController.args(
+                        controllerClass.getSimpleName(),
+                        controllerParams
+                    )
                 );
 
             controller.setLevel(level);

@@ -62,6 +62,7 @@ public final class KStandardActivator extends KObject implements KActivator {
      * @param classpath Application's classpath search engine
      */
     public KStandardActivator(
+        final KActivator2 activator2,
         final KContainerAccessor containerResolver,
         final KObjectRegistry objectRegistry,
         final KClasspathSearchEngine classpath
@@ -98,7 +99,7 @@ public final class KStandardActivator extends KObject implements KActivator {
                     KWeakObjectPool<?> pool = new KWeakObjectPool<>(
                         (Class<? extends KObject>) poolableClass,
                         initialSize,
-                        this,
+                        activator2,
                         this.objectRegistry
                     );
                     this.weakPools.put(poolableClass, pool);
@@ -106,7 +107,7 @@ public final class KStandardActivator extends KObject implements KActivator {
                     KObjectPool<?> pool = new KObjectPool<>(
                         (Class<? extends KObject>) poolableClass,
                         initialSize,
-                        this,
+                        activator2,
                         this.objectRegistry
                     );
                     this.pools.put(poolableClass, pool);
