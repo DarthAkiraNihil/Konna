@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
@@ -53,6 +54,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         KStandardArgumentParser.class,
         KEngineHypervisor.class,
         new KEngineHypervisorConfig(
+            KAppContainer.useGenerated(),
             ContextLoader.class,
             List.of(TestMessageRouteConfigurer.class),
             List.of(),

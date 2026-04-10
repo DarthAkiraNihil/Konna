@@ -52,9 +52,10 @@ public abstract class KMessenger extends KObject {
      * @param messageSystem Parent message system that messenger sends messages to
      * @param messageIdPrefix Prefix to be attached to internal message id on sending
      */
+    @KInject
     public KMessenger(
         final String messageIdPrefix,
-        @KInject final KMessageSystem messageSystem
+        final KMessageSystem messageSystem
     ) {
         super(
             String.format("messenger_%s", messageIdPrefix),
