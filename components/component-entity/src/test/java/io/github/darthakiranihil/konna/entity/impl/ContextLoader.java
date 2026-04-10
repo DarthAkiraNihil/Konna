@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskSystem;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import io.github.darthakiranihil.konna.core.engine.KProxiedEngineContext;
@@ -41,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 
 @NullMarked
-@KContainerModifier
 public class ContextLoader implements KEngineContextLoader {
 
     @Override

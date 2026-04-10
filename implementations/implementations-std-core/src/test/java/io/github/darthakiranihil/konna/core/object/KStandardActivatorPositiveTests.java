@@ -16,10 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
-@KContainerModifier
 public class KStandardActivatorPositiveTests extends KStandardTestClass {
 
    /* private final KActivator activator;

@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.test;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -33,7 +32,6 @@ import org.jspecify.annotations.Nullable;
  * @author Darth Akira Nihil
  */
 @TestOnly
-@KContainerModifier
 public class KStandardTestClass extends KObject {
 
     /**

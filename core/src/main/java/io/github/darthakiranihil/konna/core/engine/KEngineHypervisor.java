@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.debug.KDebugger;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.except.KException;
@@ -52,7 +51,6 @@ import java.util.Map;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KContainerModifier
 public class KEngineHypervisor extends KObject {
 
     /**

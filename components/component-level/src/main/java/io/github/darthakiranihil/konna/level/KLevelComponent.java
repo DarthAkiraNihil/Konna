@@ -16,12 +16,11 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
@@ -448,7 +447,6 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-@KContainerModifier
 @KSingleton
 public class KLevelComponent extends KComponent {
 

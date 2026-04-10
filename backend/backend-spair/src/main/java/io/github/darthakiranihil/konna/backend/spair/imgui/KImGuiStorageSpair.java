@@ -17,9 +17,9 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImGuiStorage;
-import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStorage;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 @KExcludeFromGeneratedCoverageReport
 final class KImGuiStorageSpair implements KImGuiStorage {
@@ -30,7 +30,7 @@ final class KImGuiStorageSpair implements KImGuiStorage {
         this.boxed = boxed;
     }
 
-    @KInjectedConstructor
+    @KInject
     KImGuiStorageSpair() {
         this.boxed = new ImGuiStorage();
     }

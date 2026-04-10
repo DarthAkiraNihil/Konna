@@ -40,7 +40,6 @@ import java.util.function.Consumer;
  * @author Darth Akira Nihil
  */
 @KSingleton(immortal = true)
-@KContainerModifier
 public final class KProxiedEngineContext extends KObject implements KEngineContext {
 
     private final KActivator activator;

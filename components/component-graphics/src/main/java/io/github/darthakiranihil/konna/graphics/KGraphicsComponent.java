@@ -16,12 +16,11 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
 import io.github.darthakiranihil.konna.graphics.type.*;
@@ -88,7 +87,6 @@ import io.github.darthakiranihil.konna.graphics.type.*;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KContainerModifier
 @KSingleton
 public class KGraphicsComponent extends KComponent {
 

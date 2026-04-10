@@ -20,7 +20,6 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGui;
@@ -36,7 +35,6 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
  */
 @KSingleton
 @KExcludeFromGeneratedCoverageReport
-@KContainerModifier
 public class KImGuiControllerSpair extends KImGuiController {
 
     private final ImGuiImplGl3 imGuiImplGl3;

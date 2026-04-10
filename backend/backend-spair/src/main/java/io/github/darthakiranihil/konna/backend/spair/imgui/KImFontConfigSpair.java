@@ -17,18 +17,18 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImFontConfig;
-import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontConfig;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 @KExcludeFromGeneratedCoverageReport
 final class KImFontConfigSpair implements KImFontConfig {
 
     private final ImFontConfig boxed;
 
-    @KInjectedConstructor
+    @KInject
     KImFontConfigSpair() {
         this.boxed = new ImFontConfig();
     }

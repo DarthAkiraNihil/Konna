@@ -30,7 +30,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({
-    ElementType.PARAMETER,
     ElementType.CONSTRUCTOR,
     ElementType.METHOD,
     ElementType.FIELD

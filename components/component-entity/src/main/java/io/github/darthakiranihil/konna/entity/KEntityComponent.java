@@ -16,12 +16,11 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 
@@ -237,7 +236,6 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@KContainerModifier
 @KSingleton
 public class KEntityComponent extends KComponent {
 
