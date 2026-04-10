@@ -151,7 +151,7 @@ public class KEngineHypervisor extends KObject {
             throw new KHypervisorInitializationException(e);
         }
 
-        this.ctx = contextLoader.load(features);
+        this.ctx = contextLoader.load(features, this.appContainer);
         this.frameTaskSystem = this.ctx.createObject(KFrameTaskSystem.class);
         this.frameTaskSystem.setIsDebug(this.systemFeatures.isDebugEnabled());
 

@@ -18,10 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
-import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
+import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.*;
@@ -47,6 +44,7 @@ import java.util.function.Consumer;
 public final class KProxiedEngineContext extends KObject implements KEngineContext {
 
     private final KActivator activator;
+    private final KActivator2 activator2;
     private final KContainerAccessor containerResolver;
     private final KObjectRegistry objectRegistry;
     private final KQueueBasedEventSystem eventSystem;
@@ -70,6 +68,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      */
     public KProxiedEngineContext(
         final KActivator activator,
+        final KActivator2 activator2,
         final KContainerAccessor containerAccessor,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
@@ -81,6 +80,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
         this.activator = activator;
+        this.activator2 = activator2;
         this.containerResolver = containerAccessor;
         this.objectRegistry = objectRegistry;
         this.eventSystem = eventSystem;
@@ -104,6 +104,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      */
     public KProxiedEngineContext(
         final KActivator activator,
+        final KActivator2 activator2,
         final KContainerAccessor containerAccessor,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
@@ -114,6 +115,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     ) {
         this(
             activator,
+            activator2,
             containerAccessor,
             objectRegistry,
             eventSystem,
@@ -270,6 +272,11 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     @Override
     public KContainer newContainer() {
         return this.activator.newContainer();
+    }
+
+    @Override
+    public <T> T createObject(final Class<? extends T> clazz) {
+        return this.activator2.createObject(clazz);
     }
 
     @Override

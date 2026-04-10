@@ -72,8 +72,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendRegularMessageSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendRegularSync,
@@ -84,8 +84,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendDebugMessageSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendDebugSync,
@@ -96,8 +96,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendMetricsMessageSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendMetricsSync,
@@ -108,8 +108,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendSystemMessageSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendSystemSync,
@@ -120,8 +120,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendRegularMessageAsyncSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendRegular,
@@ -132,8 +132,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendDebugMessageAsyncSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendDebug,
@@ -144,8 +144,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendMetricsMessageAsyncSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendMetrics,
@@ -156,8 +156,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
 
     @Test
     public void testSendSystemMessageAsyncSuccess() {
-        KMessenger messenger1 = new KStandardMessenger(this.messageSystem, "TestComponent");
-        KMessenger messenger2 = new KStandardMessenger(this.messageSystem, "TestComponentAgain");
+        KMessenger messenger1 = new KStandardMessenger(this.messageSystem);
+        KMessenger messenger2 = new KStandardMessenger(this.messageSystem);
 
         this.sendTest(
             messenger1::sendSystem,
@@ -176,8 +176,8 @@ public class KStandardMessengerNegativeTests extends KStandardTestClass {
         var body = new KUniversalMap();
         body.put("test", 1);
 
-        sendMethodForFirstMessenger.accept("biba", body);
-        sendMethodForSecondMessenger.accept("aboba", new KUniversalMap());
+        sendMethodForFirstMessenger.accept("TestComponent.biba", body);
+        sendMethodForSecondMessenger.accept("TestComponentAgain.aboba", new KUniversalMap());
 
         try {
 

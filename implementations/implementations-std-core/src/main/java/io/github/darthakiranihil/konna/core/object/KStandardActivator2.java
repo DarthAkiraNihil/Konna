@@ -32,7 +32,7 @@ public class KStandardActivator2 extends KObject implements KActivator2 {
     private final KObjectRegistry objectRegistry;
 
     public KStandardActivator2(
-        final KAppContainer appContainer,
+        final KAppContainer container,
         final KObjectRegistry objectRegistry
     ) {
         super(
@@ -43,7 +43,7 @@ public class KStandardActivator2 extends KObject implements KActivator2 {
             )
         );
 
-        this.appContainer = appContainer;
+        this.appContainer = container;
         this.objectRegistry = objectRegistry;
 
     }

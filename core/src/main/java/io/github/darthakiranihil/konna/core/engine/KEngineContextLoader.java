@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 
 /**
  * Represents interface for loading the engine context, which
@@ -34,7 +35,7 @@ public interface KEngineContextLoader {
      *                 after parsing application arguments
      * @return Loaded context
      */
-    KEngineContext load(KApplicationFeatures features);
+    KEngineContext load(KApplicationFeatures features, KAppContainer container);
 
     /**
      * Executes post-load for previously loaded context.

@@ -23,6 +23,7 @@ import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KActivator2;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 
 /**
@@ -35,6 +36,7 @@ import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
  */
 public interface KEngineContext extends
     KActivator,
+    KActivator2,
     KContainerAccessor,
     KObjectRegistry,
     KEventSystem,

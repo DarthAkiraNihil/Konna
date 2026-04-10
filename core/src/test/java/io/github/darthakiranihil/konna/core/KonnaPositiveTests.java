@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core;
 import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.engine.TestComponentLoader;
@@ -39,6 +40,7 @@ public class KonnaPositiveTests extends KStandardTestClass {
         KStandardArgumentParser.class,
         KEngineHypervisor.class,
         new KEngineHypervisorConfig(
+            KAppContainer.Mock.class,
             KTestContextLoader.class,
             List.of(KEmptyRouteConfigurer.class),
             List.of(KEmptyEventRegisterer.class),
