@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -27,6 +28,13 @@ import org.jspecify.annotations.Nullable;
  * @author Darth Akira Nihil
  */
 public interface KApplicationFeatures {
+
+    final class Mock implements KApplicationFeatures {
+        @Override
+        public String getFeature(String key) {
+            throw new KUnsupportedOperationException("Cannot use mock features!");
+        }
+    }
 
     /**
      * Gets value for specific feature.

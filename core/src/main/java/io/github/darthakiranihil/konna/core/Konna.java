@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KArgumentParser;
 import io.github.darthakiranihil.konna.core.app.KVersion;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
@@ -204,4 +205,5 @@ public final class Konna extends KObject implements Runnable {
             );
         }
     }
+
 }

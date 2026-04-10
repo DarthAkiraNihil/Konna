@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
+import io.github.darthakiranihil.konna.core.util.KClassUtils;
 
 /**
  * Abstract class for app container that is supposed to be used
@@ -27,6 +29,24 @@ import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
  * @author Darth Akira Nihil
  */
 public abstract class KAppContainer implements KContainer2 {
+
+    @SuppressWarnings("unchecked")
+    public static Class<? extends KAppContainer> useGenerated() {
+        return (Class<? extends KAppContainer>) KClassUtils
+            .getGeneratedForName("core.modules.kGeneratedAppContainer");
+    }
+
+    public static final class Mock extends KAppContainer {
+
+        public Mock() {
+            super(new KApplicationFeatures.Mock(), new KSystemFeatures());
+        }
+
+        @Override
+        public Object getInstance(final Class<?> clazz) {
+            throw new KUnsupportedOperationException("Cannot use mock app container!");
+        }
+    }
 
     /**
      * Application features assigned to this container.

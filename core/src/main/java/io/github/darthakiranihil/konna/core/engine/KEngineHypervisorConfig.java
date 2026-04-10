@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueIsClassValidator;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
 import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 
@@ -38,6 +39,8 @@ import java.util.List;
  * @author Darth Akira Nihil
  */
 public record KEngineHypervisorConfig(
+    Class<? extends KAppContainer> applicationContainer,
+
     @KJsonSerialized @KJsonCustomName(name = ENGINE_CONTEXT_LOADER_KEY)
     Class<? extends KEngineContextLoader> contextLoader,
 

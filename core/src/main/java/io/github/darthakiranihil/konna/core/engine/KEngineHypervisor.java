@@ -19,10 +19,12 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.debug.KDebugger;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
+import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
@@ -34,6 +36,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
@@ -92,6 +95,7 @@ public class KEngineHypervisor extends KObject {
     private final KSimpleEvent ready;
 
     private KSystemFeatures systemFeatures;
+    private KAppContainer appContainer;
 
     private final DoubleSummaryStatistics fpsStats;
     private final KUniversalMap fpsData;
@@ -117,6 +121,7 @@ public class KEngineHypervisor extends KObject {
 
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
         this.systemFeatures = new KSystemFeatures();
+        this.appContainer = new KAppContainer.Mock();
 
         this.fpsStats = new DoubleSummaryStatistics();
         this.fpsData = new KUniversalMap();
@@ -133,6 +138,7 @@ public class KEngineHypervisor extends KObject {
 
         this.systemFeatures = new KSystemFeatures(features);
         this.processSystemFeatures();
+        this.appContainer = this.createAppContainer(features);
 
         KEngineContextLoader contextLoader;
         try {
@@ -419,6 +425,34 @@ public class KEngineHypervisor extends KObject {
 
         KSystemLogger.setLogLevel(this.systemFeatures.getLogLevel());
         this.nanosPerFrame = (long) (ONE_SEC_IN_NANOS / this.systemFeatures.getMaxFps());
+    }
+
+    private KAppContainer createAppContainer(final KApplicationFeatures features) {
+        var constructor = KReflectionUtils.getConstructor(
+            this.config.applicationContainer(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        if (constructor == null) {
+            throw new KHypervisorInitializationException(
+                String.format(
+                        "App container class (%s) does not provide a constructor "
+                    +   "with exact two arguments of KApplicationFeatures and KSystemFeatures",
+                    this.config.applicationContainer()
+                )
+            );
+        }
+
+        try {
+            return KReflectionUtils.newInstance(
+                constructor,
+                features,
+                this.systemFeatures
+            );
+        } catch (Throwable e) {
+            throw new KHypervisorInitializationException("Could not create engine app container");
+        }
     }
 
 }
