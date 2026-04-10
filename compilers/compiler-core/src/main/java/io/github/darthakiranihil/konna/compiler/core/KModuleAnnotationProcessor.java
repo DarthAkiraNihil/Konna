@@ -113,7 +113,6 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
     );
 
     private KModuleMetadataReader moduleMetadataReader;
-    private KModuleProcessingQueueBuilder queueBuilder;
     private KModuleContainerBrewer brewer;
 
     @Override
@@ -126,7 +125,6 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             this.messager
         );
 
-        this.queueBuilder = new KModuleProcessingQueueBuilder();
         this.brewer = new KModuleContainerBrewer();
     }
 
@@ -181,11 +179,10 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             modules.add(moduleMetadata);
         }
 
-        Queue<KModuleMetadata> moduleMetadataQueue = this.queueBuilder.buildQueue(modules);
-        if (moduleMetadataQueue.isEmpty()) {
+        if (modules.isEmpty()) {
             return true;
         }
-        var containers = this.brewer.brewJava(moduleMetadataQueue);
+        var containers = this.brewer.brewJava(modules);
 
         for (var container: containers) {
             JavaFile javaFile = JavaFile.builder(
@@ -269,49 +266,28 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             .addStatement("this.modules = new $T<>($L)", ArrayList.class, containerQueue.size());
 
         Map<String, KModuleContainerMetadata> processedContainers = new HashMap<>();
-        Map<String, String> containerVarNames = new HashMap<>();
 
         int createdModules = 0;
         while (!containerQueue.isEmpty()) {
             KModuleContainerMetadata current = containerQueue.poll();
-            var moduleCreationStatement = CodeBlock
-                .builder()
-                .add(
-                    String.format("var module%d = new $T(", createdModules),
-                    ClassName.get("konna.generated.core.modules", current.containerSpec().name())
-                );
-
-            if (current.withApplicationFeatures()) {
-                moduleCreationStatement.add("this.applicationFeatures");
-            }
-
-            if (current.withSystemFeatures()) {
-                if (current.withApplicationFeatures()) {
-                    moduleCreationStatement.add(", ");
-                }
-                moduleCreationStatement.add("this.systemFeatures");
-            }
-
-            if (current.withSystemFeatures() || current.withApplicationFeatures()) {
-                moduleCreationStatement.add(", ");
-            }
-            var dependencies = current.dependencies();
-            for (int i = 0; i < dependencies.size(); i++) {
-                var dependency = dependencies.get(i);
-                moduleCreationStatement.add(containerVarNames.get(dependency.simpleName()));
-                if (i < dependencies.size() - 1) {
-                    moduleCreationStatement.add(", ");
-                }
-            }
-            moduleCreationStatement.add(")");
             constructor
-                .addStatement(moduleCreationStatement.build())
+                .addStatement(
+                    CodeBlock
+                        .builder()
+                        .add(
+                            String.format("var module%d = new $T(", createdModules),
+                            ClassName.get(
+                                "konna.generated.core.modules",
+                                current.containerSpec().name()
+                            )
+                        )
+                        .add("this.applicationFeatures, ")
+                        .add("this.systemFeatures, ")
+                        .add("this)")
+                        .build()
+                )
                 .addStatement(String.format("this.modules.add(module%d)", createdModules));
 
-            containerVarNames.put(
-                current.containerSpec().name(),
-                String.format("module%d", createdModules)
-            );
             createdModules++;
         }
 
