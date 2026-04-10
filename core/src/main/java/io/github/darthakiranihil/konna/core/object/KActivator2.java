@@ -14,26 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.di;
+package io.github.darthakiranihil.konna.core.object;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface KActivator2 {
 
-/**
- * Marks that a method parameter value should be
- * injected automatically by resolving all required dependencies.
- *
- * @since 0.2.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({
-    ElementType.PARAMETER,
-    ElementType.CONSTRUCTOR,
-    ElementType.METHOD,
-    ElementType.FIELD
-})
-public @interface KInject {
+    <T> T createObject(Class<? extends T> clazz);
+
 }

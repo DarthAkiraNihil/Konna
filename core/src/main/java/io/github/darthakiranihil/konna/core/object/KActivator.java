@@ -33,6 +33,7 @@ public interface KActivator {
      * on the implementation.
      * @return A new container
      */
+    @Deprecated(forRemoval = true)
     KContainer newContainer();
 
     /**

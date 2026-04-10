@@ -21,19 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Marks that a method parameter value should be
- * injected automatically by resolving all required dependencies.
- *
- * @since 0.2.0
- * @author Darth Akira Nihil
- */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({
-    ElementType.PARAMETER,
-    ElementType.CONSTRUCTOR,
-    ElementType.METHOD,
-    ElementType.FIELD
-})
-public @interface KInject {
+@Target(ElementType.TYPE)
+public @interface KInjectable {
 }
