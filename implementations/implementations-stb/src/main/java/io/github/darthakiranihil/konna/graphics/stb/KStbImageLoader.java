@@ -49,9 +49,10 @@ public class KStbImageLoader extends KObject implements KImageLoader {
      * @param stbImage STBImage frontend
      * @param resourceLoader Resource loader
      */
+    @KInject
     public KStbImageLoader(
-        @KInject final KStbImage stbImage,
-        @KInject final KResourceLoader resourceLoader
+        final KStbImage stbImage,
+        final KResourceLoader resourceLoader
     ) {
         this.stbImage = stbImage;
         this.resourceLoader = resourceLoader;

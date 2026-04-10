@@ -51,8 +51,9 @@ public final class KGetTileAssetNode implements KGeneratorNode {
      * Constructs this node.
      * @param tileCollection Tile collection to retrieve tiles from
      */
+    @KInject
     public KGetTileAssetNode(
-        @KInject final KTileCollection tileCollection
+        final KTileCollection tileCollection
     ) {
         this.tileCollection = tileCollection;
     }

@@ -66,10 +66,10 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * @param cache Cache service for storing buffer data, textures etc.
      */
     public KGl33RenderFrontend(
-        @KInject final KGl33 gl,
-        @KInject final KShaderCompiler shaderCompiler,
-        @KInject final KGl33TransformMatrixCalculator calculator,
-        @KInject final KCache cache
+        final KGl33 gl,
+        final KShaderCompiler shaderCompiler,
+        final KGl33TransformMatrixCalculator calculator,
+        final KCache cache
     ) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);

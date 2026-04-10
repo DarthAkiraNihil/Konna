@@ -53,9 +53,10 @@ public class KGraphicsComponentLoader implements KComponentLoader {
      * @param parser Json parser to parse config
      * @param deserializer Json deserializer to deserialize config
      */
+    @KInject
     public KGraphicsComponentLoader(
-        @KInject final KJsonParser parser,
-        @KInject final KJsonDeserializer deserializer
+        final KJsonParser parser,
+        final KJsonDeserializer deserializer
     ) {
         this.parser = parser;
         this.deserializer = deserializer;

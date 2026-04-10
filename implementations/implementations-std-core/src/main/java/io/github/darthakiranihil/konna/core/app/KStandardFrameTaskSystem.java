@@ -246,9 +246,9 @@ public class KStandardFrameTaskSystem
      * Standard constructor.
      * @param prioritizer Prioritizer to use to assign task priorities
      */
-    @KInjectedConstructor
+    @KInject
     public KStandardFrameTaskSystem(
-        @KInject final KFrameTaskPrioritizer prioritizer
+        final KFrameTaskPrioritizer prioritizer
     ) {
         super(
             "FrameTaskSystem",

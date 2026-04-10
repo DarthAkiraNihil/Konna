@@ -50,8 +50,9 @@ public final class KEntityMetadataCollection
      * Standard constructor.
      * @param assetLoader Asset loader (to load entity metadata)
      */
+    @KInject
     public KEntityMetadataCollection(
-        @KInject final KAssetLoader assetLoader
+        final KAssetLoader assetLoader
     ) {
         this.assetLoader = assetLoader;
         this.loadedMetadata = new HashMap<>();

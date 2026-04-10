@@ -50,10 +50,11 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
      * @param deserializer JSON deserializer to restore data components with
      *                     provided data
      */
+    @KInject
     public KStandardEntityFactory(
-        @KInject final KEntityMetadataCollection metadataCollection,
-        @KInject final KActivator activator,
-        @KInject final KJsonDeserializer deserializer
+        final KEntityMetadataCollection metadataCollection,
+        final KActivator activator,
+        final KJsonDeserializer deserializer
     ) {
         super("std_entity_factory", KStructUtils.setOfTags(KTag.DefaultTags.STD));
 

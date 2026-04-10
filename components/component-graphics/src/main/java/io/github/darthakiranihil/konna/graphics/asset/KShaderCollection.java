@@ -54,10 +54,11 @@ public final class KShaderCollection extends KObject implements KAssetCollection
      * @param resourceLoader Resource loader (to read shader source file)
      * @param shaderCompiler Shader compiler (to compile the shader)
      */
+    @KInject
     public KShaderCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KResourceLoader resourceLoader,
-        @KInject final KShaderCompiler shaderCompiler
+        final KAssetLoader assetLoader,
+        final KResourceLoader resourceLoader,
+        final KShaderCompiler shaderCompiler
     ) {
         super(
             "Graphics.shaderCollection",

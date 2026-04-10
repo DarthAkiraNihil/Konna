@@ -57,10 +57,11 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
      * @param textureCollection Texture collection (to load font faces)
      * @param activator Activator to instantiate tiled font formats
      */
+    @KInject
     public KTiledFontCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection,
-        @KInject final KActivator activator
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection,
+        final KActivator activator
     ) {
         super(
             "Graphics.tiledFontCollection",

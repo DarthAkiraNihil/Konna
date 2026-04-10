@@ -54,10 +54,11 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
      * @param imageLoader Image loader (to load texture images)
      * @param shaderProgramCollection (to load texture shaders)
      */
+    @KInject
     public KTextureCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KImageLoader imageLoader,
-        @KInject final KShaderProgramCollection shaderProgramCollection
+        final KAssetLoader assetLoader,
+        final KImageLoader imageLoader,
+        final KShaderProgramCollection shaderProgramCollection
     ) {
         super(
             "Graphics.textureCollection",

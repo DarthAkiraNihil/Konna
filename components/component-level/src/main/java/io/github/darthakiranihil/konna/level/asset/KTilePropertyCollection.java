@@ -62,9 +62,10 @@ public final class KTilePropertyCollection
      * @param assetLoader Asset loader
      * @param activator Activator to create property factories
      */
+    @KInject
     public KTilePropertyCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KActivator activator
+        final KAssetLoader assetLoader,
+        final KActivator activator
     ) {
         super(
             "Level.tilePropertyCollection",

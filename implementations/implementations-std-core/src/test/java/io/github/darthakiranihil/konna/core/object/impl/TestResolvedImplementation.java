@@ -22,7 +22,8 @@ public class TestResolvedImplementation implements TestInterfaceToResolve {
 
     private final TestDependencyInterface dep;
 
-    public TestResolvedImplementation(@KInject final TestDependencyInterface dep) {
+    @KInject
+    public TestResolvedImplementation(final TestDependencyInterface dep) {
         this.dep = dep;
     }
 

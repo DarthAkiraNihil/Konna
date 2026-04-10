@@ -50,9 +50,10 @@ public class KLevelComponentLoader implements KComponentLoader {
      * @param parser Json parser to parse config
      * @param deserializer Json deserializer to deserialize config
      */
+    @KInject
     public KLevelComponentLoader(
-        @KInject final KJsonParser parser,
-        @KInject final KJsonDeserializer deserializer
+        final KJsonParser parser,
+        final KJsonDeserializer deserializer
     ) {
         this.parser = parser;
         this.deserializer = deserializer;

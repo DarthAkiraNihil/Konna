@@ -75,10 +75,11 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
      * @param activator Activator to create controllers
      * @param tileCollection Tile collection
      */
+    @KInject
     public KStandardLevelLoader(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KActivator activator,
-        @KInject final KTileCollection tileCollection
+        final KEventSystem eventSystem,
+        final KActivator activator,
+        final KTileCollection tileCollection
     ) {
         super(
             "KStandardLevelLoader", KStructUtils.setOfTags(KTag.DefaultTags.STD)

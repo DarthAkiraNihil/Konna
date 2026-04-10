@@ -106,10 +106,11 @@ public class KLevelEntityManagementService extends KObject implements KService {
      *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
      *                  to send messages
      */
+    @KInject
     public KLevelEntityManagementService(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KFrameTaskScheduler frameTaskScheduler,
-        @KInject final KActivator activator,
+        final KEventSystem eventSystem,
+        final KFrameTaskScheduler frameTaskScheduler,
+        final KActivator activator,
         final KMessenger messenger
     ) {
         super(

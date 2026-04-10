@@ -106,10 +106,11 @@ public class KEntityManagementService extends KObject implements KService {
      *                  {@link io.github.darthakiranihil.konna.entity.KEntityComponent}
      *                  to send messages
      */
+    @KInject
     public KEntityManagementService(
-        @KInject final KActivator activator,
-        @KInject final KEntityFactory entityFactory,
-        @KInject final KFrameTaskScheduler frameTaskScheduler,
+        final KActivator activator,
+        final KEntityFactory entityFactory,
+        final KFrameTaskScheduler frameTaskScheduler,
         final KMessenger messenger
     ) {
 

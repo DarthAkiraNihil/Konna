@@ -73,8 +73,9 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
      * Standard constructor.
      * @param activator Activator that will be used to create tunnel instances.
      */
+    @KInject
     public KStandardMessageSystem(
-        @KInject final KActivator activator
+        final KActivator activator
     ) {
         super(
             "StandardMessageSystem",

@@ -44,8 +44,9 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
      * Standard constructor.
      * @param inputEventProcessor Input event processor
      */
+    @KInject
     public KStandardInputProcessor(
-        @KInject final KInputEventProcessor inputEventProcessor
+        final KInputEventProcessor inputEventProcessor
     ) {
         this.inputEventProcessor = inputEventProcessor;
         this.controlSchemes = new LinkedList<>();

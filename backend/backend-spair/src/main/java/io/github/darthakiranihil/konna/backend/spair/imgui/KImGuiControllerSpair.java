@@ -42,11 +42,12 @@ public class KImGuiControllerSpair extends KImGuiController {
     private final ImGuiImplGlfw imGuiImplGlfw;
     private final KFrame frame;
 
+    @KInject
     public KImGuiControllerSpair(
-        @KInject final KImGui imGui,
-        @KInject final KFrameTaskScheduler frameTaskScheduler,
-        @KInject final KFrame frame,
-        @KInject final KContainerAccessor containerAccessor
+        final KImGui imGui,
+        final KFrameTaskScheduler frameTaskScheduler,
+        final KFrame frame,
+        final KContainerAccessor containerAccessor
     ) {
         super(imGui, frameTaskScheduler);
 

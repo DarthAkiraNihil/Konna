@@ -79,12 +79,13 @@ public class KLevelService extends KObject implements KService {
      *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
      *                  to send messages
      */
+    @KInject
     public KLevelService(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KActivator activator,
-        @KInject final KLevelMetadataCollection levelCollection,
-        @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection,
-        @KInject final KLevelLoader levelLoader,
+        final KEventSystem eventSystem,
+        final KActivator activator,
+        final KLevelMetadataCollection levelCollection,
+        final KLevelGeneratorMetadataCollection generatorMetadataCollection,
+        final KLevelLoader levelLoader,
         final KMessenger messenger
     ) {
         super("LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));

@@ -183,9 +183,9 @@ public class KGlfwFrame extends KObject implements KFrame {
 
 
     public KGlfwFrame(
-        @KInject final KGlfw glfw,
-        @KInject final KGlfwCallbacks glfwCallbacks,
-        @KInject final KInputProcessor inputProcessor,
+        final KGlfw glfw,
+        final KGlfwCallbacks glfwCallbacks,
+        final KInputProcessor inputProcessor,
         final String title,
         final KSize size
     ) {

@@ -26,7 +26,8 @@ public class TestWeakPoolableWithInjectedParameters {
     private TestSingleton field;
 
     @KOnPoolableObjectObtain
-    private void create(@KInject TestSingleton field) {
+    @KInject
+    private void create(TestSingleton field) {
         this.field = field;
     }
 

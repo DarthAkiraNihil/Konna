@@ -55,7 +55,8 @@ public final class KFrameLock extends KObject {
     }
 
     @KOnPoolableObjectObtain
-    private void lock(@KInject final KFrame lockedFrame) {
+    @KInject
+    private void lock(final KFrame lockedFrame) {
         this.frame = lockedFrame;
         lockedFrame.addLock(this);
     }

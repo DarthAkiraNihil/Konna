@@ -31,113 +31,109 @@ public class KStandardMessenger extends KMessenger {
     /**
      * Standard constructor.
      * @param messageSystem Parent message system that messenger sends messages to
-     * @param messageIdSpecifier Prefix to be attached to internal message id on sending
      */
+    @KInject
     public KStandardMessenger(
-        @KInject final KMessageSystem messageSystem,
-        final String messageIdSpecifier
+        final KMessageSystem messageSystem
     ) {
-        super(messageSystem, messageIdSpecifier);
+        super(messageSystem);
         this.addTag(KTag.DefaultTags.STD);
     }
 
     @Override
-    public void sendRegular(final String internalMessageId, final KUniversalMap body) {
+    public void sendRegular(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessage(
                 KMessage.regular(
-                    this.makeFullMessageId(internalMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendSystem(final String shortMessageId, final KUniversalMap body) {
+    public void sendSystem(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessage(
                 KMessage.system(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendDebug(final String shortMessageId, final KUniversalMap body) {
+    public void sendDebug(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessage(
                 KMessage.debug(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendMetrics(final String shortMessageId, final KUniversalMap body) {
+    public void sendMetrics(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessage(
                 KMessage.metrics(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendRegularSync(final String shortMessageId, final KUniversalMap body) {
+    public void sendRegularSync(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessageSync(
                 KMessage.regular(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendSystemSync(final String shortMessageId, final KUniversalMap body) {
+    public void sendSystemSync(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessageSync(
                 KMessage.system(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendDebugSync(final String shortMessageId, final KUniversalMap body) {
+    public void sendDebugSync(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessageSync(
                 KMessage.debug(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
 
     @Override
-    public void sendMetricsSync(final String shortMessageId, final KUniversalMap body) {
+    public void sendMetricsSync(final String messageId, final KUniversalMap body) {
         this
             .messageSystem
             .deliverMessageSync(
                 KMessage.metrics(
-                    this.makeFullMessageId(shortMessageId),
+                    messageId,
                     body
                 )
             );
     }
-
-    private String makeFullMessageId(final String shortMessageId) {
-        return String.format("%s.%s", this.messageIdPrefix, shortMessageId);
-    }
+    
 }
