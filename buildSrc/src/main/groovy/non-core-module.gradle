@@ -12,6 +12,7 @@ dependencies {
     implementation project(":annotations-core")
 
     annotationProcessor project(":compiler-core")
+    testAnnotationProcessor project(":compiler-core")
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

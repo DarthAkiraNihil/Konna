@@ -21,12 +21,15 @@ import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KResource;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
@@ -60,12 +63,13 @@ public class KGraphicsComponentLoader implements KComponentLoader {
 
     @Override
     public KComponent load(
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KApplicationFeatures features,
         final KSystemFeatures systemConfig
     ) {
+        KResourceLoader resourceLoader = engineModule.resourceLoader();
         KJsonValue parsedConfig;
-        try (KResource config = ctx.loadResource("classpath:config/graphics.json")) {
+        try (KResource config = resourceLoader.loadResource("classpath:config/graphics.json")) {
             InputStream configStream = config.stream();
             if (!config.exists() || configStream == null) {
                 throw new KComponentLoadingException(
@@ -88,7 +92,8 @@ public class KGraphicsComponentLoader implements KComponentLoader {
             throw new KComponentLoadingException("Could not read component config");
         }
 
-        KTransformMatrixCalculator calculator = ctx
+        KActivator activator = engineModule.activator();
+        KTransformMatrixCalculator calculator = activator
             .createObject(KTransformMatrixCalculator.class);
         KTransform.setTransformMatrixCalculator(calculator);
 
@@ -104,8 +109,8 @@ public class KGraphicsComponentLoader implements KComponentLoader {
 
 
         return new KGraphicsComponent(
-            ctx,
-            ctx.createObject(KRenderService.class),
+            engineModule,
+            activator.createObject(KRenderService.class),
             deserializedConfig
         );
     }
