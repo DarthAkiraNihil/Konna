@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.compiler.core.util;
 
 import io.github.darthakiranihil.konna.core.di.KAlsoProvides;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.di.KTakeFrom;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import org.jspecify.annotations.Nullable;
 
@@ -45,6 +44,8 @@ public final class KModuleMetadataReader {
 
     private final TypeMirror appFeaturesType;
     private final TypeMirror systemFeaturesType;
+    private final TypeMirror appContainerType;
+    private final TypeMirror abstractModuleType;
 
     public KModuleMetadataReader(
         final Types typeUtils,
@@ -61,6 +62,15 @@ public final class KModuleMetadataReader {
         this.systemFeaturesType = elementUtils
             .getTypeElement("io.github.darthakiranihil.konna.core.app.KSystemFeatures")
             .asType();
+
+        this.appContainerType = elementUtils
+            .getTypeElement("io.github.darthakiranihil.konna.core.di.KAppContainer")
+            .asType();
+
+        this.abstractModuleType = elementUtils
+            .getTypeElement("io.github.darthakiranihil.konna.core.di.KAbstractModule")
+            .asType();
+
     }
 
     /**
@@ -69,6 +79,13 @@ public final class KModuleMetadataReader {
      * @return Read module metadata or {@link null} if it failed
      */
     public @Nullable KModuleMetadata read(final TypeElement clazz) {
+
+        if (!this.typeUtils.isSubtype(clazz.asType(), this.abstractModuleType)) {
+            this.messager.printError(
+                "Module does not extend KAbstractModule",
+                clazz
+            );
+        }
 
         var builder = new KModuleMetadata.Builder(
             clazz.asType(),
@@ -88,7 +105,7 @@ public final class KModuleMetadataReader {
                     }
 
                     ExecutableElement constructor = (ExecutableElement) enclosed;
-                    boolean ok = this.readConstructor(constructor, builder, clazz);
+                    boolean ok = this.validateConstructor(constructor, clazz);
                     if (!ok) {
                         return null;
                     }
@@ -110,62 +127,39 @@ public final class KModuleMetadataReader {
 
     }
 
-    private boolean readConstructor(
+    private boolean validateConstructor(
         final ExecutableElement constructorElement,
-        final KModuleMetadata.Builder builder,
         final TypeElement moduleClassElement
     ) {
 
-        boolean gotAppFeatures = false;
-        boolean gotSystemFeatures = false;
-
         var params = constructorElement.getParameters();
-        for (var param: params) {
-            TypeMirror paramType = param.asType();
-            if (this.typeUtils.isSameType(paramType, this.appFeaturesType)) {
-                if (gotAppFeatures) {
-                    this.messager.printWarning(
-                            "This constructor contains more that 2 args"
-                            +   "with KApplicationFeatures type. Only the first of them will"
-                            +   "be taken, while others will be ignored",
-                        constructorElement
-                    );
-                    continue;
-                }
+        if (params.size() > 3) {
+            this.messager.printError(
+                "Module has to have exact 3 constructor parameters, but there is more",
+                moduleClassElement
+            );
+        }
 
-                builder.setThatHasApplicationFeatures();
-                gotAppFeatures = true;
+        var first = params.getFirst();
+        var second = params.get(1);
+        var third = params.get(2);
 
-            } else if (this.typeUtils.isSameType(paramType, this.systemFeaturesType)) {
-                if (gotSystemFeatures) {
-                    this.messager.printWarning(
-                        "This constructor contains more that 2 args"
-                        +   "with KSystemFeatures type. Only the first of them will"
-                        +   "be taken, while others will be ignored",
-                        constructorElement
-                    );
-                    continue;
-                }
+        boolean orderIsCorrect =
+                this.typeUtils.isSameType(first.asType(), this.appFeaturesType)
+            &&  this.typeUtils.isSameType(second.asType(), this.systemFeaturesType)
+            &&  this.typeUtils.isSameType(third.asType(), this.appContainerType);
 
-                builder.setThatHasSystemFeatures();
-                gotSystemFeatures = true;
-            } else {
-                KTakeFrom src = param.getAnnotation(KTakeFrom.class);
-                if (src == null) {
-                    this.messager.printError(
-                        String.format("Cannot provide parameter %s", param),
-                        moduleClassElement
-                    );
-                    return false;
-                }
-
-                TypeMirror moduleDepClass = KAnnotationUtils.getClassValueFromAnnotation(
-                    param,
-                    KTakeFrom.class,
-                    "module"
-                );
-                builder.addModuleDependency(moduleDepClass, paramType);
-            }
+        if (!orderIsCorrect) {
+            this.messager.printError(
+                String.format(
+                    "Incorrect module's constructor parameter ordering. Got: %s, %s, %s",
+                    first.asType(),
+                    second.asType(),
+                    third.asType()
+                ),
+                moduleClassElement
+            );
+            return false;
         }
 
         return true;

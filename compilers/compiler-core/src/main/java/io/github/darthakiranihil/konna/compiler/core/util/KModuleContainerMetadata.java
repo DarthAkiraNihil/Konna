@@ -24,10 +24,7 @@ import java.util.List;
 public record KModuleContainerMetadata(
     KModuleMetadata module,
     String containerClassName,
-    TypeSpec containerSpec,
-    List<ClassName> dependencies,
-    boolean withApplicationFeatures,
-    boolean withSystemFeatures
+    TypeSpec containerSpec
 ) {
 
 }

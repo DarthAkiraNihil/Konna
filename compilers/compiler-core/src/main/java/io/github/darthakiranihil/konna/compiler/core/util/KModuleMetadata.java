@@ -23,18 +23,8 @@ import java.util.List;
 public record KModuleMetadata(
     TypeMirror type,
     String className,
-    boolean hasApplicationFeatures,
-    boolean hasSystemFeatures,
-    List<ModuleDependency> moduleDependencies,
     List<ProviderDescription> providers
 ) {
-
-    public record ModuleDependency(
-        TypeMirror module,
-        TypeMirror requiredType
-    ) {
-
-    }
 
     public record ProviderDescription(
         String methodName,
@@ -50,31 +40,12 @@ public record KModuleMetadata(
         private final TypeMirror type;
         private final String className;
 
-        private boolean hasApplicationFeatures;
-        private boolean hasSystemFeatures;
-        private final List<ModuleDependency> moduleDependencies;
         private final List<ProviderDescription> providers;
 
         Builder(final TypeMirror type, final String className) {
             this.type = type;
             this.className = className;
-            this.moduleDependencies = new LinkedList<>();
             this.providers = new LinkedList<>();
-        }
-
-        public void setThatHasApplicationFeatures() {
-            this.hasApplicationFeatures = true;
-        }
-
-        public void setThatHasSystemFeatures() {
-            this.hasSystemFeatures = true;
-        }
-
-        public void addModuleDependency(
-            final TypeMirror dep,
-            final TypeMirror requiredClass
-        ) {
-            this.moduleDependencies.add(new ModuleDependency(dep, requiredClass));
         }
 
         public void addProvider(
@@ -97,9 +68,6 @@ public record KModuleMetadata(
             return new KModuleMetadata(
                 this.type,
                 this.className,
-                this.hasApplicationFeatures,
-                this.hasSystemFeatures,
-                this.moduleDependencies,
                 this.providers
             );
         }
