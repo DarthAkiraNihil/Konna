@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
@@ -30,10 +29,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
-import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
-import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 
 import java.io.InputStream;
 
@@ -91,16 +87,6 @@ public class KGraphicsComponentLoader implements KComponentLoader {
         if (deserializedConfig == null) {
             throw new KComponentLoadingException("Could not read component config");
         }
-
-        KContainer container = ctx.getContainer();
-        container
-            .add(KRenderFrontend.class, deserializedConfig.renderFrontendClass())
-            .add(KShaderCompiler.class, deserializedConfig.shaderCompilerClass())
-            .add(KImageLoader.class, deserializedConfig.imageLoaderClass())
-            .add(
-                KTransformMatrixCalculator.class,
-                deserializedConfig.transformMatrixCalculatorClass()
-            );
 
         KTransformMatrixCalculator calculator = ctx
             .createObject(KTransformMatrixCalculator.class);

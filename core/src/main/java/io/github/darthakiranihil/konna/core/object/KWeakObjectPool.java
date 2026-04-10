@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.KContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
@@ -72,16 +71,13 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
      * if pool is not extensible and behavior of getting object from an
      * empty pool is not specified. If reference in unused objects queue is somehow
      * null, a new object will be created
-     * @param container Container (for resolving dependencies for onObtain method
      * @param nonInjectedArgs Arguments that are not injected
      *                        (passed explicitly) when onObtain method is invoked
      * @return A pooled object (unwrapped from weak reference)
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      */
-    public T obtain(
-        final KContainer container,
-        final Object... nonInjectedArgs
-    ) {
+    @Override
+    public T obtain(final Object... nonInjectedArgs) {
 
         T obtained = this.retrieveObject();
 
@@ -130,6 +126,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
      * by another requester class (through {@link KActivator2}).
      * @param object Object to return
      */
+    @Override
     public void release(final T object) {
 
         if (this.onObjectRelease != null) {
