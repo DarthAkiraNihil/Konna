@@ -34,11 +34,6 @@ public class KTestFrameLoader implements KFrameLoader {
 
     @Override
     public KFrame load(final KEngineContext ctx, final KFrameSpawnOptions spawnOptions) {
-
-        ctx
-            .getContainer()
-            .add(KFrame.class, KTestFrame.class);
-
         return new KTestFrame();
     }
 }

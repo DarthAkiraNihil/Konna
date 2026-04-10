@@ -44,7 +44,6 @@ import java.util.function.Consumer;
 public final class KProxiedEngineContext extends KObject implements KEngineContext {
 
     private final KActivator2 activator;
-    private final KContainerAccessor containerResolver;
     private final KObjectRegistry objectRegistry;
     private final KQueueBasedEventSystem eventSystem;
     private final KQueueBasedMessageSystem messageSystem;
@@ -55,7 +54,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
 
     /**
      * Standard constructor.
-     * @param containerAccessor Container accessor of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
@@ -65,8 +63,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param disposer Additional disposer for this context when it shuts down
      */
     public KProxiedEngineContext(
-        final KActivator2 activator2,
-        final KContainerAccessor containerAccessor,
+        final KActivator2 activator,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
@@ -76,8 +73,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final @Nullable KDisposer<KEngineContext> disposer
     ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
-        this.activator = activator2;
-        this.containerResolver = containerAccessor;
+        this.activator = activator;
         this.objectRegistry = objectRegistry;
         this.eventSystem = eventSystem;
         this.messageSystem = messageSystem;
@@ -89,7 +85,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
 
     /**
      * Standard constructor, but without disposer.
-     * @param containerAccessor Container accessor of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
      * @param messageSystem Message system of the context
@@ -98,8 +93,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param frameTaskScheduler Frame task scheduler of the context
      */
     public KProxiedEngineContext(
-        final KActivator2 activator2,
-        final KContainerAccessor containerAccessor,
+        final KActivator2 activator,
         final KObjectRegistry objectRegistry,
         final KQueueBasedEventSystem eventSystem,
         final KQueueBasedMessageSystem messageSystem,
@@ -108,8 +102,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final KFrameTaskScheduler frameTaskScheduler
     ) {
         this(
-            activator2,
-            containerAccessor,
+            activator,
             objectRegistry,
             eventSystem,
             messageSystem,
@@ -118,11 +111,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
             frameTaskScheduler,
             null
         );
-    }
-
-    @Override
-    public KContainer getContainer() {
-        return this.containerResolver.getContainer();
     }
 
     @Override

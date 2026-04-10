@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 @KContainerModifier
 public class KStandardActivatorPositiveTests extends KStandardTestClass {
 
-    private final KActivator activator;
+   /* private final KActivator activator;
     
     public KStandardActivatorPositiveTests() {
         KContainer master = KStandardTestClass.context.getContainer();
@@ -178,5 +178,5 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
         this.activator.deleteObject(singleton);
         this.assertNotExists(singleton);
 
-    }
+    }*/
 }

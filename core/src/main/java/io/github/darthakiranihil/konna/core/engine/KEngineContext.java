@@ -17,12 +17,10 @@
 package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
-import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KActivator2;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 
@@ -36,7 +34,6 @@ import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
  */
 public interface KEngineContext extends
     KActivator2,
-    KContainerAccessor,
     KObjectRegistry,
     KEventSystem,
     KMessageSystem,

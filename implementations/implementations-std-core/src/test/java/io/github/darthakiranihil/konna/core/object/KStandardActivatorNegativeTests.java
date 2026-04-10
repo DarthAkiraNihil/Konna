@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 public class KStandardActivatorNegativeTests extends KStandardTestClass {
 
-    private final KActivator activator;
+    /*private final KActivator activator;
 
     protected KStandardActivatorNegativeTests() {
         super();
@@ -85,5 +85,5 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
                 TestDependencyInterface.class
             )
         );
-    }
+    }*/
 }

@@ -158,11 +158,6 @@ public class KEngineHypervisor extends KObject {
         this.registerSystemEvents();
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
-
-        KContainer master = this.ctx.getContainer();
-
-        master.add(KFrameLoader.class, config.frameLoader());
-
         KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
         this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
 

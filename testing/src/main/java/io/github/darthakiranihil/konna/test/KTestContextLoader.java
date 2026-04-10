@@ -16,30 +16,24 @@
 
 package io.github.darthakiranihil.konna.test;
 
-import io.github.darthakiranihil.konna.core.app.*;
-import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskSystem;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
-import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import io.github.darthakiranihil.konna.core.engine.KProxiedEngineContext;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
-import io.github.darthakiranihil.konna.core.message.*;
-import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator;
+import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
-import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import org.jetbrains.annotations.TestOnly;
 
 import java.util.List;
@@ -57,25 +51,6 @@ public final class KTestContextLoader implements KEngineContextLoader {
 
     @Override
     public KEngineContext load(final KApplicationFeatures features, final KAppContainer container) {
-        var classpath = new KClassGraphClasspathSearchEngine();
-        var containerResolver = new KStandardContainerAccessor();
-        containerResolver
-            .getContainer()
-            .add(KJsonParser.class, KStandardJsonParser.class)
-            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
-            .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
-            .add(KJsonSerializer.class, KStandardJsonSerializer.class)
-            .add(KMessageSystem.class, KProxiedEngineContext.class)
-            .add(KAssetLoader.class, KProxiedEngineContext.class)
-            .add(KEventSystem.class, KProxiedEngineContext.class)
-            .add(KMessenger.class, KStandardMessenger.class)
-            .add(KLogger.class, KStandardLogger.class)
-            .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
-            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
-            .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
-            .add(KFrameTaskSystem.class, KStandardFrameTaskSystem.class)
-            .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
-            .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
         var activator = new KStandardActivator2(container, objectRegistry);
@@ -102,7 +77,6 @@ public final class KTestContextLoader implements KEngineContextLoader {
         eventSystem.startPolling();
         KStandardTestClass.context = new KProxiedEngineContext(
             activator2,
-            containerResolver,
             objectRegistry,
             eventSystem,
             messageSystem,

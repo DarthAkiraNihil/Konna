@@ -16,30 +16,24 @@
 
 package io.github.darthakiranihil.konna.level.impl;
 
-import io.github.darthakiranihil.konna.core.app.*;
-import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskSystem;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineContextLoader;
 import io.github.darthakiranihil.konna.core.engine.KProxiedEngineContext;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
-import io.github.darthakiranihil.konna.core.log.KLogger;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
-import io.github.darthakiranihil.konna.core.message.*;
-import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator;
+import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
-import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
@@ -55,26 +49,6 @@ public class ContextLoader implements KEngineContextLoader {
 
     @Override
     public KEngineContext load(KApplicationFeatures features, KAppContainer container) {
-        var classpath = new KClassGraphClasspathSearchEngine();
-        var containerResolver = new KStandardContainerAccessor();
-        containerResolver
-            .getContainer()
-            .add(KJsonParser.class, KStandardJsonParser.class)
-            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
-            .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
-            .add(KJsonSerializer.class, KStandardJsonSerializer.class)
-            .add(KMessageSystem.class, KProxiedEngineContext.class)
-            .add(KAssetLoader.class, KProxiedEngineContext.class)
-            .add(KEventSystem.class, KProxiedEngineContext.class)
-            .add(KMessenger.class, KStandardMessenger.class)
-            .add(KFrameTaskScheduler.class, KProxiedEngineContext.class)
-            .add(KFrameTaskExecutor.class, KStandardFrameTaskSystem.class)
-            .add(KFrameTaskPrioritizer.class, KFrameTaskPrioritizer.LeaveAsIs.class)
-            .add(KFrameTaskSystem.class, KStandardFrameTaskSystem.class)
-            .add(KLogger.class, KStandardLogger.class)
-            .add(KClasspathSearchEngine.class, KClassGraphClasspathSearchEngine.class)
-            .add(KCache.class, KHashMapBasedCache.class);
-
         var objectRegistry = new KStandardObjectRegistry();
         var activator = new KStandardActivator2(container, objectRegistry);
         var messageSystem = new KStandardMessageSystem(activator);
@@ -107,9 +81,8 @@ public class ContextLoader implements KEngineContextLoader {
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
         var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
-        var ctx = new KProxiedEngineContext(
+        return new KProxiedEngineContext(
             activator,
-            containerResolver,
             objectRegistry,
             eventSystem,
             messageSystem,
@@ -117,6 +90,5 @@ public class ContextLoader implements KEngineContextLoader {
             assetLoader,
             frameTaskSystem
         );
-        return ctx;
     }
 }
