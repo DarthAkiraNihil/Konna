@@ -72,7 +72,7 @@ public class ContextLoader implements KEngineContextLoader {
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
-        return new KProxiedEngineContext(
+        var ctx = new KProxiedEngineContext(
             activator2,
             objectRegistry,
             eventSystem,
@@ -81,6 +81,7 @@ public class ContextLoader implements KEngineContextLoader {
             assetLoader,
             frameTaskSystem
         );
-
+        activator2.setContext(ctx);
+        return ctx;
     }
 }

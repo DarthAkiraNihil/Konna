@@ -104,7 +104,7 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
 
     private static final ClassName CONTAINER_CLASS_NAME = ClassName.get(
         "io.github.darthakiranihil.konna.core.di",
-        "KContainer2"
+        "KContainer"
     );
 
     private static final ClassName DEPENDENCY_RESOLVE_EXCEPTION_CLASS_NAME = ClassName.get(
@@ -295,7 +295,7 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
             .addMethod(constructor.build())
             .addMethod(
                 MethodSpec
-                    .methodBuilder("getInstance")
+                    .methodBuilder("getRawInstance")
                     .returns(Object.class)
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Override.class)

@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
@@ -59,23 +60,23 @@ public abstract class KComponent extends KObject {
     /**
      * Engine context in which this component has been created.
      */
-    protected final KEngineContext ctx;
+    protected final KEngineModule engineModule;
 
     /**
      * Standard constructor.
      * @param name Name of the component
-     * @param ctx Current engine context
+     * @param engineModule Current engine context
      * @param services Array of services used by this component
      */
     protected KComponent(
         final String name,
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KService[] services
     ) {
         super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
 
-        this.ctx = ctx;
-        this.services = KComponent.packServices(services, ctx);
+        this.engineModule = engineModule;
+        this.services = KComponent.packServices(services, engineModule.activator());
     }
 
     /**

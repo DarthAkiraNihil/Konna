@@ -32,13 +32,26 @@ import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public interface KEngineContext extends KActivator,
+public interface KEngineContext extends
+    KActivator,
     KObjectRegistry,
     KEventSystem,
     KMessageSystem,
     KResourceLoader,
     KAssetLoader,
     KFrameTaskScheduler {
+
+    static boolean isContextClass(final Class<?> clazz) {
+        return
+                KEngineContext.class.isAssignableFrom(clazz)
+            ||  KActivator.class.isAssignableFrom(clazz)
+            ||  KObjectRegistry.class.isAssignableFrom(clazz)
+            ||  KEventSystem.class.isAssignableFrom(clazz)
+            ||  KMessageSystem.class.isAssignableFrom(clazz)
+            ||  KResourceLoader.class.isAssignableFrom(clazz)
+            ||  KAssetLoader.class.isAssignableFrom(clazz)
+            ||  KFrameTaskScheduler.class.isAssignableFrom(clazz);
+    }
 
     /**
      * Executes graceful shutdown for this context.

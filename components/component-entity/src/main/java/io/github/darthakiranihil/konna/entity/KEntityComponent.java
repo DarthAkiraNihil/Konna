@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.entity;
 
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -246,16 +247,16 @@ public class KEntityComponent extends KComponent {
 
     /**
      * Constructs this component.
-     * @param ctx Engine context
+     * @param engineModule Engine context
      * @param entityManagementService Entity management service instance
      * @param config Component's config
      */
     public KEntityComponent(
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KEntityManagementService entityManagementService,
         final KEntityComponentConfig config
     ) {
-        super("Entity", ctx, new KService[] {entityManagementService});
+        super("Entity", engineModule, new KService[] {entityManagementService});
         this.config = config;
     }
 

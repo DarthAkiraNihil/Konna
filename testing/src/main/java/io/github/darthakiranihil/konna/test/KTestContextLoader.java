@@ -90,7 +90,7 @@ public final class KTestContextLoader implements KEngineContextLoader {
         KStandardTestClass.msgSystem = messageSystem;
         KSystemLogger.activateFileLogging();
         KSystemLogger.setLogLevel(KLogLevel.INFO);
-
+        activator2.setContext(KStandardTestClass.context);
         return KStandardTestClass.context;
     }
 

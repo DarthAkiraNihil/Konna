@@ -23,11 +23,14 @@ import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityComponentLoader;
@@ -61,7 +64,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
     private final Method shutdown;
     private final Field hypervisor;
-    private final Field ctx;
+    private final Field engineModule;
 
     public KEntityManagementServicePositiveTests() {
 
@@ -72,8 +75,8 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             this.hypervisor = Konna.class.getDeclaredField("hypervisor");
             this.hypervisor.setAccessible(true);
 
-            this.ctx = KEngineHypervisor.class.getDeclaredField("ctx");
-            this.ctx.setAccessible(true);
+            this.engineModule = KEngineHypervisor.class.getDeclaredField("engineModule");
+            this.engineModule.setAccessible(true);
         } catch (Throwable e) {
             throw new KException(e);
         }
@@ -92,22 +95,23 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(2);
-            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
             Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
             activeEntities.setAccessible(true);
             inactiveEntities.setAccessible(true);
 
-
+            KMessageSystem messageSystem = realContext.messageSystem();
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
 
             var body = new KUniversalMap();
             body.put("name", "E1");
             body.put("type", "Typpi3");
 
-            realContext.deliverMessageSync(KMessage.regular("createEntity", body));
+            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
-            var service = realContext
+            var service = objectRegistry
                 .listObjects()
                 .stream()
                 .filter(o -> o.object().name().equals("EntityManagementService"))
@@ -144,7 +148,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
             TimeUnit.SECONDS.sleep(1);
             System.out.println("GECON");
-            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
             Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
@@ -176,9 +180,11 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 )
             );
 
-            realContext.deliverMessageSync(KMessage.regular("restoreEntity", body));
+            KMessageSystem messageSystem = realContext.messageSystem();
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            messageSystem.deliverMessageSync(KMessage.regular("restoreEntity", body));
 
-            var service = realContext
+            var service = objectRegistry
                 .listObjects()
                 .stream()
                 .filter(o -> o.object().name().equals("EntityManagementService"))
@@ -223,7 +229,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
             TimeUnit.SECONDS.sleep(1);
             System.out.println("GECON");
-            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
             Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
@@ -231,14 +237,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             inactiveEntities.setAccessible(true);
 
 
+            KMessageSystem messageSystem = realContext.messageSystem();
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
 
             var body = new KUniversalMap();
             body.put("name", "E1");
             body.put("type", "Typpi3");
 
-            realContext.deliverMessageSync(KMessage.regular("createEntity", body));
+            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
-            var service = realContext
+            var service = objectRegistry
                 .listObjects()
                 .stream()
                 .filter(o -> o.object().name().equals("EntityManagementService"))
@@ -263,21 +271,21 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             KUniversalMap nonExistentEntityIdBody = new KUniversalMap();
             nonExistentEntityIdBody.put("entity_id", UUID.randomUUID());
 
-            realContext.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
-            realContext.deliverMessageSync(KMessage.regular("deactivateEntity", nonExistentEntityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", nonExistentEntityIdBody));
             Assertions.assertEquals(0, active.size());
             Assertions.assertEquals(1, inactive.size());
 
-            realContext.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
             Assertions.assertEquals(0, active.size());
             Assertions.assertEquals(1, inactive.size());
 
-            realContext.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
-            realContext.deliverMessageSync(KMessage.regular("activateEntity", nonExistentEntityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("activateEntity", nonExistentEntityIdBody));
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
 
-            realContext.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
 
@@ -298,7 +306,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
             TimeUnit.SECONDS.sleep(1);
             System.out.println("GECON");
-            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
             Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
@@ -309,9 +317,11 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             body.put("name", "E1");
             body.put("type", "Typpi3");
 
-            realContext.deliverMessageSync(KMessage.regular("createEntity", body));
+            KMessageSystem messageSystem = realContext.messageSystem();
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
-            var service = realContext
+            var service = objectRegistry
                 .listObjects()
                 .stream()
                 .filter(o -> o.object().name().equals("EntityManagementService"))
@@ -334,7 +344,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             KUniversalMap entityIdBody = new KUniversalMap();
             entityIdBody.put("entity_id", createdId);
 
-            realContext.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
             Assertions.assertEquals(0, active.size());
             Assertions.assertEquals(0, inactive.size());
 
@@ -355,7 +365,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
             TimeUnit.SECONDS.sleep(1);
             System.out.println("GECON");
-            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
             Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
@@ -366,9 +376,11 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             body.put("name", "E1");
             body.put("type", "Typpi3");
 
-            realContext.deliverMessageSync(KMessage.regular("createEntity", body));
+            KMessageSystem messageSystem = realContext.messageSystem();
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
-            var service = realContext
+            var service = objectRegistry
                 .listObjects()
                 .stream()
                 .filter(o -> o.object().name().equals("EntityManagementService"))
@@ -391,11 +403,11 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             KUniversalMap entityIdBody = new KUniversalMap();
             entityIdBody.put("entity_id", createdId);
 
-            realContext.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
             Assertions.assertEquals(0, active.size());
             Assertions.assertEquals(1, inactive.size());
 
-            realContext.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
             Assertions.assertEquals(0, active.size());
             Assertions.assertEquals(0, inactive.size());
 
@@ -415,14 +427,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             konnaWithOnlyDefaultArgs.run();
 
             TimeUnit.SECONDS.sleep(1);
-            KEngineContext realContext = (KEngineContext) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
 
             Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
             Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
             activeEntities.setAccessible(true);
             inactiveEntities.setAccessible(true);
 
-            var service = realContext
+            KMessageSystem messageSystem = realContext.messageSystem();
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            var service = objectRegistry
                 .listObjects()
                 .stream()
                 .filter(o -> o.object().name().equals("EntityManagementService"))
@@ -436,7 +450,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             KUniversalMap entityIdBody = new KUniversalMap();
             entityIdBody.put("entity_id", UUID.randomUUID());
 
-            realContext.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
+            messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
             Assertions.assertEquals(0, active.size());
             Assertions.assertEquals(0, inactive.size());
 

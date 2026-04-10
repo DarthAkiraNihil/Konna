@@ -125,7 +125,7 @@ public class KGraphicsComponent extends KComponent {
     @Override
     public void postInit() {
 
-        KRenderFrontend rf = this.ctx.createObject(KRenderFrontend.class);
+        KRenderFrontend rf = this.engineModule.createObject(KRenderFrontend.class);
         rf.initialize();
 
     }

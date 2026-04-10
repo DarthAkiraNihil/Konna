@@ -18,8 +18,10 @@ package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Abstract class for app container that is supposed to be used
@@ -43,7 +45,7 @@ public abstract class KAppContainer implements KContainer {
         }
 
         @Override
-        public Object getInstance(final Class<?> clazz) {
+        public Object getRawInstance(final Class<?> clazz) {
             throw new KUnsupportedOperationException("Cannot use mock app container!");
         }
     }
@@ -56,6 +58,8 @@ public abstract class KAppContainer implements KContainer {
      * System features assigned to this container.
      */
     protected final KSystemFeatures systemFeatures;
+    protected @Nullable KEngineModule engineModule;
+    private boolean setModuleCalled;
 
     /**
      * Constructs this container.
@@ -71,5 +75,31 @@ public abstract class KAppContainer implements KContainer {
     }
 
     @Override
-    public abstract Object getInstance(Class<?> clazz);
+    public final Object getInstance(Class<?> clazz) {
+        if (!this.setModuleCalled) {
+            return this.getRawInstance(clazz);
+        }
+
+        if (this.engineModule == null) {
+            throw new KIllegalStateException("Engine module is not initialized");
+        }
+
+        Object moduleClassObject = this.engineModule.getInstance(clazz);
+        return moduleClassObject == null
+            ? this.getRawInstance(clazz)
+            : moduleClassObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final <T> T getInstanceInferred(Class<?> clazz) {
+        return (T) this.getInstance(clazz);
+    }
+
+    protected abstract Object getRawInstance(Class<?> clazz);
+
+    final void setEngineModule(final KEngineModule module) {
+        this.engineModule = module;
+        this.setModuleCalled = true;
+    }
+
 }

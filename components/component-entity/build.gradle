@@ -13,5 +13,6 @@ description = "Entity component of Konna engine"
 dependencies {
 
     testImplementation project(":implementations-std-entity")
+    testAnnotationProcessor project(":compiler-core")
 
 }

@@ -33,7 +33,7 @@ public final class KModuleContainerBrewer {
 
     private static final ClassName CONTAINER_CLASS_NAME = ClassName.get(
         "io.github.darthakiranihil.konna.core.di",
-        "KContainer2"
+        "KContainer"
     );
 
     private static final ClassName OBJECT_SUPPLIER_CLASS_NAME = ClassName.get(
