@@ -26,9 +26,11 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KArgs;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
 
@@ -88,13 +90,12 @@ public class KLevelComponentLoader implements KComponentLoader {
             throw new KComponentLoadingException("Could not read component config");
         }
 
-        KContainer container = ctx.getContainer();
-        container.add(KLevelLoader.class, deserializedConfig.levelLoaderClass());
-
+        KMessenger messenger = ctx.createObject(KMessenger.class, KMessenger.args("Level"));
+        KArgs messengerArgs = KService.argsOfServiceWithMessenger(messenger);
         return new KLevelComponent(
             ctx,
-            ctx.createObject(KLevelService.class),
-            ctx.createObject(KLevelEntityManagementService.class),
+            ctx.createObject(KLevelService.class, messengerArgs),
+            ctx.createObject(KLevelEntityManagementService.class, messengerArgs),
             deserializedConfig
         );
     }

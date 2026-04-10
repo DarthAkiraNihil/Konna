@@ -26,6 +26,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
@@ -87,13 +88,13 @@ public class KEntityComponentLoader implements KComponentLoader {
             throw new KComponentLoadingException("Could not read component config");
         }
 
-        KContainer container = ctx.getContainer();
-        container.add(KEntityFactory.class, cfg.entityFactoryClass());
-
-        KMessenger messenger = ctx.createObject(KMessenger.class);
+        KMessenger messenger = ctx.createObject(KMessenger.class, KMessenger.args("Entity"));
         return new KEntityComponent(
             ctx,
-            ctx.createObject(KEntityManagementService.class, messenger),
+            ctx.createObject(
+                KEntityManagementService.class,
+                KService.argsOfServiceWithMessenger(messenger)
+            ),
             cfg
         );
     }

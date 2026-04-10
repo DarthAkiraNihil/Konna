@@ -105,9 +105,9 @@ public class KEntityManagementService extends KObject implements KService {
      */
     @KInject
     public KEntityManagementService(
+        final KMessenger messenger,
         final KEntityFactory entityFactory,
-        final KFrameTaskScheduler frameTaskScheduler,
-        final KMessenger messenger
+        final KFrameTaskScheduler frameTaskScheduler
     ) {
 
         super(
