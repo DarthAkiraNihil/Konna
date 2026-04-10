@@ -124,7 +124,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
 
     /**
      * Returns object back to the pool, making it available to be taken
-     * by another requester class (through {@link KActivator}).
+     * by another requester class (through {@link KActivator2}).
      * @param object Object to return
      */
     public abstract void release(T object);

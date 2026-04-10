@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
  * Utility class which purpose it to throw exception when a class is about
  * to be created, when it's forbidden. Generally used in utility classes
  * that have private constructor, so you cannot create it directly, but
- * it is still possible with {@link KActivator}
+ * it is still possible with {@link KActivator2}
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

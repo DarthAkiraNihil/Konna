@@ -17,8 +17,8 @@
 package io.github.darthakiranihil.konna.core.object;
 
 /**
- * Enumeration that represents the way {@link KActivator} creating a new object
- * of given class. Normally, it is used only by {@link KActivator}
+ * Enumeration that represents the way {@link KActivator2} creating a new object
+ * of given class. Normally, it is used only by {@link KActivator2}
  * and {@link KObjectRegistry}
  * as it does not have any other purpose.
  *
@@ -35,7 +35,7 @@ public enum KObjectInstantiationType {
     /**
      * Created object is a singleton - created in only one instance.
      * If there are multiple attempts of creating a singleton class after its
-     * actual creation, {@link KActivator} will return the created instance
+     * actual creation, {@link KActivator2} will return the created instance
      * instead of instantiating a new object.
      *
      * @see io.github.darthakiranihil.konna.core.di.KSingleton
@@ -44,9 +44,9 @@ public enum KObjectInstantiationType {
     /**
      * Created object is a poolable object.
      * Poolable objects are created in {@link KObjectPool}s.
-     * When {@link KActivator} tries to create a poolable object,
+     * When {@link KActivator2} tries to create a poolable object,
      * it does not actually create it but retrieves from assigned pool.
-     * Similar for deleting - {@link KActivator} just returns poolable object
+     * Similar for deleting - {@link KActivator2} just returns poolable object
      * to its place.
      *
      * @see KPoolable
@@ -63,7 +63,7 @@ public enum KObjectInstantiationType {
     WEAK_POOLABLE,
     /**
      * Created object is a transient object.
-     * When {@link KActivator} creates a transient object, it will create
+     * When {@link KActivator2} creates a transient object, it will create
      * a new instance for each call. Default type if instantiation type is
      * not specified by corresponding annotations
      * ({@link io.github.darthakiranihil.konna.core.di.KSingleton}, {@link KPoolable}
@@ -74,7 +74,7 @@ public enum KObjectInstantiationType {
     TRANSIENT,
     /**
      * Created object is a temporal object.
-     * Just like transient object, but {@link KActivator} does not push
+     * Just like transient object, but {@link KActivator2} does not push
      * it to registry when creating it, that means the only "owner" of the object
      * is one who invoked instantiation. So when it leaves its scope, no one will
      * reference it, and possibly the garbage collection will delete it finally.
