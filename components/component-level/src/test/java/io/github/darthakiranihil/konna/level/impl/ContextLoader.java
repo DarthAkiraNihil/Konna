@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.impl;
 
 import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.*;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KContainerModifier;
 import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -33,6 +34,7 @@ import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
+import io.github.darthakiranihil.konna.core.object.KStandardActivator2;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
@@ -52,7 +54,7 @@ import java.util.Map;
 public class ContextLoader implements KEngineContextLoader {
 
     @Override
-    public KEngineContext load(KApplicationFeatures features) {
+    public KEngineContext load(KApplicationFeatures features, KAppContainer container) {
         var classpath = new KClassGraphClasspathSearchEngine();
         var containerResolver = new KStandardContainerAccessor();
         containerResolver
@@ -61,7 +63,6 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
             .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
             .add(KJsonSerializer.class, KStandardJsonSerializer.class)
-            .add(KActivator.class, KProxiedEngineContext.class)
             .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
@@ -75,7 +76,7 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
+        var activator = new KStandardActivator2(container, objectRegistry);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -116,7 +117,6 @@ public class ContextLoader implements KEngineContextLoader {
             assetLoader,
             frameTaskSystem
         );
-        activator.addContext(ctx);
         return ctx;
     }
 }

@@ -35,7 +35,6 @@ import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
  * @author Darth Akira Nihil
  */
 public interface KEngineContext extends
-    KActivator,
     KActivator2,
     KContainerAccessor,
     KObjectRegistry,

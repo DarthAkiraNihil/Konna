@@ -60,7 +60,6 @@ public class ContextLoader implements KEngineContextLoader {
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
             .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
             .add(KJsonSerializer.class, KStandardJsonSerializer.class)
-            .add(KActivator.class, KProxiedEngineContext.class)
             .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
@@ -74,9 +73,8 @@ public class ContextLoader implements KEngineContextLoader {
 
         var objectRegistry = new KStandardObjectRegistry();
 
-        var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
         var activator2 = new KStandardActivator2(container, objectRegistry);
-        var frameTaskSystem = activator.createObject(KFrameTaskSystem.class);
+        var frameTaskSystem = activator2.createObject(KFrameTaskSystem.class);
         var messageSystem = new KStandardMessageSystem(activator2);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -100,8 +98,7 @@ public class ContextLoader implements KEngineContextLoader {
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
 
-        var ctx = new KProxiedEngineContext(
-            activator,
+        return new KProxiedEngineContext(
             activator2,
             containerResolver,
             objectRegistry,
@@ -111,8 +108,6 @@ public class ContextLoader implements KEngineContextLoader {
             assetLoader,
             frameTaskSystem
         );
-        activator.addContext(ctx);
-        return ctx;
 
     }
 }

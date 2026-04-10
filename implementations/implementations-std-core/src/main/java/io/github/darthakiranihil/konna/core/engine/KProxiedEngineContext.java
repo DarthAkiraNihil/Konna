@@ -43,8 +43,7 @@ import java.util.function.Consumer;
 @KContainerModifier
 public final class KProxiedEngineContext extends KObject implements KEngineContext {
 
-    private final KActivator activator;
-    private final KActivator2 activator2;
+    private final KActivator2 activator;
     private final KContainerAccessor containerResolver;
     private final KObjectRegistry objectRegistry;
     private final KQueueBasedEventSystem eventSystem;
@@ -56,7 +55,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
 
     /**
      * Standard constructor.
-     * @param activator Activator of the context
      * @param containerAccessor Container accessor of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
@@ -67,7 +65,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param disposer Additional disposer for this context when it shuts down
      */
     public KProxiedEngineContext(
-        final KActivator activator,
         final KActivator2 activator2,
         final KContainerAccessor containerAccessor,
         final KObjectRegistry objectRegistry,
@@ -79,8 +76,7 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final @Nullable KDisposer<KEngineContext> disposer
     ) {
         super("context", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD));
-        this.activator = activator;
-        this.activator2 = activator2;
+        this.activator = activator2;
         this.containerResolver = containerAccessor;
         this.objectRegistry = objectRegistry;
         this.eventSystem = eventSystem;
@@ -93,7 +89,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
 
     /**
      * Standard constructor, but without disposer.
-     * @param activator Activator of the context
      * @param containerAccessor Container accessor of the context
      * @param objectRegistry Object registry of the context
      * @param eventSystem Event system of the context
@@ -103,7 +98,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
      * @param frameTaskScheduler Frame task scheduler of the context
      */
     public KProxiedEngineContext(
-        final KActivator activator,
         final KActivator2 activator2,
         final KContainerAccessor containerAccessor,
         final KObjectRegistry objectRegistry,
@@ -114,7 +108,6 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
         final KFrameTaskScheduler frameTaskScheduler
     ) {
         this(
-            activator,
             activator2,
             containerAccessor,
             objectRegistry,
@@ -270,37 +263,13 @@ public final class KProxiedEngineContext extends KObject implements KEngineConte
     }
 
     @Override
-    public KContainer newContainer() {
-        return this.activator.newContainer();
-    }
-
-    @Override
     public <T> T createObject(final Class<? extends T> clazz) {
-        return this.activator2.createObject(clazz);
-    }
-
-    @Override
-    public <T> T createObject(
-        final Class<? extends T> clazz,
-        final KContainer container,
-        final Object... nonInjectedArgs
-    ) {
-        return this.activator.createObject(clazz, container, nonInjectedArgs);
-    }
-
-    @Override
-    public <T> T createObject(final Class<? extends T> clazz, final Object... nonInjectedArgs) {
-        return this.activator.createObject(clazz, nonInjectedArgs);
+        return this.activator.createObject(clazz);
     }
 
     @Override
     public <T> T createObject(Class<? extends T> clazz, KArgs explicitArgs) {
         return this.activator.createObject(clazz, explicitArgs);
-    }
-
-    @Override
-    public <T> void deleteObject(final T object) {
-        this.activator.deleteObject(object);
     }
 
     @Override

@@ -65,7 +65,6 @@ public final class KTestContextLoader implements KEngineContextLoader {
             .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
             .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
             .add(KJsonSerializer.class, KStandardJsonSerializer.class)
-            .add(KActivator.class, KProxiedEngineContext.class)
             .add(KMessageSystem.class, KProxiedEngineContext.class)
             .add(KAssetLoader.class, KProxiedEngineContext.class)
             .add(KEventSystem.class, KProxiedEngineContext.class)
@@ -79,7 +78,7 @@ public final class KTestContextLoader implements KEngineContextLoader {
             .add(KCache.class, KHashMapBasedCache.class);
 
         var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator(containerResolver, objectRegistry, classpath);
+        var activator = new KStandardActivator2(container, objectRegistry);
         var messageSystem = new KStandardMessageSystem(activator);
         var eventSystem = new KStandardEventSystem();
         var resourceLoader = new KStandardResourceLoader(
@@ -102,7 +101,6 @@ public final class KTestContextLoader implements KEngineContextLoader {
 
         eventSystem.startPolling();
         KStandardTestClass.context = new KProxiedEngineContext(
-            activator,
             activator2,
             containerResolver,
             objectRegistry,
@@ -115,7 +113,6 @@ public final class KTestContextLoader implements KEngineContextLoader {
                 eventSystem.stopPolling();
             }
         );
-        activator.addContext(KStandardTestClass.context);
         KStandardTestClass.msgSystem = messageSystem;
         KSystemLogger.activateFileLogging();
         KSystemLogger.setLogLevel(KLogLevel.INFO);
