@@ -26,6 +26,7 @@ import java.util.List;
 
 /**
  * Record class of initial Konna hypervisor configuration.
+ * @param applicationContainer Application container's class to create in hypervisor
  * @param messageRoutesConfigurers List of engine message routes configurers
  * @param eventRegisterers List of engine event registerers
  * @param componentLoaders List of engine components classes to load

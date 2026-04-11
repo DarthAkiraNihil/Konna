@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -29,9 +30,18 @@ import org.jspecify.annotations.Nullable;
  */
 public interface KApplicationFeatures {
 
+    /**
+     * Mock class to be used to bypass nullability checks. Must not be
+     * used in production. Any attempt to invoke {@link KApplicationFeatures#getFeature(String)}
+     * will cause a {@link KUnsupportedOperationException}.
+     *
+     * @since 0.6.0
+     * @author Darth Akira Nihil
+     */
+    @ApiStatus.Internal
     final class Mock implements KApplicationFeatures {
         @Override
-        public String getFeature(String key) {
+        public String getFeature(final String key) {
             throw new KUnsupportedOperationException("Cannot use mock features!");
         }
     }

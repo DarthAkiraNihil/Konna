@@ -34,8 +34,14 @@ import io.github.darthakiranihil.konna.core.object.KArgs;
  */
 public interface KConstantNode extends KGeneratorNode {
 
+    /**
+     * Constructs {@link KArgs} object that constructors of all implementations of this
+     * class must follow.
+     * @param constant Object to pack into the constant
+     * @return Packed args
+     */
     static KArgs args(final Object constant) {
-        return () -> new Object[] { constant };
+        return () -> new Object[] {constant};
     }
 
 }

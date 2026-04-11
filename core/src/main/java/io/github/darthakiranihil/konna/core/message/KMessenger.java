@@ -34,8 +34,14 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
  */
 public final class KMessenger extends KObject {
 
+    /**
+     * Returns {@link KArgs} object for all non-injected (explicitly passed)
+     * messenger constructor's args.
+     * @param messageIdPrefix Prefix to be attached to internal message id on sending
+     * @return Packed args
+     */
     public static KArgs args(final String messageIdPrefix) {
-        return () -> new Object[] { messageIdPrefix };
+        return () -> new Object[] {messageIdPrefix};
     }
     
     private final KMessageSystem messageSystem;

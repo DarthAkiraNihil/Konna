@@ -16,9 +16,19 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+/**
+ * Simple functional interface that just returns array of objects to be passed
+ * in method args, that is about to be invoked via reflection.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 @FunctionalInterface
 public interface KArgs {
 
+    /**
+     * @return Array of args contained in this object
+     */
     Object[] unpack();
 
 }

@@ -35,6 +35,12 @@ import org.jspecify.annotations.Nullable;
  */
 public abstract class KAutonomousEntityController extends KObject {
 
+    /**
+     * Constructs {@link KArgs} object for this class.
+     * @param qualifier Controller qualifier
+     * @param params Controller params
+     * @return Packed args
+     */
     public static KArgs args(final String qualifier, final KAssetDefinition params) {
         return () -> new Object[] {qualifier, params};
     }

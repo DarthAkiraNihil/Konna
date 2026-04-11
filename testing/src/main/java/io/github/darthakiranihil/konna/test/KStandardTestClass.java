@@ -69,6 +69,9 @@ public class KStandardTestClass extends KObject {
         KSystemLogger.activateFileLogging();
     }
 
+    /**
+     * @return Engine module of generated container without features.
+     */
     public static KEngineModule getModule() {
         var constructor = KReflectionUtils.getConstructor(
             KAppContainer.useGenerated(),

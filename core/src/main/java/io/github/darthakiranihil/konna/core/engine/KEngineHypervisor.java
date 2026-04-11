@@ -73,6 +73,9 @@ public class KEngineHypervisor extends KObject {
      */
     protected final Map<String, Object> loadedDebuggers;
 
+    /**
+     * Engine module assigned to this application.
+     */
     protected @Nullable KEngineModule engineModule;
     /**
      * Spawned application's frame.
@@ -82,6 +85,9 @@ public class KEngineHypervisor extends KObject {
      * Applications's frame task system.
      */
     protected @Nullable KFrameTaskExecutor frameTaskExecutor;
+    /**
+     * Message system assigned to this application.
+     */
     protected @Nullable KMessageSystem messageSystem;
 
     private final KSimpleEvent ready;
@@ -157,7 +163,9 @@ public class KEngineHypervisor extends KObject {
 
             for (var componentLoaderClass: config.componentLoaders()) {
                 KComponentLoader componentLoader = activator.createObject(componentLoaderClass);
-                KComponent loaded = componentLoader.load(this.engineModule, features, this.systemFeatures);
+                KComponent loaded = componentLoader.load(
+                    this.engineModule, features, this.systemFeatures
+                );
                 // todo: remove KObjectInstantiationType after reworking registry
                 objectRegistry.pushObjectToRegistry(loaded, KObjectInstantiationType.SINGLETON);
                 this.engineComponents.put(loaded.name(), loaded);
@@ -172,11 +180,11 @@ public class KEngineHypervisor extends KObject {
             throw new KHypervisorInitializationException(e);
         }
 
-        KMessageSystem messageSystem = this.engineModule.messageSystem();
+        this.messageSystem = this.engineModule.messageSystem();
         KAssetLoader assetLoader = this.engineModule.assetLoader();
 
         engineComponents.forEach((_k, v) -> {
-            messageSystem.registerComponent(v);
+            this.messageSystem.registerComponent(v);
 
             KAssetTypedef[] assetTypedefs = v.getAssetTypedefs();
             for (var typedef: assetTypedefs) {
@@ -193,7 +201,7 @@ public class KEngineHypervisor extends KObject {
 
         for (var routeConfigurer: config.messageRoutesConfigurers()) {
             KMessageRoutesConfigurer configurer = activator.createObject(routeConfigurer);
-            configurer.setupRoutes(messageSystem);
+            configurer.setupRoutes(this.messageSystem);
         }
         KSystemLogger.info(
             this.name,
@@ -201,7 +209,7 @@ public class KEngineHypervisor extends KObject {
             config.messageRoutesConfigurers().size()
         );
 
-        engineComponents.values().forEach(KComponent::postInit);
+        this.engineComponents.values().forEach(KComponent::postInit);
         KSystemLogger.info(
             this.name,
             "Components' post-init is completed"

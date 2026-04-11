@@ -17,10 +17,9 @@
 package io.github.darthakiranihil.konna.core.object.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 
 /**
- * Exception thrown when {@link KActivator}
+ * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KActivator}
  * failed to create an object.
  * By default, the exception is fatal.
  *

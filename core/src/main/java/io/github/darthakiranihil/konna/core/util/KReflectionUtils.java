@@ -129,6 +129,14 @@ public final class KReflectionUtils extends KUninstantiable {
         }
     }
 
+    /**
+     * Set field's value without required checked exceptions catching.
+     * @param field Field handle to set
+     * @param instance Instance of set field
+     * @param value New field value
+     *
+     * @since 0.6.0
+     */
     public static void setFieldValue(
         final Field field,
         final Object instance,

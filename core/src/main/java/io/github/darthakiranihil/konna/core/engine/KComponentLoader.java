@@ -31,7 +31,7 @@ public interface KComponentLoader {
 
     /**
      * Loads a new component according to provided configuration.
-     * @param ctx Current engine context
+     * @param engineModule Engine module initialized in current application
      * @param features Application features
      * @param systemConfig System features configured by hypervisor
      * @return A loaded component

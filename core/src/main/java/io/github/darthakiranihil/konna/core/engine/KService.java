@@ -27,6 +27,10 @@ import io.github.darthakiranihil.konna.core.object.KArgs;
  */
 public interface KService {
 
+    /**
+     * @param messenger Messenger for a service
+     * @return Packed args for a service that uses {@link KMessenger}.
+     */
     static KArgs argsOfServiceWithMessenger(final KMessenger messenger) {
         return () -> new Object[] {messenger};
     }
