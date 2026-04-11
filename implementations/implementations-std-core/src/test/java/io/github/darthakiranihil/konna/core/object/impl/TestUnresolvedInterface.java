@@ -16,19 +16,5 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-
-public class TestPartialPoolable {
-    private TestSingleton field;
-
-    @KOnPoolableObjectObtain
-    @KInject
-    private void create(TestSingleton field) {
-        this.field = field;
-    }
-
-    public TestSingleton field() {
-        return this.field;
-    }
+public interface TestUnresolvedInterface {
 }

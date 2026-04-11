@@ -16,26 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
+import io.github.darthakiranihil.konna.core.di.KInjectable;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
-import io.github.darthakiranihil.konna.core.object.KPoolable;
 
-@KPoolable(initialPoolSize = 2)
-public class TestPoolable extends KObject {
-    private int field;
-
-    @KOnPoolableObjectObtain
-    private void create(int fieldValue) {
-        this.field = fieldValue;
-    }
-
-    @KOnPoolableObjectRelease
-    private void delete() {
-        this.field = -1;
-    }
-
-    public int getField() {
-        return this.field;
-    }
+@KInjectable
+public class TestInjectable extends KObject {
 }

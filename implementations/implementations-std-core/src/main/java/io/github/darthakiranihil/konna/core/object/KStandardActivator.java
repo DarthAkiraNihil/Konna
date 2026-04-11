@@ -89,12 +89,12 @@ public class KStandardActivator extends KObject implements KActivator {
         if (clazz.isAnnotationPresent(KInjectable.class)) {
             var object = this.objectRegistry.listObjects()
                 .stream()
-                .filter(x -> x.getClass().equals(clazz))
+                .filter(x -> x.object().getClass().equals(clazz))
                 .findFirst()
                 .orElse(null);
 
             if (object != null) {
-                return (T) object;
+                return (T) (object.object());
             }
         }
 

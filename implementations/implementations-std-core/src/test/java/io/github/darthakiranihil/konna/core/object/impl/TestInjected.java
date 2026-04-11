@@ -16,13 +16,35 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.object.KPoolable;
+import io.github.darthakiranihil.konna.core.di.KInject;
 
-@KPoolable(initialPoolSize = 2)
-public class TestPoolableWithoutSpecialMethods {
+public class TestInjected {
 
-    public int baba() {
-        return 5;
+    @KInject
+    private TestDependencyInterface field;
+    private TestDependencyInterface sField;
+
+    private final TestDependencyInterface cField;
+
+    @KInject
+    public TestInjected(TestDependencyInterface cField) {
+        this.cField = cField;
     }
 
+    @KInject
+    public void setSField(TestDependencyInterface sField) {
+        this.sField = sField;
+    }
+
+    public TestDependencyInterface getField() {
+        return this.field;
+    }
+
+    public TestDependencyInterface getsField() {
+        return this.sField;
+    }
+
+    public TestDependencyInterface getcField() {
+        return this.cField;
+    }
 }

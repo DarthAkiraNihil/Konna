@@ -16,9 +16,5 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
-
-@KSingleton(immortal = true)
-public class TestImmortal extends KObject {
+public abstract class TestAbstractClass {
 }
