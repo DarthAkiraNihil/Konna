@@ -16,8 +16,13 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
@@ -53,12 +58,27 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
 
     public KStandardLevelLoaderPositiveTests() {
 
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        Assertions.assertNotNull(constructor);
+        KEngineModule engineModule = KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
+
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
         KAssetLoader assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.context, Map.of(
+            engineModule.resourceLoader(), Map.of(
             "tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[]{ KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
                 new String[]{ "classpath:assets/props.json" }
@@ -78,10 +98,10 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
 
         this.levelCollection = new KLevelMetadataCollection(assetLoader);
         this.levelLoader = new KStandardLevelLoader(
-            es, KStandardTestClass.context, new KTileCollection(
+            es, engineModule.activator(), new KTileCollection(
             assetLoader,
             new KHashMapBasedCache(),
-            new KTilePropertyCollection(assetLoader, KStandardTestClass.context)
+            new KTilePropertyCollection(assetLoader, engineModule.activator())
         ));
     }
 

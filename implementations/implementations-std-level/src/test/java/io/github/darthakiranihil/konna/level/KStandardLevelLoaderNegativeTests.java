@@ -16,15 +16,23 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
 import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;
@@ -35,17 +43,36 @@ import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
 
     private final KAssetLoader assetLoader;
     private final KEventSystem es;
+    private final KEngineModule engineModule;
 
     public KStandardLevelLoaderNegativeTests() {
 
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        Assertions.assertNotNull(constructor);
+        KEngineModule engineModule = KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
+
+        this.engineModule = engineModule;
+
         this.assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.context,
+            engineModule.resourceLoader(),
             Map.of("tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
                 new String[] {"classpath:assets/props.json"}
@@ -227,11 +254,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.engineModule.activator(),
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.engineModule.activator())
             )
         );
 
