@@ -28,7 +28,7 @@ import java.util.List;
  * Record class of initial Konna hypervisor configuration.
  * @param messageRoutesConfigurers List of engine message routes configurers
  * @param eventRegisterers List of engine event registerers
- * @param componentLoaders List of engine components classes to loadz
+ * @param componentLoaders List of engine components classes to load
  *
  * @since 0.2.0
  * @author Darth Akira Nihil

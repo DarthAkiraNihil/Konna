@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.di;
 
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
