@@ -389,13 +389,15 @@ public class KEngineHypervisor extends KObject {
      * @since 0.3.0
      */
     protected void registerSystemEvents() {
-        if (this.ctx == null) {
+        if (this.engineModule == null) {
             return; // will be checked on entering frame loop
         }
 
-        this.ctx.registerEvent(this.ready);
+        KEventSystem eventSystem = this.engineModule.eventSystem();
+        KActivator activator = this.engineModule.activator();
+        eventSystem.registerEvent(this.ready);
 
-        KClasspathSearchEngine classpath = this.ctx.createObject(KClasspathSearchEngine.class);
+        KClasspathSearchEngine classpath = activator.createObject(KClasspathSearchEngine.class);
         try (
             var result = classpath
                 .queryGenerated()
@@ -405,8 +407,8 @@ public class KEngineHypervisor extends KObject {
             result
                 .loadClasses()
                 .stream()
-                .map(c -> (KEventRegisterer) this.ctx.createObject(c))
-                .forEach(er -> er.registerEvents(this.ctx));
+                .map(c -> (KEventRegisterer) activator.createObject(c))
+                .forEach(er -> er.registerEvents(eventSystem));
         }
     }
 

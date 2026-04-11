@@ -16,17 +16,23 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.impl.TestDebugger;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KTestContextLoader;
+import io.github.darthakiranihil.konna.test.KTestFrameLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class KEngineHypervisorPositiveTests extends KStandardTestClass {
@@ -35,46 +41,18 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
     @SuppressWarnings("unchecked")
     public void testInstantiateHypervisorSuccess() {
 
-        String config = """
-            {\
-            "context_loader": "io.github.darthakiranihil.konna.test.KTestContextLoader"\
-            "component_loader": "io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader",\
-            "service_loader": "io.github.darthakiranihil.konna.core.engine.KStandardServiceLoader",\
-            "route_configurers": [],\
-            "event_registerers": [],\
-            "event_queue": "io.github.darthakiranihil.konna.core.message.KStandardEventQueue",\
-            "component_loaders": [\
-            "io.github.darthakiranihil.konna.core.engine.TestComponentLoader"\
-            ],"frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
-                  "frame_options": {
-                    "size": {
-                        "width": 1000,
-                        "height": 800
-                    },
-                    "title": "Hello, world!"
-                  }}""";
+        KEngineHypervisorConfig config = new KEngineHypervisorConfig(
+            KAppContainer.useGenerated(),
+            KTestContextLoader.class,
+            List.of(),
+            List.of(),
+            List.of(TestComponentLoader.class),
+            KTestFrameLoader.class,
+            new KFrameSpawnOptions(new KSize(1000, 800), "Hello, world!")
+        );
 
-        KJsonValue parsed;
-        try {
-            parsed = this.jsonParser.parse(config);
-        } catch (KJsonParseException e) {
-            Assertions.fail(e);
-            return;
-        }
-
-        KEngineHypervisorConfig loadedConfig;
-        try {
-            loadedConfig = this.jsonDeserializer.deserialize(
-                parsed,
-                KEngineHypervisorConfig.class
-            );
-        } catch (KJsonSerializationException e) {
-            Assertions.fail(e);
-            return;
-        }
-
-        Assertions.assertNotNull(loadedConfig);
-        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
+        Assertions.assertNotNull(config);
+        KEngineHypervisor hypervisor = new KEngineHypervisor(config);
         hypervisor.launch(new KStandardApplicationFeatures(Map.of("log-level", "INFO", "max-fps", "-1")));
         try {
             Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
@@ -94,46 +72,18 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
     @SuppressWarnings("unchecked")
     public void testInstantiateHypervisorSuccessWithDebuggers() {
 
-        String config = """
-            {\
-            "context_loader": "io.github.darthakiranihil.konna.test.KTestContextLoader"\
-            "component_loader": "io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader",\
-            "service_loader": "io.github.darthakiranihil.konna.core.engine.KStandardServiceLoader",\
-            "route_configurers": [],\
-            "event_registerers": [],\
-            "event_queue": "io.github.darthakiranihil.konna.core.message.std.KStandardEventQueue",\
-            "component_loaders": [\
-            "io.github.darthakiranihil.konna.core.engine.TestComponentLoader"\
-            ],"frame_loader": "io.github.darthakiranihil.konna.test.KTestFrameLoader",
-                  "frame_options": {
-                    "size": {
-                        "width": 1000,
-                        "height": 800
-                    },
-                    "title": "Hello, world!"
-                  }}""";
+        KEngineHypervisorConfig config = new KEngineHypervisorConfig(
+            KAppContainer.useGenerated(),
+            KTestContextLoader.class,
+            List.of(),
+            List.of(),
+            List.of(TestComponentLoader.class),
+            KTestFrameLoader.class,
+            new KFrameSpawnOptions(new KSize(1000, 800), "Hello, world!")
+        );
 
-        KJsonValue parsed;
-        try {
-            parsed = this.jsonParser.parse(config);
-        } catch (KJsonParseException e) {
-            Assertions.fail(e);
-            return;
-        }
-
-        KEngineHypervisorConfig loadedConfig;
-        try {
-            loadedConfig = this.jsonDeserializer.deserialize(
-                parsed,
-                KEngineHypervisorConfig.class
-            );
-        } catch (KJsonSerializationException e) {
-            Assertions.fail(e);
-            return;
-        }
-
-        Assertions.assertNotNull(loadedConfig);
-        KEngineHypervisor hypervisor = new KEngineHypervisor(loadedConfig);
+        Assertions.assertNotNull(config);
+        KEngineHypervisor hypervisor = new KEngineHypervisor(config);
         hypervisor.launch(new KStandardApplicationFeatures(Map.of("debug", "true", "log-level", "INFO", "max-fps", "-1")));
         try {
             Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");

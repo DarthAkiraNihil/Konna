@@ -177,6 +177,9 @@ public class KStandardFrameTaskSystem
                     continue;
                 }
 
+                this.executionWaitlists.putIfAbsent(
+                    currentTask.id, new ArrayDeque<>(INITIAL_QUEUE_CAPACITY)
+                );
                 Queue<FrameTask> waitlist = this.executionWaitlists.get(currentTask.id);
                 FrameTask awaited = waitlist.poll();
                 if (awaited != null) {

@@ -81,12 +81,12 @@ public class KLevelService extends KObject implements KService {
      */
     @KInject
     public KLevelService(
+        final KMessenger messenger,
         final KEventSystem eventSystem,
         final KActivator activator,
         final KLevelMetadataCollection levelCollection,
         final KLevelGeneratorMetadataCollection generatorMetadataCollection,
-        final KLevelLoader levelLoader,
-        final KMessenger messenger
+        final KLevelLoader levelLoader
     ) {
         super("LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
@@ -125,6 +125,10 @@ public class KLevelService extends KObject implements KService {
                 this.name,
                 "Could not load level with name %s",
                 levelName
+            );
+            KSystemLogger.warning(
+                this.name,
+                e
             );
             return;
         }

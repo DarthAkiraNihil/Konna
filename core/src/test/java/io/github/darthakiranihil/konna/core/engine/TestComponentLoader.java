@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.engine;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import org.jspecify.annotations.NullMarked;
 
@@ -26,12 +27,12 @@ public class TestComponentLoader implements KComponentLoader {
 
     @Override
     public KComponent load(
-        KEngineContext ctx,
+        KEngineModule engineModule,
         KApplicationFeatures features,
         KSystemFeatures systemConfig
     ) {
         return new TestComponent(
-            ctx,
+            engineModule,
             new TestService()
         );
     }

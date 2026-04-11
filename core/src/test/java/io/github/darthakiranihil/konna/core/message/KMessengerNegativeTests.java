@@ -16,7 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KServiceEntry;
 import io.github.darthakiranihil.konna.core.engine.TestComponent;
@@ -24,6 +29,8 @@ import io.github.darthakiranihil.konna.core.engine.TestComponentAgain;
 import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.impl.TestService;
+import io.github.darthakiranihil.konna.core.object.KStandardActivator;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -43,19 +50,33 @@ public class KMessengerNegativeTests extends KStandardTestClass {
     private final Field componentServicesField;
 
     public KMessengerNegativeTests() {
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        Assertions.assertNotNull(constructor);
+        KEngineModule engineModule = KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
 
         try {
             this.component1 = new TestComponent(
-                KStandardTestClass.context,
+                engineModule,
                 new TestService()
             );
 
             this.component2 = new TestComponentAgain(
-                KStandardTestClass.context,
+                engineModule,
                 new TestAnotherService()
             );
 
-            this.messageSystem = KStandardTestClass.context;
+            this.messageSystem = engineModule.messageSystem();
 
             this.serviceObjectField = KServiceEntry.class.getDeclaredField("service");
             this.componentServicesField = KComponent.class.getDeclaredField("services");

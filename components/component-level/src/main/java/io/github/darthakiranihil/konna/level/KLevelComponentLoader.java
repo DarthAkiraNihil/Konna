@@ -21,14 +21,16 @@ import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KResource;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KArgs;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
@@ -62,12 +64,13 @@ public class KLevelComponentLoader implements KComponentLoader {
 
     @Override
     public KComponent load(
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KApplicationFeatures features,
         final KSystemFeatures systemConfig
     ) {
+        KResourceLoader resourceLoader = engineModule.resourceLoader();
         KJsonValue parsedConfig;
-        try (KResource config = ctx.loadResource("classpath:config/level.json")) {
+        try (KResource config = resourceLoader.loadResource("classpath:config/level.json")) {
             InputStream configStream = config.stream();
             if (!config.exists() || configStream == null) {
                 throw new KComponentLoadingException(
@@ -89,12 +92,13 @@ public class KLevelComponentLoader implements KComponentLoader {
             throw new KComponentLoadingException("Could not read component config");
         }
 
-        KMessenger messenger = ctx.createObject(KMessenger.class, KMessenger.args("Level"));
+        KActivator activator = engineModule.activator();
+        KMessenger messenger = activator.createObject(KMessenger.class, KMessenger.args("Level"));
         KArgs messengerArgs = KService.argsOfServiceWithMessenger(messenger);
         return new KLevelComponent(
-            ctx,
-            ctx.createObject(KLevelService.class, messengerArgs),
-            ctx.createObject(KLevelEntityManagementService.class, messengerArgs),
+            engineModule,
+            activator.createObject(KLevelService.class, messengerArgs),
+            activator.createObject(KLevelEntityManagementService.class, messengerArgs),
             deserializedConfig
         );
     }

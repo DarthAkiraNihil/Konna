@@ -108,10 +108,10 @@ public class KLevelEntityManagementService extends KObject implements KService {
      */
     @KInject
     public KLevelEntityManagementService(
+        final KMessenger messenger,
         final KEventSystem eventSystem,
         final KFrameTaskScheduler frameTaskScheduler,
-        final KActivator activator,
-        final KMessenger messenger
+        final KActivator activator
     ) {
         super(
             "LevelEntityManagementService",

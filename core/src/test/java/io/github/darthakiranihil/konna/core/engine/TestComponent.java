@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.impl.TestService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import org.jspecify.annotations.NullMarked;
@@ -24,10 +25,10 @@ import org.jspecify.annotations.NullMarked;
 public class TestComponent extends KComponent {
 
     public TestComponent(
-        KEngineContext ctx,
+        KEngineModule engineModule,
         TestService testService
     ) {
-        super("TestComponent", ctx, new KService[]{ testService });
+        super("TestComponent", engineModule, new KService[]{ testService });
     }
 
     @Override

@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level;
 
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineContext;
@@ -457,18 +458,18 @@ public class KLevelComponent extends KComponent {
 
     /**
      * Constructs the component.
-     * @param ctx Engine context
+     * @param engineModule Engine context
      * @param levelService Level service instance
      * @param levelEntityManagementService Level entity management service instance
      * @param config Component's configuration
      */
     public KLevelComponent(
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KLevelService levelService,
         final KLevelEntityManagementService levelEntityManagementService,
         final KLevelComponentConfig config
     ) {
-        super("Level", ctx, new KService[] {levelService, levelEntityManagementService});
+        super("Level", engineModule, new KService[] {levelService, levelEntityManagementService});
         this.config = config;
     }
 

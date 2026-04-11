@@ -16,11 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.*;
 import io.github.darthakiranihil.konna.core.engine.another_impl.TestAnotherService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.impl.TestService;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -61,22 +67,35 @@ public class KMessengerPositiveTests extends KStandardTestClass {
     }
 
     public KMessengerPositiveTests() {
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
 
+        Assertions.assertNotNull(constructor);
+        KEngineModule engineModule = KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
         try {
             this.component1 = new TestComponent(
-                KStandardTestClass.context,
+                engineModule,
                 new TestService()
             );
 
             this.component2 = new TestComponentAgain(
-                KStandardTestClass.context,
+                engineModule,
                 new TestAnotherService()
             );
 
             this.consumerTest1 = new ConsumerTest();
             this.consumerTest2 = new ConsumerTest();
 
-            this.messageSystem = KStandardTestClass.msgSystem;
+            this.messageSystem = (KQueueBasedMessageSystem) engineModule.messageSystem();
 
             this.messageSystem.registerComponent(this.component1);
             this.messageSystem.registerComponent(this.component2);
