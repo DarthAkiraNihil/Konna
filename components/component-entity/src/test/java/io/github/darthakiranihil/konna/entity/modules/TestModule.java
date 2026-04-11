@@ -16,27 +16,20 @@
 
 package io.github.darthakiranihil.konna.entity.modules;
 
-import io.github.darthakiranihil.konna.core.app.*;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.di.*;
+import io.github.darthakiranihil.konna.core.di.KAbstractModule;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KModule;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KResourceLoader;
-import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
-import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator;
-import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
 import io.github.darthakiranihil.konna.entity.KStandardEntityFactory;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
-import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
-import io.github.darthakiranihil.konna.test.KTestFrameLoader;
-
-import java.util.List;
-import java.util.Map;
 
 @KModule
 public class TestModule extends KAbstractModule {
@@ -62,10 +55,6 @@ public class TestModule extends KAbstractModule {
     @KSingleton
     public KClasspathSearchEngine getClasspathSearchEngine() {
         return new KClassGraphClasspathSearchEngine();
-    }
-
-    public KFrameLoader getFrameLoader() {
-        return new KTestFrameLoader();
     }
 
     @KSingleton

@@ -16,22 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.impl.TestDebugger;
-import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.test.KTestContextLoader;
-import io.github.darthakiranihil.konna.test.KTestFrameLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +35,9 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
         KEngineHypervisorConfig config = new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
-            KTestContextLoader.class,
             List.of(),
             List.of(),
-            List.of(TestComponentLoader.class),
-            KTestFrameLoader.class,
-            new KFrameSpawnOptions(new KSize(1000, 800), "Hello, world!")
+            List.of(TestComponentLoader.class)
         );
 
         Assertions.assertNotNull(config);
@@ -74,12 +63,9 @@ public class KEngineHypervisorPositiveTests extends KStandardTestClass {
 
         KEngineHypervisorConfig config = new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
-            KTestContextLoader.class,
             List.of(),
             List.of(),
-            List.of(TestComponentLoader.class),
-            KTestFrameLoader.class,
-            new KFrameSpawnOptions(new KSize(1000, 800), "Hello, world!")
+            List.of(TestComponentLoader.class)
         );
 
         Assertions.assertNotNull(config);

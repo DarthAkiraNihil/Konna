@@ -31,6 +31,7 @@ import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
@@ -51,6 +52,7 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
     private final KAssetLoader assetLoader;
     private final KEventSystem es;
     private final KEngineModule engineModule;
+    private final KActivator activator;
 
     public KStandardLevelLoaderNegativeTests() {
 
@@ -70,6 +72,7 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         );
 
         this.engineModule = engineModule;
+        this.activator = this.engineModule.activator();
 
         this.assetLoader = new KJsonSubtypeBasedAssetLoader(
             engineModule.resourceLoader(),
@@ -102,11 +105,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.activator,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.activator)
             )
         );
 
@@ -125,11 +128,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.activator,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.activator)
             )
         );
 
@@ -161,11 +164,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.activator,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.activator)
             )
         );
 
@@ -182,11 +185,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.activator,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.activator)
             )
         );
 
@@ -218,11 +221,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.activator,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.activator)
             )
         );
 
@@ -275,11 +278,11 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         KLevelMetadataCollection levelCollection = new KLevelMetadataCollection(this.assetLoader);
         KLevelLoader levelLoader = new KStandardLevelLoader(
             this.es,
-            KStandardTestClass.context,
+            this.activator,
             new KTileCollection(
                 this.assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(this.assetLoader, KStandardTestClass.context)
+                new KTilePropertyCollection(this.assetLoader, this.activator)
             )
         );
 

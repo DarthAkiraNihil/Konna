@@ -35,7 +35,6 @@ import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.DoubleSummaryStatistics;
@@ -73,10 +72,6 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine debuggers.
      */
     protected final Map<String, Object> loadedDebuggers;
-    /**
-     * Loaded engine context.
-     */
-    protected @Nullable KEngineContext ctx;
 
     protected @Nullable KEngineModule engineModule;
     /**
@@ -84,9 +79,10 @@ public class KEngineHypervisor extends KObject {
      */
     protected @Nullable KFrame frame;
     /**
-     * Applications's fra,e task system.
+     * Applications's frame task system.
      */
     protected @Nullable KFrameTaskExecutor frameTaskExecutor;
+    protected @Nullable KMessageSystem messageSystem;
 
     private final KSimpleEvent ready;
 
@@ -113,7 +109,6 @@ public class KEngineHypervisor extends KObject {
 
         this.engineComponents = new HashMap<>();
         this.loadedDebuggers = new HashMap<>();
-        this.ctx = null;
 
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
         this.systemFeatures = new KSystemFeatures();
@@ -136,19 +131,7 @@ public class KEngineHypervisor extends KObject {
         this.processSystemFeatures();
         this.appContainer = this.createAppContainer(features);
 
-        KEngineContextLoader contextLoader;
-        try {
-            contextLoader = this.config.contextLoader().getDeclaredConstructor().newInstance();
-        } catch (
-            NoSuchMethodException
-            |   InstantiationException
-            |   IllegalAccessException
-            |   InvocationTargetException e) {
-            throw new KHypervisorInitializationException(e);
-        }
-
         this.engineModule = KEngineModule.create(this.appContainer);
-        this.ctx = contextLoader.load(features, this.appContainer);
         KActivator activator = this.engineModule.activator();
         this.frameTaskExecutor = activator.createObject(KFrameTaskExecutor.class);
         this.frameTaskExecutor.setIsDebug(this.systemFeatures.isDebugEnabled());
@@ -156,8 +139,7 @@ public class KEngineHypervisor extends KObject {
         this.registerSystemEvents();
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
-        KFrameLoader frameLoader = activator.createObject(KFrameLoader.class);
-        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
+        this.frame = activator.createObject(KFrame.class);
 
         for (var eventRegisterer: config.eventRegisterers()) {
             KEventRegisterer registerer = activator.createObject(eventRegisterer);
@@ -250,7 +232,7 @@ public class KEngineHypervisor extends KObject {
                     );
                     this.loadedDebuggers.put(
                         debugger.getCanonicalName(),
-                        this.ctx.createObject(debugger)
+                        activator.createObject(debugger)
                     );
                 }
             }
@@ -259,7 +241,6 @@ public class KEngineHypervisor extends KObject {
 
         // ready
         this.ready.invokeSync();
-        contextLoader.postLoad(this.ctx, features);
 
     }
 
@@ -271,12 +252,13 @@ public class KEngineHypervisor extends KObject {
      */
     public void frameLoop() {
 
-        if (this.ctx == null) {
+        if (this.engineModule == null) {
             throw new KHypervisorInitializationException(
-                "Cannot enter frame loop: context is null!"
+                "Cannot enter frame loop: engine module is null!"
             );
         }
 
+        this.messageSystem = this.engineModule.messageSystem();
         if (this.frame == null) {
             throw new KHypervisorInitializationException(
                 "Cannot enter frame loop: frame is null!"
@@ -327,7 +309,7 @@ public class KEngineHypervisor extends KObject {
                 this.fpsStats.accept(currentFps);
                 this.fpsData.put("fps", currentFps);
                 this.fpsData.put("avg_fps", (float) this.fpsStats.getAverage());
-                this.ctx.deliverMessageSync(
+                this.messageSystem.deliverMessageSync(
                     KMessage.metrics(
                         "Konna.fps",
                         this.fpsData
@@ -368,13 +350,6 @@ public class KEngineHypervisor extends KObject {
      * It won't have any effect if there is no loaded engine context.
      */
     public void shutdown() {
-        if (this.ctx == null) {
-            return;
-        }
-
-        this.ctx.handleShutdown();
-        this.ctx = null;
-
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
 

@@ -16,14 +16,21 @@
 
 package io.github.darthakiranihil.konna.test;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jetbrains.annotations.TestOnly;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Map;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -54,18 +61,23 @@ public class KStandardTestClass extends KObject {
      * Implementation of a json stringifier.
      */
     protected final KJsonStringifier jsonStringifier;
-    /**
-     * Engine context, required for running tests.
-     */
-    @SuppressWarnings("DataFlowIssue")
-    protected static KEngineContext context = null;
 
-    /**
-     * Returns engine context for testing environment.
-     * @return Engine context for testing environment
-     */
-    public static KEngineContext getContext() {
-        return KStandardTestClass.context;
+    public static KEngineModule getModule() {
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        assert constructor != null;
+        return KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
+
     }
 
     /**

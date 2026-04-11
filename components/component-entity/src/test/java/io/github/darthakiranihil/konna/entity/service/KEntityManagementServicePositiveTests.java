@@ -53,12 +53,9 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEngineHypervisor.class,
         new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
-            ContextLoader.class,
             List.of(TestMessageRouteConfigurer.class),
             List.of(),
-            List.of(KEntityComponentLoader.class),
-            TestFrameLoader.class,
-            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+            List.of(KEntityComponentLoader.class)
         )
     );
 

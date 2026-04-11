@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
-import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
@@ -29,12 +28,9 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.KLevelSector;
-import io.github.darthakiranihil.konna.level.impl.ContextLoader;
-import io.github.darthakiranihil.konna.level.impl.TestFrameLoader;
 import io.github.darthakiranihil.konna.level.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -52,12 +48,9 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
         KEngineHypervisor.class,
         new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
-            ContextLoader.class,
             List.of(TestMessageRouteConfigurer.class),
             List.of(),
-            List.of(KLevelComponentLoader.class),
-            TestFrameLoader.class,
-            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+            List.of(KLevelComponentLoader.class)
         )
     );
 

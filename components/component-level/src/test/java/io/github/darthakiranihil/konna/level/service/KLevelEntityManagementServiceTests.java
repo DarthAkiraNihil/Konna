@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
-import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
@@ -29,7 +28,6 @@ import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
@@ -38,7 +36,10 @@ import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
-import io.github.darthakiranihil.konna.level.impl.*;
+import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
+import io.github.darthakiranihil.konna.level.impl.TestController;
+import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
+import io.github.darthakiranihil.konna.level.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.*;
 
@@ -57,12 +58,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         KEngineHypervisor.class,
         new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
-            ContextLoader.class,
             List.of(TestMessageRouteConfigurer.class),
             List.of(),
-            List.of(KLevelComponentLoader.class),
-            TestFrameLoader.class,
-            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+            List.of(KLevelComponentLoader.class)
         )
     );
 

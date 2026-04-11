@@ -30,7 +30,7 @@ public class KShaderCollectionPositiveTests extends KAssetCollectionTestClass {
 
         KShaderCollection sc = new KShaderCollection(
             this.assetLoader,
-            KStandardTestClass.context,
+            this.engineModule.resourceLoader(),
             new TestShaderCompiler()
         );
 

@@ -33,6 +33,7 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.test.KTestFrame;
 
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,11 @@ public class ContextModule extends KAbstractModule {
     @KAlsoProvides({ KFrameTaskExecutor.class, KFrameTaskScheduler.class})
     public KFrameTaskSystem frameTaskSystem() {
         return new KStandardFrameTaskSystem();
+    }
+
+    @KSingleton
+    public KFrame frame() {
+        return new KTestFrame();
     }
 
 }

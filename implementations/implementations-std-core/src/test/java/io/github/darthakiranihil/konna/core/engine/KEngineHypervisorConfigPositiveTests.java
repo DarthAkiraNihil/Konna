@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.test.KTestContextLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +30,7 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
 
         String config = """
             {\
-            "context_loader": "io.github.darthakiranihil.konna.test.KTestContextLoader"\
+            "application_container": "io.github.darthakiranihil.konna.core.di.KAppContainer$Mock"\
             "component_loader": "io.github.darthakiranihil.konna.core.engine.KStandardComponentLoader",\
             "service_loader": "io.github.darthakiranihil.konna.core.engine.KStandardServiceLoader",\
             "route_configurers": [],\
@@ -65,7 +64,6 @@ public class KEngineHypervisorConfigPositiveTests extends KStandardTestClass {
 
             Assertions.assertNotNull(loadedConfig);
             Assertions.assertEquals(TestComponentLoader.class, loadedConfig.componentLoaders().getFirst());
-            Assertions.assertEquals(KTestContextLoader.class, loadedConfig.contextLoader());
             Assertions.assertEquals(0, loadedConfig.eventRegisterers().size());
             Assertions.assertEquals(0, loadedConfig.messageRoutesConfigurers().size());
 

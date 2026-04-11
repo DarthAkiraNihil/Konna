@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.graphics.modules;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KFrameLoader;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KAbstractModule;
@@ -32,7 +31,6 @@ import io.github.darthakiranihil.konna.graphics.impl.TestRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.opengl33.KGl33TransformMatrixCalculator;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.test.KTestFrame;
-import io.github.darthakiranihil.konna.test.KTestFrameLoader;
 
 @KModule
 public class TestModule extends KAbstractModule {
@@ -48,10 +46,6 @@ public class TestModule extends KAbstractModule {
     @KSingleton
     public KClasspathSearchEngine classpathSearchEngine() {
         return new KClassGraphClasspathSearchEngine();
-    }
-
-    public KFrameLoader getFrameLoader() {
-        return new KTestFrameLoader();
     }
 
     @KSingleton

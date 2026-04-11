@@ -16,38 +16,31 @@
 
 package io.github.darthakiranihil.konna.entity;
 
-import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.test.*;
+import io.github.darthakiranihil.konna.test.KEmptyEventRegisterer;
+import io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class KEntityComponentPositiveTests extends KStandardTestClass {
     @Test
     @SuppressWarnings("unchecked")
-    public void testLoadKonnaWithGraphicsComponentSuccess() {
+    public void testLoadKonnaWithEntityComponentSuccess() {
 
         KEngineHypervisorConfig config = new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
-            KTestContextLoader.class,
             List.of(KEmptyRouteConfigurer.class),
             List.of(KEmptyEventRegisterer.class),
-            List.of(KEntityComponentLoader.class),
-            KTestFrameLoader.class,
-            new KFrameSpawnOptions(new KSize(1000, 800), "Hello, world!")
+            List.of(KEntityComponentLoader.class)
         );
 
         KEngineHypervisor hypervisor = new KEngineHypervisor(config);

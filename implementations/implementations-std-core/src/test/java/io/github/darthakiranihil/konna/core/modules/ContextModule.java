@@ -35,7 +35,7 @@ import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
-import io.github.darthakiranihil.konna.test.KTestFrameLoader;
+import io.github.darthakiranihil.konna.test.KTestFrame;
 
 import java.util.List;
 import java.util.Map;
@@ -102,8 +102,8 @@ public class ContextModule extends KAbstractModule {
     }
 
     @KSingleton
-    public KFrameLoader frameLoader() {
-        return new KTestFrameLoader();
+    public KFrame frame() {
+        return new KTestFrame();
     }
 
 }

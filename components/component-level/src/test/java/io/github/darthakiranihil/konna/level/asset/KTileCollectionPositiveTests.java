@@ -32,7 +32,7 @@ public class KTileCollectionPositiveTests extends KAssetCollectionTestClass {
         KTileCollection tc = new KTileCollection(
             this.assetLoader,
             new KHashMapBasedCache(),
-            new KTilePropertyCollection(this.assetLoader, KAssetCollectionTestClass.context)
+            new KTilePropertyCollection(this.assetLoader, this.engineModule.activator())
         );
 
         KTileInfo tile = tc.getAsset("tile_valid");

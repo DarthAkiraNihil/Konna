@@ -19,11 +19,9 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KInjectable;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -39,7 +37,6 @@ public class KStandardActivator extends KObject implements KActivator {
 
     private final KAppContainer appContainer;
     private final KObjectRegistry objectRegistry;
-    private @Nullable KEngineContext context;
 
     /**
      * Standard constructor.
@@ -102,14 +99,7 @@ public class KStandardActivator extends KObject implements KActivator {
         }
 
         if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
-            if (this.context == null) {
-                return (T) this.appContainer.getInstance(clazz);
-            }
-
-            // todo: improve when context becomes a module-like object
-            return KEngineContext.isContextClass(clazz)
-                ? (T) this.context
-                : (T) this.appContainer.getInstance(clazz);
+            return (T) this.appContainer.getInstance(clazz);
         }
 
         Object instantiated = this.injectConstructorAndCreate(clazz);
@@ -149,11 +139,6 @@ public class KStandardActivator extends KObject implements KActivator {
         this.injectMethods(instantiated, clazz);
         this.pushToRegistry(instantiated);
         return (T) instantiated;
-    }
-
-    // todo: remove when context will became a module-like object
-    public void setContext(final KEngineContext newContext) {
-        this.context = newContext;
     }
 
     private Object injectConstructorAndCreate(final Class<?> clazz) {
