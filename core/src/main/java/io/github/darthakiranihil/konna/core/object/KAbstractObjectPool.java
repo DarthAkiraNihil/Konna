@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -31,6 +32,7 @@ import java.lang.reflect.Method;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KExcludeFromGeneratedCoverageReport // todo: remove after pool reworking
 public abstract class KAbstractObjectPool<T> extends KObject {
 
     /**

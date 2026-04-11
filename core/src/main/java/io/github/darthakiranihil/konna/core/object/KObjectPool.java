@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 import java.util.Objects;
 import java.util.Queue;
@@ -32,6 +33,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KExcludeFromGeneratedCoverageReport // todo: remove after pool reworking
 public class KObjectPool<T> extends KAbstractObjectPool<T> {
 
     private final Queue<T> unusedObjects;

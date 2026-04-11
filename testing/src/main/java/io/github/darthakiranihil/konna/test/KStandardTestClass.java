@@ -22,13 +22,13 @@ import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
-import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
+import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
+import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jetbrains.annotations.TestOnly;
-import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
@@ -62,6 +62,13 @@ public class KStandardTestClass extends KObject {
      */
     protected final KJsonStringifier jsonStringifier;
 
+    static {
+        KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
+        KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
+        KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
+        KSystemLogger.activateFileLogging();
+    }
+
     public static KEngineModule getModule() {
         var constructor = KReflectionUtils.getConstructor(
             KAppContainer.useGenerated(),
@@ -79,11 +86,6 @@ public class KStandardTestClass extends KObject {
         );
 
     }
-
-    /**
-     * Convenience reference to message system.
-     */
-    protected static @Nullable KQueueBasedMessageSystem msgSystem;
 
     /**
      * Default constructor.
