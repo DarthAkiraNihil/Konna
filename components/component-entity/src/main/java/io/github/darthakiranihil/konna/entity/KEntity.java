@@ -17,10 +17,9 @@
 package io.github.darthakiranihil.konna.entity;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class KEntity extends KObject {
     /**
      * Default tag, used to mark all created entity objects.
      */
-    public static final KTag TAG = new KTag("entity");
+    public static final String TAG = "entity";
 
     private final List<KEntityDataComponent> dataComponents;
     private final List<KEntityBehaviour> behaviours;
@@ -54,7 +53,7 @@ public class KEntity extends KObject {
         final String type,
         final List<KEntityDataComponent> dataComponents
     ) {
-        super(name, KStructUtils.setOfTags(TAG));
+        super(name, Collections.singleton(TAG));
 
         this.type = type;
         this.dataComponents = dataComponents;

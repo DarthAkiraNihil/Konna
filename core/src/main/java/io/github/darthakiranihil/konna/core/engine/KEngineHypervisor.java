@@ -29,7 +29,6 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.*;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
@@ -37,6 +36,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,7 +108,7 @@ public class KEngineHypervisor extends KObject {
     ) {
         super(
             "KEngineHypervisor",
-            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
+            Collections.singleton(KDefaultTags.SYSTEM)
         );
 
         this.config = config;

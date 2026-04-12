@@ -21,14 +21,14 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of {@link KClasspathSearchEngine} using ClassGraph library.
@@ -47,7 +47,7 @@ public final class KClassGraphClasspathSearchEngine
     public KClassGraphClasspathSearchEngine() {
         super(
             "ClassGraphClasspathSearchEngine",
-            KStructUtils.setOfTags(KTag.DefaultTags.STD, KTag.DefaultTags.SYSTEM)
+            Set.of(KDefaultTags.STD, KDefaultTags.SYSTEM)
         );
     }
 

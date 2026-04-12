@@ -16,12 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -48,7 +48,7 @@ public final class KSimpleEvent
      * @param name Name of the event
      */
     public KSimpleEvent(final String name) {
-        super(name, KStructUtils.setOfTags(KTag.DefaultTags.EVENT));
+        super(name, Collections.singleton(KDefaultTags.EVENT));
         this.listeners = new HashMap<>(INITIAL_LISTENERS_CAPACITY);
     }
 

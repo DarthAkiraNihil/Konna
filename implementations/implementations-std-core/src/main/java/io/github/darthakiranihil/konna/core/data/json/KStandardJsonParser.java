@@ -19,15 +19,11 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.io.*;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Standard implementation of {@link KJsonParser}.
@@ -45,7 +41,7 @@ public class KStandardJsonParser extends KObject implements KJsonParser {
      */
     @KInject
     public KStandardJsonParser(final KJsonTokenizer tokenizer) {
-        super("std_json_parser", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+        super("StdJsonParser", Collections.singleton(KDefaultTags.STD));
         this.tokenizer = tokenizer;
     }
 

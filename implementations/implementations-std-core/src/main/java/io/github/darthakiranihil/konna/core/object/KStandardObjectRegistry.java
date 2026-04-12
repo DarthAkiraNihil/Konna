@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,9 +36,9 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
     public KStandardObjectRegistry() {
         super(
             "object_registry",
-            KStructUtils.setOfTags(
-                KTag.DefaultTags.SYSTEM,
-                KTag.DefaultTags.STD
+            Set.of(
+                KDefaultTags.SYSTEM,
+                KDefaultTags.STD
             )
         );
         this.objects = new HashSet<>();

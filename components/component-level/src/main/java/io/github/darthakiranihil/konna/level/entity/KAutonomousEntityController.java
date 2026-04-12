@@ -26,6 +26,8 @@ import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import io.github.darthakiranihil.konna.level.KLevel;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Collections;
+
 /**
  * Provides for assigned autonomous entity next move directions in order
  * for them to move. The way it returns a new direction depends on implementation.
@@ -68,7 +70,7 @@ public abstract class KAutonomousEntityController extends KObject {
             String.format(
                 "controller_%s", qualifier
             ),
-            KStructUtils.setOfTags(KLevelComponentTags.CONTROLLER)
+            Collections.singleton(KLevelComponentTags.CONTROLLER)
         );
 
         this.applyParams(params);

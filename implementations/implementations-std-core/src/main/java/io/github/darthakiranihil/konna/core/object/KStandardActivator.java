@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
 import java.lang.reflect.Constructor;
@@ -29,6 +28,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Standard implementation of {@link KActivator}.
@@ -54,9 +54,9 @@ public class KStandardActivator extends KObject implements KActivator {
     ) {
         super(
             "std_activator",
-            KStructUtils.setOfTags(
-                KTag.DefaultTags.SYSTEM,
-                KTag.DefaultTags.STD
+            Set.of(
+                KDefaultTags.SYSTEM,
+                KDefaultTags.STD
             )
         );
 

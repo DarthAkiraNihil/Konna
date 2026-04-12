@@ -18,14 +18,13 @@ package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
@@ -34,6 +33,7 @@ import io.github.darthakiranihil.konna.graphics.image.KTextureSliceData;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
 import io.github.darthakiranihil.konna.graphics.type.KTextureSliceSetTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -67,7 +67,7 @@ public final class KTextureSliceSetCollection
     ) {
         super(
             "Graphics.textureSliceSetCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;

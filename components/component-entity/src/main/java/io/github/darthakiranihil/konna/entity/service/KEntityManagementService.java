@@ -28,9 +28,8 @@ import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityBehaviour;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
@@ -112,7 +111,7 @@ public class KEntityManagementService extends KObject implements KService {
 
         super(
             "EntityManagementService",
-            KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
+            Collections.singleton(KDefaultTags.SERVICE)
         );
 
         this.entityFactory = entityFactory;

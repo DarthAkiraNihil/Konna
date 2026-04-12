@@ -17,12 +17,10 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
-import io.github.darthakiranihil.konna.core.object.KPoolable;
 import io.github.darthakiranihil.konna.core.object.*;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Set;
 
 /**
  * Utility object that prevent frame updating when the lock is active.
@@ -47,8 +45,8 @@ public final class KFrameLock extends KObject {
 
     private KFrameLock() {
         super(
-            "frame_lock",
-            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)
+            "FrameLock",
+            Set.of(KDefaultTags.SYSTEM, KDefaultTags.STD)
         );
 
         this.frame = null;

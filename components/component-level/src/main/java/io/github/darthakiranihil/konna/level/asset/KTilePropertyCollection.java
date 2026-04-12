@@ -23,13 +23,13 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -71,7 +71,7 @@ public final class KTilePropertyCollection
     ) {
         super(
             "Level.tilePropertyCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;

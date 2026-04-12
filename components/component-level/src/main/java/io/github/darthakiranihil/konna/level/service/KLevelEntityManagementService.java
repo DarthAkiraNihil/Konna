@@ -31,10 +31,9 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
@@ -115,7 +114,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
     ) {
         super(
             "LevelEntityManagementService",
-            KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
+            Collections.singleton(KDefaultTags.SERVICE)
         );
 
         KEventSubscriber<KLevel> levelLoaded = eventSystem

@@ -19,11 +19,12 @@ package io.github.darthakiranihil.konna.libfrontend.imgui;
 import io.github.darthakiranihil.konna.core.app.KFrameEvent;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
-import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
+import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+
+import java.util.Collections;
 
 /**
  * Helper class. Represents controller of Dear ImGui rendering process that
@@ -84,7 +85,7 @@ public abstract class KImGuiController extends KObject {
         final KImGui imGui,
         final KFrameTaskScheduler frameTaskScheduler
     ) {
-        super("imgui_capsule", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("imgui_capsule", Collections.singleton(KDefaultTags.SYSTEM));
         this.imGui = imGui;
 
         frameTaskScheduler.scheduleTask(ON_NEW_FRAME_TASK, this::onNewFrame);

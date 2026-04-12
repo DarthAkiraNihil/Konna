@@ -20,15 +20,11 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -77,9 +73,9 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
     ) {
         super(
             "StandardMessageSystem",
-            KStructUtils.setOfTags(
-                KTag.DefaultTags.SYSTEM,
-                KTag.DefaultTags.STD
+            Set.of(
+                KDefaultTags.SYSTEM,
+                KDefaultTags.STD
             )
         );
         this.activator = activator;
