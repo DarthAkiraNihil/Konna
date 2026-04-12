@@ -20,9 +20,11 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -142,16 +144,7 @@ public class KStandardActivator extends KObject implements KActivator {
     }
 
     private Object injectConstructorAndCreate(final Class<?> clazz) {
-        var injectedConstructor = Arrays.stream(clazz.getConstructors())
-            .filter(x -> x.isAnnotationPresent(KInject.class))
-            .findFirst()
-            .orElse(null);
-
-        if (injectedConstructor == null) {
-            injectedConstructor = clazz.getConstructors()[0];
-        }
-
-        injectedConstructor.setAccessible(true);
+        Constructor<?> injectedConstructor = this.getConstructor(clazz);
         var parameterTypes = injectedConstructor.getParameterTypes();
 
         Object[] args = new Object[parameterTypes.length];
@@ -163,16 +156,7 @@ public class KStandardActivator extends KObject implements KActivator {
     }
 
     private Object injectConstructorAndCreate(final Class<?> clazz, final KArgs explicitArgs) {
-        var injectedConstructor = Arrays.stream(clazz.getConstructors())
-            .filter(x -> x.isAnnotationPresent(KInject.class))
-            .findFirst()
-            .orElse(null);
-
-        if (injectedConstructor == null) {
-            injectedConstructor = clazz.getConstructors()[0];
-        }
-
-        injectedConstructor.setAccessible(true);
+        Constructor<?> injectedConstructor = this.getConstructor(clazz);
         var parameterTypes = injectedConstructor.getParameterTypes();
 
         Object[] args = new Object[parameterTypes.length];
@@ -183,6 +167,37 @@ public class KStandardActivator extends KObject implements KActivator {
         }
 
         return KReflectionUtils.newInstance(injectedConstructor, args);
+    }
+
+    private Constructor<?> getConstructor(Class<?> clazz) {
+        var constructors = clazz.getConstructors();
+
+        var injectedConstructors = Arrays.stream(constructors)
+            .filter(x -> x.isAnnotationPresent(KInject.class))
+            .toList();
+
+        int injectedConstructorsCount = injectedConstructors.size();
+        Constructor<?> injectedConstructor;
+        if (injectedConstructorsCount > 1) {
+            throw new KInstantiationException(
+                clazz,
+                "An injected class must contain at most one injected constructor"
+            );
+        } else if (injectedConstructorsCount == 1) {
+            injectedConstructor = injectedConstructors.getFirst();
+        } else {
+            if (constructors.length > 1) {
+                throw new KInstantiationException(
+                    clazz,
+                        "Cannot choose a constructor to inject since"
+                    +   "there is more than one constructor"
+                );
+            }
+            injectedConstructor = clazz.getConstructors()[0];
+        }
+
+        injectedConstructor.setAccessible(true);
+        return injectedConstructor;
     }
 
     private void injectFields(final Object object, final Class<?> clazz) {

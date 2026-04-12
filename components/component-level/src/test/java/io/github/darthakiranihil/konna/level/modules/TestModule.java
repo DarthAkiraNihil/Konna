@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
@@ -74,6 +75,11 @@ public class TestModule extends KAbstractModule {
             this.appContainer.getInstanceInferred(KActivator.class),
             this.appContainer.getInstanceInferred(KTileCollection.class)
         );
+    }
+
+    @KSingleton
+    public KCache cache() {
+        return new KHashMapBasedCache();
     }
 
 

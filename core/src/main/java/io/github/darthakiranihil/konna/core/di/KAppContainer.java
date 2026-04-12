@@ -107,7 +107,7 @@ public abstract class KAppContainer implements KContainer {
         if (clazz.isAnnotationPresent(KProvided.class)) {
             return this.engineModule
                 .activator()
-                .createObject(KProvided.class);
+                .createObject(clazz);
         }
 
         Object moduleClassObject = this.engineModule.getInstance(clazz);

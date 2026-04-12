@@ -16,9 +16,19 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.di.KInject;
 
-@KSingleton
-public class TestInjectable extends KObject {
+public class TestIncorrectInjected {
+
+    private int aboba;
+
+    @KInject
+    public TestIncorrectInjected(int aboba) {
+        this.aboba = aboba;
+    }
+
+    @KInject
+    public TestIncorrectInjected() {
+    }
+
 }
