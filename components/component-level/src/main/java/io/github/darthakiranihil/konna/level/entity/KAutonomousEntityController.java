@@ -20,10 +20,9 @@ import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.object.KArgs;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import io.github.darthakiranihil.konna.level.KLevel;
+import io.github.darthakiranihil.konna.level.KLevelComponentTags;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;

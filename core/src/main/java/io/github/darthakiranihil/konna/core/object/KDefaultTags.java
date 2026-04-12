@@ -16,8 +16,18 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+/**
+ * Static class of all Konna default tags.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public final class KDefaultTags extends KUninstantiable {
 
+    /**
+     * Marks that the object is a standard implementation
+     * of an internal abstract class or interface.
+     */
     public static final String STD = "std";
     /**
      * Marks that the object is related to engine system.

@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.io.*;
 import java.util.Collections;
