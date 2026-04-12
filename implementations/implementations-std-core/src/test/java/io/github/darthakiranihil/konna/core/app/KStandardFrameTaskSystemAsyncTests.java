@@ -16,12 +16,13 @@
 
 package io.github.darthakiranihil.konna.core.app;
 
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
 
-public class KStandardFrameTaskSystemTests extends KStandardTestClass {
+public class KStandardFrameTaskSystemAsyncTests extends KStandardTestClass {
 
     private static final class TestObject {
         int field;
@@ -44,10 +45,11 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testSchedulePersistent() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofPersistent("pt1", KFrameEvent.TICK, 0),
+            KFrameTaskDescription.ofAsyncPersistent("pt1", KFrameEvent.TICK, 0),
             () -> object.field++
         );
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
@@ -55,12 +57,14 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             KScheduledFrameTask task = tasks.getFirst();
             Assertions.assertEquals("pt1", task.getId());
             Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, task.getPriority());
             Assertions.assertEquals(0, task.getDelay());
             Assertions.assertFalse(task.isTemporal());
             Assertions.assertFalse(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i + 2, object.field);
         }
     }
@@ -69,10 +73,11 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDelayedPersistent() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofDelayedPersistent("pt1", KFrameEvent.TICK, 0, 16),
+            KFrameTaskDescription.ofAsyncDelayedPersistent("pt1", KFrameEvent.TICK, 0, 16),
             () -> object.field++
         );
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(0, object.field);
         for (int i = 0; i < 15; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
@@ -80,12 +85,14 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             KScheduledFrameTask task = tasks.getFirst();
             Assertions.assertEquals("pt1", task.getId());
             Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, task.getPriority());
             Assertions.assertEquals(16, task.getDelay());
             Assertions.assertFalse(task.isTemporal());
             Assertions.assertFalse(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i == 14 ? 1 : 0, object.field);
         }
     }
@@ -94,12 +101,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleRepeatedPersistent() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "prt1", KFrameEvent.TICK, 0, 0, false, false, true, false
+            "prt1", KFrameEvent.TICK, 0, 0, true, false, true, false
         );
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         for (int i = 0; i < 16; i++) {
@@ -108,12 +116,14 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             KScheduledFrameTask task = tasks.getFirst();
             Assertions.assertEquals("prt1", task.getId());
             Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, task.getPriority());
             Assertions.assertEquals(0, task.getDelay());
             Assertions.assertFalse(task.isTemporal());
             Assertions.assertFalse(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i + 2, object.field);
         }
     }
@@ -122,12 +132,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugPersistent() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pdt1", KFrameEvent.TICK, 0, 0, false, false, false, true
+            "pdt1", KFrameEvent.TICK, 0, 0, true, false, false, true
         );
 
         this.taskSystem.setIsDebug(true);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         for (int i = 0; i < 16; i++) {
@@ -136,12 +147,14 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             KScheduledFrameTask task = tasks.getFirst();
             Assertions.assertEquals("pdt1", task.getId());
             Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, task.getPriority());
             Assertions.assertEquals(0, task.getDelay());
             Assertions.assertFalse(task.isTemporal());
             Assertions.assertTrue(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i + 2, object.field);
         }
     }
@@ -150,17 +163,19 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugPersistentButItsNotDebug() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pdt1", KFrameEvent.TICK, 0, 0, false, false, false, true
+            "pdt1", KFrameEvent.TICK, 0, 0, true, false, false, true
         );
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(0, object.field);
 
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, object.field);
         }
     }
@@ -169,15 +184,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testSchedulePersistentForEnterEventButItsCompleted() {
 
         TestObject object = new TestObject();
-        KFrameTaskDescription description = KFrameTaskDescription.ofPersistent("pt1", KFrameEvent.ENTER, 0);
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncPersistent("pt1", KFrameEvent.ENTER, 0);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
         Assertions.assertEquals(0, tasks.size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
     }
@@ -186,15 +203,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleTemporal() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.TICK, 0),
+            KFrameTaskDescription.ofAsyncImmediateTemporal("pt1", KFrameEvent.TICK, 0),
             () -> object.field++
         );
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(1, object.field);
         }
     }
@@ -203,7 +222,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDelayedTemporal() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofTemporal("pt1", KFrameEvent.TICK, 0,  8),
+            KFrameTaskDescription.ofAsyncTemporal("pt1", KFrameEvent.TICK, 0,  8),
             () -> object.field++
         );
         for (int i = 0; i < 16; i++) {
@@ -218,14 +237,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
                 Assertions.assertTrue(task.isTemporal());
                 Assertions.assertFalse(task.isDebug());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(0, object.field);
             } else if (i == 7) {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             } else {
                 Assertions.assertEquals(0, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             }
 
@@ -235,7 +257,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Test
     public void testScheduleRepeatedTemporal() {
         TestObject object = new TestObject();
-        KFrameTaskDescription description = KFrameTaskDescription.ofRepeatableTemporal(
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncRepeatableTemporal(
             "trt1", KFrameEvent.TICK, 0
         );
 
@@ -243,9 +265,11 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
         this.taskSystem.scheduleTask(description, () -> object.field++);
         Assertions.assertEquals(1, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         Assertions.assertEquals(1, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(2, object.field);
 
     }
@@ -253,7 +277,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Test
     public void testScheduleDelayedRepeatableTemporal() {
 
-        KFrameTaskDescription description = KFrameTaskDescription.ofDelayedRepeatableTemporal("pt1", KFrameEvent.TICK, 0,  8);
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncDelayedRepeatableTemporal("pt1", KFrameEvent.TICK, 0,  8);
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.scheduleTask(description, () -> object.field++);
@@ -265,24 +289,29 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
                 KScheduledFrameTask task = tasks.getFirst();
                 Assertions.assertEquals("pt1", task.getId());
                 Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(0, task.getPriority());
                 Assertions.assertEquals(8, task.getDelay());
                 Assertions.assertTrue(task.isTemporal());
                 Assertions.assertFalse(task.isDebug());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(0, object.field);
             } else if (i == 7) {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             } else if (i == 15) {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(2, object.field);
                 Assertions.assertEquals(0, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
             } else {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             }
 
@@ -294,7 +323,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugTemporal() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pt1", KFrameEvent.TICK, 0, 0, false, true, false, true
+            "pt1", KFrameEvent.TICK, 0, 0, true, true, false, true
         );
         this.taskSystem.setIsDebug(true);
         this.taskSystem.scheduleTask(
@@ -303,11 +332,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
         );
 
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(1, object.field);
         }
     }
@@ -316,7 +347,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugTemporalButItsNotDebug() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pt1", KFrameEvent.TICK, 0, 0, false, true, false, true
+            "pt1", KFrameEvent.TICK, 0, 0, true, true, false, true
         );
         this.taskSystem.scheduleTask(
             description,
@@ -324,11 +355,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
         );
 
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(0, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, object.field);
         }
     }
@@ -336,15 +369,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Test
     public void testScheduleTemporalForEnterEventButItsCompleted() {
         TestObject object = new TestObject();
-        KFrameTaskDescription description = KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.ENTER, 0);
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncImmediateTemporal("pt1", KFrameEvent.ENTER, 0);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
         Assertions.assertEquals(0, tasks.size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
     }
 
@@ -353,10 +388,11 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testSchedulePersistentWithFifo() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofPersistent("pt1", KFrameEvent.TICK, 0),
+            KFrameTaskDescription.ofAsyncPersistent("pt1", KFrameEvent.TICK, 0),
             () -> object.field++
         );
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
@@ -364,12 +400,14 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             KScheduledFrameTask task = tasks.getFirst();
             Assertions.assertEquals("pt1", task.getId());
             Assertions.assertEquals(KFrameEvent.TICK, task.getEvent());
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, task.getPriority());
             Assertions.assertEquals(0, task.getDelay());
             Assertions.assertFalse(task.isTemporal());
             Assertions.assertFalse(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i + 2, object.field);
         }
     }
@@ -379,10 +417,11 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDelayedPersistentWithFifo() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofDelayedPersistent("pt1", KFrameEvent.TICK, 0, 16),
+            KFrameTaskDescription.ofAsyncDelayedPersistent("pt1", KFrameEvent.TICK, 0, 16),
             () -> object.field++
         );
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(0, object.field);
         for (int i = 0; i < 15; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
@@ -396,6 +435,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             Assertions.assertFalse(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i == 14 ? 1 : 0, object.field);
         }
     }
@@ -405,12 +445,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleRepeatedPersistentWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "prt1", KFrameEvent.TICK, 0, 0, false, false, true, false
+            "prt1", KFrameEvent.TICK, 0, 0, true, false, true, false
         );
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         for (int i = 0; i < 16; i++) {
@@ -425,6 +466,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             Assertions.assertFalse(task.isDebug());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i + 2, object.field);
         }
     }
@@ -434,12 +476,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugPersistentWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pdt1", KFrameEvent.TICK, 0, 0, false, false, false, true
+            "pdt1", KFrameEvent.TICK, 0, 0, true, false, false, true
         );
 
         this.taskSystem.setIsDebug(true);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         for (int i = 0; i < 16; i++) {
@@ -452,8 +495,10 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
             Assertions.assertEquals(0, task.getDelay());
             Assertions.assertFalse(task.isTemporal());
             Assertions.assertTrue(task.isDebug());
+            Assertions.assertTrue(task.isAsync());
 
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(i + 2, object.field);
         }
     }
@@ -463,17 +508,19 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugPersistentButItsNotDebugWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pdt1", KFrameEvent.TICK, 0, 0, false, false, false, true
+            "pdt1", KFrameEvent.TICK, 0, 0, true, false, false, true
         );
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(0, object.field);
 
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, object.field);
         }
     }
@@ -483,15 +530,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testSchedulePersistentForEnterEventButItsCompletedWithFifo() {
 
         TestObject object = new TestObject();
-        KFrameTaskDescription description = KFrameTaskDescription.ofPersistent("pt1", KFrameEvent.ENTER, 0);
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncPersistent("pt1", KFrameEvent.ENTER, 0);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
         Assertions.assertEquals(0, tasks.size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
     }
@@ -501,15 +550,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleTemporalWithFifo() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.TICK, 0),
+            KFrameTaskDescription.ofAsyncImmediateTemporal("pt1", KFrameEvent.TICK, 0),
             () -> object.field++
         );
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(1, object.field);
         }
     }
@@ -519,7 +570,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDelayedTemporalWithFifo() {
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(
-            KFrameTaskDescription.ofTemporal("pt1", KFrameEvent.TICK, 0,  8),
+            KFrameTaskDescription.ofAsyncTemporal("pt1", KFrameEvent.TICK, 0,  8),
             () -> object.field++
         );
         for (int i = 0; i < 16; i++) {
@@ -534,14 +585,17 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
                 Assertions.assertTrue(task.isTemporal());
                 Assertions.assertFalse(task.isDebug());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(0, object.field);
             } else if (i == 7) {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             } else {
                 Assertions.assertEquals(0, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             }
 
@@ -552,7 +606,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Tag("runWithFifo")
     public void testScheduleRepeatedTemporalWithFifo() {
         TestObject object = new TestObject();
-        KFrameTaskDescription description = KFrameTaskDescription.ofRepeatableTemporal(
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncRepeatableTemporal(
             "trt1", KFrameEvent.TICK, 0
         );
 
@@ -560,9 +614,11 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
         this.taskSystem.scheduleTask(description, () -> object.field++);
         Assertions.assertEquals(1, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         Assertions.assertEquals(1, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(2, object.field);
 
     }
@@ -571,7 +627,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Tag("runWithFifo")
     public void testScheduleDelayedRepeatableTemporalWithFifo() {
 
-        KFrameTaskDescription description = KFrameTaskDescription.ofDelayedRepeatableTemporal("pt1", KFrameEvent.TICK, 0,  8);
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncDelayedRepeatableTemporal("pt1", KFrameEvent.TICK, 0,  8);
         TestObject object = new TestObject();
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.scheduleTask(description, () -> object.field++);
@@ -588,19 +644,23 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
                 Assertions.assertTrue(task.isTemporal());
                 Assertions.assertFalse(task.isDebug());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(0, object.field);
             } else if (i == 7) {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             } else if (i == 15) {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(2, object.field);
                 Assertions.assertEquals(0, this.taskSystem.getScheduledTasks(KFrameEvent.TICK).size());
             } else {
                 Assertions.assertEquals(1, tasks.size());
                 this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+                KThreadUtils.sleepForSeconds(1);
                 Assertions.assertEquals(1, object.field);
             }
 
@@ -613,7 +673,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugTemporalWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pt1", KFrameEvent.TICK, 0, 0, false, true, false, true
+            "pt1", KFrameEvent.TICK, 0, 0, true, true, false, true
         );
         this.taskSystem.setIsDebug(true);
         this.taskSystem.scheduleTask(
@@ -622,11 +682,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
         );
 
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(1, object.field);
         }
     }
@@ -636,7 +698,7 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     public void testScheduleDebugTemporalButItsNotDebugWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
-            "pt1", KFrameEvent.TICK, 0, 0, false, true, false, true
+            "pt1", KFrameEvent.TICK, 0, 0, true, true, false, true
         );
         this.taskSystem.scheduleTask(
             description,
@@ -644,11 +706,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
         );
 
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(0, object.field);
         for (int i = 0; i < 16; i++) {
             List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
             Assertions.assertEquals(0, tasks.size());
             this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
+            KThreadUtils.sleepForSeconds(1);
             Assertions.assertEquals(0, object.field);
         }
     }
@@ -657,17 +721,18 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @Tag("runWithFifo")
     public void testScheduleTemporalForEnterEventButItsCompletedWithFifo() {
         TestObject object = new TestObject();
-        KFrameTaskDescription description = KFrameTaskDescription.ofImmediateTemporal("pt1", KFrameEvent.ENTER, 0);
+        KFrameTaskDescription description = KFrameTaskDescription.ofAsyncImmediateTemporal("pt1", KFrameEvent.ENTER, 0);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
 
         this.taskSystem.scheduleTask(description, () -> object.field++);
         List<KScheduledFrameTask> tasks = this.taskSystem.getScheduledTasks(KFrameEvent.TICK);
         Assertions.assertEquals(0, tasks.size());
         this.taskSystem.executeScheduledTasks(KFrameEvent.ENTER);
+        KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(1, object.field);
     }
-
 
 }

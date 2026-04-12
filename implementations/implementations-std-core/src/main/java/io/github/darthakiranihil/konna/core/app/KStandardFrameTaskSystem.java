@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.Nullable;
 
@@ -54,12 +55,14 @@ public class KStandardFrameTaskSystem
         private final KFrameEvent event;
         private final int priority;
         private final int delay;
+        private final boolean async;
         private final boolean repeatable;
         private final boolean temporal;
         private final boolean debug;
         private final Runnable task;
 
         private int currentDelay;
+        private volatile boolean started;
 
         FrameTask(
             final KFrameTaskDescription description,
@@ -70,6 +73,7 @@ public class KStandardFrameTaskSystem
             this.event = description.event();
             this.priority = priority;
             this.delay = description.delay();
+            this.async = description.async();
             this.temporal = description.temporal();
             this.debug = description.debug();
             this.repeatable = description.mayBeRepeated();
@@ -99,6 +103,11 @@ public class KStandardFrameTaskSystem
         }
 
         @Override
+        public boolean isAsync() {
+            return this.async;
+        }
+
+        @Override
         public boolean isTemporal() {
             return this.temporal;
         }
@@ -109,13 +118,25 @@ public class KStandardFrameTaskSystem
         }
 
         public boolean tryExecute() {
+            if (this.started) { // don't decrease delay if the task is not parked (completed) yet
+                return false;
+            }
+
             if (this.currentDelay > 1) {
                 this.currentDelay--;
                 return false;
             }
 
             this.currentDelay = this.delay;
-            this.task.run();
+            if (this.async) {
+                this.started = true;
+                KThreadUtils.runAsync(() -> {
+                    this.task.run();
+                    this.started = false;
+                });
+            } else {
+                this.task.run();
+            }
             return true;
         }
     }

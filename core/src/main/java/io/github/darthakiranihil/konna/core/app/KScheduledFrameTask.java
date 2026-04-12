@@ -45,6 +45,10 @@ public interface KScheduledFrameTask {
     int getDelay();
 
     /**
+     * @return Whether task will be executed asynchronously or not
+     */
+    boolean isAsync();
+    /**
      * @return Whether this task is temporal or not
      */
     boolean isTemporal();
