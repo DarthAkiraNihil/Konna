@@ -21,6 +21,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Marks that this class can be provided even though it is not in the app container.
+ * But more precisely, it restricts using annotated class in modules since getting
+ * its instance is bypassed through KActivator.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface KProvided {

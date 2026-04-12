@@ -169,7 +169,7 @@ public class KStandardActivator extends KObject implements KActivator {
         return KReflectionUtils.newInstance(injectedConstructor, args);
     }
 
-    private Constructor<?> getConstructor(Class<?> clazz) {
+    private Constructor<?> getConstructor(final Class<?> clazz) {
         var constructors = clazz.getConstructors();
 
         var injectedConstructors = Arrays.stream(constructors)
