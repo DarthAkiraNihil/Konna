@@ -18,13 +18,15 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KInjectable;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Standard implementation of {@link KActivator}.
@@ -37,6 +39,7 @@ public class KStandardActivator extends KObject implements KActivator {
 
     private final KAppContainer appContainer;
     private final KObjectRegistry objectRegistry;
+    private final Map<Class<?>, Object> singletons;
 
     /**
      * Standard constructor.
@@ -57,7 +60,7 @@ public class KStandardActivator extends KObject implements KActivator {
 
         this.appContainer = container;
         this.objectRegistry = objectRegistry;
-
+        this.singletons = new HashMap<>();
     }
 
     /**
@@ -68,9 +71,9 @@ public class KStandardActivator extends KObject implements KActivator {
      *     Firstly, it checks if passed class is neither abstract nor an interface.
      * </p>
      * <p>
-     *     Secondly, it reads {@link KInjectable} annotation to check if an object with that class
-     *     has been previously created by looking in {@link KObjectRegistry}.
-     *     If it is true, then gets object from the registry.
+     *     Secondly, it reads {@link KSingleton} annotation to check if an object with that class
+     *     has been previously created.
+     *     If it is true, then returns the created instance.
      * </p>
      * <p>
      *     Else, if passed class is an interface or an abstract class, it gets its instance from
@@ -85,27 +88,24 @@ public class KStandardActivator extends KObject implements KActivator {
      */
     @Override
     public <T> T createObject(final Class<? extends T> clazz) {
-        // todo: more registry methods
-        if (clazz.isAnnotationPresent(KInjectable.class)) {
-            var object = this.objectRegistry.listObjects()
-                .stream()
-                .filter(x -> x.object().getClass().equals(clazz))
-                .findFirst()
-                .orElse(null);
-
-            if (object != null) {
-                return (T) (object.object());
-            }
-        }
-
         if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
             return (T) this.appContainer.getInstance(clazz);
+        }
+        boolean isSingleton = clazz.isAnnotationPresent(KSingleton.class);
+        if (isSingleton) {
+            Object object = this.singletons.get(clazz);
+            if (object != null) {
+                return (T) object;
+            }
         }
 
         Object instantiated = this.injectConstructorAndCreate(clazz);
         this.injectFields(instantiated, clazz);
         this.injectMethods(instantiated, clazz);
         this.pushToRegistry(instantiated);
+        if (isSingleton) {
+            this.singletons.put(clazz, instantiated);
+        }
         return (T) instantiated;
 
     }

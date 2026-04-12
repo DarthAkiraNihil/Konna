@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core.di;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jetbrains.annotations.ApiStatus;
@@ -101,6 +102,12 @@ public abstract class KAppContainer implements KContainer {
 
         if (this.engineModule == null) {
             throw new KIllegalStateException("Engine module is not initialized");
+        }
+
+        if (clazz.isAnnotationPresent(KProvided.class)) {
+            return this.engineModule
+                .activator()
+                .createObject(KProvided.class);
         }
 
         Object moduleClassObject = this.engineModule.getInstance(clazz);

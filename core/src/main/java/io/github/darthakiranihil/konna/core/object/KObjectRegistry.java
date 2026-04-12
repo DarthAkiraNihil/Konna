@@ -27,6 +27,7 @@ import java.util.UUID;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+// todo: more registry methods
 public interface KObjectRegistry {
 
     /**
