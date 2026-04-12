@@ -62,17 +62,6 @@ public enum KObjectInstantiationType {
      */
     WEAK_POOLABLE,
     /**
-     * Created object is a transient object.
-     * When {@link KActivator} creates a transient object, it will create
-     * a new instance for each call. Default type if instantiation type is
-     * not specified by corresponding annotations
-     * ({@link io.github.darthakiranihil.konna.core.di.KSingleton}, {@link KPoolable}
-     * or {@link io.github.darthakiranihil.konna.core.di.KTransient} with temporal flag set true)
-     *
-     * @see io.github.darthakiranihil.konna.core.di.KTransient
-     */
-    TRANSIENT,
-    /**
      * Created object is a temporal object.
      * Just like transient object, but {@link KActivator} does not push
      * it to registry when creating it, that means the only "owner" of the object

@@ -67,7 +67,6 @@ public record KTag(String name) {
         /**
          * Marks that the object is transient.
          * @see KObjectInstantiationType
-         * @see io.github.darthakiranihil.konna.core.di.KTransient
          */
         public static final KTag TRANSIENT = new KTag("transient");
         /**
