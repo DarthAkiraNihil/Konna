@@ -17,10 +17,10 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -69,7 +69,7 @@ public final class KSystemFeatures extends KObject {
      * @param features Parsed application features
      */
     public KSystemFeatures(final KApplicationFeatures features) {
-        super("SystemFeatures", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("SystemFeatures", Collections.singleton(KDefaultTags.SYSTEM));
         this.debugEnabled = KSystemFeatures.getDebug(features);
         this.fileLoggingActive = KSystemFeatures.getFileLoggingActive(features);
         this.logLevel = KSystemFeatures.getLogLevel(features);
@@ -83,7 +83,7 @@ public final class KSystemFeatures extends KObject {
      * nullability check requirements.
      */
     public KSystemFeatures() {
-        super("SystemFeatures", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("SystemFeatures", Collections.singleton(KDefaultTags.SYSTEM));
         this.debugEnabled = false;
         this.fileLoggingActive = false;
         this.logLevel = KLogLevel.WARNING;

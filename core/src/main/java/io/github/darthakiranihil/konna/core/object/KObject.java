@@ -46,7 +46,7 @@ public class KObject implements Serializable {
     /**
      * Object tags.
      */
-    protected final Set<KTag> tags;
+    protected final Set<String> tags;
     /**
      * Parent object.
      */
@@ -98,10 +98,10 @@ public class KObject implements Serializable {
      * @param tags List of object tags
      * @param parent Parent object
      */
-    public KObject(final String name, final Set<KTag> tags, final KObject parent) {
+    public KObject(final String name, final Set<String> tags, final KObject parent) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.tags = tags;
+        this.tags = new HashSet<>(tags);
         this.parent = parent;
 
         KObject.createdObjects++;
@@ -112,10 +112,10 @@ public class KObject implements Serializable {
      * @param name Name of the object
      * @param tags List of object tags
      */
-    public KObject(final String name, final Set<KTag> tags) {
+    public KObject(final String name, final Set<String> tags) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.tags = tags;
+        this.tags = new HashSet<>(tags);
         this.parent = null;
 
         KObject.createdObjects++;
@@ -149,7 +149,7 @@ public class KObject implements Serializable {
      * Adds a tag to the object.
      * @param tag Added tag
      */
-    public void addTag(final KTag tag) {
+    public void addTag(final String tag) {
         this.tags.add(tag);
     }
 
@@ -158,7 +158,7 @@ public class KObject implements Serializable {
      * being added.
      * @param addedTags List of added tags.
      */
-    public void addTags(final KTag... addedTags) {
+    public void addTags(final String... addedTags) {
         this.tags.addAll(List.of(addedTags));
     }
 
@@ -166,7 +166,7 @@ public class KObject implements Serializable {
      * Removes a tag from the object.
      * @param tag Tag to remove
      */
-    public void removeTag(final KTag tag) {
+    public void removeTag(final String tag) {
         this.tags.remove(tag);
     }
 

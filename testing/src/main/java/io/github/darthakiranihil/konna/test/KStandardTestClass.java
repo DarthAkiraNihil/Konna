@@ -24,13 +24,13 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jetbrains.annotations.TestOnly;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -95,8 +95,8 @@ public class KStandardTestClass extends KObject {
      */
     protected KStandardTestClass() {
         super(
-            "std_test_class",
-            KStructUtils.setOfTags(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)
+            "StandardTestClass",
+            Set.of(KDefaultTags.TEST, KDefaultTags.STD)
         );
         this.jsonTokenizer = new KStandardJsonTokenizer();
         this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);

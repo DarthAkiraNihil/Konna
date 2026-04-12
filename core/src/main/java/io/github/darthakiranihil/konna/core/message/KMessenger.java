@@ -19,9 +19,10 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KArgs;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+
+import java.util.Collections;
 
 /**
  * Convenience base class which purpose is to simplify
@@ -59,7 +60,7 @@ public final class KMessenger extends KObject {
     ) {
         super(
             String.format("messenger_%s", messageIdPrefix),
-            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
+            Collections.singleton(KDefaultTags.SYSTEM)
         );
 
         this.messageIdPrefix = messageIdPrefix;

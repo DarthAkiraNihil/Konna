@@ -18,9 +18,8 @@ package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.Nullable;
 
@@ -251,7 +250,7 @@ public class KStandardFrameTaskSystem
     ) {
         super(
             "FrameTaskSystem",
-            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.SYSTEM)
+            Set.of(KDefaultTags.STD, KDefaultTags.SYSTEM)
         );
         this.prioritizer = prioritizer;
 

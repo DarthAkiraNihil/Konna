@@ -18,14 +18,14 @@ package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.except.KNotFoundException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -52,9 +52,9 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
     public KStandardEventSystem() {
         super(
             "KStandardEventSystem",
-            KStructUtils.setOfTags(
-                KTag.DefaultTags.SYSTEM,
-                KTag.DefaultTags.STD
+            Set.of(
+                KDefaultTags.SYSTEM,
+                KDefaultTags.STD
             )
         );
 

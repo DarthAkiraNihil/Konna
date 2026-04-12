@@ -23,12 +23,12 @@ import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -102,7 +102,7 @@ public final class KLevelSector extends KObject {
         final KLevelEntityLayer entityLayer,
         final KLevelTransitionLayer levelTransitionLayer
     ) {
-        super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
+        super(name, Collections.singleton(KLevelComponentTags.SECTOR));
 
         this.tileLayer = tileLayer;
         this.heightLayer = heightLayer;

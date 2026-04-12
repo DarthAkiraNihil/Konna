@@ -17,9 +17,8 @@
 package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
@@ -90,9 +89,9 @@ public class KHashMapBasedCache extends KObject implements KCache {
     private final Map<String, CacheRecord> cache;
 
     public KHashMapBasedCache() {
-        super("cache", KStructUtils.setOfTags(
-            KTag.DefaultTags.STD,
-            KTag.DefaultTags.SYSTEM
+        super("cache", Set.of(
+            KDefaultTags.STD,
+            KDefaultTags.SYSTEM
         ));
 
         this.cache = new ConcurrentHashMap<>();

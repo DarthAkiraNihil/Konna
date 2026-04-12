@@ -16,12 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Provides different useful methods, connected with data structures.
@@ -33,15 +28,6 @@ public final class KStructUtils extends KUninstantiable {
 
     private KStructUtils() {
         super();
-    }
-
-    /**
-     * Puts given tag array into a set and returns it.
-     * @param tags List of tags
-     * @return Set of given tags
-     */
-    public static Set<KTag> setOfTags(final KTag... tags) {
-        return new HashSet<>(List.of(tags));
     }
 
     /**

@@ -18,17 +18,17 @@ package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -64,7 +64,7 @@ public final class KShaderCollection extends KObject implements KAssetCollection
     ) {
         super(
             "Graphics.shaderCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;

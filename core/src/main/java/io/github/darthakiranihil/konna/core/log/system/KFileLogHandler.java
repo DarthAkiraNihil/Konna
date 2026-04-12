@@ -19,14 +19,14 @@ package io.github.darthakiranihil.konna.core.log.system;
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
 
 /**
  * Implementation of {@link KLogHandler} that writes log
@@ -46,7 +46,7 @@ public class KFileLogHandler extends KObject implements KLogHandler, AutoCloseab
      * @param logFormatter Log formatter
      */
     public KFileLogHandler(final String filename, final KLogFormatter logFormatter) {
-        super(KFileLogHandler.class.getSimpleName(), KStructUtils.setOfTags(KTag.DefaultTags.STD));
+        super(KFileLogHandler.class.getSimpleName(), Collections.singleton(KDefaultTags.STD));
 
         this.logFormatter = logFormatter;
 

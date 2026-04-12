@@ -23,10 +23,10 @@ import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +73,7 @@ public abstract class KComponent extends KObject {
         final KEngineModule engineModule,
         final KService[] services
     ) {
-        super(name, KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super(name, Collections.singleton(KDefaultTags.SYSTEM));
 
         this.engineModule = engineModule;
         this.services = KComponent.packServices(services, engineModule.activator());

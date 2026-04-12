@@ -25,9 +25,8 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelLoader;
 import io.github.darthakiranihil.konna.level.KLevelMetadata;
@@ -38,6 +37,8 @@ import io.github.darthakiranihil.konna.level.except.KGenerationException;
 import io.github.darthakiranihil.konna.level.generator.KLevelGenerator;
 import io.github.darthakiranihil.konna.level.generator.KLevelGeneratorMetadata;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Collections;
 
 /**
  * Level service for handling current active level like loading a new level,
@@ -88,7 +89,7 @@ public class KLevelService extends KObject implements KService {
         final KLevelGeneratorMetadataCollection generatorMetadataCollection,
         final KLevelLoader levelLoader
     ) {
-        super("LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super("LevelService", Collections.singleton(KDefaultTags.SERVICE));
 
         this.levelCollection = levelCollection;
         this.generatorMetadataCollection = generatorMetadataCollection;

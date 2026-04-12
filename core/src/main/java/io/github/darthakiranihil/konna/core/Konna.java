@@ -24,9 +24,8 @@ import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jspecify.annotations.Nullable;
 
@@ -74,7 +73,7 @@ public final class Konna extends KObject implements Runnable {
      * @see Konna#run()
      */
     public Konna(final String[] args, final KonnaBootstrapConfig bootstrap) {
-        super("Konna", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.args = args;
         this.shutdownHook = new Thread(this::shutdown);
@@ -96,7 +95,7 @@ public final class Konna extends KObject implements Runnable {
         final List<KApplicationArgument> customArgs,
         final KonnaBootstrapConfig bootstrap
     ) {
-        super("Konna", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.args = args;
         this.shutdownHook = new Thread(this::shutdown);

@@ -48,7 +48,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
         final KObjectRegistry objectRegistry
     ) {
         super(clazz, initialSize);
-        this.addTags(KTag.DefaultTags.WEAK_POOL, KTag.DefaultTags.STD);
+        this.addTags(KDefaultTags.WEAK_POOL, KDefaultTags.STD);
 
         this.unusedObjects = new ConcurrentLinkedQueue<>();
         this.activator = activator;

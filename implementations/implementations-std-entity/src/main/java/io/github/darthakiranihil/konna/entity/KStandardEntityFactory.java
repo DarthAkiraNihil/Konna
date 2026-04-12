@@ -20,9 +20,8 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
 
@@ -54,7 +53,7 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         final KActivator activator,
         final KJsonDeserializer deserializer
     ) {
-        super("std_entity_factory", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+        super("StandardEntityFactory", Collections.singleton(KDefaultTags.STD));
 
         this.metadataCollection = metadataCollection;
         this.activator = activator;

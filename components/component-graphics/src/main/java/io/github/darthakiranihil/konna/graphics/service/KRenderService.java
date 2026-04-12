@@ -26,12 +26,12 @@ import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -72,7 +72,7 @@ public class KRenderService extends KObject implements KService {
         final KFrameTaskScheduler frameTaskScheduler,
         final KFrame frame
     ) {
-        super("RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super("RenderService", Collections.singleton(KDefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
 
         this.currentRenderables = new CopyOnWriteArrayList<>();
