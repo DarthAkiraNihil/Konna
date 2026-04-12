@@ -17,13 +17,13 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -57,10 +57,11 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
      * @param textureCollection Texture collection (to load font faces)
      * @param activator Activator to instantiate tiled font formats
      */
+    @KInject
     public KTiledFontCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection,
-        @KInject final KActivator activator
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection,
+        final KActivator activator
     ) {
         super(
             "Graphics.tiledFontCollection",

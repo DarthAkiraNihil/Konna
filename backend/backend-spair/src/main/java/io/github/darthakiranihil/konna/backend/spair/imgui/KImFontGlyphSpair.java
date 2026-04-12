@@ -17,20 +17,19 @@
 package io.github.darthakiranihil.konna.backend.spair.imgui;
 
 import imgui.ImFontGlyph;
-import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontGlyph;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 @KExcludeFromGeneratedCoverageReport
 final class KImFontGlyphSpair implements KImFontGlyph {
-    
     private final ImFontGlyph boxed;
 
     KImFontGlyphSpair(final ImFontGlyph boxed) {
         this.boxed = boxed;
     }
 
-    @KInjectedConstructor
+    @KInject
     KImFontGlyphSpair() {
         this.boxed = new ImFontGlyph();
     }

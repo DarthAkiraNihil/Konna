@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import io.github.darthakiranihil.konna.core.object.impl.*;
@@ -29,61 +31,28 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
 
     protected KStandardActivatorNegativeTests() {
         super();
-        this.activator = KStandardTestClass.context;
-    }
-
-    @Test
-    public void testDeleteNonInstantiatedSingletons() {
-
-        TestSingleton singleton = new TestSingleton();
-        Assertions.assertThrowsExactly(KDeletionException.class, () -> this.activator.deleteObject(singleton));
-
-    }
-
-    @Test
-    public void testDeleteImmortal() {
-
-        var immortal = this.activator.createObject(TestImmortal.class);
-        Assertions.assertThrowsExactly(KDeletionException.class, () -> this.activator.deleteObject(immortal));
-
-    }
-
-    @Test
-    public void testEmptyPool() {
-
-        var p1 = this.activator.createObject(TestPoolable.class, 0);
-        var p2 = this.activator.createObject(TestPoolable.class, 0);
-        Assertions.assertThrowsExactly(
-            KInstantiationException.class,
-            () -> this.activator.createObject(
-                TestPoolable.class, 0
-            )
-        );
-
-        this.activator.deleteObject(p1);
-        this.activator.deleteObject(p2);
-
-        var wp1 = this.activator.createObject(TestWeakPoolable.class, 0);
-        var wp2 = this.activator.createObject(TestWeakPoolable.class, 0);
-        Assertions.assertThrowsExactly(
-            KInstantiationException.class,
-            () -> this.activator.createObject(
-                TestWeakPoolable.class, 0
-            )
-        );
-
-        this.activator.deleteObject(wp1);
-        this.activator.deleteObject(wp2);
-
+        this.activator = new KStandardActivator(new AppContainer(), new KStandardObjectRegistry());
     }
 
     @Test
     public void testDependencyResolveFailed() {
         Assertions.assertThrowsExactly(
-            KInstantiationException.class,
+            KDependencyResolveException.class,
             () -> this.activator.createObject(
-                TestDependencyInterface.class
+                TestUnresolvedInterface.class
             )
+        );
+    }
+
+    @Test
+    public void testCreateExplicitButItsAbstractClassOrInterface() {
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> this.activator.createObject(TestDependencyInterface.class, () -> new Object[0])
+        );
+        Assertions.assertThrows(
+            KInvalidArgumentException.class,
+            () -> this.activator.createObject(TestAbstractClass.class, () -> new Object[0])
         );
     }
 }

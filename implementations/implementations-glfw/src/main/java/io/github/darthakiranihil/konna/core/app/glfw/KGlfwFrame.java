@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.app.glfw;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLock;
-import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
@@ -26,7 +26,6 @@ import io.github.darthakiranihil.konna.core.io.control.KKey;
 import io.github.darthakiranihil.konna.core.io.control.KKeyActionType;
 import io.github.darthakiranihil.konna.core.io.control.KKeyInputData;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfw;
 import io.github.darthakiranihil.konna.libfrontend.glfw.KGlfwCallbacks;
@@ -183,9 +182,9 @@ public class KGlfwFrame extends KObject implements KFrame {
 
 
     public KGlfwFrame(
-        @KInject final KGlfw glfw,
-        @KInject final KGlfwCallbacks glfwCallbacks,
-        @KInject final KInputProcessor inputProcessor,
+        final KGlfw glfw,
+        final KGlfwCallbacks glfwCallbacks,
+        final KInputProcessor inputProcessor,
         final String title,
         final KSize size
     ) {

@@ -16,6 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KArgs;
+
 /**
  * Interface of a component service.
  *
@@ -23,6 +26,14 @@ package io.github.darthakiranihil.konna.core.engine;
  * @author Darth Akira Nihil
  */
 public interface KService {
+
+    /**
+     * @param messenger Messenger for a service
+     * @return Packed args for a service that uses {@link KMessenger}.
+     */
+    static KArgs argsOfServiceWithMessenger(final KMessenger messenger) {
+        return () -> new Object[] {messenger};
+    }
 
     /**
      * @return Name of this service

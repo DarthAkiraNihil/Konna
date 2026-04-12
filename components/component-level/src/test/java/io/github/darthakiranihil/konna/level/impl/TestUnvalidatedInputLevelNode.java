@@ -19,10 +19,13 @@ package io.github.darthakiranihil.konna.level.impl;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelLoader;
@@ -50,10 +53,14 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
     private final KLevelMetadataCollection levelCollection;
     private final KLevelLoader levelLoader;
 
-    public TestUnvalidatedInputLevelNode() {
+    @KInject
+    public TestUnvalidatedInputLevelNode(
+        KResourceLoader resourceLoader,
+        KActivator activator
+    ) {
         // I hate this
         var assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.getContext(),
+            resourceLoader,
             Map.of("tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
                 new String[] {"classpath:assets/props.json"}
@@ -83,11 +90,11 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
 
         this.levelLoader = new KStandardLevelLoader(
             es,
-            KStandardTestClass.getContext(),
+            activator,
             new KTileCollection(
                 assetLoader,
                 new KHashMapBasedCache(),
-                new KTilePropertyCollection(assetLoader, KAssetCollectionTestClass.getContext())
+                new KTilePropertyCollection(assetLoader, activator)
             )
         );
     }

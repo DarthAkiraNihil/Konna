@@ -36,13 +36,13 @@ public class KTextureSliceSetCollectionNegativeTests extends KAssetCollectionTes
                 this.assetLoader,
                 new KStbImageLoader(
                     new KStbImageLwjgl(),
-                    KStandardTestClass.context
+                    this.engineModule.resourceLoader()
                 ),
                 new KShaderProgramCollection(
                     this.assetLoader,
                     new KShaderCollection(
                         this.assetLoader,
-                        KStandardTestClass.context,
+                        this.engineModule.resourceLoader(),
                         new TestShaderCompiler()
                     ),
                     new TestShaderCompiler()

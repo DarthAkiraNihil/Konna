@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+@KExcludeFromGeneratedCoverageReport // todo: remove after pool reworking
 public abstract class KAbstractObjectPool<T> extends KObject {
 
     /**
@@ -109,7 +110,6 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      * Obtains an object from the pool. Calling this is a risky operation
      * if pool is not extensible and behaviour of getting object from an
      * empty pool is not specified.
-     * @param container Container (for resolving dependencies for onObtain method)
      * @param nonResolvedArgs Arguments that are not resolved
      *                        (passed explicitly) for onObtain method
      * @return A pooled object
@@ -117,10 +117,7 @@ public abstract class KAbstractObjectPool<T> extends KObject {
      *         If there is no unused objects in the pool
      * @see io.github.darthakiranihil.konna.core.di.KInject
      */
-    public abstract T obtain(
-        KContainer container,
-        Object... nonResolvedArgs
-    );
+    public abstract T obtain(Object... nonResolvedArgs);
 
     /**
      * Returns object back to the pool, making it available to be taken

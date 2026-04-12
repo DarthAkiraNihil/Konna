@@ -64,7 +64,8 @@ public final class KRandomlyPlaceStaticEntitiesNode implements KGeneratorNode {
      * Constructs this node.
      * @param eventSystem Event system to inject into placed entities
      */
-    public KRandomlyPlaceStaticEntitiesNode(@KInject final KEventSystem eventSystem) {
+    @KInject
+    public KRandomlyPlaceStaticEntitiesNode(final KEventSystem eventSystem) {
         this.eventSystem = eventSystem;
     }
 

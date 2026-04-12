@@ -20,10 +20,13 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
+import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 
 
+import java.util.List;
 import java.util.Map;
 
 public class KAssetCollectionTestClass extends KStandardTestClass {
@@ -34,7 +37,9 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         super();
 
         this.assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.context,
+            new KStandardResourceLoader(
+                List.of(new KClasspathProtocol(ClassLoader.getSystemClassLoader()))
+            ),
             Map.of("entities", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE },
                 new String[] {"classpath:assets/entities.json"}

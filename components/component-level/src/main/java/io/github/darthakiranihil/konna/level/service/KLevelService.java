@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
@@ -25,7 +26,6 @@ import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
@@ -79,13 +79,14 @@ public class KLevelService extends KObject implements KService {
      *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
      *                  to send messages
      */
+    @KInject
     public KLevelService(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KActivator activator,
-        @KInject final KLevelMetadataCollection levelCollection,
-        @KInject final KLevelGeneratorMetadataCollection generatorMetadataCollection,
-        @KInject final KLevelLoader levelLoader,
-        final KMessenger messenger
+        final KMessenger messenger,
+        final KEventSystem eventSystem,
+        final KActivator activator,
+        final KLevelMetadataCollection levelCollection,
+        final KLevelGeneratorMetadataCollection generatorMetadataCollection,
+        final KLevelLoader levelLoader
     ) {
         super("LevelService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
 
@@ -124,6 +125,10 @@ public class KLevelService extends KObject implements KService {
                 this.name,
                 "Could not load level with name %s",
                 levelName
+            );
+            KSystemLogger.warning(
+                this.name,
+                e
             );
             return;
         }

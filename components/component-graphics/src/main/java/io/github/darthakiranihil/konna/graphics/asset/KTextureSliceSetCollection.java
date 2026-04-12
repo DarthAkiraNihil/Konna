@@ -58,9 +58,10 @@ public final class KTextureSliceSetCollection
      * @param assetLoader Asset loader
      * @param textureCollection Texture collection to extract base textures
      */
+    @KInject
     public KTextureSliceSetCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection
     ) {
         super(
             "Graphics.textureSliceSetCollection",

@@ -57,10 +57,11 @@ public final class KRenderableTextureCollection
      * @param textureCollection Texture collection to extract the whole textures
      * @param textureSliceSetCollection Texture slice collection to extract sliced textures
      */
+    @KInject
     public KRenderableTextureCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection,
-        @KInject final KTextureSliceSetCollection textureSliceSetCollection
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection,
+        final KTextureSliceSetCollection textureSliceSetCollection
     ) {
         super(
             "Graphics.renderableTextureCollection",

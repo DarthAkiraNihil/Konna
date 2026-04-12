@@ -29,6 +29,10 @@ import java.lang.annotation.Target;
  * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
+@Target({
+    ElementType.CONSTRUCTOR,
+    ElementType.METHOD,
+    ElementType.FIELD
+})
 public @interface KInject {
 }

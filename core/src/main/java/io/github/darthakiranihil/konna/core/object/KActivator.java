@@ -15,13 +15,23 @@
  */
 
 package io.github.darthakiranihil.konna.core.object;
-import io.github.darthakiranihil.konna.core.di.KContainer;
 
 /**
- * Interface for the most important utility class in Konna which purpose is to create new objects.
- * Unlike standard instantiating objects with {@code new}, this class can do this
- * with automatic dependency resolution, dispatching different instantiation types
- * and so on. At least it implies here.
+ * <p>
+ *     Interface for the most important utility class in Konna which purpose
+ *     is to create new objects with dependency injection support.
+ * </p>
+ * <p>
+ *     Unlike standard instantiating objects with {@code new}, this class can do this
+ *     with automatic dependency resolution, injecting dependencies by handling
+ *     {@link io.github.darthakiranihil.konna.core.di.KInject} annotation. However,
+ *     it's possible to just create object with this class.
+ * </p>
+ * <p>
+ *     An implementation of this class should put created objects in
+ *     {@link KObjectRegistry}, at least if created class is instance of {@link KObject}, but this
+ *     is not actually required and might be tuned according to your needs.
+ * </p>
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -29,55 +39,53 @@ import io.github.darthakiranihil.konna.core.di.KContainer;
 public interface KActivator {
 
     /**
-     * Creates a new container and returns it. Container may be empty or not, it depends
-     * on the implementation.
-     * @return A new container
-     */
-    KContainer newContainer();
-
-    /**
-     * Creates a new object or returns it if it already instantiated (depends on created class).
-     * @param clazz Class to instantiate
-     * @param container Container (used for dependency resolution)
-     * @param <T> Type of object to instantiate
-     * @param nonInjectedArgs Arguments that are not injected (passed explicitly)
-     *                        when constructing an object
-     * @return Created object
-     * @see KContainer
-     * @see KObjectInstantiationType
-     */
-    <T> T createObject(
-        Class<? extends T> clazz,
-        KContainer container,
-        Object... nonInjectedArgs
-    );
-
-    /**
-     * Creates a new object or returns it if it already instantiated (depends on created class).
-     * Implementation of this method may not require a source of container, but it recommended.
-     * @param clazz Class to instantiate
-     * @param nonInjectedArgs Arguments that are not injected (passed explicitly)
-     *                        when constructing an object
-     * @return Created object
-     * @param <T> Type of object to instantiate
+     * <p>
+     *     Tries to get instance of specified class <i>or</i> creates an object of that class.
+     * </p>
+     * <p>
+     *     An implementation common implementation of this class should check if passed class
+     *     is neither abstract nor an interface, because it defines the way the activator should
+     *     work.
+     * </p>
+     * <p>
+     *     However, it's important to notice that some objects are not in containers but still
+     *     need to be singleton (for example,
+     *     {@link io.github.darthakiranihil.konna.core.app.KApplicationFeatures}). This behavior
+     *     might be specified by {@link io.github.darthakiranihil.konna.core.di.KInjectable}. In
+     *     this case activator should firstly look if it has been previously created.
+     * </p>
+     * <p>
+     *     In other cases an object, firstly, must be retrieved from a container, if it's abstract
+     *     or an interface. Else it should be created as usual, with constructor, field and method
+     *     injection.
+     * </p>
+     * 
+     * @param clazz Class to instantiate or to get
+     * @return Instance of specified class
+     * @param <T> Type of instantiated object
      *
-     * @see KContainer
-     * @see KObjectInstantiationType
+     * @since 0.6.0
      */
-    <T> T createObject(
-        Class<? extends T> clazz,
-        Object... nonInjectedArgs
-    );
+    <T> T createObject(Class<? extends T> clazz);
 
     /**
-     * "deletes" a created object.
-     * Actually, there is no such action as "deleting an object", however, this method's
-     * purpose exists - it removes all possible references of the object, making it unreachable
-     * by none, so tha garbage collected will delete the object at last. However, poolable objects
-     * are just returned to their pool, not wiped.
+     * <p>
+     *     Creates an object of specified class.
+     * </p>
+     * <p>
+     *     Unlike {@link KActivator#createObject(Class)}, this method's implementation must
+     *     forbid instantiation if class is abstract or an interface (by throwing
+     *     {@link io.github.darthakiranihil.konna.core.object.except.KInstantiationException}).
+     *     However, it must still support dependency injection, but then it have to handle
+     *     ordering of {@link KArgs} and injected constructor args (it depends on implementation).
+     * </p>
+     * @param clazz Class to instantiate
+     * @param explicitArgs Explicit instantiation args
+     * @return Instance of specified class
+     * @param <T> Type of instantiated object
      *
-     * @param object Object to delete
-     * @param <T> Type of object to delete
+     * @since 0.6.0
      */
-    <T> void deleteObject(T object);
+    <T> T createObject(Class<? extends T> clazz, KArgs explicitArgs);
+
 }

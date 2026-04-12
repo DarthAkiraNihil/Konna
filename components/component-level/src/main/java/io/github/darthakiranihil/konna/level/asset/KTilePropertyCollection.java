@@ -17,12 +17,12 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
@@ -62,9 +62,10 @@ public final class KTilePropertyCollection
      * @param assetLoader Asset loader
      * @param activator Activator to create property factories
      */
+    @KInject
     public KTilePropertyCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KActivator activator
+        final KAssetLoader assetLoader,
+        final KActivator activator
     ) {
         super(
             "Level.tilePropertyCollection",

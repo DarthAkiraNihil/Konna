@@ -56,10 +56,11 @@ public final class KShaderProgramCollection
      * @param shaderCollection Shader collection (to get shaders of the shader program)
      * @param shaderCompiler Shader compiler (to link shader program from shaders)
      */
+    @KInject
     public KShaderProgramCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KShaderCollection shaderCollection,
-        @KInject final KShaderCompiler shaderCompiler
+        final KAssetLoader assetLoader,
+        final KShaderCollection shaderCollection,
+        final KShaderCompiler shaderCompiler
     ) {
 
         super(

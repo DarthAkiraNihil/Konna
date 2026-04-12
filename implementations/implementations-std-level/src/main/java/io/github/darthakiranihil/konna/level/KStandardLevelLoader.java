@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
@@ -26,7 +27,6 @@ import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -75,10 +75,11 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
      * @param activator Activator to create controllers
      * @param tileCollection Tile collection
      */
+    @KInject
     public KStandardLevelLoader(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KActivator activator,
-        @KInject final KTileCollection tileCollection
+        final KEventSystem eventSystem,
+        final KActivator activator,
+        final KTileCollection tileCollection
     ) {
         super(
             "KStandardLevelLoader", KStructUtils.setOfTags(KTag.DefaultTags.STD)
@@ -372,8 +373,10 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
                 .activator
                 .createObject(
                     controllerClass,
-                    controllerClass.getSimpleName(),
-                    controllerParams
+                    KAutonomousEntityController.args(
+                        controllerClass.getSimpleName(),
+                        controllerParams
+                    )
                 );
 
             controller.setLevel(level);

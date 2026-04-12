@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
+import io.github.darthakiranihil.konna.core.object.KArgs;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
@@ -33,6 +34,16 @@ import org.jspecify.annotations.Nullable;
  * @author Darth Akira Nihil
  */
 public abstract class KAutonomousEntityController extends KObject {
+
+    /**
+     * Constructs {@link KArgs} object for this class.
+     * @param qualifier Controller qualifier
+     * @param params Controller params
+     * @return Packed args
+     */
+    public static KArgs args(final String qualifier, final KAssetDefinition params) {
+        return () -> new Object[] {qualifier, params};
+    }
 
     private @Nullable KLevelEntity assignedEntity;
     private @Nullable KLevel level;

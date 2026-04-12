@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 
 @KSingleton
-public class TestSingleton extends KObject {
+public class TestSingleton extends KObject implements TestSingletonInterface {
 
     public int wawa() {
         return 10;

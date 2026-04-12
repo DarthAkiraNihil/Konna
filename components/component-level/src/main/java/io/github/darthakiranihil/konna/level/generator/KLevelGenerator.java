@@ -284,7 +284,7 @@ public final class KLevelGenerator extends KObject {
             );
         }
 
-        var instance = this.activator.createObject(nodeClass, constant);
+        var instance = this.activator.createObject(nodeClass, KConstantNode.args(constant));
         String nodeClassName = nodeClass.getSimpleName();
 
         KValidator<KUniversalMap> outputParamsValidator;

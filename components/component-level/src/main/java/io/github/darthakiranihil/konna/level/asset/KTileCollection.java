@@ -58,10 +58,11 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
      * @param cache Cache to store loaded tiles
      * @param propsCollection Additional tiles' properties collection
      */
+    @KInject
     public KTileCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KCache cache,
-        @KInject final KTilePropertyCollection propsCollection
+        final KAssetLoader assetLoader,
+        final KCache cache,
+        final KTilePropertyCollection propsCollection
     ) {
         super(
             "Level.tileCollection",

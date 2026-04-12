@@ -54,8 +54,9 @@ public final class KLevelMetadataCollection
      * Standard constructor.
      * @param assetLoader Asset loader
      */
+    @KInject
     public KLevelMetadataCollection(
-        @KInject final KAssetLoader assetLoader
+        final KAssetLoader assetLoader
     ) {
         super(
             "Level.levelCollection",

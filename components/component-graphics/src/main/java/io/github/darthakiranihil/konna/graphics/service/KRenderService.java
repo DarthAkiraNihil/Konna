@@ -66,10 +66,11 @@ public class KRenderService extends KObject implements KService {
      * @param frame The frame of the current context
      * @param frameTaskScheduler Frame task scheduler to schedule render task
      */
+    @KInject
     public KRenderService(
-        @KInject final KRenderFrontend renderFrontend,
-        @KInject final KFrameTaskScheduler frameTaskScheduler,
-        @KInject final KFrame frame
+        final KRenderFrontend renderFrontend,
+        final KFrameTaskScheduler frameTaskScheduler,
+        final KFrame frame
     ) {
         super("RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;

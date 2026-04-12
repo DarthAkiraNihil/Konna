@@ -21,14 +21,16 @@ import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.di.KContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KComponentLoader;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.io.KResource;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.entity.service.KEntityManagementService;
 
 import java.io.InputStream;
@@ -49,9 +51,10 @@ public class KEntityComponentLoader implements KComponentLoader {
      * @param parser Json parser to parse config
      * @param deserializer Json deserializer to deserialize config
      */
+    @KInject
     public KEntityComponentLoader(
-        @KInject final KJsonParser parser,
-        @KInject final KJsonDeserializer deserializer
+        final KJsonParser parser,
+        final KJsonDeserializer deserializer
     ) {
         this.parser = parser;
         this.deserializer = deserializer;
@@ -60,12 +63,13 @@ public class KEntityComponentLoader implements KComponentLoader {
 
     @Override
     public KComponent load(
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KApplicationFeatures features,
         final KSystemFeatures systemConfig
     ) {
+        KResourceLoader resourceLoader = engineModule.resourceLoader();
         KJsonValue parsedConfig;
-        try (KResource config = ctx.loadResource("classpath:config/entity.json")) {
+        try (KResource config = resourceLoader.loadResource("classpath:config/entity.json")) {
             InputStream configStream = config.stream();
             if (!config.exists() || configStream == null) {
                 throw new KComponentLoadingException(
@@ -86,13 +90,14 @@ public class KEntityComponentLoader implements KComponentLoader {
             throw new KComponentLoadingException("Could not read component config");
         }
 
-        KContainer container = ctx.getContainer();
-        container.add(KEntityFactory.class, cfg.entityFactoryClass());
-
-        KMessenger messenger = ctx.createObject(KMessenger.class, "Entity");
+        KActivator activator = engineModule.activator();
+        KMessenger messenger = activator.createObject(KMessenger.class, KMessenger.args("Entity"));
         return new KEntityComponent(
-            ctx,
-            ctx.createObject(KEntityManagementService.class, messenger),
+            engineModule,
+            activator.createObject(
+                KEntityManagementService.class,
+                KService.argsOfServiceWithMessenger(messenger)
+            ),
             cfg
         );
     }

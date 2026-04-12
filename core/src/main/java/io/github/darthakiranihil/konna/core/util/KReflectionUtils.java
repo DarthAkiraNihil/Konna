@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import org.jspecify.annotations.Nullable;
@@ -125,6 +126,26 @@ public final class KReflectionUtils extends KUninstantiable {
             return fieldClass.cast(obj);
         } catch (Throwable e) {
             return null;
+        }
+    }
+
+    /**
+     * Set field's value without required checked exceptions catching.
+     * @param field Field handle to set
+     * @param instance Instance of set field
+     * @param value New field value
+     *
+     * @since 0.6.0
+     */
+    public static void setFieldValue(
+        final Field field,
+        final Object instance,
+        final Object value
+    ) {
+        try {
+            field.set(instance, value);
+        } catch (IllegalAccessException e) {
+            throw new KInvalidArgumentException("Field access is restricted");
         }
     }
 

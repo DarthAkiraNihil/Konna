@@ -44,8 +44,9 @@ public final class KLevelGeneratorMetadataCollection
      * Standard constructor.
      * @param assetLoader Asset loader
      */
+    @KInject
     public KLevelGeneratorMetadataCollection(
-        @KInject final KAssetLoader assetLoader
+        final KAssetLoader assetLoader
     ) {
         this.assetLoader = assetLoader;
     }

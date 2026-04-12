@@ -18,15 +18,16 @@ package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
-import io.github.darthakiranihil.konna.core.app.KFrameSpawnOptions;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
@@ -35,7 +36,10 @@ import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;
 import io.github.darthakiranihil.konna.level.entity.KControllableEntity;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
-import io.github.darthakiranihil.konna.level.impl.*;
+import io.github.darthakiranihil.konna.level.impl.FalseValidatedController;
+import io.github.darthakiranihil.konna.level.impl.TestController;
+import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
+import io.github.darthakiranihil.konna.level.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.*;
 
@@ -53,12 +57,10 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         KStandardArgumentParser.class,
         KEngineHypervisor.class,
         new KEngineHypervisorConfig(
-            ContextLoader.class,
+            KAppContainer.useGenerated(),
             List.of(TestMessageRouteConfigurer.class),
             List.of(),
-            List.of(KLevelComponentLoader.class),
-            TestFrameLoader.class,
-            new KFrameSpawnOptions(KSize.squared(1000), "Hello, world!")
+            List.of(KLevelComponentLoader.class)
         )
     );
 
@@ -70,13 +72,13 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
     private Map<UUID, KStaticEntity> statics;
     private Map<UUID, KAutonomousEntity> autonomouses;
     private KLevel currentLevel;
-    private KEngineContext realContext;
+    private KMessageSystem messageSystem;
 
     public KLevelEntityManagementServiceTests() {
 
         this.shutdown = KReflectionUtils.getMethod(Konna.class, "shutdown");
         this.hypervisor = KReflectionUtils.getField(Konna.class, "hypervisor");
-        this.ctx = KReflectionUtils.getField(KEngineHypervisor.class, "ctx");
+        this.ctx = KReflectionUtils.getField(KEngineHypervisor.class, "engineModule");
 
     }
 
@@ -85,25 +87,28 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
         konnaWithOnlyDefaultArgs.run();
         KThreadUtils.sleepForSeconds(2);
-        this.realContext = KReflectionUtils.getFieldValue(
+        KEngineModule realContext = KReflectionUtils.getFieldValue(
             this.ctx,
             Objects.requireNonNull(KReflectionUtils.getFieldValue(
                 this.hypervisor,
                 konnaWithOnlyDefaultArgs
             )),
-            KEngineContext.class
+            KEngineModule.class
         );
 
-        Assertions.assertNotNull(this.realContext);
+        Assertions.assertNotNull(realContext);
+
+        this.messageSystem = realContext.messageSystem();
+        KObjectRegistry objectRegistry = realContext.objectRegistry();
 
         if (!testInfo.getTags().contains("doNotLoadLevel")) {
             var body = new KUniversalMap();
             body.put("level_name", "test_level_entity_management_service");
             body.put("sector", "mf1");
-            this.realContext.deliverMessageSync(KMessage.regular("loadLevel", body));
+            messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
         }
 
-        var serviceOpt =  this.realContext
+        var serviceOpt =  objectRegistry
             .listObjects()
             .stream()
             .filter(o -> o.object().name().equals("LevelEntityManagementService"))
@@ -161,8 +166,8 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.clear();
         body.put("entity_id", id);
         body.put("direction", new KVector2i(0, 1));
-        this.realContext.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
+        this.messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
         KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(new KVector2i(2, 1),  this.controllables.get(id).getPosition().first());
 
@@ -190,7 +195,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("controller", TestController.class);
         body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
         Assertions.assertEquals(2, this.autonomouses.size());
         Assertions.assertTrue(
             this
@@ -226,7 +231,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("controller", TestControllerWithoutValidator.class);
         body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
         Assertions.assertEquals(2, this.autonomouses.size());
         Assertions.assertTrue(
             this
@@ -262,7 +267,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("controller", FalseValidatedController.class);
         body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
         Assertions.assertEquals(2, this.autonomouses.size());
         Assertions.assertTrue(
             this
@@ -298,7 +303,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("controller", TestController.class);
         body.put("params", new KMapAssetDefinition(Map.of("test2", 42069)));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
         Assertions.assertEquals(1, this.autonomouses.size());
 
     }
@@ -318,7 +323,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         var previousPosition = this.autonomouses.get(deletedId).getPosition();
 
-        this.realContext.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
         KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(0, this.autonomouses.size());
         Assertions.assertEquals(0, previousPosition
@@ -345,7 +350,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("sector_name", "mf1");
         body.put("position", new KVector2i(2, 2));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
         Assertions.assertEquals(2, this.controllables.size());
         Assertions.assertTrue(
             this
@@ -379,7 +384,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         var previousPosition = this.controllables.get(deletedId).getPosition();
 
-        this.realContext.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
         KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(0, this.controllables.size());
         Assertions.assertEquals(0, previousPosition
@@ -405,7 +410,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("sector_name", "mf1");
         body.put("position", new KVector2i(2, 2));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
         Assertions.assertEquals(2, this.statics.size());
         Assertions.assertTrue(
             this
@@ -439,7 +444,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         var previousPosition = this.statics.get(deletedId).getPosition();
 
-        this.realContext.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
         KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(0, this.statics.size());
         Assertions.assertEquals(0, previousPosition
@@ -465,12 +470,12 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("sector_name", "mf1");
         body.put("position", new KVector2i(999, 99));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
 
         body.put("controller", TestController.class);
         body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
 
         Assertions.assertEquals(1, this.statics.size());
         Assertions.assertEquals(1, this.controllables.size());
@@ -492,12 +497,12 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("sector_name", "mf99");
         body.put("position", new KVector2i(1, 1));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
 
         body.put("controller", TestController.class);
         body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
 
         Assertions.assertEquals(1, this.statics.size());
         Assertions.assertEquals(1, this.controllables.size());
@@ -515,9 +520,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         KUniversalMap body = new KUniversalMap();
         body.put("entity_id", UUID.randomUUID());
 
-        this.realContext.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
 
         Assertions.assertEquals(1, this.statics.size());
         Assertions.assertEquals(1, this.controllables.size());
@@ -539,8 +544,8 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         body.put("entity_id", UUID.randomUUID());
         body.put("direction", new KVector2i(0, 1));
-        this.realContext.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
+        this.messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
 
         KThreadUtils.sleepForSeconds(2);
         Assertions.assertEquals(previousPosition,  this.controllables.get(id).getPosition());
@@ -567,12 +572,12 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         body.put("sector_name", "mf99");
         body.put("position", new KVector2i(1, 1));
 
-        this.realContext.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
 
         body.put("controller", TestController.class);
         body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
-        this.realContext.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
 
         Assertions.assertEquals(0, this.statics.size());
         Assertions.assertEquals(0, this.controllables.size());
@@ -592,9 +597,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         KUniversalMap body = new KUniversalMap();
         body.put("entity_id", UUID.randomUUID());
 
-        this.realContext.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
-        this.realContext.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+        this.messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
 
         Assertions.assertEquals(0, this.statics.size());
         Assertions.assertEquals(0, this.controllables.size());

@@ -16,22 +16,15 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.*;
-import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.object.except.KDeletionException;
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KInjectable;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 
-import java.lang.ref.SoftReference;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
 
 /**
  * Standard implementation of {@link KActivator}.
@@ -40,31 +33,19 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @SuppressWarnings("unchecked")
-@KSingleton(immortal = true)
-public final class KStandardActivator extends KObject implements KActivator {
+public class KStandardActivator extends KObject implements KActivator {
 
-    private final KContainerAccessor containerResolver;
+    private final KAppContainer appContainer;
     private final KObjectRegistry objectRegistry;
-
-    private final Map<Class<?>, KObject> singletons;
-    private final Map<Class<?>, KObjectPool<?>> pools;
-    private final Map<Class<?>, KWeakObjectPool<?>> weakPools;
-
-    private final Map<Class<?>, KObjectInstantiationType> objectInstantiationTypes;
-    private final Map<Class<?>, SoftReference<Class<?>>> cachedDependencies;
 
     /**
      * Standard constructor.
-     * On initialization, it looks for all poolable classes and creates corresponding
-     * object pools for them, other types of instantiation are ignored at this moment.
-     * @param containerResolver Container resolver
-     * @param objectRegistry Object registry
-     * @param classpath Application's classpath search engine
+     * @param container Application container to resolve dependencies from
+     * @param objectRegistry Object registry to put created objects
      */
     public KStandardActivator(
-        final KContainerAccessor containerResolver,
-        final KObjectRegistry objectRegistry,
-        final KClasspathSearchEngine classpath
+        final KAppContainer container,
+        final KObjectRegistry objectRegistry
     ) {
         super(
             "std_activator",
@@ -74,381 +55,175 @@ public final class KStandardActivator extends KObject implements KActivator {
             )
         );
 
-        this.containerResolver = containerResolver;
+        this.appContainer = container;
         this.objectRegistry = objectRegistry;
 
-        this.singletons = new HashMap<>();
-        this.pools = new HashMap<>();
-        this.weakPools = new HashMap<>();
-        this.objectInstantiationTypes = new HashMap<>();
-        this.cachedDependencies = new HashMap<>();
-
-        try (
-            var result = classpath
-                .query()
-                .withAnnotation(KPoolable.class)
-                .execute()
-        ) {
-            List<Class<?>> poolableClasses = result.loadClasses();
-            for (var poolableClass: poolableClasses) {
-                KPoolable poolableMeta = poolableClass.getAnnotation(KPoolable.class);
-                int initialSize = poolableMeta.initialPoolSize();
-
-                if (poolableMeta.weak()) {
-                    KWeakObjectPool<?> pool = new KWeakObjectPool<>(
-                        (Class<? extends KObject>) poolableClass,
-                        initialSize,
-                        this,
-                        this.objectRegistry
-                    );
-                    this.weakPools.put(poolableClass, pool);
-                } else {
-                    KObjectPool<?> pool = new KObjectPool<>(
-                        (Class<? extends KObject>) poolableClass,
-                        initialSize,
-                        this,
-                        this.objectRegistry
-                    );
-                    this.pools.put(poolableClass, pool);
-                }
-            }
-        }
-
     }
 
     /**
-     * Returns a new container with master container of caller class as its parent.
-     * @return A new container, which parent is the master container of the caller class
-     */
-    @Override
-    public KContainer newContainer() {
-        return new KContainer(this.containerResolver.getContainer());
-    }
-
-    /**
-     * Creates a new object or returns it if it already instantiated (depends on created class).
-     * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
-     * @param clazz Class to instantiate
-     * @param container Container (used for dependency resolution)
-     * @param <T> Type of object to instantiate
-     * @param nonInjectedArgs Arguments that are not injected (passed explicitly)
-     *                        when constructing an object
-     * @return Created object
-     * @see KContainer
-     * @see KObjectInstantiationType
-     * @see KObjectRegistry
-     * @see KInject
-     */
-    @Override
-    public <T> T createObject(
-        final Class<? extends T> clazz,
-        final KContainer container,
-        final Object... nonInjectedArgs
-    ) {
-
-        var klass = this.getClassImplementation(clazz, container);
-
-        KObjectInstantiationType
-            instantiationType = this.getOrResolveInstantiationType(klass);
-
-        T created = switch (instantiationType) {
-            case SINGLETON, IMMORTAL -> this.createSingleton(
-                klass,
-                container,
-                nonInjectedArgs
-            );
-            case POOLABLE -> this.createPoolable(
-                klass,
-                container,
-                false,
-                nonInjectedArgs
-            );
-            case WEAK_POOLABLE -> this.createPoolable(
-                klass,
-                container,
-                true,
-                nonInjectedArgs
-            );
-            case TRANSIENT, TEMPORAL -> this.createNewObject(
-                klass,
-                container,
-                nonInjectedArgs
-            );
-        };
-
-        if (instantiationType != KObjectInstantiationType.TEMPORAL && created instanceof KObject) {
-            this.objectRegistry.pushObjectToRegistry((KObject) created, instantiationType);
-            this.addTagsToCreatedObject((KObject) created, instantiationType);
-        }
-
-        return created;
-    }
-
-    /**
-     * Creates a new object or returns it if it already instantiated (depends on created class).
-     * Also puts it to {@link KObjectRegistry} if the object created is not temporal.
-     * This method uses default container, that must be set before calling it
-     * @param clazz Class to instantiate
-     * @param nonInjectedArgs Arguments that are not injected (passed explicitly)
-     *                        when constructing an object
-     * @return Created object
-     * @param <T> Type of object to instantiate
+     * <p>
+     *     Tries to get instance of specified class <i>or</i> creates an object of that class.
+     * </p>
+     * <p>
+     *     Firstly, it checks if passed class is neither abstract nor an interface.
+     * </p>
+     * <p>
+     *     Secondly, it reads {@link KInjectable} annotation to check if an object with that class
+     *     has been previously created by looking in {@link KObjectRegistry}.
+     *     If it is true, then gets object from the registry.
+     * </p>
+     * <p>
+     *     Else, if passed class is an interface or an abstract class, it gets its instance from
+     *     {@link KAppContainer}. If it is not, then, creates an object with constructor,
+     *     field, and method injection.
+     * </p>
      *
-     * @see KContainer
-     * @see KObjectInstantiationType
-     * @see KObjectRegistry
-     */
-    @Override
-    public <T> T createObject(
-        final Class<? extends T> clazz,
-        final Object... nonInjectedArgs
-    ) {
-        return this.createObject(
-            clazz,
-            this.containerResolver.getContainer(),
-            nonInjectedArgs
-        );
-    }
-
-    /**
-     * "deletes" a created object.
-     * Actually, there is no such action as "deleting an object", however, this method's
-     * purpose exists - it removes all possible references of the object, making it unreachable
-     * by none, so tha garbage collected will delete the object at last. However, poolable objects
-     * are just returned to their pool, not wiped.
-     * Additionally, it removes record from {@link KObjectRegistry} of the deleted object.
+     * @param clazz Class to instantiate or to get
+     * @return Instance of specified class
+     * @param <T> Type of instantiated object
      *
-     * @param object Object to delete
-     * @param <T> Type of object to delete
      */
     @Override
-    public <T> void deleteObject(final T object) {
-        var klass = object.getClass();
+    public <T> T createObject(final Class<? extends T> clazz) {
+        // todo: more registry methods
+        if (clazz.isAnnotationPresent(KInjectable.class)) {
+            var object = this.objectRegistry.listObjects()
+                .stream()
+                .filter(x -> x.object().getClass().equals(clazz))
+                .findFirst()
+                .orElse(null);
 
-        KObjectInstantiationType
-            instantiationType = this.getOrResolveInstantiationType(klass);
-
-
-        switch (instantiationType) {
-            case IMMORTAL -> throw new KDeletionException(object, "object is immortal");
-            case SINGLETON -> this.deleteSingleton(object, (Class<T>) klass);
-            case POOLABLE -> this.deletePoolable(object, (Class<T>) klass, false);
-            case WEAK_POOLABLE -> this.deletePoolable(object, (Class<T>) klass, true);
+            if (object != null) {
+                return (T) (object.object());
+            }
         }
 
-        if (
-            instantiationType != KObjectInstantiationType.TEMPORAL
-                &&  instantiationType != KObjectInstantiationType.POOLABLE
-                &&  instantiationType != KObjectInstantiationType.WEAK_POOLABLE
-                &&  object instanceof KObject) {
-            this.objectRegistry.removeObjectFromRegistry(((KObject) object).id());
+        if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+            return (T) this.appContainer.getInstance(clazz);
         }
+
+        Object instantiated = this.injectConstructorAndCreate(clazz);
+        this.injectFields(instantiated, clazz);
+        this.injectMethods(instantiated, clazz);
+        this.pushToRegistry(instantiated);
+        return (T) instantiated;
+
     }
 
     /**
-     * Utility method that exists only in this implementation of {@link KActivator}.
-     * Adds engine context objects to the activator and also pushes them to the
-     * object registry inside activator. It is important that all context object implementations
-     * must extend {@link KObject} in order adding to be performed successfully
-     * @param ctx Engine context objects of which is to be added
+     * <p>
+     *     Creates an object of specified class.
+     * </p>
+     * <p>
+     *     Instantiated object's constructor args must be in that order in which
+     *     all explicit args come first, then all injected. Gaps are not allowed!
+     * </p>
+     * @param clazz Class to instantiate
+     * @param explicitArgs Explicit instantiation args
+     * @return Instance of specified class
+     * @param <T> Type of instantiated object
+     * @throws KInvalidArgumentException if clazz is an interface or abstract
+     *
+     * @since 0.6.0
      */
-    public void addContext(final KEngineContext ctx) {
-
-        var clazz = ctx.getClass();
-        if (clazz.isAnnotationPresent(KSingleton.class)) {
-            this.singletons.put(clazz, (KObject) ctx);
+    @Override
+    public <T> T createObject(final Class<? extends T> clazz, final KArgs explicitArgs) {
+        if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+            throw new KInvalidArgumentException(
+                "Cannot create object: class is and interface or abstract"
+            );
         }
 
-        this.objectRegistry.pushObjectToRegistry((KObject) ctx, this.getInstantiationType(clazz));
-
+        Object instantiated = this.injectConstructorAndCreate(clazz, explicitArgs);
+        this.injectFields(instantiated, clazz);
+        this.injectMethods(instantiated, clazz);
+        this.pushToRegistry(instantiated);
+        return (T) instantiated;
     }
 
-    private <T> Class<T> getClassImplementation(
-        final Class<T> clazz,
-        final KContainer container
-    ) {
-        // todo: this is ugly. Need to rework the container system
-        if (!(clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))) {
-            return clazz;
+    private Object injectConstructorAndCreate(final Class<?> clazz) {
+        var injectedConstructor = Arrays.stream(clazz.getConstructors())
+            .filter(x -> x.isAnnotationPresent(KInject.class))
+            .findFirst()
+            .orElse(null);
+
+        if (injectedConstructor == null) {
+            injectedConstructor = clazz.getConstructors()[0];
         }
 
-        if (this.cachedDependencies.containsKey(clazz)) {
-            var ref = this.cachedDependencies.get(clazz);
-            var klass = ref.get();
-            if (klass != null) {
-                return (Class<T>) klass;
-            }
+        injectedConstructor.setAccessible(true);
+        var parameterTypes = injectedConstructor.getParameterTypes();
+
+        Object[] args = new Object[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            args[i] = this.createObject(parameterTypes[i]);
         }
 
-        try {
-            var klass = container.resolve(clazz);
-            this.cachedDependencies.put(clazz, new SoftReference<>(klass));
-            return klass;
-        } catch (KDependencyResolveException e) {
-            throw new KInstantiationException(clazz, e);
-        }
+        return KReflectionUtils.newInstance(injectedConstructor, args);
     }
 
-    private <T> KObjectInstantiationType getOrResolveInstantiationType(
-        final Class<T> klass
-    ) {
-        if (this.objectInstantiationTypes.containsKey(klass)) {
-            return this.objectInstantiationTypes.get(klass);
-        } else {
-            var instantiationType = this.getInstantiationType(klass);
-            this.objectInstantiationTypes.put(klass, instantiationType);
-            return instantiationType;
-        }
-    }
+    private Object injectConstructorAndCreate(final Class<?> clazz, final KArgs explicitArgs) {
+        var injectedConstructor = Arrays.stream(clazz.getConstructors())
+            .filter(x -> x.isAnnotationPresent(KInject.class))
+            .findFirst()
+            .orElse(null);
 
-    private <T> KObjectInstantiationType getInstantiationType(final Class<T> clazz) {
-        if (clazz.isAnnotationPresent(KSingleton.class)) {
-            KSingleton meta = clazz.getAnnotation(KSingleton.class);
-            if (meta.immortal()) {
-                return KObjectInstantiationType.IMMORTAL;
-            }
-
-            return KObjectInstantiationType.SINGLETON;
+        if (injectedConstructor == null) {
+            injectedConstructor = clazz.getConstructors()[0];
         }
 
-        if (clazz.isAnnotationPresent(KPoolable.class)) {
-            KPoolable meta = clazz.getAnnotation(KPoolable.class);
-            return meta.weak()
-                ? KObjectInstantiationType.WEAK_POOLABLE
-                : KObjectInstantiationType.POOLABLE;
-        }
+        injectedConstructor.setAccessible(true);
+        var parameterTypes = injectedConstructor.getParameterTypes();
 
-        if (clazz.isAnnotationPresent(KTransient.class)) {
-            KTransient meta = clazz.getAnnotation(KTransient.class);
-            return meta.temporal()
-                ? KObjectInstantiationType.TEMPORAL
-                : KObjectInstantiationType.TRANSIENT;
-        }
-
-        return KObjectInstantiationType.TRANSIENT;
-    }
-
-    private <T> Constructor<?> getConstructor(final Class<T> clazz) {
-        var constructors = clazz.getDeclaredConstructors();
-        Constructor<?> foundConstructor = null;
-        for (var constructor: constructors) {
-            if (constructor.isAnnotationPresent(KInjectedConstructor.class)) {
-                foundConstructor = constructor;
-                break;
-            }
-        }
-
-        if (foundConstructor == null) {
-            foundConstructor = constructors[0];
-        }
-        foundConstructor.setAccessible(true);
-        return foundConstructor;
-    }
-
-    private <T> T createNewObject(
-        final Class<T> clazz,
-        final KContainer container,
-        final Object... nonResolvedArgs
-    ) {
-
-        var constructor = this.getConstructor(clazz);
-        constructor.setAccessible(true);
-
-        var parameterTypes = constructor.getParameterTypes();
-        var parameterAnnotations = constructor.getParameterAnnotations();
-
-        Object[] parameters = new Object[parameterTypes.length];
-        int nonInjectedArgsProcessed = 0;
+        Object[] args = new Object[parameterTypes.length];
+        Object[] explicit = explicitArgs.unpack();
 
         for (int i = 0; i < parameterTypes.length; i++) {
-            boolean isNonInjected = true;
-            for (int j = 0; j < parameterAnnotations[i].length; j++) {
-                if (parameterAnnotations[i][j] instanceof KInject) {
-                    isNonInjected = false;
-                    break;
-                }
-            }
-
-            if (isNonInjected) {
-                parameters[i] = nonResolvedArgs[nonInjectedArgsProcessed];
-                nonInjectedArgsProcessed++;
-            } else {
-                parameters[i] = this.createObject(parameterTypes[i], container);
-            }
+            args[i] = (i < explicit.length) ? explicit[i] : this.createObject(parameterTypes[i]);
         }
 
-        try {
-            return (T) constructor.newInstance(parameters);
-        } catch (InvocationTargetException e) {
-            throw new KInstantiationException(clazz, e.getTargetException());
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new KInstantiationException(clazz, e);
-        }
+        return KReflectionUtils.newInstance(injectedConstructor, args);
     }
 
-    private <T> T createSingleton(
-        final Class<T> clazz,
-        final KContainer container,
-        final Object... nonResolvedArgs
-    ) {
-        if (this.singletons.containsKey(clazz)) {
-            return (T) this.singletons.get(clazz);
-        }
+    private void injectFields(final Object object, final Class<?> clazz) {
 
-        var object = this.createNewObject(clazz, container, nonResolvedArgs);
-        this.singletons.put(clazz, (KObject) object);
-        return object;
-    }
-
-    private <T> T createPoolable(
-        final Class<T> clazz,
-        final KContainer container,
-        boolean weak,
-        final Object... nonResolvedArgs
-    ) {
-        KAbstractObjectPool<?> pool = weak
-            ? this.weakPools.get(clazz)
-            : this.pools.get(clazz);
-
-        try {
-            return (T) pool.obtain(container, nonResolvedArgs);
-        } catch (KEmptyObjectPoolException e) {
-            throw new KInstantiationException(clazz, e);
-        }
-    }
-
-    private void addTagsToCreatedObject(
-        final KObject object,
-        final KObjectInstantiationType instantiationType) {
-        switch (instantiationType) {
-            case IMMORTAL -> object.addTag(KTag.DefaultTags.IMMORTAL);
-            case SINGLETON -> object.addTag(KTag.DefaultTags.SINGLETON);
-            case POOLABLE -> object.addTag(KTag.DefaultTags.POOLABLE);
-            case WEAK_POOLABLE -> object.addTags(
-                KTag.DefaultTags.POOLABLE,
-                KTag.DefaultTags.WEAK
-            );
-            case TRANSIENT -> object.addTag(KTag.DefaultTags.TRANSIENT);
-        }
-    }
-
-    private <T> void deleteSingleton(final T object, final Class<T> clazz) {
-        if (!this.singletons.containsKey(clazz)) {
-            throw new KDeletionException(
+        Arrays.stream(clazz.getDeclaredFields())
+            .filter(x -> x.isAnnotationPresent(KInject.class))
+            .peek(x -> x.setAccessible(true))
+            .forEach(x -> KReflectionUtils.setFieldValue(
+                x,
                 object,
-                "cannot delete a non-instantiated singleton"
-            );
-        }
+                this.createObject(x.getType())
+            ));
 
-        this.singletons.remove(clazz);
     }
 
-    private <T> void deletePoolable(final T object, final Class<T> clazz, boolean weak) {
-        KAbstractObjectPool<T> pool = (KAbstractObjectPool<T>) (
-            weak
-                ? this.weakPools.get(clazz)
-                : this.pools.get(clazz)
+    private void injectMethods(final Object object, final Class<?> clazz) {
+
+        var injectedMethods = Arrays.stream(clazz.getDeclaredMethods())
+            .filter(x -> x.isAnnotationPresent(KInject.class))
+            .peek(x -> x.setAccessible(true))
+            .toList();
+
+        for (var injectedMethod: injectedMethods) {
+            var methodParameterTypes = injectedMethod.getParameterTypes();
+            Object[] args = new Object[methodParameterTypes.length];
+            for (int i = 0; i < methodParameterTypes.length; i++) {
+                args[i] = this.createObject(methodParameterTypes[i]);
+            }
+            KReflectionUtils.invokeMethod(injectedMethod, object, args);
+        }
+
+    }
+
+    private void pushToRegistry(final Object object) {
+        if (!(object instanceof KObject)) {
+            return;
+        }
+
+        this.objectRegistry.pushObjectToRegistry(
+            (KObject) object,
+            KObjectInstantiationType.SINGLETON
         );
-        pool.release(object);
     }
 }

@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KArgs;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -31,25 +32,30 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public abstract class KMessenger extends KObject {
+public final class KMessenger extends KObject {
 
     /**
-     * Reference to the message system.
+     * Returns {@link KArgs} object for all non-injected (explicitly passed)
+     * messenger constructor's args.
+     * @param messageIdPrefix Prefix to be attached to internal message id on sending
+     * @return Packed args
      */
-    protected final KMessageSystem messageSystem;
-    /**
-     * Prefix to be attached to internal message id on sending.
-     */
-    protected final String messageIdPrefix;
+    public static KArgs args(final String messageIdPrefix) {
+        return () -> new Object[] {messageIdPrefix};
+    }
+    
+    private final KMessageSystem messageSystem;
+    private final String messageIdPrefix;
 
     /**
-     * Base constructor.
+     * Standard constructor.
      * @param messageSystem Parent message system that messenger sends messages to
      * @param messageIdPrefix Prefix to be attached to internal message id on sending
      */
+    @KInject
     public KMessenger(
-        @KInject final KMessageSystem messageSystem,
-        final String messageIdPrefix
+        final String messageIdPrefix,
+        final KMessageSystem messageSystem
     ) {
         super(
             String.format("messenger_%s", messageIdPrefix),
@@ -59,63 +65,145 @@ public abstract class KMessenger extends KObject {
         this.messageIdPrefix = messageIdPrefix;
         this.messageSystem = messageSystem;
     }
-
+        
     /**
      * Creates a regular message and passes it to the message system to process.
      * This operation is asynchronous.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendRegular(String internalMessageId, KUniversalMap body);
+    public void sendRegular(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessage(
+                KMessage.regular(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a system message and passes it to the message system to process.
      * This operation is asynchronous.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendSystem(String internalMessageId, KUniversalMap body);
+    public void sendSystem(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessage(
+                KMessage.system(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a debug message and passes it to the message system to process.
      * This operation is asynchronous.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendDebug(String internalMessageId, KUniversalMap body);
+    public void sendDebug(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessage(
+                KMessage.debug(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a metrics message and passes it to the message system to process.
      * This operation is asynchronous.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendMetrics(String internalMessageId, KUniversalMap body);
-
+    public void sendMetrics(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessage(
+                KMessage.metrics(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a regular message and passes it to the message system to process.
      * This operation is synchronous, which is useful for testing.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendRegularSync(String internalMessageId, KUniversalMap body);
+    public void sendRegularSync(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessageSync(
+                KMessage.regular(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a system message and passes it to the message system to process.
      * This operation is synchronous, which is useful for testing.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendSystemSync(String internalMessageId, KUniversalMap body);
+    public void sendSystemSync(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessageSync(
+                KMessage.system(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a debug message and passes it to the message system to process.
      * This operation is synchronous, which is useful for testing.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendDebugSync(String internalMessageId, KUniversalMap body);
+    public void sendDebugSync(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessageSync(
+                KMessage.debug(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+    
     /**
      * Creates a metrics message and passes it to the message system to process.
      * This operation is synchronous, which is useful for testing.
      * @param internalMessageId Internal message id (does not include component name)
      * @param body Message body
      */
-    public abstract void sendMetricsSync(String internalMessageId, KUniversalMap body);
+    public void sendMetricsSync(final String internalMessageId, final KUniversalMap body) {
+        this
+            .messageSystem
+            .deliverMessageSync(
+                KMessage.metrics(
+                    this.makeFullMessageId(internalMessageId),
+                    body
+                )
+            );
+    }
+
+    private String makeFullMessageId(final String internalMessageId) {
+        return String.format("%s.%s", this.messageIdPrefix, internalMessageId);
+    }
 
 }

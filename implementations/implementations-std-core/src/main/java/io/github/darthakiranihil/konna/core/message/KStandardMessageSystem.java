@@ -17,11 +17,11 @@
 package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -73,8 +73,9 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
      * Standard constructor.
      * @param activator Activator that will be used to create tunnel instances.
      */
+    @KInject
     public KStandardMessageSystem(
-        @KInject final KActivator activator
+        final KActivator activator
     ) {
         super(
             "StandardMessageSystem",

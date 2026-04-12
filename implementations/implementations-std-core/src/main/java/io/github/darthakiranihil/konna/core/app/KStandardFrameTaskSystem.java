@@ -17,17 +17,15 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KInjectedConstructor;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
-import java.util.List;
 
 /**
  * Standard implementation of {@link KFrameTaskSystem}, based of prioritizer
@@ -179,6 +177,9 @@ public class KStandardFrameTaskSystem
                     continue;
                 }
 
+                this.executionWaitlists.putIfAbsent(
+                    currentTask.id, new ArrayDeque<>(INITIAL_QUEUE_CAPACITY)
+                );
                 Queue<FrameTask> waitlist = this.executionWaitlists.get(currentTask.id);
                 FrameTask awaited = waitlist.poll();
                 if (awaited != null) {
@@ -246,9 +247,9 @@ public class KStandardFrameTaskSystem
      * Standard constructor.
      * @param prioritizer Prioritizer to use to assign task priorities
      */
-    @KInjectedConstructor
+    @KInject
     public KStandardFrameTaskSystem(
-        @KInject final KFrameTaskPrioritizer prioritizer
+        final KFrameTaskPrioritizer prioritizer
     ) {
         super(
             "FrameTaskSystem",

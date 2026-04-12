@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
@@ -29,12 +30,14 @@ import java.util.Map;
 public class KAssetCollectionTestClass extends KStandardTestClass {
 
     protected final KAssetLoader assetLoader;
+    protected final KEngineModule engineModule;
 
     protected KAssetCollectionTestClass() {
         super();
 
+        this.engineModule = KStandardTestClass.getModule();
         this.assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.context,
+            this.engineModule.resourceLoader(),
             Map.of("shader", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KShaderTypedef.SHADER_ASSET_TYPE },
                 new String[] {"classpath:assets/shaders.json"}

@@ -138,7 +138,8 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
      * Constructs shader compiler with provided OpenGL 3.3 frontend.
      * @param gl OpenGL 3.3 frontend
      */
-    public KGl33ShaderCompiler(@KInject final KGl33 gl) {
+    @KInject
+    public KGl33ShaderCompiler(final KGl33 gl) {
         super("gl33_shader_compiler");
         this.gl = gl;
     }

@@ -16,10 +16,8 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
@@ -30,6 +28,7 @@ import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.graphics.text.KTiledText;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 /**
  * Render frontend implementation using OpenGL 3.3.
@@ -66,10 +65,10 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
      * @param cache Cache service for storing buffer data, textures etc.
      */
     public KGl33RenderFrontend(
-        @KInject final KGl33 gl,
-        @KInject final KShaderCompiler shaderCompiler,
-        @KInject final KGl33TransformMatrixCalculator calculator,
-        @KInject final KCache cache
+        final KGl33 gl,
+        final KShaderCompiler shaderCompiler,
+        final KGl33TransformMatrixCalculator calculator,
+        final KCache cache
     ) {
         this.gl = gl;
         this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);

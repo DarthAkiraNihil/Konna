@@ -1,10 +1,18 @@
 package io.github.darthakiranihil.konna.entity;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
+import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
@@ -13,6 +21,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
@@ -20,8 +29,23 @@ public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
     private final KEntityFactory factory;
 
     public KStandardEntityFactoryNegativeTests() {
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        Assertions.assertNotNull(constructor);
+        KEngineModule engineModule = KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
+
         var assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.context,
+            engineModule.resourceLoader(),
             Map.of("entities", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE },
                 new String[] {"classpath:assets/entities.json"}
@@ -36,7 +60,7 @@ public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
 
         this.factory = new KStandardEntityFactory(
             metadataCollection,
-            KStandardTestClass.context,
+            engineModule.activator(),
             this.jsonDeserializer
         );
     }

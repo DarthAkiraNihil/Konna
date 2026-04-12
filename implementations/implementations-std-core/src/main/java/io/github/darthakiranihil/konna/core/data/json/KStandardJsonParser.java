@@ -42,7 +42,8 @@ public class KStandardJsonParser extends KObject implements KJsonParser {
      * Constructs parser with concrete tokenizer.
      * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser(@KInject final KJsonTokenizer tokenizer) {
+    @KInject
+    public KStandardJsonParser(final KJsonTokenizer tokenizer) {
         super("std_json_parser", KStructUtils.setOfTags(KTag.DefaultTags.STD));
         this.tokenizer = tokenizer;
     }

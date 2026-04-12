@@ -16,12 +16,11 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
 import io.github.darthakiranihil.konna.graphics.type.*;
@@ -88,7 +87,6 @@ import io.github.darthakiranihil.konna.graphics.type.*;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KContainerModifier
 @KSingleton
 public class KGraphicsComponent extends KComponent {
 
@@ -99,16 +97,16 @@ public class KGraphicsComponent extends KComponent {
 
     /**
      * Constructs this component.
-     * @param ctx Engine context
+     * @param engineModule Engine module
      * @param renderService Render service instance
      * @param config Component's config
      */
     public KGraphicsComponent(
-        final KEngineContext ctx,
+        final KEngineModule engineModule,
         final KRenderService renderService,
         final KGraphicsComponentConfig config
     ) {
-        super("Graphics", ctx, new KService[]{renderService});
+        super("Graphics", engineModule, new KService[]{renderService});
         this.config = config;
     }
 
@@ -127,7 +125,10 @@ public class KGraphicsComponent extends KComponent {
     @Override
     public void postInit() {
 
-        KRenderFrontend rf = this.ctx.createObject(KRenderFrontend.class);
+        KRenderFrontend rf = this.engineModule
+            .activator()
+            .createObject(KRenderFrontend.class);
+
         rf.initialize();
 
     }

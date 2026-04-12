@@ -22,14 +22,13 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
 import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
@@ -87,7 +86,6 @@ public class KEntityManagementService extends KObject implements KService {
     }
 
     private final KEntityFactory entityFactory;
-    private final KActivator activator;
 
     private final Map<UUID, KEntity> activeEntities;
     private final Map<UUID, KEntity> inactiveEntities;
@@ -99,18 +97,17 @@ public class KEntityManagementService extends KObject implements KService {
 
     /**
      * Standard constructor.
-     * @param activator Activator to delete entities
      * @param entityFactory Entity factory for create entities
      * @param frameTaskScheduler Frame task scheduler to schedule its tasks.
      * @param messenger Messenger created inside
      *                  {@link io.github.darthakiranihil.konna.entity.KEntityComponent}
      *                  to send messages
      */
+    @KInject
     public KEntityManagementService(
-        @KInject final KActivator activator,
-        @KInject final KEntityFactory entityFactory,
-        @KInject final KFrameTaskScheduler frameTaskScheduler,
-        final KMessenger messenger
+        final KMessenger messenger,
+        final KEntityFactory entityFactory,
+        final KFrameTaskScheduler frameTaskScheduler
     ) {
 
         super(
@@ -118,7 +115,6 @@ public class KEntityManagementService extends KObject implements KService {
             KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
         );
 
-        this.activator = activator;
         this.entityFactory = entityFactory;
         this.frameTaskScheduler = frameTaskScheduler;
         this.messenger = messenger;
@@ -283,13 +279,12 @@ public class KEntityManagementService extends KObject implements KService {
 
         boolean flag = false;
         KEntity deleted = null;
+        // todo: explicitly delete by delete() method in KManagedObject
         if (this.activeEntities.containsKey(entityId)) {
             deleted = this.activeEntities.remove(entityId);
-            this.activator.deleteObject(deleted);
             flag = true;
         } else if (this.inactiveEntities.containsKey(entityId)) {
             deleted = this.inactiveEntities.remove(entityId);
-            this.activator.deleteObject(deleted);
             flag = true;
         }
 

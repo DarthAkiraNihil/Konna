@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode;
@@ -32,8 +32,13 @@ import java.util.Map;
 import java.util.Set;
 
 @NullMarked
-@KContainerModifier
 public class KLevelGeneratorPositiveTests extends KStandardTestClass {
+    
+    private final KActivator activator;
+
+    public KLevelGeneratorPositiveTests() {
+        this.activator = KStandardTestClass.getModule().activator();
+    }
 
     @Test
     public void testGenerateValidLevel() {
@@ -60,7 +65,7 @@ public class KLevelGeneratorPositiveTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -100,7 +105,7 @@ public class KLevelGeneratorPositiveTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -151,7 +156,7 @@ public class KLevelGeneratorPositiveTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
