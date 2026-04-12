@@ -22,6 +22,9 @@ package io.github.darthakiranihil.konna.core.app;
  * @param event Event the task is executed on
  * @param priority Initial task priority. May be overridden by scheduler
  * @param delay Number of frame loop iterations that must complete before this task is executed
+ * @param async Flag that indicated if task should be completed asynchronously, i.e. only
+ *              <i>started</i> on scheduled frame but not mandatory completed.
+ *              This flag should be set if a task is long-running.
  * @param temporal Flag that indicates if task should be executed in every frame
  *                 or only in the current frame
  * @param mayBeRepeated Flag that indicates if a temporal task may be scheduler more than one
@@ -40,6 +43,7 @@ public record KFrameTaskDescription(
     KFrameEvent event,
     int priority,
     int delay,
+    boolean async,
     boolean temporal,
     boolean mayBeRepeated,
     boolean debug
@@ -63,6 +67,7 @@ public record KFrameTaskDescription(
             event,
             priority,
             0,
+            false,
             false,
             false,
             false
@@ -90,6 +95,7 @@ public record KFrameTaskDescription(
             event,
             priority,
             delay,
+            false,
             true,
             false,
             false
@@ -118,6 +124,7 @@ public record KFrameTaskDescription(
             delay,
             false,
             false,
+            false,
             false
         );
     }
@@ -141,6 +148,7 @@ public record KFrameTaskDescription(
             event,
             priority,
             0,
+            false,
             true,
             false,
             false
@@ -166,6 +174,7 @@ public record KFrameTaskDescription(
             event,
             priority,
             0,
+            false,
             true,
             true,
             false
@@ -192,6 +201,7 @@ public record KFrameTaskDescription(
             event,
             priority,
             delay,
+            false,
             true,
             true,
             false
