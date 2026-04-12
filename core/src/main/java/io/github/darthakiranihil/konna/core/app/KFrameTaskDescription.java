@@ -208,4 +208,163 @@ public record KFrameTaskDescription(
         );
     }
 
+    /**
+     * Convenience factory method for descriptions of tasks that are executed asynchronously,
+     * in each frame.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a persistent task
+     */
+    public static KFrameTaskDescription ofAsyncPersistent(
+        final String taskId,
+        final KFrameEvent event,
+        int priority
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            0,
+            true,
+            false,
+            false,
+            false
+        );
+    }
+
+    /**
+     * Convenience factory method for descriptions of tasks that are executed asynchronously,
+     * only once, cannot be scheduled multiple times during one frame loop iteration and
+     * executed only after specified amount of completed frames.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @param delay Number of frame loop iterations that must complete before this task is executed
+     * @return Description of a temporal delayed task
+     */
+    public static KFrameTaskDescription ofAsyncTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority,
+        int delay
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            delay,
+            true,
+            true,
+            false,
+            false
+        );
+    }
+
+    /**
+     * Convenience factory method for descriptions of tasks that are executed asynchronously,
+     * always once in specified amount of frames.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @param delay Number of frame loop iterations that must complete before this task is executed
+     * @return Description of a persistent delayed task
+     */
+    public static KFrameTaskDescription ofAsyncDelayedPersistent(
+        final String taskId,
+        final KFrameEvent event,
+        int priority,
+        int delay
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            delay,
+            true,
+            false,
+            false,
+            false
+        );
+    }
+
+    /**
+     * Convenience factory method for descriptions of tasks that are executed asynchronously,
+     * only once, cannot be scheduled multiple times during one frame loop iteration and
+     * executed in the next frame.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a temporal immediate task
+     */
+    public static KFrameTaskDescription ofAsyncImmediateTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            0,
+            true,
+            true,
+            false,
+            false
+        );
+    }
+
+    /**
+     * Convenience factory method for descriptions of tasks that are executed asynchronously,
+     * only once, can be scheduled multiple times during one frame loop iteration and
+     * executed in the next frame.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a temporal immediate repeatable task
+     */
+    public static KFrameTaskDescription ofAsyncRepeatableTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            0,
+            true,
+            true,
+            true,
+            false
+        );
+    }
+
+    /**
+     * Convenience factory method for descriptions of tasks that are executed asynchronously,
+     * only once, can be scheduled multiple times during one frame loop iteration and
+     * executed only after specified amount of completed frames.
+     * @param taskId Unique task id
+     * @param event Event the task is executed on
+     * @param priority Initial task priority. May be overridden by scheduler
+     * @return Description of a temporal immediate repeatable task
+     */
+    public static KFrameTaskDescription ofAsyncDelayedRepeatableTemporal(
+        final String taskId,
+        final KFrameEvent event,
+        int priority,
+        int delay
+    ) {
+        return new KFrameTaskDescription(
+            taskId,
+            event,
+            priority,
+            delay,
+            true,
+            true,
+            true,
+            false
+        );
+    }
+
 }
