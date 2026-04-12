@@ -41,7 +41,6 @@ import java.util.function.Consumer;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardMessageSystem extends KObject implements KQueueBasedMessageSystem {
 
     private static final String WATCHER_THREAD_NAME = "KStandardMessageSystem.watcher";

@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.entity.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
@@ -38,6 +39,7 @@ import java.util.Objects;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KEntityMetadataCollection
     extends KObject

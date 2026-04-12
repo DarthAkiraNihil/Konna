@@ -21,7 +21,6 @@ import imgui.glfw.ImGuiImplGlfw;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGui;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiController;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiIo;
@@ -33,7 +32,6 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 @KExcludeFromGeneratedCoverageReport
 public class KImGuiControllerSpair extends KImGuiController {
 

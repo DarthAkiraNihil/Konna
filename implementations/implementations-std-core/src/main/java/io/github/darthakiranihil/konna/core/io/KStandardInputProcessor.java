@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.io;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.control.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -32,7 +31,6 @@ import java.util.List;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStandardInputProcessor extends KObject implements KInputProcessor {
 
     private final List<KInputControlScheme> controlSchemes;

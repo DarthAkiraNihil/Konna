@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -37,7 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 @SuppressWarnings("unchecked")
 public class KHashMapBasedCache extends KObject implements KCache {
 

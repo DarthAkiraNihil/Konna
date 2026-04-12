@@ -68,18 +68,6 @@ public class TestModule extends KAbstractModule {
     }
 
     @KSingleton
-    public KTileCollection tileCollection() {
-        return new KTileCollection(
-            this.appContainer.getInstanceInferred(KAssetLoader.class),
-            new KHashMapBasedCache(),
-            new KTilePropertyCollection(
-                this.appContainer.getInstanceInferred(KAssetLoader.class),
-                this.appContainer.getInstanceInferred(KActivator.class)
-            )
-        );
-    }
-
-    @KSingleton
     public KLevelLoader levelLoader() {
         return new KStandardLevelLoader(
             this.appContainer.getInstanceInferred(KEventSystem.class),

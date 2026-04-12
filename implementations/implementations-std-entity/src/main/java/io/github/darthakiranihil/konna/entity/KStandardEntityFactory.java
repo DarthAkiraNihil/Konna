@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.entity;
 import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -36,7 +35,6 @@ import java.util.*;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStandardEntityFactory extends KObject implements KEntityFactory {
 
     private final KEntityMetadataCollection metadataCollection;

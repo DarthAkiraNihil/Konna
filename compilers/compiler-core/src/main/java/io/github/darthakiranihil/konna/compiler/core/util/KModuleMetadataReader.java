@@ -27,6 +27,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -229,7 +230,8 @@ public final class KModuleMetadataReader {
                     ok = false;
                 }
 
-                if (providedType.getAnnotation(KProvided.class) != null)  {
+                Element providedElement = ((DeclaredType) providedType).asElement();
+                if (providedElement.getAnnotation(KProvided.class) != null)  {
                     this.messager.printError(
                         String.format(
                             "%s: Attempt to add provider for guaranteed provided type %s",
@@ -237,6 +239,7 @@ public final class KModuleMetadataReader {
                             providedType
                         )
                     );
+                    ok = false;
                 }
 
                 providedTypes.add(providedType);

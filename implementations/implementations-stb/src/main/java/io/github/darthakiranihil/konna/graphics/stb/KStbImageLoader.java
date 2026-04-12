@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
@@ -37,7 +36,6 @@ import java.nio.IntBuffer;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStbImageLoader extends KObject implements KImageLoader {
 
     private final KStbImage stbImage;

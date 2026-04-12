@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
@@ -49,7 +48,6 @@ import java.util.*;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStandardLevelLoader extends KObject implements KLevelLoader {
 
     private record RawSector(
