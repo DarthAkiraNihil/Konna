@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.core.app.glfw;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameLock;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
@@ -43,7 +42,6 @@ import java.util.Map;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 @KExcludeFromGeneratedCoverageReport
 public class KGlfwFrame extends KObject implements KFrame {
 

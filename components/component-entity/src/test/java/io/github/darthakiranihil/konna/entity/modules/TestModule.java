@@ -66,11 +66,4 @@ public class TestModule extends KAbstractModule {
         );
     }
 
-    @KSingleton
-    public KEntityMetadataCollection getEntityMetadataCollection() {
-        return new KEntityMetadataCollection(this.appContainer.getInstanceInferred(KAssetLoader.class));
-    }
-
-
-
 }

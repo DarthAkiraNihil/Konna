@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
@@ -68,24 +69,17 @@ public class TestModule extends KAbstractModule {
     }
 
     @KSingleton
-    public KTileCollection tileCollection() {
-        return new KTileCollection(
-            this.appContainer.getInstanceInferred(KAssetLoader.class),
-            new KHashMapBasedCache(),
-            new KTilePropertyCollection(
-                this.appContainer.getInstanceInferred(KAssetLoader.class),
-                this.appContainer.getInstanceInferred(KActivator.class)
-            )
-        );
-    }
-
-    @KSingleton
     public KLevelLoader levelLoader() {
         return new KStandardLevelLoader(
             this.appContainer.getInstanceInferred(KEventSystem.class),
             this.appContainer.getInstanceInferred(KActivator.class),
             this.appContainer.getInstanceInferred(KTileCollection.class)
         );
+    }
+
+    @KSingleton
+    public KCache cache() {
+        return new KHashMapBasedCache();
     }
 
 

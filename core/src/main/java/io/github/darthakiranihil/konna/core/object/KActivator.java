@@ -51,7 +51,7 @@ public interface KActivator {
      *     However, it's important to notice that some objects are not in containers but still
      *     need to be singleton (for example,
      *     {@link io.github.darthakiranihil.konna.core.app.KApplicationFeatures}). This behavior
-     *     might be specified by {@link io.github.darthakiranihil.konna.core.di.KInjectable}. In
+     *     might be specified by {@link io.github.darthakiranihil.konna.core.di.KSingleton}. In
      *     this case activator should firstly look if it has been previously created.
      * </p>
      * <p>

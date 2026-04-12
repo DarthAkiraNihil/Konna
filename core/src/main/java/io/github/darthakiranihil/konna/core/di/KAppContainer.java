@@ -103,6 +103,12 @@ public abstract class KAppContainer implements KContainer {
             throw new KIllegalStateException("Engine module is not initialized");
         }
 
+        if (clazz.isAnnotationPresent(KProvided.class)) {
+            return this.engineModule
+                .activator()
+                .createObject(clazz);
+        }
+
         Object moduleClassObject = this.engineModule.getInstance(clazz);
         return moduleClassObject == null
             ? this.getRawInstance(clazz)

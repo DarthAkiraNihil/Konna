@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
@@ -27,7 +26,6 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardJsonStringifier extends KObject implements KJsonStringifier {
 
     public KStandardJsonStringifier() {

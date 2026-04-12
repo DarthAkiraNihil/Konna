@@ -22,7 +22,6 @@ import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -37,7 +36,6 @@ import java.util.List;
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public final class KClassGraphClasspathSearchEngine
     extends KObject
     implements KClasspathSearchEngine {

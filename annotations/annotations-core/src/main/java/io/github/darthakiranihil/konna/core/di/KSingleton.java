@@ -31,12 +31,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface KSingleton {
-
-    /**
-     * Flag that indicates if singleton is immortal, so it cannot be "deleted"
-     * and only application termination can destroy immortal objects. Has priority above
-     * weak flag, so if both weak and immortal are true, weak flag will be ignored.
-     * @return Flag of object immortality
-     */
-    boolean immortal() default false;
 }

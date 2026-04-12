@@ -16,10 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Utility class that stores records about all objects, created with
@@ -29,7 +31,6 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public final class KStandardObjectRegistry extends KObject implements KObjectRegistry {
 
     private final Set<KObjectRegistryRecord> objects;

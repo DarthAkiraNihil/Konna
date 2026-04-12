@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
@@ -35,6 +37,8 @@ import java.util.*;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
+@KSingleton
 public final class KLevelGeneratorMetadataCollection
     implements KAssetCollection<KLevelGeneratorMetadata> {
 

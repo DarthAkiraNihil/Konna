@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KTag;
@@ -34,7 +33,6 @@ import java.util.*;
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardFrameTaskSystem
     extends KObject
     implements KFrameTaskSystem {

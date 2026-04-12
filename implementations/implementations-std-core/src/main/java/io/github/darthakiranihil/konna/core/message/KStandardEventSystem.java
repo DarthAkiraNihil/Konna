@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.message;
 import io.github.darthakiranihil.konna.core.except.KNotFoundException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
@@ -36,7 +35,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardEventSystem extends KObject implements KQueueBasedEventSystem {
 
     private static final String WATCHER_THREAD_NAME = "KStandardEventSystem.watcher";

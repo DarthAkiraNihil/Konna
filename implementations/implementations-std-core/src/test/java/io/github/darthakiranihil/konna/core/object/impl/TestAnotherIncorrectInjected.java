@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.di;
+package io.github.darthakiranihil.konna.core.object.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class TestAnotherIncorrectInjected {
 
-/**
- * Marks that this parameter should be taken from another module.
- * Must be used only inside modules' constructors.
- *
- * @since 0.6.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.PARAMETER)
-public @interface KTakeFrom {
+    private int aboba;
 
-    /**
-     * @return Module class to take implementation from
-     */
-    Class<?> module();
+    public TestAnotherIncorrectInjected() {
+    }
 
+    public TestAnotherIncorrectInjected(int aboba) {
+        this.aboba = aboba;
+    }
 }

@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.compiler.core.util;
 
 import io.github.darthakiranihil.konna.core.di.KAlsoProvides;
+import io.github.darthakiranihil.konna.core.di.KProvided;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.util.KAnnotationUtils;
 import org.jspecify.annotations.Nullable;
@@ -26,6 +27,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -221,6 +223,18 @@ public final class KModuleMetadataReader {
                     this.messager.printError(
                         String.format(
                             "%s: Conflict: type %s has been already provided by this module",
+                            moduleClassName,
+                            providedType
+                        )
+                    );
+                    ok = false;
+                }
+
+                Element providedElement = ((DeclaredType) providedType).asElement();
+                if (providedElement.getAnnotation(KProvided.class) != null)  {
+                    this.messager.printError(
+                        String.format(
+                            "%s: Attempt to add provider for guaranteed provided type %s",
                             moduleClassName,
                             providedType
                         )

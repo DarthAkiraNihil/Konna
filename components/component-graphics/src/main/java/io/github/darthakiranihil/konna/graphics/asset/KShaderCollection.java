@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -39,6 +40,7 @@ import java.util.Objects;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KShaderCollection extends KObject implements KAssetCollection<KShader> {
 

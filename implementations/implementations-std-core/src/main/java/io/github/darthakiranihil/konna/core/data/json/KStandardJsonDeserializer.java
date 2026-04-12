@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
@@ -39,7 +38,6 @@ import java.util.*;
  * @author Darth Akira Nihil
  */
 @NullUnmarked
-@KSingleton(immortal = true)
 public class KStandardJsonDeserializer extends KObject implements KJsonDeserializer {
 
     private static Unsafe theUnsafe = null;

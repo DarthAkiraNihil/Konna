@@ -16,9 +16,19 @@
 
 package io.github.darthakiranihil.konna.core.object.impl;
 
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.di.KTransient;
+import io.github.darthakiranihil.konna.core.di.KInject;
 
-@KTransient(temporal = true)
-public class TestTemporal extends KObject {
+public class TestIncorrectInjected {
+
+    private int aboba;
+
+    @KInject
+    public TestIncorrectInjected(int aboba) {
+        this.aboba = aboba;
+    }
+
+    @KInject
+    public TestIncorrectInjected() {
+    }
+
 }

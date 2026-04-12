@@ -22,19 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Explicitly marks class as transient, so on each instantiation
- * requires a new instance for each creation.
+ * Marks that this class can be provided even though it is not in the app container.
+ * But more precisely, it restricts using annotated class in modules since getting
+ * its instance is bypassed through KActivator.
  *
- * @since 0.2.0
+ * @since 0.6.0
  * @author Darth Akira Nihil
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface KTransient {
-    /**
-     * Flag that indicated if object should be temporal, that handling depends
-     * on implementation.
-     * @return Flag of object temporality
-     */
-    boolean temporal() default false;
+public @interface KProvided {
 }

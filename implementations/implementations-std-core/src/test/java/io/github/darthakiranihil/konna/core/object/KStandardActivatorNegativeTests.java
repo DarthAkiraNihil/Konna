@@ -55,4 +55,16 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
             () -> this.activator.createObject(TestAbstractClass.class, () -> new Object[0])
         );
     }
+
+    @Test
+    public void testCreateIncorrectInjectedObjects() {
+        Assertions.assertThrows(
+            KInstantiationException.class,
+            () -> this.activator.createObject(TestIncorrectInjected.class)
+        );
+        Assertions.assertThrows(
+            KInstantiationException.class,
+            () -> this.activator.createObject(TestAnotherIncorrectInjected.class)
+        );
+    }
 }
