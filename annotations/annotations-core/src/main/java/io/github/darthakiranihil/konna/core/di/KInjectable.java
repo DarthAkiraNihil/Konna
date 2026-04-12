@@ -21,6 +21,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// todo: possibly remove
+/**
+ * Marks that annotated class is not provided by container, but still can be injected
+ * into another class. However, it also defines annotated class to be instantiated
+ * with the only instance (wtf actually).
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface KInjectable {

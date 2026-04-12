@@ -23,6 +23,8 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.KImFont;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImFontConfig;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
+// todo: fix the fact it is not added to container anymore
+//       so we can't create this and other related classes
 @KExcludeFromGeneratedCoverageReport
 final class KImFontConfigSpair implements KImFontConfig {
 
