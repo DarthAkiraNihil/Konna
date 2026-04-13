@@ -45,7 +45,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
 
     private static final int INITIAL_CAPACITY = 64;
 
-    private static sealed abstract class RegistryRecord implements KObjectRegistryRecord {
+    private abstract static sealed class RegistryRecord implements KObjectRegistryRecord {
 
         private final UUID recordId;
         private final UUID objectId;
@@ -53,7 +53,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         private final Class<?> objectClass;
         private final Set<String> objectTags;
 
-        public RegistryRecord(Object object) {
+        RegistryRecord(final Object object) {
             this.recordId = UUID.randomUUID();
 
             Class<?> objectClazz = object.getClass();
@@ -120,7 +120,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
 
         private final WeakReference<?> ref;
 
-        public CommonObjectRecord(final Object object, final WeakReference<?> ref) {
+        CommonObjectRecord(final Object object, final WeakReference<?> ref) {
             super(object);
             this.ref = ref;
         }
@@ -157,7 +157,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
 
         private final Object object;
 
-        public ImmortalObjectRecord(final Object object) {
+        ImmortalObjectRecord(final Object object) {
             super(object);
             this.object = object;
         }
@@ -185,6 +185,9 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
 
     }
 
+    /**
+     * Constant for frame task description for removing all dead records, that point to nothing.
+     */
     public static final KFrameTaskDescription
         REMOVE_DEAD_RECORDS_TASK = KFrameTaskDescription.ofAsyncDelayedPersistent(
         "ObjectsRegistry.removeDeadRecords",

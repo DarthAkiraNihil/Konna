@@ -145,6 +145,9 @@ public class KObject implements Serializable {
         return this.name;
     }
 
+    /**
+     * @return Set of tags associated with this object
+     */
     public Set<String> tags() {
         return this.tags;
     }

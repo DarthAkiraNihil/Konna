@@ -30,14 +30,68 @@ import java.util.UUID;
  */
 public interface KObjectRegistry {
 
+    /**
+     * Constant for tag attached to all synthetic records (that store non-KObjects).
+     */
     String SYNTHETIC_TAG = "synthetic";
 
+    /**
+     * Adds an object to this registry.
+     * @param object Object to add
+     * @return Registry record created for pushed object
+     *
+     * @since 0.6.0
+     */
     KObjectRegistryRecord pushObject(Object object);
+
+    /**
+     * Adds an object to this registry. Pushing an object with this method guarantees that it
+     * won't be deleted nor collected by GC, unless it is explicitly deleted.
+     * @param object Object to add
+     * @return Registry record created for pushed object
+     *
+     * @since 0.6.0
+     */
     KObjectRegistryRecord pushImmortalObject(Object object);
+
+    /**
+     * @param objectId ID of object to get record of
+     * @return Registry record associated with passed object id or {@code null} if it is not found
+     *
+     * @since 0.6.0
+     */
     @Nullable KObjectRegistryRecord getObject(UUID objectId);
+
+    /**
+     * Removes a registry record for specific object, if corresponding id is presented
+     * in the registry.
+     * @param objectId ID of object to remove
+     *
+     * @since 0.6.0
+     */
     void removeObject(UUID objectId);
+
+    /**
+     * @param tag Tag to be in found objects
+     * @return Set of objects that are in this registry and have specified tag
+     *
+     * @since 0.6.0
+     */
     Set<KObjectRegistryRecord> getObjectsWithTag(String tag);
+
+    /**
+     * @param clazz Required type of referenced objects
+     * @return Set of objects that are in this registry and stored instances have specified type
+     *
+     * @since 0.6.0
+     */
     Set<KObjectRegistryRecord> getObjectsOfType(Class<?> clazz);
+
+    /**
+     * @return Set of all objects stored in this registry
+     *
+     * @since 0.6.0
+     */
     Set<KObjectRegistryRecord> getObjects();
 
 
