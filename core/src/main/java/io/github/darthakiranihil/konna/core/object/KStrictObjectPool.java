@@ -16,8 +16,5 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-public interface KPoolable {
-
-    void reset();
-
+final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
 }

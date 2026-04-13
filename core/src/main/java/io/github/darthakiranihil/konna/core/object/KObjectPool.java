@@ -35,7 +35,20 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KObjectPool<T extends KPoolable> extends KObject {
+public abstract sealed class KObjectPool<T extends KPoolable>
+    extends KObject
+    permits KStrictObjectPool, KForgivingObjectPool, KExtensibleObjectPool {
+
+    public static <T extends KPoolable> KObjectPool<T> create(
+        final KActivator activator,
+        final KPoolMetadata metadata
+    ) {
+        switch (metadata.noObjectPolicy()) {
+            case THROW_EXCEPTION ->
+            case RETURN_EMPTY ->
+            case EXTEND_THEN_RETURN_NEW ->
+        }
+    }
 
     /**
      * Reference to the method of pooled class that is called
@@ -187,7 +200,7 @@ public class KObjectPool<T extends KPoolable> extends KObject {
      * by another requester class (through {@link KActivator}).
      * @param object Object to return
      */
-    public void release(final T object) {
+    void release(final T object) {
 
         if (this.onObjectRelease != null) {
             KReflectionUtils.invokeMethod(this.onObjectRelease, object);

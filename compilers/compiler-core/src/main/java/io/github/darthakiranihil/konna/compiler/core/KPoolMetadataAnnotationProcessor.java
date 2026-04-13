@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.compiler.core;
 
 import com.google.auto.service.AutoService;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.object.KPoolMetadata;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
@@ -34,15 +33,18 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Annotation processor, specializing on checking correctness of a pollable classes
- * (that must be marked with {@link KPoolMetadata} annotation).
  * <p>
- * A valid poolable class must have either
- * one and only one method marked with {@link KOnPoolableObjectObtain}
- * and {@link KOnPoolableObjectRelease} correspondingly or none of them.
- * Multiple methods with such annotations, one method with both of them,
- * only one method with one of these annotations are not allowed and will
- * cause a compilation error.
+ *     Annotation processor, specializing on checking correctness of a pollable classes
+ *     (that must be marked with {@link KPoolMetadata} annotation).
+ * </p>
+ * <p>
+     * A valid poolable class must have either
+     * one and only one method marked with {@link KOnPoolableObjectObtain} or none.
+     * Multiple methods with such annotation, are not allowed and will cause a compilation error.
+ * </p>
+ * <p>
+ *     Also, a poolable class must implement {@code KPoolable} interface and contain
+ *     a non-public zero-arg constructor.
  * </p>
  *
  * @since 0.4.0
@@ -86,7 +88,7 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
 
             if (
                 metadata.noObjectPolicy()
-                    == KPoolMetadata.NoObjectPolicy.EXTEND_THEN_RETURN_NON_NULL
+                    == KPoolMetadata.NoObjectPolicy.EXTEND_THEN_RETURN_NEW
                 && metadata.extensionFactor() < 1.0
             ) {
                 this.messager.printError(
@@ -96,7 +98,6 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
             }
 
             int onObtain = 0;
-            int onRelease = 0;
             boolean hasZeroArgConstructor = false;
 
             for (Element enclosed: classElement.getEnclosedElements()) {
@@ -104,6 +105,13 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
                     ExecutableElement method = (ExecutableElement) enclosed;
                     if (method.getParameters().isEmpty()) {
                         hasZeroArgConstructor = true;
+                    }
+
+                    if (method.getModifiers().contains(Modifier.PUBLIC)) {
+                        this.messager.printError(
+                            "Constructor must not be public for poolable classes",
+                            classElement
+                        );
                     }
                     continue;
                 }
@@ -114,28 +122,9 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
 
                 ExecutableElement method = (ExecutableElement) enclosed;
                 var onObtainAnnotation = method.getAnnotation(KOnPoolableObjectObtain.class);
-                var onReleaseAnnotation = method.getAnnotation(KOnPoolableObjectRelease.class);
-
-                if (onObtainAnnotation != null && onReleaseAnnotation != null) {
-                    this.messager.printError(
-                        String.format(
-                            "%s: Cannot have both %s and %s on a single method at the time",
-                            canonicalName,
-                            KOnPoolableObjectObtain.class.getSimpleName(),
-                            KOnPoolableObjectRelease.class.getSimpleName()
-                        ),
-                        classElement
-                    );
-                }
-
                 if (onObtainAnnotation != null) {
                     onObtain++;
                 }
-
-                if (onReleaseAnnotation != null) {
-                    onRelease++;
-                }
-
             }
 
             if (onObtain > 1) {
@@ -144,29 +133,6 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
                         "%s: %s",
                         canonicalName,
                         "Cannot have more that one onObtain method on a poolable object"
-                    ),
-                    classElement
-                );
-            }
-
-            if (onRelease > 1) {
-                this.messager.printError(
-                    String.format(
-                        "%s: %s",
-                        canonicalName,
-                        "Cannot have more that one onRelease method on a poolable object"
-                    ),
-                    classElement
-                );
-            }
-
-            if (onRelease != onObtain) {
-                this.messager.printError(
-                    String.format(
-                        "%s: %s",
-                        canonicalName,
-                            "A poolable class must have either none "
-                        +   "or both of onRelease and onObtain methods"
                     ),
                     classElement
                 );

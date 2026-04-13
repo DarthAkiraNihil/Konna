@@ -23,17 +23,14 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * Marks class as poolable so all instances of this class should be retrieved
- * from their assigned pool when instantiation is requested.
+ *     Annotates class with information about pool that is needed to be created for this type.
  * </p>
  * <p>
- * Each poolable class should provide either both 2 methods annotated with
- * {@link KOnPoolableObjectObtain} and {@link KOnPoolableObjectRelease} correspondingly
- * or none of them. Multiple methods with such annotations, one method with both of them,
- * only one method with one of these annotations are not allowed and will
- * be prevented at compile-time.
+ *     Each annotated class must implement {@code KPoolable} interface, provide
+ *     a non-public zero-arg constructor and at most one method annotated with
+ *     {@link KOnPoolableObjectObtain}.
  * </p>
- *
+
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
@@ -42,9 +39,9 @@ import java.lang.annotation.Target;
 public @interface KPoolMetadata {
 
     enum NoObjectPolicy {
-        RETURN_NULL,
+        RETURN_EMPTY,
         THROW_EXCEPTION,
-        EXTEND_THEN_RETURN_NON_NULL
+        EXTEND_THEN_RETURN_NEW
     }
 
     /**
@@ -54,6 +51,5 @@ public @interface KPoolMetadata {
     int initialSize();
     NoObjectPolicy noObjectPolicy() default NoObjectPolicy.THROW_EXCEPTION;
     float extensionFactor() default 1.5f;
-    boolean soft() default false;
 
 }
