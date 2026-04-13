@@ -42,7 +42,7 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         final Class<T> clazz,
         final KActivator activator,
         final KObjectRegistry objectRegistry,
-        final KPoolMetadata metadata
+        final KAllocatePool metadata
     ) {
         if (metadata.extensible()) {
             return switch (metadata.noObjectPolicy()) {

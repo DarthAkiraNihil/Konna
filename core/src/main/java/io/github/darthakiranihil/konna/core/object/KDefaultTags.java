@@ -63,7 +63,7 @@ public final class KDefaultTags extends KUninstantiable {
     public static final String SINGLETON = "singleton";
     /**
      * Marks that the object is poolable.
-     * @see KPoolMetadata
+     * @see KAllocatePool
      */
     public static final String POOLABLE = "poolable";
     /**
@@ -73,7 +73,7 @@ public final class KDefaultTags extends KUninstantiable {
     /**
      * Marks that the object is hold by a weak reference.
      * @see io.github.darthakiranihil.konna.core.di.KSingleton
-     * @see KPoolMetadata
+     * @see KAllocatePool
      */
     public static final String WEAK = "weak";
     /**

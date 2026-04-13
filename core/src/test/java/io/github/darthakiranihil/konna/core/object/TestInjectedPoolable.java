@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import org.jspecify.annotations.Nullable;
 
-@KPoolMetadata(
+@KAllocatePool(
     initialSize = 2
 )
 public class TestInjectedPoolable implements KPoolable {

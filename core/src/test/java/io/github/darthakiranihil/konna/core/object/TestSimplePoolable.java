@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-@KPoolMetadata(
+@KAllocatePool(
     initialSize = 2
 )
 public class TestSimplePoolable implements KPoolable {

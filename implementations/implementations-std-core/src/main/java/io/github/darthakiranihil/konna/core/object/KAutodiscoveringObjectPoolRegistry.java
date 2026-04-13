@@ -37,7 +37,7 @@ public class KAutodiscoveringObjectPoolRegistry implements KObjectPoolRegistry {
         try (var poolables = classpath
             .query()
             .implementsInterface(KPoolable.class)
-            .withAnnotation(KPoolMetadata.class)
+            .withAnnotation(KAllocatePool.class)
             .execute()
         ) {
             var loadedPoolables = poolables
@@ -52,7 +52,7 @@ public class KAutodiscoveringObjectPoolRegistry implements KObjectPoolRegistry {
                     loadedPoolable,
                     activator,
                     objectRegistry,
-                    loadedPoolable.getAnnotation(KPoolMetadata.class)
+                    loadedPoolable.getAnnotation(KAllocatePool.class)
                 );
 
                 this.pools.put(loadedPoolable, pool);

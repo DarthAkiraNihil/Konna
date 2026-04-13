@@ -17,10 +17,10 @@
 package io.github.darthakiranihil.konna.core.object.poolables;
 
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KPoolMetadata;
+import io.github.darthakiranihil.konna.core.object.KAllocatePool;
 import io.github.darthakiranihil.konna.core.object.KPoolable;
 
-@KPoolMetadata(
+@KAllocatePool(
     initialSize = 2
 )
 public class TestExplicitPoolable implements KPoolable {

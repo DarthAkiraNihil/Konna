@@ -30,14 +30,14 @@ import java.lang.annotation.Annotation;
 @NullMarked
 public class KObjectPoolsTests extends KStandardTestClass {
 
-    private static KPoolMetadata materializePoolMetadata(
+    private static KAllocatePool materializePoolMetadata(
         int initialSize,
-        KPoolMetadata.NoObjectPolicy noObjectPolicy,
+        KAllocatePool.NoObjectPolicy noObjectPolicy,
         boolean extensible,
         int maxSize,
         float extensionFactor
     ) {
-        return new KPoolMetadata() {
+        return new KAllocatePool() {
             @Override
             public int initialSize() {
                 return initialSize;
@@ -65,7 +65,7 @@ public class KObjectPoolsTests extends KStandardTestClass {
 
             @Override
             public Class<? extends Annotation> annotationType() {
-                return KPoolMetadata.class;
+                return KAllocatePool.class;
             }
         };
     }
@@ -332,7 +332,7 @@ public class KObjectPoolsTests extends KStandardTestClass {
             clazz,
             this.activator,
             this.objectRegistry,
-            materializePoolMetadata(2, KPoolMetadata.NoObjectPolicy.THROW_EXCEPTION, false, -1, 1.5f)
+            materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.THROW_EXCEPTION, false, -1, 1.5f)
         );
     }
 
@@ -341,7 +341,7 @@ public class KObjectPoolsTests extends KStandardTestClass {
             clazz,
             this.activator,
             this.objectRegistry,
-            materializePoolMetadata(2, KPoolMetadata.NoObjectPolicy.RETURN_EMPTY, false, -1, 1.5f)
+            materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.RETURN_EMPTY, false, -1, 1.5f)
         );
     }
 
@@ -350,7 +350,7 @@ public class KObjectPoolsTests extends KStandardTestClass {
             clazz,
             this.activator,
             this.objectRegistry,
-            materializePoolMetadata(2, KPoolMetadata.NoObjectPolicy.THROW_EXCEPTION, true, 3, 1.5f)
+            materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.THROW_EXCEPTION, true, 3, 1.5f)
         );
     }
 
@@ -359,7 +359,7 @@ public class KObjectPoolsTests extends KStandardTestClass {
             clazz,
             this.activator,
             this.objectRegistry,
-            materializePoolMetadata(2, KPoolMetadata.NoObjectPolicy.RETURN_EMPTY, true, 3, 1.5f)
+            materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.RETURN_EMPTY, true, 3, 1.5f)
         );
     }
 

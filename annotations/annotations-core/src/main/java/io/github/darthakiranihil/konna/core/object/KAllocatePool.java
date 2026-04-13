@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface KPoolMetadata {
+public @interface KAllocatePool {
 
     enum NoObjectPolicy {
         RETURN_EMPTY,

@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.compiler.core;
 
 import com.google.auto.service.AutoService;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KPoolMetadata;
+import io.github.darthakiranihil.konna.core.object.KAllocatePool;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
 import javax.annotation.processing.Processor;
@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * <p>
  *     Annotation processor, specializing on checking correctness of a pollable classes
- *     (that must be marked with {@link KPoolMetadata} annotation).
+ *     (that must be marked with {@link KAllocatePool} annotation).
  * </p>
  * <p>
      * A valid poolable class must have either
@@ -67,7 +67,7 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
             "io.github.darthakiranihil.konna.core.object.KPoolable").asType();
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
-            KPoolMetadata.class
+            KAllocatePool.class
         )) {
 
             if (element.getKind() != ElementKind.CLASS) {
@@ -82,8 +82,8 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
                 continue;
             }
 
-            KPoolMetadata metadata = Objects.requireNonNull(
-                classElement.getAnnotation(KPoolMetadata.class)
+            KAllocatePool metadata = Objects.requireNonNull(
+                classElement.getAnnotation(KAllocatePool.class)
             );
 
             if (metadata.maxSize() < 0) {
