@@ -40,8 +40,7 @@ public @interface KPoolMetadata {
 
     enum NoObjectPolicy {
         RETURN_EMPTY,
-        THROW_EXCEPTION,
-        EXTEND_THEN_RETURN_NEW
+        THROW_EXCEPTION
     }
 
     /**
@@ -50,6 +49,9 @@ public @interface KPoolMetadata {
      */
     int initialSize();
     NoObjectPolicy noObjectPolicy() default NoObjectPolicy.THROW_EXCEPTION;
+
+    boolean extensible() default false;
+    int maxSize() default Integer.MAX_VALUE;
     float extensionFactor() default 1.5f;
 
 }

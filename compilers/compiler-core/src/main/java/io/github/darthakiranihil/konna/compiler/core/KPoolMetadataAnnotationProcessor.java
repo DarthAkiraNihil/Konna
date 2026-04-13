@@ -86,15 +86,27 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
                 classElement.getAnnotation(KPoolMetadata.class)
             );
 
-            if (
-                metadata.noObjectPolicy()
-                    == KPoolMetadata.NoObjectPolicy.EXTEND_THEN_RETURN_NEW
-                && metadata.extensionFactor() < 1.0
-            ) {
+            if (metadata.maxSize() < 0) {
                 this.messager.printError(
-                    "Cannot assign an extension factor less than 1. Are you nuts?",
+                    "Initial pool size must be positive",
                     classElement
                 );
+            }
+
+            if (metadata.extensible()) {
+                if (metadata.maxSize() < metadata.initialSize()) {
+                    this.messager.printError(
+                        "Max pool size cannot be less than its initial size",
+                        classElement
+                    );
+                }
+
+                if (metadata.extensionFactor() < 1.0) {
+                    this.messager.printError(
+                        "Cannot assign an extension factor less than 1 for extensible. Are you nuts?",
+                        classElement
+                    );
+                }
             }
 
             int onObtain = 0;
