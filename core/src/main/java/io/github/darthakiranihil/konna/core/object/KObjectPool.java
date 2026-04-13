@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -36,7 +35,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KObjectPool<T extends KPoolableObject> extends KObject {
+public class KObjectPool<T extends KPoolable> extends KObject {
 
     /**
      * Reference to the method of pooled class that is called

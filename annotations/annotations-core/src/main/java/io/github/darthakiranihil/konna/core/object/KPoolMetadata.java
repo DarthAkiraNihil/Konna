@@ -41,17 +41,19 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface KPoolMetadata {
 
+    enum NoObjectPolicy {
+        RETURN_NULL,
+        THROW_EXCEPTION,
+        EXTEND_THEN_RETURN_NON_NULL
+    }
+
     /**
      * Initial size of assigned pool, measured in objects stored in it.
      * @return Object count to store in the pool at creation
      */
-    int initialPoolSize();
-
-    /**
-     * Flag that indicates that weak references should be used
-     * in assigned object pool.
-     * @return Flag of weak reference usage in an object pool.
-     */
-    boolean weak() default false;
+    int initialSize();
+    NoObjectPolicy noObjectPolicy() default NoObjectPolicy.THROW_EXCEPTION;
+    float extensionFactor() default 1.5f;
+    boolean soft() default false;
 
 }

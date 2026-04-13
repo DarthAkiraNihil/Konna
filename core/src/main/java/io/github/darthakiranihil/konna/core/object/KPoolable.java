@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-public interface KPoolableObject extends AutoCloseable {
+public interface KPoolable extends AutoCloseable {
 
     @Override
     void close();

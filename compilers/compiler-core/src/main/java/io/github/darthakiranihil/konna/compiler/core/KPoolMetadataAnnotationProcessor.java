@@ -23,10 +23,14 @@ import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
 import io.github.darthakiranihil.konna.core.object.KPoolMetadata;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
-import javax.tools.Diagnostic;
+import javax.lang.model.type.TypeMirror;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -57,6 +61,8 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
         final Set<? extends TypeElement> annotations,
         final RoundEnvironment roundEnv
     ) {
+        TypeMirror poolableType = this.elementUtils.getTypeElement(
+            "io.github.darthakiranihil.konna.core.object.KPoolable").asType();
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
             KPoolMetadata.class
@@ -68,6 +74,26 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
 
             TypeElement classElement = (TypeElement) element;
             Name canonicalName = classElement.getQualifiedName();
+
+            if (this.typeUtils.isSubtype(classElement.asType(), poolableType)) {
+                this.messager.printError("A poolable class must extend KPoolable");
+                continue;
+            }
+
+            KPoolMetadata metadata = Objects.requireNonNull(
+                classElement.getAnnotation(KPoolMetadata.class)
+            );
+
+            if (
+                metadata.noObjectPolicy()
+                    == KPoolMetadata.NoObjectPolicy.EXTEND_THEN_RETURN_NON_NULL
+                && metadata.extensionFactor() < 1.0
+            ) {
+                this.messager.printError(
+                    "Cannot assign an extension factor less than 1. Are you nuts?",
+                    classElement
+                );
+            }
 
             int onObtain = 0;
             int onRelease = 0;
@@ -91,14 +117,14 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
                 var onReleaseAnnotation = method.getAnnotation(KOnPoolableObjectRelease.class);
 
                 if (onObtainAnnotation != null && onReleaseAnnotation != null) {
-                    this.messager.printMessage(
-                        Diagnostic.Kind.ERROR,
+                    this.messager.printError(
                         String.format(
                             "%s: Cannot have both %s and %s on a single method at the time",
                             canonicalName,
                             KOnPoolableObjectObtain.class.getSimpleName(),
                             KOnPoolableObjectRelease.class.getSimpleName()
-                        )
+                        ),
+                        classElement
                     );
                 }
 
@@ -113,47 +139,47 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
             }
 
             if (onObtain > 1) {
-                this.messager.printMessage(
-                    Diagnostic.Kind.ERROR,
+                this.messager.printError(
                     String.format(
                         "%s: %s",
                         canonicalName,
                         "Cannot have more that one onObtain method on a poolable object"
-                    )
+                    ),
+                    classElement
                 );
             }
 
             if (onRelease > 1) {
-                this.messager.printMessage(
-                    Diagnostic.Kind.ERROR,
+                this.messager.printError(
                     String.format(
                         "%s: %s",
                         canonicalName,
                         "Cannot have more that one onRelease method on a poolable object"
-                    )
+                    ),
+                    classElement
                 );
             }
 
             if (onRelease != onObtain) {
-                this.messager.printMessage(
-                    Diagnostic.Kind.ERROR,
+                this.messager.printError(
                     String.format(
                         "%s: %s",
                         canonicalName,
                             "A poolable class must have either none "
                         +   "or both of onRelease and onObtain methods"
-                    )
+                    ),
+                    classElement
                 );
             }
 
             if (!hasZeroArgConstructor) {
-                this.messager.printMessage(
-                    Diagnostic.Kind.ERROR,
+                this.messager.printError(
                     String.format(
                         "%s: %s",
                         canonicalName,
                         "A poolable class must have a zero-arg constructor"
-                    )
+                    ),
+                    classElement
                 );
             }
         }
