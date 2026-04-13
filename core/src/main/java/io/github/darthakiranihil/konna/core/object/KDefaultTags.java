@@ -76,16 +76,6 @@ public final class KDefaultTags extends KUninstantiable {
      */
     public static final String WEAK = "weak";
     /**
-     * Marks that the object is an object pool.
-     * @see KObjectPool
-     */
-    public static final String POOL = "pool";
-    /**
-     * Marks that the object is a weak object pool.
-     * @see KWeakObjectPool
-     */
-    public static final String WEAK_POOL = "weak_pool";
-    /**
      * Marks that the object is an event.
      * @see io.github.darthakiranihil.konna.core.message.KEvent
      * @see io.github.darthakiranihil.konna.core.message.KSimpleEvent

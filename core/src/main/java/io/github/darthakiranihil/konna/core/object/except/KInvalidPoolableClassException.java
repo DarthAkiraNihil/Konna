@@ -20,8 +20,7 @@ import io.github.darthakiranihil.konna.core.except.KException;
 
 /**
  * Exception thrown when there is an attempt of creating an
- * {@link io.github.darthakiranihil.konna.core.object.KObjectPool}
- * or {@link io.github.darthakiranihil.konna.core.object.KWeakObjectPool} of a class that
+ * {@link io.github.darthakiranihil.konna.core.object.KObjectPool} of a class that
  * does not fit poolable object criteria: the class contains two methods annotated with
  * {@link io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain} and
  * {@link io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease}.
