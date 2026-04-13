@@ -16,18 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Implementation that represents
@@ -40,26 +34,53 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract sealed class KObjectPool<T extends KPoolable>
     extends KObject
     permits
-        KStrictObjectPool,
-        KForgivingObjectPool,
-        KExtensibleObjectPool,
-        KForgivingExtensibleObjectPool {
+        KFixedObjectPool,
+        KExtensibleObjectPool {
 
     public static <T extends KPoolable> KObjectPool<T> create(
+        final Class<T> clazz,
         final KActivator activator,
         final KObjectRegistry objectRegistry,
         final KPoolMetadata metadata
     ) {
         if (metadata.extensible()) {
-            switch (metadata.noObjectPolicy()) {
-                case THROW_EXCEPTION ->
-                case RETURN_EMPTY ->
-            }
+            return switch (metadata.noObjectPolicy()) {
+                case THROW_EXCEPTION -> new KExtensibleObjectPool<>(
+                    clazz,
+                    activator,
+                    objectRegistry,
+                    metadata.initialSize(),
+                    metadata.maxSize(),
+                    metadata.extensionFactor(),
+                    false
+                );
+                case RETURN_EMPTY -> new KExtensibleObjectPool<>(
+                    clazz,
+                    activator,
+                    objectRegistry,
+                    metadata.initialSize(),
+                    metadata.maxSize(),
+                    metadata.extensionFactor(),
+                    true
+                );
+            };
         } else {
-            switch (metadata.noObjectPolicy()) {
-                case THROW_EXCEPTION ->
-                case RETURN_EMPTY ->
-            }
+            return switch (metadata.noObjectPolicy()) {
+                case THROW_EXCEPTION -> new KFixedObjectPool<>(
+                    clazz,
+                    activator,
+                    objectRegistry,
+                    metadata.initialSize(),
+                    false
+                );
+                case RETURN_EMPTY -> new KFixedObjectPool<>(
+                    clazz,
+                    activator,
+                    objectRegistry,
+                    metadata.initialSize(),
+                    true
+                );
+            };
         }
     }
 
@@ -71,9 +92,7 @@ public abstract sealed class KObjectPool<T extends KPoolable>
     protected KObjectPool(
         final String poolQualifier,
         final Class<T> clazz,
-        int initialSize,
-        final KActivator activator,
-        final KObjectRegistry objectRegistry
+        final KActivator activator
     ) {
         super(
             String.format("%s.%s", poolQualifier, clazz),
@@ -92,24 +111,10 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         this.onObtainParameterClasses = onObtain == null
             ? null
             : onObtain.getParameterTypes();
-
-
         this.onObjectObtain = onObtain;
-        this.initialSize = initialSize;
+
         this.clazz = clazz;
-
-        this.addTags(KDefaultTags.STD);
-
-        this.unusedObjects = new ConcurrentLinkedQueue<>();
         this.activator = activator;
-
-        for (int i = 0; i < initialSize; i++) {
-            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(clazz));
-            T object = KReflectionUtils.newInstance(constructor);
-
-            this.unusedObjects.add(object);
-            objectRegistry.pushObject(object);
-        }
     }
 
     public abstract KObtainedPoolableObject<T> obtain();

@@ -24,19 +24,23 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
+final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
+
     private final Queue<T> unusedObjects;
+    private final boolean allowObtainOnEmpty;
 
     @SuppressWarnings("unchecked")
-    KStrictObjectPool(
+    KFixedObjectPool(
         final Class<T> clazz,
-        int size,
         final KActivator activator,
-        final KObjectRegistry objectRegistry
+        final KObjectRegistry objectRegistry,
+        int size,
+        boolean allowObtainOnEmpty
     ) {
-        super("StrictPool", clazz, size, activator, objectRegistry);
-        this.unusedObjects = new ArrayBlockingQueue<>(size);
+        super(allowObtainOnEmpty ? "FixedForgivingPool" : "FixedStrictPool", clazz, activator);
 
+        this.allowObtainOnEmpty = allowObtainOnEmpty;
+        this.unusedObjects = new ArrayBlockingQueue<>(size);
         for (int i = 0; i < size; i++) {
             var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(this.clazz));
             T object = (T) KReflectionUtils.newInstance(constructor);
@@ -49,6 +53,10 @@ final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
     @Override
     public KObtainedPoolableObject<T> obtain() {
         if (this.unusedObjects.isEmpty()) {
+            if (this.allowObtainOnEmpty) {
+                return new KObtainedPoolableObject<>(this);
+            }
+
             throw new KEmptyObjectPoolException(this.clazz);
         }
 
@@ -68,6 +76,10 @@ final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
     @Override
     public KObtainedPoolableObject<T> obtain(final KArgs args) {
         if (this.unusedObjects.isEmpty()) {
+            if (this.allowObtainOnEmpty) {
+                return new KObtainedPoolableObject<>(this);
+            }
+
             throw new KEmptyObjectPoolException(this.clazz);
         }
 
