@@ -20,21 +20,53 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+import org.jspecify.annotations.Nullable;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Implementation of {@link KAbstractObjectPool} that represents
+ * Implementation that represents
  * object pool in its classic meaning.
  * @param <T> Class of poolable object
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KExcludeFromGeneratedCoverageReport // todo: remove after pool reworking
-public class KObjectPool<T> extends KAbstractObjectPool<T> {
+public class KObjectPool<T extends KPoolableObject> extends KObject {
+
+    /**
+     * Reference to the method of pooled class that is called
+     * when an object is obtained from the pool.
+     */
+    protected final @Nullable Method onObjectObtain;
+    /**
+     * Reference to the method of pooled class that is called
+     * when an object is returned to the pool (released).
+     */
+    protected final @Nullable Method onObjectRelease;
+
+    /**
+     * Class of poolable object.
+     */
+    protected final Class<T> clazz;
+
+    /**
+     * Cached parameters of the object obtaining method.
+     */
+    protected final Class<?> @Nullable[] onObtainParameterClasses;
+    /**
+     * Cached parameter annotations of the object obtaining method.
+     */
+    protected final Annotation @Nullable[][] onObtainParameterAnnotations;
+
+    /**
+     * Initial pool size, measured in objects stored in the pool.
+     */
+    protected final int initialSize;
 
     private final Queue<T> unusedObjects;
     private final KActivator activator;
@@ -45,7 +77,39 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
         final KActivator activator,
         final KObjectRegistry objectRegistry
     ) {
-        super(clazz, initialSize);
+        Method onObtain = null;
+        Method onRelease = null;
+        for (var method: clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(KOnPoolableObjectObtain.class)) {
+                method.setAccessible(true);
+                onObtain = method;
+                continue;
+            }
+
+            if (method.isAnnotationPresent(KOnPoolableObjectRelease.class)) {
+                method.setAccessible(true);
+                onRelease = method;
+                continue;
+            }
+
+            if (onObtain != null && onRelease != null) {
+                break;
+            }
+        }
+
+        if (onObtain != null) {
+            this.onObtainParameterClasses = onObtain.getParameterTypes();
+            this.onObtainParameterAnnotations = onObtain.getParameterAnnotations();
+        } else {
+            this.onObtainParameterClasses = null;
+            this.onObtainParameterAnnotations = null;
+        }
+
+        this.onObjectObtain = onObtain;
+        this.onObjectRelease = onRelease;
+        this.initialSize = initialSize;
+        this.clazz = clazz;
+
         this.addTags(KDefaultTags.STD);
 
         this.unusedObjects = new ConcurrentLinkedQueue<>();
@@ -70,7 +134,6 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
      * @throws KEmptyObjectPoolException If there is no unused objects in the pool
      * @see KInject
      */
-    @Override
     public T obtain(final Object... nonInjectedArgs) {
 
 
@@ -125,7 +188,6 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
      * by another requester class (through {@link KActivator}).
      * @param object Object to return
      */
-    @Override
     public void release(final T object) {
 
         if (this.onObjectRelease != null) {
