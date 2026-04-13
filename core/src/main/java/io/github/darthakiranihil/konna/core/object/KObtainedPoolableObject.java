@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
+import io.github.darthakiranihil.konna.core.except.KNoSuchElementException;
 import org.jspecify.annotations.Nullable;
 
 public final class KObtainedPoolableObject<T extends KPoolable> implements AutoCloseable {
@@ -39,7 +39,7 @@ public final class KObtainedPoolableObject<T extends KPoolable> implements AutoC
 
     public T get() {
         if (this.object == null) {
-            throw new KIllegalStateException("Poolable object is not provided");
+            throw new KNoSuchElementException("Poolable object is not provided");
         }
 
         return this.object;
