@@ -29,7 +29,7 @@ public class KAutodiscoveringObjectPoolRegistry implements KObjectPoolRegistry {
 
     @KInject
     @SuppressWarnings("unchecked")
-    private KAutodiscoveringObjectPoolRegistry(
+    public KAutodiscoveringObjectPoolRegistry(
         final KClasspathSearchEngine classpath,
         final KActivator activator,
         final KObjectRegistry objectRegistry
