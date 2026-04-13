@@ -16,13 +16,21 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+
 /**
  * Static class of all Konna default tags.
  *
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
+// todo: add tags attaching in KObject registry
 public final class KDefaultTags extends KUninstantiable {
+
+    @KExcludeFromGeneratedCoverageReport
+    private KDefaultTags() {
+        super();
+    }
 
     /**
      * Marks that the object is a standard implementation
@@ -44,30 +52,25 @@ public final class KDefaultTags extends KUninstantiable {
     public static final String TEST = "test";
     /**
      * Marks that the object is immortal.
-     * @see KObjectInstantiationType
      * @see io.github.darthakiranihil.konna.core.di.KSingleton
      */
     public static final String IMMORTAL = "immortal";
     /**
      * Marks that the object is a singleton.
-     * @see KObjectInstantiationType
      * @see io.github.darthakiranihil.konna.core.di.KSingleton
      */
     public static final String SINGLETON = "singleton";
     /**
      * Marks that the object is poolable.
-     * @see KObjectInstantiationType
      * @see KPoolable
      */
     public static final String POOLABLE = "poolable";
     /**
      * Marks that the object is transient.
-     * @see KObjectInstantiationType
      */
     public static final String TRANSIENT = "transient";
     /**
      * Marks that the object is hold by a weak reference.
-     * @see KObjectInstantiationType
      * @see io.github.darthakiranihil.konna.core.di.KSingleton
      * @see KPoolable
      */

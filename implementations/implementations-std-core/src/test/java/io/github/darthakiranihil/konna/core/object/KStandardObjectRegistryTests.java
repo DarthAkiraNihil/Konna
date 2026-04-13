@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.app.KFrameTaskExecutor;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskSystem;
 import io.github.darthakiranihil.konna.core.app.KStandardFrameTaskSystem;
 import io.github.darthakiranihil.konna.core.object.except.KDeletedObjectException;
@@ -27,6 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class KStandardObjectRegistryTests extends KStandardTestClass {
 
     private static final class TestObject {
@@ -40,12 +40,10 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
     }
 
     private final KObjectRegistry objectRegistry;
-    private final KFrameTaskExecutor frameTaskExecutor;
 
     public KStandardObjectRegistryTests() {
         KFrameTaskSystem frameTaskSystem = new KStandardFrameTaskSystem();
         this.objectRegistry = new KStandardObjectRegistry(frameTaskSystem);
-        this.frameTaskExecutor = frameTaskSystem;
     }
 
     @Test
@@ -69,6 +67,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         });
 
         Assertions.assertTrue(stored.getObjectTags().contains("Aboba"));
+        stored.toString();
     }
 
     @Test
@@ -92,6 +91,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         });
 
         Assertions.assertTrue(stored.getObjectTags().contains("Aboba"));
+        stored.toString();
     }
 
     @Test
@@ -115,6 +115,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         });
 
         Assertions.assertTrue(stored.getObjectTags().contains("synthetic"));
+        stored.toString();
     }
 
     @Test
@@ -138,6 +139,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         });
 
         Assertions.assertTrue(stored.getObjectTags().contains("synthetic"));
+        stored.toString();
     }
 
     @Test
@@ -162,6 +164,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         );
 
         Assertions.assertTrue(stored.getObjectTags().contains("Aboba"));
+        stored.toString();
     }
 
     @Test
@@ -187,6 +190,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         });
 
         Assertions.assertTrue(stored.getObjectTags().contains("Aboba"));
+        stored.toString();
     }
 
     @Test
@@ -211,6 +215,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         );
 
         Assertions.assertTrue(stored.getObjectTags().contains("synthetic"));
+        stored.toString();
     }
 
     @Test
@@ -235,6 +240,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
         });
 
         Assertions.assertTrue(stored.getObjectTags().contains("synthetic"));
+        stored.toString();
     }
 
     @Test
