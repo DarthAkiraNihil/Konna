@@ -191,6 +191,18 @@ public class KObject implements KDeletable, Serializable {
         this.tags.remove(tag);
     }
 
+    @Override
+    public final void delete() {
+        for (KObject child: children) {
+            child.delete();
+        }
+
+        this.deleteSelf();
+    }
+
+    protected void deleteSelf() {
+
+    }
 
     /**
      * Compares a KObject to another object.
