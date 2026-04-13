@@ -32,7 +32,7 @@ import java.util.Set;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KPoolable(
+@KPoolMetadata(
     initialPoolSize = KFrameLock.MAX_LOCKS
 )
 public final class KFrameLock extends KObject {

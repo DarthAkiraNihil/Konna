@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface KPoolable {
+public @interface KPoolMetadata {
 
     /**
      * Initial size of assigned pool, measured in objects stored in it.

@@ -20,7 +20,7 @@ package io.github.darthakiranihil.konna.compiler.core;
 import com.google.auto.service.AutoService;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
 import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
-import io.github.darthakiranihil.konna.core.object.KPoolable;
+import io.github.darthakiranihil.konna.core.object.KPoolMetadata;
 import io.github.darthakiranihil.konna.core.util.KBaseAnnotationProcessor;
 
 import javax.annotation.processing.*;
@@ -31,7 +31,7 @@ import java.util.Set;
 
 /**
  * Annotation processor, specializing on checking correctness of a pollable classes
- * (that must be marked with {@link KPoolable} annotation).
+ * (that must be marked with {@link KPoolMetadata} annotation).
  * <p>
  * A valid poolable class must have either
  * one and only one method marked with {@link KOnPoolableObjectObtain}
@@ -46,11 +46,11 @@ import java.util.Set;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.object.KPoolable"
+    "io.github.darthakiranihil.konna.core.object.KPoolMetadata"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
-public final class KPoolableAnnotationProcessor extends KBaseAnnotationProcessor {
+public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProcessor {
 
     @Override
     public boolean process(
@@ -59,7 +59,7 @@ public final class KPoolableAnnotationProcessor extends KBaseAnnotationProcessor
     ) {
 
         for (Element element : roundEnv.getElementsAnnotatedWith(
-            KPoolable.class
+            KPoolMetadata.class
         )) {
 
             if (element.getKind() != ElementKind.CLASS) {
