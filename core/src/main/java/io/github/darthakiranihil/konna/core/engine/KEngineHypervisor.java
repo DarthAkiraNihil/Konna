@@ -339,7 +339,7 @@ public class KEngineHypervisor extends KObject {
                     case FATAL: {
                         KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
                         KSystemLogger.fatal(this.name, kex);
-                        this.shutdown();
+                        this.frame.setShouldClose(true);
                         break;
                     }
                 }
@@ -348,16 +348,11 @@ public class KEngineHypervisor extends KObject {
 
         KSystemLogger.info(this.name, "Leaving frame loop");
         this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.SHUTDOWN);
-        this.shutdown();
-
     }
 
-    /**
-     * Performs graceful shutdown of this hypervisor.
-     * It won't have any effect if there is no loaded engine context.
-     */
-    public void shutdown() {
-        this.engineComponents.values().forEach(KComponent::shutdown);
+    @Override
+    protected void deleteSelf() {
+        this.engineComponents.values().forEach(KComponent::delete);
         this.engineComponents.clear();
 
         if (this.frame != null) {

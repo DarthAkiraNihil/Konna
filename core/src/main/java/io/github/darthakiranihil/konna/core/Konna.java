@@ -47,14 +47,14 @@ public final class Konna extends KObject implements Runnable {
      */
     public static final KVersion VERSION = new KVersion(0, 6, 0, "dev");
 
-    private final Thread shutdownHook;
-    private @Nullable Thread hypervisorThread;
-
-    private final KonnaBootstrapConfig bootstrapConfig;
     private final List<KApplicationArgument> applicationArgsOptions;
     private final String[] args;
 
+    private final KonnaBootstrapConfig bootstrapConfig;
+
+    private final Thread shutdownHook;
     private @Nullable KEngineHypervisor hypervisor;
+    private @Nullable Thread hypervisorThread;
 
     private static List<KApplicationArgument> defaultAndCustom(
         final List<KApplicationArgument> customArgs
@@ -76,7 +76,7 @@ public final class Konna extends KObject implements Runnable {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.args = args;
-        this.shutdownHook = new Thread(this::shutdown);
+        this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
     }
 
@@ -98,7 +98,7 @@ public final class Konna extends KObject implements Runnable {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.args = args;
-        this.shutdownHook = new Thread(this::shutdown);
+        this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
     }
 
@@ -123,7 +123,10 @@ public final class Konna extends KObject implements Runnable {
 
         KArgumentParser argParser = this.createArgumentParser();
         KApplicationFeatures features = argParser.parse(this.args, this.applicationArgsOptions);
+        Runtime.getRuntime().addShutdownHook(this.shutdownHook);
+
         this.hypervisor = this.createHypervisor();
+        this.addChild(this.hypervisor);
 
         this.hypervisorThread = new Thread(
             () -> {
@@ -133,24 +136,29 @@ public final class Konna extends KObject implements Runnable {
                 } catch (Throwable e) {
                     KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
                     KSystemLogger.fatal(this.name, e);
-                    this.hypervisor.shutdown();
+                } finally {
+                    this.hypervisor.delete();
+                    this.hypervisor = null;
                 }
             }
         );
 
         this.hypervisorThread.setName("Konna.hypervisor");
-        Runtime.getRuntime().addShutdownHook(this.shutdownHook);
         this.hypervisorThread.start();
+
     }
 
-    private void shutdown() {
-        KSystemLogger.info(this.name, "Shutdown initiated");
+    @Override
+    protected void deleteSelf() {
         if (this.hypervisor == null) {
             return;
         }
 
-        this.hypervisor.shutdown();
+        KSystemLogger.info(this.name, "Shutdown initiated");
+
+        this.hypervisor.delete();
         this.hypervisorThread = null;
+
         KSystemLogger.info(this.name, "Shutdown finished");
     }
 

@@ -197,6 +197,7 @@ public class KObject implements KDeletable, Serializable {
             child.delete();
         }
 
+        this.children.clear();
         this.deleteSelf();
     }
 
