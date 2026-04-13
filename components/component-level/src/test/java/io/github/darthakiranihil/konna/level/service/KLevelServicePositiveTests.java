@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -101,17 +102,18 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             KObjectRegistry objectRegistry = realContext.objectRegistry();
 
             messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
-
+            
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("LevelService"))
+                .filter(x -> x.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var cloc = (KLevel) currentLevel.get(service.get().object());
-            var csec = (KLevelSector) currentSector.get(service.get().object());
+            var cloc = (KLevel) currentLevel.get(service.get().getObject());
+            var csec = (KLevelSector) currentSector.get(service.get().getObject());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);
@@ -149,15 +151,16 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("LevelService"))
+                .filter(x -> x.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var cloc = (KLevel) currentLevel.get(service.get().object());
-            var csec = (KLevelSector) currentSector.get(service.get().object());
+            var cloc = (KLevel) currentLevel.get(service.get().getObject());
+            var csec = (KLevelSector) currentSector.get(service.get().getObject());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);
@@ -166,8 +169,8 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
 
             messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
 
-            cloc = (KLevel) currentLevel.get(service.get().object());
-            csec = (KLevelSector) currentSector.get(service.get().object());
+            cloc = (KLevel) currentLevel.get(service.get().getObject());
+            csec = (KLevelSector) currentSector.get(service.get().getObject());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);
@@ -207,15 +210,16 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("LevelService"))
+                .filter(x -> x.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var cloc = (KLevel) currentLevel.get(service.get().object());
-            var csec = (KLevelSector) currentSector.get(service.get().object());
+            var cloc = (KLevel) currentLevel.get(service.get().getObject());
+            var csec = (KLevelSector) currentSector.get(service.get().getObject());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);
@@ -252,15 +256,16 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("LevelService"))
+                .filter(x -> x.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var cloc = (KLevel) currentLevel.get(service.get().object());
-            var csec = (KLevelSector) currentSector.get(service.get().object());
+            var cloc = (KLevel) currentLevel.get(service.get().getObject());
+            var csec = (KLevelSector) currentSector.get(service.get().getObject());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);
@@ -271,8 +276,8 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
             body.put("sector", "mf2");
             messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
 
-            cloc = (KLevel) currentLevel.get(service.get().object());
-            csec = (KLevelSector) currentSector.get(service.get().object());
+            cloc = (KLevel) currentLevel.get(service.get().getObject());
+            csec = (KLevelSector) currentSector.get(service.get().getObject());
 
             Assertions.assertEquals("valid", cloc.name());
             Assertions.assertEquals(2, cloc.getSectorNames().length);

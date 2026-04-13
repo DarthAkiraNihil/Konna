@@ -20,7 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
-import io.github.darthakiranihil.konna.core.object.KObjectInstantiationType;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,6 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
+
+    private enum Tete {
+        ABOBA, ABIBA
+    }
 
     private final KAsset definition;
 
@@ -100,7 +103,7 @@ public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("null", KJsonValueType.class));
         Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("string_property", KJsonValueType.class));
-        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("string_property", KObjectInstantiationType.class));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("string_property", Tete.class));
 
     }
 

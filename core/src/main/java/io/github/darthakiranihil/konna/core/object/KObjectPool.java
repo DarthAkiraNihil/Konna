@@ -56,12 +56,7 @@ public class KObjectPool<T> extends KAbstractObjectPool<T> {
             T object = KReflectionUtils.newInstance(constructor);
 
             this.unusedObjects.add(object);
-            if (object instanceof KObject) {
-                objectRegistry.pushObjectToRegistry(
-                    (KObject) object,
-                    KObjectInstantiationType.POOLABLE
-                );
-            }
+            objectRegistry.pushObject(object);
         }
     }
 

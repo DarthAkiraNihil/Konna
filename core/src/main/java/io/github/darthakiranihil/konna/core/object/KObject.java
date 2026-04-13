@@ -146,6 +146,13 @@ public class KObject implements Serializable {
     }
 
     /**
+     * @return Set of tags associated with this object
+     */
+    public Set<String> tags() {
+        return this.tags;
+    }
+
+    /**
      * Adds a tag to the object.
      * @param tag Added tag
      */
@@ -184,7 +191,7 @@ public class KObject implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (this.getClass() != o.getClass()) {
             return false;
         }
         KObject kObject = (KObject) o;
