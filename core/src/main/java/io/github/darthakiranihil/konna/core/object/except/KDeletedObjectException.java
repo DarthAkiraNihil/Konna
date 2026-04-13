@@ -20,25 +20,17 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
 
 /**
- * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KActivator}
- * failed to "delete" an object.
- * By default, the exception is a warning
+ * Exception thrown when there is an attempt of getting an object from
+ * {@link io.github.darthakiranihil.konna.core.object.KObjectRegistryRecord}, but it has been
+ * deleted by GC.
  *
- * @since 0.2.0
+ * @since 0.6.0
  * @author Darth Akira Nihil
  */
-public class KDeletionException extends KException {
+public class KDeletedObjectException extends KException {
 
-    /**
-     * Constructs exception with provided object that failed to delete
-     * and provided string cause.
-     * @param object Object that failed to be deleted
-     * @param cause Cause of failure
-     */
-    public KDeletionException(final Object object, final String cause) {
-        super(
-            String.format("Cannot delete object %s - %s", object, cause)
-        );
+    public KDeletedObjectException(final String message) {
+        super(message);
     }
 
     @Override

@@ -21,34 +21,22 @@ import java.util.UUID;
 
 /**
  * Interface for utility class that stores records about all objects, created with
- * {@link KActivator} (excluding temporal). Should be
- * used in debugging, though it is possible to use it in other way.
+ * {@link KActivator} or another tools.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-// todo: more registry methods
 public interface KObjectRegistry {
 
-    /**
-     * Pushes an object to the registry. If id of the pushed object already
-     * exists in the registry, no record will be added to the registry.
-     * @param obj Object to push
-     * @param instantiationType Instantiation type of the object
-     */
-    void pushObjectToRegistry(KObject obj, KObjectInstantiationType instantiationType);
+    String SYNTHETIC_TAG = "synthetic";
 
-    /**
-     * Removes object from the registry. If the object with given id
-     * is not registered, nothing will happen.
-     * @param objectId ID of removed object.
-     */
-    void removeObjectFromRegistry(UUID objectId);
+    KObjectRegistryRecord pushObject(Object object);
+    KObjectRegistryRecord pushImmortalizedObject(Object object);
+    void immortalizeObject(UUID recordId);
+    void removeObject(UUID recordId);
+    Set<KObjectRegistryRecord> getObjectsWithTag(String tag);
+    Set<KObjectRegistryRecord> getObjectsOfType(String tag);
+    Set<KObjectRegistryRecord> getObjects();
 
-    /**
-     * Lists all objects that have been registered.
-     * @return Set of all registered objects.
-     */
-    Set<KObjectRegistryRecord> listObjects();
 
 }
