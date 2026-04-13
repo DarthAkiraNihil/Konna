@@ -35,7 +35,7 @@ import java.util.Set;
 @KPoolMetadata(
     initialSize = KFrameLock.MAX_LOCKS
 )
-public final class KFrameLock extends KObject {
+public final class KFrameLock extends KObject implements KPoolable {
 
     /**
      * Max number of active frame locks.
@@ -59,8 +59,8 @@ public final class KFrameLock extends KObject {
         lockedFrame.addLock(this);
     }
 
-    @KOnPoolableObjectRelease
-    private void unlock() {
+    @Override
+    public void reset() {
         if (this.frame == null) {
             return;
         }

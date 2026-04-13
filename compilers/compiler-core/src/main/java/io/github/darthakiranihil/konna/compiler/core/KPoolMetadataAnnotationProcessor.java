@@ -77,8 +77,8 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
             TypeElement classElement = (TypeElement) element;
             Name canonicalName = classElement.getQualifiedName();
 
-            if (this.typeUtils.isSubtype(classElement.asType(), poolableType)) {
-                this.messager.printError("A poolable class must extend KPoolable");
+            if (!this.typeUtils.isSubtype(classElement.asType(), poolableType)) {
+                this.messager.printError("A poolable class must extend KPoolable", classElement);
                 continue;
             }
 

@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jspecify.annotations.Nullable;
@@ -85,6 +86,8 @@ public abstract sealed class KObjectPool<T extends KPoolable>
     }
 
     protected final Class<?> clazz;
+
+    private final boolean isOnObtainInjected;
     private final @Nullable Method onObjectObtain;
     private final Class<?> @Nullable[] onObtainParameterClasses;
     private final KActivator activator;
@@ -108,9 +111,13 @@ public abstract sealed class KObjectPool<T extends KPoolable>
             }
         }
 
-        this.onObtainParameterClasses = onObtain == null
-            ? null
-            : onObtain.getParameterTypes();
+        if (onObtain == null) {
+            this.onObtainParameterClasses = null;
+            this.isOnObtainInjected = false;
+        } else {
+            this.onObtainParameterClasses = onObtain.getParameterTypes();
+            this.isOnObtainInjected = onObtain.isAnnotationPresent(KInject.class);
+        }
         this.onObjectObtain = onObtain;
 
         this.clazz = clazz;
@@ -128,8 +135,10 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         }
 
         Object[] args = new Object[this.onObtainParameterClasses.length];
-        for (int i = 0; i < args.length; i++) {
-            args[i] = this.activator.createObject(this.onObtainParameterClasses[i]);
+        if (this.isOnObtainInjected) {
+            for (int i = 0; i < args.length; i++) {
+                args[i] = this.activator.createObject(this.onObtainParameterClasses[i]);
+            }
         }
 
         KReflectionUtils.invokeMethod(
@@ -149,10 +158,14 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         Object[] args = new Object[this.onObtainParameterClasses.length];
         Object[] explicit = explicitArgs.unpack();
 
-        for (int i = 0; i < args.length; i++) {
-            args[i] = (i < explicit.length)
-                ? explicit[i]
-                : this.activator.createObject(this.onObtainParameterClasses[i]);
+        if (this.isOnObtainInjected) {
+            for (int i = 0; i < args.length; i++) {
+                args[i] = (i < explicit.length)
+                    ? explicit[i]
+                    : this.activator.createObject(this.onObtainParameterClasses[i]);
+            }
+        } else {
+            System.arraycopy(explicit, 0, args, 0, explicit.length);
         }
 
         KReflectionUtils.invokeMethod(
