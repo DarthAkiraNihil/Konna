@@ -24,6 +24,10 @@ public final class KObtainedPoolableObject<T extends KPoolable> implements AutoC
     private final @Nullable T object;
     private final KObjectPool<T> pool;
 
+    public KObtainedPoolableObject(final KObjectPool<T> pool) {
+        this(null, pool);
+    }
+
     public KObtainedPoolableObject(final @Nullable T object, final KObjectPool<T> pool) {
         this.object = object;
         this.pool = pool;

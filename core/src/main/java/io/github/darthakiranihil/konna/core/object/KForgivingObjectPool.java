@@ -16,5 +16,77 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
+
+import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+
 final class KForgivingObjectPool<T extends KPoolable> extends KObjectPool<T> {
+    private final Queue<T> unusedObjects;
+
+    @SuppressWarnings("unchecked")
+    KForgivingObjectPool(
+        final Class<T> clazz,
+        int size,
+        final KActivator activator,
+        final KObjectRegistry objectRegistry
+    ) {
+        super("StrictPool", clazz, size, activator, objectRegistry);
+        this.unusedObjects = new ArrayBlockingQueue<>(size);
+
+        for (int i = 0; i < size; i++) {
+            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(this.clazz));
+            T object = (T) KReflectionUtils.newInstance(constructor);
+
+            this.unusedObjects.add(object);
+            objectRegistry.pushObject(object);
+        }
+    }
+
+    @Override
+    public KObtainedPoolableObject<T> obtain() {
+        if (this.unusedObjects.isEmpty()) {
+            return new KObtainedPoolableObject<>(this);
+        }
+
+        T obtained = this.unusedObjects.poll();
+        return this.prepareObject(obtained);
+    }
+
+    @Override
+    public KObtainedPoolableObject<T> obtain(int timeout) {
+        if (this.unusedObjects.isEmpty()) {
+            KThreadUtils.sleepForSeconds(timeout);
+        }
+
+        return this.obtain();
+    }
+
+    @Override
+    public KObtainedPoolableObject<T> obtain(final KArgs args) {
+        if (this.unusedObjects.isEmpty()) {
+            return new KObtainedPoolableObject<>(this);
+        }
+
+        T obtained = this.unusedObjects.poll();
+        return this.prepareObject(obtained, args);
+    }
+
+    @Override
+    public KObtainedPoolableObject<T> obtain(final KArgs args, int timeout) {
+        if (this.unusedObjects.isEmpty()) {
+            KThreadUtils.sleepForSeconds(timeout);
+        }
+
+        return this.obtain(args);
+    }
+
+    @Override
+    void release(T object) {
+        super.release(object);
+        this.unusedObjects.add(object);
+    }
+
 }

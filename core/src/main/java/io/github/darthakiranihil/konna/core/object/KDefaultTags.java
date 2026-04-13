@@ -50,6 +50,7 @@ public final class KDefaultTags extends KUninstantiable {
      * Marks that the object is used or created in test context.
      */
     public static final String TEST = "test";
+    public static final String POOL = "pool";
     /**
      * Marks that the object is immortal.
      * @see io.github.darthakiranihil.konna.core.di.KSingleton

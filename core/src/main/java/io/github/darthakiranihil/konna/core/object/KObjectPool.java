@@ -19,10 +19,12 @@ package io.github.darthakiranihil.konna.core.object;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -37,88 +39,62 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public abstract sealed class KObjectPool<T extends KPoolable>
     extends KObject
-    permits KStrictObjectPool, KForgivingObjectPool, KExtensibleObjectPool {
+    permits
+        KStrictObjectPool,
+        KForgivingObjectPool,
+        KExtensibleObjectPool,
+        KForgivingExtensibleObjectPool {
 
     public static <T extends KPoolable> KObjectPool<T> create(
         final KActivator activator,
+        final KObjectRegistry objectRegistry,
         final KPoolMetadata metadata
     ) {
-        switch (metadata.noObjectPolicy()) {
-            case THROW_EXCEPTION ->
-            case RETURN_EMPTY ->
-            case EXTEND_THEN_RETURN_NEW ->
+        if (metadata.extensible()) {
+            switch (metadata.noObjectPolicy()) {
+                case THROW_EXCEPTION ->
+                case RETURN_EMPTY ->
+            }
+        } else {
+            switch (metadata.noObjectPolicy()) {
+                case THROW_EXCEPTION ->
+                case RETURN_EMPTY ->
+            }
         }
     }
 
-    /**
-     * Reference to the method of pooled class that is called
-     * when an object is obtained from the pool.
-     */
-    protected final @Nullable Method onObjectObtain;
-    /**
-     * Reference to the method of pooled class that is called
-     * when an object is returned to the pool (released).
-     */
-    protected final @Nullable Method onObjectRelease;
-
-    /**
-     * Class of poolable object.
-     */
-    protected final Class<T> clazz;
-
-    /**
-     * Cached parameters of the object obtaining method.
-     */
-    protected final Class<?> @Nullable[] onObtainParameterClasses;
-    /**
-     * Cached parameter annotations of the object obtaining method.
-     */
-    protected final Annotation @Nullable[][] onObtainParameterAnnotations;
-
-    /**
-     * Initial pool size, measured in objects stored in the pool.
-     */
-    protected final int initialSize;
-
-    private final Queue<T> unusedObjects;
+    protected final Class<?> clazz;
+    private final @Nullable Method onObjectObtain;
+    private final Class<?> @Nullable[] onObtainParameterClasses;
     private final KActivator activator;
 
-    public KObjectPool(
+    protected KObjectPool(
+        final String poolQualifier,
         final Class<T> clazz,
         int initialSize,
         final KActivator activator,
         final KObjectRegistry objectRegistry
     ) {
+        super(
+            String.format("%s.%s", poolQualifier, clazz),
+            Collections.singleton(KDefaultTags.POOL)
+        );
+
         Method onObtain = null;
-        Method onRelease = null;
         for (var method: clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(KOnPoolableObjectObtain.class)) {
                 method.setAccessible(true);
                 onObtain = method;
-                continue;
-            }
-
-            if (method.isAnnotationPresent(KOnPoolableObjectRelease.class)) {
-                method.setAccessible(true);
-                onRelease = method;
-                continue;
-            }
-
-            if (onObtain != null && onRelease != null) {
                 break;
             }
         }
 
-        if (onObtain != null) {
-            this.onObtainParameterClasses = onObtain.getParameterTypes();
-            this.onObtainParameterAnnotations = onObtain.getParameterAnnotations();
-        } else {
-            this.onObtainParameterClasses = null;
-            this.onObtainParameterAnnotations = null;
-        }
+        this.onObtainParameterClasses = onObtain == null
+            ? null
+            : onObtain.getParameterTypes();
+
 
         this.onObjectObtain = onObtain;
-        this.onObjectRelease = onRelease;
         this.initialSize = initialSize;
         this.clazz = clazz;
 
@@ -136,78 +112,62 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         }
     }
 
-    /**
-     * Obtains an object from the pool. Calling this is a risky operation
-     * if pool is not extensible and behaviour of getting object from an
-     * empty pool is not specified.
-     * @param nonInjectedArgs Arguments that are not injected
-     *                        (passed explicitly) when onObtain method is invoked
-     * @return A pooled object
-     * @throws KEmptyObjectPoolException If there is no unused objects in the pool
-     * @see KInject
-     */
-    public T obtain(final Object... nonInjectedArgs) {
+    public abstract KObtainedPoolableObject<T> obtain();
+    public abstract KObtainedPoolableObject<T> obtain(int timeout);
+    public abstract KObtainedPoolableObject<T> obtain(KArgs explicitArgs);
+    public abstract KObtainedPoolableObject<T> obtain(KArgs explicitArgs, int timeout);
 
-
-        if (this.unusedObjects.peek() == null) {
-            throw new KEmptyObjectPoolException(this.clazz);
-        }
-        var obtained = this.unusedObjects.peek();
-
-        // no onObtain - no parameter classes and annotations
-        if (
-                this.onObjectObtain == null
-            ||  this.onObtainParameterClasses == null
-            ||  this.onObtainParameterAnnotations == null
-        ) {
-            this.unusedObjects.poll();
-            return obtained;
+    protected final KObtainedPoolableObject<T> prepareObject(T obtained) {
+        if (this.onObjectObtain == null || this.onObtainParameterClasses == null) {
+            return new KObtainedPoolableObject<>(obtained, this);
         }
 
-        Object[] parameters = new Object[this.onObtainParameterClasses.length];
-        int nonResolvedArgsProcessed = 0;
-
-        for (int i = 0; i < this.onObtainParameterClasses.length; i++) {
-            boolean isNonResolved = true;
-            for (int j = 0; j < this.onObtainParameterAnnotations[i].length; j++) {
-                if (this.onObtainParameterAnnotations[i][j] instanceof KInject) {
-                    isNonResolved = false;
-                    break;
-                }
-            }
-
-            if (isNonResolved) {
-                parameters[i] = nonInjectedArgs[nonResolvedArgsProcessed];
-                nonResolvedArgsProcessed++;
-            } else {
-                parameters[i] = this.activator.createObject(this.onObtainParameterClasses[i]);
-            }
+        Object[] args = new Object[this.onObtainParameterClasses.length];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = this.activator.createObject(this.onObtainParameterClasses[i]);
         }
 
         KReflectionUtils.invokeMethod(
             this.onObjectObtain,
             obtained,
-            parameters
+            args
         );
 
-        this.unusedObjects.poll();
-        return obtained;
-
+        return new KObtainedPoolableObject<>(obtained, this);
     }
+
+    protected final KObtainedPoolableObject<T> prepareObject(final T obtained, final KArgs explicitArgs) {
+        if (this.onObjectObtain == null || this.onObtainParameterClasses == null) {
+            return new KObtainedPoolableObject<>(obtained, this);
+        }
+
+        Object[] args = new Object[this.onObtainParameterClasses.length];
+        Object[] explicit = explicitArgs.unpack();
+
+        for (int i = 0; i < args.length; i++) {
+            args[i] = (i < explicit.length)
+                ? explicit[i]
+                : this.activator.createObject(this.onObtainParameterClasses[i]);
+        }
+
+        KReflectionUtils.invokeMethod(
+            this.onObjectObtain,
+            obtained,
+            args
+        );
+
+        return new KObtainedPoolableObject<>(obtained, this);
+    }
+
 
     /**
      * Returns object back to the pool, making it available to be taken
      * by another requester class (through {@link KActivator}).
      * @param object Object to return
      */
+    @MustBeInvokedByOverriders
     void release(final T object) {
-
-        if (this.onObjectRelease != null) {
-            KReflectionUtils.invokeMethod(this.onObjectRelease, object);
-        }
-        this.unusedObjects.add(object);
-
+        object.reset();
     }
-
 
 }

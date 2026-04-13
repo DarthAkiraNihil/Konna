@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
@@ -24,20 +23,36 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
-    private final Queue<T> unusedObjects;
+final class KForgivingExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
+
+    private final Object extensionLock = new Object();
+
+    private int currentSize;
+    private final int maxSize;
+    private final float extensionFactor;
+    private final KObjectRegistry objectRegistry;
+
+    private Queue<T> unusedObjects;
 
     @SuppressWarnings("unchecked")
-    KStrictObjectPool(
+    KForgivingExtensibleObjectPool(
         final Class<T> clazz,
-        int size,
+        int initialSize,
+        int maxSize,
+        float extensionFactor,
         final KActivator activator,
         final KObjectRegistry objectRegistry
     ) {
-        super("StrictPool", clazz, size, activator, objectRegistry);
-        this.unusedObjects = new ArrayBlockingQueue<>(size);
+        super("ExtensiblePool", clazz, initialSize, activator, objectRegistry);
 
-        for (int i = 0; i < size; i++) {
+        this.objectRegistry = objectRegistry;
+
+        this.maxSize = maxSize;
+        this.extensionFactor = extensionFactor;
+        this.currentSize = initialSize;
+
+        this.unusedObjects = new ArrayBlockingQueue<>(initialSize);
+        for (int i = 0; i < initialSize; i++) {
             var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(this.clazz));
             T object = (T) KReflectionUtils.newInstance(constructor);
 
@@ -46,10 +61,38 @@ final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private void extend() {
+        if (this.currentSize >= this.maxSize) {
+            return;
+        }
+
+        int newSize = Math.min((int) ((float) this.currentSize * this.extensionFactor), this.maxSize);
+        synchronized (this.extensionLock) {
+            this.unusedObjects.clear();
+            this.unusedObjects = new ArrayBlockingQueue<>(newSize);
+        }
+
+        int diff = newSize - this.currentSize;
+        for (int i = 0; i < diff; i++) {
+            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(this.clazz));
+            T object = (T) KReflectionUtils.newInstance(constructor);
+
+            this.unusedObjects.add(object);
+            this.objectRegistry.pushObject(object);
+        }
+
+        this.currentSize = newSize;
+    }
+
     @Override
     public KObtainedPoolableObject<T> obtain() {
         if (this.unusedObjects.isEmpty()) {
-            throw new KEmptyObjectPoolException(this.clazz);
+            this.extend();
+        }
+
+        if (this.unusedObjects.isEmpty()) {
+            return new KObtainedPoolableObject<>(this);
         }
 
         T obtained = this.unusedObjects.poll();
@@ -68,7 +111,11 @@ final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
     @Override
     public KObtainedPoolableObject<T> obtain(final KArgs args) {
         if (this.unusedObjects.isEmpty()) {
-            throw new KEmptyObjectPoolException(this.clazz);
+            this.extend();
+        }
+
+        if (this.unusedObjects.isEmpty()) {
+            return new KObtainedPoolableObject<>(this);
         }
 
         T obtained = this.unusedObjects.poll();
@@ -87,7 +134,9 @@ final class KStrictObjectPool<T extends KPoolable> extends KObjectPool<T> {
     @Override
     void release(T object) {
         super.release(object);
-        this.unusedObjects.add(object);
+        synchronized (this.extensionLock) {
+            this.unusedObjects.add(object);
+        }
     }
 
 }
