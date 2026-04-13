@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -104,14 +105,15 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
 
             KObjectRegistry objectRegistry = realContext.objectRegistry();
             var renderServiceResult = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("RenderService"))
+                .filter(x -> x.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("RenderService"))
                 .findFirst();
 
             Assertions.assertTrue(renderServiceResult.isPresent());
 
-            var renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            var renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().getObject());
             Assertions.assertEquals(1, renderables.size());
             Assertions.assertEquals(obj, renderables.getFirst());
 
@@ -120,13 +122,13 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
             TimeUnit.SECONDS.sleep(2);
             messageSystem.deliverMessageSync(KMessage.regular("bulkRender", body));
 
-            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().getObject());
             Assertions.assertEquals(1, renderables.size());
 
             TimeUnit.SECONDS.sleep(2);
             messageSystem.deliverMessageSync(KMessage.regular("bulkAddToRender", body));
 
-            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().getObject());
             Assertions.assertEquals(2, renderables.size());
 
             Assertions.assertEquals(obj, renderables.getFirst());

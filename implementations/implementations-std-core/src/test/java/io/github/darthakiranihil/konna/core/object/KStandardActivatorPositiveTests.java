@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.core.app.KStandardFrameTaskSystem;
 import io.github.darthakiranihil.konna.core.object.impl.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -27,21 +28,21 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     private final KObjectRegistry objectRegistry;
     
     public KStandardActivatorPositiveTests() {
-        this.objectRegistry = new KStandardObjectRegistry();
+        this.objectRegistry = new KStandardObjectRegistry(new KStandardFrameTaskSystem());
         this.activator = new KStandardActivator(new AppContainer(), this.objectRegistry);
     }
 
     private void assertExists(KObject... objects) {
-        var registered = this.objectRegistry.listObjects();
+        var registered = this.objectRegistry.getObjects();
         for (var object: objects) {
-            Assertions.assertTrue(registered.stream().anyMatch(x -> x.object().id() == object.id()));
+            Assertions.assertTrue(registered.stream().anyMatch(x -> ((KObject) x.getCastObject()).id() == object.id()));
         }
     }
 
     private void assertNotExists(KObject... objects) {
-        var registered = this.objectRegistry.listObjects();
+        var registered = this.objectRegistry.getObjects();
         for (var object: objects) {
-            Assertions.assertTrue(registered.stream().allMatch(x -> x.object().id() != object.id()));
+            Assertions.assertTrue(registered.stream().allMatch(x -> ((KObject) x.getCastObject()).id() != object.id()));
         }
     }
 

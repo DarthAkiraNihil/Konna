@@ -166,8 +166,7 @@ public class KEngineHypervisor extends KObject {
                 KComponent loaded = componentLoader.load(
                     this.engineModule, features, this.systemFeatures
                 );
-                // todo: remove KObjectInstantiationType after reworking registry
-                objectRegistry.pushObjectToRegistry(loaded, KObjectInstantiationType.SINGLETON);
+                objectRegistry.pushImmortalObject(loaded);
                 this.engineComponents.put(loaded.name(), loaded);
             }
 

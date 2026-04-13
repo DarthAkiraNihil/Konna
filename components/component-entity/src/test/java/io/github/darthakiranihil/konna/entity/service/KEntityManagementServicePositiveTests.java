@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -108,15 +109,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("EntityManagementService"))
+                .filter(o -> o.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().object());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().object());
+            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
 
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
@@ -181,15 +183,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("restoreEntity", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("EntityManagementService"))
+                .filter(o -> o.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().object());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().object());
+            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
 
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
@@ -243,15 +246,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("EntityManagementService"))
+                .filter(o -> o.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().object());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().object());
+            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
 
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
@@ -318,15 +322,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("EntityManagementService"))
+                .filter(o -> o.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().object());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().object());
+            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
 
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
@@ -377,15 +382,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
 
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("EntityManagementService"))
+                .filter(o -> o.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().object());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().object());
+            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
 
             Assertions.assertEquals(1, active.size());
             Assertions.assertEquals(0, inactive.size());
@@ -433,15 +439,16 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             KMessageSystem messageSystem = realContext.messageSystem();
             KObjectRegistry objectRegistry = realContext.objectRegistry();
             var service = objectRegistry
-                .listObjects()
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("EntityManagementService"))
+                .filter(o -> o.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
                 .findFirst();
 
             Assertions.assertTrue(service.isPresent());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().object());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().object());
+            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
 
             KUniversalMap entityIdBody = new KUniversalMap();
             entityIdBody.put("entity_id", UUID.randomUUID());

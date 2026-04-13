@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
+// todo: rework on phantom references, but when new managed object model will appear
 public final class KStandardObjectRegistry extends KObject implements KObjectRegistry {
 
     private static final int INITIAL_CAPACITY = 64;
@@ -87,6 +88,26 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         @Override
         public Set<String> getObjectTags() {
             return this.objectTags;
+        }
+
+        @Override
+        public String toString() {
+            if (this.isSynthetic()) {
+                return String.format(
+                    "[%s] -> %s object (class: %s, synthetic record)",
+                    this.recordId,
+                    this.isImmortal() ? "immortal" : "common",
+                    this.objectClass
+                );
+            } else {
+                return String.format(
+                    "[%s] -> [%s], %s object (class: %s)",
+                    this.recordId,
+                    this.objectId,
+                    this.isImmortal() ? "immortal" : "common",
+                    this.objectClass
+                );
+            }
         }
     }
 

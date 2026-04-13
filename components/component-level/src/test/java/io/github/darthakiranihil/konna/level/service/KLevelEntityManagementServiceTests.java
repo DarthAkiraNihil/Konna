@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -109,13 +110,14 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         var serviceOpt =  objectRegistry
-            .listObjects()
+            .getObjects()
             .stream()
-            .filter(o -> o.object().name().equals("LevelEntityManagementService"))
+            .filter(x -> x.getObject() instanceof KService)
+            .filter(o -> ((KService) o.getCastObject()).name().equals("LevelEntityManagementService"))
             .findFirst();
 
         Assertions.assertTrue(serviceOpt.isPresent());
-        var service = (KLevelEntityManagementService) serviceOpt.get().object();
+        var service = (KLevelEntityManagementService) serviceOpt.get().getObject();
 
         this.currentLevel = KReflectionUtils.getFieldValue(
             KLevelEntityManagementService.class,

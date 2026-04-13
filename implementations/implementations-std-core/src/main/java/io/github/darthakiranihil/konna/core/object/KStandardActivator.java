@@ -104,10 +104,14 @@ public class KStandardActivator extends KObject implements KActivator {
         Object instantiated = this.injectConstructorAndCreate(clazz);
         this.injectFields(instantiated, clazz);
         this.injectMethods(instantiated, clazz);
-        this.pushToRegistry(instantiated);
+
         if (isSingleton) {
             this.singletons.put(clazz, instantiated);
+            this.objectRegistry.pushImmortalObject(instantiated);
+        } else {
+            this.objectRegistry.pushObject(instantiated);
         }
+
         return (T) instantiated;
 
     }
@@ -139,7 +143,7 @@ public class KStandardActivator extends KObject implements KActivator {
         Object instantiated = this.injectConstructorAndCreate(clazz, explicitArgs);
         this.injectFields(instantiated, clazz);
         this.injectMethods(instantiated, clazz);
-        this.pushToRegistry(instantiated);
+        this.objectRegistry.pushObject(instantiated);
         return (T) instantiated;
     }
 
@@ -231,14 +235,4 @@ public class KStandardActivator extends KObject implements KActivator {
 
     }
 
-    private void pushToRegistry(final Object object) {
-        if (!(object instanceof KObject)) {
-            return;
-        }
-
-        this.objectRegistry.pushObjectToRegistry(
-            (KObject) object,
-            KObjectInstantiationType.SINGLETON
-        );
-    }
 }

@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import io.github.darthakiranihil.konna.core.app.KStandardFrameTaskSystem;
 import io.github.darthakiranihil.konna.core.di.except.KDependencyResolveException;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
@@ -30,7 +31,9 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
 
     protected KStandardActivatorNegativeTests() {
         super();
-        this.activator = new KStandardActivator(new AppContainer(), new KStandardObjectRegistry());
+        this.activator = new KStandardActivator(new AppContainer(), new KStandardObjectRegistry(
+            new KStandardFrameTaskSystem()
+        ));
     }
 
     @Test

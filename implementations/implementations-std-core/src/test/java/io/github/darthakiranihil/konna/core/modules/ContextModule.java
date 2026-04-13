@@ -61,7 +61,9 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KObjectRegistry objectRegistry() {
-        return new KStandardObjectRegistry();
+        return new KStandardObjectRegistry(
+            this.appContainer.getInstanceInferred(KFrameTaskScheduler.class)
+        );
     }
 
     @KSingleton

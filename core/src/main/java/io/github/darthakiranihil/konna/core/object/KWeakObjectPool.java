@@ -59,12 +59,7 @@ public class KWeakObjectPool<T> extends KAbstractObjectPool<T> {
             T object = KReflectionUtils.newInstance(constructor);
 
             this.unusedObjects.add(new WeakReference<>(object));
-            if (object instanceof KObject) {
-                objectRegistry.pushObjectToRegistry(
-                    (KObject) object,
-                    KObjectInstantiationType.WEAK_POOLABLE
-                );
-            }
+            objectRegistry.pushObject(object);
         }
     }
 
