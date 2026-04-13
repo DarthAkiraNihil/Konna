@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +34,7 @@ public interface KObjectRegistry {
 
     KObjectRegistryRecord pushObject(Object object);
     KObjectRegistryRecord pushImmortalObject(Object object);
+    @Nullable KObjectRegistryRecord getObject(UUID objectId);
     void removeObject(UUID objectId);
     Set<KObjectRegistryRecord> getObjectsWithTag(String tag);
     Set<KObjectRegistryRecord> getObjectsOfType(Class<?> clazz);

@@ -21,10 +21,15 @@ import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.except.KDeletedObjectException;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -203,7 +208,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
             )
         );
 
-        this.records = new HashMap<>(INITIAL_CAPACITY);
+        this.records = new ConcurrentHashMap<>(INITIAL_CAPACITY);
         this.referenceQueue = new ReferenceQueue<>();
 
         frameTaskScheduler.scheduleTask(REMOVE_DEAD_RECORDS_TASK, this::removeDeadObjects);
@@ -228,9 +233,14 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
 
     }
 
+    @Override
+    public @Nullable KObjectRegistryRecord getObject(final UUID objectId) {
+        return this.records.get(objectId);
+    }
 
     @Override
     public void removeObject(final UUID objectId) {
+        // todo: phantomize but on new managed object model
         this.records.remove(objectId);
     }
 
@@ -239,7 +249,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         return this.records
             .values()
             .stream()
-            .filter(x -> x.isPresent() && x.getObjectTags().contains(tag))
+            .filter(x -> x.getObjectTags().contains(tag))
             .collect(Collectors.toUnmodifiableSet());
     }
 
@@ -248,7 +258,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         return this.records
             .values()
             .stream()
-            .filter(x -> x.isPresent() && x.getObjectClass().equals(clazz))
+            .filter(x -> x.getObjectClass().equals(clazz))
             .collect(Collectors.toUnmodifiableSet());
     }
 
