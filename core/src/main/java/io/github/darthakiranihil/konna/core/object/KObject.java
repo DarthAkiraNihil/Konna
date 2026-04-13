@@ -27,7 +27,7 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KObject implements Serializable {
+public class KObject implements KDeletable, Serializable {
 
     private static final String DEFAULT_OBJECT_NAME = "object@%d";
 
