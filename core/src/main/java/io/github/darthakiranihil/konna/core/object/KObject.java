@@ -50,7 +50,8 @@ public class KObject implements KDeletable, Serializable {
     /**
      * Parent object.
      */
-    @Nullable protected KObject parent;
+    private @Nullable KObject parent;
+    private final Set<KObject> children;
 
     /**
      * Zero-args KObject constructor.
@@ -61,6 +62,7 @@ public class KObject implements KDeletable, Serializable {
         this.name = String.format(DEFAULT_OBJECT_NAME, KObject.createdObjects);
         this.tags = new HashSet<>();
         this.parent = null;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
@@ -74,6 +76,7 @@ public class KObject implements KDeletable, Serializable {
         this.name = name;
         this.tags = new HashSet<>();
         this.parent = null;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
@@ -88,6 +91,7 @@ public class KObject implements KDeletable, Serializable {
         this.name = name;
         this.tags = new HashSet<>();
         this.parent = parent;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
@@ -103,6 +107,7 @@ public class KObject implements KDeletable, Serializable {
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.parent = parent;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
@@ -117,38 +122,47 @@ public class KObject implements KDeletable, Serializable {
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.parent = null;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
 
     /**
-     * Sets a new parent object for current one.
+     * Sets a new parent object for this object.
      * @param parent New parent object.
      */
-    public void setParent(final KObject parent) {
+    public final void setParent(final KObject parent) {
+        if (this.parent != null) {
+            this.parent.children
+                .removeIf(x -> x.id.equals(this.id));
+        }
+
         this.parent = parent;
+        parent.children.add(this);
+    }
+
+    public final void addChild(final KObject child) {
+        child.setParent(this);
     }
 
     /**
-     * Returns id of the object.
      * @return ID of the object
      */
-    public UUID id() {
+    public final UUID id() {
         return this.id;
     }
 
     /**
-     * Returns name of the object.
      * @return Name of the object
      */
-    public String name() {
+    public final String name() {
         return this.name;
     }
 
     /**
      * @return Set of tags associated with this object
      */
-    public Set<String> tags() {
+    public final Set<String> tags() {
         return this.tags;
     }
 
@@ -156,7 +170,7 @@ public class KObject implements KDeletable, Serializable {
      * Adds a tag to the object.
      * @param tag Added tag
      */
-    public void addTag(final String tag) {
+    public final void addTag(final String tag) {
         this.tags.add(tag);
     }
 
@@ -165,7 +179,7 @@ public class KObject implements KDeletable, Serializable {
      * being added.
      * @param addedTags List of added tags.
      */
-    public void addTags(final String... addedTags) {
+    public final void addTags(final String... addedTags) {
         this.tags.addAll(List.of(addedTags));
     }
 
@@ -173,7 +187,7 @@ public class KObject implements KDeletable, Serializable {
      * Removes a tag from the object.
      * @param tag Tag to remove
      */
-    public void removeTag(final String tag) {
+    public final void removeTag(final String tag) {
         this.tags.remove(tag);
     }
 
