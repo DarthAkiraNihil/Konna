@@ -16,10 +16,16 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
+import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.except.KDeletedObjectException;
+
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Utility class that stores records about all objects, created with
@@ -31,57 +37,215 @@ import java.util.UUID;
  */
 public final class KStandardObjectRegistry extends KObject implements KObjectRegistry {
 
-    private final Set<KObjectRegistryRecord> objects;
+    private static final int INITIAL_CAPACITY = 64;
 
-    public KStandardObjectRegistry() {
+    private static sealed abstract class RegistryRecord implements KObjectRegistryRecord {
+
+        private final UUID recordId;
+        private final UUID objectId;
+        private final boolean isSynthetic;
+        private final Class<?> objectClass;
+        private final Set<String> objectTags;
+
+        public RegistryRecord(Object object) {
+            this.recordId = UUID.randomUUID();
+
+            Class<?> objectClazz = object.getClass();
+            if (KObject.class.isAssignableFrom(objectClazz)) {
+                this.objectTags = ((KObject) object).tags();
+                this.objectId = ((KObject) object).id();
+                this.isSynthetic = false;
+            } else {
+                this.objectTags = Collections.singleton(KObjectRegistry.SYNTHETIC_TAG);
+                this.objectId = this.recordId;
+                this.isSynthetic = true;
+            }
+
+            this.objectClass = objectClazz;
+        }
+
+        @Override
+        public UUID recordId() {
+            return this.recordId;
+        }
+
+        @Override
+        public UUID objectId() {
+            return this.objectId;
+        }
+
+        @Override
+        public boolean isSynthetic() {
+            return this.isSynthetic;
+        }
+
+        @Override
+        public Class<?> getObjectClass() {
+            return this.objectClass;
+        }
+
+        @Override
+        public Set<String> getObjectTags() {
+            return this.objectTags;
+        }
+    }
+
+    private static final class CommonObjectRecord extends RegistryRecord {
+
+        private final WeakReference<?> ref;
+
+        public CommonObjectRecord(final Object object, final WeakReference<?> ref) {
+            super(object);
+            this.ref = ref;
+        }
+
+        @Override
+        public boolean isPresent() {
+            return this.ref.get() != null;
+        }
+
+        @Override
+        public boolean isImmortal() {
+            return false;
+        }
+
+        @Override
+        public Object getObject() {
+            Object object = this.ref.get();
+            if (object == null) {
+                throw new KDeletedObjectException("Object has been deleted");
+            }
+
+            return object;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getCastObject() {
+            return (T) this.getObject();
+        }
+
+    }
+
+    private static final class ImmortalObjectRecord extends RegistryRecord {
+
+        private final Object object;
+
+        public ImmortalObjectRecord(final Object object) {
+            super(object);
+            this.object = object;
+        }
+
+        @Override
+        public boolean isPresent() {
+            return true;
+        }
+
+        @Override
+        public boolean isImmortal() {
+            return true;
+        }
+
+        @Override
+        public Object getObject() {
+            return this.object;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getCastObject() {
+            return (T) this.getObject();
+        }
+
+    }
+
+    public static final KFrameTaskDescription
+        REMOVE_DEAD_RECORDS_TASK = KFrameTaskDescription.ofAsyncDelayedPersistent(
+        "ObjectsRegistry.removeDeadRecords",
+        KFrameEvent.FRAME_FINISHED,
+        Integer.MAX_VALUE,
+        7200
+    );
+
+    private final Map<UUID, KObjectRegistryRecord> records;
+    private final ReferenceQueue<Object> referenceQueue;
+
+    @KInject
+    public KStandardObjectRegistry(
+        final KFrameTaskScheduler frameTaskScheduler
+    ) {
         super(
-            "object_registry",
+            "ObjectRegistry",
             Set.of(
                 KDefaultTags.SYSTEM,
                 KDefaultTags.STD
             )
         );
-        this.objects = new HashSet<>();
+
+        this.records = new HashMap<>(INITIAL_CAPACITY);
+        this.referenceQueue = new ReferenceQueue<>();
+
+        frameTaskScheduler.scheduleTask(REMOVE_DEAD_RECORDS_TASK, this::removeDeadObjects);
     }
 
-    /**
-     * Pushes an object to the registry. If id of the pushed object already
-     * exists in the registry, no record will be added to the registry.
-     * @param obj Object to push
-     * @param instantiationType Instantiation type of the object
-     */
     @Override
-    public void pushObjectToRegistry(
-        final KObject obj,
-        final KObjectInstantiationType instantiationType
-    ) {
-        this.objects.add(
-            new KObjectRegistryRecord(
-                obj,
-                instantiationType
-            )
-        );
+    public KObjectRegistryRecord pushObject(final Object object) {
+
+        WeakReference<?> ref = new WeakReference<>(object, this.referenceQueue);
+        KObjectRegistryRecord objectRecord = new CommonObjectRecord(object, ref);
+        this.records.put(objectRecord.objectId(), objectRecord);
+        return objectRecord;
+
     }
 
-    /**
-     * Removes object from the registry. If the object with given id
-     * is not registered, nothing will happen.
-     * @param objectId ID of removed object.
-     */
     @Override
-    public void removeObjectFromRegistry(final UUID objectId) {
-        this.objects.removeIf(
-            (x) -> x.object().id() == objectId
-        );
+    public KObjectRegistryRecord pushImmortalObject(final Object object) {
+
+        KObjectRegistryRecord objectRecord = new ImmortalObjectRecord(object);
+        this.records.put(objectRecord.objectId(), objectRecord);
+        return objectRecord;
+
     }
 
-    /**
-     * Lists all objects that have been registered.
-     * @return Set of all registered objects.
-     */
+
     @Override
-    public Set<KObjectRegistryRecord> listObjects() {
-        return Collections.unmodifiableSet(this.objects);
+    public void removeObject(final UUID objectId) {
+        this.records.remove(objectId);
+    }
+
+    @Override
+    public Set<KObjectRegistryRecord> getObjectsWithTag(final String tag) {
+        return this.records
+            .values()
+            .stream()
+            .filter(x -> x.isPresent() && x.getObjectTags().contains(tag))
+            .collect(Collectors.toUnmodifiableSet());
+    }
+
+    @Override
+    public Set<KObjectRegistryRecord> getObjectsOfType(final Class<?> clazz) {
+        return this.records
+            .values()
+            .stream()
+            .filter(x -> x.isPresent() && x.getObjectClass().equals(clazz))
+            .collect(Collectors.toUnmodifiableSet());
+    }
+
+    @Override
+    public Set<KObjectRegistryRecord> getObjects() {
+        return Set.copyOf(this.records.values());
+    }
+
+    private void removeDeadObjects() {
+        this.records
+            .entrySet()
+            .removeIf(x -> !x.getValue().isPresent());
+
+        Object deleted = this.referenceQueue.poll();
+        while (deleted != null) {
+            // todo: add check if object is managed, then delete
+            deleted = this.referenceQueue.poll();
+        }
     }
 
 }

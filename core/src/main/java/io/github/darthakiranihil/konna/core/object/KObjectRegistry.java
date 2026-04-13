@@ -31,11 +31,10 @@ public interface KObjectRegistry {
     String SYNTHETIC_TAG = "synthetic";
 
     KObjectRegistryRecord pushObject(Object object);
-    KObjectRegistryRecord pushImmortalizedObject(Object object);
-    void immortalizeObject(UUID recordId);
-    void removeObject(UUID recordId);
+    KObjectRegistryRecord pushImmortalObject(Object object);
+    void removeObject(UUID objectId);
     Set<KObjectRegistryRecord> getObjectsWithTag(String tag);
-    Set<KObjectRegistryRecord> getObjectsOfType(String tag);
+    Set<KObjectRegistryRecord> getObjectsOfType(Class<?> clazz);
     Set<KObjectRegistryRecord> getObjects();
 
 
