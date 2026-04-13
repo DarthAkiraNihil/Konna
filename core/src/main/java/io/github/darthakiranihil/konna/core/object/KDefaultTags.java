@@ -51,40 +51,9 @@ public final class KDefaultTags extends KUninstantiable {
      */
     public static final String TEST = "test";
     /**
-     * Marks that the object is immortal.
-     * @see io.github.darthakiranihil.konna.core.di.KSingleton
-     */
-    public static final String IMMORTAL = "immortal";
-    /**
-     * Marks that the object is a singleton.
-     * @see io.github.darthakiranihil.konna.core.di.KSingleton
-     */
-    public static final String SINGLETON = "singleton";
-    /**
-     * Marks that the object is poolable.
-     * @see KPoolable
-     */
-    public static final String POOLABLE = "poolable";
-    /**
-     * Marks that the object is transient.
-     */
-    public static final String TRANSIENT = "transient";
-    /**
-     * Marks that the object is hold by a weak reference.
-     * @see io.github.darthakiranihil.konna.core.di.KSingleton
-     * @see KPoolable
-     */
-    public static final String WEAK = "weak";
-    /**
-     * Marks that the object is an object pool.
-     * @see KObjectPool
+     * Marks that the object is {@link KObjectPool}.
      */
     public static final String POOL = "pool";
-    /**
-     * Marks that the object is a weak object pool.
-     * @see KWeakObjectPool
-     */
-    public static final String WEAK_POOL = "weak_pool";
     /**
      * Marks that the object is an event.
      * @see io.github.darthakiranihil.konna.core.message.KEvent

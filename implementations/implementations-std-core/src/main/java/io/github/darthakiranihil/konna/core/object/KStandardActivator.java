@@ -143,7 +143,11 @@ public class KStandardActivator extends KObject implements KActivator {
         Object instantiated = this.injectConstructorAndCreate(clazz, explicitArgs);
         this.injectFields(instantiated, clazz);
         this.injectMethods(instantiated, clazz);
-        this.objectRegistry.pushObject(instantiated);
+        if (clazz.isAnnotationPresent(KSingleton.class)) {
+            this.objectRegistry.pushImmortalObject(instantiated);
+        } else {
+            this.objectRegistry.pushObject(instantiated);
+        }
         return (T) instantiated;
     }
 

@@ -16,19 +16,21 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class TestPoolableWithZeroArgOnObtain implements KPoolable {
 
-/**
- * Indicates that method should be called when
- * an object is returned back to its pool.
- *
- * @since 0.2.0
- * @author Darth Akira Nihil
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface KOnPoolableObjectRelease {
+    private int value;
+
+    public int getValue() {
+        return this.value;
+    }
+
+    @KOnPoolableObjectObtain
+    private void aboba() {
+        this.value = 1;
+    }
+
+    @Override
+    public void reset() {
+        this.value = 0;
+    }
 }

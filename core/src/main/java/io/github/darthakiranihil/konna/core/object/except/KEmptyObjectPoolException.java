@@ -19,10 +19,9 @@ package io.github.darthakiranihil.konna.core.object.except;
 import io.github.darthakiranihil.konna.core.except.KException;
 
 /**
- * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KObjectPool} or
- * {@link io.github.darthakiranihil.konna.core.object.KWeakObjectPool} do not contain an
- * object that is not used by anyone. At the moment it is default behaviour but may be changed
- * later. By default, the exception is fatal.
+ * Exception thrown when {@link io.github.darthakiranihil.konna.core.object.KObjectPool} does
+ * not contain an object that is not used by anyone. At the moment it is default
+ * behavior but may be changed later. By default, the exception is fatal.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
