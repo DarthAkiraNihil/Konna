@@ -24,6 +24,13 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * Implementation of object pool with fixed size.
+ * @param <T> Type of pooled object
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
 
     private final Queue<T> unusedObjects;
@@ -97,7 +104,7 @@ final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
     }
 
     @Override
-    void release(T object) {
+    void release(final T object) {
         super.release(object);
         this.unusedObjects.add(object);
     }

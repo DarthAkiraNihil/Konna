@@ -25,6 +25,13 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * Implementation of pool, that extends on no free objects provided.
+ * @param <T> Type of pooled object
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
 
     private final Object extensionLock = new Object();
@@ -79,7 +86,10 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
             return;
         }
 
-        int newSize = Math.min((int) ((float) this.currentSize * this.extensionFactor), this.maxSize);
+        int newSize = Math.min(
+            (int) ((float) this.currentSize * this.extensionFactor),
+            this.maxSize
+        );
         synchronized (this.extensionLock) {
             this.unusedObjects.clear();
             this.unusedObjects = new ArrayBlockingQueue<>(newSize);
@@ -127,7 +137,7 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
     }
 
     @Override
-    void release(T object) {
+    void release(final T object) {
         super.release(object);
         synchronized (this.extensionLock) {
             this.unusedObjects.add(object);

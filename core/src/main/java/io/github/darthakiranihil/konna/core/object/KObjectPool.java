@@ -25,9 +25,16 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 
 /**
- * Implementation that represents
- * object pool in its classic meaning.
- * @param <T> Class of poolable object
+ * <p>
+ *     An object pool with its classic meaning.
+ * </p>
+ * <p>
+ *     This class' instances should be not created by hand (even its constructor is protected),
+ *     as its allocation is up to {@link KObjectPoolRegistry}. However, it is still possible with
+ *     {@link KObjectPool#create(Class, KActivator, KObjectRegistry, KAllocatePool)}.
+ * </p>
+ *
+ * @param <T> Type of poolable object
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -38,6 +45,17 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         KFixedObjectPool,
         KExtensibleObjectPool {
 
+    /**
+     * Creates a new pool based on {@link KAllocatePool }metadata.
+     * @param clazz Class of poolable object
+     * @param activator Activator to pass it to the pool
+     * @param objectRegistry Object registry to pass it to the pool
+     * @param metadata Pool allocation metadata
+     * @return Created pool for specified class
+     * @param <T> Type of poolable object
+     *
+     * @since 0.6.0
+     */
     public static <T extends KPoolable> KObjectPool<T> create(
         final Class<T> clazz,
         final KActivator activator,
@@ -85,6 +103,9 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         }
     }
 
+    /**
+     * Type of poolable object.
+     */
     protected final Class<?> clazz;
 
     private final boolean isOnObtainInjected;
@@ -92,6 +113,13 @@ public abstract sealed class KObjectPool<T extends KPoolable>
     private final Class<?> @Nullable[] onObtainParameterClasses;
     private final KActivator activator;
 
+    /**
+     * Constructs the pool.
+     * @param poolQualifier Additional pool qualifier. Just for its name
+     * @param clazz Type of poolable object
+     * @param activator Activator to inject parameters into
+     *        {@link KOnPoolableObjectObtain}-annotated methods
+     */
     protected KObjectPool(
         final String poolQualifier,
         final Class<T> clazz,
@@ -124,12 +152,78 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         this.activator = activator;
     }
 
+    /**
+     * <p>
+     *     Obtains an object from the pool.
+     * </p>
+     * <p>
+     *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
+     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
+     * </p>
+     * @return Container of obtained poolable object
+     * @since 0.6.0
+     */
     public abstract KObtainedPoolableObject<T> obtain();
+
+    /**
+     * <p>
+     *     Obtains an object from the pool, but if there is no object, it firstly waits
+     *     for {@code timeout} seconds, then tries to obtain an object again.
+     * </p>
+     * <p>
+     *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
+     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
+     * </p>
+     * @param timeout Amount of seconds to wait before the second acquisition attempt
+     * @return Container of obtained poolable object
+     * @since 0.6.0
+     */
     public abstract KObtainedPoolableObject<T> obtain(int timeout);
+
+    /**
+     * <p>
+     *     Obtains an object from the pool with passing explicit args, that are not
+     *     injected by {@link KActivator}.
+     * </p>
+     * <p>
+     *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
+     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
+     * </p>
+     * @param explicitArgs Explicit args to pass to {@link KOnPoolableObjectObtain}-annotated
+     *                     method
+     * @return Container of obtained poolable object
+     * @since 0.6.0
+     */
     public abstract KObtainedPoolableObject<T> obtain(KArgs explicitArgs);
+
+    /**
+     * <p>
+     *     Obtains an object from the pool, with passing explicit args, that are not
+     *     injected by {@link KActivator}, but if there is no object, it firstly waits
+     *     for {@code timeout} seconds, then tries to obtain an object again.
+     * </p>
+     * <p>
+     *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
+     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
+     * </p>
+     * @param timeout Amount of seconds to wait before the second acquisition attempt
+     * @param explicitArgs Explicit args to pass to {@link KOnPoolableObjectObtain}-annotated
+     *                     method
+     * @return Container of obtained poolable object
+     * @since 0.6.0
+     */
     public abstract KObtainedPoolableObject<T> obtain(KArgs explicitArgs, int timeout);
 
-    protected final KObtainedPoolableObject<T> prepareObject(T obtained) {
+    /**
+     * Prepares object before it will be obtained by the requester.
+     * @param obtained Object that has been retrieved from pool's storage
+     * @return Container of prepared and valid obtained object
+     */
+    protected final KObtainedPoolableObject<T> prepareObject(final T obtained) {
         if (this.onObjectObtain == null || this.onObtainParameterClasses == null) {
             return new KObtainedPoolableObject<>(obtained, this);
         }
@@ -150,7 +244,17 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         return new KObtainedPoolableObject<>(obtained, this);
     }
 
-    protected final KObtainedPoolableObject<T> prepareObject(final T obtained, final KArgs explicitArgs) {
+    /**
+     * Prepares object before it will be obtained by the requester.
+     * @param obtained Object that has been retrieved from pool's storage
+     * @param explicitArgs Explicit args to pass to {@link KOnPoolableObjectObtain}-annotated
+     *                     method
+     * @return Container of prepared and valid obtained object
+     */
+    protected final KObtainedPoolableObject<T> prepareObject(
+        final T obtained,
+        final KArgs explicitArgs
+    ) {
         if (this.onObjectObtain == null || this.onObtainParameterClasses == null) {
             return new KObtainedPoolableObject<>(obtained, this);
         }
@@ -179,8 +283,7 @@ public abstract sealed class KObjectPool<T extends KPoolable>
 
 
     /**
-     * Returns object back to the pool, making it available to be taken
-     * by another requester class (through {@link KActivator}).
+     * Returns object back to the pool, making it available to be taken by another class.
      * @param object Object to return
      */
     @MustBeInvokedByOverriders

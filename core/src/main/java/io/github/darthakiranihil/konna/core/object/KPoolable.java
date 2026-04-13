@@ -16,8 +16,24 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+/**
+ * Interface that each poolable object must implement in order
+ * to be put in object pools.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KPoolable {
 
+    /**
+     * <p>
+     *     Resets this object to state before taken from pool.
+     * </p>
+     * <p>
+     *     This method is not supposed to be called manually. However, if it happens,
+     *     then calling it twice should be handled properly.
+     * </p>
+     */
     void reset();
 
 }

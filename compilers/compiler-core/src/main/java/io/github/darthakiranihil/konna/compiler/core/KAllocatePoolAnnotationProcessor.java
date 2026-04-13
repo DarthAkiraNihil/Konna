@@ -52,11 +52,11 @@ import java.util.Set;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-    "io.github.darthakiranihil.konna.core.object.KPoolMetadata"
+    "io.github.darthakiranihil.konna.core.object.KAllocatePool"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SuppressWarnings("unused")
-public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProcessor {
+public final class KAllocatePoolAnnotationProcessor extends KBaseAnnotationProcessor {
 
     @Override
     public boolean process(
@@ -103,7 +103,8 @@ public final class KPoolMetadataAnnotationProcessor extends KBaseAnnotationProce
 
                 if (metadata.extensionFactor() < 1.0) {
                     this.messager.printError(
-                        "Cannot assign an extension factor less than 1 for extensible. Are you nuts?",
+                            "Cannot assign an extension factor less than 1 for extensible."
+                            +   "Are you nuts?",
                         classElement
                     );
                 }

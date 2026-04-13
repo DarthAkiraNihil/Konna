@@ -23,10 +23,23 @@ import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of {@link KObjectPoolRegistry} that automatically creates object pools
+ * for all classes, located in the classpath and annotated with {@link KAllocatePool}.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public class KAutodiscoveringObjectPoolRegistry implements KObjectPoolRegistry {
 
     private final Map<Class<? extends KPoolable>, KObjectPool<? extends KPoolable>> pools;
 
+    /**
+     * Standard constructor.
+     * @param classpath Classpath search engine to look for pollable classes in
+     * @param activator Activator to pass to created pools
+     * @param objectRegistry Object registry to pass created pools to (and to pools themselves too)
+     */
     @KInject
     @SuppressWarnings("unchecked")
     public KAutodiscoveringObjectPoolRegistry(
@@ -63,34 +76,37 @@ public class KAutodiscoveringObjectPoolRegistry implements KObjectPoolRegistry {
     }
 
     @Override
-    public <T extends KPoolable> KObtainedPoolableObject<T> obtain(Class<T> clazz) {
+    public <T extends KPoolable> KObtainedPoolableObject<T> obtain(final Class<T> clazz) {
         return this.getPool(clazz).obtain();
     }
 
     @Override
-    public <T extends KPoolable> KObtainedPoolableObject<T> obtain(Class<T> clazz, int timeout) {
+    public <T extends KPoolable> KObtainedPoolableObject<T> obtain(
+        final Class<T> clazz,
+        int timeout
+    ) {
         return this.getPool(clazz).obtain(timeout);
     }
 
     @Override
     public <T extends KPoolable> KObtainedPoolableObject<T> obtain(
-        Class<T> clazz,
-        KArgs explicitArgs
+        final Class<T> clazz,
+        final KArgs explicitArgs
     ) {
         return this.getPool(clazz).obtain(explicitArgs);
     }
 
     @Override
     public <T extends KPoolable> KObtainedPoolableObject<T> obtain(
-        Class<T> clazz,
-        KArgs explicitArgs,
+        final Class<T> clazz,
+        final KArgs explicitArgs,
         int timeout
     ) {
         return this.getPool(clazz).obtain(explicitArgs, timeout);
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends KPoolable> KObjectPool<T> getPool(Class<T> clazz) {
+    private <T extends KPoolable> KObjectPool<T> getPool(final Class<T> clazz) {
         if (!this.pools.containsKey(clazz)) {
             throw new KNoSuchElementException(
                 String.format("Pool for class %s is not found", clazz)

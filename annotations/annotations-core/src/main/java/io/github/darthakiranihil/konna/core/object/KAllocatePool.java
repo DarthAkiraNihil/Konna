@@ -38,20 +38,50 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface KAllocatePool {
 
+    /**
+     * Enumeration representing pool policy in situations when there is an attempt to
+     * obtain an object from it, but there is no free objects.
+     */
     enum NoObjectPolicy {
+        /**
+         * Return empty object container (<i>not the actual object</i>).
+         */
         RETURN_EMPTY,
+        /**
+         * Throw an exception.
+         */
         THROW_EXCEPTION
     }
 
     /**
-     * Initial size of assigned pool, measured in objects stored in it.
-     * @return Object count to store in the pool at creation
+     * @return Initial pool size, if its extensible, or its size, that measures number of objects
+     *         to be allocated on pool creation. Must be positive.
      */
     int initialSize();
+
+    /**
+     * @return Pool policy in situations where there is an attempt to obtain an object
+     *         when there is no unused objects.
+     */
     NoObjectPolicy noObjectPolicy() default NoObjectPolicy.THROW_EXCEPTION;
 
+    /**
+     * @return Whether the pool is extensible, i.e. its storage may be extended when there is no
+     *         free objects but the pool is still requested.
+     */
     boolean extensible() default false;
+
+    /**
+     * @return Maximum size of objects contained in this pool. Does not make sense if the pool
+     *         is not extensible. Default is {@link Integer#MAX_VALUE}. Must be greater than
+     *         initial size.
+     */
     int maxSize() default Integer.MAX_VALUE;
+
+    /**
+     * @return Factor to multiply current pool size on when it needs to be extended.
+     *         Must not be less than 1.0 + EPS;
+     */
     float extensionFactor() default 1.5f;
 
 }

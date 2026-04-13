@@ -16,8 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.except;
 
+/**
+ * Exception thrown when there is no element provided, presented etc.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public class KNoSuchElementException extends KException {
-    public KNoSuchElementException(String message) {
+    public KNoSuchElementException(final String message) {
         super(message);
     }
 
