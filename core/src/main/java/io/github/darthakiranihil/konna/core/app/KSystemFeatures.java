@@ -118,4 +118,15 @@ public final class KSystemFeatures extends KObject {
     public int getMaxFps() {
         return this.maxFps;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "SystemFeatures [debug=%b, fileLoggingActive=%b, logLevel=%s, maxFps=%d]",
+            this.debugEnabled,
+            this.fileLoggingActive,
+            this.logLevel,
+            this.maxFps
+        );
+    }
 }
