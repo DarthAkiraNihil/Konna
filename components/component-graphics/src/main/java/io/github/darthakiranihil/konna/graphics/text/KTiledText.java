@@ -274,7 +274,7 @@ public class KTiledText extends KAbstractShape {
         }
 
         this.rendered = new KRenderableTexture(
-            String.format("tiled_text_%d", this.hashCode()),
+            String.format("tiled_text_%d", this.text.hashCode()),
             uv,
             xy,
             colors,

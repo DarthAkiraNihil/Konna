@@ -63,7 +63,7 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
         KLevel level = new KLevel("loc1", List.of(sector));
 
-        KFov fov = observer.observePoint(level,"sector_1", 5, 5, 3);
+        KFov fov = observer.observePointBlindly(level,"sector_1", new KVector2i(5, 5), 3);
         KFov fov2 = observer.observePoint(level, "sector_1", new KVector2i(5, 5), 3);
         Assertions.assertEquals(21, fov.getObservedSlices().size());
         Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());

@@ -19,7 +19,7 @@ jobs:
             -   name: Build and publish with Gradle
                 uses: gradle/actions/setup-gradle@v3
                 with:
-                    arguments: --no-daemon jreleaserConfig --git-root-search build test publish createBundle
+                    arguments: --no-daemon jreleaserConfig --git-root-search build test publish copyJar createBundle
                 env:
                     JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
                     JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
@@ -45,7 +45,7 @@ jobs:
                     TAG: ${{ github.ref_name }} # The name of the tag (e.g., v1.0.0)
                 run: |
                     gh release create "$TAG" \
-                        ./build/distributions/Konna.bundle-*.jar
+                        **/Konna.bundle-*.jar
                         --repo="$GITHUB_REPOSITORY" \
                         --title="${GITHUB_REPOSITORY#*/} $TAG" \
-                        --generate-notes # Automatically generates release notes
+                        --generate-notes

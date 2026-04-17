@@ -35,12 +35,34 @@ public final class KRaycastLevelObserver implements KLevelObserver {
     private static final int FOV_CAST_RAYS_COUNT = 360;
 
     @Override
-    public KFov observePoint(
-        final KLevel location,
+    public KFov observePointBlindly(
+        final KLevel level,
         final String sector,
         int x,
         int y,
         int visionRange
+    ) {
+        return this.observePoint(level, sector, x, y, visionRange, true);
+    }
+
+    @Override
+    public KFov observePoint(
+        final KLevel level,
+        final String sector,
+        int x,
+        int y,
+        int visionRange
+    ) {
+        return this.observePoint(level, sector, x, y, visionRange, false);
+    }
+
+    private KFov observePoint(
+        final KLevel location,
+        final String sector,
+        int x,
+        int y,
+        int visionRange,
+        boolean blind
     ) {
 
         Set<KPair<String, KVector2i>> observed = new HashSet<>();
@@ -72,9 +94,9 @@ public final class KRaycastLevelObserver implements KLevelObserver {
                 float observedY = data.third().y();
 
                 while (vision > 0) {
-                    KLevelSectorSlice slice = observedSector.getSliceAndVisit(
-                        (int) observedX, (int) observedY
-                    );
+                    KLevelSectorSlice slice = blind
+                        ? observedSector.getSlice((int) observedX, (int) observedY)
+                        : observedSector.getSliceAndVisit((int) observedX, (int) observedY);
 
                     if (slice.tile() != null) {
                         vision -= slice.tile().getOpaqueness() * 2;
