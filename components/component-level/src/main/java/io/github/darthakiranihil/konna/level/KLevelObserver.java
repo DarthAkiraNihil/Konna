@@ -27,6 +27,23 @@ import io.github.darthakiranihil.konna.core.struct.KVector2i;
  */
 public interface KLevelObserver {
 
+    default KFov observePointBlindly(
+        final KLevel level,
+        final String sector,
+        final KVector2i point,
+        int visionRange
+    ) {
+        return this.observePointBlindly(level, sector, point.x(), point.y(), visionRange);
+    }
+
+    KFov observePointBlindly(
+        KLevel level,
+        String sector,
+        int x,
+        int y,
+        int visionRange
+    );
+
     /**
      * Observes a point in specified level.
      * @param level Level to observe
