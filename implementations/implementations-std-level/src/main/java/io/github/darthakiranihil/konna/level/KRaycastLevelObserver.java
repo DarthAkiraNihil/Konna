@@ -35,12 +35,24 @@ public final class KRaycastLevelObserver implements KLevelObserver {
     private static final int FOV_CAST_RAYS_COUNT = 360;
 
     @Override
-    public KFov observePointBlindly(KLevel level, String sector, int x, int y, int visionRange) {
+    public KFov observePointBlindly(
+        final KLevel level,
+        final String sector,
+        int x,
+        int y,
+        int visionRange
+    ) {
         return this.observePoint(level, sector, x, y, visionRange, true);
     }
 
     @Override
-    public KFov observePoint(KLevel level, String sector, int x, int y, int visionRange) {
+    public KFov observePoint(
+        final KLevel level,
+        final String sector,
+        int x,
+        int y,
+        int visionRange
+    ) {
         return this.observePoint(level, sector, x, y, visionRange, false);
     }
 
