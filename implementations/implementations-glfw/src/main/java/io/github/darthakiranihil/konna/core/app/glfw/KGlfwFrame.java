@@ -339,7 +339,7 @@ public class KGlfwFrame extends KObject implements KFrame {
                 );
 
                 switch (action) {
-                    case KGlfw.GLFW_PRESS -> {
+                    case KGlfw.GLFW_PRESS, KGlfw.GLFW_REPEAT -> {
                         this.inputProcessor.keyPressed(eventData);
                     }
                     case KGlfw.GLFW_RELEASE -> {
@@ -353,7 +353,7 @@ public class KGlfwFrame extends KObject implements KFrame {
     private static KKeyActionType getKeyActionType(int action) {
         KKeyActionType keyActionType = null;
         switch (action) {
-            case KGlfw.GLFW_PRESS -> {
+            case KGlfw.GLFW_PRESS, KGlfw.GLFW_REPEAT -> {
                 keyActionType = KKeyActionType.PRESS;
             }
             case KGlfw.GLFW_RELEASE -> {
