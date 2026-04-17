@@ -44,7 +44,7 @@ public class KObject implements KDeletable, Serializable {
         @Override
         protected void deleteSelf() {
             Class<?> clazz = this.object.getClass();
-            if (clazz.isAssignableFrom(KDeletable.class)) {
+            if (KDeletable.class.isAssignableFrom(clazz)) {
                 ((KDeletable) this.object).delete();
             }
         }
