@@ -123,4 +123,9 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
         this.loadedTextures.put(assetId, texture);
         return texture;
     }
+
+    @Override
+    protected void deleteSelf() {
+        this.loadedTextures.clear();
+    }
 }

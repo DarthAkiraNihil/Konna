@@ -98,4 +98,9 @@ public final class KEntityMetadataCollection
         return metadata;
 
     }
+
+    @Override
+    protected void deleteSelf() {
+        this.loadedMetadata.clear();
+    }
 }
