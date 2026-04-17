@@ -55,6 +55,7 @@ public final class KLevel extends KObject {
         sectors.forEach(
             s -> {
                 this.sectors.put(s.name(), s);
+                this.addChild(s);
             }
         );
 
@@ -95,11 +96,9 @@ public final class KLevel extends KObject {
         return this.sectors.containsKey(sectorName);
     }
 
-    /**
-     * Unloads this level.
-     */
-    public void unload() {
-        this.sectors.values().forEach(KLevelSector::unload);
+    @Override
+    protected void deleteSelf() {
+        this.sectors.clear();
     }
 
     /**

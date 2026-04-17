@@ -220,7 +220,11 @@ public class KObject implements KDeletable, Serializable {
 
     @Override
     public final void delete() {
-        for (KObject child: children) {
+        if (this.parent != null) {
+            this.parent.children.removeIf(x -> x.id.equals(this.id));
+            this.parent = null;
+        }
+        for (KObject child: this.children) {
             child.delete();
         }
 

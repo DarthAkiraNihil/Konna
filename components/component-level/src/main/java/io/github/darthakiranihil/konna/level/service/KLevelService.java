@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelLoader;
 import io.github.darthakiranihil.konna.level.KLevelMetadata;
@@ -61,10 +62,9 @@ public class KLevelService extends KObject implements KService {
 
     private final KEventInvoker<KLevel> levelLoaded;
     private final KSimpleEventInvoker levelUnloaded;
+    private final KObjectRegistry objectRegistry;
 
     private @Nullable KLevel currentLevel;
-    // todo: do we really need it?
-    private @Nullable KLevelSector currentSector;
     private final KMessenger messenger;
 
     /**
@@ -87,7 +87,8 @@ public class KLevelService extends KObject implements KService {
         final KActivator activator,
         final KLevelMetadataCollection levelCollection,
         final KLevelGeneratorMetadataCollection generatorMetadataCollection,
-        final KLevelLoader levelLoader
+        final KLevelLoader levelLoader,
+        final KObjectRegistry objectRegistry
     ) {
         super("LevelService", Collections.singleton(KDefaultTags.SERVICE));
 
@@ -95,6 +96,7 @@ public class KLevelService extends KObject implements KService {
         this.generatorMetadataCollection = generatorMetadataCollection;
         this.activator = activator;
         this.levelLoader = levelLoader;
+        this.objectRegistry = objectRegistry;
         this.messenger = messenger;
 
         this.levelLoaded = eventSystem.getEventInvoker("levelLoaded");
@@ -117,10 +119,12 @@ public class KLevelService extends KObject implements KService {
             KLevelMetadata levelMetadata = this.levelCollection.getAsset(levelName);
             KLevel newLevel = this.levelLoader.load(levelMetadata);
             if (this.currentLevel != null) {
-                this.currentLevel.unload();
+                this.currentLevel.delete();
                 this.levelUnloaded.invokeSync();
             }
+            this.addChild(newLevel);
             this.currentLevel = newLevel;
+            this.objectRegistry.pushObject(newLevel);
         } catch (KAssetLoadingException e) {
             KSystemLogger.warning(
                 this.name,
@@ -134,13 +138,12 @@ public class KLevelService extends KObject implements KService {
             return;
         }
 
-        this.currentSector = this.currentLevel.getSector(deploymentSector);
-
+        KLevelSector currentSector = this.currentLevel.getSector(deploymentSector);
         this.levelLoaded.invokeSync(this.currentLevel);
 
         KUniversalMap body = new KUniversalMap();
         body.put("level", this.currentLevel);
-        body.put("sector", this.currentSector);
+        body.put("sector", currentSector);
 
         this.messenger.sendRegular(
             "levelLoaded", body
@@ -186,9 +189,11 @@ public class KLevelService extends KObject implements KService {
         try {
             KLevel generated = generator.generate(seed);
             if (this.currentLevel != null) {
-                this.currentLevel.unload();
+                this.currentLevel.delete();
                 this.levelUnloaded.invokeSync();
             }
+            this.addChild(generated);
+            this.objectRegistry.pushObject(generated);
             this.currentLevel = generated;
         } catch (KGenerationException e) {
             KSystemLogger.error(
@@ -199,12 +204,12 @@ public class KLevelService extends KObject implements KService {
             return;
         }
 
-        this.currentSector = this.currentLevel.getSector(deploymentSector);
+        KLevelSector currentSector = this.currentLevel.getSector(deploymentSector);
         this.levelLoaded.invokeSync(this.currentLevel);
 
         KUniversalMap body = new KUniversalMap();
         body.put("level", this.currentLevel);
-        body.put("sector", this.currentSector);
+        body.put("sector", currentSector);
         body.put("seed", seed);
 
         this.messenger.sendRegular(

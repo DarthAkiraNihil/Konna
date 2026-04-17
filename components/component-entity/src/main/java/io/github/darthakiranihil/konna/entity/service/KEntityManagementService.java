@@ -278,7 +278,7 @@ public class KEntityManagementService extends KObject implements KService {
 
         boolean flag = false;
         KEntity deleted = null;
-        // todo: explicitly delete by delete() method in KManagedObject
+
         if (this.activeEntities.containsKey(entityId)) {
             deleted = this.activeEntities.remove(entityId);
             flag = true;
@@ -343,6 +343,7 @@ public class KEntityManagementService extends KObject implements KService {
                 case CREATE: {
                     behaviours.forEach(KEntityBehaviour::awake);
                     behaviours.forEach(KEntityBehaviour::onEnable);
+                    this.addChild(entity);
                     break;
                 }
                 case ACTIVATE: {
@@ -355,6 +356,8 @@ public class KEntityManagementService extends KObject implements KService {
                 }
                 case DESTROY: {
                     behaviours.forEach(KEntityBehaviour::onDestroy);
+                    // will be taken by KObjectRegistry
+                    // post-mortem will detach entity from this service
                     break;
                 }
             }
@@ -377,4 +380,9 @@ public class KEntityManagementService extends KObject implements KService {
         );
     }
 
+    @Override
+    protected void deleteSelf() {
+        this.activeEntities.values().forEach(KEntity::delete);
+        this.inactiveEntities.values().forEach(KEntity::delete);
+    }
 }

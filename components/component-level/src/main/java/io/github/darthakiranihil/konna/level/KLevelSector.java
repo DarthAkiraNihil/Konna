@@ -238,11 +238,10 @@ public final class KLevelSector extends KObject {
      * Unloads this sector (unsubscribes from {@code entityLeftSector}
      * and {@code entityMoved} events).
      */
-    public void unload() {
-
+    @Override
+    protected void deleteSelf() {
         this.entityMovedEvent.unsubscribe(this.entityMovedToken);
         this.entityLeftSectorEvent.unsubscribe(this.entityLeftSectorToken);
-
     }
 
     /**

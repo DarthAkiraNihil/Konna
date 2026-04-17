@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
 
@@ -37,6 +38,7 @@ import java.util.*;
 public class KStandardEntityFactory extends KObject implements KEntityFactory {
 
     private final KEntityMetadataCollection metadataCollection;
+    private final KObjectRegistry objectRegistry;
     private final KActivator activator;
     private final KJsonDeserializer deserializer;
 
@@ -51,13 +53,15 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
     public KStandardEntityFactory(
         final KEntityMetadataCollection metadataCollection,
         final KActivator activator,
-        final KJsonDeserializer deserializer
+        final KJsonDeserializer deserializer,
+        final KObjectRegistry objectRegistry
     ) {
         super("StandardEntityFactory", Collections.singleton(KDefaultTags.STD));
 
         this.metadataCollection = metadataCollection;
         this.activator = activator;
         this.deserializer = deserializer;
+        this.objectRegistry = objectRegistry;
     }
 
     @Override
@@ -87,6 +91,7 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         for (var behaviour: behaviours) {
             entity.addBehaviour(behaviour);
         }
+        this.objectRegistry.pushObject(entity);
 
         return entity;
     }
@@ -147,6 +152,7 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         for (var behaviour: behaviours) {
             entity.addBehaviour(behaviour);
         }
+        this.objectRegistry.pushObject(entity);
 
         return entity;
     }
