@@ -90,7 +90,7 @@ public final class KPassabilityLayerAddNode implements KGeneratorNode {
                 int dstX = x + offset.x();
                 int dstY = y + offset.y();
 
-                KPassabilityState secondState = first.getOnPosition(x, y);
+                KPassabilityState secondState = second.getOnPosition(x, y);
                 KPassabilityState resultState = resultLayer.getOnPosition(dstX, dstY);
 
                 if (
