@@ -66,5 +66,11 @@ public final class KDefaultTags extends KUninstantiable {
      * @since 0.3.0
      */
     public static final String ASSET_COLLECTION = "asset_collection";
+
+    /**
+     * Marks that the object is a proxy object i.e. packed into a {@link KObject}.
+     * @since 0.6.0
+     */
+    public static final String PROXY = "proxy";
     
 }

@@ -29,6 +29,33 @@ import java.util.*;
  */
 public class KObject implements KDeletable, Serializable {
 
+    private static final class KDeletableProxy extends KObject {
+        private final Object object;
+
+        public KDeletableProxy(final Object object) {
+            super(
+                String.format("DeletableProxy$$%s", object),
+                Collections.singleton(KDefaultTags.PROXY)
+            );
+
+            this.object = object;
+        }
+
+        @Override
+        protected void deleteSelf() {
+            Class<?> clazz = this.object.getClass();
+            if (clazz.isAssignableFrom(KDeletable.class)) {
+                ((KDeletable) this.object).delete();
+            }
+        }
+    }
+
+    public static KObject managify(Object object) {
+        return (object instanceof KObject)
+            ? (KObject) object
+            : new KDeletableProxy(object);
+    }
+
     private static final String DEFAULT_OBJECT_NAME = "object@%d";
 
     private static long createdObjects = 0;

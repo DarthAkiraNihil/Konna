@@ -27,7 +27,6 @@ import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,8 +52,6 @@ public final class Konna extends KObject implements Runnable {
     private final KonnaBootstrapConfig bootstrapConfig;
 
     private final Thread shutdownHook;
-    private @Nullable KEngineHypervisor hypervisor;
-    private @Nullable Thread hypervisorThread;
 
     private static List<KApplicationArgument> defaultAndCustom(
         final List<KApplicationArgument> customArgs
@@ -125,41 +122,19 @@ public final class Konna extends KObject implements Runnable {
         KApplicationFeatures features = argParser.parse(this.args, this.applicationArgsOptions);
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
 
-        this.hypervisor = this.createHypervisor();
-        this.addChild(this.hypervisor);
+        KEngineHypervisor hypervisor = this.createHypervisor();
+        this.addChild(hypervisor);
 
-        this.hypervisorThread = new Thread(
-            () -> {
-                try {
-                    this.hypervisor.launch(features);
-                    this.hypervisor.frameLoop();
-                } catch (Throwable e) {
-                    KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
-                    KSystemLogger.fatal(this.name, e);
-                } finally {
-                    this.hypervisor.delete();
-                    this.hypervisor = null;
-                }
-            }
-        );
-
-        this.hypervisorThread.setName("Konna.hypervisor");
-        this.hypervisorThread.start();
-
-    }
-
-    @Override
-    protected void deleteSelf() {
-        if (this.hypervisor == null) {
-            return;
+        try {
+            hypervisor.launch(features);
+        } catch (Throwable e) {
+            KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
+            KSystemLogger.fatal(this.name, e);
         }
 
-        KSystemLogger.info(this.name, "Shutdown initiated");
+        // !! the only correct usage of self-destruction
+        this.delete();
 
-        this.hypervisor.delete();
-        this.hypervisorThread = null;
-
-        KSystemLogger.info(this.name, "Shutdown finished");
     }
 
     private KArgumentParser createArgumentParser() {
