@@ -34,7 +34,7 @@ final class KImGuiKeyDataSpair implements KImGuiKeyData {
     }
 
     @Override
-    public void destroy() {
+    public void delete() {
         this.boxed.destroy();
     }
 

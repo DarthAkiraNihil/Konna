@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
-import io.github.darthakiranihil.konna.core.struct.KDestroyable;
+import io.github.darthakiranihil.konna.core.object.KDeletable;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector4f;
 
@@ -26,7 +26,8 @@ import io.github.darthakiranihil.konna.core.struct.KVector4f;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public interface KImFont extends KDestroyable {
+@SuppressWarnings("unused")
+public interface KImFont extends KDeletable {
 
     float getFallbackAdvanceX();
     void setFallbackAdvanceX(float value);

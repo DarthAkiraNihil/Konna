@@ -30,7 +30,7 @@ final class KImGuiWindowClassSpair implements KImGuiWindowClass {
     }
 
     @Override
-    public void destroy() {
+    public void delete() {
         this.boxed.destroy();
     }
 

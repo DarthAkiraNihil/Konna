@@ -37,7 +37,7 @@ final class KImFontAtlasSpair implements KImFontAtlas {
     }
 
     @Override
-    public void destroy() {
+    public void delete() {
         this.boxed.destroy();
     }
 
