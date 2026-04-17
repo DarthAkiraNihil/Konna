@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KTransform;
@@ -25,7 +26,7 @@ import org.junit.jupiter.api.Test;
 public class KGl33TransformMatrixCalculatorPositiveTests {
 
     public KGl33TransformMatrixCalculatorPositiveTests() {
-        KTransform.setTransformMatrixCalculator(new KGl33TransformMatrixCalculator());
+        KTransform.setTransformMatrixCalculator(new KGl33TransformMatrixCalculator(KSize.squared(640)));
     }
 
     @Test
@@ -131,8 +132,6 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
         Assertions.assertEquals(1.0f, matrix[1]);
         Assertions.assertEquals(-1.0f, matrix[4]);
         Assertions.assertEquals((float) Math.sqrt(3), matrix[5]);
-        // Assertions.assertEquals(1.0f, matrix[12]);
-        // Assertions.assertEquals(-1.0f, matrix[13]);
 
     }
 

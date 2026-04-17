@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.object.KDeletable;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
@@ -34,6 +36,8 @@ import java.util.Objects;
 @ApiStatus.Internal
 @KExcludeFromGeneratedCoverageReport
 final class KTextureMaker {
+
+    private static final int TEXTURE_TTL = 60;
 
     /**
      * Total texture elements count.
@@ -54,18 +58,19 @@ final class KTextureMaker {
 
     @KExcludeFromGeneratedCoverageReport
     public record TextureInfo(
+        KGl33 gl,
         int id,
         int vao,
         int vbo,
         int ebo,
         int indicesCount
-    ) {
+    ) implements KDeletable {
 
-        public void free(final KGl33 gl) {
-            gl.glDeleteBuffers(vao);
-            gl.glDeleteBuffers(vbo);
-            gl.glDeleteBuffers(ebo);
-            // gl.glDeleteTextures(id);
+        @Override
+        public void delete() {
+            this.gl.glDeleteBuffers(vao);
+            this.gl.glDeleteBuffers(vbo);
+            this.gl.glDeleteBuffers(ebo);
         }
 
     }
@@ -74,10 +79,9 @@ final class KTextureMaker {
     private final KGl33 gl;
     private KSize viewportSize;
 
-    KTextureMaker(final KGl33 gl, final KCache cache) {
+    KTextureMaker(final KFrame frame, final KGl33 gl, final KCache cache) {
         this.gl = gl;
-        this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
-
+        this.viewportSize = frame.getSize();
         this.cache = cache;
     }
 
@@ -95,8 +99,8 @@ final class KTextureMaker {
             this.cache.putToCache(
                 key,
                 this.createTextureInfo(texture, doNotTriangulate),
-                i -> i.free(this.gl),
-                KCache.TTL_EVERLASTING
+                TextureInfo::delete,
+                TEXTURE_TTL
             );
         }
 
@@ -185,6 +189,7 @@ final class KTextureMaker {
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         return new TextureInfo(
+            this.gl,
             tex,
             vao,
             vbo,

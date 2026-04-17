@@ -132,4 +132,10 @@ public final class KShaderProgramCollection
     public KShaderProgram getDefaultTextureShader() {
         return this.shaderCompiler.getDefaultTextureShader();
     }
+
+    @Override
+    protected void deleteSelf() {
+        this.loadedPrograms.values().forEach(KShaderProgram::delete);
+        this.loadedPrograms.clear();
+    }
 }
