@@ -161,11 +161,7 @@ public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(names.contains("ioa"));
 
         for (KResource resource : resources) {
-            try {
-                resource.close();
-            } catch (IOException e) {
-                Assertions.fail(e);
-            }
+            resource.close();
         }
 
         resources = this.resourceLoader.loadResources("classpath:amogus/");
@@ -182,11 +178,7 @@ public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(names.contains("ioa"));
 
         for (KResource resource : resources) {
-            try {
-                resource.close();
-            } catch (IOException e) {
-                Assertions.fail(e);
-            }
+            resource.close();
         }
 
     }
@@ -241,11 +233,7 @@ public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(names.contains("ioa"));
 
         for (KResource resource : resources) {
-            try {
-                resource.close();
-            } catch (IOException e) {
-                Assertions.fail(e);
-            }
+            resource.close();
         }
 
         resources = this.resourceLoader.loadResources("classpath:amogus/", new KClasspathProtocol(ClassLoader.getSystemClassLoader()));
@@ -262,11 +250,7 @@ public class KStandardResourceLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(names.contains("ioa"));
 
         for (KResource resource : resources) {
-            try {
-                resource.close();
-            } catch (IOException e) {
-                Assertions.fail(e);
-            }
+            resource.close();
         }
 
     }

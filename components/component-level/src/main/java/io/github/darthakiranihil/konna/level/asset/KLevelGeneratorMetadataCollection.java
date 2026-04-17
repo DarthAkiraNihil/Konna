@@ -17,6 +17,8 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
@@ -35,6 +37,8 @@ import java.util.*;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
+@KSingleton
 public final class KLevelGeneratorMetadataCollection
     implements KAssetCollection<KLevelGeneratorMetadata> {
 
@@ -44,8 +48,9 @@ public final class KLevelGeneratorMetadataCollection
      * Standard constructor.
      * @param assetLoader Asset loader
      */
+    @KInject
     public KLevelGeneratorMetadataCollection(
-        @KInject final KAssetLoader assetLoader
+        final KAssetLoader assetLoader
     ) {
         this.assetLoader = assetLoader;
     }
@@ -56,11 +61,10 @@ public final class KLevelGeneratorMetadataCollection
             assetId,
             KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        KAssetDefinition rawNodes = definition.getSubdefinition("nodes");
-        KAssetDefinition[] rawConnections = definition.getSubdefinitionArray("connections");
-        KAssetDefinition rawConstants = definition.getSubdefinition("constants");
+        KAssetDefinition rawNodes = asset.getSubdefinition("nodes");
+        KAssetDefinition[] rawConnections = asset.getSubdefinitionArray("connections");
+        KAssetDefinition rawConstants = asset.getSubdefinition("constants");
 
         Map<String, Class<? extends KGeneratorNode>>
             nodes = new HashMap<>(rawNodes.getProperties().size());

@@ -17,12 +17,10 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectObtain;
-import io.github.darthakiranihil.konna.core.object.KOnPoolableObjectRelease;
-import io.github.darthakiranihil.konna.core.object.KPoolable;
 import io.github.darthakiranihil.konna.core.object.*;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Set;
 
 /**
  * Utility object that prevent frame updating when the lock is active.
@@ -34,10 +32,10 @@ import org.jspecify.annotations.Nullable;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KPoolable(
-    initialPoolSize = KFrameLock.MAX_LOCKS
+@KAllocatePool(
+    initialSize = KFrameLock.MAX_LOCKS
 )
-public final class KFrameLock extends KObject {
+public final class KFrameLock extends KObject implements KPoolable {
 
     /**
      * Max number of active frame locks.
@@ -47,21 +45,22 @@ public final class KFrameLock extends KObject {
 
     private KFrameLock() {
         super(
-            "frame_lock",
-            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM, KTag.DefaultTags.STD)
+            "FrameLock",
+            Set.of(KDefaultTags.SYSTEM, KDefaultTags.STD)
         );
 
         this.frame = null;
     }
 
     @KOnPoolableObjectObtain
-    private void lock(@KInject final KFrame lockedFrame) {
+    @KInject
+    private void lock(final KFrame lockedFrame) {
         this.frame = lockedFrame;
         lockedFrame.addLock(this);
     }
 
-    @KOnPoolableObjectRelease
-    private void unlock() {
+    @Override
+    public void reset() {
         if (this.frame == null) {
             return;
         }

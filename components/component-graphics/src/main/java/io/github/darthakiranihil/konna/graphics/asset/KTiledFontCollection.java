@@ -17,21 +17,22 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFont;
 import io.github.darthakiranihil.konna.graphics.text.KTiledFontFormat;
 import io.github.darthakiranihil.konna.graphics.type.KTiledFontTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -42,6 +43,7 @@ import java.util.Objects;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KTiledFontCollection extends KObject implements KAssetCollection<KTiledFont> {
 
@@ -57,14 +59,15 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
      * @param textureCollection Texture collection (to load font faces)
      * @param activator Activator to instantiate tiled font formats
      */
+    @KInject
     public KTiledFontCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection,
-        @KInject final KActivator activator
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection,
+        final KActivator activator
     ) {
         super(
             "Graphics.tiledFontCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -92,23 +95,22 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
             assetId,
             KTiledFontTypedef.TILED_FONT_ASSET_TYPE
         );
-        KAssetDefinition fontDefinition = asset.definition();
 
-        String name = Objects.requireNonNull(fontDefinition.getString("name"));
+        String name = Objects.requireNonNull(asset.getString("name"));
 
-        KAssetDefinition glyphSizeData = fontDefinition.getSubdefinition("glyph_size");
+        KAssetDefinition glyphSizeData = asset.getSubdefinition("glyph_size");
         KSize glyphSize = new KSize(
             glyphSizeData.getInt("width"),
             glyphSizeData.getInt("height")
         );
 
-        String faceId = Objects.requireNonNull(fontDefinition.getString("face"));
+        String faceId = Objects.requireNonNull(asset.getString("face"));
         KTexture face = this.textureCollection.getAsset(faceId);
 
         KTiledFontFormat fontFormat = this
             .activator
             .createObject(
-                fontDefinition.getClassObject(
+                asset.getClassObject(
                     "format",
                     KTiledFontFormat.class
                 )

@@ -125,4 +125,9 @@ public interface KResource extends Closeable {
      */
     byte[] bytes();
 
+    /**
+     * Closes this resource.
+     */
+    @Override
+    void close();
 }

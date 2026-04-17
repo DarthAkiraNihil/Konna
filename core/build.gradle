@@ -20,8 +20,6 @@ java {
 
 dependencies {
     implementation "org.jspecify:jspecify:1.0.0"
-    implementation 'io.github.classgraph:classgraph:4.8.181'
-    implementation 'io.github.toolfactory:jvm-driver:9.9.10'
 
     implementation project(":annotations-core")
 
@@ -34,6 +32,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation project(":testing")
+    testImplementation project(":implementations-std-core")
 }
 
 sourceSets {

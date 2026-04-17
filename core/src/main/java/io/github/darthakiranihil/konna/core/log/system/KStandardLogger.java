@@ -20,8 +20,7 @@ import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogHandler;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.KLogger;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,7 +32,6 @@ import java.util.List;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public final class KStandardLogger extends KLogger {
 
     /**
@@ -50,7 +48,7 @@ public final class KStandardLogger extends KLogger {
         final List<KLogHandler> logHandlers
     ) {
         super(name, logLevel, defaultLogFormatter, logHandlers);
-        this.addTag(KTag.DefaultTags.STD);
+        this.addTag(KDefaultTags.STD);
     }
 
     @Override

@@ -17,14 +17,14 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
@@ -33,6 +33,7 @@ import io.github.darthakiranihil.konna.graphics.image.KTextureSliceData;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
 import io.github.darthakiranihil.konna.graphics.type.KTextureSliceSetTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +45,7 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KTextureSliceSetCollection
     extends KObject
@@ -58,13 +60,14 @@ public final class KTextureSliceSetCollection
      * @param assetLoader Asset loader
      * @param textureCollection Texture collection to extract base textures
      */
+    @KInject
     public KTextureSliceSetCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection
     ) {
         super(
             "Graphics.textureSliceSetCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -84,12 +87,11 @@ public final class KTextureSliceSetCollection
             assetId,
             KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        String baseTextureId = Objects.requireNonNull(definition.getString("base_texture"));
+        String baseTextureId = Objects.requireNonNull(asset.getString("base_texture"));
         KTexture baseTexture = this.textureCollection.getAsset(baseTextureId);
 
-        KAssetDefinition[] slices = definition.getSubdefinitionArray("slices");
+        KAssetDefinition[] slices = asset.getSubdefinitionArray("slices");
         Map<String, KTextureSliceData> slicesData = new HashMap<>();
 
         for (var slice: slices) {

@@ -17,20 +17,21 @@
 package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KBodyValue;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -41,10 +42,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Darth Akira Nihil
  */
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "RenderService"
-)
-public class KRenderService extends KObject {
+public class KRenderService extends KObject implements KService {
+
+    /**
+     * Description of task that renders all objects that is contained by the service.
+     * By default, it is supposed to be executed in the very last order before buffers' swapping.
+     */
+    public static final KFrameTaskDescription RENDER_TASK = KFrameTaskDescription.ofPersistent(
+        "RenderService.render",
+        KFrameEvent.PRE_SWAP,
+        Integer.MAX_VALUE
+    );
 
     private final Object renderLock = new Object();
 
@@ -55,30 +63,27 @@ public class KRenderService extends KObject {
     /**
      * Standard constructor.
      * @param renderFrontend Render frontend to use for rendering objects
-     * @param eventSystem Event system that contain the registered tick event.
      * @param frame The frame of the current context
+     * @param frameTaskScheduler Frame task scheduler to schedule render task
      */
+    @KInject
     public KRenderService(
-        @KInject final KRenderFrontend renderFrontend,
-        @KInject final KEventSystem eventSystem,
-        @KInject final KFrame frame
+        final KRenderFrontend renderFrontend,
+        final KFrameTaskScheduler frameTaskScheduler,
+        final KFrame frame
     ) {
-        super("Graphics.RenderService", KStructUtils.setOfTags(KTag.DefaultTags.SERVICE));
+        super("RenderService", Collections.singleton(KDefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
 
         this.currentRenderables = new CopyOnWriteArrayList<>();
 
 
         KSystemLogger.debug(
-            "Graphics.RenderService",
+            this.name,
             "Created render frontend: %s", renderFrontend.getClass().getCanonicalName()
         );
 
-        KSimpleEvent tick = eventSystem.getSimpleEvent(KFrame.TICK_EVENT_NAME);
-        if (tick != null) {
-            tick.subscribe(this::render);
-        }
-
+        frameTaskScheduler.scheduleTask(RENDER_TASK, this::render);
         this.renderFrontend.setViewportSize(frame.getSize());
     }
 

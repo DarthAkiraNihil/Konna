@@ -16,14 +16,12 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonArray;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +56,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
     private final KJsonParser jsonParser;
 
     private final Map<String, KJsonSubtypeBasedAssetLoader.AssetTypeData> assetTypeData;
-    private final Map<String, KAssetType> builtAssetTypes;
     private final Map<String, String> reverseAssetTypeMap;
 
     private final Map<String, Map<String, KAssetDefinition>> loadedRawAssetDefinitions;
@@ -86,7 +83,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
         this.loadedRawAssetDefinitions = new HashMap<>();
 
         this.assetTypeData = assetTypesData;
-        this.builtAssetTypes = new HashMap<>();
         this.reverseAssetTypeMap = new HashMap<>();
 
         for (var entry: assetTypesData.entrySet()) {
@@ -103,11 +99,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
                     internalType,
                     entry.getValue()
                 )
-            );
-
-            this.builtAssetTypes.put(
-                internalType,
-                new KAssetType(internalType)
             );
 
         }
@@ -128,7 +119,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
             );
         }
 
-        KAssetType builtType = this.builtAssetTypes.get(internalType);
         KAssetDefinition raw = this
             .loadedRawAssetDefinitions
             .get(internalType)
@@ -144,7 +134,6 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
 
         return new KAsset(
             assetId,
-            builtType,
             typeAlias,
             raw
         );
@@ -248,7 +237,7 @@ public class KJsonSubtypeBasedAssetLoader implements KAssetLoader {
                     loadedDefinitionsOfType.put(dataEntry.getKey(), def);
                 }
 
-            } catch (IOException | KJsonParseException e) {
+            } catch (KJsonParseException e) {
                 throw new KAssetDefinitionError(e.getMessage());
             }
 

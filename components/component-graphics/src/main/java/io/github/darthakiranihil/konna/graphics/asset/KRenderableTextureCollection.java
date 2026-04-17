@@ -17,15 +17,14 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTextureSource;
@@ -33,6 +32,7 @@ import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
 import io.github.darthakiranihil.konna.graphics.type.KRenderableTextureTypedef;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -42,6 +42,7 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KRenderableTextureCollection
     extends KObject
@@ -58,14 +59,15 @@ public final class KRenderableTextureCollection
      * @param textureCollection Texture collection to extract the whole textures
      * @param textureSliceSetCollection Texture slice collection to extract sliced textures
      */
+    @KInject
     public KRenderableTextureCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KTextureCollection textureCollection,
-        @KInject final KTextureSliceSetCollection textureSliceSetCollection
+        final KAssetLoader assetLoader,
+        final KTextureCollection textureCollection,
+        final KTextureSliceSetCollection textureSliceSetCollection
     ) {
         super(
             "Graphics.renderableTextureCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -111,9 +113,8 @@ public final class KRenderableTextureCollection
             assetId,
             KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        KRenderableTextureSource source = definition.getEnum(
+        KRenderableTextureSource source = asset.getEnum(
             "source",
             KRenderableTextureSource.class
         );
@@ -123,7 +124,7 @@ public final class KRenderableTextureCollection
                 return KRenderableTexture.wrapIntoRectangle(assetId, topLeftCorner, texture, unit);
             }
             case SLICE_SET -> {
-                String sliceSetId = Objects.requireNonNull(definition.getString("slice_set"));
+                String sliceSetId = Objects.requireNonNull(asset.getString("slice_set"));
                 KTextureSliceSet set = this.textureSliceSetCollection.getAsset(sliceSetId);
                 return set.getTexture(assetId, topLeftCorner, unit);
             }

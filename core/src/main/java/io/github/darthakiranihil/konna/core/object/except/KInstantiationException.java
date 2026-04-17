@@ -31,14 +31,14 @@ public class KInstantiationException extends KException {
     /**
      * Constructs exception with given class and cause.
      * @param clazz Class that failed to be instantiated
-     * @param cause Cause of failure
+     * @param message Message of failure reason
      */
-    public KInstantiationException(final Class<?> clazz, final Throwable cause) {
+    public KInstantiationException(final Class<?> clazz, final String message) {
         super(
             String.format(
                 "Cannot instantiate an object of class: %s - %s",
                 clazz,
-                cause
+                message
             )
         );
     }
@@ -46,5 +46,6 @@ public class KInstantiationException extends KException {
     public KInstantiationException(final String message) {
         super(message);
     }
+
 
 }

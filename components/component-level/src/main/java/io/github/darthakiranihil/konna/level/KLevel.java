@@ -18,11 +18,14 @@ package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Representation of a game level, consisting of map sectors,
@@ -46,7 +49,7 @@ public final class KLevel extends KObject {
         final String name,
         final List<KLevelSector> sectors
     ) {
-        super(name, KStructUtils.setOfTags(KLevelComponentTags.LEVEL));
+        super(name, Collections.singleton(KLevelComponentTags.LEVEL));
         this.sectors = new HashMap<>(sectors.size());
 
         sectors.forEach(

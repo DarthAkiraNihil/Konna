@@ -25,11 +25,9 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KTriplet;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
@@ -49,7 +47,6 @@ import java.util.*;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStandardLevelLoader extends KObject implements KLevelLoader {
 
     private record RawSector(
@@ -75,13 +72,14 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
      * @param activator Activator to create controllers
      * @param tileCollection Tile collection
      */
+    @KInject
     public KStandardLevelLoader(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KActivator activator,
-        @KInject final KTileCollection tileCollection
+        final KEventSystem eventSystem,
+        final KActivator activator,
+        final KTileCollection tileCollection
     ) {
         super(
-            "KStandardLevelLoader", KStructUtils.setOfTags(KTag.DefaultTags.STD)
+            "KStandardLevelLoader", Collections.singleton(KDefaultTags.STD)
         );
 
         this.eventSystem = eventSystem;
@@ -338,9 +336,9 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
 
             try {
                 var paramsValidator = KClassUtils
-                    .getForName(
+                    .getGeneratedForName(
                         String.format(
-                            "konna.generated.level.entity.%s$$ParamValidator",
+                            "level.entity.%s$$ParamValidator",
                             controllerClass.getSimpleName()
                         )
                     );
@@ -372,8 +370,10 @@ public class KStandardLevelLoader extends KObject implements KLevelLoader {
                 .activator
                 .createObject(
                     controllerClass,
-                    controllerClass.getSimpleName(),
-                    controllerParams
+                    KAutonomousEntityController.args(
+                        controllerClass.getSimpleName(),
+                        controllerParams
+                    )
                 );
 
             controller.setLevel(level);

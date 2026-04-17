@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.io;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.control.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
 import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -32,7 +31,6 @@ import java.util.List;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStandardInputProcessor extends KObject implements KInputProcessor {
 
     private final List<KInputControlScheme> controlSchemes;
@@ -44,8 +42,9 @@ public class KStandardInputProcessor extends KObject implements KInputProcessor 
      * Standard constructor.
      * @param inputEventProcessor Input event processor
      */
+    @KInject
     public KStandardInputProcessor(
-        @KInject final KInputEventProcessor inputEventProcessor
+        final KInputEventProcessor inputEventProcessor
     ) {
         this.inputEventProcessor = inputEventProcessor;
         this.controlSchemes = new LinkedList<>();

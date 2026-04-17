@@ -16,7 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import java.util.Map;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 
 /**
  * Interface for a component loader - class which task is to instantiate and initialize
@@ -28,21 +30,18 @@ import java.util.Map;
 public interface KComponentLoader {
 
     /**
-     * Loads engine component with given class and puts it in loadedComponentMap.
-     * @param ctx Engine execution context
-     * @param component Class of component to load
-     * @param serviceLoader Instance of component services loader
-     * @param loadedComponentMap Map of loaded components. Used to prevent loading two components
-     *                           with the same name, provided by {@link KComponentMetaInfo}
-     *                           annotation
-     * @throws io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException
-     *         when component failed to be loaded (see cause for details)
+     * Loads a new component according to provided configuration.
+     * @param engineModule Engine module initialized in current application
+     * @param features Application features
+     * @param systemConfig System features configured by hypervisor
+     * @return A loaded component
+     *
+     * @since 0.6.0
      */
-    void load(
-        KEngineContext ctx,
-        Class<? extends KComponent> component,
-        KServiceLoader serviceLoader,
-        Map<String, KComponent> loadedComponentMap
+    KComponent load(
+        KEngineModule engineModule,
+        KApplicationFeatures features,
+        KSystemFeatures systemConfig
     );
 
 }

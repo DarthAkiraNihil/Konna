@@ -17,19 +17,18 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
-import io.github.darthakiranihil.konna.core.io.except.KIoException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderType;
 import io.github.darthakiranihil.konna.graphics.type.KShaderTypedef;
 
-import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +40,7 @@ import java.util.Objects;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KShaderCollection extends KObject implements KAssetCollection<KShader> {
 
@@ -56,14 +56,15 @@ public final class KShaderCollection extends KObject implements KAssetCollection
      * @param resourceLoader Resource loader (to read shader source file)
      * @param shaderCompiler Shader compiler (to compile the shader)
      */
+    @KInject
     public KShaderCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KResourceLoader resourceLoader,
-        @KInject final KShaderCompiler shaderCompiler
+        final KAssetLoader assetLoader,
+        final KResourceLoader resourceLoader,
+        final KShaderCompiler shaderCompiler
     ) {
         super(
             "Graphics.shaderCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -87,10 +88,8 @@ public final class KShaderCollection extends KObject implements KAssetCollection
         }
 
         KAsset asset = this.assetLoader.loadAsset(assetId, KShaderTypedef.SHADER_ASSET_TYPE);
-
-        KAssetDefinition shaderDefinition = asset.definition();
-        KShaderType type = shaderDefinition.getEnum("type", KShaderType.class);
-        String sourcePath = Objects.requireNonNull(shaderDefinition.getString("source"));
+        KShaderType type = asset.getEnum("type", KShaderType.class);
+        String sourcePath = Objects.requireNonNull(asset.getString("source"));
 
         try (KResource shaderSource = this.resourceLoader.loadResource(sourcePath)) {
 
@@ -108,8 +107,6 @@ public final class KShaderCollection extends KObject implements KAssetCollection
 
             return compiledShader;
 
-        } catch (IOException e) {
-            throw new KIoException(e);
         }
 
     }

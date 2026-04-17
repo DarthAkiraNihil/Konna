@@ -20,16 +20,11 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -41,7 +36,6 @@ import java.util.function.Consumer;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardMessageSystem extends KObject implements KQueueBasedMessageSystem {
 
     private static final String WATCHER_THREAD_NAME = "KStandardMessageSystem.watcher";
@@ -73,14 +67,15 @@ public class KStandardMessageSystem extends KObject implements KQueueBasedMessag
      * Standard constructor.
      * @param activator Activator that will be used to create tunnel instances.
      */
+    @KInject
     public KStandardMessageSystem(
-        @KInject final KActivator activator
+        final KActivator activator
     ) {
         super(
-            "KStandardMessageSystem",
-            KStructUtils.setOfTags(
-                KTag.DefaultTags.SYSTEM,
-                KTag.DefaultTags.STD
+            "StandardMessageSystem",
+            Set.of(
+                KDefaultTags.SYSTEM,
+                KDefaultTags.STD
             )
         );
         this.activator = activator;

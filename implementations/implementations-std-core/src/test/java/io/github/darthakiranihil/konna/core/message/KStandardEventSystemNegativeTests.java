@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.except.KNotFoundException;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,10 +31,23 @@ public class KStandardEventSystemNegativeTests extends KStandardTestClass {
 
     @Test
     public void testGetUnregisteredEvent() {
-        var registeredTestEvent1 = this.eventSystem.getEvent("testEvent1");
-        var registeredTestEvent2 = this.eventSystem.getSimpleEvent("testEvent2");
 
-        Assertions.assertNull(registeredTestEvent1);
-        Assertions.assertNull(registeredTestEvent2);
+        Assertions.assertThrows(
+            KNotFoundException.class,
+            () -> this.eventSystem.getEventInvoker("testEvent1")
+        );
+        Assertions.assertThrows(
+            KNotFoundException.class,
+            () -> this.eventSystem.getEventSubscriber("testEvent1")
+        );
+        Assertions.assertThrows(
+            KNotFoundException.class,
+            () -> this.eventSystem.getSimpleEventInvoker("testEvent2")
+        );
+        Assertions.assertThrows(
+            KNotFoundException.class,
+            () -> this.eventSystem.getSimpleEventSubscriber("testEvent2")
+        );
+
     }
 }

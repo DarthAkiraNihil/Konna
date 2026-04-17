@@ -16,14 +16,15 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Representation of an event - a simple message that should be delivered
@@ -33,10 +34,13 @@ import java.util.Queue;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KSimpleEvent extends KObject {
+public final class KSimpleEvent
+    extends KObject
+    implements KSimpleEventInvoker, KSimpleEventSubscriber {
     private static final int INITIAL_LISTENERS_CAPACITY = 4;
+    private final Object lock = new Object();
 
-    private final Queue<KSimpleEventAction> listeners;
+    private final Map<UUID, KSimpleEventAction> listeners;
     private @Nullable KEventQueue eventQueue;
 
     /**
@@ -44,28 +48,32 @@ public class KSimpleEvent extends KObject {
      * @param name Name of the event
      */
     public KSimpleEvent(final String name) {
-        super(name, KStructUtils.setOfTags(KTag.DefaultTags.EVENT));
-        this.listeners = new ArrayDeque<>(INITIAL_LISTENERS_CAPACITY);
+        super(name, Collections.singleton(KDefaultTags.EVENT));
+        this.listeners = new HashMap<>(INITIAL_LISTENERS_CAPACITY);
     }
 
     /**
      * Adds a new subscriber to the event. This method is synchronized.
      * @param callable Method reference to be called on event invocation
      */
-    public synchronized void subscribe(
+    @Override
+    public UUID subscribe(
         final KSimpleEventAction callable
     ) {
-        this.listeners.add(callable);
+        UUID subscriptionToken = UUID.randomUUID();
+        synchronized (this.lock) {
+            this.listeners.put(subscriptionToken, callable);
+        }
+        return subscriptionToken;
     }
 
-    /**
-     * Removes a subscriber from the event. This method is synchronized.
-     * @param callable Method reference to remove from event listeners list
-     */
-    public synchronized void unsubscribe(
-        final KSimpleEventAction callable
+    @Override
+    public void unsubscribe(
+        final UUID subscriptionToken
     ) {
-        this.listeners.remove(callable);
+        synchronized (this.lock) {
+            this.listeners.remove(subscriptionToken);
+        }
     }
 
     /**
@@ -75,6 +83,7 @@ public class KSimpleEvent extends KObject {
      * If the event is connected to an event queue, it will be passed to it and invoked
      * when it reaches the end of the queue.
      */
+    @Override
     public void invoke() {
         if (this.eventQueue != null) {
             this.eventQueue.queueEvent(this);
@@ -84,18 +93,12 @@ public class KSimpleEvent extends KObject {
         KThreadUtils.runAsync(this::invokeSync);
     }
 
-    /**
-     * Invokes the event, calling all methods that have been subscribed to the event.
-     * Each subscriber will be invoked synchronously, so each listener will be called
-     * in the same thread of the method. It's not recommended to call it if subscribers' methods
-     * are complex and its execution time is huge or the number of listeners is enormous, since it
-     * will cause a long time of execution locking. However, this method is useful in tests because
-     * them often require assertions of values if they are affected, and with async invocation
-     * there is no guarantee that values will change before assertions.
-     */
+    @Override
     public void invokeSync() {
-        for (KSimpleEventAction listener: this.listeners) {
-            listener.accept();
+        synchronized (this.lock) {
+            for (KSimpleEventAction listener : this.listeners.values()) {
+                listener.accept();
+            }
         }
     }
 

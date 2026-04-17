@@ -20,8 +20,6 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
-import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
-import io.github.darthakiranihil.konna.core.object.KObjectInstantiationType;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +29,11 @@ import java.util.Map;
 
 public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
 
-    private final KAssetDefinition definition;
+    private enum Tete {
+        ABOBA, ABIBA
+    }
+
+    private final KAsset definition;
 
     @SuppressWarnings("UnnecessaryBoxing")
     public KMapAssetDefinitionNegativeTests() {
@@ -83,9 +85,7 @@ public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
         source.put("class_array_as_class_array_property", new Class[] {KStandardJsonParser.class});
         source.put("empty_class_array_as_class_array_property", new Class[0]);
 
-        this.definition = new KMapAssetDefinition(
-            source
-        );
+        this.definition = new KAsset("abiba", "aboba", new KMapAssetDefinition(source));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class KMapAssetDefinitionNegativeTests extends KStandardTestClass {
 
         Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("null", KJsonValueType.class));
         Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("string_property", KJsonValueType.class));
-        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("string_property", KObjectInstantiationType.class));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> this.definition.getEnum("string_property", Tete.class));
 
     }
 

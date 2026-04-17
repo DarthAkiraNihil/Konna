@@ -17,16 +17,16 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevelMetadata;
 import io.github.darthakiranihil.konna.level.KLevelSectorMetadata;
@@ -43,6 +43,7 @@ import java.util.*;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KLevelMetadataCollection
     extends KObject
@@ -54,12 +55,13 @@ public final class KLevelMetadataCollection
      * Standard constructor.
      * @param assetLoader Asset loader
      */
+    @KInject
     public KLevelMetadataCollection(
-        @KInject final KAssetLoader assetLoader
+        final KAssetLoader assetLoader
     ) {
         super(
             "Level.levelCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -72,9 +74,8 @@ public final class KLevelMetadataCollection
         KAsset asset = this.assetLoader.loadAsset(
             assetId, KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
 
-        KAssetDefinition rawSectorsDefinitions = definition.getSubdefinition("sectors");
+        KAssetDefinition rawSectorsDefinitions = asset.getSubdefinition("sectors");
         Map<String, KLevelSectorMetadata>
             sectorMetadata = this.readSectorMetadata(rawSectorsDefinitions);
 

@@ -29,7 +29,7 @@ public class KDependencyResolveException extends KException {
 
     public KDependencyResolveException(final Class<?> clazz) {
         super(
-            String.format("Cannot resolve implementation for %s", clazz)
+            String.format("Could not resolve implementation for %s", clazz)
         );
     }
 

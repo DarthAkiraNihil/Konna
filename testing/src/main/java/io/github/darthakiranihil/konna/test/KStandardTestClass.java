@@ -16,40 +16,21 @@
 
 package io.github.darthakiranihil.konna.test;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
-import io.github.darthakiranihil.konna.core.di.KStandardContainerAccessor;
-import io.github.darthakiranihil.konna.core.engine.KEngineContext;
-import io.github.darthakiranihil.konna.core.engine.KProxiedEngineContext;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
-import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
-import io.github.darthakiranihil.konna.core.log.KLogger;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KMessenger;
-import io.github.darthakiranihil.konna.core.message.KQueueBasedMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessenger;
-import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.object.KStandardActivator;
-import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KStandardIndex;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import org.jetbrains.annotations.TestOnly;
-import org.jspecify.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Standard test class, containing implementations of most common Konna classes.
@@ -58,7 +39,6 @@ import java.util.Map;
  * @author Darth Akira Nihil
  */
 @TestOnly
-@KContainerModifier
 public class KStandardTestClass extends KObject {
 
     /**
@@ -81,81 +61,33 @@ public class KStandardTestClass extends KObject {
      * Implementation of a json stringifier.
      */
     protected final KJsonStringifier jsonStringifier;
-    /**
-     * Engine context, required for running tests.
-     */
-    @SuppressWarnings("DataFlowIssue")
-    protected static KEngineContext context = null;
-
-    /**
-     * Returns engine context for testing environment.
-     * @return Engine context for testing environment
-     */
-    public static KEngineContext getContext() {
-        return KStandardTestClass.context;
-    }
-
-    /**
-     * Convenience reference to message system.
-     */
-    protected static @Nullable KQueueBasedMessageSystem msgSystem;
 
     static {
-        var index = new KStandardIndex();
-
-        var containerResolver = new KStandardContainerAccessor(index);
-        containerResolver
-            .getContainer()
-            .add(KJsonParser.class, KStandardJsonParser.class)
-            .add(KJsonTokenizer.class, KStandardJsonTokenizer.class)
-            .add(KJsonDeserializer.class, KStandardJsonDeserializer.class)
-            .add(KJsonSerializer.class, KStandardJsonSerializer.class)
-            .add(KActivator.class, KProxiedEngineContext.class)
-            .add(KMessageSystem.class, KProxiedEngineContext.class)
-            .add(KAssetLoader.class, KProxiedEngineContext.class)
-            .add(KEventSystem.class, KProxiedEngineContext.class)
-            .add(KMessenger.class, KStandardMessenger.class)
-            .add(KLogger.class, KStandardLogger.class)
-            .add(KCache.class, KHashMapBasedCache.class);
-
-        var objectRegistry = new KStandardObjectRegistry();
-        var activator = new KStandardActivator(containerResolver, objectRegistry, index);
-        var messageSystem = new KStandardMessageSystem(activator);
-        var eventSystem = new KStandardEventSystem();
-        var resourceLoader = new KStandardResourceLoader(
-            List.of(
-                new KClasspathProtocol(
-                    ClassLoader.getSystemClassLoader()
-                )
-            )
-        );
-        var assetLoader = new KJsonSubtypeBasedAssetLoader(
-            resourceLoader,
-            Map.of(),
-            new KStandardJsonParser(new KStandardJsonTokenizer())
-        );
         KSystemLogger.addLogHandler(new KFileLogHandler("_log.log", new KTimestampLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KColorfulTerminalLogFormatter()));
         KSystemLogger.addLogHandler(new KTerminalLogHandler(new KSimpleLogFormatter()));
-
-        eventSystem.startPolling();
-        KStandardTestClass.context = new KProxiedEngineContext(
-            activator,
-            containerResolver,
-            index,
-            objectRegistry,
-            eventSystem,
-            messageSystem,
-            resourceLoader,
-            assetLoader,
-            ctx -> {
-                eventSystem.stopPolling();
-            }
-        );
-        activator.addContext(KStandardTestClass.context);
-        KStandardTestClass.msgSystem = messageSystem;
         KSystemLogger.activateFileLogging();
-        KSystemLogger.setLogLevel(KLogLevel.INFO);
+    }
+
+    /**
+     * @return Engine module of generated container without features.
+     */
+    public static KEngineModule getModule() {
+        var constructor = KReflectionUtils.getConstructor(
+            KAppContainer.useGenerated(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        assert constructor != null;
+        return KEngineModule.create(
+            KReflectionUtils.newInstance(
+                constructor,
+                new KStandardApplicationFeatures(Map.of()),
+                new KSystemFeatures()
+            )
+        );
+
     }
 
     /**
@@ -163,8 +95,8 @@ public class KStandardTestClass extends KObject {
      */
     protected KStandardTestClass() {
         super(
-            "std_test_class",
-            KStructUtils.setOfTags(KTag.DefaultTags.TEST, KTag.DefaultTags.STD)
+            "StandardTestClass",
+            Set.of(KDefaultTags.TEST, KDefaultTags.STD)
         );
         this.jsonTokenizer = new KStandardJsonTokenizer();
         this.jsonParser = new KStandardJsonParser(this.jsonTokenizer);

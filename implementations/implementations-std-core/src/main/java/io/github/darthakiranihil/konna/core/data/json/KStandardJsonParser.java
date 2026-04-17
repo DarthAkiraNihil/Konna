@@ -19,10 +19,8 @@ package io.github.darthakiranihil.konna.core.data.json;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonTokenException;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.io.*;
 import java.util.*;
@@ -33,7 +31,6 @@ import java.util.*;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardJsonParser extends KObject implements KJsonParser {
 
     private final KJsonTokenizer tokenizer;
@@ -42,8 +39,9 @@ public class KStandardJsonParser extends KObject implements KJsonParser {
      * Constructs parser with concrete tokenizer.
      * @param tokenizer Any Json tokenizer
      */
-    public KStandardJsonParser(@KInject final KJsonTokenizer tokenizer) {
-        super("std_json_parser", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+    @KInject
+    public KStandardJsonParser(final KJsonTokenizer tokenizer) {
+        super("StdJsonParser", Collections.singleton(KDefaultTags.STD));
         this.tokenizer = tokenizer;
     }
 

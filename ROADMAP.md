@@ -110,9 +110,12 @@ The foundation that is essential for the whole engine
 - [ ] Make bootstrap config a record so there can be more than one Konna instance
 - [ ] Add opportunity to start hypervisor in the first thread
 - [ ] Implement new container system that is Dagger-like
-- [ ] Eliminate KIndex and replace it to KClasspathSearchEngine
+- [x] Eliminate KIndex and replace it to KClasspathSearchEngine
 - [ ] Add something-something to be used in Konna Editor 
 - [ ] Weaken log levels of some messages
+- [ ] Maybe more convenient way to handle native memory? (at least need to fix render memory leaking)
+- [ ] Brand new Object Registry
+- [ ] Improved object management model (object "deletion")
 
 ### v. 0.7.0 - Level - Part II
 

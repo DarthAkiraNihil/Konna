@@ -17,18 +17,19 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.image.*;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.type.KTextureTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +40,7 @@ import java.util.Objects;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KTextureCollection extends KObject implements KAssetCollection<KTexture> {
 
@@ -54,14 +56,15 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
      * @param imageLoader Image loader (to load texture images)
      * @param shaderProgramCollection (to load texture shaders)
      */
+    @KInject
     public KTextureCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KImageLoader imageLoader,
-        @KInject final KShaderProgramCollection shaderProgramCollection
+        final KAssetLoader assetLoader,
+        final KImageLoader imageLoader,
+        final KShaderProgramCollection shaderProgramCollection
     ) {
         super(
             "Graphics.textureCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -89,10 +92,9 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
             assetId,
             KTextureTypedef.TEXTURE_ASSET_TYPE
         );
-        KAssetDefinition textureDefinition = asset.definition();
 
-        String imageFile = Objects.requireNonNull(textureDefinition.getString("image"));
-        String shaderId = Objects.requireNonNull(textureDefinition.getString("shader"));
+        String imageFile = Objects.requireNonNull(asset.getString("image"));
+        String shaderId = Objects.requireNonNull(asset.getString("shader"));
 
         KShaderProgram textureShader = shaderId.equals("default")
             ? this.shaderProgramCollection.getDefaultTextureShader()
@@ -100,8 +102,8 @@ public final class KTextureCollection extends KObject implements KAssetCollectio
 
         KImage image = this.imageLoader.load(imageFile);
 
-        KAssetDefinition filtering = textureDefinition.getSubdefinition("filtering");
-        KAssetDefinition wrapping = textureDefinition.getSubdefinition("wrapping");
+        KAssetDefinition filtering = asset.getSubdefinition("filtering");
+        KAssetDefinition wrapping = asset.getSubdefinition("wrapping");
 
         KTextureFiltering minFilter = filtering.getEnum("min", KTextureFiltering.class);
         KTextureFiltering magFilter = filtering.getEnum("mag", KTextureFiltering.class);

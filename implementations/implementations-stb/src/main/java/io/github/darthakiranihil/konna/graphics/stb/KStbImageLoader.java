@@ -21,13 +21,11 @@ import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KImageLoader;
 import io.github.darthakiranihil.konna.libfrontend.stb.KStbImage;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -38,7 +36,6 @@ import java.nio.IntBuffer;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStbImageLoader extends KObject implements KImageLoader {
 
     private final KStbImage stbImage;
@@ -50,9 +47,10 @@ public class KStbImageLoader extends KObject implements KImageLoader {
      * @param stbImage STBImage frontend
      * @param resourceLoader Resource loader
      */
+    @KInject
     public KStbImageLoader(
-        @KInject final KStbImage stbImage,
-        @KInject final KResourceLoader resourceLoader
+        final KStbImage stbImage,
+        final KResourceLoader resourceLoader
     ) {
         this.stbImage = stbImage;
         this.resourceLoader = resourceLoader;
@@ -92,8 +90,6 @@ public class KStbImageLoader extends KObject implements KImageLoader {
 
             return new KImage(loaded, width.get(), height.get());
 
-        } catch (IOException e) {
-            throw new KIoException(e);
         }
 
     }

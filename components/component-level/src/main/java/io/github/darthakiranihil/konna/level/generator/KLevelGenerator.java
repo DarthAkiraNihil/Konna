@@ -284,15 +284,15 @@ public final class KLevelGenerator extends KObject {
             );
         }
 
-        var instance = this.activator.createObject(nodeClass, constant);
+        var instance = this.activator.createObject(nodeClass, KConstantNode.args(constant));
         String nodeClassName = nodeClass.getSimpleName();
 
         KValidator<KUniversalMap> outputParamsValidator;
         try {
             Class<? extends KValidator<KUniversalMap>> outputParamsValidatorClass =
-                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
+                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getGeneratedForName(
                     String.format(
-                        "konna.generated.level.generator.%s$$OutputValidator",
+                        "level.generator.%s$$OutputValidator",
                         nodeClassName
                     ));
             outputParamsValidator = this.activator.createObject(outputParamsValidatorClass);
@@ -325,9 +325,9 @@ public final class KLevelGenerator extends KObject {
         KValidator<KUniversalMap> inputParamsValidator = null;
         try {
             Class<? extends KValidator<KUniversalMap>> inputParamsValidatorClass =
-                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
+                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getGeneratedForName(
                     String.format(
-                        "konna.generated.level.generator.%s$$InputValidator",
+                        "level.generator.%s$$InputValidator",
                         nodeClassName
                     ));
             inputParamsValidator = this.activator.createObject(inputParamsValidatorClass);
@@ -343,9 +343,9 @@ public final class KLevelGenerator extends KObject {
         KValidator<KUniversalMap> outputParamsValidator;
         try {
             Class<? extends KValidator<KUniversalMap>> outputParamsValidatorClass =
-                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getForName(
+                (Class<? extends KValidator<KUniversalMap>>) KClassUtils.getGeneratedForName(
                     String.format(
-                        "konna.generated.level.generator.%s$$OutputValidator",
+                        "level.generator.%s$$OutputValidator",
                         nodeClassName
                     ));
             outputParamsValidator = this.activator.createObject(outputParamsValidatorClass);

@@ -16,13 +16,14 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Set;
 import java.util.UUID;
 
 /**
  * Interface for utility class that stores records about all objects, created with
- * {@link io.github.darthakiranihil.konna.core.object.KActivator} (excluding temporal). Should be
- * used in debugging, though it is possible to use it in other way.
+ * {@link KActivator} or another tools.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -30,24 +31,68 @@ import java.util.UUID;
 public interface KObjectRegistry {
 
     /**
-     * Pushes an object to the registry. If id of the pushed object already
-     * exists in the registry, no record will be added to the registry.
-     * @param obj Object to push
-     * @param instantiationType Instantiation type of the object
+     * Constant for tag attached to all synthetic records (that store non-KObjects).
      */
-    void pushObjectToRegistry(KObject obj, KObjectInstantiationType instantiationType);
+    String SYNTHETIC_TAG = "synthetic";
 
     /**
-     * Removes object from the registry. If the object with given id
-     * is not registered, nothing will happen.
-     * @param objectId ID of removed object.
+     * Adds an object to this registry.
+     * @param object Object to add
+     * @return Registry record created for pushed object
+     *
+     * @since 0.6.0
      */
-    void removeObjectFromRegistry(UUID objectId);
+    KObjectRegistryRecord pushObject(Object object);
 
     /**
-     * Lists all objects that have been registered.
-     * @return Set of all registered objects.
+     * Adds an object to this registry. Pushing an object with this method guarantees that it
+     * won't be deleted nor collected by GC, unless it is explicitly deleted.
+     * @param object Object to add
+     * @return Registry record created for pushed object
+     *
+     * @since 0.6.0
      */
-    Set<KObjectRegistryRecord> listObjects();
+    KObjectRegistryRecord pushImmortalObject(Object object);
+
+    /**
+     * @param objectId ID of object to get record of
+     * @return Registry record associated with passed object id or {@code null} if it is not found
+     *
+     * @since 0.6.0
+     */
+    @Nullable KObjectRegistryRecord getObject(UUID objectId);
+
+    /**
+     * Removes a registry record for specific object, if corresponding id is presented
+     * in the registry.
+     * @param objectId ID of object to remove
+     *
+     * @since 0.6.0
+     */
+    void removeObject(UUID objectId);
+
+    /**
+     * @param tag Tag to be in found objects
+     * @return Set of objects that are in this registry and have specified tag
+     *
+     * @since 0.6.0
+     */
+    Set<KObjectRegistryRecord> getObjectsWithTag(String tag);
+
+    /**
+     * @param clazz Required type of referenced objects
+     * @return Set of objects that are in this registry and stored instances have specified type
+     *
+     * @since 0.6.0
+     */
+    Set<KObjectRegistryRecord> getObjectsOfType(Class<?> clazz);
+
+    /**
+     * @return Set of all objects stored in this registry
+     *
+     * @since 0.6.0
+     */
+    Set<KObjectRegistryRecord> getObjects();
+
 
 }

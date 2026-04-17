@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
+import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.level.except.KGenerationException;
 import io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode;
@@ -30,6 +31,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class KLevelGeneratorNegativeTests extends KStandardTestClass {
+    
+    private final KActivator activator;
+
+    public KLevelGeneratorNegativeTests() {
+        this.activator = KStandardTestClass.getModule().activator();
+    }
 
     @Test
     public void testGenerateLevelWithUnknownConstant() {
@@ -56,7 +63,7 @@ public class KLevelGeneratorNegativeTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -93,7 +100,7 @@ public class KLevelGeneratorNegativeTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -129,7 +136,7 @@ public class KLevelGeneratorNegativeTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -153,7 +160,7 @@ public class KLevelGeneratorNegativeTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -177,7 +184,7 @@ public class KLevelGeneratorNegativeTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 
@@ -201,7 +208,7 @@ public class KLevelGeneratorNegativeTests extends KStandardTestClass {
 
         KLevelGenerator generator = new KLevelGenerator(
             "valid_generator",
-            KStandardTestClass.context,
+            this.activator,
             metadata
         );
 

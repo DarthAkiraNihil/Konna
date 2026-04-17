@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.entity;
 
+import io.github.darthakiranihil.konna.core.object.KArgs;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -27,18 +28,27 @@ import org.jspecify.annotations.Nullable;
  */
 public abstract class KEntityBehaviour {
 
+    /**
+     * Constructs {@link KArgs} object for this class.
+     * @param entity Entity that this behavior is assigned to
+     * @return Packed args
+     */
+    public static KArgs args(final KEntity entity) {
+        return () -> new Object[] {entity};
+    }
+
     private final KEntity entity;
 
     /**
      * Standard constructor.
-     * @param entity Entity assigned to this behaviour
+     * @param entity Entity that this behavior is assigned to
      */
     public KEntityBehaviour(final KEntity entity) {
         this.entity = entity;
     }
 
     /**
-     * Tries to get a data components with specific class from assigned entity.
+     * Tries to get a data component with specific class from assigned entity.
      * @param clazz Class of the data component to get
      * @return The actual data component instance or {@code null} if it is not found
      * @param <T> Type parameter for retrieved component

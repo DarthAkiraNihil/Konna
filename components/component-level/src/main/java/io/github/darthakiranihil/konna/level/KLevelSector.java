@@ -17,22 +17,21 @@
 package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.core.message.KEvent;
-import io.github.darthakiranihil.konna.core.message.KEventAction;
+import io.github.darthakiranihil.konna.core.message.KEventSubscriber;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The elementary unit of a game level that provides all information
@@ -66,11 +65,8 @@ public final class KLevelSector extends KObject {
 
     }
 
-    private final KEventAction<EventData> entityLeftSectorConsumer = this::onEntityLeftSector;
-    private final KEventAction<EventData> entityMovedConsumer = this::onEntityMoved;
-
-    private final KEvent<EventData> entityLeftSectorEvent;
-    private final KEvent<EventData> entityMovedEvent;
+    private final KEventSubscriber<EventData> entityLeftSectorEvent;
+    private final KEventSubscriber<EventData> entityMovedEvent;
 
     private final KTileLayer tileLayer;
     private final KHeightLayer heightLayer;
@@ -82,6 +78,9 @@ public final class KLevelSector extends KObject {
     private final KVisitedPlacesLayer visitedPlacesLayer;
 
     private final Map<Class<? extends KLayerTool>, KLayerTool> tools;
+
+    private final UUID entityLeftSectorToken;
+    private final UUID entityMovedToken;
 
     /**
      * Standard constructor.
@@ -103,7 +102,7 @@ public final class KLevelSector extends KObject {
         final KLevelEntityLayer entityLayer,
         final KLevelTransitionLayer levelTransitionLayer
     ) {
-        super(name, KStructUtils.setOfTags(KLevelComponentTags.SECTOR));
+        super(name, Collections.singleton(KLevelComponentTags.SECTOR));
 
         this.tileLayer = tileLayer;
         this.heightLayer = heightLayer;
@@ -111,15 +110,14 @@ public final class KLevelSector extends KObject {
         this.entityLayer = entityLayer;
         this.levelTransitionLayer = levelTransitionLayer;
 
-        this.entityLeftSectorEvent = Objects.requireNonNull(
-            eventSystem.getEvent("entityLeftSector")
-        );
-        this.entityMovedEvent = Objects.requireNonNull(
-            eventSystem.getEvent("entityMoved")
-        );
+        this.entityLeftSectorEvent = eventSystem.getEventSubscriber("entityLeftSector");
+        this.entityMovedEvent = eventSystem.getEventSubscriber("entityMoved");
 
-        this.entityMovedEvent.subscribe(this.entityMovedConsumer);
-        this.entityLeftSectorEvent.subscribe(this.entityLeftSectorConsumer);
+        this.entityMovedToken = this.entityMovedEvent
+            .subscribe(this::onEntityMoved);
+
+        this.entityLeftSectorToken = this.entityLeftSectorEvent
+            .subscribe(this::onEntityLeftSector);
 
         this.reachabilityAreaLayer = new KReachabilityAreaLayer(tileLayer, heightLayer);
         this.visitedPlacesLayer = new KVisitedPlacesLayer(tileLayer.getSize());
@@ -242,8 +240,8 @@ public final class KLevelSector extends KObject {
      */
     public void unload() {
 
-        this.entityMovedEvent.unsubscribe(this.entityMovedConsumer);
-        this.entityLeftSectorEvent.unsubscribe(this.entityLeftSectorConsumer);
+        this.entityMovedEvent.unsubscribe(this.entityMovedToken);
+        this.entityLeftSectorEvent.unsubscribe(this.entityLeftSectorToken);
 
     }
 

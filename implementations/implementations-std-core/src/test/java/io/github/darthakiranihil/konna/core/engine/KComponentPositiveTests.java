@@ -16,13 +16,19 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
+import io.github.darthakiranihil.konna.core.engine.impl.TestService;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class KComponentPositiveTests extends KStandardTestClass {
 
@@ -30,15 +36,25 @@ public class KComponentPositiveTests extends KStandardTestClass {
 
     @Test
     public void testInstantiateComponentSuccess() {
-        KServiceLoader serviceLoader = new KStandardServiceLoader();
-
         try {
+            var constructor = KReflectionUtils.getConstructor(
+                KAppContainer.useGenerated(),
+                KApplicationFeatures.class,
+                KSystemFeatures.class
+            );
+
+            Assertions.assertNotNull(constructor);
+            KEngineModule engineModule = KEngineModule.create(
+                KReflectionUtils.newInstance(
+                    constructor,
+                    new KStandardApplicationFeatures(Map.of()),
+                    new KSystemFeatures()
+                )
+            );
+
             new TestComponent(
-                serviceLoader,
-                "abobax",
-                KStandardTestClass.context,
-                "io.github.darthakiranihil.konna.core.engine.impl",
-                KJsonValue.fromMap(new HashMap<>())
+                engineModule,
+                new TestService()
             );
         } catch (KComponentLoadingException e) {
             Assertions.fail(e);

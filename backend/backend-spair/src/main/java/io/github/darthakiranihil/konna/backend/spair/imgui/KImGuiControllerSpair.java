@@ -19,13 +19,12 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.di.KContainerAccessor;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGui;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiController;
+import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiIo;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
-import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
 /**
  * ImGui controller implementation using SpaiR bindings.
@@ -33,22 +32,20 @@ import io.github.darthakiranihil.konna.libfrontend.imgui.*;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 @KExcludeFromGeneratedCoverageReport
-@KContainerModifier
 public class KImGuiControllerSpair extends KImGuiController {
 
     private final ImGuiImplGl3 imGuiImplGl3;
     private final ImGuiImplGlfw imGuiImplGlfw;
     private final KFrame frame;
 
+    @KInject
     public KImGuiControllerSpair(
-        @KInject final KImGui imGui,
-        @KInject final KEventSystem eventSystem,
-        @KInject final KFrame frame,
-        @KInject final KContainerAccessor containerAccessor
+        final KImGui imGui,
+        final KFrameTaskScheduler frameTaskScheduler,
+        final KFrame frame
     ) {
-        super(imGui, eventSystem);
+        super(imGui, frameTaskScheduler);
 
         this.imGuiImplGl3 = new ImGuiImplGl3();
         this.imGuiImplGlfw = new ImGuiImplGlfw();
@@ -65,14 +62,15 @@ public class KImGuiControllerSpair extends KImGuiController {
         this.imGuiImplGl3.init("#version 330 core");
 
         // maybe there are more of them but idk
-        containerAccessor
-            .getContainer()
-            .add(KImFontConfig.class, KImFontConfigSpair.class)
-            .add(KImFontGlyph.class, KImFontGlyphSpair.class)
-            .add(KImGuiIo.class, KImGuiIoSpair.class)
-            .add(KImGuiStorage.class, KImGuiStorageSpair.class)
-            .add(KImGuiStyle.class, KImGuiStyleSpair.class)
-            .add(KImGuiKeyData.class, KImGuiKeyDataSpair.class);
+        // todo: manually setting this is boring, need to add runtime modules or smth like that
+        //        containerAccessor
+        //            .getContainer()
+        //            .add(KImFontConfig.class, KImFontConfigSpair.class)
+        //            .add(KImFontGlyph.class, KImFontGlyphSpair.class)
+        //            .add(KImGuiIo.class, KImGuiIoSpair.class)
+        //            .add(KImGuiStorage.class, KImGuiStorageSpair.class)
+        //            .add(KImGuiStyle.class, KImGuiStyleSpair.class)
+        //            .add(KImGuiKeyData.class, KImGuiKeyDataSpair.class);
 
         this.frame = frame;
 

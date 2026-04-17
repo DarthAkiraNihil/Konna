@@ -16,36 +16,30 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
-import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KFrameLoader;
+import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.debug.KDebugger;
-import io.github.darthakiranihil.konna.core.di.KContainer;
-import io.github.darthakiranihil.konna.core.di.KContainerModifier;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingException;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.log.KLogLevel;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.message.KEventRegisterer;
-import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
-import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+import io.github.darthakiranihil.konna.core.message.*;
+import io.github.darthakiranihil.konna.core.object.*;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Konna Engine hypervisor - the primal class for the engine that starts
@@ -54,7 +48,6 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-@KContainerModifier
 public class KEngineHypervisor extends KObject {
 
     /**
@@ -79,29 +72,32 @@ public class KEngineHypervisor extends KObject {
      * Loaded engine debuggers.
      */
     protected final Map<String, Object> loadedDebuggers;
+
     /**
-     * Loaded engine context.
+     * Engine module assigned to this application.
      */
-    protected @Nullable KEngineContext ctx;
+    protected @Nullable KEngineModule engineModule;
     /**
      * Spawned application's frame.
      */
     protected @Nullable KFrame frame;
+    /**
+     * Applications's frame task system.
+     */
+    protected @Nullable KFrameTaskExecutor frameTaskExecutor;
+    /**
+     * Message system assigned to this application.
+     */
+    protected @Nullable KMessageSystem messageSystem;
 
-    private final KSimpleEvent tick;
-    private final KSimpleEvent newFrame;
-    private final KSimpleEvent frameFinished;
-    private final KSimpleEvent debugTick;
-    private final KSimpleEvent loopEnter;
-    private final KSimpleEvent preSwap;
     private final KSimpleEvent ready;
-    private final KSimpleEvent loopLeaving;
 
-    private boolean debug;
-    private final DoubleSummaryStatistics fps;
-    private int maxFps;
-    private long nanosPerFrame;
+    private KSystemFeatures systemFeatures;
+    private KAppContainer appContainer;
+
+    private final DoubleSummaryStatistics fpsStats;
     private final KUniversalMap fpsData;
+    private long nanosPerFrame;
 
     /**
      * Constructs hypervisor with provided config.
@@ -112,26 +108,19 @@ public class KEngineHypervisor extends KObject {
     ) {
         super(
             "KEngineHypervisor",
-            KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM)
+            Collections.singleton(KDefaultTags.SYSTEM)
         );
 
         this.config = config;
 
         this.engineComponents = new HashMap<>();
         this.loadedDebuggers = new HashMap<>();
-        this.ctx = null;
 
-        this.tick = new KSimpleEvent(KFrame.TICK_EVENT_NAME);
-        this.newFrame = new KSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
-        this.frameFinished = new KSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME);
-        this.debugTick = new KSimpleEvent(KFrame.DEBUG_TICK_EVENT_NAME);
-        this.loopEnter = new KSimpleEvent(KFrame.LOOP_ENTER_EVENT_NAME);
-        this.preSwap = new KSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
         this.ready = new KSimpleEvent(KEngineHypervisor.HYPERVISOR_READY_EVENT_NAME);
-        this.loopLeaving = new KSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
+        this.systemFeatures = new KSystemFeatures();
+        this.appContainer = new KAppContainer.Mock();
 
-        this.maxFps = -1;
-        this.fps = new DoubleSummaryStatistics();
+        this.fpsStats = new DoubleSummaryStatistics();
         this.fpsData = new KUniversalMap();
     }
 
@@ -144,42 +133,23 @@ public class KEngineHypervisor extends KObject {
      */
     public void launch(final KApplicationFeatures features) {
 
-        this.processSystemFeatures(features);
-        KEngineContextLoader contextLoader;
-        try {
-            contextLoader = this.config.contextLoader().getDeclaredConstructor().newInstance();
-        } catch (
-            NoSuchMethodException
-            |   InstantiationException
-            |   IllegalAccessException
-            |   InvocationTargetException e) {
-            throw new KHypervisorInitializationException(e);
-        }
+        this.systemFeatures = new KSystemFeatures(features);
+        this.processSystemFeatures();
+        this.appContainer = this.createAppContainer(features);
 
-        this.ctx = contextLoader.load(features);
+        this.engineModule = KEngineModule.create(this.appContainer);
+        KActivator activator = this.engineModule.activator();
+        this.frameTaskExecutor = activator.createObject(KFrameTaskExecutor.class);
+        this.frameTaskExecutor.setIsDebug(this.systemFeatures.isDebugEnabled());
+
         this.registerSystemEvents();
 
         KSystemLogger.info(this.name, "Launching engine hypervisor [config = %s]", config);
-        KSystemLogger.info(
-            this.name,
-            "index: indexed %d classes in %d packages",
-            ctx.getClassIndex().size(),
-            ctx.getPackageIndex().size()
-        );
-
-        KContainer master = this.ctx.getContainer();
-
-        master
-            .add(config.serviceLoader())
-            .add(config.componentLoader())
-            .add(KFrameLoader.class, config.frameLoader());
-
-        KFrameLoader frameLoader = this.ctx.createObject(KFrameLoader.class);
-        this.frame = frameLoader.load(this.ctx, this.config.frameSpawnOptions());
+        this.frame = activator.createObject(KFrame.class);
 
         for (var eventRegisterer: config.eventRegisterers()) {
-            KEventRegisterer registerer = ctx.createObject(eventRegisterer);
-            registerer.registerEvents(ctx);
+            KEventRegisterer registerer = activator.createObject(eventRegisterer);
+            registerer.registerEvents(this.engineModule.eventSystem());
         }
 
         KSystemLogger.info(
@@ -188,20 +158,16 @@ public class KEngineHypervisor extends KObject {
             config.eventRegisterers().size()
         );
 
+        KObjectRegistry objectRegistry = this.engineModule.objectRegistry();
         try {
 
-            KComponentLoader componentLoader = ctx.createObject(config.componentLoader());
-            KSystemLogger.info(this.name, "Created component loader %s", config.componentLoader());
-            KServiceLoader serviceLoader = ctx.createObject(config.serviceLoader());
-            KSystemLogger.info(this.name, "Created service loader %s", config.serviceLoader());
-
-            for (var component: config.components()) {
-                componentLoader.load(
-                    ctx,
-                    component,
-                    serviceLoader,
-                    this.engineComponents
+            for (var componentLoaderClass: config.componentLoaders()) {
+                KComponentLoader componentLoader = activator.createObject(componentLoaderClass);
+                KComponent loaded = componentLoader.load(
+                    this.engineModule, features, this.systemFeatures
                 );
+                objectRegistry.pushImmortalObject(loaded);
+                this.engineComponents.put(loaded.name(), loaded);
             }
 
             KSystemLogger.info(this.name, "Loaded %d components", engineComponents.size());
@@ -213,12 +179,15 @@ public class KEngineHypervisor extends KObject {
             throw new KHypervisorInitializationException(e);
         }
 
+        this.messageSystem = this.engineModule.messageSystem();
+        KAssetLoader assetLoader = this.engineModule.assetLoader();
+
         engineComponents.forEach((_k, v) -> {
-            ctx.registerComponent(v);
+            this.messageSystem.registerComponent(v);
 
             KAssetTypedef[] assetTypedefs = v.getAssetTypedefs();
             for (var typedef: assetTypedefs) {
-                ctx.addAssetTypedef(typedef);
+                assetLoader.addAssetTypedef(typedef);
             }
 
         });
@@ -230,8 +199,8 @@ public class KEngineHypervisor extends KObject {
 
 
         for (var routeConfigurer: config.messageRoutesConfigurers()) {
-            KMessageRoutesConfigurer configurer = ctx.createObject(routeConfigurer);
-            configurer.setupRoutes(ctx);
+            KMessageRoutesConfigurer configurer = activator.createObject(routeConfigurer);
+            configurer.setupRoutes(this.messageSystem);
         }
         KSystemLogger.info(
             this.name,
@@ -239,43 +208,46 @@ public class KEngineHypervisor extends KObject {
             config.messageRoutesConfigurers().size()
         );
 
-        engineComponents.values().forEach(KComponent::postInit);
+        this.engineComponents.values().forEach(KComponent::postInit);
         KSystemLogger.info(
             this.name,
             "Components' post-init is completed"
         );
 
-        if (this.debug) {
-            var debuggers = this
-                .ctx
-                .getClassIndex()
-                .stream()
-                .filter(c -> c.isAnnotationPresent(KDebugger.class))
-                .toList();
+        if (this.systemFeatures.isDebugEnabled()) {
 
-            KSystemLogger.info(
-                this.name,
-                "Found %d debuggers",
-                debuggers.size()
-            );
+            KClasspathSearchEngine classpath = activator.createObject(KClasspathSearchEngine.class);
 
-            for (var debugger: debuggers) {
+            try (
+                var debuggersSearchResult = classpath
+                    .query()
+                    .withAnnotation(KDebugger.class)
+                    .execute()
+            ) {
+                var debuggers = debuggersSearchResult.loadClasses();
                 KSystemLogger.info(
                     this.name,
-                    "Loading debugger %s",
-                    debugger.getCanonicalName()
+                    "Found %d debuggers",
+                    debuggers.size()
                 );
-                this.loadedDebuggers.put(
-                    debugger.getCanonicalName(),
-                    this.ctx.createObject(debugger)
-                );
+
+                for (var debugger: debuggers) {
+                    KSystemLogger.info(
+                        this.name,
+                        "Loading debugger %s",
+                        debugger.getCanonicalName()
+                    );
+                    this.loadedDebuggers.put(
+                        debugger.getCanonicalName(),
+                        activator.createObject(debugger)
+                    );
+                }
             }
 
         }
 
         // ready
         this.ready.invokeSync();
-        contextLoader.postLoad(this.ctx, features);
 
     }
 
@@ -287,15 +259,22 @@ public class KEngineHypervisor extends KObject {
      */
     public void frameLoop() {
 
-        if (this.ctx == null) {
+        if (this.engineModule == null) {
             throw new KHypervisorInitializationException(
-                "Cannot enter frame loop: context is null!"
+                "Cannot enter frame loop: engine module is null!"
             );
         }
 
+        this.messageSystem = this.engineModule.messageSystem();
         if (this.frame == null) {
             throw new KHypervisorInitializationException(
                 "Cannot enter frame loop: frame is null!"
+            );
+        }
+
+        if (this.frameTaskExecutor == null) {
+            throw new KHypervisorInitializationException(
+                "Cannot enter frame loop: frame task system is null!"
             );
         }
 
@@ -307,47 +286,44 @@ public class KEngineHypervisor extends KObject {
             this.frame.getClass().getCanonicalName()
         );
 
-        this.loopEnter.invokeSync();
+        this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.ENTER);
         while (!this.frame.shouldClose()) {
 
             try {
 
                 Instant beginTime = Instant.now();
                 // new_frame
-                this.newFrame.invokeSync();
+                this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.NEW_FRAME);
 
-                this.tick.invokeSync();
-                if (this.debug) {
-                    this.debugTick.invokeSync();
-                }
+                this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.TICK);
 
                 while (this.frame.isLocked()) {
                     Thread.onSpinWait();
                 }
 
                 // pre_swap
-                this.preSwap.invokeSync();
+                this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.PRE_SWAP);
                 this.frame.swapBuffers();
                 this.frame.pollEvents();
 
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 long sleepTime = deltaTime.getNano() + this.nanosPerFrame;
-                if (this.maxFps != -1 && sleepTime > 0) {
+                if (this.systemFeatures.getMaxFps() != -1 && sleepTime > 0) {
                     KThreadUtils.sleepForNano(sleepTime);
                     deltaTime = Duration.between(beginTime, Instant.now());
                 }
                 var currentFps = ONE_SEC_IN_NANOS / deltaTime.getNano();
-                this.fps.accept(currentFps);
+                this.fpsStats.accept(currentFps);
                 this.fpsData.put("fps", currentFps);
-                this.fpsData.put("avg_fps", (float) this.fps.getAverage());
-                this.ctx.deliverMessageSync(
+                this.fpsData.put("avg_fps", (float) this.fpsStats.getAverage());
+                this.messageSystem.deliverMessageSync(
                     KMessage.metrics(
                         "Konna.fps",
                         this.fpsData
                     )
                 );
 
-                this.frameFinished.invokeSync();
+                this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
                 // frame_finished
 
             } catch (KException kex) {
@@ -371,7 +347,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         KSystemLogger.info(this.name, "Leaving frame loop");
-        this.loopLeaving.invokeSync();
+        this.frameTaskExecutor.executeScheduledTasks(KFrameEvent.SHUTDOWN);
         this.shutdown();
 
     }
@@ -381,13 +357,6 @@ public class KEngineHypervisor extends KObject {
      * It won't have any effect if there is no loaded engine context.
      */
     public void shutdown() {
-        if (this.ctx == null) {
-            return;
-        }
-
-        this.ctx.handleShutdown();
-        this.ctx = null;
-
         this.engineComponents.values().forEach(KComponent::shutdown);
         this.engineComponents.clear();
 
@@ -402,59 +371,71 @@ public class KEngineHypervisor extends KObject {
      * @since 0.3.0
      */
     protected void registerSystemEvents() {
-        if (this.ctx == null) {
+        if (this.engineModule == null) {
             return; // will be checked on entering frame loop
         }
 
-        this.ctx.registerEvent(this.tick);
-        this.ctx.registerEvent(this.newFrame);
-        this.ctx.registerEvent(this.frameFinished);
-        this.ctx.registerEvent(this.debugTick);
-        this.ctx.registerEvent(this.preSwap);
-        this.ctx.registerEvent(this.loopEnter);
-        this.ctx.registerEvent(this.ready);
-        this.ctx.registerEvent(this.loopLeaving);
+        KEventSystem eventSystem = this.engineModule.eventSystem();
+        KActivator activator = this.engineModule.activator();
+        eventSystem.registerEvent(this.ready);
 
-        KSystemLogger.info(this.name, "Executing generated event registerers");
-        try (ScanResult scanResult = new ClassGraph()
-            .enableAllInfo()
-            .acceptPackages("konna.generated")
-            .scan()
+        KClasspathSearchEngine classpath = activator.createObject(KClasspathSearchEngine.class);
+        try (
+            var result = classpath
+                .queryGenerated()
+                .implementsInterface(KEventRegisterer.class)
+                .execute()
         ) {
-            scanResult
-                .getAllClasses()
+            result
+                .loadClasses()
                 .stream()
-                .filter((c) -> c.implementsInterface(KEventRegisterer.class))
-                .map(ClassInfo::loadClass)
-                .map(c -> (KEventRegisterer) this.ctx.createObject(c))
-                .forEach(er -> er.registerEvents(this.ctx));
+                .map(c -> (KEventRegisterer) activator.createObject(c))
+                .forEach(er -> er.registerEvents(eventSystem));
         }
     }
 
-    private void processSystemFeatures(final KApplicationFeatures features) {
-        String debugFeature = features.getFeature("debug");
-        if (debugFeature != null && debugFeature.equals("true")) {
-            this.debug = true;
+    private void processSystemFeatures() {
+        if (this.systemFeatures.isDebugEnabled()) {
             KSystemLogger.info(
                 this.name,
                 "Debug mode is enabled"
             );
         }
-        String logToFileFeature = features.getFeature("log-to-file");
-        if (logToFileFeature != null && logToFileFeature.equals("true")) {
+
+        if (this.systemFeatures.isFileLoggingActive()) {
             KSystemLogger.activateFileLogging();
         }
 
-        String logLevel = features.getFeature("log-level");
-        if (logLevel != null) {
-            KSystemLogger.setLogLevel(KLogLevel.valueOf(logLevel));
+        KSystemLogger.setLogLevel(this.systemFeatures.getLogLevel());
+        this.nanosPerFrame = (long) (ONE_SEC_IN_NANOS / this.systemFeatures.getMaxFps());
+    }
+
+    private KAppContainer createAppContainer(final KApplicationFeatures features) {
+        var constructor = KReflectionUtils.getConstructor(
+            this.config.applicationContainer(),
+            KApplicationFeatures.class,
+            KSystemFeatures.class
+        );
+
+        if (constructor == null) {
+            throw new KHypervisorInitializationException(
+                String.format(
+                        "App container class (%s) does not provide a constructor "
+                    +   "with exact two arguments of KApplicationFeatures and KSystemFeatures",
+                    this.config.applicationContainer()
+                )
+            );
         }
 
-        String maxFpsFeature = features.getFeature("max-fps");
-        if (maxFpsFeature != null) {
-            this.maxFps = Integer.parseInt(maxFpsFeature);
+        try {
+            return KReflectionUtils.newInstance(
+                constructor,
+                features,
+                this.systemFeatures
+            );
+        } catch (Throwable e) {
+            throw new KHypervisorInitializationException("Could not create engine app container");
         }
-        this.nanosPerFrame = (long) (ONE_SEC_IN_NANOS / this.maxFps);
     }
 
 }

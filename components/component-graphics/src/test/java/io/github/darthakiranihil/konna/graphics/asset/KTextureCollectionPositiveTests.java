@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTextureFiltering;
@@ -36,13 +35,13 @@ public class KTextureCollectionPositiveTests extends KAssetCollectionTestClass {
             this.assetLoader,
             new KStbImageLoader(
                 new KStbImageLwjgl(),
-                KStandardTestClass.context
+                this.engineModule.resourceLoader()
             ),
             new KShaderProgramCollection(
                 this.assetLoader,
                 new KShaderCollection(
                     this.assetLoader,
-                    KStandardTestClass.context,
+                    this.engineModule.resourceLoader(),
                     new TestShaderCompiler()
                 ),
                 new TestShaderCompiler()

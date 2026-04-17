@@ -17,20 +17,19 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.level.property.factory.KTilePropertyFactory;
 import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -42,6 +41,7 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KTilePropertyCollection
     extends KObject
@@ -64,13 +64,14 @@ public final class KTilePropertyCollection
      * @param assetLoader Asset loader
      * @param activator Activator to create property factories
      */
+    @KInject
     public KTilePropertyCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KActivator activator
+        final KAssetLoader assetLoader,
+        final KActivator activator
     ) {
         super(
             "Level.tilePropertyCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -92,9 +93,7 @@ public final class KTilePropertyCollection
         KAsset asset = this.assetLoader.loadAsset(
             assetId, KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE
         );
-        KAssetDefinition definition = asset.definition();
-
-        String type = Objects.requireNonNull(definition.getString("property_type"));
+        String type = Objects.requireNonNull(asset.getString("property_type"));
         return this.getFactory(type);
 
     }
@@ -131,7 +130,7 @@ public final class KTilePropertyCollection
 
         boolean isArray = type.endsWith("[]");
         String factoryClassName = String.format(
-            "konna.generated.level.props.%s$$%s",
+            "level.props.%s$$%s",
             isArray ? type.substring(0, type.lastIndexOf('[')) : type,
             isArray ? "ArrayFactory" : "Factory"
         );
@@ -139,12 +138,12 @@ public final class KTilePropertyCollection
         if (isArray) {
             return this.activator.createObject(
                 (Class<? extends KObjectArrayPropertyFactory<?>>)
-                    KClassUtils.getForName(factoryClassName)
+                    KClassUtils.getGeneratedForName(factoryClassName)
             );
         } else {
             return this.activator.createObject(
                 (Class<? extends KObjectPropertyFactory<?>>)
-                    KClassUtils.getForName(factoryClassName)
+                    KClassUtils.getGeneratedForName(factoryClassName)
             );
         }
 

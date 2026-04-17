@@ -31,7 +31,7 @@ public class KShaderProgramCollectionPositiveTests extends KAssetCollectionTestC
             this.assetLoader,
             new KShaderCollection(
                 this.assetLoader,
-                KStandardTestClass.context,
+                this.engineModule.resourceLoader(),
                 new TestShaderCompiler()
             ),
             new TestShaderCompiler()

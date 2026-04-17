@@ -20,10 +20,8 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
 
@@ -36,7 +34,6 @@ import java.util.*;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-@KSingleton
 public class KStandardEntityFactory extends KObject implements KEntityFactory {
 
     private final KEntityMetadataCollection metadataCollection;
@@ -50,12 +47,13 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
      * @param deserializer JSON deserializer to restore data components with
      *                     provided data
      */
+    @KInject
     public KStandardEntityFactory(
-        @KInject final KEntityMetadataCollection metadataCollection,
-        @KInject final KActivator activator,
-        @KInject final KJsonDeserializer deserializer
+        final KEntityMetadataCollection metadataCollection,
+        final KActivator activator,
+        final KJsonDeserializer deserializer
     ) {
-        super("std_entity_factory", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+        super("StandardEntityFactory", Collections.singleton(KDefaultTags.STD));
 
         this.metadataCollection = metadataCollection;
         this.activator = activator;
@@ -171,7 +169,10 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
         List<KEntityBehaviour> createdBehaviours = new LinkedList<>();
         for (var behaviour: behaviours) {
             createdBehaviours.add(
-                this.activator.createObject(behaviour, createdEntity)
+                this.activator.createObject(
+                    behaviour,
+                    KEntityBehaviour.args(createdEntity)
+                )
             );
         }
 

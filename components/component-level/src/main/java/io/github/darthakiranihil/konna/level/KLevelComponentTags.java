@@ -16,7 +16,6 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
 /**
@@ -34,14 +33,14 @@ public final class KLevelComponentTags extends KUninstantiable {
     /**
      * Indicates that the object is a map sector.
      */
-    public static final KTag SECTOR = new KTag("sector");
+    public static final String SECTOR = "sector";
     /**
      * Indicates that the object is a level.
      */
-    public static final KTag LEVEL = new KTag("level");
+    public static final String LEVEL = "level";
     /**
      * Indicates that the object is an autonomous entity controller.
      */
-    public static final KTag CONTROLLER = new KTag("controller");
+    public static final String CONTROLLER = "controller";
 
 }

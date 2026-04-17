@@ -17,10 +17,8 @@
 package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -33,11 +31,10 @@ import java.util.*;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardJsonSerializer extends KObject implements KJsonSerializer {
 
     public KStandardJsonSerializer() {
-        super("std_json_serializer", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+        super("std_json_serializer", Collections.singleton(KDefaultTags.STD));
     }
 
     private <T> List<Field> getFields(final T t) {

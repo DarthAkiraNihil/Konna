@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -92,18 +91,15 @@ public class KJsonTransformerBasedAssetLoaderPositiveTests extends KStandardTest
 
             KAsset asset = assetLoader.loadAsset("type_1.asset_1", "alias_1");
 
-            Assertions.assertEquals("type_1.asset_1", asset.assetId());
-            Assertions.assertEquals("alias_1", asset.typeAlias());
-            Assertions.assertEquals("type_1", asset.type().name());
+            Assertions.assertEquals("type_1.asset_1", asset.getId());
+            Assertions.assertEquals("alias_1", asset.getType());
 
-            KAssetDefinition def = asset.definition();
+            Assertions.assertEquals(1, asset.getInt("int_property"));
+            Assertions.assertEquals(1.0f, asset.getFloat("float_property"));
+            Assertions.assertFalse(asset.getBoolean("boolean_property"));
+            Assertions.assertEquals("1234", asset.getString("string_property"));
 
-            Assertions.assertEquals(1, def.getInt("int_property"));
-            Assertions.assertEquals(1.0f, def.getFloat("float_property"));
-            Assertions.assertFalse(def.getBoolean("boolean_property"));
-            Assertions.assertEquals("1234", def.getString("string_property"));
-
-            KAssetDefinition subdef = def.getSubdefinition("subdef_property");
+            KAssetDefinition subdef = asset.getSubdefinition("subdef_property");
             Assertions.assertEquals("string", subdef.getString("prop_1"));
 
             int[] intArrayCheck = new int[] {1, 2, 3};
@@ -111,10 +107,10 @@ public class KJsonTransformerBasedAssetLoaderPositiveTests extends KStandardTest
             boolean[] booleanArrayCheck = new boolean[] {true, true, true};
             String[] stringArrayCheck = new String[] {"1234", "1235", "9999"};
 
-            int[] intArray = def.getIntArray("int_array_property");
-            float[] floatArray = def.getFloatArray("float_array_property");
-            boolean[] booleanArray = def.getBooleanArray("boolean_array_property");
-            String[] stringArray = def.getStringArray("string_array_property");
+            int[] intArray = asset.getIntArray("int_array_property");
+            float[] floatArray = asset.getFloatArray("float_array_property");
+            boolean[] booleanArray = asset.getBooleanArray("boolean_array_property");
+            String[] stringArray = asset.getStringArray("string_array_property");
             Assertions.assertNotNull(stringArray);
 
             for (int i = 0; i < 3; i++) {
@@ -124,7 +120,7 @@ public class KJsonTransformerBasedAssetLoaderPositiveTests extends KStandardTest
                 Assertions.assertEquals(stringArrayCheck[i], stringArray[i]);
             }
 
-            KAssetDefinition[] subdefArray = def.getSubdefinitionArray("subdef_array_property");
+            KAssetDefinition[] subdefArray = asset.getSubdefinitionArray("subdef_array_property");
             for (var subdefEl: subdefArray) {
                 Assertions.assertEquals("string", subdefEl.getString("prop_1"));
             }

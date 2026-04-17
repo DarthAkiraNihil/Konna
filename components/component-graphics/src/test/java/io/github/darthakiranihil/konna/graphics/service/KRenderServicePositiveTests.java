@@ -17,21 +17,45 @@
 package io.github.darthakiranihil.konna.graphics.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
+import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
+import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
+import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.graphics.KGraphicsComponentLoader;
+import io.github.darthakiranihil.konna.graphics.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.KRectangle;
+import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class KRenderServicePositiveTests extends KStandardTestClass {
+
+    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
+        KStandardArgumentParser.class,
+        KEngineHypervisor.class,
+        new KEngineHypervisorConfig(
+            KAppContainer.useGenerated(),
+            List.of(TestMessageRouteConfigurer.class),
+            List.of(),
+            List.of(KGraphicsComponentLoader.class)
+        )
+    );
 
     private final Method shutdown;
 
@@ -52,7 +76,7 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
 
         try {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0]);
+            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
 
             Field currentRenderables = KRenderService.class.getDeclaredField("currentRenderables");
@@ -63,32 +87,48 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
             body.put("object", obj);
 
             TimeUnit.SECONDS.sleep(2);
-            KStandardTestClass.context.deliverMessageSync(KMessage.regular("render", body));
+            KEngineModule realContext = KReflectionUtils.getFieldValue(
+                KEngineHypervisor.class,
+                Objects.requireNonNull(KReflectionUtils.getFieldValue(
+                    Konna.class,
+                    konnaWithOnlyDefaultArgs,
+                    "hypervisor",
+                    KEngineHypervisor.class
+                )),
+                "engineModule",
+                KEngineModule.class
+            );
 
-            var renderServiceResult = KStandardTestClass.context
-                .listObjects()
+            Assertions.assertNotNull(realContext);
+            KMessageSystem messageSystem = realContext.messageSystem();
+            messageSystem.deliverMessageSync(KMessage.regular("render", body));
+
+            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            var renderServiceResult = objectRegistry
+                .getObjects()
                 .stream()
-                .filter(o -> o.object().name().equals("Graphics.RenderService"))
+                .filter(x -> x.getObject() instanceof KService)
+                .filter(o -> ((KService) o.getCastObject()).name().equals("RenderService"))
                 .findFirst();
 
             Assertions.assertTrue(renderServiceResult.isPresent());
 
-            var renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            var renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().getObject());
             Assertions.assertEquals(1, renderables.size());
             Assertions.assertEquals(obj, renderables.getFirst());
 
             body.put("objects", new KRenderable[] {obj});
 
             TimeUnit.SECONDS.sleep(2);
-            KStandardTestClass.context.deliverMessageSync(KMessage.regular("bulkRender", body));
+            messageSystem.deliverMessageSync(KMessage.regular("bulkRender", body));
 
-            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().getObject());
             Assertions.assertEquals(1, renderables.size());
 
             TimeUnit.SECONDS.sleep(2);
-            KStandardTestClass.context.deliverMessageSync(KMessage.regular("bulkAddToRender", body));
+            messageSystem.deliverMessageSync(KMessage.regular("bulkAddToRender", body));
 
-            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().object());
+            renderables = (List<KRenderable>) currentRenderables.get(renderServiceResult.get().getObject());
             Assertions.assertEquals(2, renderables.size());
 
             Assertions.assertEquals(obj, renderables.getFirst());

@@ -70,7 +70,8 @@ public final class KNewLevelSectorNode implements KGeneratorNode {
      * Constructs this node.
      * @param eventSystem Event system to inject into created sectors
      */
-    public KNewLevelSectorNode(@KInject final KEventSystem eventSystem) {
+    @KInject
+    public KNewLevelSectorNode(final KEventSystem eventSystem) {
         this.eventSystem = eventSystem;
     }
 

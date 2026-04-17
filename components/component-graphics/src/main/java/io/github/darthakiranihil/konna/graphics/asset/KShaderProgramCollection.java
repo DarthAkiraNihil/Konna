@@ -17,18 +17,18 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
-import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
 import io.github.darthakiranihil.konna.graphics.type.KShaderProgramTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -40,6 +40,7 @@ import java.util.Objects;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KShaderProgramCollection
     extends KObject
@@ -57,15 +58,16 @@ public final class KShaderProgramCollection
      * @param shaderCollection Shader collection (to get shaders of the shader program)
      * @param shaderCompiler Shader compiler (to link shader program from shaders)
      */
+    @KInject
     public KShaderProgramCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KShaderCollection shaderCollection,
-        @KInject final KShaderCompiler shaderCompiler
+        final KAssetLoader assetLoader,
+        final KShaderCollection shaderCollection,
+        final KShaderCompiler shaderCompiler
     ) {
 
         super(
             "Graphics.shaderProgramCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -95,10 +97,8 @@ public final class KShaderProgramCollection
             KShaderProgramTypedef.SHADER_PROGRAM_ASSET_TYPE
         );
 
-        KAssetDefinition shaderProgramDefinition = asset.definition();
-
-        String vertexShaderAssetId = shaderProgramDefinition.getString("vertex");
-        String fragmentShaderAssetId = shaderProgramDefinition.getString("fragment");
+        String vertexShaderAssetId = asset.getString("vertex");
+        String fragmentShaderAssetId = asset.getString("fragment");
 
         KShaderProgram linkedProgram;
 

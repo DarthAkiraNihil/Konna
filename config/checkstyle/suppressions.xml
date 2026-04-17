@@ -99,4 +99,5 @@
 
 
     <suppress checks="ParameterName" files="KStbImageLwjgl.java"/>
+    <suppress checks="MissingJavadocMethod" files="KModuleDependencyGraph.java"/>
 </suppressions>

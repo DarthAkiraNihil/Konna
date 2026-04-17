@@ -16,16 +16,9 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ScanResult;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import org.jspecify.annotations.Nullable;
-
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Class that provides different useful class utils.
@@ -37,51 +30,6 @@ public final class KClassUtils extends KUninstantiable {
 
     private KClassUtils() {
         super();
-    }
-
-    /**
-     * Returns a list of annotated classes from the class index.
-     * @param index Index
-     * @param annotation Annotation to look for
-     * @return List of classes with specified annotation
-     */
-    public static List<Class<?>> getAnnotatedClasses(
-        final KIndex index,
-        final Class<? extends Annotation> annotation
-    ) {
-        return index
-            .getClassIndex()
-            .stream()
-            .filter((c) -> c.isAnnotationPresent(annotation))
-            .toList();
-    }
-
-    /**
-     * Returns a list of real classes in specific packages. A real class is not abstract,
-     * an interface, an annotation, a record or an enum.
-     * @param packages Packages where to look for.
-     * @return List of real classes.
-     */
-    public static List<Class<?>> getRealClassesInPackages(final Set<String> packages) {
-        try (ScanResult scanResult = new ClassGraph()
-            .enableAllInfo()
-            .acceptPackages(packages.toArray(new String[0]))
-            .scan()
-        ) {
-            List<Class<?>> classes = new ArrayList<>();
-            scanResult
-                .getAllClasses()
-                .stream()
-                .filter((c) -> !(
-                    c.isInterface()
-                        ||  c.isAbstract()
-                        ||  c.isAnnotation()
-                        ||  c.isRecord()
-                        ||  c.isEnum()
-                ))
-                .forEach((c) -> classes.add(c.loadClass()));
-            return classes;
-        }
     }
 
     /**
@@ -98,6 +46,25 @@ public final class KClassUtils extends KUninstantiable {
         } catch (ClassNotFoundException e) {
             throw new KClassNotFoundException(e.getMessage());
         }
+    }
+
+    /**
+     * Convenience method to get class by its name without forced
+     * checked exception. It will all {@link KClasspathSearchEngine#GENERATED_CLASSES_PACKAGE}
+     * prefix to passed class name.
+     * @param name Name of the class
+     * @return Class object by passed name
+     * @throws KClassNotFoundException if class is not found
+     * @since 0.6.0
+     */
+    public static Class<?> getGeneratedForName(final @Nullable String name) {
+        return KClassUtils.getForName(
+            String.format(
+                "%s.%s",
+                KClasspathSearchEngine.GENERATED_CLASSES_PACKAGE,
+                name
+            )
+        );
     }
 
 }

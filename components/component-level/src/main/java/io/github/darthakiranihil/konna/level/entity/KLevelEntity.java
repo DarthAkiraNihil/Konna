@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
-import io.github.darthakiranihil.konna.core.message.KEvent;
+import io.github.darthakiranihil.konna.core.message.KEventInvoker;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KRequiresEvent;
 import io.github.darthakiranihil.konna.core.object.KObject;
@@ -27,8 +27,6 @@ import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * <p>Base class for all map entities, that is, however, sealed, since there are not so many
@@ -59,8 +57,8 @@ public abstract sealed class KLevelEntity
         KStaticEntity,
         KAutonomousEntity {
 
-    private final KEvent<KLevelSector.EventData> entityLeftSectorEvent;
-    private final KEvent<KLevelSector.EventData> entityMovedEvent;
+    private final KEventInvoker<KLevelSector.EventData> entityLeftSectorEvent;
+    private final KEventInvoker<KLevelSector.EventData> entityMovedEvent;
 
     private @Nullable KVector2i position;
     private @Nullable KLevelSector currentSector;
@@ -83,12 +81,8 @@ public abstract sealed class KLevelEntity
         super(name);
 
         this.descriptor = descriptor;
-        this.entityLeftSectorEvent = Objects.requireNonNull(
-            eventSystem.getEvent("entityLeftSector")
-        );
-        this.entityMovedEvent = Objects.requireNonNull(
-            eventSystem.getEvent("entityMoved")
-        );
+        this.entityLeftSectorEvent = eventSystem.getEventInvoker("entityLeftSector");
+        this.entityMovedEvent = eventSystem.getEventInvoker("entityMoved");
 
     }
 

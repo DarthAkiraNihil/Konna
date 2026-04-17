@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
@@ -31,12 +32,14 @@ import java.util.Map;
 public class KAssetCollectionTestClass extends KStandardTestClass {
 
     protected final KAssetLoader assetLoader;
+    protected final KEngineModule engineModule;
 
     protected KAssetCollectionTestClass() {
         super();
 
+        this.engineModule = KStandardTestClass.getModule();
         this.assetLoader = new KJsonSubtypeBasedAssetLoader(
-            KStandardTestClass.context,
+            this.engineModule.resourceLoader(),
             Map.of("tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
                 new String[] { KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
                 new String[] {"classpath:assets/props.json"}

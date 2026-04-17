@@ -16,10 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.data.json;
 
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
+
+import java.util.Collections;
 
 /**
  * Standard implementation of {@link KJsonStringifier}.
@@ -27,11 +27,10 @@ import io.github.darthakiranihil.konna.core.struct.KStructUtils;
  * @since 0.1.0
  * @author Darth Akira Nihil
  */
-@KSingleton(immortal = true)
 public class KStandardJsonStringifier extends KObject implements KJsonStringifier {
 
     public KStandardJsonStringifier() {
-        super("std_json_stringifier", KStructUtils.setOfTags(KTag.DefaultTags.STD));
+        super("StdJsonStringifier", Collections.singleton(KDefaultTags.STD));
     }
 
     @Override

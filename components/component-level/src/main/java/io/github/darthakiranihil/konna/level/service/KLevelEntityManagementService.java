@@ -16,10 +16,13 @@
 
 package io.github.darthakiranihil.konna.level.service;
 
-import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.engine.KComponentServiceMetaInfo;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
+import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.engine.KServiceEndpoint;
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
@@ -28,17 +31,15 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KLevelSectorSlice;
+import io.github.darthakiranihil.konna.level.entity.*;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
 import org.jspecify.annotations.Nullable;
 
@@ -53,20 +54,33 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Darth Akira Nihil
  */
 @KSingleton
-@KComponentServiceMetaInfo(
-    name = "LevelEntityManagementService"
-)
 @KRequiresEvent(name = "levelLoaded", simple = false, type = KLevel.class)
 @KRequiresEvent(name = "levelUnloaded")
 @SuppressWarnings("FieldCanBeLocal,unused")
-public class KLevelEntityManagementService extends KObject {
+public class KLevelEntityManagementService extends KObject implements KService {
+
+    /**
+     * Description of task that moves all entities, active on the current moment.
+     */
+    public static final KFrameTaskDescription
+        MOVE_ENTITIES_TASK = KFrameTaskDescription.ofRepeatableTemporal(
+        "LevelEntitiyManagementService.moveEntities",
+        KFrameEvent.FRAME_FINISHED,
+        1
+    );
+
+    /**
+     * Description of task that cleans all entities that have been destroyed.
+     */
+    public static final KFrameTaskDescription
+        CLEAN_DESTROYED_ENTITIES_TASK = KFrameTaskDescription.ofImmediateTemporal(
+        "LevelEntitiyManagementService.cleanDestroyedEntities",
+        KFrameEvent.FRAME_FINISHED,
+        2
+    );
 
     private final KEventAction<KLevel> onLeveLoadedConsumer = this::onLevelLoaded;
     private final KSimpleEventAction onLevelUnloadedConsumer = this::onLevelUnloaded;
-    private final KSimpleEventAction
-        deleteDestroyedEntitiesConsumer = this::deleteDestroyedEntities;
-    private final KSimpleEventAction
-        performEntitiesMovementConsumer = this::performEntitiesMovement;
 
     private final Map<UUID, KControllableEntity> controllables;
     private final Map<UUID, KStaticEntity> statics;
@@ -76,42 +90,40 @@ public class KLevelEntityManagementService extends KObject {
 
     private final KEventSystem eventSystem;
     private final KActivator activator;
+    private final KFrameTaskScheduler frameTaskScheduler;
 
-    private @Nullable KMessenger messenger;
+    private final KMessenger messenger;
     private @Nullable KLevel currentLevel;
-
-    private volatile boolean movementScheduled;
 
     /**
      * Standard constructor.
      * @param eventSystem Event system to get {@code levelLoaded} and {@code levelUnloaded}
      *                    events
      * @param activator Activator to create autonomous entities' controllers
+     * @param frameTaskScheduler Frame task scheduler to schedule its additional tasks
+     * @param messenger Messenger created inside
+     *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
+     *                  to send messages
      */
+    @KInject
     public KLevelEntityManagementService(
-        @KInject final KEventSystem eventSystem,
-        @KInject final KActivator activator
+        final KMessenger messenger,
+        final KEventSystem eventSystem,
+        final KFrameTaskScheduler frameTaskScheduler,
+        final KActivator activator
     ) {
         super(
-            "Level.LevelEntityManagementService",
-            KStructUtils.setOfTags(KTag.DefaultTags.SERVICE)
+            "LevelEntityManagementService",
+            Collections.singleton(KDefaultTags.SERVICE)
         );
 
-        KEvent<KLevel> levelLoaded = Objects.requireNonNull(
-            eventSystem.getEvent("levelLoaded")
-        );
-        KSimpleEvent levelUnloaded = Objects.requireNonNull(
-            eventSystem.getSimpleEvent("levelUnloaded")
-        );
+        KEventSubscriber<KLevel> levelLoaded = eventSystem
+            .getEventSubscriber("levelLoaded");
+        KSimpleEventSubscriber levelUnloaded = eventSystem
+                .getSimpleEventSubscriber("levelUnloaded");
 
         levelUnloaded.subscribe(this.onLevelUnloadedConsumer);
         levelLoaded.subscribe(this.onLeveLoadedConsumer);
-
-        KSimpleEvent frameFinished = Objects.requireNonNull(
-            eventSystem.getSimpleEvent(KFrame.FRAME_FINISHED_EVENT_NAME)
-        );
-        frameFinished.subscribe(this.deleteDestroyedEntitiesConsumer);
-        frameFinished.subscribe(this.performEntitiesMovementConsumer);
 
         this.controllables = new HashMap<>();
         this.statics = new HashMap<>();
@@ -119,17 +131,10 @@ public class KLevelEntityManagementService extends KObject {
 
         this.activator = activator;
         this.eventSystem = eventSystem;
-
-        // todo: maybe array deque instead
-        this.deletionQueue = new ConcurrentLinkedQueue<>();
-    }
-
-    /**
-     * Sets a messenger for this service.
-     * @param messenger Messenger to set
-     */
-    public void setMessenger(final KMessenger messenger) {
+        this.frameTaskScheduler = frameTaskScheduler;
         this.messenger = messenger;
+
+        this.deletionQueue = new ConcurrentLinkedQueue<>();
     }
 
     /**
@@ -147,10 +152,9 @@ public class KLevelEntityManagementService extends KObject {
      */
     @KServiceEndpoint(route = "moveAllEntities")
     protected void moveAllEntities() {
-        this.movementScheduled = true;
-        KSystemLogger.debug(
-            this.name,
-            "Movement of entities has been scheduled"
+        this.frameTaskScheduler.scheduleTask(
+            MOVE_ENTITIES_TASK,
+            this::moveEntities
         );
     }
 
@@ -218,9 +222,9 @@ public class KLevelEntityManagementService extends KObject {
 
         try {
             var paramsValidator = KClassUtils
-                .getForName(
+                .getGeneratedForName(
                     String.format(
-                        "konna.generated.level.entity.%s$$ParamValidator",
+                        "level.entity.%s$$ParamValidator",
                         controller.getSimpleName()
                     )
                 );
@@ -258,8 +262,10 @@ public class KLevelEntityManagementService extends KObject {
             .activator
             .createObject(
                 controller,
-                controller.getSimpleName(),
-                controllerParams
+                KAutonomousEntityController.args(
+                    controller.getSimpleName(),
+                    controllerParams
+                )
             );
 
         controllerInstance.setLevel(Objects.requireNonNull(this.currentLevel));
@@ -309,6 +315,7 @@ public class KLevelEntityManagementService extends KObject {
 
         KAutonomousEntity entity = this.autonomouses.get(entityId);
         this.deletionQueue.add(entity);
+        this.scheduleCleaning();
 
     }
 
@@ -390,6 +397,7 @@ public class KLevelEntityManagementService extends KObject {
 
         KStaticEntity entity = this.statics.get(entityId);
         this.deletionQueue.add(entity);
+        this.scheduleCleaning();
 
     }
 
@@ -473,6 +481,7 @@ public class KLevelEntityManagementService extends KObject {
 
         KControllableEntity entity = this.controllables.get(entityId);
         this.deletionQueue.add(entity);
+        this.scheduleCleaning();
 
     }
 
@@ -566,9 +575,6 @@ public class KLevelEntityManagementService extends KObject {
     }
 
     private void sendMessage(final KLevelEntity entity, final String messageId) {
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("id", entity.id());
@@ -580,11 +586,7 @@ public class KLevelEntityManagementService extends KObject {
         );
     }
 
-    private void deleteDestroyedEntities() {
-
-        if (this.deletionQueue.isEmpty()) {
-            return;
-        }
+    private void cleanDestroyedEntities() {
 
         List<KLevelEntity> deleted = new ArrayList<>(this.deletionQueue.size());
         while (!this.deletionQueue.isEmpty()) {
@@ -607,10 +609,6 @@ public class KLevelEntityManagementService extends KObject {
             "Deleted %d entities", deleted.size()
         );
 
-        if (this.messenger == null) {
-            return;
-        }
-
         KUniversalMap body = new KUniversalMap();
         body.put("instances", deleted);
         this.messenger.sendRegular(
@@ -620,17 +618,10 @@ public class KLevelEntityManagementService extends KObject {
 
     }
 
-    private void performEntitiesMovement() {
-        if (!this.movementScheduled) {
-            return;
-        }
+    private void moveEntities() {
 
         this.autonomouses.values().forEach(KLevelEntity::move);
         this.controllables.values().forEach(KLevelEntity::move);
-
-        if (this.messenger == null) {
-            return;
-        }
 
         KUniversalMap body = new KUniversalMap();
         body.put("moved_controllables", this.controllables.keySet());
@@ -662,7 +653,13 @@ public class KLevelEntityManagementService extends KObject {
             body
         );
 
-        this.movementScheduled = false;
+    }
+
+    private void scheduleCleaning() {
+        this.frameTaskScheduler.scheduleTask(
+            CLEAN_DESTROYED_ENTITIES_TASK,
+            this::cleanDestroyedEntities
+        );
     }
 
 

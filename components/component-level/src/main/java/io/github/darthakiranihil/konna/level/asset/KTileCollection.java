@@ -17,21 +17,22 @@
 package io.github.darthakiranihil.konna.level.asset;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.di.KProvided;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.core.util.KCache;
-import io.github.darthakiranihil.konna.level.*;
+import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.property.KTileProperty;
 import io.github.darthakiranihil.konna.level.property.factory.*;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +44,7 @@ import java.util.Objects;
  * @since 0.5.0
  * @author Darth Akira Nihil
  */
+@KProvided
 @KSingleton
 public final class KTileCollection extends KObject implements KAssetCollection<KTileInfo> {
 
@@ -58,14 +60,15 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
      * @param cache Cache to store loaded tiles
      * @param propsCollection Additional tiles' properties collection
      */
+    @KInject
     public KTileCollection(
-        @KInject final KAssetLoader assetLoader,
-        @KInject final KCache cache,
-        @KInject final KTilePropertyCollection propsCollection
+        final KAssetLoader assetLoader,
+        final KCache cache,
+        final KTilePropertyCollection propsCollection
     ) {
         super(
             "Level.tileCollection",
-            KStructUtils.setOfTags(KTag.DefaultTags.ASSET_COLLECTION)
+            Collections.singleton(KDefaultTags.ASSET_COLLECTION)
         );
 
         this.assetLoader = assetLoader;
@@ -93,13 +96,12 @@ public final class KTileCollection extends KObject implements KAssetCollection<K
                 )
             );
         }
+        
+        int tileId = asset.getInt("tile_id");
+        int opaqueness = asset.getInt("opaqueness");
+        boolean passable = asset.getBoolean("passable");
 
-        KAssetDefinition tileDefinition = asset.definition();
-        int tileId = tileDefinition.getInt("tile_id");
-        int opaqueness = tileDefinition.getInt("opaqueness");
-        boolean passable = tileDefinition.getBoolean("passable");
-
-        KAssetDefinition props = tileDefinition.getSubdefinition("properties");
+        KAssetDefinition props = asset.getSubdefinition("properties");
         Map<String, KTileProperty> readProps = this.readProps(props);
 
 

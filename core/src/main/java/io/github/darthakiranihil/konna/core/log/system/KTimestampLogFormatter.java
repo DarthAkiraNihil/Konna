@@ -18,11 +18,11 @@ package io.github.darthakiranihil.konna.core.log.system;
 
 import io.github.darthakiranihil.konna.core.log.KLogFormatter;
 import io.github.darthakiranihil.konna.core.log.KLogLevel;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 
 import java.time.Instant;
+import java.util.Collections;
 
 /**
  * Implementation of {@link KLogFormatter} that formats given message
@@ -36,7 +36,7 @@ public class KTimestampLogFormatter extends KObject implements KLogFormatter {
     public KTimestampLogFormatter() {
         super(
             KTimestampLogFormatter.class.getSimpleName(),
-            KStructUtils.setOfTags(KTag.DefaultTags.STD)
+            Collections.singleton(KDefaultTags.STD)
         );
     }
 

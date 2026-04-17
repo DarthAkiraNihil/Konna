@@ -74,7 +74,7 @@ public class KHashMapBasedCachePositiveTests extends KStandardTestClass {
                 "Abiba",
                 c.getFromCache("aboba", String.class)
             );
-            TimeUnit.SECONDS.sleep(62);
+            TimeUnit.SECONDS.sleep(65);
             Assertions.assertNull(
                 c.getFromCache("aboba", String.class)
             );

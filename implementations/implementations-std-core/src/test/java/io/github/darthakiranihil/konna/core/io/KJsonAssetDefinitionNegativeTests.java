@@ -17,9 +17,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.KJsonValueIsClassValidator;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
-import io.github.darthakiranihil.konna.core.io.KJsonAssetDefinition;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
@@ -69,10 +67,11 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
                             "int_property": 1
                 }"""
             );
-
+            
             Assertions.assertThrows(
                 KAssetDefinitionError.class,
-                () -> new KJsonAssetDefinition(addedDef, new Schema()).getSubdefinition("int_property")
+                () -> new KAsset("abiba", "aboba", new KJsonAssetDefinition(addedDef, new Schema()))
+                    .getSubdefinition("int_property")
             );
         } catch (Throwable e) {
             Assertions.fail(e);
@@ -100,12 +99,14 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
                 ))
             )), v -> {}
         );
+        KAsset asset = new KAsset("aboba", "abiba", def);
+        KAsset asset2 = new KAsset("aboba", "abiba", def2);
 
-        Assertions.assertFalse(def.hasStringArray("array"));
-        Assertions.assertFalse(def.hasSubdefinitionArray("array"));
-        Assertions.assertFalse(def.hasBooleanArray("array"));
-        Assertions.assertFalse(def2.hasIntArray("array"));
-        Assertions.assertFalse(def2.hasFloatArray("array"));
+        Assertions.assertFalse(asset.hasStringArray("array"));
+        Assertions.assertFalse(asset.hasSubdefinitionArray("array"));
+        Assertions.assertFalse(asset.hasBooleanArray("array"));
+        Assertions.assertFalse(asset2.hasIntArray("array"));
+        Assertions.assertFalse(asset2.hasFloatArray("array"));
 
     }
 
@@ -117,9 +118,9 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
                 KJsonValue.fromString("ABIBA")
             )), v -> {}
         );
-
+        KAsset asset = new KAsset("aboba", "abiba", def);
         Assertions.assertThrows(KAssetDefinitionError.class, () -> {
-            def.getEnum("enum", KJsonValueType.class);
+            asset.getEnum("enum", KJsonValueType.class);
         });
     }
 
@@ -131,8 +132,8 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
                 KJsonValue.fromString("ABIBA")
             )), v -> {}
         );
-
-        Assertions.assertFalse(def.hasEnum("enum", KJsonValueType.class));
+        KAsset asset = new KAsset("aboba", "abiba", def);
+        Assertions.assertFalse(asset.hasEnum("enum", KJsonValueType.class));
     }
 
     @Test
@@ -141,9 +142,9 @@ public class KJsonAssetDefinitionNegativeTests extends KStandardTestClass {
         KAssetDefinition def = new KJsonAssetDefinition(
             KJsonValue.fromMap(Map.of()), v -> {}
         );
-
-        Assertions.assertThrows(KAssetDefinitionError.class, () -> def.getString("aboba"));
-        Assertions.assertThrows(KAssetDefinitionError.class, () -> def.getIntArray("aboba"));
+        KAsset asset = new KAsset("aboba", "abiba", def);
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> asset.getString("aboba"));
+        Assertions.assertThrows(KAssetDefinitionError.class, () -> asset.getIntArray("aboba"));
 
     }
 }

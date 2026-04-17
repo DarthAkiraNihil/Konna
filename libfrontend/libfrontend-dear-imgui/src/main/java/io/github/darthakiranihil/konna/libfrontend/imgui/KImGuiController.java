@@ -16,14 +16,15 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
-import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskDescription;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
+import io.github.darthakiranihil.konna.core.di.KSingleton;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.object.KSingleton;
-import io.github.darthakiranihil.konna.core.object.KTag;
-import io.github.darthakiranihil.konna.core.struct.KStructUtils;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+
+import java.util.Collections;
 
 /**
  * Helper class. Represents controller of Dear ImGui rendering process that
@@ -38,37 +39,58 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 public abstract class KImGuiController extends KObject {
 
     /**
+     * Description of task that prepares ImGui for a new frame.
+     */
+    public static final KFrameTaskDescription
+        ON_NEW_FRAME_TASK = KFrameTaskDescription.ofPersistent(
+        "DearImGui.prepareForNewFrame",
+        KFrameEvent.NEW_FRAME,
+        16
+    );
+
+    /**
+     * Description of task that finalizes ImGui in the current frame in order
+     * to render itself correctly.
+     */
+    public static final KFrameTaskDescription
+        ON_PRE_SWAP_TASK = KFrameTaskDescription.ofPersistent(
+        "DearImGui.finishCurrentFrame",
+        KFrameEvent.PRE_SWAP,
+        16
+    );
+
+    /**
+     * Description of task that finalizes ImGui in this application by destroying
+     * its context.
+     */
+    public static final KFrameTaskDescription
+        ON_SHUTDOWN_FRAME_TASK = KFrameTaskDescription.ofPersistent(
+        "DearImGui.destroyDearImGui",
+        KFrameEvent.SHUTDOWN,
+        16
+    );
+
+    /**
      * Dear ImGui reference.
      */
     protected final KImGui imGui;
 
     /**
-     * Standard constructor. Also subscribes to {@link KFrame#NEW_FRAME_EVENT_NAME} and
-     * {@link KFrame#FRAME_FINISHED_EVENT_NAME} events.
+     * Standard constructor. Also schedules tasks on {@link KFrameEvent#NEW_FRAME},
+     * {@link KFrameEvent#PRE_SWAP} and {@link KFrameEvent#SHUTDOWN} events.
      * @param imGui Dear ImGui
-     * @param eventSystem Event system
+     * @param frameTaskScheduler Frame task scheduler
      */
     public KImGuiController(
         final KImGui imGui,
-        final KEventSystem eventSystem
+        final KFrameTaskScheduler frameTaskScheduler
     ) {
-        super("imgui_capsule", KStructUtils.setOfTags(KTag.DefaultTags.SYSTEM));
+        super("imgui_capsule", Collections.singleton(KDefaultTags.SYSTEM));
         this.imGui = imGui;
 
-        KSimpleEvent newFrame = eventSystem.getSimpleEvent(KFrame.NEW_FRAME_EVENT_NAME);
-        if (newFrame != null) {
-            newFrame.subscribe(this::onNewFrame);
-        }
-
-        KSimpleEvent preSwap = eventSystem.getSimpleEvent(KFrame.PRE_SWAP_EVENT_NAME);
-        if (preSwap != null) {
-            preSwap.subscribe(this::onFrameFinished);
-        }
-
-        KSimpleEvent loopLeaving = eventSystem.getSimpleEvent(KFrame.LOOP_LEAVING_EVENT_NAME);
-        if (loopLeaving != null) {
-            loopLeaving.subscribe(this::onDestroy);
-        }
+        frameTaskScheduler.scheduleTask(ON_NEW_FRAME_TASK, this::onNewFrame);
+        frameTaskScheduler.scheduleTask(ON_PRE_SWAP_TASK, this::onFrameFinished);
+        frameTaskScheduler.scheduleTask(ON_SHUTDOWN_FRAME_TASK, this::onDestroy);
     }
 
     /**
