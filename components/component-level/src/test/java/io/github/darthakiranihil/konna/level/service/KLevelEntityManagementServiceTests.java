@@ -18,20 +18,21 @@ package io.github.darthakiranihil.konna.level.service;
 
 import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
+import io.github.darthakiranihil.konna.core.app.KFrameEvent;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskExecutor;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
-import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
-import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;
@@ -42,577 +43,1442 @@ import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
 import io.github.darthakiranihil.konna.level.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
-    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
-        KStandardArgumentParser.class,
-        KEngineHypervisor.class,
-        new KEngineHypervisorConfig(
-            KAppContainer.useGenerated(),
-            List.of(TestMessageRouteConfigurer.class),
-            List.of(),
-            List.of(KLevelComponentLoader.class)
-        )
-    );
+    private static final KSimpleEvent CAPTURE_THE_FLAG = new KSimpleEvent("captureTheFlag");
 
-    private final Method shutdown;
-    private final Field hypervisor;
-    private final Field ctx;
-
-    private Map<UUID, KControllableEntity> controllables;
-    private Map<UUID, KStaticEntity> statics;
-    private Map<UUID, KAutonomousEntity> autonomouses;
-    private KLevel currentLevel;
-    private KMessageSystem messageSystem;
-
-    public KLevelEntityManagementServiceTests() {
-
-        this.shutdown = KReflectionUtils.getMethod(Konna.class, "shutdown");
-        this.hypervisor = KReflectionUtils.getField(Konna.class, "hypervisor");
-        this.ctx = KReflectionUtils.getField(KEngineHypervisor.class, "engineModule");
-
-    }
-
-    private void runTest() {
-
-    }
-
-    @BeforeEach
-    void setUp(final TestInfo testInfo) {
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-        konnaWithOnlyDefaultArgs.run();
-        KThreadUtils.sleepForSeconds(2);
-        KEngineModule realContext = KReflectionUtils.getFieldValue(
-            this.ctx,
-            Objects.requireNonNull(KReflectionUtils.getFieldValue(
-                this.hypervisor,
-                konnaWithOnlyDefaultArgs
-            )),
-            KEngineModule.class
-        );
-
-        Assertions.assertNotNull(realContext);
-
-        this.messageSystem = realContext.messageSystem();
-        KObjectRegistry objectRegistry = realContext.objectRegistry();
-
-        if (!testInfo.getTags().contains("doNotLoadLevel")) {
-            var body = new KUniversalMap();
-            body.put("level_name", "test_level_entity_management_service");
-            body.put("sector", "mf1");
-            messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
-        }
-
-        var serviceOpt =  objectRegistry
-            .getObjects()
+    private static KService assertService(
+        KObjectRegistry objectRegistry
+    ) {
+        var packedService = objectRegistry
+            .getObjectsOfType(KService.class)
             .stream()
-            .filter(x -> x.getObject() instanceof KService)
             .filter(o -> ((KService) o.getCastObject()).name().equals("LevelEntityManagementService"))
             .findFirst();
 
-        Assertions.assertTrue(serviceOpt.isPresent());
-        var service = (KLevelEntityManagementService) serviceOpt.get().getObject();
+        Assertions.assertTrue(packedService.isPresent());
+        return packedService.get().getCastObject();
+    }
+    
+    private static abstract class AsserterForNotLoadedLevel implements KTunnel {
+        private final KObjectRegistry objectRegistry;
+        private final KMessageSystem messageSystem;
+        private final KFrameTaskExecutor frameTaskExecutor;
 
-        this.currentLevel = KReflectionUtils.getFieldValue(
-            KLevelEntityManagementService.class,
-            service,
-            "currentLevel",
-            KLevel.class
-        );
-
-        this.controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(
-            KLevelEntityManagementService.class,
-            service,
-            "controllables",
-            Map.class
-        );
-        this.statics = (Map<UUID, KStaticEntity>) KReflectionUtils.getFieldValue(
-            KLevelEntityManagementService.class,
-            service,
-            "statics",
-            Map.class
-        );
-        this.autonomouses = (Map<UUID, KAutonomousEntity>) KReflectionUtils.getFieldValue(
-            KLevelEntityManagementService.class,
-            service,
-            "autonomouses",
-            Map.class
-        );
-
-        if (testInfo.getTags().contains("doNotLoadLevel")) {
-            Assertions.assertNull(this.currentLevel);
-        } else {
-            Assertions.assertNotNull(this.currentLevel);
+        @KInject
+        public AsserterForNotLoadedLevel(
+            KObjectRegistry objectRegistry,
+            KMessageSystem messageSystem,
+            KFrameTaskExecutor frameTaskExecutor
+        ) {
+            this.objectRegistry = objectRegistry;
+            this.messageSystem = messageSystem;
+            this.frameTaskExecutor = frameTaskExecutor;
         }
-        Assertions.assertNotNull(this.controllables);
-        Assertions.assertNotNull(this.statics);
-        Assertions.assertNotNull(this.autonomouses);
+
+        @Override
+        public final KMessage processMessage(KMessage message) {
+            KService service = assertService(this.objectRegistry);
+
+            var currentLevel = KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "currentLevel",
+                KLevel.class
+            );
+            var controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "controllables",
+                Map.class
+            );
+            var statics = (Map<UUID, KStaticEntity>) KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "statics",
+                Map.class
+            );
+            var autonomouses = (Map<UUID, KAutonomousEntity>) KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "autonomouses",
+                Map.class
+            );
+
+            Assertions.assertNull(currentLevel);
+            Assertions.assertNotNull(controllables);
+            Assertions.assertNotNull(statics);
+            Assertions.assertNotNull(autonomouses);
+            
+            Assertions.assertEquals(0,  controllables.size());
+            Assertions.assertEquals(0,  statics.size());
+            Assertions.assertEquals(0,  autonomouses.size());
+
+            this.check(controllables, statics, autonomouses, this.messageSystem, this.frameTaskExecutor);
+            CAPTURE_THE_FLAG.invokeSync();
+            return KMessage.DROP;
+        }
+
+        protected abstract void check(
+            Map<UUID, KControllableEntity> controllables,
+            Map<UUID, KStaticEntity> statics,
+            Map<UUID, KAutonomousEntity> autonomouses,
+            KMessageSystem messageSystem,
+            KFrameTaskExecutor frameTaskExecutor
+        );
+    }
+    
+    private static abstract class AsserterForLoadedLevel implements KTunnel {
+
+        private final KObjectRegistry objectRegistry;
+        private final KMessageSystem messageSystem;
+        private final KFrameTaskExecutor frameTaskExecutor;
+
+        @KInject
+        public AsserterForLoadedLevel(
+            KObjectRegistry objectRegistry,
+            KMessageSystem messageSystem,
+            KFrameTaskExecutor frameTaskExecutor
+        ) {
+            this.objectRegistry = objectRegistry;
+            this.messageSystem = messageSystem;
+            this.frameTaskExecutor = frameTaskExecutor;
+        }
+
+        @Override
+        public final KMessage processMessage(KMessage message) {
+            KService service = assertService(this.objectRegistry);
+
+            var currentLevel = KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "currentLevel",
+                KLevel.class
+            );
+            var controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "controllables",
+                Map.class
+            );
+            var statics = (Map<UUID, KStaticEntity>) KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "statics",
+                Map.class
+            );
+            var autonomouses = (Map<UUID, KAutonomousEntity>) KReflectionUtils.getFieldValue(
+                KLevelEntityManagementService.class,
+                service,
+                "autonomouses",
+                Map.class
+            );
+
+            Assertions.assertNotNull(currentLevel);
+            Assertions.assertNotNull(controllables);
+            Assertions.assertNotNull(statics);
+            Assertions.assertNotNull(autonomouses);
+
+            Assertions.assertEquals("test_level_entity_management_service",  currentLevel.name());
+            Assertions.assertEquals(1,  controllables.size());
+            Assertions.assertEquals(1,  statics.size());
+            Assertions.assertEquals(1,  autonomouses.size());
+
+            this.check(controllables, statics, autonomouses, this.messageSystem, this.frameTaskExecutor);
+            CAPTURE_THE_FLAG.invokeSync();
+            return message;
+        }
+
+        protected abstract void check(
+            Map<UUID, KControllableEntity> controllables,
+            Map<UUID, KStaticEntity> statics,
+            Map<UUID, KAutonomousEntity> autonomouses,
+            KMessageSystem messageSystem,
+            KFrameTaskExecutor frameTaskExecutor
+        );
     }
 
     @Test
     public void testMoveControllableEntity() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+        class Asserter extends AsserterForLoadedLevel {
 
-        KUniversalMap body = new KUniversalMap();
-        var id = (UUID)  this.controllables.keySet().toArray()[0];
-        body.clear();
-        body.put("entity_id", id);
-        body.put("direction", new KVector2i(0, 1));
-        this.messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
-        KThreadUtils.sleepForSeconds(2);
-        Assertions.assertEquals(new KVector2i(2, 1),  this.controllables.get(id).getPosition().first());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        var autoId = (UUID) autonomouses.keySet().toArray()[0];
-        Assertions.assertEquals(new KVector2i(1, 0),  this.autonomouses.get(autoId).getPosition().first());
-        var staticId = (UUID) statics.keySet().toArray()[0];
-        Assertions.assertEquals(new KVector2i(0, 1),  this.statics.get(staticId).getPosition().first());
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                var id = (UUID)  controllables.keySet().toArray()[0];
+                body.clear();
+                body.put("entity_id", id);
+                body.put("direction", new KVector2i(0, 1));
+                messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
+                frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
+                Assertions.assertEquals(new KVector2i(2, 1),  controllables.get(id).getPosition().first());
+
+                var autoId = (UUID) autonomouses.keySet().toArray()[0];
+                Assertions.assertEquals(new KVector2i(1, 0),  autonomouses.get(autoId).getPosition().first());
+                var staticId = (UUID) statics.keySet().toArray()[0];
+                Assertions.assertEquals(new KVector2i(0, 1),  statics.get(staticId).getPosition().first());
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
 
     }
 
     @Test
     public void testCreateAutonomousEntityValid() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+        class Asserter extends AsserterForLoadedLevel {
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(2, 2));
-        body.put("controller", TestController.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
-        Assertions.assertEquals(2, this.autonomouses.size());
-        Assertions.assertTrue(
-            this
-                .autonomouses
-                .values()
-                .stream()
-                .anyMatch(x -> {
-                    var pos = x.getPosition();
-                    return
-                        pos.first().equals(new KVector2i(2, 2))
-                            &&  pos.second().name().equals("mf1")
-                            &&  x.name().equals("synthetic")
-                            &&  x.getDescriptor().equals("synthetic");
-                })
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(2, 2));
+                body.put("controller", TestController.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                Assertions.assertEquals(2, autonomouses.size());
+                Assertions.assertTrue(
+                    autonomouses
+                        .values()
+                        .stream()
+                        .anyMatch(x -> {
+                            var pos = x.getPosition();
+                            return
+                                pos.first().equals(new KVector2i(2, 2))
+                                    &&  pos.second().name().equals("mf1")
+                                    &&  x.name().equals("synthetic")
+                                    &&  x.getDescriptor().equals("synthetic");
+                        })
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+        
     }
 
     @Test
     public void testCreateAutonomousEntityValidationSkippedBecauseNoValidator() {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+        class Asserter extends AsserterForLoadedLevel {
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(2, 2));
-        body.put("controller", TestControllerWithoutValidator.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
-        Assertions.assertEquals(2, this.autonomouses.size());
-        Assertions.assertTrue(
-            this
-                .autonomouses
-                .values()
-                .stream()
-                .anyMatch(x -> {
-                    var pos = x.getPosition();
-                    return
-                        pos.first().equals(new KVector2i(2, 2))
-                            &&  pos.second().name().equals("mf1")
-                            &&  x.name().equals("synthetic")
-                            &&  x.getDescriptor().equals("synthetic");
-                })
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(2, 2));
+                body.put("controller", TestControllerWithoutValidator.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                Assertions.assertEquals(2, autonomouses.size());
+                Assertions.assertTrue(
+                    autonomouses
+                        .values()
+                        .stream()
+                        .anyMatch(x -> {
+                            var pos = x.getPosition();
+                            return
+                                pos.first().equals(new KVector2i(2, 2))
+                                    &&  pos.second().name().equals("mf1")
+                                    &&  x.name().equals("synthetic")
+                                    &&  x.getDescriptor().equals("synthetic");
+                        })
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+        
     }
-
+    
     @Test
     public void testCreateAutonomousEntityValidationSkippedBecauseInvalidValidator() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(2, 2));
-        body.put("controller", FalseValidatedController.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(2, 2));
+                body.put("controller", FalseValidatedController.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
-        Assertions.assertEquals(2, this.autonomouses.size());
-        Assertions.assertTrue(
-            this
-                .autonomouses
-                .values()
-                .stream()
-                .anyMatch(x -> {
-                    var pos = x.getPosition();
-                    return
-                        pos.first().equals(new KVector2i(2, 2))
-                            &&  pos.second().name().equals("mf1")
-                            &&  x.name().equals("synthetic")
-                            &&  x.getDescriptor().equals("synthetic");
-                })
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                Assertions.assertEquals(2, autonomouses.size());
+                Assertions.assertTrue(
+                    autonomouses
+                        .values()
+                        .stream()
+                        .anyMatch(x -> {
+                            var pos = x.getPosition();
+                            return
+                                pos.first().equals(new KVector2i(2, 2))
+                                    &&  pos.second().name().equals("mf1")
+                                    &&  x.name().equals("synthetic")
+                                    &&  x.getDescriptor().equals("synthetic");
+                        })
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testCreateAutonomousEntityButValidationFailed() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(2, 2));
-        body.put("controller", TestController.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test2", 42069)));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(2, 2));
+                body.put("controller", TestController.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test2", 42069)));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
-        Assertions.assertEquals(1, this.autonomouses.size());
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                Assertions.assertEquals(1, autonomouses.size());
+            }
+        }
 
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testDestroyAutonomousEntity() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        var deletedId = (UUID) this.autonomouses.keySet().toArray()[0];
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("entity_id", deletedId);
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                var deletedId = (UUID) autonomouses.keySet().toArray()[0];
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("entity_id", deletedId);
 
-        var previousPosition = this.autonomouses.get(deletedId).getPosition();
+                var previousPosition = autonomouses.get(deletedId).getPosition();
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
-        KThreadUtils.sleepForSeconds(2);
-        Assertions.assertEquals(0, this.autonomouses.size());
-        Assertions.assertEquals(0, previousPosition
-            .second()
-            .getSlice(previousPosition.first().x(), previousPosition.first().y())
-            .entities()
-            .size()
+                messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+                frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
+                Assertions.assertEquals(0, autonomouses.size());
+                Assertions.assertEquals(0, previousPosition
+                    .second()
+                    .getSlice(previousPosition.first().x(), previousPosition.first().y())
+                    .entities()
+                    .size()
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testCreateControllableEntity() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(2, 2));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(2, 2));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
-        Assertions.assertEquals(2, this.controllables.size());
-        Assertions.assertTrue(
-            this
-                .controllables
-                .values()
-                .stream()
-                .anyMatch(x -> {
-                    var pos = x.getPosition();
-                    return
-                        pos.first().equals(new KVector2i(2, 2))
-                            &&  pos.second().name().equals("mf1")
-                            &&  x.name().equals("synthetic")
-                            &&  x.getDescriptor().equals("synthetic");
-                })
+                messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+                Assertions.assertEquals(2, controllables.size());
+                Assertions.assertTrue(
+                    controllables
+                        .values()
+                        .stream()
+                        .anyMatch(x -> {
+                            var pos = x.getPosition();
+                            return
+                                pos.first().equals(new KVector2i(2, 2))
+                                    &&  pos.second().name().equals("mf1")
+                                    &&  x.name().equals("synthetic")
+                                    &&  x.getDescriptor().equals("synthetic");
+                        })
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testDestroyControllableEntity() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        var deletedId = (UUID) this.controllables.keySet().toArray()[0];
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("entity_id", deletedId);
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                var deletedId = (UUID) controllables.keySet().toArray()[0];
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("entity_id", deletedId);
 
-        var previousPosition = this.controllables.get(deletedId).getPosition();
+                var previousPosition = controllables.get(deletedId).getPosition();
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
-        KThreadUtils.sleepForSeconds(2);
-        Assertions.assertEquals(0, this.controllables.size());
-        Assertions.assertEquals(0, previousPosition
-            .second()
-            .getSlice(previousPosition.first().x(), previousPosition.first().y())
-            .entities()
-            .size()
+                messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+                frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
+                
+                Assertions.assertEquals(0, controllables.size());
+                Assertions.assertEquals(0, previousPosition
+                    .second()
+                    .getSlice(previousPosition.first().x(), previousPosition.first().y())
+                    .entities()
+                    .size()
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
-    }
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+    }
+    
     @Test
     public void testCreateStaticEntity() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(2, 2));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(2, 2));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        Assertions.assertEquals(2, this.statics.size());
-        Assertions.assertTrue(
-            this
-                .statics
-                .values()
-                .stream()
-                .anyMatch(x -> {
-                    var pos = x.getPosition();
-                    return
-                            pos.first().equals(new KVector2i(2, 2))
-                        &&  pos.second().name().equals("mf1")
-                        &&  x.name().equals("synthetic")
-                        &&  x.getDescriptor().equals("synthetic");
-                })
+                messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+                Assertions.assertEquals(2, statics.size());
+                Assertions.assertTrue(
+                    statics
+                        .values()
+                        .stream()
+                        .anyMatch(x -> {
+                            var pos = x.getPosition();
+                            return
+                                pos.first().equals(new KVector2i(2, 2))
+                                    &&  pos.second().name().equals("mf1")
+                                    &&  x.name().equals("synthetic")
+                                    &&  x.getDescriptor().equals("synthetic");
+                        })
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testDestroyStaticEntity() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        var deletedId = (UUID) this.statics.keySet().toArray()[0];
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("entity_id", deletedId);
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                var deletedId = (UUID) statics.keySet().toArray()[0];
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("entity_id", deletedId);
 
-        var previousPosition = this.statics.get(deletedId).getPosition();
+                var previousPosition = statics.get(deletedId).getPosition();
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
-        KThreadUtils.sleepForSeconds(2);
-        Assertions.assertEquals(0, this.statics.size());
-        Assertions.assertEquals(0, previousPosition
-            .second()
-            .getSlice(previousPosition.first().x(), previousPosition.first().y())
-            .entities()
-            .size()
+                messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+                
+                frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
+                Assertions.assertEquals(0, statics.size());
+                Assertions.assertEquals(0, previousPosition
+                    .second()
+                    .getSlice(previousPosition.first().x(), previousPosition.first().y())
+                    .entities()
+                    .size()
+                );
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
         );
-    }
 
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+    }
+    
     @Test
     public void testCreateEntitiesOnInvalidPosition() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.clear();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf1");
-        body.put("position", new KVector2i(999, 99));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.clear();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf1");
+                body.put("position", new KVector2i(999, 99));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
 
-        body.put("controller", TestController.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                body.put("controller", TestController.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
 
-        Assertions.assertEquals(1, this.statics.size());
-        Assertions.assertEquals(1, this.controllables.size());
-        Assertions.assertEquals(1, this.autonomouses.size());
+                Assertions.assertEquals(1, statics.size());
+                Assertions.assertEquals(1, controllables.size());
+                Assertions.assertEquals(1, autonomouses.size());
+            }
+        }
 
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testCreateEntitiesOnUnknownSector() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf99");
-        body.put("position", new KVector2i(1, 1));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf99");
+                body.put("position", new KVector2i(1, 1));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
 
-        body.put("controller", TestController.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                body.put("controller", TestController.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
 
-        Assertions.assertEquals(1, this.statics.size());
-        Assertions.assertEquals(1, this.controllables.size());
-        Assertions.assertEquals(1, this.autonomouses.size());
+                Assertions.assertEquals(1, statics.size());
+                Assertions.assertEquals(1, controllables.size());
+                Assertions.assertEquals(1, autonomouses.size());
+            }
+        }
 
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testDestroyUnknownEntities() {
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+        class Asserter extends AsserterForLoadedLevel {
 
-        KUniversalMap body = new KUniversalMap();
-        body.put("entity_id", UUID.randomUUID());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.put("entity_id", UUID.randomUUID());
 
-        Assertions.assertEquals(1, this.statics.size());
-        Assertions.assertEquals(1, this.controllables.size());
-        Assertions.assertEquals(1, this.autonomouses.size());
+                messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
 
+                Assertions.assertEquals(1, statics.size());
+                Assertions.assertEquals(1, controllables.size());
+                Assertions.assertEquals(1, autonomouses.size());
+            }
+        }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
     public void testSetDirectionForUnknownControllable() {
+        class Asserter extends AsserterForLoadedLevel {
 
-        Assertions.assertEquals("test_level_entity_management_service",  this.currentLevel.name());
-        Assertions.assertEquals(1,  this.controllables.size());
-        Assertions.assertEquals(1,  this.statics.size());
-        Assertions.assertEquals(1,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        var id = (UUID)  this.controllables.keySet().toArray()[0];
-        var previousPosition = this.controllables.get(id).getPosition();
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                var id = (UUID)  controllables.keySet().toArray()[0];
+                var previousPosition = controllables.get(id).getPosition();
 
-        body.put("entity_id", UUID.randomUUID());
-        body.put("direction", new KVector2i(0, 1));
-        this.messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
+                body.put("entity_id", UUID.randomUUID());
+                body.put("direction", new KVector2i(0, 1));
+                messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
+                frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
+                
+                Assertions.assertEquals(previousPosition,  controllables.get(id).getPosition());
 
-        KThreadUtils.sleepForSeconds(2);
-        Assertions.assertEquals(previousPosition,  this.controllables.get(id).getPosition());
+                var autoId = (UUID) autonomouses.keySet().toArray()[0];
+                Assertions.assertEquals(new KVector2i(1, 0),  autonomouses.get(autoId).getPosition().first());
+                var staticId = (UUID) statics.keySet().toArray()[0];
+                Assertions.assertEquals(new KVector2i(0, 1),  statics.get(staticId).getPosition().first());
+            }
+        }
 
-        var autoId = (UUID) autonomouses.keySet().toArray()[0];
-        Assertions.assertEquals(new KVector2i(1, 0),  this.autonomouses.get(autoId).getPosition().first());
-        var staticId = (UUID) statics.keySet().toArray()[0];
-        Assertions.assertEquals(new KVector2i(0, 1),  this.statics.get(staticId).getPosition().first());
+        class Sender implements KMessageRoutesConfigurer {
 
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "Level.levelLoaded",
+                    KMessageSystem.SINK,
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
-    @Tag("doNotLoadLevel")
     public void testCreateEntitiesWithoutLevel() {
+        class Asserter extends AsserterForNotLoadedLevel {
 
-        Assertions.assertNull(this.currentLevel);
-        Assertions.assertEquals(0,  this.controllables.size());
-        Assertions.assertEquals(0,  this.statics.size());
-        Assertions.assertEquals(0,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.put("name", "synthetic");
-        body.put("descriptor", "synthetic");
-        body.put("sector_name", "mf99");
-        body.put("position", new KVector2i(1, 1));
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.put("name", "synthetic");
+                body.put("descriptor", "synthetic");
+                body.put("sector_name", "mf99");
+                body.put("position", new KVector2i(1, 1));
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
 
-        body.put("controller", TestController.class);
-        body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
-        this.messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
+                body.put("controller", TestController.class);
+                body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
+                messageSystem.deliverMessageSync(KMessage.regular("createAutonomousEntity", body));
 
-        Assertions.assertEquals(0, this.statics.size());
-        Assertions.assertEquals(0, this.controllables.size());
-        Assertions.assertEquals(0, this.autonomouses.size());
+                Assertions.assertEquals(0, statics.size());
+                Assertions.assertEquals(0, controllables.size());
+                Assertions.assertEquals(0, autonomouses.size());
+            }
+        }
 
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "fakeLoadLevel",
+                    "Level.LevelService.loadLevel",
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("fakeLoadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
+    
     @Test
-    @Tag("doNotLoadLevel")
     public void testDestroyEntitiesWithoutLevel() {
+        class Asserter extends AsserterForNotLoadedLevel {
 
-        Assertions.assertNull(this.currentLevel);
-        Assertions.assertEquals(0,  this.controllables.size());
-        Assertions.assertEquals(0,  this.statics.size());
-        Assertions.assertEquals(0,  this.autonomouses.size());
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                super(objectRegistry, messageSystem, frameTaskExecutor);
+            }
 
-        KUniversalMap body = new KUniversalMap();
-        body.put("entity_id", UUID.randomUUID());
+            @Override
+            protected void check(
+                Map<UUID, KControllableEntity> controllables,
+                Map<UUID, KStaticEntity> statics,
+                Map<UUID, KAutonomousEntity> autonomouses,
+                KMessageSystem messageSystem,
+                KFrameTaskExecutor frameTaskExecutor
+            ) {
+                KUniversalMap body = new KUniversalMap();
+                body.put("entity_id", UUID.randomUUID());
 
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
-        this.messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
+                messageSystem.deliverMessageSync(KMessage.regular("destroyAutonomousEntity", body));
 
-        Assertions.assertEquals(0, this.statics.size());
-        Assertions.assertEquals(0, this.controllables.size());
-        Assertions.assertEquals(0, this.autonomouses.size());
+                Assertions.assertEquals(0, statics.size());
+                Assertions.assertEquals(0, controllables.size());
+                Assertions.assertEquals(0, autonomouses.size());
+            }
+        }
 
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute(
+                    "fakeLoadLevel",
+                    "Level.LevelService.loadLevel",
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("level_name", "test_level_entity_management_service");
+                body.put("sector", "mf1");
+                messageSystem.deliverMessageSync(KMessage.regular("fakeLoadLevel", body));
+            }
+
+        }
+
+        Konna konna = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(TestMessageRouteConfigurer.class, Sender.class),
+                    List.of(),
+                    List.of(KLevelComponentLoader.class)
+                )
+            )
+        );
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        konna.run();
+        Assertions.assertTrue(executed.get());
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
-
 
 }
 
