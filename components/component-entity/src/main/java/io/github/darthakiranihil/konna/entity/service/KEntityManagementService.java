@@ -311,8 +311,8 @@ public class KEntityManagementService extends KObject implements KService {
 
         KUniversalMap body = new KUniversalMap();
         body.put("id", entity.id());
-        body.put("type", entity.name());
-        body.put("name", entity.type());
+        body.put("type", entity.type());
+        body.put("name", entity.name());
         body.put("instance", entity);
 
         this.messenger.sendRegular(

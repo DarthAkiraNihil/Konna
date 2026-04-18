@@ -27,281 +27,240 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.engine.KService;
-import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KTunnel;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
+import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityComponentLoader;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2;
 import io.github.darthakiranihil.konna.entity.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.test.KTestHypervisor;
-import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unchecked")
 public class KEntityManagementServicePositiveTests extends KStandardTestClass {
-    
-    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
-        KStandardArgumentParser.class,
-        KTestHypervisor.class,
-        new KEngineHypervisorConfig(
-            KAppContainer.useGenerated(),
-            List.of(TestMessageRouteConfigurer.class),
-            List.of(),
-            List.of(KEntityComponentLoader.class)
-        )
-    );
 
-    private final Method shutdown;
-    private final Field hypervisor;
-    private final Field engineModule;
+    private static final KSimpleEvent CAPTURE_THE_FLAG = new KSimpleEvent("captureTheFlag");
+
+    private static void assertMessage(KMessage message) {
+        Assertions.assertEquals("Entity.entityCreated", message.messageId());
+        KUniversalMap body = message.body();
+        Assertions.assertNotNull(body.getSafe("id", UUID.class));
+        Assertions.assertNotNull(body.getSafe("type", String.class));
+        Assertions.assertEquals("Typpi3", body.get("type", String.class));
+        Assertions.assertNotNull(body.getSafe("name", String.class));
+        Assertions.assertEquals("E1", body.get("name", String.class));
+        Assertions.assertNotNull(body.getSafe("instance", KEntity.class));
+
+    }
+
+    private static KService assertService(
+        KObjectRegistry objectRegistry
+    ) {
+        var packedService = objectRegistry
+            .getObjectsOfType(KService.class)
+            .stream()
+            .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
+            .findFirst();
+
+        Assertions.assertTrue(packedService.isPresent());
+        return packedService.get().getCastObject();
+    }
+
+    private final Field activeEntities;
+    private final Field inactiveEntities;
 
     public KEntityManagementServicePositiveTests() {
 
-        try {
-            this.shutdown = Konna.class.getDeclaredMethod("createArgumentParser");
-            this.shutdown.setAccessible(true);
+        Field activeEntitiesField = KReflectionUtils.getField(KEntityManagementService.class, "activeEntities");
+        Assertions.assertNotNull(activeEntitiesField);
+        this.activeEntities = activeEntitiesField;
 
-            this.hypervisor = Konna.class.getDeclaredField("args");
-            this.hypervisor.setAccessible(true);
-
-            this.engineModule = KEngineHypervisor.class.getDeclaredField("loadedDebuggers");
-            this.engineModule.setAccessible(true);
-        } catch (Throwable e) {
-            throw new KException(e);
-        }
-
-        // KStandardTestClass.context.addAssetTypedef(new KEntityMetadataTypedef());
+        Field inactiveEntitiesField = KReflectionUtils.getField(KEntityManagementService.class, "inactiveEntities");
+        Assertions.assertNotNull(inactiveEntitiesField);
+        this.inactiveEntities = inactiveEntitiesField;
 
     }
 
-    @NullMarked
-    private static final class Sender implements KMessageRoutesConfigurer {
-
-        public Sender() {
-            super();
-        }
-
-        @Override
-        public void setupRoutes(KMessageSystem messageSystem) {
-
-            messageSystem.addMessageRoute("Entity.entityCreated", (m) -> {}, List.of(Asserter.class));
-
-            var body = new KUniversalMap();
-            body.put("name", "E1");
-            body.put("type", "Typpi3");
-
-            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
-        }
-
-    }
-
-    @NullMarked
-    private static final class Asserter implements KTunnel {
-
-        private final KObjectRegistry objectRegistry;
-
-        @KInject
-        public Asserter(KObjectRegistry objectRegistry) {
-            this.objectRegistry = objectRegistry;
-        }
-
-        @Override
-        public KMessage processMessage(KMessage message) {
-            try {
-                Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-                Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-                activeEntities.setAccessible(true);
-                inactiveEntities.setAccessible(true);
-
-                var service = objectRegistry.getObjects().stream().filter(o -> o.getObject() instanceof KService).filter(
-                    o -> ( (KService) o.getCastObject() ).name().equals("EntityManagementService")).findFirst();
-
-                Assertions.assertTrue(service.isPresent());
-
-                var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-                var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
-
-                Assertions.assertEquals(1, active.size());
-                Assertions.assertEquals(0, inactive.size());
-
-                UUID createdId = (UUID) active.keySet().toArray()[0];
-                Assertions.assertEquals("E1", active.get(createdId).name());
-                Assertions.assertEquals("Typpi3", active.get(createdId).type());
-                KSystemLogger.info("TEST", "WE ARE HERE!");
-            } catch (Throwable e) {
-                Assertions.fail(e);
-            }
-
-            return message;
-        }
-    }
-
-    @Test
-    public void tetetete() {
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], new KonnaBootstrapConfig(
-            KStandardArgumentParser.class,
+    private void runTest(
+        KMessageRoutesConfigurer sender
+    ) {
+        Konna konnaWithOnlyDefaultArgs = new Konna(
+            new String[0],
+            new KonnaBootstrapConfig(
+                KStandardArgumentParser.class,
                 KEngineHypervisor.class,
                 new KEngineHypervisorConfig(
                     KAppContainer.useGenerated(),
                     List.of(
-                        TestMessageRouteConfigurer.class,
-                        Sender.class
-                    ),
-                    List.of(),
-                    List.of(KEntityComponentLoader.class)
-                )
-            ));
-            konnaWithOnlyDefaultArgs.run();
-            KThreadUtils.sleepForSeconds(5);
+                    TestMessageRouteConfigurer.class,
+                    sender.getClass()
+                ),
+                List.of(),
+                List.of(KEntityComponentLoader.class)
+            )
+        ));
+        konnaWithOnlyDefaultArgs.run();
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testCreateEntity() {
 
-        try {
+        KBooleanReference executed = new KBooleanReference();
+        KEngineModule engineModule = KStandardTestClass.getModule();
+        KEventSystem eventSystem = engineModule.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+        class Asserter implements KTunnel {
 
-            TimeUnit.SECONDS.sleep(2);
-            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            private final KObjectRegistry objectRegistry;
 
-            Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-            Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-            activeEntities.setAccessible(true);
-            inactiveEntities.setAccessible(true);
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry) {
+                this.objectRegistry = objectRegistry;
+            }
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            @Override
+            public KMessage processMessage(KMessage message) {
 
-            var body = new KUniversalMap();
-            body.put("name", "E1");
-            body.put("type", "Typpi3");
+                assertMessage(message);
+                KService service = assertService(this.objectRegistry);
 
-            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
+                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(o -> o.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
-                .findFirst();
+                Assertions.assertNotNull(active);
+                Assertions.assertNotNull(inactive);
 
-            Assertions.assertTrue(service.isPresent());
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
+                UUID createdId = message.body().get("id", UUID.class);
+                Assertions.assertEquals("E1", active.get(createdId).name());
+                Assertions.assertEquals("Typpi3", active.get(createdId).type());
 
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
+                CAPTURE_THE_FLAG.invokeSync();
 
-            UUID createdId = (UUID) active.keySet().toArray()[0];
-            Assertions.assertEquals("E1", active.get(createdId).name());
-            Assertions.assertEquals("Typpi3", active.get(createdId).type());
+                return message;
+            }
 
-            // Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithOnlyDefaultArgs));
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
         }
 
+        this.runTest(
+            (ms) -> {
+                ms.addMessageRoute("Entity.entityCreated", KMessageSystem.SINK, List.of(Asserter.class));
+
+                var body = new KUniversalMap();
+                body.put("name", "E1");
+                body.put("type", "Typpi3");
+
+                ms.deliverMessageSync(KMessage.regular("createEntity", body));
+            }
+        );
+
+        Assertions.assertTrue(executed.get());
+        captureTheFlag.unsubscribe(subToken);
+
     }
+
 
     @Test
     @SuppressWarnings("unchecked")
     public void testRestoreEntity() {
 
-        try {
+        KBooleanReference executed = new KBooleanReference();
+        KEngineModule engineModule = KStandardTestClass.getModule();
+        KEventSystem eventSystem = engineModule.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+        class Asserter implements KTunnel {
 
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println("GECON");
-            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            private final KObjectRegistry objectRegistry;
 
-            Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-            Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-            activeEntities.setAccessible(true);
-            inactiveEntities.setAccessible(true);
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry) {
+                this.objectRegistry = objectRegistry;
+            }
 
+            @Override
+            public KMessage processMessage(KMessage message) {
 
+                assertMessage(message);
+                KService service = assertService(this.objectRegistry);
 
-            var body = new KUniversalMap();
-            body.put("name", "E1");
-            body.put("type", "Typpi3");
-            body.put(
-                "data",
-                KJsonValue.fromMap(
-                    Map.of(
-                        TestEntityDataComponent.class.getCanonicalName(),
-                        KJsonValue.fromMap(
-                            Map.of(
-                                "testField", KJsonValue.fromNumber(1)
-                            )
-                        ),
-                        TestEntityDataComponent2.class.getCanonicalName(),
-                        KJsonValue.fromMap(
-                            Map.of(
-                                "stringField", KJsonValue.fromString("123")
+                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+
+                Assertions.assertNotNull(active);
+                Assertions.assertNotNull(inactive);
+
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
+
+                UUID createdId = message.body().get("id", UUID.class);
+                KEntity created = active.get(createdId);
+                Assertions.assertNotNull(created);
+                Assertions.assertEquals("E1", created.name());
+                Assertions.assertEquals("Typpi3", created.type());
+
+                TestEntityDataComponent tedc1 = created.getComponent(TestEntityDataComponent.class);
+                TestEntityDataComponent2 tedc2 = created.getComponent(TestEntityDataComponent2.class);
+
+                Assertions.assertNotNull(tedc1);
+                Assertions.assertNotNull(tedc2);
+                Assertions.assertEquals(1, tedc1.getTestField());
+                Assertions.assertEquals("123", tedc2.getStringField());
+
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
+        }
+
+        this.runTest(
+            (ms) -> {
+                ms.addMessageRoute("Entity.entityCreated", KMessageSystem.SINK, List.of(Asserter.class));
+
+                var body = new KUniversalMap();
+                body.put("name", "E1");
+                body.put("type", "Typpi3");
+                body.put(
+                    "data",
+                    KJsonValue.fromMap(
+                        Map.of(
+                            TestEntityDataComponent.class.getCanonicalName(),
+                            KJsonValue.fromMap(
+                                Map.of(
+                                    "testField", KJsonValue.fromNumber(1)
+                                )
+                            ),
+                            TestEntityDataComponent2.class.getCanonicalName(),
+                            KJsonValue.fromMap(
+                                Map.of(
+                                    "stringField", KJsonValue.fromString("123")
+                                )
                             )
                         )
                     )
-                )
-            );
+                );
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
-            messageSystem.deliverMessageSync(KMessage.regular("restoreEntity", body));
+                ms.deliverMessageSync(KMessage.regular("restoreEntity", body));
+            }
+        );
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(o -> o.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
-                .findFirst();
-
-            Assertions.assertTrue(service.isPresent());
-
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
-
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
-
-            UUID createdId = (UUID) active.keySet().toArray()[0];
-            KEntity created = active.get(createdId);
-            Assertions.assertNotNull(created);
-            Assertions.assertEquals("E1", created.name());
-            Assertions.assertEquals("Typpi3", created.type());
-
-            TestEntityDataComponent tedc1 = created.getComponent(TestEntityDataComponent.class);
-            TestEntityDataComponent2 tedc2 = created.getComponent(TestEntityDataComponent2.class);
-
-            Assertions.assertNotNull(tedc1);
-            Assertions.assertNotNull(tedc2);
-            Assertions.assertEquals(1, tedc1.getTestField());
-            Assertions.assertEquals("123", tedc2.getStringField());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
-        }
+        Assertions.assertTrue(executed.get());
+        captureTheFlag.unsubscribe(subToken);
 
     }
 
@@ -309,77 +268,88 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
     @SuppressWarnings("unchecked")
     public void testDeactivateAndActivateEntity() {
 
-        try {
+        KBooleanReference executed = new KBooleanReference();
+        KEngineModule engineModule = KStandardTestClass.getModule();
+        KEventSystem eventSystem = engineModule.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+        class Asserter implements KTunnel {
 
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println("GECON");
-            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
-
-            Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-            Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-            activeEntities.setAccessible(true);
-            inactiveEntities.setAccessible(true);
+            private final KObjectRegistry objectRegistry;
+            private final KMessageSystem messageSystem;
 
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
+            @KInject
+            public Asserter(
+                KObjectRegistry objectRegistry,
+                KMessageSystem messageSystem
+            ) {
+                this.objectRegistry = objectRegistry;
+                this.messageSystem = messageSystem;
+            }
 
-            var body = new KUniversalMap();
-            body.put("name", "E1");
-            body.put("type", "Typpi3");
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message);
+                KService service = assertService(this.objectRegistry);
 
-            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
+                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                Assertions.assertNotNull(active);
+                Assertions.assertNotNull(inactive);
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(o -> o.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
-                .findFirst();
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            Assertions.assertTrue(service.isPresent());
+                UUID createdId = message.body().get("id", UUID.class);
+                KEntity created = active.get(createdId);
+                Assertions.assertNotNull(created);
+                Assertions.assertEquals("E1", created.name());
+                Assertions.assertEquals("Typpi3", created.type());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
+                KUniversalMap entityIdBody = new KUniversalMap();
+                entityIdBody.put("entity_id", createdId);
+                KUniversalMap nonExistentEntityIdBody = new KUniversalMap();
+                nonExistentEntityIdBody.put("entity_id", UUID.randomUUID());
 
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
+                this.messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
+                this.messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", nonExistentEntityIdBody));
+                this.messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
 
-            UUID createdId = (UUID) active.keySet().toArray()[0];
-            KEntity created = active.get(createdId);
-            Assertions.assertNotNull(created);
-            Assertions.assertEquals("E1", created.name());
-            Assertions.assertEquals("Typpi3", created.type());
+                Assertions.assertEquals(0, active.size());
+                Assertions.assertEquals(1, inactive.size());
 
-            KUniversalMap entityIdBody = new KUniversalMap();
-            entityIdBody.put("entity_id", createdId);
-            KUniversalMap nonExistentEntityIdBody = new KUniversalMap();
-            nonExistentEntityIdBody.put("entity_id", UUID.randomUUID());
+                this.messageSystem.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
+                this.messageSystem.deliverMessageSync(KMessage.regular("activateEntity", nonExistentEntityIdBody));
+                this.messageSystem.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
 
-            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
-            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", nonExistentEntityIdBody));
-            Assertions.assertEquals(0, active.size());
-            Assertions.assertEquals(1, inactive.size());
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
-            Assertions.assertEquals(0, active.size());
-            Assertions.assertEquals(1, inactive.size());
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
 
-            messageSystem.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
-            messageSystem.deliverMessageSync(KMessage.regular("activateEntity", nonExistentEntityIdBody));
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
-
-            messageSystem.deliverMessageSync(KMessage.regular("activateEntity", entityIdBody));
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
         }
+
+        this.runTest(
+            (ms) -> {
+                ms.addMessageRoute("Entity.entityCreated", KMessageSystem.SINK, List.of(Asserter.class));
+                ms.addMessageRoute("Entity.entityActivated", KMessageSystem.SINK, List.of());
+                ms.addMessageRoute("Entity.entityDeactivated", KMessageSystem.SINK, List.of());
+
+                var body = new KUniversalMap();
+                body.put("name", "E1");
+                body.put("type", "Typpi3");
+
+                ms.deliverMessageSync(KMessage.regular("createEntity", body));
+            }
+        );
+
+        Assertions.assertTrue(executed.get());
+        captureTheFlag.unsubscribe(subToken);
 
     }
 
@@ -387,123 +357,145 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
     @SuppressWarnings("unchecked")
     public void testDestroyActiveEntity() {
 
-        try {
+        KBooleanReference executed = new KBooleanReference();
+        KEngineModule engineModule = KStandardTestClass.getModule();
+        KEventSystem eventSystem = engineModule.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
 
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println("GECON");
-            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+        class Asserter implements KTunnel {
 
-            Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-            Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-            activeEntities.setAccessible(true);
-            inactiveEntities.setAccessible(true);
+            private final KObjectRegistry objectRegistry;
+            private final KMessageSystem messageSystem;
 
-            var body = new KUniversalMap();
-            body.put("name", "E1");
-            body.put("type", "Typpi3");
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry, KMessageSystem messageSystem) {
+                this.objectRegistry = objectRegistry;
+                this.messageSystem = messageSystem;
+            }
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
-            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message);
+                KService service = assertService(this.objectRegistry);
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(o -> o.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
-                .findFirst();
+                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                Assertions.assertNotNull(active);
+                Assertions.assertNotNull(inactive);
 
-            Assertions.assertTrue(service.isPresent());
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
+                UUID createdId = message.body().get("id", UUID.class);
+                KEntity created = active.get(createdId);
+                Assertions.assertNotNull(created);
+                Assertions.assertEquals("E1", created.name());
+                Assertions.assertEquals("Typpi3", created.type());
 
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
+                KUniversalMap entityIdBody = new KUniversalMap();
+                entityIdBody.put("entity_id", createdId);
 
-            UUID createdId = (UUID) active.keySet().toArray()[0];
-            KEntity created = active.get(createdId);
-            Assertions.assertNotNull(created);
-            Assertions.assertEquals("E1", created.name());
-            Assertions.assertEquals("Typpi3", created.type());
+                this.messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
+                Assertions.assertEquals(0, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            KUniversalMap entityIdBody = new KUniversalMap();
-            entityIdBody.put("entity_id", createdId);
-
-            messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
-            Assertions.assertEquals(0, active.size());
-            Assertions.assertEquals(0, inactive.size());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
         }
 
+        this.runTest(
+            (ms) -> {
+                ms.addMessageRoute("Entity.entityCreated", KMessageSystem.SINK, List.of(Asserter.class));
+                ms.addMessageRoute("Entity.entityDestroyed", KMessageSystem.SINK, List.of());
+
+                var body = new KUniversalMap();
+                body.put("name", "E1");
+                body.put("type", "Typpi3");
+
+                ms.deliverMessageSync(KMessage.regular("createEntity", body));
+            }
+        );
+
+        Assertions.assertTrue(executed.get());
+        captureTheFlag.unsubscribe(subToken);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testDestroyInactiveEntity() {
 
-        try {
+        KBooleanReference executed = new KBooleanReference();
+        KEngineModule engineModule = KStandardTestClass.getModule();
+        KEventSystem eventSystem = engineModule.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+        class Asserter implements KTunnel {
 
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println("GECON");
-            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            private final KObjectRegistry objectRegistry;
+            private final KMessageSystem messageSystem;
 
-            Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-            Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-            activeEntities.setAccessible(true);
-            inactiveEntities.setAccessible(true);
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry, KMessageSystem messageSystem) {
+                this.objectRegistry = objectRegistry;
+                this.messageSystem = messageSystem;
+            }
 
-            var body = new KUniversalMap();
-            body.put("name", "E1");
-            body.put("type", "Typpi3");
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message);
+                KService service = assertService(this.objectRegistry);
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
-            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
+                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                Assertions.assertNotNull(active);
+                Assertions.assertNotNull(inactive);
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(o -> o.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
-                .findFirst();
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            Assertions.assertTrue(service.isPresent());
+                UUID createdId = message.body().get("id", UUID.class);
+                KEntity created = active.get(createdId);
+                Assertions.assertNotNull(created);
+                Assertions.assertEquals("E1", created.name());
+                Assertions.assertEquals("Typpi3", created.type());
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
+                KUniversalMap entityIdBody = new KUniversalMap();
+                entityIdBody.put("entity_id", createdId);
 
-            Assertions.assertEquals(1, active.size());
-            Assertions.assertEquals(0, inactive.size());
+                messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
+                Assertions.assertEquals(0, active.size());
+                Assertions.assertEquals(1, inactive.size());
 
-            UUID createdId = (UUID) active.keySet().toArray()[0];
-            KEntity created = active.get(createdId);
-            Assertions.assertNotNull(created);
-            Assertions.assertEquals("E1", created.name());
-            Assertions.assertEquals("Typpi3", created.type());
+                this.messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
+                Assertions.assertEquals(0, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            KUniversalMap entityIdBody = new KUniversalMap();
-            entityIdBody.put("entity_id", createdId);
-
-            messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
-            Assertions.assertEquals(0, active.size());
-            Assertions.assertEquals(1, inactive.size());
-
-            messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
-            Assertions.assertEquals(0, active.size());
-            Assertions.assertEquals(0, inactive.size());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
         }
+
+        this.runTest(
+            (ms) -> {
+                ms.addMessageRoute("Entity.entityCreated", KMessageSystem.SINK, List.of(Asserter.class));
+                ms.addMessageRoute("Entity.entityDestroyed", KMessageSystem.SINK, List.of());
+
+                var body = new KUniversalMap();
+                body.put("name", "E1");
+                body.put("type", "Typpi3");
+
+                ms.deliverMessageSync(KMessage.regular("createEntity", body));
+            }
+        );
+
+        Assertions.assertTrue(executed.get());
+        captureTheFlag.unsubscribe(subToken);
 
     }
 
@@ -511,43 +503,65 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
     @SuppressWarnings("unchecked")
     public void testDestroyNonExistentEntity() {
 
-        try {
+        KBooleanReference executed = new KBooleanReference();
+        KEngineModule engineModule = KStandardTestClass.getModule();
+        KEventSystem eventSystem = engineModule.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+        class Asserter implements KTunnel {
 
-            TimeUnit.SECONDS.sleep(1);
-            KEngineModule realContext = (KEngineModule) this.engineModule.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            private final KObjectRegistry objectRegistry;
+            private final KMessageSystem messageSystem;
 
-            Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
-            Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
-            activeEntities.setAccessible(true);
-            inactiveEntities.setAccessible(true);
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry, KMessageSystem messageSystem) {
+                this.objectRegistry = objectRegistry;
+                this.messageSystem = messageSystem;
+            }
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(o -> o.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getCastObject()).name().equals("EntityManagementService"))
-                .findFirst();
+            @Override
+            public KMessage processMessage(KMessage message) {
+                KService service = assertService(this.objectRegistry);
 
-            Assertions.assertTrue(service.isPresent());
+                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                Assertions.assertNotNull(active);
+                Assertions.assertNotNull(inactive);
 
-            var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
-            var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
+                KUniversalMap entityIdBody = new KUniversalMap();
+                entityIdBody.put("entity_id", UUID.randomUUID());
 
-            KUniversalMap entityIdBody = new KUniversalMap();
-            entityIdBody.put("entity_id", UUID.randomUUID());
+                this.messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
+                Assertions.assertEquals(0, active.size());
+                Assertions.assertEquals(0, inactive.size());
 
-            messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
-            Assertions.assertEquals(0, active.size());
-            Assertions.assertEquals(0, inactive.size());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return KMessage.DROP;
+            }
         }
+
+        this.runTest(
+            (ms) -> {
+                ms.addMessageRoute("Entity.entityCreated", KMessageSystem.SINK, List.of(Asserter.class));
+                ms.addMessageRoute("Entity.entityDestroyed", KMessageSystem.SINK, List.of());
+
+                ms.addMessageRoute(
+                    "fakeCreateEntity",
+                    "Entity.EntityManagementService.createEntity",
+                    List.of(Asserter.class)
+                );
+
+                var body = new KUniversalMap();
+                body.put("name", "E1");
+                body.put("type", "Typpi3");
+                ms.deliverMessageSync(KMessage.regular("fakeCreateEntity", body));
+            }
+        );
+
+        Assertions.assertTrue(executed.get());
+        captureTheFlag.unsubscribe(subToken);
 
     }
 

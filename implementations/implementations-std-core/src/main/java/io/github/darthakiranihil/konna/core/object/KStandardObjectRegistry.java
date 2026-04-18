@@ -266,7 +266,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         return this.records
             .values()
             .stream()
-            .filter(x -> x.getObjectClass().equals(clazz))
+            .filter(x -> clazz.isAssignableFrom(x.getObjectClass()))
             .collect(Collectors.toUnmodifiableSet());
     }
 

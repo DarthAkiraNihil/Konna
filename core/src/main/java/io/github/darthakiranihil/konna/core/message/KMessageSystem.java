@@ -31,6 +31,8 @@ import java.util.function.Consumer;
  */
 public interface KMessageSystem {
 
+    Consumer<KMessage> SINK = (m) -> {};
+
     /**
      * Delivers given message to destinations specified by its message id. If no route is specified,
      * the message won't be sent. This operation is asynchronous

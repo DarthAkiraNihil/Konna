@@ -178,7 +178,7 @@ public class KStandardActivator extends KObject implements KActivator {
     }
 
     private Constructor<?> getConstructor(final Class<?> clazz) {
-        var constructors = clazz.getConstructors();
+        var constructors = clazz.getDeclaredConstructors();
 
         var injectedConstructors = Arrays.stream(constructors)
             .filter(x -> x.isAnnotationPresent(KInject.class))
