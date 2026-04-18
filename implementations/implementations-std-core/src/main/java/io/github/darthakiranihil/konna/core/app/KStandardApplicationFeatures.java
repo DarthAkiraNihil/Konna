@@ -30,6 +30,10 @@ public class KStandardApplicationFeatures implements KApplicationFeatures {
 
     private final Map<String, String> features;
 
+    public KStandardApplicationFeatures() {
+        this(Map.of());
+    }
+
     public KStandardApplicationFeatures(final Map<String, String> features) {
         this.features = features;
     }

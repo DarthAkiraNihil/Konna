@@ -168,7 +168,7 @@ public final class Konna extends KObject implements Runnable {
             throw new KBootstrapException(
                 String.format(
                         "Hypervisor class (%s) does not provide a constructor "
-                    +   "with the only argument of type KEngineHypervisor",
+                    +   "with the only argument of type KEngineHypervisorConfig",
                     this.bootstrapConfig.hypervisor()
                 )
             );

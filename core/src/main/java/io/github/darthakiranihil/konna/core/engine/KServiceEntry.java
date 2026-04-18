@@ -39,7 +39,7 @@ import java.util.Objects;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KServiceEntry implements KDeletable {
+public final class KServiceEntry {
 
     @SuppressWarnings("unchecked")
     private static Map<String, KPair<KMessageToEndpointConverter, Method>> getServiceEndpoints(
@@ -179,11 +179,4 @@ public final class KServiceEntry implements KDeletable {
         return this.endpoints.containsKey(route);
     }
 
-    @Override
-    public void delete() {
-        Class<?> clazz = this.service.getClass();
-        if (KDeletable.class.isAssignableFrom(clazz)) {
-            ((KDeletable) this.service).delete();
-        }
-    }
 }

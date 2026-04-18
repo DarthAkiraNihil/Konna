@@ -79,7 +79,7 @@ public abstract class KComponent extends KObject {
 
         this.engineModule = engineModule;
         var packedServices = KComponent.packServices(services, engineModule.activator());
-        for (KServiceEntry service: packedServices.values()) {
+        for (KService service: services) {
             this.addChild(KObject.managify(service));
         }
         this.services = packedServices;

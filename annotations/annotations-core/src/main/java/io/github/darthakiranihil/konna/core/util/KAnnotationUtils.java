@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.util;
 
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
+
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -30,6 +32,7 @@ import java.util.Map;
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
+@KExcludeFromGeneratedCoverageReport
 public final class KAnnotationUtils {
 
     private KAnnotationUtils() {

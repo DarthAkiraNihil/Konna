@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Serializable;
@@ -50,8 +51,8 @@ public class KObject implements KDeletable, Serializable {
         }
     }
 
-    public static KObject managify(Object object) {
-        return (object instanceof KObject)
+    public static KObject managify(final Object object) {
+        return KObject.class.isAssignableFrom(object.getClass())
             ? (KObject) object
             : new KDeletableProxy(object);
     }
@@ -117,9 +118,8 @@ public class KObject implements KDeletable, Serializable {
         this.id = UUID.randomUUID();
         this.name = name;
         this.tags = new HashSet<>();
-        this.parent = parent;
         this.children = new HashSet<>();
-
+        this.setParent(parent);
         KObject.createdObjects++;
     }
 
@@ -133,9 +133,8 @@ public class KObject implements KDeletable, Serializable {
         this.id = UUID.randomUUID();
         this.name = name;
         this.tags = new HashSet<>(tags);
-        this.parent = parent;
         this.children = new HashSet<>();
-
+        this.setParent(parent);
         KObject.createdObjects++;
     }
 
@@ -154,6 +153,10 @@ public class KObject implements KDeletable, Serializable {
         KObject.createdObjects++;
     }
 
+    public final @Nullable KObject getParent() {
+        return parent;
+    }
+
     /**
      * Sets a new parent object for this object.
      * @param parent New parent object.
@@ -166,6 +169,11 @@ public class KObject implements KDeletable, Serializable {
 
         this.parent = parent;
         parent.children.add(this);
+    }
+
+    @Unmodifiable
+    public Set<KObject> getChildren() {
+        return Collections.unmodifiableSet(this.children);
     }
 
     public final void addChild(final KObject child) {
