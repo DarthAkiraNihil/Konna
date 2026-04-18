@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KEmptyEventRegisterer;
 import io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -47,17 +48,12 @@ public class KGraphicsComponentPositiveTests extends KStandardTestClass {
         Assertions.assertNotNull(config);
         KEngineHypervisor hypervisor = new KEngineHypervisor(config);
         hypervisor.launch(new KStandardApplicationFeatures(Map.of("log-level", "INFO", "max-fps", "-1")));
-        try {
-            Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
+        Field engineComponentsField = KReflectionUtils.getField(KEngineHypervisor.class, "engineComponents");
 
-            engineComponents.setAccessible(true);
-
-            Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
-            Assertions.assertTrue(mapOfComponents.containsKey("Graphics"));
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
-        }
+        Assertions.assertNotNull(engineComponentsField);
+        Map<String, KComponent> engineComponents = (Map<String, KComponent>) KReflectionUtils.getFieldValue(engineComponentsField, hypervisor);
+        Assertions.assertNotNull(engineComponents);
+        Assertions.assertTrue(engineComponents.containsKey("Graphics"));
 
     }
 }
