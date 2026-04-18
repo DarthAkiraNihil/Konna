@@ -224,7 +224,9 @@ public class KObject implements KDeletable, Serializable {
             this.parent.children.removeIf(x -> x.id.equals(this.id));
             this.parent = null;
         }
+
         for (KObject child: this.children) {
+            child.parent = null;
             child.delete();
         }
 

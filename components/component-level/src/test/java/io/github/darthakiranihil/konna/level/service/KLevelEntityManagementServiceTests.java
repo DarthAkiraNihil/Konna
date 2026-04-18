@@ -83,6 +83,10 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
     }
 
+    private void runTest() {
+
+    }
+
     @BeforeEach
     void setUp(final TestInfo testInfo) {
         Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);

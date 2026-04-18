@@ -21,14 +21,15 @@ import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
 import io.github.darthakiranihil.konna.core.app.KStandardArgumentParser;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
-import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.engine.KService;
-import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.message.KMessage;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
+import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
+import io.github.darthakiranihil.konna.core.struct.ref.KIntReference;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.KLevelSector;
@@ -38,254 +39,303 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 
 public class KLevelServicePositiveTests extends KStandardTestClass {
 
-    private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
-        KStandardArgumentParser.class,
-        KEngineHypervisor.class,
-        new KEngineHypervisorConfig(
-            KAppContainer.useGenerated(),
-            List.of(TestMessageRouteConfigurer.class),
-            List.of(),
-            List.of(KLevelComponentLoader.class)
-        )
-    );
+    private static final KSimpleEvent CAPTURE_THE_FLAG = new KSimpleEvent("captureTheFlag");
 
-    private final Method shutdown;
-    private final Field hypervisor;
-    private final Field ctx;
+    private static KService assertService(
+        KObjectRegistry objectRegistry
+    ) {
+        var packedService = objectRegistry
+            .getObjectsOfType(KService.class)
+            .stream()
+            .filter(o -> ((KService) o.getCastObject()).name().equals("LevelService"))
+            .findFirst();
+
+        Assertions.assertTrue(packedService.isPresent());
+        return packedService.get().getCastObject();
+    }
+
+    private static void assertMessage(
+        KMessage message,
+        String messageId
+    ) {
+
+        Assertions.assertEquals(messageId, message.messageId());
+        KUniversalMap body = message.body();
+
+        Assertions.assertNotNull(body.getSafe("level", KLevel.class));
+        Assertions.assertNotNull(body.getSafe("sector", KLevelSector.class));
+
+    }
+
+    private final Field currentLevel;
 
     public KLevelServicePositiveTests() {
 
-        try {
-            this.shutdown = Konna.class.getDeclaredMethod("shutdown");
-            this.shutdown.setAccessible(true);
-
-            this.hypervisor = Konna.class.getDeclaredField("hypervisor");
-            this.hypervisor.setAccessible(true);
-
-            this.ctx = KEngineHypervisor.class.getDeclaredField("engineModule");
-            this.ctx.setAccessible(true);
-        } catch (Throwable e) {
-            throw new KException(e);
-        }
-
-        // KStandardTestClass.context.addAssetTypedef(new KEntityMetadataTypedef());
+        Field rawCurrentLevel = KReflectionUtils.getField(KLevelService.class, "currentLevel");
+        Assertions.assertNotNull(rawCurrentLevel);
+        this.currentLevel = rawCurrentLevel;
 
     }
 
     @Test
     public void testLoadLevel() {
 
-        try {
+        class Asserter implements KTunnel {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+            private final KObjectRegistry objectRegistry;
 
-            TimeUnit.SECONDS.sleep(2);
-            KEngineModule realContext = (KEngineModule) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry) {
+                this.objectRegistry = objectRegistry;
+            }
 
-            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
-            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
-            currentLevel.setAccessible(true);
-            currentSector.setAccessible(true);
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message, "Level.levelLoaded");
+                KService service = assertService(this.objectRegistry);
 
-            var body = new KUniversalMap();
-            body.put("level_name", "valid");
-            body.put("sector", "mf2");
+                var actualLevel = (KLevel) KReflectionUtils.getFieldValue(currentLevel, service);
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
+                Assertions.assertNotNull(actualLevel);
+                Assertions.assertEquals("valid", actualLevel.name());
+                Assertions.assertEquals(2, actualLevel.getSectorNames().length);
+                Assertions.assertEquals("mf2", message.body().get("sector", KLevelSector.class).name());
 
-            messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
-            
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(x -> x.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
-                .findFirst();
-
-            Assertions.assertTrue(service.isPresent());
-
-            var cloc = (KLevel) currentLevel.get(service.get().getObject());
-            var csec = (KLevelSector) currentSector.get(service.get().getObject());
-
-            Assertions.assertEquals("valid", cloc.name());
-            Assertions.assertEquals(2, cloc.getSectorNames().length);
-
-            Assertions.assertEquals("mf2", csec.name());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
         }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute("Level.levelLoaded", KMessageSystem.SINK, List.of(Asserter.class));
+
+                KUniversalMap body = new KUniversalMap();
+                body.put("level_name", "valid");
+                body.put("sector", "mf2");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+        }
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+
+        KonnaBootstrapConfig config = new KonnaBootstrapConfig(
+            KStandardArgumentParser.class,
+            KEngineHypervisor.class,
+            new KEngineHypervisorConfig(
+                KAppContainer.useGenerated(),
+                List.of(TestMessageRouteConfigurer.class, Sender.class),
+                List.of(),
+                List.of(KLevelComponentLoader.class)
+            )
+        );
+        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
+        konnaWithOnlyDefaultArgs.run();
+
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+        Assertions.assertTrue(executed.get());
 
     }
 
     @Test
     public void testLoadTwice() {
 
-        try {
+        class Asserter implements KTunnel {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+            private final KObjectRegistry objectRegistry;
 
-            TimeUnit.SECONDS.sleep(2);
-            KEngineModule realContext = (KEngineModule) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry) {
+                this.objectRegistry = objectRegistry;
+            }
 
-            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
-            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
-            currentLevel.setAccessible(true);
-            currentSector.setAccessible(true);
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message, "Level.levelLoaded");
+                KService service = assertService(this.objectRegistry);
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
+                var actualLevel = (KLevel) KReflectionUtils.getFieldValue(currentLevel, service);
 
-            var body = new KUniversalMap();
-            body.put("level_name", "valid");
-            body.put("sector", "mf2");
-            messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+                Assertions.assertNotNull(actualLevel);
+                Assertions.assertEquals("valid", actualLevel.name());
+                Assertions.assertEquals(2, actualLevel.getSectorNames().length);
+                Assertions.assertEquals("mf2", message.body().get("sector", KLevelSector.class).name());
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(x -> x.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
-                .findFirst();
-
-            Assertions.assertTrue(service.isPresent());
-
-            var cloc = (KLevel) currentLevel.get(service.get().getObject());
-            var csec = (KLevelSector) currentSector.get(service.get().getObject());
-
-            Assertions.assertEquals("valid", cloc.name());
-            Assertions.assertEquals(2, cloc.getSectorNames().length);
-
-            Assertions.assertEquals("mf2", csec.name());
-
-            messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
-
-            cloc = (KLevel) currentLevel.get(service.get().getObject());
-            csec = (KLevelSector) currentSector.get(service.get().getObject());
-
-            Assertions.assertEquals("valid", cloc.name());
-            Assertions.assertEquals(2, cloc.getSectorNames().length);
-
-            Assertions.assertEquals("mf2", csec.name());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
         }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute("Level.levelLoaded", KMessageSystem.SINK, List.of(Asserter.class));
+
+                KUniversalMap body = new KUniversalMap();
+                body.put("level_name", "valid");
+                body.put("sector", "mf2");
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+                messageSystem.deliverMessageSync(KMessage.regular("loadLevel", body));
+            }
+        }
+
+        KIntReference executions = new KIntReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executions.set(executions.get() + 1));
+
+        KonnaBootstrapConfig config = new KonnaBootstrapConfig(
+            KStandardArgumentParser.class,
+            KEngineHypervisor.class,
+            new KEngineHypervisorConfig(
+                KAppContainer.useGenerated(),
+                List.of(TestMessageRouteConfigurer.class, Sender.class),
+                List.of(),
+                List.of(KLevelComponentLoader.class)
+            )
+        );
+        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
+        konnaWithOnlyDefaultArgs.run();
+
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+        Assertions.assertEquals(2, executions.get());
 
     }
 
     @Test
     public void testGenerateAndLoad() {
 
-        try {
+        class Asserter implements KTunnel {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+            private final KObjectRegistry objectRegistry;
 
-            TimeUnit.SECONDS.sleep(2);
-            KEngineModule realContext = (KEngineModule) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry) {
+                this.objectRegistry = objectRegistry;
+            }
 
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message, "Level.generatedLevelLoaded");
+                KService service = assertService(this.objectRegistry);
 
+                var actualLevel = (KLevel) KReflectionUtils.getFieldValue(currentLevel, service);
 
-            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
-            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
-            currentLevel.setAccessible(true);
-            currentSector.setAccessible(true);
+                Assertions.assertNotNull(actualLevel);
+                Assertions.assertEquals("valid", actualLevel.name());
+                Assertions.assertEquals(2, actualLevel.getSectorNames().length);
+                Assertions.assertEquals("mf2", message.body().get("sector", KLevelSector.class).name());
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
-            var body = new KUniversalMap();
-            body.put("generator", "valid");
-            body.put("seed", 123456L);
-            body.put("sector", "mf2");
-            messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
-
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(x -> x.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
-                .findFirst();
-
-            Assertions.assertTrue(service.isPresent());
-
-            var cloc = (KLevel) currentLevel.get(service.get().getObject());
-            var csec = (KLevelSector) currentSector.get(service.get().getObject());
-
-            Assertions.assertEquals("valid", cloc.name());
-            Assertions.assertEquals(2, cloc.getSectorNames().length);
-
-            Assertions.assertEquals("mf2", csec.name());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
         }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute("Level.generatedLevelLoaded", KMessageSystem.SINK, List.of(Asserter.class));
+
+                var body = new KUniversalMap();
+                body.put("generator", "valid");
+                body.put("seed", 123456L);
+                body.put("sector", "mf2");
+                messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+            }
+        }
+
+        KBooleanReference executed = new KBooleanReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+
+        KonnaBootstrapConfig config = new KonnaBootstrapConfig(
+            KStandardArgumentParser.class,
+            KEngineHypervisor.class,
+            new KEngineHypervisorConfig(
+                KAppContainer.useGenerated(),
+                List.of(TestMessageRouteConfigurer.class, Sender.class),
+                List.of(),
+                List.of(KLevelComponentLoader.class)
+            )
+        );
+        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
+        konnaWithOnlyDefaultArgs.run();
+
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+        Assertions.assertTrue(executed.get());
 
     }
 
     @Test
-    public void testGenerateAndLoadTwice() {
-        try {
+    public void testLoadAndLoadTwice() {
 
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
+        class Asserter implements KTunnel {
 
-            TimeUnit.SECONDS.sleep(2);
-            KEngineModule realContext = (KEngineModule) this.ctx.get(this.hypervisor.get(konnaWithOnlyDefaultArgs));
+            private final KObjectRegistry objectRegistry;
 
-            Field currentLevel = KLevelService.class.getDeclaredField("currentLevel");
-            Field currentSector = KLevelService.class.getDeclaredField("currentSector");
-            currentLevel.setAccessible(true);
-            currentSector.setAccessible(true);
+            @KInject
+            public Asserter(KObjectRegistry objectRegistry) {
+                this.objectRegistry = objectRegistry;
+            }
 
-            KMessageSystem messageSystem = realContext.messageSystem();
-            KObjectRegistry objectRegistry = realContext.objectRegistry();
-            var body = new KUniversalMap();
-            body.put("generator", "valid");
-            body.put("seed", 123456L);
-            body.put("sector", "mf2");
-            messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+            @Override
+            public KMessage processMessage(KMessage message) {
+                assertMessage(message, "Level.generatedLevelLoaded");
+                KService service = assertService(this.objectRegistry);
 
-            var service = objectRegistry
-                .getObjects()
-                .stream()
-                .filter(x -> x.getObject() instanceof KService)
-                .filter(o -> ((KService) o.getObject()).name().equals("LevelService"))
-                .findFirst();
+                var actualLevel = (KLevel) KReflectionUtils.getFieldValue(currentLevel, service);
 
-            Assertions.assertTrue(service.isPresent());
+                Assertions.assertNotNull(actualLevel);
+                Assertions.assertEquals("valid", actualLevel.name());
+                Assertions.assertEquals(2, actualLevel.getSectorNames().length);
+                Assertions.assertEquals("mf2", message.body().get("sector", KLevelSector.class).name());
 
-            var cloc = (KLevel) currentLevel.get(service.get().getObject());
-            var csec = (KLevelSector) currentSector.get(service.get().getObject());
-
-            Assertions.assertEquals("valid", cloc.name());
-            Assertions.assertEquals(2, cloc.getSectorNames().length);
-
-            Assertions.assertEquals("mf2", csec.name());
-
-            body.put("seed", 567890L);
-            body.put("sector", "mf2");
-            messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
-
-            cloc = (KLevel) currentLevel.get(service.get().getObject());
-            csec = (KLevelSector) currentSector.get(service.get().getObject());
-
-            Assertions.assertEquals("valid", cloc.name());
-            Assertions.assertEquals(2, cloc.getSectorNames().length);
-
-            Assertions.assertEquals("mf2", csec.name());
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
+                CAPTURE_THE_FLAG.invokeSync();
+                return message;
+            }
         }
+
+        class Sender implements KMessageRoutesConfigurer {
+
+            @Override
+            public void setupRoutes(KMessageSystem messageSystem) {
+                messageSystem.addMessageRoute("Level.generatedLevelLoaded", KMessageSystem.SINK, List.of(Asserter.class));
+
+                var body = new KUniversalMap();
+                body.put("generator", "valid");
+                body.put("seed", 123456L);
+                body.put("sector", "mf2");
+                messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+                messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
+            }
+        }
+
+        KIntReference executions = new KIntReference();
+        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executions.set(executions.get() + 1));
+
+        KonnaBootstrapConfig config = new KonnaBootstrapConfig(
+            KStandardArgumentParser.class,
+            KEngineHypervisor.class,
+            new KEngineHypervisorConfig(
+                KAppContainer.useGenerated(),
+                List.of(TestMessageRouteConfigurer.class, Sender.class),
+                List.of(),
+                List.of(KLevelComponentLoader.class)
+            )
+        );
+        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
+        konnaWithOnlyDefaultArgs.run();
+
+        CAPTURE_THE_FLAG.unsubscribe(subToken);
+        Assertions.assertEquals(2, executions.get());
+
     }
+
 }

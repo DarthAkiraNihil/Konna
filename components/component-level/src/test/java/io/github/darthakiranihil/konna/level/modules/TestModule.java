@@ -16,9 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.modules;
 
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
-import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KAbstractModule;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
@@ -65,7 +63,9 @@ public class TestModule extends KAbstractModule {
 
     @KSingleton
     public KFrame frame() {
-        return new KTestFrame();
+        return new KTestFrame(
+            this.appContainer.getInstanceInferred(KFrameTaskScheduler.class)
+        );
     }
 
     @KSingleton

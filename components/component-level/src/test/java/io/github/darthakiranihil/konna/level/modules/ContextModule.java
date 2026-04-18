@@ -28,7 +28,6 @@ import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
@@ -37,7 +36,7 @@ import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef
 import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KSynchronousMessageSystem;
 
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,7 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KMessageSystem messageSystem() {
-        return new KStandardMessageSystem(this.appContainer.getInstanceInferred(KActivator.class));
+        return new KSynchronousMessageSystem(this.appContainer.getInstanceInferred(KActivator.class));
     }
 
     @KSingleton
