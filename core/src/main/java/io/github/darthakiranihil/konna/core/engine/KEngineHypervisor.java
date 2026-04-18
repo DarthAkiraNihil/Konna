@@ -131,6 +131,11 @@ public class KEngineHypervisor extends KObject {
             engineModule, features, systemFeatures, activator, objectRegistry
         );
 
+        this.engineComponents.putAll(loadedComponents);
+
+
+        KAssetLoader assetLoader = engineModule.assetLoader();
+        this.addAssetTypedefs(assetLoader, loadedComponents);
         KMessageSystem messageSystem = engineModule.messageSystem();
         this.configureMessageRoutes(
             activator,
@@ -139,8 +144,6 @@ public class KEngineHypervisor extends KObject {
             this.config.messageRoutesConfigurers()
         );
 
-        KAssetLoader assetLoader = engineModule.assetLoader();
-        this.addAssetTypedefs(assetLoader, loadedComponents);
         this.engineComponents.values().forEach(KComponent::postInit);
 
         if (systemFeatures.isDebugEnabled()) {
@@ -159,7 +162,7 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
-    private void frameLoop(
+    protected void frameLoop(
         final KSystemFeatures systemFeatures,
         final KFrame frame,
         final KMessageSystem messageSystem,

@@ -23,19 +23,26 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.except.KException;
+import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
+import io.github.darthakiranihil.konna.core.message.KTunnel;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityComponentLoader;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2;
 import io.github.darthakiranihil.konna.entity.impl.TestMessageRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KTestHypervisor;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +57,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
     
     private static final KonnaBootstrapConfig BOOTSTRAP = new KonnaBootstrapConfig(
         KStandardArgumentParser.class,
-        KEngineHypervisor.class,
+        KTestHypervisor.class,
         new KEngineHypervisorConfig(
             KAppContainer.useGenerated(),
             List.of(TestMessageRouteConfigurer.class),
@@ -66,13 +73,13 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
     public KEntityManagementServicePositiveTests() {
 
         try {
-            this.shutdown = Konna.class.getDeclaredMethod("shutdown");
+            this.shutdown = Konna.class.getDeclaredMethod("createArgumentParser");
             this.shutdown.setAccessible(true);
 
-            this.hypervisor = Konna.class.getDeclaredField("hypervisor");
+            this.hypervisor = Konna.class.getDeclaredField("args");
             this.hypervisor.setAccessible(true);
 
-            this.engineModule = KEngineHypervisor.class.getDeclaredField("engineModule");
+            this.engineModule = KEngineHypervisor.class.getDeclaredField("loadedDebuggers");
             this.engineModule.setAccessible(true);
         } catch (Throwable e) {
             throw new KException(e);
@@ -80,6 +87,87 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
 
         // KStandardTestClass.context.addAssetTypedef(new KEntityMetadataTypedef());
 
+    }
+
+    @NullMarked
+    private static final class Sender implements KMessageRoutesConfigurer {
+
+        public Sender() {
+            super();
+        }
+
+        @Override
+        public void setupRoutes(KMessageSystem messageSystem) {
+
+            messageSystem.addMessageRoute("Entity.entityCreated", (m) -> {}, List.of(Asserter.class));
+
+            var body = new KUniversalMap();
+            body.put("name", "E1");
+            body.put("type", "Typpi3");
+
+            messageSystem.deliverMessageSync(KMessage.regular("createEntity", body));
+        }
+
+    }
+
+    @NullMarked
+    private static final class Asserter implements KTunnel {
+
+        private final KObjectRegistry objectRegistry;
+
+        @KInject
+        public Asserter(KObjectRegistry objectRegistry) {
+            this.objectRegistry = objectRegistry;
+        }
+
+        @Override
+        public KMessage processMessage(KMessage message) {
+            try {
+                Field activeEntities = KEntityManagementService.class.getDeclaredField("activeEntities");
+                Field inactiveEntities = KEntityManagementService.class.getDeclaredField("inactiveEntities");
+                activeEntities.setAccessible(true);
+                inactiveEntities.setAccessible(true);
+
+                var service = objectRegistry.getObjects().stream().filter(o -> o.getObject() instanceof KService).filter(
+                    o -> ( (KService) o.getCastObject() ).name().equals("EntityManagementService")).findFirst();
+
+                Assertions.assertTrue(service.isPresent());
+
+                var active = (Map<UUID, KEntity>) activeEntities.get(service.get().getObject());
+                var inactive = (Map<UUID, KEntity>) inactiveEntities.get(service.get().getObject());
+
+                Assertions.assertEquals(1, active.size());
+                Assertions.assertEquals(0, inactive.size());
+
+                UUID createdId = (UUID) active.keySet().toArray()[0];
+                Assertions.assertEquals("E1", active.get(createdId).name());
+                Assertions.assertEquals("Typpi3", active.get(createdId).type());
+                KSystemLogger.info("TEST", "WE ARE HERE!");
+            } catch (Throwable e) {
+                Assertions.fail(e);
+            }
+
+            return message;
+        }
+    }
+
+    @Test
+    public void tetetete() {
+        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], new KonnaBootstrapConfig(
+            KStandardArgumentParser.class,
+                KEngineHypervisor.class,
+                new KEngineHypervisorConfig(
+                    KAppContainer.useGenerated(),
+                    List.of(
+                        TestMessageRouteConfigurer.class,
+                        Sender.class
+                    ),
+                    List.of(),
+                    List.of(KEntityComponentLoader.class)
+                )
+            ));
+            konnaWithOnlyDefaultArgs.run();
+            KThreadUtils.sleepForSeconds(5);
     }
 
     @Test
