@@ -37,8 +37,8 @@ public final class KGl33TransformMatrixCalculator
 
     private KSize viewportSize;
 
-    public KGl33TransformMatrixCalculator() {
-        this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
+    public KGl33TransformMatrixCalculator(final KSize viewportSize) {
+        this.viewportSize = viewportSize;
     }
 
     /**

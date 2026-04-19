@@ -16,22 +16,62 @@
 
 package io.github.darthakiranihil.konna.entity;
 
+import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
+import io.github.darthakiranihil.konna.core.data.json.KJsonDeserializer;
+import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
+import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.message.KEventSystem;
+import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
+import io.github.darthakiranihil.konna.core.message.KSimpleEventSubscriber;
+import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
+import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KEmptyEventRegisterer;
 import io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import io.github.darthakiranihil.konna.test.KTestHypervisor;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class KEntityComponentPositiveTests extends KStandardTestClass {
+
+    public static final KSimpleEvent CAPTURE_THE_FLAG = new KSimpleEvent("captureTheFlag");
+
+    @NullMarked
+    private static final class TestEntityComponentLoader extends KEntityComponentLoader {
+
+        @KInject
+        public TestEntityComponentLoader(
+            KJsonParser parser,
+            KJsonDeserializer deserializer
+        ) {
+            super(parser, deserializer);
+        }
+
+        @Override
+        public KComponent load(
+            KEngineModule engineModule,
+            KApplicationFeatures features,
+            KSystemFeatures systemConfig
+        ) {
+            KComponent loaded = super.load(engineModule, features, systemConfig);
+            CAPTURE_THE_FLAG.invokeSync();
+            return loaded;
+        }
+
+    }
     @Test
     @SuppressWarnings("unchecked")
     public void testLoadKonnaWithEntityComponentSuccess() {
@@ -40,23 +80,32 @@ public class KEntityComponentPositiveTests extends KStandardTestClass {
             KAppContainer.useGenerated(),
             List.of(KEmptyRouteConfigurer.class),
             List.of(KEmptyEventRegisterer.class),
-            List.of(KEntityComponentLoader.class)
+            List.of(TestEntityComponentLoader.class)
         );
 
-        KEngineHypervisor hypervisor = new KEngineHypervisor(config);
+        KBooleanReference checkerExecuted = new KBooleanReference();
+
+        KEngineHypervisor hypervisor = new KTestHypervisor(
+            config,
+            (h) -> {
+                Field engineComponentsField = KReflectionUtils.getField(KEngineHypervisor.class, "engineComponents");
+                Assertions.assertNotNull(engineComponentsField);
+
+                var engineComponents = (Map<String, KComponent>) KReflectionUtils.getFieldValue(engineComponentsField, h);
+                Assertions.assertNotNull(engineComponents);
+                Assertions.assertTrue(engineComponents.containsKey("Entity"));
+            }
+        );
+        KEngineModule module = KStandardTestClass.getModule();
+        KEventSystem eventSystem = module.eventSystem();
+        eventSystem.registerEvent(CAPTURE_THE_FLAG);
+
+        KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
+        UUID subToken = captureTheFlag.subscribe(() -> checkerExecuted.set(true));
+
         hypervisor.launch(new KStandardApplicationFeatures(Map.of("log-level", "INFO", "max-fps", "-1")));
-        try {
-            Field engineComponents = KEngineHypervisor.class.getDeclaredField("engineComponents");
-
-            engineComponents.setAccessible(true);
-
-            Map<String, KComponent> mapOfComponents = (Map<String, KComponent>) engineComponents.get(hypervisor);
-            Assertions.assertTrue(mapOfComponents.containsKey("Entity"));
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
-        }
-
+        Assertions.assertTrue(checkerExecuted.get());
+        captureTheFlag.unsubscribe(subToken);
     }
 
 }

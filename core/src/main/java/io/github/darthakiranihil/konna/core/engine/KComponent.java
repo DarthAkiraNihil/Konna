@@ -62,6 +62,8 @@ public abstract class KComponent extends KObject {
      */
     protected final KEngineModule engineModule;
 
+    private volatile boolean deleted;
+
     /**
      * Standard constructor.
      * @param name Name of the component
@@ -76,7 +78,11 @@ public abstract class KComponent extends KObject {
         super(name, Collections.singleton(KDefaultTags.SYSTEM));
 
         this.engineModule = engineModule;
-        this.services = KComponent.packServices(services, engineModule.activator());
+        var packedServices = KComponent.packServices(services, engineModule.activator());
+        for (KService service: services) {
+            this.addChild(KObject.managify(service));
+        }
+        this.services = packedServices;
     }
 
     /**
@@ -86,6 +92,10 @@ public abstract class KComponent extends KObject {
      * @param message Message to accept.
      */
     public final void acceptMessage(final String endpoint, final KMessage message) {
+        if (this.deleted) {
+            return;
+        }
+
         var splitId = endpoint.split("\\.");
         String service = splitId[0];
         String route = splitId[1];
@@ -137,12 +147,9 @@ public abstract class KComponent extends KObject {
 
     }
 
-    /**
-     * Performs graceful shutdown for this component.
-     * It is highly recommended to override this method if there is no simple
-     * logic for its disposing.
-     */
-    protected void shutdown() {
-        KSystemLogger.info(this.name, "Component %s has been shut down", this.name);
+    @Override
+    protected void deleteSelf() {
+        this.deleted = true;
     }
+
 }

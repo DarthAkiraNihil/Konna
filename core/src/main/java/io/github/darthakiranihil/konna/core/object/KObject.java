@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Serializable;
@@ -27,7 +28,48 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KObject implements Serializable {
+public class KObject implements KDeletable, Serializable {
+
+    private static final class KDeletableProxy extends KObject {
+        private final Object object;
+
+        KDeletableProxy(final Object object) {
+            super(
+                String.format("DeletableProxy$$%s", object),
+                Collections.singleton(KDefaultTags.PROXY)
+            );
+
+            this.object = object;
+        }
+
+        @Override
+        protected void deleteSelf() {
+            Class<?> clazz = this.object.getClass();
+            if (KDeletable.class.isAssignableFrom(clazz)) {
+                ((KDeletable) this.object).delete();
+            }
+        }
+    }
+
+    /**
+     * <p>
+     *     Makes any object an instance of {@link KObject}.
+     * </p>
+     * <p>
+     *     It is performed by checking if it is already is a {@link KObject}.
+     *     If it is true, then just returns it, else wraps it into a special
+     *     proxy object.
+     * </p>
+     * @param object Object to make managed
+     * @return Managed instance of passed object
+     *
+     * @since 0.6.0
+     */
+    public static KObject managify(final Object object) {
+        return KObject.class.isAssignableFrom(object.getClass())
+            ? (KObject) object
+            : new KDeletableProxy(object);
+    }
 
     private static final String DEFAULT_OBJECT_NAME = "object@%d";
 
@@ -50,7 +92,8 @@ public class KObject implements Serializable {
     /**
      * Parent object.
      */
-    @Nullable protected KObject parent;
+    private @Nullable KObject parent;
+    private final Set<KObject> children;
 
     /**
      * Zero-args KObject constructor.
@@ -61,6 +104,7 @@ public class KObject implements Serializable {
         this.name = String.format(DEFAULT_OBJECT_NAME, KObject.createdObjects);
         this.tags = new HashSet<>();
         this.parent = null;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
@@ -74,6 +118,7 @@ public class KObject implements Serializable {
         this.name = name;
         this.tags = new HashSet<>();
         this.parent = null;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
@@ -87,8 +132,8 @@ public class KObject implements Serializable {
         this.id = UUID.randomUUID();
         this.name = name;
         this.tags = new HashSet<>();
-        this.parent = parent;
-
+        this.children = new HashSet<>();
+        this.setParent(parent);
         KObject.createdObjects++;
     }
 
@@ -102,8 +147,8 @@ public class KObject implements Serializable {
         this.id = UUID.randomUUID();
         this.name = name;
         this.tags = new HashSet<>(tags);
-        this.parent = parent;
-
+        this.children = new HashSet<>();
+        this.setParent(parent);
         KObject.createdObjects++;
     }
 
@@ -117,38 +162,69 @@ public class KObject implements Serializable {
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.parent = null;
+        this.children = new HashSet<>();
 
         KObject.createdObjects++;
     }
 
     /**
-     * Sets a new parent object for current one.
-     * @param parent New parent object.
+     * @return Parent of this object
+     * @since 0.6.0
      */
-    public void setParent(final KObject parent) {
-        this.parent = parent;
+    public final @Nullable KObject getParent() {
+        return parent;
     }
 
     /**
-     * Returns id of the object.
+     * Sets a new parent object for this object.
+     * @param parent New parent object.
+     */
+    public final void setParent(final KObject parent) {
+        if (this.parent != null) {
+            this.parent.children
+                .removeIf(x -> x.id.equals(this.id));
+        }
+
+        this.parent = parent;
+        parent.children.add(this);
+    }
+
+    /**
+     * @return Unmodifiable view to set of this object's children.
+     * @since 0.6.0
+     */
+    @Unmodifiable
+    public final Set<KObject> getChildren() {
+        return Collections.unmodifiableSet(this.children);
+    }
+
+    /**
+     * Adds a child object to this object.
+     * @param child Child object to add
+     * @since 0.6.0
+     */
+    public final void addChild(final KObject child) {
+        child.setParent(this);
+    }
+
+    /**
      * @return ID of the object
      */
-    public UUID id() {
+    public final UUID id() {
         return this.id;
     }
 
     /**
-     * Returns name of the object.
      * @return Name of the object
      */
-    public String name() {
+    public final String name() {
         return this.name;
     }
 
     /**
      * @return Set of tags associated with this object
      */
-    public Set<String> tags() {
+    public final Set<String> tags() {
         return this.tags;
     }
 
@@ -156,7 +232,7 @@ public class KObject implements Serializable {
      * Adds a tag to the object.
      * @param tag Added tag
      */
-    public void addTag(final String tag) {
+    public final void addTag(final String tag) {
         this.tags.add(tag);
     }
 
@@ -165,18 +241,45 @@ public class KObject implements Serializable {
      * being added.
      * @param addedTags List of added tags.
      */
-    public void addTags(final String... addedTags) {
+    public final void addTags(final String... addedTags) {
         this.tags.addAll(List.of(addedTags));
     }
 
     /**
      * Removes a tag from the object.
      * @param tag Tag to remove
+     * @since 0.6.0
      */
-    public void removeTag(final String tag) {
+    public final void removeTag(final String tag) {
         this.tags.remove(tag);
     }
 
+    /**
+     * Deletes this object. Children are deleted first, then the object itself.
+     * @since 0.6.0
+     */
+    @Override
+    public final void delete() {
+        if (this.parent != null) {
+            this.parent.children.removeIf(x -> x.id.equals(this.id));
+            this.parent = null;
+        }
+
+        for (KObject child: this.children) {
+            child.parent = null;
+            child.delete();
+        }
+
+        this.children.clear();
+        this.deleteSelf();
+    }
+
+    /**
+     * Performs self-deletion.
+     */
+    protected void deleteSelf() {
+
+    }
 
     /**
      * Compares a KObject to another object.

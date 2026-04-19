@@ -178,5 +178,4 @@ public final class KServiceEntry {
         return this.endpoints.containsKey(route);
     }
 
-
 }

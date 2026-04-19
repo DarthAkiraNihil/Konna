@@ -61,7 +61,8 @@ public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
         this.factory = new KStandardEntityFactory(
             metadataCollection,
             engineModule.activator(),
-            this.jsonDeserializer
+            this.jsonDeserializer,
+            engineModule.objectRegistry()
         );
     }
 

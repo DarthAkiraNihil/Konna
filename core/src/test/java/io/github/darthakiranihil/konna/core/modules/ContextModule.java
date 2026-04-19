@@ -98,7 +98,9 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KFrame frame() {
-        return new KTestFrame();
+        return new KTestFrame(
+            this.appContainer.getInstanceInferred(KFrameTaskScheduler.class)
+        );
     }
 
 }

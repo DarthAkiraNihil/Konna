@@ -32,6 +32,14 @@ import java.util.function.Consumer;
 public interface KMessageSystem {
 
     /**
+     * Use this static instance of a message consumer that literally does nothing. It just silently
+     * accepts the message and that's it!
+     *
+     * @since 0.6.0
+     */
+    Consumer<KMessage> SINK = (m) -> { };
+
+    /**
      * Delivers given message to destinations specified by its message id. If no route is specified,
      * the message won't be sent. This operation is asynchronous
      * @param message Message to send.

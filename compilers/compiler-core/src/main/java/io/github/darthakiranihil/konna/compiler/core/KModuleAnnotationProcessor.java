@@ -290,6 +290,15 @@ public final class KModuleAnnotationProcessor extends KBaseAnnotationProcessor {
                         )
                         .build()
             )
+            .addMethod(
+                MethodSpec
+                    .methodBuilder("delete")
+                    .returns(TypeName.VOID)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addAnnotation(Override.class)
+                    .addStatement("this.modules.clear()")
+                    .build()
+            )
             .build();
     }
 

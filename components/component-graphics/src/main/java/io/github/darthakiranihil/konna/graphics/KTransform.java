@@ -16,9 +16,9 @@
 
 package io.github.darthakiranihil.konna.graphics;
 
+import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.graphics.except.KInvalidGraphicsStateException;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -241,7 +241,8 @@ public final class KTransform {
      * Gets plain matrix representation of this transform.
      * It relies on {@link KTransform#transformMatrixCalculator} field, that should be
      * set by {@link KGraphicsComponent} on applying its config. If it is not, then
-     * {@link KInvalidGraphicsStateException} will be thrown that is fatal.
+     * {@link io.github.darthakiranihil.konna.core.except.KIllegalStateException}
+     * will be thrown that is fatal.
      * If transform parameters or parent transform is not changed,
      * then cached matrix will be used. If a transform is added to this as a child,
      * then added matrix cache will be invalidated.
@@ -258,7 +259,7 @@ public final class KTransform {
         }
 
         if (KTransform.transformMatrixCalculator == null) {
-            throw new KInvalidGraphicsStateException(
+            throw new KIllegalStateException(
                     "Cannot calculate transform matrix: matrix calculator is not set. "
                 +   "Make sure it is defined in graphics component's config "
                 +   "by transform_matrix_calculator key"

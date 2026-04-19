@@ -33,6 +33,7 @@ import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
@@ -91,6 +92,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
     private final KEventSystem eventSystem;
     private final KActivator activator;
     private final KFrameTaskScheduler frameTaskScheduler;
+    private final KObjectRegistry objectRegistry;
 
     private final KMessenger messenger;
     private @Nullable KLevel currentLevel;
@@ -104,13 +106,15 @@ public class KLevelEntityManagementService extends KObject implements KService {
      * @param messenger Messenger created inside
      *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
      *                  to send messages
+     * @param objectRegistry Object registry to put created entities to
      */
     @KInject
     public KLevelEntityManagementService(
         final KMessenger messenger,
         final KEventSystem eventSystem,
         final KFrameTaskScheduler frameTaskScheduler,
-        final KActivator activator
+        final KActivator activator,
+        final KObjectRegistry objectRegistry
     ) {
         super(
             "LevelEntityManagementService",
@@ -133,6 +137,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
         this.eventSystem = eventSystem;
         this.frameTaskScheduler = frameTaskScheduler;
         this.messenger = messenger;
+        this.objectRegistry = objectRegistry;
 
         this.deletionQueue = new ConcurrentLinkedQueue<>();
     }
@@ -275,8 +280,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
         var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
         tool.placeEntity(position, entity);
         this.autonomouses.put(entity.id(), entity);
-
-        this.sendMessage(entity, "autonomousEntityCreated");
+        this.finalizeEntityInstantiation(entity, "autonomousEntityCreated");
 
     }
 
@@ -357,8 +361,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
         var tool = deploymentSector.getTool(KLevelEntityLayerTool.class);
         tool.placeEntity(position, entity);
         this.statics.put(entity.id(), entity);
-
-        this.sendMessage(entity, "staticEntityCreated");
+        this.finalizeEntityInstantiation(entity, "staticEntityCreated");
 
     }
 
@@ -442,7 +445,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
         tool.placeEntity(position, entity);
         this.controllables.put(entity.id(), entity);
 
-        this.sendMessage(entity, "controllableEntityCreated");
+        this.finalizeEntityInstantiation(entity, "controllableEntityCreated");
 
     }
 
@@ -574,7 +577,10 @@ public class KLevelEntityManagementService extends KObject implements KService {
         return deploymentSector;
     }
 
-    private void sendMessage(final KLevelEntity entity, final String messageId) {
+    private void finalizeEntityInstantiation(final KLevelEntity entity, final String messageId) {
+
+        this.objectRegistry.pushObject(entity);
+        this.addChild(entity);
 
         KUniversalMap body = new KUniversalMap();
         body.put("id", entity.id());

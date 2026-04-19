@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.except.KUnsupportedOperationException;
+import io.github.darthakiranihil.konna.core.object.KDeletable;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
@@ -31,7 +32,7 @@ import org.jspecify.annotations.Nullable;
  * @since 0.6.0
  * @author Darth Akira Nihil
  */
-public abstract class KAppContainer implements KContainer {
+public abstract class KAppContainer implements KContainer, KDeletable {
 
     /**
      * Use this method's value in

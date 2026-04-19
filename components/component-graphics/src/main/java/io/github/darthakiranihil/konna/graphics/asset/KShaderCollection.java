@@ -110,4 +110,9 @@ public final class KShaderCollection extends KObject implements KAssetCollection
         }
 
     }
+
+    @Override
+    protected void deleteSelf() {
+        this.loadedShaders.clear();
+    }
 }

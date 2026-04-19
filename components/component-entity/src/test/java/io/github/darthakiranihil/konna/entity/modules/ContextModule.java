@@ -25,22 +25,31 @@ import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
-import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
+import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
 import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import io.github.darthakiranihil.konna.test.KTestFrame;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;
 
 @KModule
 public class ContextModule extends KAbstractModule {
+
+    private static final class TestMessageSystem extends KStandardMessageSystem {
+        public TestMessageSystem(KActivator activator) {
+            super(activator);
+        }
+
+        @Override
+        public void deliverMessage(@NonNull KMessage message) {
+            super.deliverMessageSync(message);
+        }
+    }
 
     public ContextModule(
         KApplicationFeatures applicationFeatures,
@@ -72,7 +81,7 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KMessageSystem messageSystem() {
-        return new KStandardMessageSystem(this.appContainer.getInstanceInferred(KActivator.class));
+        return new TestMessageSystem(this.appContainer.getInstanceInferred(KActivator.class));
     }
 
     @KSingleton
@@ -104,7 +113,9 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KFrame frame() {
-        return new KTestFrame();
+        return new KTestFrame(
+            this.appContainer.getInstanceInferred(KFrameTaskScheduler.class)
+        );
     }
 
 }

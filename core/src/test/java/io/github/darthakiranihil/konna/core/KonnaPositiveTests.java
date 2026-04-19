@@ -26,13 +26,9 @@ import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.test.KEmptyEventRegisterer;
 import io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class KonnaPositiveTests extends KStandardTestClass {
 
@@ -47,39 +43,14 @@ public class KonnaPositiveTests extends KStandardTestClass {
         )
     );
 
-    private final Method shutdown;
-    private final Field hypervisorThread;
-
-    public KonnaPositiveTests() {
-
-        try {
-            this.shutdown = Konna.class.getDeclaredMethod("shutdown");
-            this.hypervisorThread = Konna.class.getDeclaredField("hypervisorThread");
-
-            this.shutdown.setAccessible(true);
-            this.hypervisorThread.setAccessible(true);
-        } catch (Throwable e) {
-            throw new KException(e);
-        }
-
-    }
-
     @Test
     public void testStartKonna() {
 
         try {
             Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
             konnaWithOnlyDefaultArgs.run();
-            Assertions.assertNotNull(hypervisorThread.get(konnaWithOnlyDefaultArgs));
-            Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithOnlyDefaultArgs));
-
             Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa", "wawa")), BOOTSTRAP);
             konnaWithCustomArgs.run();
-            Assertions.assertNotNull(hypervisorThread.get(konnaWithCustomArgs));
-
-            TimeUnit.SECONDS.sleep(1);
-
-            Assertions.assertDoesNotThrow(() -> this.shutdown.invoke(konnaWithCustomArgs));
 
         } catch (Throwable e) {
             throw new KException(e);

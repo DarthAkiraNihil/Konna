@@ -25,6 +25,7 @@ import io.github.darthakiranihil.konna.core.di.KModule;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.entity.KEntityFactory;
@@ -62,7 +63,8 @@ public class TestModule extends KAbstractModule {
         return new KStandardEntityFactory(
             this.appContainer.getInstanceInferred(KEntityMetadataCollection.class),
             this.appContainer.getInstanceInferred(KActivator.class),
-            this.appContainer.getInstanceInferred(KJsonDeserializer.class)
+            this.appContainer.getInstanceInferred(KJsonDeserializer.class),
+            this.appContainer.getInstanceInferred(KObjectRegistry.class)
         );
     }
 

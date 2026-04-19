@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2025-present the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,6 +80,11 @@ public final class KGl33ShaderProgram implements KShaderProgram {
             false,
             value
         );
+    }
+
+    @Override
+    public void delete() {
+        this.gl.glDeleteProgram(this.id);
     }
 
     private int getUniformLocation(final String uniformName) {

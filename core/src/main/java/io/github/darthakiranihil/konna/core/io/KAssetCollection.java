@@ -16,6 +16,8 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
+import io.github.darthakiranihil.konna.core.object.KDeletable;
+
 /**
  * Interface of simple collection of assets of concrete type. It is supposed to
  * be used in components for handling internal asset types. However, it is useful
@@ -27,7 +29,7 @@ package io.github.darthakiranihil.konna.core.io;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public interface KAssetCollection<T> {
+public interface KAssetCollection<T> extends KDeletable {
 
     /**
      * Returns built asset class object by its asset id.

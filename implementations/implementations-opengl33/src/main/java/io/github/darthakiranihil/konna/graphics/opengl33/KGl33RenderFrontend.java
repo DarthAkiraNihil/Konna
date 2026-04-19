@@ -16,6 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.util.KCache;
@@ -38,17 +39,12 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
+@SuppressWarnings("unused")
 @KExcludeFromGeneratedCoverageReport
 public final class KGl33RenderFrontend extends KObject implements KRenderFrontend {
 
-    /**
-     * Default side of viewport size.
-     */
-    public static final int DEFAULT_VIEWPORT_SIZE_SIDE = 640;
-
     private final KGl33 gl;
     private boolean initialized;
-    private KSize viewportSize;
 
     private final KBufferMaker bufferMaker;
     private final KTextureMaker textureMaker;
@@ -59,29 +55,31 @@ public final class KGl33RenderFrontend extends KObject implements KRenderFronten
     /**
      * Constructs render frontend with provided OpenGL 3.3
      * library frontend.
+     * @param frame Application's frame
      * @param gl OpenGL 3.3 frontend
      * @param shaderCompiler Shader compiler used for getting default shape shader
      * @param calculator Transform matrix calculator implemented in this module
      * @param cache Cache service for storing buffer data, textures etc.
      */
     public KGl33RenderFrontend(
+        final KFrame frame,
         final KGl33 gl,
         final KShaderCompiler shaderCompiler,
         final KGl33TransformMatrixCalculator calculator,
         final KCache cache
     ) {
+        super("Gl33RenderFrontend");
         this.gl = gl;
-        this.viewportSize = KSize.squared(DEFAULT_VIEWPORT_SIZE_SIDE);
 
-        this.textureMaker = new KTextureMaker(this.gl, cache);
-        this.bufferMaker = new KBufferMaker(this.gl, cache);
+        this.textureMaker = new KTextureMaker(frame, this.gl, cache);
+        this.bufferMaker = new KBufferMaker(frame, this.gl, cache);
+
         this.shaderCompiler = shaderCompiler;
         this.transformMatrixCalculator = calculator;
     }
 
     @Override
     public void setViewportSize(final KSize size) {
-        this.viewportSize = size;
         this.transformMatrixCalculator.setViewportSize(size);
         this.bufferMaker.setViewportSize(size);
         this.textureMaker.setViewportSize(size);

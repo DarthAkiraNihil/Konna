@@ -16,13 +16,15 @@
 
 package io.github.darthakiranihil.konna.graphics.shader;
 
+import io.github.darthakiranihil.konna.core.object.KDeletable;
+
 /**
  * Interface for a shader program that does not depend on used graphics framework.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public interface KShaderProgram {
+public interface KShaderProgram extends KDeletable {
 
     /**
      * Returns id of this shader program.
@@ -49,4 +51,9 @@ public interface KShaderProgram {
      */
     void setUniformMatrix(String uniformName, float[] value);
 
+    /**
+     * Executes deletion of this shader by releasing all used native resources.
+     * @since 0.6.0
+     */
+    void delete();
 }

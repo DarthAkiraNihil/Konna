@@ -18,12 +18,14 @@ package io.github.darthakiranihil.konna.graphics.modules;
 
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
+import io.github.darthakiranihil.konna.core.app.KFrameTaskScheduler;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
 import io.github.darthakiranihil.konna.core.di.KAbstractModule;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KModule;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
+import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.graphics.KTransformMatrixCalculator;
@@ -60,7 +62,7 @@ public class TestModule extends KAbstractModule {
 
     @KSingleton
     public KTransformMatrixCalculator transformMatrixCalculator() {
-        return new KGl33TransformMatrixCalculator();
+        return new KGl33TransformMatrixCalculator(KSize.squared(640));
     }
 
     @KSingleton
@@ -70,7 +72,9 @@ public class TestModule extends KAbstractModule {
 
     @KSingleton
     public KFrame frame() {
-        return new KTestFrame();
+        return new KTestFrame(
+            this.appContainer.getInstanceInferred(KFrameTaskScheduler.class)
+        );
     }
 
 

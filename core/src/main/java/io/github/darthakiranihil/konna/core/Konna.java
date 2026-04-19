@@ -27,7 +27,6 @@ import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,14 +46,12 @@ public final class Konna extends KObject implements Runnable {
      */
     public static final KVersion VERSION = new KVersion(0, 6, 0, "dev");
 
-    private final Thread shutdownHook;
-    private @Nullable Thread hypervisorThread;
-
-    private final KonnaBootstrapConfig bootstrapConfig;
     private final List<KApplicationArgument> applicationArgsOptions;
     private final String[] args;
 
-    private @Nullable KEngineHypervisor hypervisor;
+    private final KonnaBootstrapConfig bootstrapConfig;
+
+    private final Thread shutdownHook;
 
     private static List<KApplicationArgument> defaultAndCustom(
         final List<KApplicationArgument> customArgs
@@ -76,7 +73,7 @@ public final class Konna extends KObject implements Runnable {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.args = args;
-        this.shutdownHook = new Thread(this::shutdown);
+        this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
     }
 
@@ -98,7 +95,7 @@ public final class Konna extends KObject implements Runnable {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.args = args;
-        this.shutdownHook = new Thread(this::shutdown);
+        this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
     }
 
@@ -123,35 +120,21 @@ public final class Konna extends KObject implements Runnable {
 
         KArgumentParser argParser = this.createArgumentParser();
         KApplicationFeatures features = argParser.parse(this.args, this.applicationArgsOptions);
-        this.hypervisor = this.createHypervisor();
-
-        this.hypervisorThread = new Thread(
-            () -> {
-                try {
-                    this.hypervisor.launch(features);
-                    this.hypervisor.frameLoop();
-                } catch (Throwable e) {
-                    KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
-                    KSystemLogger.fatal(this.name, e);
-                    this.hypervisor.shutdown();
-                }
-            }
-        );
-
-        this.hypervisorThread.setName("Konna.hypervisor");
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
-        this.hypervisorThread.start();
-    }
 
-    private void shutdown() {
-        KSystemLogger.info(this.name, "Shutdown initiated");
-        if (this.hypervisor == null) {
-            return;
+        KEngineHypervisor hypervisor = this.createHypervisor();
+        this.addChild(hypervisor);
+
+        try {
+            hypervisor.launch(features);
+        } catch (Throwable e) {
+            KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
+            KSystemLogger.fatal(this.name, e);
         }
 
-        this.hypervisor.shutdown();
-        this.hypervisorThread = null;
-        KSystemLogger.info(this.name, "Shutdown finished");
+        // !! the only correct usage of self-destruction
+        this.delete();
+
     }
 
     private KArgumentParser createArgumentParser() {
@@ -185,7 +168,7 @@ public final class Konna extends KObject implements Runnable {
             throw new KBootstrapException(
                 String.format(
                         "Hypervisor class (%s) does not provide a constructor "
-                    +   "with the only argument of type KEngineHypervisor",
+                    +   "with the only argument of type KEngineHypervisorConfig",
                     this.bootstrapConfig.hypervisor()
                 )
             );

@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.graphics.except;
+package io.github.darthakiranihil.konna.test;
 
-import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.except.KExceptionSeverity;
+import io.github.darthakiranihil.konna.core.message.KMessage;
+import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
+import io.github.darthakiranihil.konna.core.object.KActivator;
 
 /**
- * Exception thrown when an incorrect renderable class is passed to config
- * or {@link io.github.darthakiranihil.konna.graphics.service.KRenderService}
- * tries to render unknown object type.
+ * Special implementation of {@link KStandardMessageSystem} that acts
+ * always synchronous, even if a message is sent asynchronously.
  *
- * @since 0.3.0
+ * @since 0.6.0
  * @author Darth Akira Nihil
  */
-public class KInvalidRenderableClassException extends KException {
-    public KInvalidRenderableClassException(final String message) {
-        super(message);
+public class KSynchronousMessageSystem extends KStandardMessageSystem {
+
+    public KSynchronousMessageSystem(final KActivator activator) {
+        super(activator);
     }
 
     @Override
-    public KExceptionSeverity getSeverity() {
-        return KExceptionSeverity.WARNING;
+    public void deliverMessage(final KMessage message) {
+        this.deliverMessageSync(message);
     }
 }

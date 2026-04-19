@@ -16,17 +16,19 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
+import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.core.object.KDeletable;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.core.util.KCache;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 import io.github.darthakiranihil.konna.graphics.shape.*;
 import io.github.darthakiranihil.konna.libfrontend.opengl.KGl33;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.FloatBuffer;
@@ -37,15 +39,19 @@ import java.util.Objects;
 @KExcludeFromGeneratedCoverageReport
 final class KBufferMaker {
 
+    private static final int BUFFER_TTL = 60;
+
     @KExcludeFromGeneratedCoverageReport
     public record BufferInfo(
+        KGl33 gl,
         int vbo,
         int ibo
-    ) {
+    ) implements KDeletable {
 
-        public void free(final KGl33 gl) {
-            gl.glDeleteBuffers(vbo);
-            gl.glDeleteBuffers(ibo);
+        @Override
+        public void delete() {
+            this.gl.glDeleteBuffers(vbo);
+            this.gl.glDeleteBuffers(ibo);
         }
 
     }
@@ -55,9 +61,9 @@ final class KBufferMaker {
     private final KGl33 gl;
     private KSize viewportSize;
 
-    KBufferMaker(final KGl33 gl, final KCache cache) {
+    KBufferMaker(final KFrame frame, final KGl33 gl, final KCache cache) {
         this.gl = gl;
-        this.viewportSize = KSize.squared(KGl33RenderFrontend.DEFAULT_VIEWPORT_SIZE_SIDE);
+        this.viewportSize = frame.getSize();
         this.cache = cache;
     }
 
@@ -88,7 +94,9 @@ final class KBufferMaker {
 
             this.cache.putToCache(
                 key,
-                bufferInfo
+                bufferInfo,
+                BufferInfo::delete,
+                BUFFER_TTL
             );
         }
 
@@ -220,7 +228,7 @@ final class KBufferMaker {
         this.gl.glBindBuffer(KGl33.GL_ARRAY_BUFFER, 0);
         this.gl.glBindBuffer(KGl33.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-        return new BufferInfo(vbo, ibo);
+        return new BufferInfo(this.gl, vbo, ibo);
     }
 
 }

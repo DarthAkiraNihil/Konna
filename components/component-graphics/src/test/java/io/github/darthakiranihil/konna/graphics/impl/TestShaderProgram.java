@@ -41,4 +41,9 @@ public class TestShaderProgram implements KShaderProgram {
     public void setUniformMatrix(String uniformName, float[] value) {
 
     }
+
+    @Override
+    public void delete() {
+
+    }
 }

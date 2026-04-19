@@ -34,7 +34,7 @@ final class KImFontSpair implements KImFont {
     }
 
     @Override
-    public void destroy() {
+    public void delete() {
         this.boxed.destroy();
     }
 

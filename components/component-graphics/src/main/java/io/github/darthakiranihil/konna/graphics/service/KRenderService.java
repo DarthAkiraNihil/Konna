@@ -31,9 +31,9 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Service for rendering different objects using {@link KRenderFrontend}.
@@ -43,6 +43,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @KSingleton
 public class KRenderService extends KObject implements KService {
+
+    private static final int INITIAL_RENDERABLES_SIZE = 512;
 
     /**
      * Description of task that renders all objects that is contained by the service.
@@ -75,7 +77,7 @@ public class KRenderService extends KObject implements KService {
         super("RenderService", Collections.singleton(KDefaultTags.SERVICE));
         this.renderFrontend = renderFrontend;
 
-        this.currentRenderables = new CopyOnWriteArrayList<>();
+        this.currentRenderables = new ArrayList<>(INITIAL_RENDERABLES_SIZE);
 
 
         KSystemLogger.debug(
@@ -85,6 +87,8 @@ public class KRenderService extends KObject implements KService {
 
         frameTaskScheduler.scheduleTask(RENDER_TASK, this::render);
         this.renderFrontend.setViewportSize(frame.getSize());
+
+        this.addChild(KObject.managify(renderFrontend));
     }
 
     /**
@@ -148,4 +152,8 @@ public class KRenderService extends KObject implements KService {
 
     }
 
+    @Override
+    protected void deleteSelf() {
+        this.currentRenderables.clear();
+    }
 }

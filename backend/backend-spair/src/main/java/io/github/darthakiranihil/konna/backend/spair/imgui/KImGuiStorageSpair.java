@@ -36,7 +36,7 @@ final class KImGuiStorageSpair implements KImGuiStorage {
     }
 
     @Override
-    public void destroy() {
+    public void delete() {
         this.boxed.destroy();
     }
 

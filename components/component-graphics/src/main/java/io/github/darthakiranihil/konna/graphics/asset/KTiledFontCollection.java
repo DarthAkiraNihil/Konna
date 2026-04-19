@@ -126,4 +126,9 @@ public final class KTiledFontCollection extends KObject implements KAssetCollect
         this.loadedFonts.put(assetId, font);
         return font;
     }
+
+    @Override
+    protected void deleteSelf() {
+        this.loadedFonts.clear();
+    }
 }

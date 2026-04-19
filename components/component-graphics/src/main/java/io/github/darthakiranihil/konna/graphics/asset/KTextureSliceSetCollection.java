@@ -137,4 +137,9 @@ public final class KTextureSliceSetCollection
         return set;
 
     }
+
+    @Override
+    protected void deleteSelf() {
+        this.loadedSets.clear();
+    }
 }

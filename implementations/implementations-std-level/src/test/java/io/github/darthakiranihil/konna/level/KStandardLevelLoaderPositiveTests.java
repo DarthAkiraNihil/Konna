@@ -150,7 +150,7 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(c1.isPresent());
         Assertions.assertTrue(s1.isPresent());
 
-        loaded.unload();
+        loaded.delete();
 
         Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), mf1), c1.get().getPosition());
         Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), mf1), s1.get().getPosition());

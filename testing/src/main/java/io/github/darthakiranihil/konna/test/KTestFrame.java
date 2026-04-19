@@ -16,10 +16,11 @@
 
 package io.github.darthakiranihil.konna.test;
 
-import io.github.darthakiranihil.konna.core.app.KFrame;
-import io.github.darthakiranihil.konna.core.app.KFrameLock;
+import io.github.darthakiranihil.konna.core.app.*;
+import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
 import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jetbrains.annotations.TestOnly;
 
 /**
@@ -33,10 +34,22 @@ public final class KTestFrame implements KFrame {
 
     private boolean shouldClose;
 
-    public KTestFrame() {
-
+    @KInject
+    public KTestFrame(
+        final KFrameTaskScheduler frameTaskScheduler
+    ) {
         this.shouldClose = false;
-
+        frameTaskScheduler.scheduleTask(
+            KFrameTaskDescription.ofAsyncImmediateTemporal(
+                "shutdown",
+                KFrameEvent.FRAME_FINISHED,
+                0
+            ),
+            () -> {
+                KThreadUtils.sleepForSeconds(1);
+                this.setShouldClose(true);
+            }
+        );
     }
 
     @Override
