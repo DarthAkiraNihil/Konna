@@ -118,7 +118,7 @@ public class KObjectExtraTests extends KStandardTestClass {
     @Test
     public void testEquals() {
 
-        Assertions.assertNotEquals("123", new KObject());
+        Assertions.assertNotEquals(new KObject(), "123");
 
         KObject o1 = new KObject("O1");
         KObject o2 = new KObject("O2");
@@ -139,6 +139,29 @@ public class KObjectExtraTests extends KStandardTestClass {
         KObject same = new KObject("O1", Set.of());
 
         Assertions.assertEquals(one, same);
+
+    }
+
+    @Test
+    public void testDeleteProxiedDeletable() {
+
+        class Proxied implements KDeletable {
+            private boolean deleted;
+
+            public boolean isDeleted() {
+                return this.deleted;
+            }
+
+            @Override
+            public void delete() {
+                this.deleted = true;
+            }
+        }
+
+        Proxied proxied = new Proxied();
+        KObject managed = KObject.managify(proxied);
+        managed.delete();
+        Assertions.assertTrue(proxied.isDeleted());
 
     }
 }
