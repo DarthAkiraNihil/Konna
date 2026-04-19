@@ -48,6 +48,7 @@ public class KStandardEntityFactory extends KObject implements KEntityFactory {
      * @param activator Activator to create Entity components
      * @param deserializer JSON deserializer to restore data components with
      *                     provided data
+     * @param objectRegistry Object registry to put created entities to
      */
     @KInject
     public KStandardEntityFactory(

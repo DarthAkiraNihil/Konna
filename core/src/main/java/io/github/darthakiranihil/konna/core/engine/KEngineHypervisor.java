@@ -95,8 +95,63 @@ public class KEngineHypervisor extends KObject {
     }
 
     /**
-     * Launches the hypervisor with subsystem initialization,
-     * loading context, components and its services.
+     * <p>
+     *     Launches the hypervisor and enters its frame loop.
+     * </p>
+     * <p>
+     *     Hypervisor's launch process is followed by running special stages, whose standard
+     *     order is:
+     *     <ol>
+     *         <li>
+     *             {@link
+     *             KEngineHypervisor#processSystemFeatures(KSystemFeatures, KLongReference)
+     *             processing system features
+     *             }
+     *         </li>
+     *         <li>
+     *              {@link
+     *              KEngineHypervisor#createAppContainer(KApplicationFeatures, KSystemFeatures)
+     *              creating an app container
+     *              }
+     *         </li>
+     *         <li>
+     *              {@link KEngineHypervisor#registerSystemEvents(KEventSystem, KActivator, List)
+     *              registering system events}
+     *         </li>
+     *         <li>
+     *             {@link
+     *             KEngineHypervisor#loadComponents(KEngineModule, KApplicationFeatures,
+     *             KSystemFeatures, KActivator, KObjectRegistry, List) loading components}
+     *         </li>
+     *         <li>
+     *             {@link KEngineHypervisor#addAssetTypedefs(KAssetLoader, Map)
+     *             adding asset typedefs} to {@link KAssetLoader}
+     *         </li>
+     *         <li>
+     *             {@link
+     *             KEngineHypervisor#configureMessageRoutes(KActivator, KMessageSystem, Map, List)
+     *             configuring message routes
+     *             }
+     *         </li>
+     *         <li>
+     *             Executing {@link KComponent#postInit()} of all loaded components
+     *         </li>
+     *         <li>
+     *             {@link KEngineHypervisor#runDebugStages(KEngineModule) running debug stages} (if
+     *             {@link KSystemFeatures#isDebugEnabled() debug mode} is enabled.
+     *         </li>
+     *     </ol>
+     * </p>
+     * <p>
+     *     After the moment all stages are completed, it enters the {@link
+     *     KEngineHypervisor#frameLoop(KSystemFeatures, KFrame, KMessageSystem, KFrameTaskExecutor,
+     *     long) frame loop}
+     * </p>
+     * <p>
+     *     Each of stages can be overridden. Even more, the launch process can be overridden with
+     *     even possibility to change order of executed stages. However, you should do this
+     *     if the standard launch process does not fit your needs.
+     * </p>
      * @param features Application features, retrieved from
      *                 {@link io.github.darthakiranihil.konna.core.app.KArgumentParser}
      *                 after parsing arguments
@@ -128,7 +183,12 @@ public class KEngineHypervisor extends KObject {
 
         KObjectRegistry objectRegistry = engineModule.objectRegistry();
         Map<String, KComponent> loadedComponents = this.loadComponents(
-            engineModule, features, systemFeatures, activator, objectRegistry
+            engineModule,
+            features,
+            systemFeatures,
+            activator,
+            objectRegistry,
+            this.config.componentLoaders()
         );
 
         this.engineComponents.putAll(loadedComponents);
@@ -151,7 +211,7 @@ public class KEngineHypervisor extends KObject {
         }
 
         this.frame = activator.createObject(KFrame.class);
-        KSystemLogger.debug(this.name,"Acquired frame: %s", frame);
+        KSystemLogger.debug(this.name, "Acquired frame: %s", frame);
         this.ready.invokeSync();
         this.frameLoop(
             systemFeatures,
@@ -162,27 +222,66 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
+    /**
+     * <p>
+     *     Runs the frame loop. The frame loop will run until the frame is closed.
+     * </p>
+     * <p>
+     *     Overriding this method is not actually recommended. If you do this, you are on
+     *     you own. However, if this implementation does not fit your requirements, it
+     *     can be overridden.
+     * </p>
+     * <p>
+     *     An iteration of the frame loop consist of execution of scheduled frame tasks in
+     *     corresponding frame event order:
+     *     <ol>
+     *         <li>{@link KFrameEvent#NEW_FRAME}</li>
+     *         <li>{@link KFrameEvent#TICK}</li>
+     *         <li>{@link KFrameEvent#PRE_SWAP}</li>
+     *         <li>{@link KFrameEvent#FRAME_FINISHED}</li>
+     *     </ol>
+     *     There are also two special frame events that execute only once:
+     *     <ul>
+     *         <li>{@link KFrameEvent#ENTER}</li>
+     *         <li>{@link KFrameEvent#SHUTDOWN}</li>
+     *     </ul>
+     * </p>
+     * <p>
+     *     Please note that if iteration's execution time is limited, it must wait
+     *     until its time window is complete. Else it should just continue execution.
+     * </p>
+     * <p>
+     *     This implementation also sends FPS statistics by sending a message with id
+     *     {@code Konna.fps} with {@link KMessageType#METRICS} type.
+     * </p>
+     *
+     * @param systemFeatures Application's system features
+     * @param appFrame Application's frame
+     * @param messageSystem Message system
+     * @param frameTaskExecutor Frame task executor
+     * @param nanosPerFrame Amount of nanoseconds reserved for a single frame iteration.
+     *                      It is ignored if {@link KSystemFeatures#getMaxFps() max FPS}
+     *                      is set to -1
+     *
+     * @since 0.6.0
+     */
     protected void frameLoop(
         final KSystemFeatures systemFeatures,
-        final KFrame frame,
+        final KFrame appFrame,
         final KMessageSystem messageSystem,
         final KFrameTaskExecutor frameTaskExecutor,
         long nanosPerFrame
     ) {
 
-        frame.show();
-        KSystemLogger.info(
-            this.name,
-            "Entering frame loop. Class: %s",
-            frame.getClass().getSimpleName()
-        );
+        appFrame.show();
+        KSystemLogger.info(this.name, "Entering frame loop");
 
         KUniversalMap fpsData = new KUniversalMap();
         DoubleSummaryStatistics fpsStats = new DoubleSummaryStatistics();
         fpsStats.accept(0.0); // to prevent division by zero
 
         frameTaskExecutor.executeScheduledTasks(KFrameEvent.ENTER);
-        while (!frame.shouldClose()) {
+        while (!appFrame.shouldClose()) {
 
             try {
 
@@ -191,14 +290,14 @@ public class KEngineHypervisor extends KObject {
                 frameTaskExecutor.executeScheduledTasks(KFrameEvent.NEW_FRAME);
                 frameTaskExecutor.executeScheduledTasks(KFrameEvent.TICK);
 
-                while (frame.isLocked()) { // ??? do we really need this???
+                while (appFrame.isLocked()) { // ??? do we really need this???
                     Thread.onSpinWait();
                 }
 
                 // pre_swap
                 frameTaskExecutor.executeScheduledTasks(KFrameEvent.PRE_SWAP);
-                frame.swapBuffers();
-                frame.pollEvents();
+                appFrame.swapBuffers();
+                appFrame.pollEvents();
 
                 var deltaTime = Duration.between(beginTime, Instant.now());
                 long sleepTime = deltaTime.getNano() + nanosPerFrame;
@@ -231,7 +330,7 @@ public class KEngineHypervisor extends KObject {
                     case FATAL: {
                         KSystemLogger.fatal(this.name, "An unhandled fatal exception occurred");
                         KSystemLogger.fatal(this.name, kex);
-                        frame.setShouldClose(true);
+                        appFrame.setShouldClose(true);
                         break;
                     }
                 }
@@ -252,6 +351,16 @@ public class KEngineHypervisor extends KObject {
         }
     }
 
+    /**
+     * Registers all system events and executes all found generated and externally provided
+     * {@link KEventRegisterer event registers}.
+     *
+     * @param eventSystem Event system to register events in
+     * @param activator Activator to instantiate event registers
+     * @param additionalEventRegisters List of non-generated additional event registers
+     *
+     * @since 0.6.0
+     */
     protected void registerSystemEvents(
         final KEventSystem eventSystem,
         final KActivator activator,
@@ -289,6 +398,20 @@ public class KEngineHypervisor extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Processes system features by configuring something related to it.
+     * </p>
+     * <p>
+     *     This particular implementation is activation file logging if it is set as active
+     *     and sets a log level. Both operations are applied to {@link KSystemLogger}.
+     *     Additionally, it calculates number of nanoseconds, reserved for a single frame.
+     * </p>
+     * @param systemFeatures Application's system features
+     * @param nanosPerFrame Reference to a number of nanoseconds per a single frame
+     *
+     * @since 0.6.0
+     */
     protected void processSystemFeatures(
         final KSystemFeatures systemFeatures,
         final KLongReference nanosPerFrame
@@ -308,6 +431,14 @@ public class KEngineHypervisor extends KObject {
         nanosPerFrame.set((long) (ONE_SEC_IN_NANOS / systemFeatures.getMaxFps()));
     }
 
+    /**
+     * Creates app container for current application.
+     * @param features Application's features
+     * @param systemFeatures Application's system features
+     * @return Instantiated app container
+     *
+     * @since 0.6.0
+     */
     protected KAppContainer createAppContainer(
         final KApplicationFeatures features,
         final KSystemFeatures systemFeatures
@@ -339,18 +470,31 @@ public class KEngineHypervisor extends KObject {
         }
     }
 
+    /**
+     * Loads all components from provided list of component loaders.
+     * @param engineModule Current application's engine module
+     * @param applicationFeatures Application's features
+     * @param systemFeatures Application's system features
+     * @param activator Activator to instantiate component loaders
+     * @param objectRegistry Object registry to put loaded components to
+     * @param componentLoaders List of classes of component loaders
+     * @return Map of loaded components
+     *
+     * @since 0.6.0
+     */
     protected Map<String, KComponent> loadComponents(
         final KEngineModule engineModule,
         final KApplicationFeatures applicationFeatures,
         final KSystemFeatures systemFeatures,
         final KActivator activator,
-        final KObjectRegistry objectRegistry
+        final KObjectRegistry objectRegistry,
+        final List<Class<? extends KComponentLoader>> componentLoaders
     ) {
 
-        Map<String, KComponent> loadedComponents = new HashMap<>(config.componentLoaders().size());
+        Map<String, KComponent> loadedComponents = new HashMap<>(componentLoaders.size());
 
         try {
-            for (var componentLoaderClass: config.componentLoaders()) {
+            for (var componentLoaderClass: componentLoaders) {
                 KSystemLogger.debug(
                     this.name,
                     "Executing component loader %s",
@@ -377,6 +521,16 @@ public class KEngineHypervisor extends KObject {
         return loadedComponents;
     }
 
+    /**
+     * Configures message routes for current application's message system. Also registers
+     * all loaded components in this system.
+     * @param activator Activator to instantiate {@link KMessageRoutesConfigurer}s
+     * @param messageSystem Message system to configure
+     * @param loadedComponents Map
+     * @param configurers List of classes of message route configurers
+     *
+     * @since 0.6.0
+     */
     protected void configureMessageRoutes(
         final KActivator activator,
         final KMessageSystem messageSystem,
@@ -401,6 +555,13 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
+    /**
+     * Adds all asset typedefs, provided by all components, to current asset loader.
+     * @param assetLoader Asset loader to add the typedefs
+     * @param loadedComponents Map of loaded components
+     *
+     * @since 0.6.0
+     */
     protected void addAssetTypedefs(
         final KAssetLoader assetLoader,
         final Map<String, KComponent> loadedComponents
@@ -421,12 +582,31 @@ public class KEngineHypervisor extends KObject {
 
     }
 
+    /**
+     * <p>
+     *     Executes all debug stages for this hypervisor.
+     * </p>
+     * <p>
+     *     As for now, debug stages consist of the only
+     *     {@link KEngineHypervisor#loadDebuggers(KActivator) loadDebuggers} stage.
+     * </p>
+     * @param engineModule Engine module of current application
+     *
+     * @since 0.6.0
+     */
     protected void runDebugStages(final KEngineModule engineModule) {
         KActivator activator = engineModule.activator();
         this.loadDebuggers(activator);
     }
 
     // todo: make it return map when KRuntime will be added
+
+    /**
+     * Instantiates all found debug classes (annotated with {@link KDebugger}).
+     * @param activator Activator to create debuggers with
+     *
+     * @since 0.6.0
+     */
     protected void loadDebuggers(final KActivator activator) {
         KClasspathSearchEngine classpath = activator.createObject(KClasspathSearchEngine.class);
 

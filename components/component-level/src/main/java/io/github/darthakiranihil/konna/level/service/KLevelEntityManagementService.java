@@ -106,6 +106,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
      * @param messenger Messenger created inside
      *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
      *                  to send messages
+     * @param objectRegistry Object registry to put created entities to
      */
     @KInject
     public KLevelEntityManagementService(

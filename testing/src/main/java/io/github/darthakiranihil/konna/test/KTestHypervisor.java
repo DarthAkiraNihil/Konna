@@ -16,24 +16,36 @@
 
 package io.github.darthakiranihil.konna.test;
 
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KFrame;
 import io.github.darthakiranihil.konna.core.app.KFrameTaskExecutor;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
+import org.jetbrains.annotations.TestOnly;
 
 import java.util.function.Consumer;
 
+/**
+ * Extension of {@link KEngineHypervisor} that allows to perform additional checks
+ * before actual entering the frame loop.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
+@TestOnly
 public class KTestHypervisor extends KEngineHypervisor {
 
     private final Consumer<KEngineHypervisor> checker;
 
+    /**
+     * Standard constructor.
+     * @param config Hypervisor's configuration
+     * @param checker Additional checker for this hypervisor
+     */
     public KTestHypervisor(
-        KEngineHypervisorConfig config,
-        Consumer<KEngineHypervisor> checker
+        final KEngineHypervisorConfig config,
+        final Consumer<KEngineHypervisor> checker
     ) {
         super(config);
         this.checker = checker;
@@ -41,13 +53,13 @@ public class KTestHypervisor extends KEngineHypervisor {
 
     @Override
     protected void frameLoop(
-        KSystemFeatures systemFeatures,
-        KFrame frame,
-        KMessageSystem messageSystem,
-        KFrameTaskExecutor frameTaskExecutor,
+        final KSystemFeatures systemFeatures,
+        final KFrame appFrame,
+        final KMessageSystem messageSystem,
+        final KFrameTaskExecutor frameTaskExecutor,
         long nanosPerFrame
     ) {
         this.checker.accept(this);
-        super.frameLoop(systemFeatures, frame, messageSystem, frameTaskExecutor, nanosPerFrame);
+        super.frameLoop(systemFeatures, appFrame, messageSystem, frameTaskExecutor, nanosPerFrame);
     }
 }

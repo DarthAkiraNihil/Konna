@@ -51,5 +51,9 @@ public interface KShaderProgram extends KDeletable {
      */
     void setUniformMatrix(String uniformName, float[] value);
 
+    /**
+     * Executes deletion of this shader by releasing all used native resources.
+     * @since 0.6.0
+     */
     void delete();
 }

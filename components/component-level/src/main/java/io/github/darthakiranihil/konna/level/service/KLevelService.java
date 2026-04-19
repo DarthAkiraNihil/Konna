@@ -79,6 +79,7 @@ public class KLevelService extends KObject implements KService {
      * @param messenger Messenger created inside
      *                  {@link io.github.darthakiranihil.konna.level.KLevelComponent}
      *                  to send messages
+     * @param objectRegistry Object registry to put loaded levels to
      */
     @KInject
     public KLevelService(

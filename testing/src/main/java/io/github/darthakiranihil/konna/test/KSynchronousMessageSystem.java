@@ -20,14 +20,21 @@ import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.message.KStandardMessageSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 
+/**
+ * Special implementation of {@link KStandardMessageSystem} that acts
+ * always synchronous, even if a message is sent asynchronously.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public class KSynchronousMessageSystem extends KStandardMessageSystem {
 
-    public KSynchronousMessageSystem(KActivator activator) {
+    public KSynchronousMessageSystem(final KActivator activator) {
         super(activator);
     }
 
     @Override
-    public void deliverMessage(KMessage message) {
+    public void deliverMessage(final KMessage message) {
         this.deliverMessageSync(message);
     }
 }

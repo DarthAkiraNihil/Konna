@@ -33,7 +33,7 @@ public class KObject implements KDeletable, Serializable {
     private static final class KDeletableProxy extends KObject {
         private final Object object;
 
-        public KDeletableProxy(final Object object) {
+        KDeletableProxy(final Object object) {
             super(
                 String.format("DeletableProxy$$%s", object),
                 Collections.singleton(KDefaultTags.PROXY)
@@ -51,6 +51,20 @@ public class KObject implements KDeletable, Serializable {
         }
     }
 
+    /**
+     * <p>
+     *     Makes any object an instance of {@link KObject}.
+     * </p>
+     * <p>
+     *     It is performed by checking if it is already is a {@link KObject}.
+     *     If it is true, then just returns it, else wraps it into a special
+     *     proxy object.
+     * </p>
+     * @param object Object to make managed
+     * @return Managed instance of passed object
+     *
+     * @since 0.6.0
+     */
     public static KObject managify(final Object object) {
         return KObject.class.isAssignableFrom(object.getClass())
             ? (KObject) object
@@ -153,6 +167,10 @@ public class KObject implements KDeletable, Serializable {
         KObject.createdObjects++;
     }
 
+    /**
+     * @return Parent of this object
+     * @since 0.6.0
+     */
     public final @Nullable KObject getParent() {
         return parent;
     }
@@ -171,11 +189,20 @@ public class KObject implements KDeletable, Serializable {
         parent.children.add(this);
     }
 
+    /**
+     * @return Unmodifiable view to set of this object's children.
+     * @since 0.6.0
+     */
     @Unmodifiable
-    public Set<KObject> getChildren() {
+    public final Set<KObject> getChildren() {
         return Collections.unmodifiableSet(this.children);
     }
 
+    /**
+     * Adds a child object to this object.
+     * @param child Child object to add
+     * @since 0.6.0
+     */
     public final void addChild(final KObject child) {
         child.setParent(this);
     }
@@ -221,11 +248,16 @@ public class KObject implements KDeletable, Serializable {
     /**
      * Removes a tag from the object.
      * @param tag Tag to remove
+     * @since 0.6.0
      */
     public final void removeTag(final String tag) {
         this.tags.remove(tag);
     }
 
+    /**
+     * Deletes this object. Children are deleted first, then the object itself.
+     * @since 0.6.0
+     */
     @Override
     public final void delete() {
         if (this.parent != null) {
@@ -242,6 +274,9 @@ public class KObject implements KDeletable, Serializable {
         this.deleteSelf();
     }
 
+    /**
+     * Performs self-deletion.
+     */
     protected void deleteSelf() {
 
     }

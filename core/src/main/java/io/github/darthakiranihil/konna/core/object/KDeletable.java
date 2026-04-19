@@ -16,8 +16,38 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+/**
+ * <p>
+ *     Interface for objects that can be deleted somehow, or, more correct,
+ *     can be set to the state in that an object can be claimed by the GC.
+ * </p>
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KDeletable {
 
+    /**
+     * <p>
+     *     "Deletes" this object
+     * </p>
+     * <p>
+     *     In this exact context, "deleting" an object does not actually perform it, but prepares
+     *     object to be claimed by a GC. For example, if the object holds native resources,
+     *     provides a strong reference to other objects and the like.
+     * </p>
+     * <p>
+     *     An implementation of this method should work correctly if it's called <i>twice</i>.
+     *     The common handling of this situation is literally doing nothing.
+     * </p>
+     * <p>
+     *     Actually, it is not restricted to used "deleted" object, but it's not recommended,
+     *     because deleted object is usually in an invalid state. Implementation may forbid calling
+     *     all deleted object methods by throwing
+     *     {@link io.github.darthakiranihil.konna.core.except.KIllegalStateException} or something
+     *     like that.
+     * </p>
+     */
     default void delete() {
 
     }
