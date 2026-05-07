@@ -46,6 +46,17 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
     public interface AssetTransformer {
 
         /**
+         * Constructs a new transformer, that just extracts subdefinition from
+         * specified asset definition, located by some key.
+         * @param key Key to extract from
+         * @return New asset transformer
+         * @since 0.6.0
+         */
+        static AssetTransformer justExtractFromKey(final String key) {
+            return (v) -> v.getSubdefinition(key);
+        }
+
+        /**
          * Transforms the definition.
          * @param value Definition to transform
          * @return Transformed definition
@@ -101,7 +112,9 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
             .withValidator((v) -> {
                 String type = v.getString();
                 if (!knownTypes.contains(type)) {
-                    throw new KJsonValidationError("Asset definition is not valid");
+                    throw new KJsonValidationError(
+                        String.format("Type %s is not known for asset loader", type)
+                    );
                 }
             })
             .finishField()

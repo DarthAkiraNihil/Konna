@@ -188,7 +188,7 @@ public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionT
             textureSliceSetCollection
         );
 
-        KRenderableTexture tex = collection.getAsset("sl2");
+        KRenderableTexture tex = collection.getAsset("slt2");
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
@@ -252,7 +252,7 @@ public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionT
             textureSliceSetCollection
         );
 
-        KRenderableTexture tex = collection.getAsset("sl2", new KVector2i(400, 400));
+        KRenderableTexture tex = collection.getAsset("slt2", new KVector2i(400, 400));
 
         Assertions.assertArrayEquals(
             new KVector2i[] {

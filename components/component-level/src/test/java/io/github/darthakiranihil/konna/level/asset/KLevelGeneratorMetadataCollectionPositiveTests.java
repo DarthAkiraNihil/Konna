@@ -32,7 +32,7 @@ public class KLevelGeneratorMetadataCollectionPositiveTests extends KAssetCollec
             this.assetLoader
         );
 
-        KLevelGeneratorMetadata metadata = collection.getAsset("valid");
+        KLevelGeneratorMetadata metadata = collection.getAsset("valid_generator");
 
         var nodes = metadata.nodes();
         var connections = metadata.connections();

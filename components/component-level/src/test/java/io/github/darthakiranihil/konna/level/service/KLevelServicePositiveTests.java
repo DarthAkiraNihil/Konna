@@ -245,7 +245,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
                 messageSystem.addMessageRoute("Level.generatedLevelLoaded", KMessageSystem.SINK, List.of(Asserter.class));
 
                 var body = new KUniversalMap();
-                body.put("generator", "valid");
+                body.put("generator", "valid_generator");
                 body.put("seed", 123456L);
                 body.put("sector", "mf2");
                 messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));
@@ -309,7 +309,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
                 messageSystem.addMessageRoute("Level.generatedLevelLoaded", KMessageSystem.SINK, List.of(Asserter.class));
 
                 var body = new KUniversalMap();
-                body.put("generator", "valid");
+                body.put("generator", "valid_generator");
                 body.put("seed", 123456L);
                 body.put("sector", "mf2");
                 messageSystem.deliverMessageSync(KMessage.regular("generateLevelAndLoad", body));

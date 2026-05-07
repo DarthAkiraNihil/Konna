@@ -1,0 +1,16 @@
+{
+    "asset_id": "cp438_16x16",
+    "type": "texture",
+    "Graphics.texture": {
+        "image": "classpath:assets/textures/cp437_16x16.png",
+        "shader": "default",
+        "wrapping": {
+            "u": "REPEAT",
+            "v": "REPEAT"
+        },
+        "filtering": {
+            "min": "MIPMAP_LINEAR_LINEAR",
+            "mag": "LINEAR"
+        }
+    }
+}

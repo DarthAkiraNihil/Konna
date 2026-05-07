@@ -1,0 +1,74 @@
+{
+    "asset_id": "invalid_by_sector_destination_ya",
+    "type": "level",
+    "Level.levelMetadata": {
+        "sectors": {
+            "mf1": {
+                "size": {
+                    "width": 2,
+                    "height": 2
+                },
+                "heights": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "tiles": [
+                    "tile_valid",
+                    "tile_valid",
+                    "tile_valid",
+                    "tile_valid"
+                ],
+                "sector_links": [
+                    {
+                        "sector": "mf2",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "destination": {
+                            "x": 0,
+                            "y": 3
+                        }
+                    }
+                ],
+                "entities": [],
+                "level_transitions": []
+            },
+            "mf2": {
+                "size": {
+                    "width": 2,
+                    "height": 2
+                },
+                "tiles": [
+                    "tile_valid",
+                    "tile_valid",
+                    "tile_valid",
+                    "tile_valid"
+                ],
+                "heights": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "sector_links": [
+                    {
+                        "sector": "mf1",
+                        "position": {
+                            "x": 1,
+                            "y": 1
+                        },
+                        "destination": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                ],
+                "entities": [],
+                "level_transitions": []
+            }
+        }
+    }
+}
