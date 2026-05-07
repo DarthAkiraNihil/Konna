@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
@@ -42,6 +42,7 @@ import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
 import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelTransitionLayerTool;
+import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
 import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
@@ -77,19 +78,38 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KAssetLoader assetLoader = new KJsonSubtypeBasedAssetLoader(
-            engineModule.resourceLoader(), Map.of(
-            "tileProp", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[]{ KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE },
-                new String[]{ "classpath:assets/props.json" }
-            ), "tile", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[]{ KTileTypedef.TILE_ASSET_TYPE },
-                new String[]{ "classpath:assets/tiles.json" }
-            ), "level", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                new String[]{ KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE },
-                new String[]{ "classpath:assets/levels.json" }
+        KAssetLoader assetLoader = new KJsonTransformerBasedAssetLoader(
+            engineModule.resourceLoader(),
+            new KStandardJsonParser(new KStandardJsonTokenizer()),
+            "classpath:assets",
+            new KJsonTransformerBasedAssetLoader.AssetTypeData(
+                "tileProp",
+                Map.of(
+                    KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE,
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE)
+                )
+            ),
+            new KJsonTransformerBasedAssetLoader.AssetTypeData(
+                "tile",
+                Map.of(
+                    KTileTypedef.TILE_ASSET_TYPE,
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTileTypedef.TILE_ASSET_TYPE)
+                )
+            ),
+            new KJsonTransformerBasedAssetLoader.AssetTypeData(
+                "level",
+                Map.of(
+                    KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE,
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE)
+                )
+            ),
+            new KJsonTransformerBasedAssetLoader.AssetTypeData(
+                "generator",
+                Map.of(
+                    KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE,
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE)
+                )
             )
-        ), new KStandardJsonParser(new KStandardJsonTokenizer())
         );
 
         assetLoader.addAssetTypedef(new KTilePropertyTypedef());

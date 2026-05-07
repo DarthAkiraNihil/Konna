@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonSubtypeBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
@@ -93,15 +93,19 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KAssetLoader assetLoader() {
-        return new KJsonSubtypeBasedAssetLoader(
+        return new KJsonTransformerBasedAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
-            Map.of(
-                "entities", new KJsonSubtypeBasedAssetLoader.AssetTypeData(
-                    new String[] { KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE },
-                    new String[] { "classpath:assets/entities.json"}
+            new KStandardJsonParser(new KStandardJsonTokenizer()),
+            "classpath:assets",
+            new KJsonTransformerBasedAssetLoader.AssetTypeData(
+                "entities",
+                Map.of(
+                    KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE,
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(
+                        KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE
+                    )
                 )
-            ),
-            new KStandardJsonParser(new KStandardJsonTokenizer())
+            )
         );
     }
 

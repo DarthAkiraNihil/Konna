@@ -133,6 +133,7 @@ public final class KClasspathProtocol implements KProtocol {
                 .map(Path::toString)
                 .map(p -> {
                     String fullPath = realPath + p;
+                    System.out.println(fullPath);
                     return new KClasspathResource(
                         fullPath,
                         KResourceUtils.getFilename(p),
