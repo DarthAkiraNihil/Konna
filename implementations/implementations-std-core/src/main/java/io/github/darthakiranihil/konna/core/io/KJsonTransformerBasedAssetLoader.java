@@ -45,6 +45,13 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
     @FunctionalInterface
     public interface AssetTransformer {
 
+        /**
+         * Constructs a new transformer, that just extracts subdefinition from
+         * specified asset definition, located by some key.
+         * @param key Key to extract from
+         * @return New asset transformer
+         * @since 0.6.0
+         */
         static AssetTransformer justExtractFromKey(final String key) {
             return (v) -> v.getSubdefinition(key);
         }
