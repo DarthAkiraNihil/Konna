@@ -75,7 +75,7 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         this.assetLoader = new KJsonTransformerBasedAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets",
+            "classpath:assets/",
             new KJsonTransformerBasedAssetLoader.AssetTypeData(
                 "tileProp",
                 Map.of(

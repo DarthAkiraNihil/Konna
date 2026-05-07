@@ -81,7 +81,7 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         KAssetLoader assetLoader = new KJsonTransformerBasedAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets",
+            "classpath:assets/",
             new KJsonTransformerBasedAssetLoader.AssetTypeData(
                 "tileProp",
                 Map.of(

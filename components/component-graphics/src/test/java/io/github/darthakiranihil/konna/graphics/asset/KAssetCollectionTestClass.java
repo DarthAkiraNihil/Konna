@@ -38,7 +38,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         this.assetLoader = new KJsonTransformerBasedAssetLoader(
             this.engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets",
+            "classpath:assets/",
             new KJsonTransformerBasedAssetLoader.AssetTypeData(
                 "shader",
                 Map.of(
@@ -78,7 +78,9 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
                 "renderableTextures",
                 Map.of(
                     KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE)
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE),
+                    KTextureTypedef.TEXTURE_ASSET_TYPE,
+                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTextureTypedef.TEXTURE_ASSET_TYPE)
                 )
             )
         );

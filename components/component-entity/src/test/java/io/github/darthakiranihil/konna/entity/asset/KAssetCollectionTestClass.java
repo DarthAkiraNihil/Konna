@@ -40,7 +40,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
                 List.of(new KClasspathProtocol(ClassLoader.getSystemClassLoader()))
             ),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets",
+            "classpath:assets/",
             new KJsonTransformerBasedAssetLoader.AssetTypeData(
                 "entities",
                 Map.of(

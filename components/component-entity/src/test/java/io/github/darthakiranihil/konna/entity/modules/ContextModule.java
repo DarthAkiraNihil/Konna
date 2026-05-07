@@ -96,7 +96,7 @@ public class ContextModule extends KAbstractModule {
         return new KJsonTransformerBasedAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets",
+            "classpath:assets/",
             new KJsonTransformerBasedAssetLoader.AssetTypeData(
                 "entities",
                 Map.of(

@@ -61,7 +61,7 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         var assetLoader = new KJsonTransformerBasedAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets",
+            "classpath:assets/",
             new KJsonTransformerBasedAssetLoader.AssetTypeData(
                 "entities",
                 Map.of(
