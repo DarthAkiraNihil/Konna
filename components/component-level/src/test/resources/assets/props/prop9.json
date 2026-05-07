@@ -1,0 +1,7 @@
+{
+    "asset_id": "prop9",
+    "type": "tileProp",
+    "Level.tilePropertyType": {
+        "property_type": "TOTP"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "asset_id": "prop7",
+    "type": "tileProp",
+    "Level.tilePropertyType": {
+        "property_type": "string"
+    }
+}

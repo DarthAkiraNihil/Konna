@@ -1,0 +1,11 @@
+{
+    "asset_id": "Typpi1",
+    "type": "entities",
+    "Entity.entityMetadata": {
+        "type_name": "Typpi1",
+        "data_extensions": [],
+        "data_components": [],
+        "behaviour_extensions": [],
+        "behaviours": []
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "asset_id": "fs1",
+    "type": "shader",
+    "Graphics.shader": {
+        "type": "FRAGMENT",
+        "source": "classpath:assets/shaders/fs1.frag"
+    }
+}

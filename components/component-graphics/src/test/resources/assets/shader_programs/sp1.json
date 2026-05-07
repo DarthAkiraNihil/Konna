@@ -1,0 +1,8 @@
+{
+    "asset_id": "sp1",
+    "type": "shaderProgram",
+    "Graphics.shaderProgram": {
+        "vertex": "vs1",
+        "fragment": "fs1"
+    }
+}
