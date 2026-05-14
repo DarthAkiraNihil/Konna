@@ -29,6 +29,7 @@ public interface KAssetLoader {
 
     /**
      * Add a new asset so that could be loaded by other components at request.
+     * @param asset Asset to add
      */
     void addNewAsset(KAsset asset);
 

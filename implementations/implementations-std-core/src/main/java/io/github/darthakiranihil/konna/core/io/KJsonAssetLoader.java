@@ -47,7 +47,8 @@ public class KJsonAssetLoader
 
     private enum SchemaVersion {
         VERSION_1 {
-            private static final KAssetDefinitionRule RULE = KCompositeAssetDefinitionRuleBuilder.create()
+            private static final KAssetDefinitionRule RULE = KCompositeAssetDefinitionRuleBuilder
+                .create()
                 .withNotNullString("asset_id")
                 .withNotNullString("type")
                 .withSubdefinition("data")
@@ -108,7 +109,7 @@ public class KJsonAssetLoader
 
         this.loadedAssets = new HashMap<>();
 
-        int loadedAssets = 0;
+        int loadedAssetsCount = 0;
 
         for (String pathToAssets : pathsToAssets) {
             KResource[] assetsResources = resourceLoader.loadResources(pathToAssets, true);
@@ -141,7 +142,9 @@ public class KJsonAssetLoader
                     }
 
                     int schemaVersionValue = def.getInt("schema_version");
-                    SchemaVersion schemaVersion = SchemaVersion.getSchemaVersion(schemaVersionValue);
+                    SchemaVersion schemaVersion = SchemaVersion.getSchemaVersion(
+                        schemaVersionValue
+                    );
                     KAsset loaded = schemaVersion.makeAsset(def);
                     if (this.loadedAssets.containsKey(loaded.getId())) {
                         throw new KAssetLoadingException(String.format(
@@ -151,12 +154,12 @@ public class KJsonAssetLoader
                     }
 
                     this.loadedAssets.put(loaded.getId(), loaded);
-                    loadedAssets++;
+                    loadedAssetsCount++;
                 }
             }
         }
 
-        KSystemLogger.info(this.name, "Loaded %d assets", loadedAssets);
+        KSystemLogger.info(this.name, "Loaded %d assets", loadedAssetsCount);
 
         this.assetTypedefs = new HashMap<>();
 
