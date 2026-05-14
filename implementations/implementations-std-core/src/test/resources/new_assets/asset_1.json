@@ -2,6 +2,7 @@
     "type": "type_1",
     "asset_id": "type_1.asset_1",
     "data": {
+        "int_property": 1,
         "float_property": 1.0,
         "boolean_property": false,
         "string_property": "1234",

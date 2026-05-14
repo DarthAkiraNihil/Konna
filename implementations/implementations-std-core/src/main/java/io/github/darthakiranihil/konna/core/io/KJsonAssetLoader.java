@@ -166,6 +166,9 @@ public class KJsonAssetLoader
     @Override
     public KAsset loadAsset(final String assetId, final String typeAlias) {
         KAsset asset = this.loadedAssets.get(assetId);
+        if (asset == null) {
+            throw new KAssetLoadingException(String.format("Unknown asset: %s", assetId));
+        }
         if (!asset.getType().equals(typeAlias)) {
             throw new KAssetLoadingException(String.format(
                 "Expected for asset %s to have type %s, but got %s",
@@ -194,27 +197,29 @@ public class KJsonAssetLoader
 
     @Override
     public void addNewAsset(
-        final String assetId,
-        final String internalType,
-        final KAssetDefinition rawDefinition
+        final KAsset asset
     ) {
 
-        KAssetTypedef typedef = this.assetTypedefs.get(internalType);
+        String type = asset.getType();
+        String assetId = asset.getId();
+
+        KAssetTypedef typedef = this.assetTypedefs.get(asset.getType());
+
         if (typedef == null) {
             throw new KAssetLoadingException(String.format(
-                "Cannot add asset %s - internal type %s is not registered in the asset loader",
+                "Cannot add asset %s - type %s is not registered in the asset loader",
                 assetId,
-                internalType
+                type
             ));
         }
 
         try {
-            typedef.getRule().validate(rawDefinition);
+            typedef.getRule().validate(asset);
         } catch (Throwable e) {
             throw new KAssetDefinitionError(e.getMessage());
         }
 
-        this.loadedAssets.put(assetId, new KAsset(assetId, internalType, rawDefinition));
+        this.loadedAssets.put(assetId, asset);
     }
 
 }

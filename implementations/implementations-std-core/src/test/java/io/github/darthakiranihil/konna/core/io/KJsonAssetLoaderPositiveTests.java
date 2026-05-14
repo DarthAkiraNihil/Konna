@@ -65,35 +65,16 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
             ),
             this.jsonParser,
             new String[] { "classpath:new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
+
         );
 
         try {
             assetLoader.addAssetTypedef(new KJsonAssetLoaderPositiveTests.Alias1Typedef());
 
-            KAsset asset = assetLoader.loadAsset("type_1.asset_1", "alias_1");
+            KAsset asset = assetLoader.loadAsset("type_1.asset_1", "type_1");
 
             Assertions.assertEquals("type_1.asset_1", asset.getId());
-            Assertions.assertEquals("alias_1", asset.getType());
+            Assertions.assertEquals("type_1", asset.getType());
 
             Assertions.assertEquals(1, asset.getInt("int_property"));
             Assertions.assertEquals(1.0f, asset.getFloat("float_property"));
@@ -244,8 +225,8 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
                     }"""
             );
 
-            assetLoader.addNewAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {}));
-            assetLoader.addNewAsset("type_1.asset_3", "type_1", new KJsonAssetDefinition(addedDef, v -> {}));
+            assetLoader.addNewAsset(new KAsset("type_1.asset_2", "alias_1", new KJsonAssetDefinition(addedDef, v -> {})));
+            assetLoader.addNewAsset(new KAsset("type_1.asset_3", "alias_1", new KJsonAssetDefinition(addedDef, v -> {})));
 
         } catch (Throwable e) {
             Assertions.fail(e);

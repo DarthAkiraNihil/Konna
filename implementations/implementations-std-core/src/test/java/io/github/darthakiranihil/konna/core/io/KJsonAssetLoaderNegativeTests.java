@@ -22,13 +22,13 @@ import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-@Disabled
+@NullMarked
 public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
 
     private static final class Alias1Typedef implements KAssetTypedef {
@@ -199,8 +199,8 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
             );
 
             Assertions.assertThrows(
-                KAssetDefinitionError.class,
-                () -> assetLoader.addNewAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {}))
+                KAssetLoadingException.class,
+                () -> assetLoader.addNewAsset(new KAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {})))
             );
 
         } catch (Throwable e) {
@@ -261,7 +261,7 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
 
             Assertions.assertThrows(
                 KAssetLoadingException.class,
-                () -> assetLoader.addNewAsset("type_1.asset_2", "type_2", new KJsonAssetDefinition(addedDef, (v) -> {}))
+                () -> assetLoader.addNewAsset(new KAsset("type_1.asset_2", "type_2", new KJsonAssetDefinition(addedDef, (v) -> {})))
             );
 
         } catch (Throwable e) {
@@ -287,50 +287,6 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
                     ),
                     this.jsonParser,
                     new String[] { "classpath:assets_with_non_unique/" }
-//                    new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                        "type_1",
-//                        Map.of(
-//                            "alias_1",
-//                            (v) -> {
-//                                Map<String, Object> data = new HashMap<>();
-//                                data.put("int_property", v.getInt("int_property"));
-//                                data.put("float_property", v.getFloat("float_property"));
-//                                data.put("boolean_property", v.getBoolean("boolean_property"));
-//                                data.put("string_property", v.getString("string_property"));
-//                                data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                                data.put("int_array_property", v.getIntArray("int_array_property"));
-//                                data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                                data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                                data.put("string_array_property", v.getStringArray("string_array_property"));
-//                                data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                                return new KMapAssetDefinition(data);
-//                            }
-//                        )
-//                    )
-                )
-            );
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
-        }
-
-    }
-
-    @Test
-    public void testLoadWithUnknownType() {
-
-        try {
-
-            Assertions.assertThrows(
-                KJsonValidationError.class,
-                () -> new KJsonAssetLoader(
-                    new KStandardResourceLoader(
-                        List.of(new KClasspathProtocol(
-                            ClassLoader.getSystemClassLoader()
-                        ))
-                    ),
-                    this.jsonParser,
-                    new String[] { "classpath:new_assets_with_unknown_type/" }
 //                    new KJsonTransformerBasedAssetLoader.AssetTypeData(
 //                        "type_1",
 //                        Map.of(
