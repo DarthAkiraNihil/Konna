@@ -263,11 +263,4 @@ public class KEntityComponent extends KComponent {
         this.config = config;
     }
 
-    @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[] {
-            new KEntityMetadataTypedef()
-        };
-    }
-
 }

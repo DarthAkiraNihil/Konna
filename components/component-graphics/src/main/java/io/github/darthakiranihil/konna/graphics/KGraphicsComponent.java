@@ -120,18 +120,6 @@ public class KGraphicsComponent extends KComponent {
     }
 
     @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[] {
-            new KShaderTypedef(),
-            new KShaderProgramTypedef(),
-            new KTextureTypedef(),
-            new KTiledFontTypedef(),
-            new KTextureSliceSetTypedef(),
-            new KRenderableTextureTypedef(),
-        };
-    }
-
-    @Override
     public void postInit() {
 
         KRenderFrontend rf = this.engineModule

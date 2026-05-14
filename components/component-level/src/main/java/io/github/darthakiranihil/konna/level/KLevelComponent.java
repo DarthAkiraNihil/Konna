@@ -481,14 +481,4 @@ public class KLevelComponent extends KComponent {
         this.config = config;
     }
 
-    @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[] {
-            new KTilePropertyTypedef(),
-            new KTileTypedef(),
-            new KLevelMetadataTypedef(),
-            new KLevelGeneratorMetadataTypedef()
-        };
-    }
-
 }
