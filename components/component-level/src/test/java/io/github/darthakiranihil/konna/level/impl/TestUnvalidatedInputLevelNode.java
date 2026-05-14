@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -56,7 +56,7 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
         KActivator activator
     ) {
         // I hate this
-        var assetLoader = new KJsonTransformerBasedAssetLoader(
+        var assetLoader = new KJsonAssetLoader(
             resourceLoader,
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" }

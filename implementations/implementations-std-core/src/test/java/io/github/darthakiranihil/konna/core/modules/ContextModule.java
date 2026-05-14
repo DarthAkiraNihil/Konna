@@ -35,7 +35,6 @@ import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.test.KTestFrame;
 
 import java.util.List;
-import java.util.Map;
 
 @KModule
 public class ContextModule extends KAbstractModule {
@@ -82,7 +81,7 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KAssetLoader assetLoader() {
-        return new KJsonTransformerBasedAssetLoader(
+        return new KJsonAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "/dev/null" }

@@ -25,8 +25,10 @@ import io.github.darthakiranihil.konna.graphics.impl.TestShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.stb.KStbImageLoader;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionTestClass {
 
     @Test

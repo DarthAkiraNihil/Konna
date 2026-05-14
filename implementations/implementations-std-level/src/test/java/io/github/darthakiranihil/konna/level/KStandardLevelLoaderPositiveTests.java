@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
@@ -77,7 +77,7 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityLeftSector"));
 
-        KAssetLoader assetLoader = new KJsonTransformerBasedAssetLoader(
+        KAssetLoader assetLoader = new KJsonAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" }

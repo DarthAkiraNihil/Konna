@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -71,7 +71,7 @@ public class KStandardLevelLoaderNegativeTests extends KStandardTestClass {
         this.engineModule = engineModule;
         this.activator = this.engineModule.activator();
 
-        this.assetLoader = new KJsonTransformerBasedAssetLoader(
+        this.assetLoader = new KJsonAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" }

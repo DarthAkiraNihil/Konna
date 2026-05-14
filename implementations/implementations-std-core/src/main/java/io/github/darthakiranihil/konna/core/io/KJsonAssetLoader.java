@@ -31,15 +31,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-// welcome back
+/**
+ * Implementation of {@link KAssetLoader} that uses JSON files to read asset definitions from,
+ * but when an asset is loaded, loader performs its definition transformation according to loader's
+ * configuration.
+ * Each asset's definition must be in a single file, that holds a JSON object with mandatory
+ * {@code asset_id} (that must be unique) and {@code type} keys.
+ *
+ * @since 0.4.0
+ * @author Darth Akira Nihil
+ */
 public class KJsonAssetLoader
     extends KObject
     implements KAssetLoader {
 
     private enum SchemaVersion {
         VERSION_1 {
-            private static final KAssetDefinitionRule RULE = KCompositeAssetDefinitionRuleBuilder
-                .create()
+            private static final KAssetDefinitionRule RULE = KCompositeAssetDefinitionRuleBuilder.create()
                 .withNotNullString("asset_id")
                 .withNotNullString("type")
                 .withSubdefinition("data")
@@ -65,9 +73,10 @@ public class KJsonAssetLoader
                 return VERSION_1;
             }
 
-            throw new KInvalidArgumentException(
-                String.format("Unknown version of asset metafile schema: %d", value)
-            );
+            throw new KInvalidArgumentException(String.format(
+                "Unknown version of asset metafile schema: %d",
+                value
+            ));
         }
 
         public final KAsset makeAsset(final KAssetDefinition definition) {
@@ -76,45 +85,8 @@ public class KJsonAssetLoader
         }
 
         protected abstract void validate(KAssetDefinition definition);
+
         protected abstract KAsset constructAsset(KAssetDefinition definition);
-    }
-
-    /**
-     * Simple functional interface for transforming one asset definition to another.
-     */
-    @FunctionalInterface
-    public interface AssetTransformer {
-
-        /**
-         * Constructs a new transformer, that just extracts subdefinition from
-         * specified asset definition, located by some key.
-         * @param key Key to extract from
-         * @return New asset transformer
-         * @since 0.6.0
-         */
-        static AssetTransformer justExtractFromKey(final String key) {
-            return (v) -> v.getSubdefinition(key);
-        }
-
-        /**
-         * Transforms the definition.
-         * @param value Definition to transform
-         * @return Transformed definition
-         */
-        KAssetDefinition transform(KAssetDefinition value);
-
-    }
-
-    /**
-     * Simple record for data of an asset type used in the application.
-     * @param name Name of type across the application
-     * @param transformersByInternalTypes Map of transformers by all types provided by components
-     */
-    public record AssetTypeData(
-        String name,
-        Map<String, AssetTransformer> transformersByInternalTypes
-    ) {
-
     }
 
     private final Map<String, KAsset> loadedAssets;
@@ -122,9 +94,10 @@ public class KJsonAssetLoader
 
     /**
      * Standard constructor.
+     *
      * @param resourceLoader Resource loader (to load JSON files)
-     * @param jsonParser JSON parser to parse loaded definitions
-     * @param pathsToAssets Paths to directories to look definitions in
+     * @param jsonParser     JSON parser to parse loaded definitions
+     * @param pathsToAssets  Paths to directories to look definitions in
      */
     public KJsonAssetLoader(
         final KResourceLoader resourceLoader,
@@ -137,9 +110,9 @@ public class KJsonAssetLoader
 
         int loadedAssets = 0;
 
-        for (String pathToAssets: pathsToAssets) {
+        for (String pathToAssets : pathsToAssets) {
             KResource[] assetsResources = resourceLoader.loadResources(pathToAssets, true);
-            for (KResource assetResource: assetsResources) {
+            for (KResource assetResource : assetsResources) {
                 if (!assetResource.name().endsWith(".json")) {
                     assetResource.close();
                     continue;
@@ -171,18 +144,13 @@ public class KJsonAssetLoader
                     SchemaVersion schemaVersion = SchemaVersion.getSchemaVersion(schemaVersionValue);
                     KAsset loaded = schemaVersion.makeAsset(def);
                     if (this.loadedAssets.containsKey(loaded.getId())) {
-                        throw new KAssetLoadingException(
-                            String.format(
-                                "Cannot load asset with id %s: asset id is not unique",
-                                loaded.getId()
-                            )
-                        );
+                        throw new KAssetLoadingException(String.format(
+                            "Cannot load asset with id %s: asset id is not unique",
+                            loaded.getId()
+                        ));
                     }
 
-                    this.loadedAssets.put(
-                        loaded.getId(),
-                        loaded
-                    );
+                    this.loadedAssets.put(loaded.getId(), loaded);
                     loadedAssets++;
                 }
             }
@@ -196,20 +164,15 @@ public class KJsonAssetLoader
 
     // todo: fallback assets
     @Override
-    public KAsset loadAsset(
-        final String assetId,
-        final String typeAlias
-    ) {
+    public KAsset loadAsset(final String assetId, final String typeAlias) {
         KAsset asset = this.loadedAssets.get(assetId);
         if (!asset.getType().equals(typeAlias)) {
-            throw new KInvalidArgumentException(
-                String.format(
-                    "Expected for asset %s to have type %s, but got %s",
-                    assetId,
-                    typeAlias,
-                    asset.getType()
-                )
-            );
+            throw new KAssetLoadingException(String.format(
+                "Expected for asset %s to have type %s, but got %s",
+                assetId,
+                typeAlias,
+                asset.getType()
+            ));
         }
 
         return asset;
@@ -222,7 +185,7 @@ public class KJsonAssetLoader
         KAssetDefinitionRule rule = typedef.getRule();
         String typeName = typedef.getName();
 
-        for (KAsset asset: this.loadedAssets.values()) {
+        for (KAsset asset : this.loadedAssets.values()) {
             if (asset.getType().equals(typeName)) {
                 rule.validate(asset);
             }
@@ -238,13 +201,11 @@ public class KJsonAssetLoader
 
         KAssetTypedef typedef = this.assetTypedefs.get(internalType);
         if (typedef == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot add asset %s - internal type %s is not registered in the asset loader",
-                    assetId,
-                    internalType
-                )
-            );
+            throw new KAssetLoadingException(String.format(
+                "Cannot add asset %s - internal type %s is not registered in the asset loader",
+                assetId,
+                internalType
+            ));
         }
 
         try {

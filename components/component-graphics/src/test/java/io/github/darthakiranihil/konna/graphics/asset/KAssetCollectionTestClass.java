@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.graphics.type.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
@@ -33,7 +33,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         super();
 
         this.engineModule = KStandardTestClass.getModule();
-        this.assetLoader = new KJsonTransformerBasedAssetLoader(
+        this.assetLoader = new KJsonAssetLoader(
             this.engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" }
