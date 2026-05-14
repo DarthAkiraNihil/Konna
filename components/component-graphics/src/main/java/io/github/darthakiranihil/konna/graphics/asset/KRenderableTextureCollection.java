@@ -114,24 +114,26 @@ public final class KRenderableTextureCollection
             KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE
         );
 
-        KRenderableTextureSource source = asset.getEnum(
-            "source",
+        KRenderableTextureSource sourceType = asset.getEnum(
+            "source_type",
             KRenderableTextureSource.class
         );
-        switch (source) {
+
+        String source = Objects.requireNonNull(asset.getString("source"));
+        switch (sourceType) {
             case WHOLE_TEXTURE -> {
-                KTexture texture = this.textureCollection.getAsset(assetId);
+                KTexture texture = this.textureCollection.getAsset(source);
                 return KRenderableTexture.wrapIntoRectangle(assetId, topLeftCorner, texture, unit);
             }
             case SLICE_SET -> {
-                String sliceSetId = Objects.requireNonNull(asset.getString("slice_set"));
+                String sliceSetId = Objects.requireNonNull(source);
                 KTextureSliceSet set = this.textureSliceSetCollection.getAsset(sliceSetId);
                 return set.getTexture(assetId, topLeftCorner, unit);
             }
         }
 
         throw new KAssetLoadingException(
-            String.format("Unknown source: %s", source)
+            String.format("Unknown source: %s", sourceType)
         );
     }
 
