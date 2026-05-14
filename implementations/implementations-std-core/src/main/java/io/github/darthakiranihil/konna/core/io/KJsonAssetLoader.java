@@ -118,6 +118,8 @@ public class KJsonAssetLoader
      * @param resourceLoader Resource loader (to load JSON files)
      * @param jsonParser     JSON parser to parse loaded definitions
      * @param pathsToAssets  Paths to directories to look definitions in
+     * @param assetTypedefs Types of assets that are valid for this asset loader (unknown types
+     *                      will raise an error)
      */
     public KJsonAssetLoader(
         final KResourceLoader resourceLoader,
