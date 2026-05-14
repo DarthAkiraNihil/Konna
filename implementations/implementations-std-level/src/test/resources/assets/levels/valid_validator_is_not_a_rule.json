@@ -1,7 +1,8 @@
 {
     "asset_id": "valid_validator_is_not_a_rule",
-    "type": "level",
-    "Level.levelMetadata": {
+    "type": "Level.levelMetadata",
+    "schema_version": 1,
+    "data": {
         "sectors": {
             "mf1": {
                 "size": {

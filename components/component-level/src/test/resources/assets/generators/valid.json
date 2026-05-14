@@ -1,7 +1,8 @@
 {
     "asset_id": "valid_generator",
-    "type": "generator",
-    "Level.generatorMetadata": {
+    "type": "Level.generatorMetadata",
+    "schema_version": 1,
+    "data": {
         "nodes": {
             "assetIdConst": "io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode",
             "levelNode": "io.github.darthakiranihil.konna.level.impl.TestLevelNode"

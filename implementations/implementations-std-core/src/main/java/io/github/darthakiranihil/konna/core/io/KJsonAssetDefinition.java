@@ -54,7 +54,7 @@ public class KJsonAssetDefinition implements KAssetDefinition {
         this.value = value;
     }
 
-    private KJsonAssetDefinition(final KJsonValue value) {
+    KJsonAssetDefinition(final KJsonValue value) {
         if (value.getType() != KJsonValueType.OBJECT) {
             throw new KAssetDefinitionError(
                 "Cannot create asset definition: provided json value is not an object"

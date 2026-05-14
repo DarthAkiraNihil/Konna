@@ -29,10 +29,8 @@ public interface KAssetLoader {
 
     /**
      * Add a new asset so that could be loaded by other components at request.
-     * @param assetId Global asset id
-     * @param internalType Type alias used in this application
-     * @param rawDefinition Full asset definition
+     * @param asset Asset to add
      */
-    void addNewAsset(String assetId, String internalType, KAssetDefinition rawDefinition);
+    void addNewAsset(KAsset asset);
 
 }

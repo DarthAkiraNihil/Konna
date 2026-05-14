@@ -9,7 +9,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
@@ -41,19 +41,10 @@ public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
             )
         );
 
-        var assetLoader = new KJsonTransformerBasedAssetLoader(
+        var assetLoader = new KJsonAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "entities",
-                Map.of(
-                    KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(
-                        KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE
-                    )
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
         assetLoader.addAssetTypedef(new KEntityMetadataTypedef());
 

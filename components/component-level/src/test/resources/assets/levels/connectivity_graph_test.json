@@ -1,7 +1,8 @@
 {
     "asset_id": "connectivity_graph_test",
-    "type": "level",
-    "Level.levelMetadata": {
+    "type": "Level.levelMetadata",
+    "schema_version": 1,
+    "data": {
         "sectors": {
             "mf1": {
                 "size": {

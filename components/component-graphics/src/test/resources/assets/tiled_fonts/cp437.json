@@ -1,7 +1,8 @@
 {
     "asset_id": "cp437",
-    "type": "tiledFont",
-    "Graphics.tiledFont": {
+    "type": "Graphics.tiledFont",
+    "schema_version": 1,
+    "data": {
         "name": "CP437",
         "face": "cp438_16x16",
         "glyph_size": {

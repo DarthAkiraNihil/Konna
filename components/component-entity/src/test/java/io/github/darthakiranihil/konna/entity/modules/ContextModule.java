@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.*;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
@@ -30,12 +30,10 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import io.github.darthakiranihil.konna.test.KTestFrame;
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;
-import java.util.Map;
 
 @KModule
 public class ContextModule extends KAbstractModule {
@@ -93,19 +91,10 @@ public class ContextModule extends KAbstractModule {
 
     @KSingleton
     public KAssetLoader assetLoader() {
-        return new KJsonTransformerBasedAssetLoader(
+        return new KJsonAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "entities",
-                Map.of(
-                    KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(
-                        KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE
-                    )
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
     }
 

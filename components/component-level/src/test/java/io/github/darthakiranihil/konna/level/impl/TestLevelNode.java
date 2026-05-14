@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -43,7 +43,6 @@ import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.Map;
 import java.util.Random;
 
 @NullMarked
@@ -58,38 +57,10 @@ public class TestLevelNode implements KGeneratorNode {
         final KActivator activator
     ) {
         // I hate this
-        var assetLoader = new KJsonTransformerBasedAssetLoader(
+        var assetLoader = new KJsonAssetLoader(
             resourceLoader,
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tileProp",
-                Map.of(
-                    KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tile",
-                Map.of(
-                    KTileTypedef.TILE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTileTypedef.TILE_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "level",
-                Map.of(
-                    KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "generator",
-                Map.of(
-                    KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE)
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
 
         assetLoader.addAssetTypedef(new KTilePropertyTypedef());

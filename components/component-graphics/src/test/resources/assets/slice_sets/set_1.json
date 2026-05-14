@@ -1,7 +1,8 @@
 {
     "asset_id": "set_1",
-    "type": "textureSliceSet",
-    "Graphics.textureSliceSet": {
+    "type": "Graphics.textureSliceSet",
+    "schema_version": 1,
+    "data": {
         "base_texture": "cute_image",
         "slices": [
             {
