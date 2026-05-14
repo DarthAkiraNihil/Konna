@@ -48,7 +48,6 @@ public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
             new String[] { "classpath:assets/" },
             new KAssetTypedef[][]{ KEntityComponent.getAssetTypedefs2() }
         );
-        assetLoader.addAssetTypedef(new KEntityMetadataTypedef());
 
         var metadataCollection = new KEntityMetadataCollection(
             assetLoader

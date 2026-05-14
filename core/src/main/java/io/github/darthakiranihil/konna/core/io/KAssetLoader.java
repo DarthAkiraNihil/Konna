@@ -22,13 +22,6 @@ public interface KAssetLoader {
     KAsset loadAsset(String assetId, String typeAlias);
 
     /**
-     * Adds a new asset type definition to this loader.
-     * @param typedef Asset type definition
-     */
-    @Deprecated(forRemoval = true)
-    void addAssetTypedef(KAssetTypedef typedef);
-
-    /**
      * Add a new asset so that could be loaded by other components at request.
      * @param asset Asset to add
      */

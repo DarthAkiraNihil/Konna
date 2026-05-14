@@ -153,20 +153,6 @@ public class KJsonAssetLoader
     }
 
     @Override
-    public void addAssetTypedef(final KAssetTypedef typedef) {
-        this.assetTypedefs.put(typedef.getName(), typedef);
-
-        KAssetDefinitionRule rule = typedef.getRule();
-        String typeName = typedef.getName();
-
-        for (KAsset asset : this.loadedAssets.values()) {
-            if (asset.getType().equals(typeName)) {
-                rule.validate(asset);
-            }
-        }
-    }
-
-    @Override
     public void addNewAsset(
         final KAsset asset
     ) {
