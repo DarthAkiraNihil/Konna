@@ -1,7 +1,8 @@
 {
     "asset_id": "prop4",
-    "type": "tileProp",
-    "Level.tilePropertyType": {
+    "type": "Level.tilePropertyType",
+    "schema_version": 1,
+    "data": {
         "property_type": "float[]"
     }
 }

@@ -1,7 +1,8 @@
 {
     "asset_id": "tile_invalid2",
-    "type": "tile",
-    "Level.tile": {
+    "type": "Level.tile",
+    "schema_version": 1,
+    "data": {
         "tile_id": 1,
         "opaqueness": 10,
         "passable": true,

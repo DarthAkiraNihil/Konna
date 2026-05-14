@@ -16,16 +16,20 @@
 
 package io.github.darthakiranihil.konna.core.io;
 
-import io.github.darthakiranihil.konna.core.data.json.*;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
+import io.github.darthakiranihil.konna.core.data.json.KJsonParser;
+import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
-import io.github.darthakiranihil.konna.core.io.except.KIoException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
+import io.github.darthakiranihil.konna.core.object.KObject;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Implementation of {@link KAssetLoader} that uses JSON files to read asset definitions from,
@@ -37,192 +41,155 @@ import java.util.Objects;
  * @since 0.4.0
  * @author Darth Akira Nihil
  */
-public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
+public class KJsonTransformerBasedAssetLoader
+    extends KObject
+    implements KAssetLoader {
 
-    /**
-     * Simple functional interface for transforming one asset definition to another.
-     */
-    @FunctionalInterface
-    public interface AssetTransformer {
+    private enum SchemaVersion {
+        VERSION_1 {
+            private static final KAssetDefinitionRule RULE = KCompositeAssetDefinitionRuleBuilder.create()
+                .withNotNullString("asset_id")
+                .withNotNullString("type")
+                .withSubdefinition("data")
+                .build();
 
-        /**
-         * Constructs a new transformer, that just extracts subdefinition from
-         * specified asset definition, located by some key.
-         * @param key Key to extract from
-         * @return New asset transformer
-         * @since 0.6.0
-         */
-        static AssetTransformer justExtractFromKey(final String key) {
-            return (v) -> v.getSubdefinition(key);
+            @Override
+            protected void validate(final KAssetDefinition definition) {
+                RULE.validate(definition);
+            }
+
+            @Override
+            protected KAsset constructAsset(final KAssetDefinition definition) {
+                return new KAsset(
+                    Objects.requireNonNull(definition.getString("asset_id")),
+                    Objects.requireNonNull(definition.getString("type")),
+                    definition.getSubdefinition("data")
+                );
+            }
+        };
+
+        static SchemaVersion getSchemaVersion(int value) {
+            if (value == 1) {
+                return VERSION_1;
+            }
+
+            throw new KInvalidArgumentException(String.format(
+                "Unknown version of asset metafile schema: %d",
+                value
+            ));
         }
 
-        /**
-         * Transforms the definition.
-         * @param value Definition to transform
-         * @return Transformed definition
-         */
-        KAssetDefinition transform(KAssetDefinition value);
+        public final KAsset makeAsset(final KAssetDefinition definition) {
+            this.validate(definition);
+            return this.constructAsset(definition);
+        }
 
+        protected abstract void validate(KAssetDefinition definition);
+
+        protected abstract KAsset constructAsset(KAssetDefinition definition);
     }
 
-    /**
-     * Simple record for data of an asset type used in the application.
-     * @param name Name of type across the application
-     * @param transformersByInternalTypes Map of transformers by all types provided by components
-     */
-    public record AssetTypeData(
-        String name,
-        Map<String, AssetTransformer> transformersByInternalTypes
-    ) {
-
-    }
-
-    private final Map<String, Map<String, AssetTransformer>> assetTypeData;
-    private final Map<String, KAssetDefinition> indexedDefinitions;
+    private final Map<String, KAsset> loadedAssets;
     private final Map<String, KAssetTypedef> assetTypedefs;
 
     /**
      * Standard constructor.
+     *
      * @param resourceLoader Resource loader (to load JSON files)
-     * @param jsonParser JSON parser to parse loaded definitions
-     * @param pathToAssets Path to directory to look definitions in
-     * @param assetTypeData Asset type data used in this application
+     * @param jsonParser     JSON parser to parse loaded definitions
+     * @param pathsToAssets  Paths to directories to look definitions in
      */
     public KJsonTransformerBasedAssetLoader(
         final KResourceLoader resourceLoader,
         final KJsonParser jsonParser,
-        final String pathToAssets,
-        final AssetTypeData... assetTypeData
+        final String[] pathsToAssets
     ) {
-        this.assetTypeData = new HashMap<>();
-        for (var assetType: assetTypeData) {
-            this.assetTypeData.put(
-                assetType.name(),
-                assetType.transformersByInternalTypes()
-            );
-        }
+        super("JsonAssetLoader", Set.of(KDefaultTags.STD, KDefaultTags.SYSTEM));
 
-        this.indexedDefinitions = new HashMap<>();
+        this.loadedAssets = new HashMap<>();
 
-        var knownTypes = this.assetTypeData.keySet();
-        KJsonValidator baseValidator = KJsonObjectValidatorBuilder
-            .create()
-            .withSimpleField("asset_id", KJsonValueType.STRING)
-            .withField("type", KJsonValueType.STRING)
-            .withValidator((v) -> {
-                String type = v.getString();
-                if (!knownTypes.contains(type)) {
-                    throw new KJsonValidationError(
-                        String.format("Type %s is not known for asset loader", type)
-                    );
+        int loadedAssets = 0;
+
+        for (String pathToAssets : pathsToAssets) {
+            KResource[] assetsResources = resourceLoader.loadResources(pathToAssets, true);
+            for (KResource assetResource : assetsResources) {
+                if (!assetResource.name().endsWith(".json")) {
+                    assetResource.close();
+                    continue;
                 }
-            })
-            .finishField()
-            .build();
 
-        KResource[] assetsResources = resourceLoader.loadResources(pathToAssets);
+                try (assetResource) {
+                    InputStream stream = assetResource.stream();
+                    if (stream == null) {
+                        throw new KAssetLoadingException(
+                            String.format(
+                                "Cannot read stream from asset resource %s",
+                                assetResource.name()
+                            )
+                        );
+                    }
 
-        int indexedAssets = 0;
-        for (KResource assetResource: assetsResources) {
+                    KJsonValue jsonDefinition = jsonParser.parse(stream);
+                    KAssetDefinition def = new KJsonAssetDefinition(jsonDefinition);
+                    if (!def.hasInt("schema_version")) {
+                        throw new KAssetLoadingException(
+                            String.format(
+                                "Could not read metafile schema version of %s",
+                                assetResource.name()
+                            )
+                        );
+                    }
 
-            if (!assetResource.name().endsWith(".json")) {
-                assetResource.close();
-                continue;
+                    int schemaVersionValue = def.getInt("schema_version");
+                    SchemaVersion schemaVersion = SchemaVersion.getSchemaVersion(schemaVersionValue);
+                    KAsset loaded = schemaVersion.makeAsset(def);
+                    if (this.loadedAssets.containsKey(loaded.getId())) {
+                        throw new KAssetLoadingException(String.format(
+                            "Cannot load asset with id %s: asset id is not unique",
+                            loaded.getId()
+                        ));
+                    }
+
+                    this.loadedAssets.put(loaded.getId(), loaded);
+                    loadedAssets++;
+                }
             }
-
-            // base load and parse
-            var stream = assetResource.stream();
-            if (stream == null) {
-                throw new KIoException(
-                    String.format(
-                        "Cannot read stream from asset resource %s",
-                        assetResource.name()
-                    )
-                );
-            }
-
-            KJsonValue jsonDefinition = jsonParser.parse(stream);
-            KAssetDefinition def = new KJsonAssetDefinition(jsonDefinition, baseValidator);
-
-            // get asset id and type
-            String assetId = jsonDefinition.getProperty("asset_id").getString();
-            String type = jsonDefinition.getProperty("type").getString();
-
-            // ?? check if transformers execute successfully for this type?
-            if (this.indexedDefinitions.containsKey(assetId)) {
-                throw new KAssetLoadingException(
-                    String.format(
-                        "Cannot load asset with id %s: asset id is not unique",
-                        assetId
-                    )
-                );
-            }
-
-            this.indexedDefinitions.put(
-                Objects.requireNonNull(assetId),
-                def
-            );
-
-            assetResource.close();
-            indexedAssets++;
         }
 
-        KSystemLogger.info("asset_loader", "Indexed %d assets", indexedAssets);
+        KSystemLogger.info(this.name, "Loaded %d assets", loadedAssets);
+
         this.assetTypedefs = new HashMap<>();
 
     }
 
+    // todo: fallback assets
     @Override
-    public KAsset loadAsset(
-        final String assetId,
-        final String typeAlias
-    ) {
-
-        KAssetDefinition raw = this.indexedDefinitions.get(assetId);
-        if (raw == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot load asset: asset with id %s not known",
-                    assetId
-                )
-            );
+    public KAsset loadAsset(final String assetId, final String typeAlias) {
+        KAsset asset = this.loadedAssets.get(assetId);
+        if (!asset.getType().equals(typeAlias)) {
+            throw new KInvalidArgumentException(String.format(
+                "Expected for asset %s to have type %s, but got %s",
+                assetId,
+                typeAlias,
+                asset.getType()
+            ));
         }
 
-        String actualType = Objects.requireNonNull(raw.getString("type"));
-        AssetTransformer transformer = this.assetTypeData
-            .get(actualType)
-            .get(typeAlias);
-
-        if (transformer == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot load asset %s - type alias %s not known",
-                    assetId,
-                    typeAlias
-                )
-            );
-        }
-
-        KAssetDefinition transformed = this
-            .assetTypeData
-            .get(actualType)
-            .get(typeAlias)
-            .transform(raw);
-
-        KAssetTypedef typedef = this.assetTypedefs.get(typeAlias);
-        typedef.getRule().validate(transformed);
-
-        return new KAsset(
-            assetId,
-            typeAlias,
-            transformed
-        );
+        return asset;
     }
 
     @Override
     public void addAssetTypedef(final KAssetTypedef typedef) {
         this.assetTypedefs.put(typedef.getName(), typedef);
-        this.validateAssets(typedef.getName(), typedef.getRule());
+
+        KAssetDefinitionRule rule = typedef.getRule();
+        String typeName = typedef.getName();
+
+        for (KAsset asset : this.loadedAssets.values()) {
+            if (asset.getType().equals(typeName)) {
+                rule.validate(asset);
+            }
+        }
     }
 
     @Override
@@ -232,61 +199,22 @@ public class KJsonTransformerBasedAssetLoader implements KAssetLoader {
         final KAssetDefinition rawDefinition
     ) {
 
-        var typeData = this.assetTypeData.get(internalType);
-        if (typeData == null) {
-            throw new KAssetLoadingException(
-                String.format(
-                    "Cannot add asset %s - internal type %s is not registered in the asset loader",
-                    assetId,
-                    internalType
-                )
-            );
+        KAssetTypedef typedef = this.assetTypedefs.get(internalType);
+        if (typedef == null) {
+            throw new KAssetLoadingException(String.format(
+                "Cannot add asset %s - internal type %s is not registered in the asset loader",
+                assetId,
+                internalType
+            ));
         }
 
-        for (var entry: typeData.entrySet()) {
-            KAssetTypedef typedef = this.assetTypedefs.get(entry.getKey());
-            AssetTransformer transformer = entry.getValue();
-            try {
-                typedef.getRule().validate(transformer.transform(rawDefinition));
-            } catch (Throwable e) {
-                throw new KAssetDefinitionError(e.getMessage());
-            }
+        try {
+            typedef.getRule().validate(rawDefinition);
+        } catch (Throwable e) {
+            throw new KAssetDefinitionError(e.getMessage());
         }
 
-        this.indexedDefinitions.put(assetId, rawDefinition);
+        this.loadedAssets.put(assetId, new KAsset(assetId, internalType, rawDefinition));
     }
 
-    private void validateAssets(final String typeAlias, final KAssetDefinitionRule rule) {
-
-        var affectedTypes = this
-            .assetTypeData
-            .entrySet()
-            .stream()
-            .filter(
-                x -> x.getValue().containsKey(typeAlias)
-            )
-            .map(Map.Entry::getKey)
-            .toList();
-
-        this
-            .indexedDefinitions
-            .values()
-            .stream()
-            .filter(x -> affectedTypes.contains(x.getString("type")))
-            .forEach(x -> {
-                String type = Objects.requireNonNull(x.getString("type"));
-                try {
-                    rule
-                        .validate(
-                            this
-                                .assetTypeData
-                                .get(type)
-                                .get(typeAlias)
-                                .transform(x)
-                        );
-                } catch (Throwable e) {
-                    throw new KAssetDefinitionError(e.getMessage());
-                }
-            });
-    }
 }

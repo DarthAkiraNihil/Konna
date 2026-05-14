@@ -24,8 +24,6 @@ import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
 import io.github.darthakiranihil.konna.graphics.type.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
-import java.util.Map;
-
 public class KAssetCollectionTestClass extends KStandardTestClass {
 
     protected final KAssetLoader assetLoader;
@@ -38,51 +36,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         this.assetLoader = new KJsonTransformerBasedAssetLoader(
             this.engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "shader",
-                Map.of(
-                    KShaderTypedef.SHADER_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KShaderTypedef.SHADER_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "shaderProgram",
-                Map.of(
-                    KShaderProgramTypedef.SHADER_PROGRAM_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KShaderProgramTypedef.SHADER_PROGRAM_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "texture",
-                Map.of(
-                    KTextureTypedef.TEXTURE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTextureTypedef.TEXTURE_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tiledFont",
-                Map.of(
-                    KTiledFontTypedef.TILED_FONT_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTiledFontTypedef.TILED_FONT_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "textureSliceSet",
-                Map.of(
-                    KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTextureSliceSetTypedef.TEXTURE_SLICE_SET_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "renderableTextures",
-                Map.of(
-                    KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KRenderableTextureTypedef.RENDERABLE_TEXTURE_ASSET_TYPE),
-                    KTextureTypedef.TEXTURE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTextureTypedef.TEXTURE_ASSET_TYPE)
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
 
         this.assetLoader.addAssetTypedef(new KShaderTypedef());

@@ -42,7 +42,6 @@ import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
 import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.Map;
 import java.util.Random;
 
 @NullMarked
@@ -60,35 +59,7 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
         var assetLoader = new KJsonTransformerBasedAssetLoader(
             resourceLoader,
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tileProp",
-                Map.of(
-                    KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tile",
-                Map.of(
-                    KTileTypedef.TILE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTileTypedef.TILE_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "level",
-                Map.of(
-                    KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "generator",
-                Map.of(
-                    KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE)
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
 
         assetLoader.addAssetTypedef(new KTilePropertyTypedef());

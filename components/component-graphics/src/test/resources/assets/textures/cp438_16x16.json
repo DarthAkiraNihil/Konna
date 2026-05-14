@@ -1,7 +1,8 @@
 {
     "asset_id": "cp438_16x16",
-    "type": "texture",
-    "Graphics.texture": {
+    "type": "Graphics.texture",
+    "schema_version": 1,
+    "data": {
         "image": "classpath:assets/textures/cp437_16x16.png",
         "shader": "default",
         "wrapping": {

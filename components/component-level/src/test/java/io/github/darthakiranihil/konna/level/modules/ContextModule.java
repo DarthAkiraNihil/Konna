@@ -20,7 +20,10 @@ import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.*;
-import io.github.darthakiranihil.konna.core.io.*;
+import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KJsonTransformerBasedAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KResourceLoader;
+import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -29,14 +32,9 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
-import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
-import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KSynchronousMessageSystem;
 
 import java.util.List;
-import java.util.Map;
 
 @KModule
 public class ContextModule extends KAbstractModule {
@@ -86,35 +84,7 @@ public class ContextModule extends KAbstractModule {
         return new KJsonTransformerBasedAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tileProp",
-                Map.of(
-                    KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTilePropertyTypedef.TILE_PROPERTY_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "tile",
-                Map.of(
-                    KTileTypedef.TILE_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KTileTypedef.TILE_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "level",
-                Map.of(
-                    KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelMetadataTypedef.LEVEL_METADATA_ASSET_TYPE)
-                )
-            ),
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "generator",
-                Map.of(
-                    KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(KLevelGeneratorMetadataTypedef.LEVEL_GENERATOR_METADATA_TYPE)
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
     }
 

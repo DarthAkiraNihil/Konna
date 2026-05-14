@@ -1,7 +1,8 @@
 {
     "asset_id": "Typpi4",
-    "type": "entities",
-    "Entity.entityMetadata": {
+    "type": "Entity.entityMetadata",
+    "schema_version": 1,
+    "data": {
         "type_name": "Typpi4",
         "data_extensions": [
             "Typpi3"

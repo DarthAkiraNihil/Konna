@@ -1,7 +1,8 @@
 {
     "asset_id": "vs1",
-    "type": "shader",
-    "Graphics.shader": {
+    "type": "Graphics.shader",
+    "schema_version": 1,
+    "data": {
         "type": "VERTEX",
         "source": "classpath:assets/shaders/vs1.vert"
     }

@@ -26,7 +26,6 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
 import java.util.List;
-import java.util.Map;
 
 public class KAssetCollectionTestClass extends KStandardTestClass {
 
@@ -40,16 +39,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
                 List.of(new KClasspathProtocol(ClassLoader.getSystemClassLoader()))
             ),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            "classpath:assets/",
-            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-                "entities",
-                Map.of(
-                    KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE,
-                    KJsonTransformerBasedAssetLoader.AssetTransformer.justExtractFromKey(
-                        KEntityMetadataTypedef.ENTITY_METADATA_ASSET_TYPE
-                    )
-                )
-            )
+            new String[] { "classpath:assets/" }
         );
 
         this.assetLoader.addAssetTypedef(new KEntityMetadataTypedef());

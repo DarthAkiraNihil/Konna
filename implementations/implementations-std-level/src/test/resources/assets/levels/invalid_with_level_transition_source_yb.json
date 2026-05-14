@@ -1,7 +1,8 @@
 {
     "asset_id": "invalid_with_level_transition_source_yb",
-    "type": "level",
-    "Level.levelMetadata": {
+    "type": "Level.levelMetadata",
+    "schema_version": 1,
+    "data": {
         "sectors": {
             "mf1": {
                 "size": {
