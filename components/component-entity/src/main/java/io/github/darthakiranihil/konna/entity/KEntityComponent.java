@@ -238,6 +238,15 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 public class KEntityComponent extends KComponent {
 
     /**
+     * @return Asset typedefs provided by this component
+     */
+    public static KAssetTypedef[] getAssetTypedefs() {
+        return new KAssetTypedef[] {
+            new KEntityMetadataTypedef()
+        };
+    }
+
+    /**
      * Component's config.
      */
     protected final KEntityComponentConfig config;
@@ -255,13 +264,6 @@ public class KEntityComponent extends KComponent {
     ) {
         super("Entity", engineModule, new KService[] {entityManagementService});
         this.config = config;
-    }
-
-    @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[] {
-            new KEntityMetadataTypedef()
-        };
     }
 
 }

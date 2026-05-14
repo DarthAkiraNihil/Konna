@@ -84,7 +84,8 @@ public class ContextModule extends KAbstractModule {
         return new KJsonAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "/dev/null" }
+            new String[] { "/dev/null" },
+            new KAssetTypedef[0][0]
         );
     }
 

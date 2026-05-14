@@ -23,11 +23,12 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.except.KHypervisorInitializationException;
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.*;
-import io.github.darthakiranihil.konna.core.object.*;
+import io.github.darthakiranihil.konna.core.object.KActivator;
+import io.github.darthakiranihil.konna.core.object.KDefaultTags;
+import io.github.darthakiranihil.konna.core.object.KObject;
+import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.ref.KLongReference;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
@@ -124,10 +125,6 @@ public class KEngineHypervisor extends KObject {
      *             KSystemFeatures, KActivator, KObjectRegistry, List) loading components}
      *         </li>
      *         <li>
-     *             {@link KEngineHypervisor#addAssetTypedefs(KAssetLoader, Map)
-     *             adding asset typedefs} to {@link KAssetLoader}
-     *         </li>
-     *         <li>
      *             {@link
      *             KEngineHypervisor#configureMessageRoutes(KActivator, KMessageSystem, Map, List)
      *             configuring message routes
@@ -193,9 +190,6 @@ public class KEngineHypervisor extends KObject {
 
         this.engineComponents.putAll(loadedComponents);
 
-
-        KAssetLoader assetLoader = engineModule.assetLoader();
-        this.addAssetTypedefs(assetLoader, loadedComponents);
         KMessageSystem messageSystem = engineModule.messageSystem();
         this.configureMessageRoutes(
             activator,
@@ -553,33 +547,6 @@ public class KEngineHypervisor extends KObject {
         KSystemLogger.info(
             this.name, "Executed %d message route configurers", configurers.size()
         );
-    }
-
-    /**
-     * Adds all asset typedefs, provided by all components, to current asset loader.
-     * @param assetLoader Asset loader to add the typedefs
-     * @param loadedComponents Map of loaded components
-     *
-     * @since 0.6.0
-     */
-    protected void addAssetTypedefs(
-        final KAssetLoader assetLoader,
-        final Map<String, KComponent> loadedComponents
-    ) {
-
-        for (KComponent component: loadedComponents.values()) {
-            KSystemLogger.debug(
-                this.name,
-                "Adding asset typedefs of %s",
-                component.getClass().getSimpleName()
-            );
-
-            KAssetTypedef[] assetTypedefs = component.getAssetTypedefs();
-            for (var typedef: assetTypedefs) {
-                assetLoader.addAssetTypedef(typedef);
-            }
-        }
-
     }
 
     /**

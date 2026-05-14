@@ -19,10 +19,11 @@ package io.github.darthakiranihil.konna.entity.asset;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
-import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
+import io.github.darthakiranihil.konna.entity.KEntityComponent;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
 import java.util.List;
@@ -39,9 +40,10 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
                 List.of(new KClasspathProtocol(ClassLoader.getSystemClassLoader()))
             ),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][]{
+                KEntityComponent.getAssetTypedefs()
+            }
         );
-
-        this.assetLoader.addAssetTypedef(new KEntityMetadataTypedef());
     }
 }

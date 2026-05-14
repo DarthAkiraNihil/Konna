@@ -33,7 +33,7 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
 
         @Override
         public String getName() {
-            return "alias_1";
+            return "type_1";
         }
 
         @Override
@@ -64,12 +64,13 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
                 ))
             ),
             this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][] {
+                new KAssetTypedef[] { new Alias1Typedef() }
+            }
         );
 
         try {
-            assetLoader.addAssetTypedef(new KJsonAssetLoaderPositiveTests.Alias1Typedef());
 
             KAsset asset = assetLoader.loadAsset("type_1.asset_1", "type_1");
 
@@ -115,39 +116,6 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    public void testAddAssetTypeDefinitionThatIsNotRegistered() {
-
-        KAssetLoader assetLoader = new KJsonAssetLoader(
-            new KStandardResourceLoader(
-                List.of(new KClasspathProtocol(
-                    ClassLoader.getSystemClassLoader()
-                ))
-            ),
-            this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-        );
-
-        try {
-            assetLoader.addAssetTypedef(new KAssetTypedef() {
-                @Override
-                public String getName() {
-                    return "alias_16";
-                }
-
-                @Override
-                public KAssetDefinitionRule getRule() {
-                    return KCompositeAssetDefinitionRuleBuilder
-                        .create().build();
-                }
-            });
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
-        }
-
-    }
-
-    @Test
     public void testAddNewAsset() {
 
         KAssetLoader assetLoader = new KJsonAssetLoader(
@@ -157,32 +125,13 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
                 ))
             ),
             this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][] {
+                new KAssetTypedef[] { new Alias1Typedef() }
+            }
         );
 
         try {
-            assetLoader.addAssetTypedef(new KJsonAssetLoaderPositiveTests.Alias1Typedef());
-
             KJsonValue addedDef = this.jsonParser.parse("""
                 {
                 "type": "type_1",
@@ -225,8 +174,8 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
                     }"""
             );
 
-            assetLoader.addNewAsset(new KAsset("type_1.asset_2", "alias_1", new KJsonAssetDefinition(addedDef, v -> {})));
-            assetLoader.addNewAsset(new KAsset("type_1.asset_3", "alias_1", new KJsonAssetDefinition(addedDef, v -> {})));
+            assetLoader.addNewAsset(new KAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {})));
+            assetLoader.addNewAsset(new KAsset("type_1.asset_3", "type_1", new KJsonAssetDefinition(addedDef, v -> {})));
 
         } catch (Throwable e) {
             Assertions.fail(e);

@@ -451,6 +451,18 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 public class KLevelComponent extends KComponent {
 
     /**
+     * @return Asset typedefs provided by this component
+     */
+    public static KAssetTypedef[] getAssetTypedefs() {
+        return new KAssetTypedef[] {
+            new KTilePropertyTypedef(),
+            new KTileTypedef(),
+            new KLevelMetadataTypedef(),
+            new KLevelGeneratorMetadataTypedef()
+        };
+    }
+
+    /**
      * Component's configuration.
      */
     protected final KLevelComponentConfig config;
@@ -470,16 +482,6 @@ public class KLevelComponent extends KComponent {
     ) {
         super("Level", engineModule, new KService[] {levelService, levelEntityManagementService});
         this.config = config;
-    }
-
-    @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[] {
-            new KTilePropertyTypedef(),
-            new KTileTypedef(),
-            new KLevelMetadataTypedef(),
-            new KLevelGeneratorMetadataTypedef()
-        };
     }
 
 }

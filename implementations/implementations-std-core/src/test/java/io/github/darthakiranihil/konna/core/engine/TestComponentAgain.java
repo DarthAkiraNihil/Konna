@@ -32,8 +32,4 @@ public class TestComponentAgain extends KComponent {
         super("TestComponentAgain", engineModule, new KService[]{ anotherService });
     }
 
-    @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[0];
-    }
 }

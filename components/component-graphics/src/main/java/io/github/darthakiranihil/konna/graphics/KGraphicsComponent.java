@@ -89,6 +89,20 @@ import io.github.darthakiranihil.konna.graphics.type.*;
 public class KGraphicsComponent extends KComponent {
 
     /**
+     * @return Asset typedefs provided by this component
+     */
+    public static KAssetTypedef[] getAssetTypedefs() {
+        return new KAssetTypedef[] {
+            new KShaderTypedef(),
+            new KShaderProgramTypedef(),
+            new KTextureTypedef(),
+            new KTiledFontTypedef(),
+            new KTextureSliceSetTypedef(),
+            new KRenderableTextureTypedef(),
+        };
+    }
+
+    /**
      * Component's config.
      */
     protected final KGraphicsComponentConfig config;
@@ -106,18 +120,6 @@ public class KGraphicsComponent extends KComponent {
     ) {
         super("Graphics", engineModule, new KService[]{renderService});
         this.config = config;
-    }
-
-    @Override
-    public KAssetTypedef[] getAssetTypedefs() {
-        return new KAssetTypedef[] {
-            new KShaderTypedef(),
-            new KShaderProgramTypedef(),
-            new KTextureTypedef(),
-            new KTiledFontTypedef(),
-            new KTextureSliceSetTypedef(),
-            new KRenderableTextureTypedef(),
-        };
     }
 
     @Override

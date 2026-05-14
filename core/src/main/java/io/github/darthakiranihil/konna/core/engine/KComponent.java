@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.engine;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.engine.except.KEndpointRoutingException;
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
@@ -132,12 +131,6 @@ public abstract class KComponent extends KObject {
             );
         }
     }
-
-    /**
-     * Returns asset type definitions of that types that are internal for its component.
-     * @return Array of asset type definitions, used inside this component
-     */
-    public abstract KAssetTypedef[] getAssetTypedefs();
 
     /**
      * Runs post-init operations for this component. By default, the method does nothing

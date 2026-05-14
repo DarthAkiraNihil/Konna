@@ -20,11 +20,9 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
-import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
-import io.github.darthakiranihil.konna.level.type.KTileTypedef;
+import io.github.darthakiranihil.konna.level.KLevelComponent;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
 public class KAssetCollectionTestClass extends KStandardTestClass {
@@ -39,12 +37,11 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         this.assetLoader = new KJsonAssetLoader(
             this.engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][] {
+                KLevelComponent.getAssetTypedefs()
+            }
         );
 
-        this.assetLoader.addAssetTypedef(new KTilePropertyTypedef());
-        this.assetLoader.addAssetTypedef(new KTileTypedef());
-        this.assetLoader.addAssetTypedef(new KLevelMetadataTypedef());
-        this.assetLoader.addAssetTypedef(new KLevelGeneratorMetadataTypedef());
     }
 }

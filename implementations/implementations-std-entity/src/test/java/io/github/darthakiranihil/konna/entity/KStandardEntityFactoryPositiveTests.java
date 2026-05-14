@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
@@ -31,7 +32,6 @@ import io.github.darthakiranihil.konna.entity.impl.TestBehaviour;
 import io.github.darthakiranihil.konna.entity.impl.TestBehaviour2;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent2;
-import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -61,9 +61,9 @@ public class KStandardEntityFactoryPositiveTests extends KStandardTestClass {
         var assetLoader = new KJsonAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][]{ KEntityComponent.getAssetTypedefs() }
         );
-        assetLoader.addAssetTypedef(new KEntityMetadataTypedef());
 
         var metadataCollection = new KEntityMetadataCollection(
             assetLoader

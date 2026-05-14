@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
@@ -42,9 +43,6 @@ import io.github.darthakiranihil.konna.level.impl.TestController;
 import io.github.darthakiranihil.konna.level.impl.TestControllerWithoutValidator;
 import io.github.darthakiranihil.konna.level.layer.KTransitionedLevelType;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelTransitionLayerTool;
-import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
-import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -80,12 +78,11 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         KAssetLoader assetLoader = new KJsonAssetLoader(
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][]{
+                KLevelComponent.getAssetTypedefs()
+            }
         );
-
-        assetLoader.addAssetTypedef(new KTilePropertyTypedef());
-        assetLoader.addAssetTypedef(new KTileTypedef());
-        assetLoader.addAssetTypedef(new KLevelMetadataTypedef());
 
         this.levelCollection = new KLevelMetadataCollection(assetLoader);
         this.levelLoader = new KStandardLevelLoader(

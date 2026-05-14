@@ -20,10 +20,7 @@ import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.*;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KResourceLoader;
-import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
+import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -85,7 +82,8 @@ public class ContextModule extends KAbstractModule {
         return new KJsonAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "/dev/null" }
+            new String[] { "/dev/null" },
+            new KAssetTypedef[0][0]
         );
     }
 

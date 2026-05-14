@@ -90,6 +90,25 @@ public class KJsonAssetLoader
         protected abstract KAsset constructAsset(KAssetDefinition definition);
     }
 
+    private static Map<String, KAssetTypedef> validateTypedefs(final KAssetTypedef[][] typedefs) {
+        Map<String, KAssetTypedef> validated = new HashMap<>(typedefs.length);
+        for (KAssetTypedef[] group: typedefs) {
+            for (KAssetTypedef typedef : group) {
+                String typeName = typedef.getName();
+                if (validated.containsKey(typeName)) {
+                    throw new KInvalidArgumentException(String.format(
+                        "Duplicate asset typedefs found: %s",
+                        typeName
+                    ));
+                }
+
+                validated.put(typeName, typedef);
+            }
+        }
+
+        return validated;
+    }
+
     private final Map<String, KAsset> loadedAssets;
     private final Map<String, KAssetTypedef> assetTypedefs;
 
@@ -99,16 +118,74 @@ public class KJsonAssetLoader
      * @param resourceLoader Resource loader (to load JSON files)
      * @param jsonParser     JSON parser to parse loaded definitions
      * @param pathsToAssets  Paths to directories to look definitions in
+     * @param assetTypedefs Types of assets that are valid for this asset loader (unknown types
+     *                      will raise an error)
      */
     public KJsonAssetLoader(
         final KResourceLoader resourceLoader,
         final KJsonParser jsonParser,
-        final String[] pathsToAssets
+        final String[] pathsToAssets,
+        final KAssetTypedef[][] assetTypedefs
     ) {
         super("JsonAssetLoader", Set.of(KDefaultTags.STD, KDefaultTags.SYSTEM));
 
+        this.assetTypedefs = KJsonAssetLoader.validateTypedefs(assetTypedefs);
         this.loadedAssets = new HashMap<>();
+        this.loadAssetsFromPaths(pathsToAssets, resourceLoader, jsonParser);
 
+    }
+
+    // todo: fallback assets
+    @Override
+    public KAsset loadAsset(final String assetId, final String typeAlias) {
+        KAsset asset = this.loadedAssets.get(assetId);
+        if (asset == null) {
+            throw new KAssetLoadingException(String.format("Unknown asset: %s", assetId));
+        }
+        if (!asset.getType().equals(typeAlias)) {
+            throw new KAssetLoadingException(String.format(
+                "Expected for asset %s to have type %s, but got %s",
+                assetId,
+                typeAlias,
+                asset.getType()
+            ));
+        }
+
+        return asset;
+    }
+
+    @Override
+    public void addNewAsset(
+        final KAsset asset
+    ) {
+
+        String type = asset.getType();
+        String assetId = asset.getId();
+
+        KAssetTypedef typedef = this.assetTypedefs.get(asset.getType());
+
+        if (typedef == null) {
+            throw new KAssetLoadingException(String.format(
+                "Cannot add asset %s - type %s is not registered in the asset loader",
+                assetId,
+                type
+            ));
+        }
+
+        try {
+            typedef.getRule().validate(asset);
+        } catch (Throwable e) {
+            throw new KAssetDefinitionError(e.getMessage());
+        }
+
+        this.loadedAssets.put(assetId, asset);
+    }
+
+    private void loadAssetsFromPaths(
+        final String[] pathsToAssets,
+        final KResourceLoader resourceLoader,
+        final KJsonParser jsonParser
+    ) {
         int loadedAssetsCount = 0;
 
         for (String pathToAssets : pathsToAssets) {
@@ -153,6 +230,18 @@ public class KJsonAssetLoader
                         ));
                     }
 
+                    String type = loaded.getType();
+                    if (!this.assetTypedefs.containsKey(type)) {
+                        throw new KAssetLoadingException(
+                            String.format(
+                                "Cannot load asset with id %s. Unknown type: %s",
+                                loaded.getId(),
+                                type
+                            )
+                        );
+                    }
+
+                    this.assetTypedefs.get(type).getRule().validate(loaded);
                     this.loadedAssets.put(loaded.getId(), loaded);
                     loadedAssetsCount++;
                 }
@@ -160,69 +249,6 @@ public class KJsonAssetLoader
         }
 
         KSystemLogger.info(this.name, "Loaded %d assets", loadedAssetsCount);
-
-        this.assetTypedefs = new HashMap<>();
-
-    }
-
-    // todo: fallback assets
-    @Override
-    public KAsset loadAsset(final String assetId, final String typeAlias) {
-        KAsset asset = this.loadedAssets.get(assetId);
-        if (asset == null) {
-            throw new KAssetLoadingException(String.format("Unknown asset: %s", assetId));
-        }
-        if (!asset.getType().equals(typeAlias)) {
-            throw new KAssetLoadingException(String.format(
-                "Expected for asset %s to have type %s, but got %s",
-                assetId,
-                typeAlias,
-                asset.getType()
-            ));
-        }
-
-        return asset;
-    }
-
-    @Override
-    public void addAssetTypedef(final KAssetTypedef typedef) {
-        this.assetTypedefs.put(typedef.getName(), typedef);
-
-        KAssetDefinitionRule rule = typedef.getRule();
-        String typeName = typedef.getName();
-
-        for (KAsset asset : this.loadedAssets.values()) {
-            if (asset.getType().equals(typeName)) {
-                rule.validate(asset);
-            }
-        }
-    }
-
-    @Override
-    public void addNewAsset(
-        final KAsset asset
-    ) {
-
-        String type = asset.getType();
-        String assetId = asset.getId();
-
-        KAssetTypedef typedef = this.assetTypedefs.get(asset.getType());
-
-        if (typedef == null) {
-            throw new KAssetLoadingException(String.format(
-                "Cannot add asset %s - type %s is not registered in the asset loader",
-                assetId,
-                type
-            ));
-        }
-
-        try {
-            typedef.getRule().validate(asset);
-        } catch (Throwable e) {
-            throw new KAssetDefinitionError(e.getMessage());
-        }
-
-        this.loadedAssets.put(assetId, asset);
     }
 
 }
