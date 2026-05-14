@@ -237,6 +237,12 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  */
 public class KEntityComponent extends KComponent {
 
+    public static KAssetTypedef[] getAssetTypedefs2() {
+        return new KAssetTypedef[] {
+            new KEntityMetadataTypedef()
+        };
+    }
+
     /**
      * Component's config.
      */

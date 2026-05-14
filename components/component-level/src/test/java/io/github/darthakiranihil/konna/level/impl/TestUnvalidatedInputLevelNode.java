@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KInject;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.message.KEvent;
@@ -27,19 +28,12 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.level.KLevel;
-import io.github.darthakiranihil.konna.level.KLevelLoader;
-import io.github.darthakiranihil.konna.level.KLevelSector;
-import io.github.darthakiranihil.konna.level.KStandardLevelLoader;
+import io.github.darthakiranihil.konna.level.*;
 import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
 import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
-import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
-import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Random;
@@ -59,13 +53,11 @@ public class TestUnvalidatedInputLevelNode implements KGeneratorNode {
         var assetLoader = new KJsonAssetLoader(
             resourceLoader,
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][] {
+                KLevelComponent.getAssetTypedefs2()
+            }
         );
-
-        assetLoader.addAssetTypedef(new KTilePropertyTypedef());
-        assetLoader.addAssetTypedef(new KTileTypedef());
-        assetLoader.addAssetTypedef(new KLevelMetadataTypedef());
-        assetLoader.addAssetTypedef(new KLevelGeneratorMetadataTypedef());
 
         KEventSystem es = new KStandardEventSystem();
         es.registerEvent(new KEvent<KLevelSector.EventData>("entityMoved"));

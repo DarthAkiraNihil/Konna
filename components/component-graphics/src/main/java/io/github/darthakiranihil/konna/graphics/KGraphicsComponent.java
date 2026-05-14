@@ -88,6 +88,17 @@ import io.github.darthakiranihil.konna.graphics.type.*;
  */
 public class KGraphicsComponent extends KComponent {
 
+    public static KAssetTypedef[] getAssetTypedefs2() {
+        return new KAssetTypedef[] {
+            new KShaderTypedef(),
+            new KShaderProgramTypedef(),
+            new KTextureTypedef(),
+            new KTiledFontTypedef(),
+            new KTextureSliceSetTypedef(),
+            new KRenderableTextureTypedef(),
+        };
+    }
+
     /**
      * Component's config.
      */

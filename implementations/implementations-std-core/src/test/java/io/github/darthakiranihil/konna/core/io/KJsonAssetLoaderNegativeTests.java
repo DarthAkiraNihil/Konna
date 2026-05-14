@@ -17,8 +17,6 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
-import io.github.darthakiranihil.konna.core.data.json.except.KJsonValidationError;
-import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -66,32 +64,13 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
                 ))
             ),
             this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][]{
+                new KAssetTypedef[] { new KJsonAssetLoaderNegativeTests.Alias1Typedef() }
+            }
         );
 
         try {
-            assetLoader.addAssetTypedef(new KJsonAssetLoaderNegativeTests.Alias1Typedef());
-
             Assertions.assertThrows(
                 KAssetLoadingException.class,
                 () -> assetLoader.loadAsset("type_1.asset_1", "alias_2")
@@ -100,52 +79,6 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
         } catch (Throwable e) {
             Assertions.fail(e);
         }
-    }
-
-    @Test
-    public void testAddAssetTypeAliasInvalidAsset() {
-
-        KAssetLoader assetLoader = new KJsonAssetLoader(
-            new KStandardResourceLoader(
-                List.of(new KClasspathProtocol(
-                    ClassLoader.getSystemClassLoader()
-                ))
-            ),
-            this.jsonParser,
-            new String[] {  "classpath:invalid_new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
-        );
-
-        try {
-
-            Assertions.assertThrows(
-                KAssetDefinitionError.class,
-                () -> assetLoader.addAssetTypedef(new KJsonAssetLoaderNegativeTests.Alias1Typedef())
-            );
-
-        } catch (Throwable e) {
-            Assertions.fail(e);
-        }
-
     }
 
     @Test
@@ -158,32 +91,13 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
                 ))
             ),
             this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][]{
+                new KAssetTypedef[] { new KJsonAssetLoaderNegativeTests.Alias1Typedef() }
+            }
         );
 
         try {
-            assetLoader.addAssetTypedef(new KJsonAssetLoaderNegativeTests.Alias1Typedef());
-
             KJsonValue addedDef = this.jsonParser.parse("""
                 {
                         "alias_1": {
@@ -219,31 +133,13 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
                 ))
             ),
             this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][]{
+                new KAssetTypedef[] { new KJsonAssetLoaderNegativeTests.Alias1Typedef() }
+            }
         );
 
         try {
-            assetLoader.addAssetTypedef(new KJsonAssetLoaderNegativeTests.Alias1Typedef());
 
             KJsonValue addedDef = this.jsonParser.parse("""
                 {
@@ -286,27 +182,10 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
                         ))
                     ),
                     this.jsonParser,
-                    new String[] { "classpath:assets_with_non_unique/" }
-//                    new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                        "type_1",
-//                        Map.of(
-//                            "alias_1",
-//                            (v) -> {
-//                                Map<String, Object> data = new HashMap<>();
-//                                data.put("int_property", v.getInt("int_property"));
-//                                data.put("float_property", v.getFloat("float_property"));
-//                                data.put("boolean_property", v.getBoolean("boolean_property"));
-//                                data.put("string_property", v.getString("string_property"));
-//                                data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                                data.put("int_array_property", v.getIntArray("int_array_property"));
-//                                data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                                data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                                data.put("string_array_property", v.getStringArray("string_array_property"));
-//                                data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                                return new KMapAssetDefinition(data);
-//                            }
-//                        )
-//                    )
+                    new String[] { "classpath:assets_with_non_unique/" },
+                    new KAssetTypedef[][]{
+                        new KAssetTypedef[] { new KJsonAssetLoaderNegativeTests.Alias1Typedef() }
+                    }
                 )
             );
 
@@ -326,27 +205,10 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
                 ))
             ),
             this.jsonParser,
-            new String[] { "classpath:new_assets/" }
-//            new KJsonTransformerBasedAssetLoader.AssetTypeData(
-//                "type_1",
-//                Map.of(
-//                    "alias_1",
-//                    (v) -> {
-//                        Map<String, Object> data = new HashMap<>();
-//                        data.put("int_property", v.getInt("int_property"));
-//                        data.put("float_property", v.getFloat("float_property"));
-//                        data.put("boolean_property", v.getBoolean("boolean_property"));
-//                        data.put("string_property", v.getString("string_property"));
-//                        data.put("subdef_property", v.getSubdefinition("subdef_property"));
-//                        data.put("int_array_property", v.getIntArray("int_array_property"));
-//                        data.put("float_array_property", v.getFloatArray("float_array_property"));
-//                        data.put("boolean_array_property", v.getBooleanArray("boolean_array_property"));
-//                        data.put("string_array_property", v.getStringArray("string_array_property"));
-//                        data.put("subdef_array_property", v.getSubdefinitionArray("subdef_array_property"));
-//                        return new KMapAssetDefinition(data);
-//                    }
-//                )
-//            )
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][]{
+                new KAssetTypedef[] { new KJsonAssetLoaderNegativeTests.Alias1Typedef() }
+            }
         );
 
         try {

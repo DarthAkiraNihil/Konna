@@ -20,10 +20,7 @@ import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.*;
-import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
-import io.github.darthakiranihil.konna.core.io.KResourceLoader;
-import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
+import io.github.darthakiranihil.konna.core.io.*;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
@@ -32,6 +29,7 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.level.KLevelComponent;
 import io.github.darthakiranihil.konna.test.KSynchronousMessageSystem;
 
 import java.util.List;
@@ -84,7 +82,10 @@ public class ContextModule extends KAbstractModule {
         return new KJsonAssetLoader(
             this.appContainer.getInstanceInferred(KResourceLoader.class),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][] {
+                KLevelComponent.getAssetTypedefs2()
+            }
         );
     }
 

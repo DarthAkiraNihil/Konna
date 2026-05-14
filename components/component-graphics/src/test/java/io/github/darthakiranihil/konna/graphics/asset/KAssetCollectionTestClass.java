@@ -20,8 +20,9 @@ import io.github.darthakiranihil.konna.core.data.json.KStandardJsonParser;
 import io.github.darthakiranihil.konna.core.data.json.KStandardJsonTokenizer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
+import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
-import io.github.darthakiranihil.konna.graphics.type.*;
+import io.github.darthakiranihil.konna.graphics.KGraphicsComponent;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
 public class KAssetCollectionTestClass extends KStandardTestClass {
@@ -36,14 +37,11 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
         this.assetLoader = new KJsonAssetLoader(
             this.engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
-            new String[] { "classpath:assets/" }
+            new String[] { "classpath:assets/" },
+            new KAssetTypedef[][]{
+                KGraphicsComponent.getAssetTypedefs2()
+            }
         );
 
-        this.assetLoader.addAssetTypedef(new KShaderTypedef());
-        this.assetLoader.addAssetTypedef(new KShaderProgramTypedef());
-        this.assetLoader.addAssetTypedef(new KTextureTypedef());
-        this.assetLoader.addAssetTypedef(new KTiledFontTypedef());
-        this.assetLoader.addAssetTypedef(new KTextureSliceSetTypedef());
-        this.assetLoader.addAssetTypedef(new KRenderableTextureTypedef());
     }
 }
