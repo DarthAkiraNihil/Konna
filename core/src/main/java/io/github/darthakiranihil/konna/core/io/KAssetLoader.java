@@ -25,6 +25,7 @@ public interface KAssetLoader {
      * Adds a new asset type definition to this loader.
      * @param typedef Asset type definition
      */
+    @Deprecated(forRemoval = true)
     void addAssetTypedef(KAssetTypedef typedef);
 
     /**

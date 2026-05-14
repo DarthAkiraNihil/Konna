@@ -90,6 +90,25 @@ public class KJsonAssetLoader
         protected abstract KAsset constructAsset(KAssetDefinition definition);
     }
 
+    private static Map<String, KAssetTypedef> validateTypedefs(final KAssetTypedef[][] typedefs) {
+        Map<String, KAssetTypedef> validated = new HashMap<>(typedefs.length);
+        for (KAssetTypedef[] group: typedefs) {
+            for (KAssetTypedef typedef : group) {
+                String typeName = typedef.getName();
+                if (validated.containsKey(typeName)) {
+                    throw new KInvalidArgumentException(String.format(
+                        "Duplicate asset typedefs found: %s",
+                        typeName
+                    ));
+                }
+
+                validated.put(typeName, typedef);
+            }
+        }
+
+        return validated;
+    }
+
     private final Map<String, KAsset> loadedAssets;
     private final Map<String, KAssetTypedef> assetTypedefs;
 
@@ -103,65 +122,14 @@ public class KJsonAssetLoader
     public KJsonAssetLoader(
         final KResourceLoader resourceLoader,
         final KJsonParser jsonParser,
-        final String[] pathsToAssets
+        final String[] pathsToAssets,
+        final KAssetTypedef[][] assetTypedefs
     ) {
         super("JsonAssetLoader", Set.of(KDefaultTags.STD, KDefaultTags.SYSTEM));
 
+        this.assetTypedefs = KJsonAssetLoader.validateTypedefs(assetTypedefs);
         this.loadedAssets = new HashMap<>();
-
-        int loadedAssetsCount = 0;
-
-        for (String pathToAssets : pathsToAssets) {
-            KResource[] assetsResources = resourceLoader.loadResources(pathToAssets, true);
-            for (KResource assetResource : assetsResources) {
-                if (!assetResource.name().endsWith(".json")) {
-                    assetResource.close();
-                    continue;
-                }
-
-                try (assetResource) {
-                    InputStream stream = assetResource.stream();
-                    if (stream == null) {
-                        throw new KAssetLoadingException(
-                            String.format(
-                                "Cannot read stream from asset resource %s",
-                                assetResource.name()
-                            )
-                        );
-                    }
-
-                    KJsonValue jsonDefinition = jsonParser.parse(stream);
-                    KAssetDefinition def = new KJsonAssetDefinition(jsonDefinition);
-                    if (!def.hasInt("schema_version")) {
-                        throw new KAssetLoadingException(
-                            String.format(
-                                "Could not read metafile schema version of %s",
-                                assetResource.name()
-                            )
-                        );
-                    }
-
-                    int schemaVersionValue = def.getInt("schema_version");
-                    SchemaVersion schemaVersion = SchemaVersion.getSchemaVersion(
-                        schemaVersionValue
-                    );
-                    KAsset loaded = schemaVersion.makeAsset(def);
-                    if (this.loadedAssets.containsKey(loaded.getId())) {
-                        throw new KAssetLoadingException(String.format(
-                            "Cannot load asset with id %s: asset id is not unique",
-                            loaded.getId()
-                        ));
-                    }
-
-                    this.loadedAssets.put(loaded.getId(), loaded);
-                    loadedAssetsCount++;
-                }
-            }
-        }
-
-        KSystemLogger.info(this.name, "Loaded %d assets", loadedAssetsCount);
-
-        this.assetTypedefs = new HashMap<>();
+        this.loadAssetsFromPaths(pathsToAssets, resourceLoader, jsonParser);
 
     }
 
@@ -223,6 +191,76 @@ public class KJsonAssetLoader
         }
 
         this.loadedAssets.put(assetId, asset);
+    }
+
+    private void loadAssetsFromPaths(
+        final String[] pathsToAssets,
+        final KResourceLoader resourceLoader,
+        final KJsonParser jsonParser
+    ) {
+        int loadedAssetsCount = 0;
+
+        for (String pathToAssets : pathsToAssets) {
+            KResource[] assetsResources = resourceLoader.loadResources(pathToAssets, true);
+            for (KResource assetResource : assetsResources) {
+                if (!assetResource.name().endsWith(".json")) {
+                    assetResource.close();
+                    continue;
+                }
+
+                try (assetResource) {
+                    InputStream stream = assetResource.stream();
+                    if (stream == null) {
+                        throw new KAssetLoadingException(
+                            String.format(
+                                "Cannot read stream from asset resource %s",
+                                assetResource.name()
+                            )
+                        );
+                    }
+
+                    KJsonValue jsonDefinition = jsonParser.parse(stream);
+                    KAssetDefinition def = new KJsonAssetDefinition(jsonDefinition);
+                    if (!def.hasInt("schema_version")) {
+                        throw new KAssetLoadingException(
+                            String.format(
+                                "Could not read metafile schema version of %s",
+                                assetResource.name()
+                            )
+                        );
+                    }
+
+                    int schemaVersionValue = def.getInt("schema_version");
+                    SchemaVersion schemaVersion = SchemaVersion.getSchemaVersion(
+                        schemaVersionValue
+                    );
+                    KAsset loaded = schemaVersion.makeAsset(def);
+                    if (this.loadedAssets.containsKey(loaded.getId())) {
+                        throw new KAssetLoadingException(String.format(
+                            "Cannot load asset with id %s: asset id is not unique",
+                            loaded.getId()
+                        ));
+                    }
+
+                    String type = loaded.getType();
+                    if (!this.assetTypedefs.containsKey(type)) {
+                        throw new KAssetLoadingException(
+                            String.format(
+                                "Cannot load asset with id %s. Unknown type: %s",
+                                loaded.getId(),
+                                type
+                            )
+                        );
+                    }
+
+                    this.assetTypedefs.get(type).getRule().validate(loaded);
+                    this.loadedAssets.put(loaded.getId(), loaded);
+                    loadedAssetsCount++;
+                }
+            }
+        }
+
+        KSystemLogger.info(this.name, "Loaded %d assets", loadedAssetsCount);
     }
 
 }
