@@ -56,7 +56,7 @@ public class TestLevelNode implements KGeneratorNode {
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" },
             new KAssetTypedef[][] {
-                KLevelComponent.getAssetTypedefs2()
+                KLevelComponent.getAssetTypedefs()
             }
         );
 

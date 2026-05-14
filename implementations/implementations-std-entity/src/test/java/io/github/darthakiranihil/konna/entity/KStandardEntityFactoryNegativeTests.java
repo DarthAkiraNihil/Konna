@@ -15,7 +15,6 @@ import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.except.KEntityException;
 import io.github.darthakiranihil.konna.entity.impl.TestEntityDataComponent;
-import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,7 @@ public class KStandardEntityFactoryNegativeTests extends KStandardTestClass {
             engineModule.resourceLoader(),
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" },
-            new KAssetTypedef[][]{ KEntityComponent.getAssetTypedefs2() }
+            new KAssetTypedef[][]{ KEntityComponent.getAssetTypedefs() }
         );
 
         var metadataCollection = new KEntityMetadataCollection(

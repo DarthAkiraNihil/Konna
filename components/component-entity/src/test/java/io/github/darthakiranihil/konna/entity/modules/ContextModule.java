@@ -94,7 +94,7 @@ public class ContextModule extends KAbstractModule {
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" },
             new KAssetTypedef[][]{
-                KEntityComponent.getAssetTypedefs2()
+                KEntityComponent.getAssetTypedefs()
             }
         );
     }

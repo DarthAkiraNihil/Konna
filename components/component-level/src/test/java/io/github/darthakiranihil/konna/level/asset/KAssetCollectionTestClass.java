@@ -23,10 +23,6 @@ import io.github.darthakiranihil.konna.core.io.KAssetLoader;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
 import io.github.darthakiranihil.konna.level.KLevelComponent;
-import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KLevelMetadataTypedef;
-import io.github.darthakiranihil.konna.level.type.KTilePropertyTypedef;
-import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 
 public class KAssetCollectionTestClass extends KStandardTestClass {
@@ -43,7 +39,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" },
             new KAssetTypedef[][] {
-                KLevelComponent.getAssetTypedefs2()
+                KLevelComponent.getAssetTypedefs()
             }
         );
 

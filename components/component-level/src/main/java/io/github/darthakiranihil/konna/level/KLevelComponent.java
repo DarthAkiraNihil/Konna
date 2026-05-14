@@ -450,7 +450,10 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
 @KSingleton
 public class KLevelComponent extends KComponent {
 
-    public static KAssetTypedef[] getAssetTypedefs2() {
+    /**
+     * @return Asset typedefs provided by this component
+     */
+    public static KAssetTypedef[] getAssetTypedefs() {
         return new KAssetTypedef[] {
             new KTilePropertyTypedef(),
             new KTileTypedef(),

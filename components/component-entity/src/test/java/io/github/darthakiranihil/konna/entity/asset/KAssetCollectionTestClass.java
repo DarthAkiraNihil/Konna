@@ -42,7 +42,7 @@ public class KAssetCollectionTestClass extends KStandardTestClass {
             new KStandardJsonParser(new KStandardJsonTokenizer()),
             new String[] { "classpath:assets/" },
             new KAssetTypedef[][]{
-                KEntityComponent.getAssetTypedefs2()
+                KEntityComponent.getAssetTypedefs()
             }
         );
     }

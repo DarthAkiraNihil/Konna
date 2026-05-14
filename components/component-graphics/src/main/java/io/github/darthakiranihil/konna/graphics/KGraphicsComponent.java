@@ -88,7 +88,10 @@ import io.github.darthakiranihil.konna.graphics.type.*;
  */
 public class KGraphicsComponent extends KComponent {
 
-    public static KAssetTypedef[] getAssetTypedefs2() {
+    /**
+     * @return Asset typedefs provided by this component
+     */
+    public static KAssetTypedef[] getAssetTypedefs() {
         return new KAssetTypedef[] {
             new KShaderTypedef(),
             new KShaderProgramTypedef(),
