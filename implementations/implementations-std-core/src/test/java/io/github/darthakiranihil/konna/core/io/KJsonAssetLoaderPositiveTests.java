@@ -33,7 +33,7 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
 
         @Override
         public String getName() {
-            return "alias_1";
+            return "type_1";
         }
 
         @Override
@@ -116,35 +116,6 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
     }
 
     @Test
-    public void testAddAssetTypeDefinitionThatIsNotRegistered() {
-
-        Assertions.assertDoesNotThrow(() -> new KJsonAssetLoader(
-            new KStandardResourceLoader(
-                List.of(new KClasspathProtocol(
-                    ClassLoader.getSystemClassLoader()
-                ))
-            ),
-            this.jsonParser,
-            new String[] { "classpath:new_assets/" },
-            new KAssetTypedef[][]{
-                new KAssetTypedef[] { new KAssetTypedef() {
-                    @Override
-                    public String getName() {
-                        return "alias_16";
-                    }
-
-                    @Override
-                    public KAssetDefinitionRule getRule() {
-                        return KCompositeAssetDefinitionRuleBuilder
-                            .create().build();
-                    }
-                } }
-            }
-        ));
-
-    }
-
-    @Test
     public void testAddNewAsset() {
 
         KAssetLoader assetLoader = new KJsonAssetLoader(
@@ -203,8 +174,8 @@ public class KJsonAssetLoaderPositiveTests extends KStandardTestClass {
                     }"""
             );
 
-            assetLoader.addNewAsset(new KAsset("type_1.asset_2", "alias_1", new KJsonAssetDefinition(addedDef, v -> {})));
-            assetLoader.addNewAsset(new KAsset("type_1.asset_3", "alias_1", new KJsonAssetDefinition(addedDef, v -> {})));
+            assetLoader.addNewAsset(new KAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {})));
+            assetLoader.addNewAsset(new KAsset("type_1.asset_3", "type_1", new KJsonAssetDefinition(addedDef, v -> {})));
 
         } catch (Throwable e) {
             Assertions.fail(e);

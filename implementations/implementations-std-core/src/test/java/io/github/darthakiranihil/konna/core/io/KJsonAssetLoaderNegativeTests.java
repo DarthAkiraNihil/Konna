@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.io;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonValue;
+import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.core.io.except.KAssetLoadingException;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -33,7 +34,7 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
 
         @Override
         public String getName() {
-            return "alias_1";
+            return "type_1";
         }
 
         @Override
@@ -113,13 +114,44 @@ public class KJsonAssetLoaderNegativeTests extends KStandardTestClass {
             );
 
             Assertions.assertThrows(
-                KAssetLoadingException.class,
+                KAssetDefinitionError.class,
                 () -> assetLoader.addNewAsset(new KAsset("type_1.asset_2", "type_1", new KJsonAssetDefinition(addedDef, v -> {})))
             );
 
         } catch (Throwable e) {
             Assertions.fail(e);
         }
+
+    }
+
+    @Test
+    public void testAddAssetTypeDefinitionThatIsNotRegistered() {
+
+        Assertions.assertThrows(
+            KAssetLoadingException.class,
+            () -> new KJsonAssetLoader(
+            new KStandardResourceLoader(
+                List.of(new KClasspathProtocol(
+                    ClassLoader.getSystemClassLoader()
+                ))
+            ),
+            this.jsonParser,
+            new String[] { "classpath:new_assets/" },
+            new KAssetTypedef[][]{
+                new KAssetTypedef[] { new KAssetTypedef() {
+                    @Override
+                    public String getName() {
+                        return "alias_16";
+                    }
+
+                    @Override
+                    public KAssetDefinitionRule getRule() {
+                        return KCompositeAssetDefinitionRuleBuilder
+                            .create().build();
+                    }
+                } }
+            }
+        ));
 
     }
 
