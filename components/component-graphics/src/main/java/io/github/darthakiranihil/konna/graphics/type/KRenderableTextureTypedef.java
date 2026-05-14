@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.graphics.type;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinitionRule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KCompositeAssetDefinitionRuleBuilder;
-import io.github.darthakiranihil.konna.core.io.except.KAssetDefinitionError;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTextureSource;
 
 /**
@@ -58,20 +57,8 @@ public final class KRenderableTextureTypedef implements KAssetTypedef {
     public KAssetDefinitionRule getRule() {
         return KCompositeAssetDefinitionRuleBuilder
             .create()
-            .withEnum("source", KRenderableTextureSource.class)
-            .withString("slice_set")
-            .withRule(d -> {
-                String textureSetId = d.getString("slice_set");
-                KRenderableTextureSource source = d.getEnum(
-                    "source",
-                    KRenderableTextureSource.class
-                );
-                if (source == KRenderableTextureSource.SLICE_SET && textureSetId == null) {
-                    throw new KAssetDefinitionError(
-                        "Texture set id cannot be null if a renderable texture is taken from there"
-                    );
-                }
-            })
+            .withEnum("source_type", KRenderableTextureSource.class)
+            .withNotNullString("source")
             .build();
     }
 

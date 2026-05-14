@@ -1,21 +1,9 @@
 {
     "asset_id": "sl1",
     "type": "Graphics.renderableTexture",
-    "Graphics.texture": {
-        "image": "classpath:assets/textures/cute_image.png",
-        "shader": "default",
-        "wrapping": {
-            "u": "REPEAT",
-            "v": "REPEAT"
-        },
-        "filtering": {
-            "min": "MIPMAP_LINEAR_LINEAR",
-            "mag": "LINEAR"
-        }
-    },
     "schema_version": 1,
     "data": {
-        "source": "SLICE_SET",
-        "slice_set": "set_1"
+        "source_type": "SLICE_SET",
+        "source": "set_1"
     }
 }

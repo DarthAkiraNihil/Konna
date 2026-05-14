@@ -1,0 +1,17 @@
+{
+    "asset_id": "tata2",
+    "type": "Graphics.texture",
+    "data": {
+        "image": "classpath:assets/textures/cute_image.png",
+        "shader": "default",
+        "wrapping": {
+            "u": "REPEAT",
+            "v": "REPEAT"
+        },
+        "filtering": {
+            "min": "MIPMAP_LINEAR_LINEAR",
+            "mag": "LINEAR"
+        }
+    },
+    "schema_version": 1
+}
