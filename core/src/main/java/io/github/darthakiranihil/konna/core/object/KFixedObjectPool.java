@@ -74,15 +74,6 @@ final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
     }
 
     @Override
-    public KObtainedPoolableObject<T> obtain(int timeout) {
-        if (this.unusedObjects.isEmpty()) {
-            KThreadUtils.sleepForSeconds(timeout);
-        }
-
-        return this.obtain();
-    }
-
-    @Override
     public KObtainedPoolableObject<T> obtain(final KArgs args) {
 
         Optional<T> obtained = this.noObjectPolicy.obtainRawObject(this.unusedObjects, this.clazz);
@@ -90,15 +81,6 @@ final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
             .map((x) -> this.prepareObject(x, args))
             .orElseGet(() -> new KObtainedPoolableObject<>(this));
 
-    }
-
-    @Override
-    public KObtainedPoolableObject<T> obtain(final KArgs args, int timeout) {
-        if (this.unusedObjects.isEmpty()) {
-            KThreadUtils.sleepForSeconds(timeout);
-        }
-
-        return this.obtain(args);
     }
 
     @Override

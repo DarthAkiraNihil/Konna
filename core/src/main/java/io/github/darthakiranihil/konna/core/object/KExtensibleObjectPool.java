@@ -112,29 +112,8 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
     }
 
     @Override
-    public KObtainedPoolableObject<T> obtain(int timeout) {
-        if (this.unusedObjects.isEmpty()) {
-            this.extend();
-            KThreadUtils.sleepForSeconds(timeout);
-        }
-
-        // венруть через оптионал
-        return this.obtain(true);
-    }
-
-    @Override
     public KObtainedPoolableObject<T> obtain(final KArgs args) {
         return this.obtain(args, false);
-    }
-
-    @Override
-    public KObtainedPoolableObject<T> obtain(final KArgs args, int timeout) {
-        if (this.unusedObjects.isEmpty()) {
-            this.extend();
-            KThreadUtils.sleepForSeconds(timeout);
-        }
-
-        return this.obtain(args, true);
     }
 
     @Override
