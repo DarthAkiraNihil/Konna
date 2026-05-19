@@ -62,45 +62,26 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         final KObjectRegistry objectRegistry,
         final KAllocatePool metadata
     ) {
-        if (metadata.extensible()) {
-            return switch (metadata.noObjectPolicy()) {
-                case THROW_EXCEPTION -> new KExtensibleObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    metadata.maxSize(),
-                    metadata.extensionFactor(),
-                    false
-                );
-                case RETURN_EMPTY -> new KExtensibleObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    metadata.maxSize(),
-                    metadata.extensionFactor(),
-                    true
-                );
-            };
-        } else {
-            return switch (metadata.noObjectPolicy()) {
-                case THROW_EXCEPTION -> new KFixedObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    false
-                );
-                case RETURN_EMPTY -> new KFixedObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    true
-                );
-            };
-        }
+        KNoObjectPolicy noObjectPolicy = KNoObjectPolicy.fromAnnotationMetadata(
+            metadata.noObjectPolicy()
+        );
+
+        return metadata.extensible()
+            ? new KExtensibleObjectPool<>(
+                clazz,
+                activator,
+                objectRegistry,
+                metadata.initialSize(),
+                metadata.maxSize(),
+                metadata.extensionFactor(),
+                noObjectPolicy
+            ) : new KFixedObjectPool<>(
+                clazz,
+                activator,
+                objectRegistry,
+                noObjectPolicy,
+                metadata.initialSize()
+        );
     }
 
     /**
@@ -168,22 +149,6 @@ public abstract sealed class KObjectPool<T extends KPoolable>
 
     /**
      * <p>
-     *     Obtains an object from the pool, but if there is no object, it firstly waits
-     *     for {@code timeout} seconds, then tries to obtain an object again.
-     * </p>
-     * <p>
-     *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
-     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
-     *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
-     * </p>
-     * @param timeout Amount of seconds to wait before the second acquisition attempt
-     * @return Container of obtained poolable object
-     * @since 0.6.0
-     */
-    public abstract KObtainedPoolableObject<T> obtain(int timeout);
-
-    /**
-     * <p>
      *     Obtains an object from the pool with passing explicit args, that are not
      *     injected by {@link KActivator}.
      * </p>
@@ -198,25 +163,6 @@ public abstract sealed class KObjectPool<T extends KPoolable>
      * @since 0.6.0
      */
     public abstract KObtainedPoolableObject<T> obtain(KArgs explicitArgs);
-
-    /**
-     * <p>
-     *     Obtains an object from the pool, with passing explicit args, that are not
-     *     injected by {@link KActivator}, but if there is no object, it firstly waits
-     *     for {@code timeout} seconds, then tries to obtain an object again.
-     * </p>
-     * <p>
-     *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
-     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
-     *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
-     * </p>
-     * @param timeout Amount of seconds to wait before the second acquisition attempt
-     * @param explicitArgs Explicit args to pass to {@link KOnPoolableObjectObtain}-annotated
-     *                     method
-     * @return Container of obtained poolable object
-     * @since 0.6.0
-     */
-    public abstract KObtainedPoolableObject<T> obtain(KArgs explicitArgs, int timeout);
 
     /**
      * Prepares object before it will be obtained by the requester.
