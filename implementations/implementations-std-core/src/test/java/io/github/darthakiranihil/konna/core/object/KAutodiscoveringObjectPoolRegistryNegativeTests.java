@@ -48,16 +48,8 @@ public class KAutodiscoveringObjectPoolRegistryNegativeTests extends KStandardTe
         );
         Assertions.assertThrows(
             KNoSuchElementException.class,
-            () -> this.registry.obtain(TestBlindPoolable.class, 1)
-        );
-        Assertions.assertThrows(
-            KNoSuchElementException.class,
             () -> this.registry.obtain(TestBlindPoolable.class, () -> new Object[0])
-        );Assertions.assertThrows(
-            KNoSuchElementException.class,
-            () -> this.registry.obtain(TestBlindPoolable.class, () -> new Object[0], 1)
         );
-
 
     }
 }

@@ -87,6 +87,7 @@ final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
     void release(final T object) {
         super.release(object);
         this.unusedObjects.add(object);
+        this.noObjectPolicy.objectReturnedCallback();
     }
 
 }

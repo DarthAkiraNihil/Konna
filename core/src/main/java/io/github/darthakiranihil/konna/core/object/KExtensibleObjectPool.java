@@ -135,6 +135,7 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
         super.release(object);
         synchronized (this.extensionLock) {
             this.unusedObjects.add(object);
+            this.noObjectPolicy.objectReturnedCallback();
         }
     }
 

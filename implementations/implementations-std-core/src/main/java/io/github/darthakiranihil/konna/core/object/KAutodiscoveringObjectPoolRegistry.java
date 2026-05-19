@@ -83,26 +83,9 @@ public class KAutodiscoveringObjectPoolRegistry implements KObjectPoolRegistry {
     @Override
     public <T extends KPoolable> KObtainedPoolableObject<T> obtain(
         final Class<T> clazz,
-        int timeout
-    ) {
-        return this.getPool(clazz).obtain(timeout);
-    }
-
-    @Override
-    public <T extends KPoolable> KObtainedPoolableObject<T> obtain(
-        final Class<T> clazz,
         final KArgs explicitArgs
     ) {
         return this.getPool(clazz).obtain(explicitArgs);
-    }
-
-    @Override
-    public <T extends KPoolable> KObtainedPoolableObject<T> obtain(
-        final Class<T> clazz,
-        final KArgs explicitArgs,
-        int timeout
-    ) {
-        return this.getPool(clazz).obtain(explicitArgs, timeout);
     }
 
     @SuppressWarnings("unchecked")

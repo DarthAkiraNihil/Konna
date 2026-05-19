@@ -89,11 +89,12 @@ public class KObjectPoolsTests extends KStandardTestClass {
 
         KObjectPool<TestSimplePoolable> strictPool = this.getStrictPool(TestSimplePoolable.class);
         KObjectPool<TestSimplePoolable> forgivingPool = this.getForgivingPool(TestSimplePoolable.class);
+        KObjectPool<TestSimplePoolable> waitingPool = this.getWaitingPool(TestSimplePoolable.class);
         KObjectPool<TestSimplePoolable> strictExtensiblePool = this.getStrictExtensiblePool(TestSimplePoolable.class);
         KObjectPool<TestSimplePoolable> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestSimplePoolable.class);
+        KObjectPool<TestSimplePoolable> waitingExtensiblePool = this.getWaitingExtensiblePool(TestSimplePoolable.class);
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool);
 
     }
 
@@ -101,8 +102,10 @@ public class KObjectPoolsTests extends KStandardTestClass {
     public void testGetInjectedPoolable() {
         KObjectPool<TestInjectedPoolable> strictPool = this.getStrictPool(TestInjectedPoolable.class);
         KObjectPool<TestInjectedPoolable> forgivingPool = this.getForgivingPool(TestInjectedPoolable.class);
+        KObjectPool<TestInjectedPoolable> waitingPool = this.getWaitingPool(TestInjectedPoolable.class);
         KObjectPool<TestInjectedPoolable> strictExtensiblePool = this.getStrictExtensiblePool(TestInjectedPoolable.class);
         KObjectPool<TestInjectedPoolable> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestInjectedPoolable.class);
+        KObjectPool<TestInjectedPoolable> waitingExtensiblePool = this.getWaitingExtensiblePool(TestInjectedPoolable.class);
 
         try (var o = strictPool.obtain()) {
             Assertions.assertTrue(o.isPresent());
@@ -124,16 +127,17 @@ public class KObjectPoolsTests extends KStandardTestClass {
             Assertions.assertNotNull(o.get().getMessageSystem());
         }
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool);
     }
 
     @Test
     public void testGetExplicitPoolable() {
         KObjectPool<TestExplicitPoolable> strictPool = this.getStrictPool(TestExplicitPoolable.class);
         KObjectPool<TestExplicitPoolable> forgivingPool = this.getForgivingPool(TestExplicitPoolable.class);
+        KObjectPool<TestExplicitPoolable> waitingPool = this.getWaitingPool(TestExplicitPoolable.class);
         KObjectPool<TestExplicitPoolable> strictExtensiblePool = this.getStrictExtensiblePool(TestExplicitPoolable.class);
         KObjectPool<TestExplicitPoolable> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestExplicitPoolable.class);
+        KObjectPool<TestExplicitPoolable> waitingExtensiblePool = this.getWaitingExtensiblePool(TestExplicitPoolable.class);
 
         KArgs args = () -> new Object[] {1};
         try (var o = strictPool.obtain(args)) {
@@ -156,16 +160,17 @@ public class KObjectPoolsTests extends KStandardTestClass {
             Assertions.assertEquals(1, o.get().getValue());
         }
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool, args);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool, args);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool, args);
     }
 
     @Test
     public void testGetExplicitPoolableWithInjected() {
         KObjectPool<TestExplicitPoolableWithInjected> strictPool = this.getStrictPool(TestExplicitPoolableWithInjected.class);
         KObjectPool<TestExplicitPoolableWithInjected> forgivingPool = this.getForgivingPool(TestExplicitPoolableWithInjected.class);
+        KObjectPool<TestExplicitPoolableWithInjected> waitingPool = this.getWaitingPool(TestExplicitPoolableWithInjected.class);
         KObjectPool<TestExplicitPoolableWithInjected> strictExtensiblePool = this.getStrictExtensiblePool(TestExplicitPoolableWithInjected.class);
         KObjectPool<TestExplicitPoolableWithInjected> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestExplicitPoolableWithInjected.class);
+        KObjectPool<TestExplicitPoolableWithInjected> waitingExtensiblePool = this.getWaitingExtensiblePool(TestExplicitPoolableWithInjected.class);
 
         KArgs args = () -> new Object[] {1};
         try (var o = strictPool.obtain(args)) {
@@ -192,16 +197,17 @@ public class KObjectPoolsTests extends KStandardTestClass {
             Assertions.assertEquals(1, o.get().getValue());
         }
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool, args);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool, args);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool, args);
     }
 
     @Test
     public void testGetExplicitPoolableWithFalseInjected() {
         KObjectPool<TestExplicitFalseInjectedPoolable> strictPool = this.getStrictPool(TestExplicitFalseInjectedPoolable.class);
         KObjectPool<TestExplicitFalseInjectedPoolable> forgivingPool = this.getForgivingPool(TestExplicitFalseInjectedPoolable.class);
+        KObjectPool<TestExplicitFalseInjectedPoolable> waitingPool = this.getWaitingPool(TestExplicitFalseInjectedPoolable.class);
         KObjectPool<TestExplicitFalseInjectedPoolable> strictExtensiblePool = this.getStrictExtensiblePool(TestExplicitFalseInjectedPoolable.class);
         KObjectPool<TestExplicitFalseInjectedPoolable> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestExplicitFalseInjectedPoolable.class);
+        KObjectPool<TestExplicitFalseInjectedPoolable> waitingExtensiblePool = this.getWaitingExtensiblePool(TestExplicitFalseInjectedPoolable.class);
 
         KArgs args = () -> new Object[] {1};
         try (var o = strictPool.obtain(args)) {
@@ -228,16 +234,17 @@ public class KObjectPoolsTests extends KStandardTestClass {
             Assertions.assertEquals(1, o.get().getValue());
         }
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool, args);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool, args);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool, args);
     }
 
     @Test
     public void testGetPoolableWithFalseInjected() {
         KObjectPool<TestFalseInjectedPoolable> strictPool = this.getStrictPool(TestFalseInjectedPoolable.class);
         KObjectPool<TestFalseInjectedPoolable> forgivingPool = this.getForgivingPool(TestFalseInjectedPoolable.class);
+        KObjectPool<TestFalseInjectedPoolable> waitingPool = this.getWaitingPool(TestFalseInjectedPoolable.class);
         KObjectPool<TestFalseInjectedPoolable> strictExtensiblePool = this.getStrictExtensiblePool(TestFalseInjectedPoolable.class);
         KObjectPool<TestFalseInjectedPoolable> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestFalseInjectedPoolable.class);
+        KObjectPool<TestFalseInjectedPoolable> waitingExtensiblePool = this.getWaitingExtensiblePool(TestFalseInjectedPoolable.class);
 
         try (var o = strictPool.obtain()) {
             Assertions.assertTrue(o.isPresent());
@@ -259,16 +266,17 @@ public class KObjectPoolsTests extends KStandardTestClass {
             Assertions.assertNull(o.get().getMessageSystem());
         }
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool);
     }
 
     @Test
     public void testGetPoolableWithZeroArgOnObtain() {
         KObjectPool<TestPoolableWithZeroArgOnObtain> strictPool = this.getStrictPool(TestPoolableWithZeroArgOnObtain.class);
         KObjectPool<TestPoolableWithZeroArgOnObtain> forgivingPool = this.getForgivingPool(TestPoolableWithZeroArgOnObtain.class);
+        KObjectPool<TestPoolableWithZeroArgOnObtain> waitingPool = this.getWaitingPool(TestPoolableWithZeroArgOnObtain.class);
         KObjectPool<TestPoolableWithZeroArgOnObtain> strictExtensiblePool = this.getStrictExtensiblePool(TestPoolableWithZeroArgOnObtain.class);
         KObjectPool<TestPoolableWithZeroArgOnObtain> forgivingExtensiblePool = this.getForgivingExtensiblePool(TestPoolableWithZeroArgOnObtain.class);
+        KObjectPool<TestPoolableWithZeroArgOnObtain> waitingExtensiblePool = this.getWaitingExtensiblePool(TestPoolableWithZeroArgOnObtain.class);
 
         try (var o = strictPool.obtain()) {
             Assertions.assertTrue(o.isPresent());
@@ -290,11 +298,10 @@ public class KObjectPoolsTests extends KStandardTestClass {
             Assertions.assertEquals(1, o.get().getValue());
         }
 
-        this.simpleTest(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
-        this.simpleTestWithTimeout(strictPool, forgivingPool, strictExtensiblePool, forgivingExtensiblePool);
+        this.simpleTest(strictPool, forgivingPool, waitingPool, strictExtensiblePool, forgivingExtensiblePool, waitingExtensiblePool);
     }
 
-    @Test
+    /*@Test
     public void testLateObtain() {
         KObjectPool<TestSimplePoolable> strictPool = this.getStrictPool(TestSimplePoolable.class);
         KObjectPool<TestSimplePoolable> forgivingPool = this.getForgivingPool(TestSimplePoolable.class);
@@ -325,7 +332,7 @@ public class KObjectPoolsTests extends KStandardTestClass {
                 Assertions.assertTrue(o3.isPresent());
             }
         }
-    }
+    }*/
 
     private <T extends KPoolable> KObjectPool<T> getStrictPool(Class<T> clazz) {
         return KObjectPool.create(
@@ -342,6 +349,15 @@ public class KObjectPoolsTests extends KStandardTestClass {
             this.activator,
             this.objectRegistry,
             materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.RETURN_EMPTY, false, -1, 1.5f)
+        );
+    }
+    
+    private <T extends KPoolable> KObjectPool<T> getWaitingPool(Class<T> clazz) {
+        return KObjectPool.create(
+            clazz,
+            this.activator,
+            this.objectRegistry,
+            materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.WAIT, false, -1, 1.5f)
         );
     }
 
@@ -363,11 +379,22 @@ public class KObjectPoolsTests extends KStandardTestClass {
         );
     }
 
+    private <T extends KPoolable> KObjectPool<T> getWaitingExtensiblePool(Class<T> clazz) {
+        return KObjectPool.create(
+            clazz,
+            this.activator,
+            this.objectRegistry,
+            materializePoolMetadata(2, KAllocatePool.NoObjectPolicy.WAIT, true, 3, 1.5f)
+        );
+    }
+
     private <T extends KPoolable> void simpleTest(
         KObjectPool<T> strictPool,
         KObjectPool<T> forgivingPool,
+        KObjectPool<T> waitingPool,
         KObjectPool<T> strictExtensiblePool,
-        KObjectPool<T> forgivingExtensiblePool
+        KObjectPool<T> forgivingExtensiblePool,
+        KObjectPool<T> waitingExtensiblePool
     ) {
         try (var o = strictPool.obtain()) {
             Assertions.assertTrue(o.isPresent());
@@ -403,6 +430,24 @@ public class KObjectPoolsTests extends KStandardTestClass {
                         o3::get
                     );
                 }
+            }
+        }
+        
+        try (var o = waitingPool.obtain()) {
+            Assertions.assertTrue(o.isPresent());
+            Assertions.assertDoesNotThrow(o::get);
+            
+            var o2 = forgivingPool.obtain();
+            Assertions.assertTrue(o2.isPresent());
+            Assertions.assertDoesNotThrow(o2::get);
+            KThreadUtils.runAsync(() -> {
+                KThreadUtils.sleepForSeconds(2);
+                o2.close();
+            });
+
+            try (var o3 = forgivingPool.obtain()) {
+                Assertions.assertTrue(o3.isPresent());
+                Assertions.assertDoesNotThrow(o3::get);
             }
         }
 
@@ -449,91 +494,26 @@ public class KObjectPoolsTests extends KStandardTestClass {
                 }
             }
         }
-    }
 
-    private <T extends KPoolable> void simpleTestWithTimeout(
-        KObjectPool<T> strictPool,
-        KObjectPool<T> forgivingPool,
-        KObjectPool<T> strictExtensiblePool,
-        KObjectPool<T> forgivingExtensiblePool
-    ) {
-        try (var o = strictPool.obtain(1)) {
+        try (var o = waitingExtensiblePool.obtain()) {
             Assertions.assertTrue(o.isPresent());
             Assertions.assertDoesNotThrow(o::get);
 
-            try (var o2 = strictPool.obtain(1)) {
+            try (var o2 = waitingExtensiblePool.obtain()) {
                 Assertions.assertTrue(o2.isPresent());
                 Assertions.assertDoesNotThrow(o2::get);
-
-                Assertions.assertThrows(
-                    KEmptyObjectPoolException.class,
-                    () -> {
-                        try (var o3 = strictPool.obtain(1)) {
-                            Assertions.assertFalse(o3.isPresent());
-                        }
-                    }
-                );
-            }
-        }
-
-        try (var o = forgivingPool.obtain(1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertDoesNotThrow(o::get);
-
-            try (var o2 = forgivingPool.obtain(1)) {
-                Assertions.assertTrue(o2.isPresent());
-                Assertions.assertDoesNotThrow(o2::get);
-
-                try (var o3 = forgivingPool.obtain(1)) {
-                    Assertions.assertFalse(o3.isPresent());
-                    Assertions.assertThrows(
-                        KNoSuchElementException.class,
-                        o3::get
-                    );
-                }
-            }
-        }
-
-        try (var o = strictExtensiblePool.obtain(1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertDoesNotThrow(o::get);
-
-            try (var o2 = strictExtensiblePool.obtain(1)) {
-                Assertions.assertTrue(o2.isPresent());
-                Assertions.assertDoesNotThrow(o2::get);
-
-                try (var o3 = strictExtensiblePool.obtain(1)) {
-                    Assertions.assertTrue(o3.isPresent());
-                    Assertions.assertDoesNotThrow(o3::get);
-
-                    Assertions.assertThrows(
-                        KEmptyObjectPoolException.class,
-                        () -> {
-                            try (var o4 = strictExtensiblePool.obtain(1)) {
-                                Assertions.assertFalse(o4.isPresent());
-                            }
-                        }
-                    );
-                }
-            }
-        }
-
-        try (var o = forgivingExtensiblePool.obtain(1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertDoesNotThrow(o::get);
-
-            try (var o2 = forgivingExtensiblePool.obtain(1)) {
-                Assertions.assertTrue(o2.isPresent());
-                Assertions.assertDoesNotThrow(o2::get);
-
-                try (var o3 = forgivingExtensiblePool.obtain(1)) {
-                    Assertions.assertTrue(o3.isPresent());
-                    Assertions.assertDoesNotThrow(o3::get);
-
-                    try (var o4 = forgivingExtensiblePool.obtain(1)) {
-                        Assertions.assertFalse(o4.isPresent());
-                        Assertions.assertThrows(KNoSuchElementException.class, o4::get);
-                    }
+                
+                var o3 = waitingExtensiblePool.obtain();
+                Assertions.assertTrue(o3.isPresent());
+                Assertions.assertDoesNotThrow(o3::get);
+                KThreadUtils.runAsync(() -> {
+                    KThreadUtils.sleepForSeconds(2);
+                    o3.close();
+                });
+                
+                try (var o4 = waitingExtensiblePool.obtain()) {
+                    Assertions.assertTrue(o4.isPresent());
+                    Assertions.assertDoesNotThrow(o4::get);
                 }
             }
         }
@@ -542,8 +522,10 @@ public class KObjectPoolsTests extends KStandardTestClass {
     private <T extends KPoolable> void simpleTest(
         KObjectPool<T> strictPool,
         KObjectPool<T> forgivingPool,
+        KObjectPool<T> waitingPool,
         KObjectPool<T> strictExtensiblePool,
         KObjectPool<T> forgivingExtensiblePool,
+        KObjectPool<T> waitingExtensiblePool,
         KArgs args
     ) {
         try (var o = strictPool.obtain(args)) {
@@ -580,6 +562,24 @@ public class KObjectPoolsTests extends KStandardTestClass {
                         o3::get
                     );
                 }
+            }
+        }
+
+        try (var o = waitingPool.obtain(args)) {
+            Assertions.assertTrue(o.isPresent());
+            Assertions.assertDoesNotThrow(o::get);
+
+            var o2 = forgivingPool.obtain(args);
+            Assertions.assertTrue(o2.isPresent());
+            Assertions.assertDoesNotThrow(o2::get);
+            KThreadUtils.runAsync(() -> {
+                KThreadUtils.sleepForSeconds(2);
+                o2.close();
+            });
+
+            try (var o3 = forgivingPool.obtain(args)) {
+                Assertions.assertTrue(o3.isPresent());
+                Assertions.assertDoesNotThrow(o3::get);
             }
         }
 
@@ -626,94 +626,29 @@ public class KObjectPoolsTests extends KStandardTestClass {
                 }
             }
         }
-    }
 
-    private <T extends KPoolable> void simpleTestWithTimeout(
-        KObjectPool<T> strictPool,
-        KObjectPool<T> forgivingPool,
-        KObjectPool<T> strictExtensiblePool,
-        KObjectPool<T> forgivingExtensiblePool,
-        KArgs args
-    ) {
-        try (var o = strictPool.obtain(args, 1)) {
+        try (var o = waitingExtensiblePool.obtain(args)) {
             Assertions.assertTrue(o.isPresent());
             Assertions.assertDoesNotThrow(o::get);
 
-            try (var o2 = strictPool.obtain(args, 1)) {
+            try (var o2 = waitingExtensiblePool.obtain(args)) {
                 Assertions.assertTrue(o2.isPresent());
                 Assertions.assertDoesNotThrow(o2::get);
 
-                Assertions.assertThrows(
-                    KEmptyObjectPoolException.class,
-                    () -> {
-                        try (var o3 = strictPool.obtain(args, 1)) {
-                            Assertions.assertFalse(o3.isPresent());
-                        }
-                    }
-                );
-            }
-        }
+                var o3 = waitingExtensiblePool.obtain(args);
+                Assertions.assertTrue(o3.isPresent());
+                Assertions.assertDoesNotThrow(o3::get);
+                KThreadUtils.runAsync(() -> {
+                    KThreadUtils.sleepForSeconds(2);
+                    o3.close();
+                });
 
-        try (var o = forgivingPool.obtain(args, 1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertDoesNotThrow(o::get);
-
-            try (var o2 = forgivingPool.obtain(args, 1)) {
-                Assertions.assertTrue(o2.isPresent());
-                Assertions.assertDoesNotThrow(o2::get);
-
-                try (var o3 = forgivingPool.obtain(args, 1)) {
-                    Assertions.assertFalse(o3.isPresent());
-                    Assertions.assertThrows(
-                        KNoSuchElementException.class,
-                        o3::get
-                    );
-                }
-            }
-        }
-
-        try (var o = strictExtensiblePool.obtain(args, 1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertDoesNotThrow(o::get);
-
-            try (var o2 = strictExtensiblePool.obtain(args, 1)) {
-                Assertions.assertTrue(o2.isPresent());
-                Assertions.assertDoesNotThrow(o2::get);
-
-                try (var o3 = strictExtensiblePool.obtain(args, 1)) {
-                    Assertions.assertTrue(o3.isPresent());
-                    Assertions.assertDoesNotThrow(o3::get);
-
-                    Assertions.assertThrows(
-                        KEmptyObjectPoolException.class,
-                        () -> {
-                            try (var o4 = strictExtensiblePool.obtain(args, 1)) {
-                                Assertions.assertFalse(o4.isPresent());
-                            }
-                        }
-                    );
-                }
-            }
-        }
-
-        try (var o = forgivingExtensiblePool.obtain(args, 1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertDoesNotThrow(o::get);
-
-            try (var o2 = forgivingExtensiblePool.obtain(args, 1)) {
-                Assertions.assertTrue(o2.isPresent());
-                Assertions.assertDoesNotThrow(o2::get);
-
-                try (var o3 = forgivingExtensiblePool.obtain(args, 1)) {
-                    Assertions.assertTrue(o3.isPresent());
-                    Assertions.assertDoesNotThrow(o3::get);
-
-                    try (var o4 = forgivingExtensiblePool.obtain(args, 1)) {
-                        Assertions.assertFalse(o4.isPresent());
-                        Assertions.assertThrows(KNoSuchElementException.class, o4::get);
-                    }
+                try (var o4 = waitingExtensiblePool.obtain(args)) {
+                    Assertions.assertTrue(o4.isPresent());
+                    Assertions.assertDoesNotThrow(o4::get);
                 }
             }
         }
     }
+    
 }

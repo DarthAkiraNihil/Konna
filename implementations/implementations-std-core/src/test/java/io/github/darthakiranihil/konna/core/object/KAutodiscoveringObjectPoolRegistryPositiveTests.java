@@ -44,22 +44,12 @@ public class KAutodiscoveringObjectPoolRegistryPositiveTests extends KStandardTe
             Assertions.assertTrue(o.isPresent());
             Assertions.assertEquals(1, o.get().getValue());
         }
-
-        try (var o = this.registry.obtain(TestSimplePoolable.class, 1)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertEquals(1, o.get().getValue());
-        }
     }
 
     @Test
     public void testGetExplicitPoolable() {
         KArgs args = () -> new Object[] {1};
         try (var o = this.registry.obtain(TestExplicitPoolable.class, args)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertEquals(1, o.get().getValue());
-        }
-
-        try (var o = this.registry.obtain(TestExplicitPoolable.class, args, 1)) {
             Assertions.assertTrue(o.isPresent());
             Assertions.assertEquals(1, o.get().getValue());
         }
