@@ -39,7 +39,7 @@ import java.util.List;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class Konna extends KObject implements Runnable {
+public final class Konna extends KObject {
 
     /**
      * Konna's version.
@@ -47,7 +47,6 @@ public final class Konna extends KObject implements Runnable {
     public static final KVersion VERSION = new KVersion(0, 6, 0, "dev");
 
     private final List<KApplicationArgument> applicationArgsOptions;
-    private final String[] args;
 
     private final KonnaBootstrapConfig bootstrapConfig;
 
@@ -64,15 +63,13 @@ public final class Konna extends KObject implements Runnable {
 
     /**
      * Standard constructor.
-     * @param args Application args provided by {@code main}
-     *             method.
      * @param bootstrap Bootstrap config
-     * @see Konna#run()
      */
-    public Konna(final String[] args, final KonnaBootstrapConfig bootstrap) {
+    public Konna(
+        final KonnaBootstrapConfig bootstrap
+    ) {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
-        this.args = args;
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
     }
@@ -80,21 +77,16 @@ public final class Konna extends KObject implements Runnable {
     /**
      * Standard constructor for cases the application uses non-standard arguments
      * that are defined before Konna application launching.
-     * @param args Application args provided by {@code main}
-     *             method.
      * @param customArgs Options of custom args that will be used by {@link KArgumentParser}
      *                   to parse them into application features
      * @param bootstrap Bootstrap config
-     * @see Konna#run()
      */
     public Konna(
-        final String[] args,
         final List<KApplicationArgument> customArgs,
         final KonnaBootstrapConfig bootstrap
     ) {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
-        this.args = args;
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
     }
@@ -112,14 +104,16 @@ public final class Konna extends KObject implements Runnable {
      *     so in order to graceful shutdown it the Konna thread
      *     must be stopped.
      * </p>
+     * @param args Application args provided by {@code main}
+     *             method.
+     *
      */
-    @Override
-    public void run() {
+    public void run(final String[] args) {
 
         KSystemLogger.info(this.name, "Starting Konna. Version: %s", VERSION);
 
         KArgumentParser argParser = this.createArgumentParser();
-        KApplicationFeatures features = argParser.parse(this.args, this.applicationArgsOptions);
+        KApplicationFeatures features = argParser.parse(args, this.applicationArgsOptions);
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
 
         KEngineHypervisor hypervisor = this.createHypervisor();
