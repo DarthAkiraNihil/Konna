@@ -61,6 +61,7 @@ public final class Konna extends KObject {
 
     /**
      * Standard constructor.
+     * @param applicationInfo Application's information
      * @param bootstrap Bootstrap config
      */
     public Konna(
@@ -77,6 +78,7 @@ public final class Konna extends KObject {
     /**
      * Standard constructor for cases the application uses non-standard arguments
      * that are defined before Konna application launching.
+     * @param applicationInfo Application's information
      * @param customArgs Options of custom args that will be used by {@link KArgumentParser}
      *                   to parse them into application features
      * @param bootstrap Bootstrap config

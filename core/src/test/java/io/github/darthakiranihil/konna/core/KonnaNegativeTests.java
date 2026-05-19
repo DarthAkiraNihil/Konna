@@ -79,7 +79,7 @@ public class KonnaNegativeTests extends KStandardTestClass {
     ) {
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 argumentParser,
                 engineHypervisor,
@@ -91,7 +91,7 @@ public class KonnaNegativeTests extends KStandardTestClass {
                 )
             )
         );
-        Assertions.assertThrows(KBootstrapException.class, konna::run);
+        Assertions.assertThrows(KBootstrapException.class, () -> konna.run(new String[0]));
 
     }
 

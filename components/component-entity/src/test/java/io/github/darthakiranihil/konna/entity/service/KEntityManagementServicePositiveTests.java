@@ -94,7 +94,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KMessageRoutesConfigurer sender
     ) {
         Konna konnaWithOnlyDefaultArgs = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -108,7 +108,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 List.of(KEntityComponentLoader.class)
             )
         ));
-        konnaWithOnlyDefaultArgs.run();
+        konnaWithOnlyDefaultArgs.run(new String[0]);
     }
 
     @Test

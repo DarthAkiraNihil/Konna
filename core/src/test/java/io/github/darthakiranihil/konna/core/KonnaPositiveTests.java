@@ -47,10 +47,10 @@ public class KonnaPositiveTests extends KStandardTestClass {
     public void testStartKonna() {
 
         try {
-            Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], BOOTSTRAP);
-            konnaWithOnlyDefaultArgs.run();
-            Konna konnaWithCustomArgs = new Konna(new String[0], List.of(new KApplicationArgument("a", "aaa", "wawa")), BOOTSTRAP);
-            konnaWithCustomArgs.run();
+            Konna konnaWithOnlyDefaultArgs = new Konna(KStandardTestClass.APP_INFO, BOOTSTRAP);
+            konnaWithOnlyDefaultArgs.run(new String[0]);
+            Konna konnaWithCustomArgs = new Konna(KStandardTestClass.APP_INFO, List.of(new KApplicationArgument("a", "aaa", "wawa")), BOOTSTRAP);
+            konnaWithCustomArgs.run(new String[0]);
 
         } catch (Throwable e) {
             throw new KException(e);

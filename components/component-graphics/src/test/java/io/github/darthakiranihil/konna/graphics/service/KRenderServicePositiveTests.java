@@ -113,8 +113,8 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
             )
         );
 
-        Konna konna = new Konna(new String[0], config);
-        konna.run();
+        Konna konna = new Konna(KStandardTestClass.APP_INFO, config);
+        konna.run(new String[0]);
 
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
