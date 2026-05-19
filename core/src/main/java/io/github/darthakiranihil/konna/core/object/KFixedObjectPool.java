@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -41,7 +40,7 @@ final class KFixedObjectPool<T extends KPoolable> extends KObjectPool<T> {
         final Class<T> clazz,
         final KActivator activator,
         final KObjectRegistry objectRegistry,
-        KNoObjectPolicy noObjectPolicy,
+        final KNoObjectPolicy noObjectPolicy,
         int size
     ) {
         super(

@@ -18,19 +18,21 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+@ApiStatus.Internal
 enum KNoObjectPolicy {
 
     THROW_EXCEPTION {
         @Override
-        public <T extends KPoolable> Optional<T> obtainRawObject(
-            Queue<T> objectQueue,
-            Class<?> clazz
+        <T extends KPoolable> Optional<T> obtainRawObject(
+            final Queue<T> objectQueue,
+            final Class<?> clazz
         ) {
             if (objectQueue.isEmpty()) {
                 throw new KEmptyObjectPoolException(clazz);
@@ -39,17 +41,19 @@ enum KNoObjectPolicy {
             return Optional.of(objectQueue.poll());
         }
     },
+
     RETURN_EMPTY {
         @Override
-        public <T extends KPoolable> Optional<T> obtainRawObject(
-            Queue<T> objectQueue,
-            Class<?> clazz
+        <T extends KPoolable> Optional<T> obtainRawObject(
+            final Queue<T> objectQueue,
+            final Class<?> clazz
         ) {
             return objectQueue.isEmpty()
                 ? Optional.empty()
                 : Optional.of(objectQueue.poll());
         }
     },
+
     WAIT {
 
         private final ReentrantLock lock = new ReentrantLock();
@@ -57,7 +61,10 @@ enum KNoObjectPolicy {
         private volatile boolean flag;
 
         @Override
-        public <T extends KPoolable> Optional<T> obtainRawObject(Queue<T> objectQueue, Class<?> clazz) {
+        <T extends KPoolable> Optional<T> obtainRawObject(
+            final Queue<T> objectQueue,
+            final Class<?> clazz
+        ) {
 
             this.lock.lock();
             try {
@@ -76,7 +83,7 @@ enum KNoObjectPolicy {
         }
 
         @Override
-        public void objectReturnedCallback() {
+        void objectReturnedCallback() {
             this.lock.lock();
             try {
                 if (this.flag) {
@@ -90,13 +97,13 @@ enum KNoObjectPolicy {
         }
     };
 
-    public static KNoObjectPolicy fromAnnotationMetadata(
+    static KNoObjectPolicy fromAnnotationMetadata(
         final KAllocatePool.NoObjectPolicy policy
     ) {
         return KNoObjectPolicy.valueOf(policy.name());
     }
 
-    public static String getTypeQualifier(KNoObjectPolicy policy) {
+    static String getTypeQualifier(final KNoObjectPolicy policy) {
         return switch (policy) {
             case RETURN_EMPTY -> "Forgiving";
             case THROW_EXCEPTION -> "Strict";
@@ -104,8 +111,12 @@ enum KNoObjectPolicy {
         };
     }
 
-    public abstract <T extends KPoolable> Optional<T> obtainRawObject(Queue<T> objectQueue, Class<?> clazz);
-    public void objectReturnedCallback() {
+    abstract <T extends KPoolable> Optional<T> obtainRawObject(
+        Queue<T> objectQueue,
+        Class<?> clazz
+    );
+
+    void objectReturnedCallback() {
 
     }
 
