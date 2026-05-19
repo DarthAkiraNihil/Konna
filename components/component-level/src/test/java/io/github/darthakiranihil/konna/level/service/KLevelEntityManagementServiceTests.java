@@ -263,7 +263,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -278,7 +278,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
 
@@ -351,7 +351,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -366,7 +366,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
         
@@ -439,7 +439,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -454,7 +454,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
         
@@ -526,7 +526,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -541,7 +541,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -599,7 +599,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -614,7 +614,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -677,7 +677,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -692,7 +692,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -761,7 +761,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -776,7 +776,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -840,7 +840,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -855,7 +855,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -924,7 +924,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -939,7 +939,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1003,7 +1003,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1018,7 +1018,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1082,7 +1082,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1097,7 +1097,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1160,7 +1160,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1175,7 +1175,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1232,7 +1232,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1247,7 +1247,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1310,7 +1310,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1325,7 +1325,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1388,7 +1388,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1403,7 +1403,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }
@@ -1460,7 +1460,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         Konna konna = new Konna(
-            new String[0],
+            KStandardTestClass.APP_INFO,
             new KonnaBootstrapConfig(
                 KStandardArgumentParser.class,
                 KEngineHypervisor.class,
@@ -1475,7 +1475,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
         KBooleanReference executed = new KBooleanReference();
         UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
-        konna.run();
+        konna.run(new String[0]);
         Assertions.assertTrue(executed.get());
         CAPTURE_THE_FLAG.unsubscribe(subToken);
     }

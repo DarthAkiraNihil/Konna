@@ -16,7 +16,9 @@
 
 package io.github.darthakiranihil.konna.test;
 
+import io.github.darthakiranihil.konna.core.Konna;
 import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
+import io.github.darthakiranihil.konna.core.app.KApplicationInfo;
 import io.github.darthakiranihil.konna.core.app.KStandardApplicationFeatures;
 import io.github.darthakiranihil.konna.core.app.KSystemFeatures;
 import io.github.darthakiranihil.konna.core.data.json.*;
@@ -40,6 +42,15 @@ import java.util.Set;
  */
 @TestOnly
 public class KStandardTestClass extends KObject {
+
+    /**
+     * Application info for all Konna instances created in tests.
+     */
+    public static final KApplicationInfo APP_INFO = new KApplicationInfo(
+        "TEST_APP",
+        "Akira Nihil",
+        Konna.VERSION
+    );
 
     /**
      * Implementation of a json tokenizer.

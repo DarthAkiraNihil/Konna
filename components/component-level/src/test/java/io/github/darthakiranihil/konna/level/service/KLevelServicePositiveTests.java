@@ -137,8 +137,8 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
                 List.of(KLevelComponentLoader.class)
             )
         );
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
-        konnaWithOnlyDefaultArgs.run();
+        Konna konnaWithOnlyDefaultArgs = new Konna(KStandardTestClass.APP_INFO, config);
+        konnaWithOnlyDefaultArgs.run(new String[0]);
 
         CAPTURE_THE_FLAG.unsubscribe(subToken);
         Assertions.assertTrue(executed.get());
@@ -201,8 +201,8 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
                 List.of(KLevelComponentLoader.class)
             )
         );
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
-        konnaWithOnlyDefaultArgs.run();
+        Konna konnaWithOnlyDefaultArgs = new Konna(KStandardTestClass.APP_INFO, config);
+        konnaWithOnlyDefaultArgs.run(new String[0]);
 
         CAPTURE_THE_FLAG.unsubscribe(subToken);
         Assertions.assertEquals(2, executions.get());
@@ -265,8 +265,8 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
                 List.of(KLevelComponentLoader.class)
             )
         );
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
-        konnaWithOnlyDefaultArgs.run();
+        Konna konnaWithOnlyDefaultArgs = new Konna(KStandardTestClass.APP_INFO, config);
+        konnaWithOnlyDefaultArgs.run(new String[0]);
 
         CAPTURE_THE_FLAG.unsubscribe(subToken);
         Assertions.assertTrue(executed.get());
@@ -330,8 +330,8 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
                 List.of(KLevelComponentLoader.class)
             )
         );
-        Konna konnaWithOnlyDefaultArgs = new Konna(new String[0], config);
-        konnaWithOnlyDefaultArgs.run();
+        Konna konnaWithOnlyDefaultArgs = new Konna(KStandardTestClass.APP_INFO, config);
+        konnaWithOnlyDefaultArgs.run(new String[0]);
 
         CAPTURE_THE_FLAG.unsubscribe(subToken);
         Assertions.assertEquals(2, executions.get());
