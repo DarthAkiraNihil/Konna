@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.core;
 import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KRuntime;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
@@ -38,6 +39,26 @@ import java.util.List;
  */
 public final class Konna extends KObject {
 
+    private static final class KonnaRuntime implements KRuntime {
+
+        private final KApplicationInfo applicationInfo;
+
+        public KonnaRuntime(final KApplicationInfo applicationInfo) {
+            this.applicationInfo = applicationInfo;
+        }
+
+        @Override
+        public KVersion getKonnaVersion() {
+            return Konna.VERSION;
+        }
+
+        @Override
+        public KApplicationInfo getApplicationInfo() {
+            return this.applicationInfo;
+        }
+
+    }
+
     /**
      * Konna's version.
      */
@@ -46,7 +67,7 @@ public final class Konna extends KObject {
     private final List<KApplicationArgument> applicationArgsOptions;
 
     private final KonnaBootstrapConfig bootstrapConfig;
-    private final KApplicationInfo applicationInfo;
+    private final KRuntime runtime;
 
     private final Thread shutdownHook;
 
@@ -69,10 +90,12 @@ public final class Konna extends KObject {
         final KonnaBootstrapConfig bootstrap
     ) {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
+
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
-        this.applicationInfo = applicationInfo;
+
+        this.runtime = new KonnaRuntime(applicationInfo);
     }
 
     /**
@@ -92,7 +115,8 @@ public final class Konna extends KObject {
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
-        this.applicationInfo = applicationInfo;
+
+        this.runtime = new KonnaRuntime(applicationInfo);
     }
 
     /**
@@ -133,6 +157,10 @@ public final class Konna extends KObject {
         // !! the only correct usage of self-destruction
         this.delete();
 
+    }
+
+    public KRuntime getRuntime() {
+        return this.runtime;
     }
 
     private KArgumentParser createArgumentParser() {
