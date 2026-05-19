@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.core;
 
-import io.github.darthakiranihil.konna.core.app.KApplicationArgument;
-import io.github.darthakiranihil.konna.core.app.KApplicationFeatures;
-import io.github.darthakiranihil.konna.core.app.KArgumentParser;
-import io.github.darthakiranihil.konna.core.app.KVersion;
+import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
@@ -49,6 +46,7 @@ public final class Konna extends KObject {
     private final List<KApplicationArgument> applicationArgsOptions;
 
     private final KonnaBootstrapConfig bootstrapConfig;
+    private final KApplicationInfo applicationInfo;
 
     private final Thread shutdownHook;
 
@@ -66,12 +64,14 @@ public final class Konna extends KObject {
      * @param bootstrap Bootstrap config
      */
     public Konna(
+        final KApplicationInfo applicationInfo,
         final KonnaBootstrapConfig bootstrap
     ) {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
+        this.applicationInfo = applicationInfo;
     }
 
     /**
@@ -82,6 +82,7 @@ public final class Konna extends KObject {
      * @param bootstrap Bootstrap config
      */
     public Konna(
+        final KApplicationInfo applicationInfo,
         final List<KApplicationArgument> customArgs,
         final KonnaBootstrapConfig bootstrap
     ) {
@@ -89,6 +90,7 @@ public final class Konna extends KObject {
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
+        this.applicationInfo = applicationInfo;
     }
 
     /**
