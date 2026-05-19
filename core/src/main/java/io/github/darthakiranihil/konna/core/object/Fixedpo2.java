@@ -22,17 +22,11 @@ import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-/**
- * Implementation of pool, that extends on no free objects provided.
- * @param <T> Type of pooled object
- *
- * @since 0.6.0
- * @author Darth Akira Nihil
- */
-final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
+public final class Fixedpo2<T extends KPoolable> extends KObjectPool<T> {
 
     private final Object extensionLock = new Object();
 
@@ -42,27 +36,27 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
 
     private final Constructor<T> constructor;
     private final KObjectRegistry objectRegistry;
-    private final boolean allowObtainOnEmpty;
+    private final KNoObjectPolicy noObjectPolicy;
 
     private Queue<T> unusedObjects;
 
     @SuppressWarnings("unchecked")
-    KExtensibleObjectPool(
+    Fixedpo2(
         final Class<T> clazz,
         final KActivator activator,
         final KObjectRegistry objectRegistry,
         int initialSize,
         int maxSize,
         float extensionFactor,
-        boolean allowObtainOnEmpty
+        KNoObjectPolicy noObjectPolicy
     ) {
         super(
-            allowObtainOnEmpty ? "ExtensibleForgivingPool" : "ExtensibleStrictPool",
+            String.format("Extensible%sPool", KNoObjectPolicy.getTypeQualifier(noObjectPolicy)),
             clazz,
             activator
         );
 
-        this.allowObtainOnEmpty = allowObtainOnEmpty;
+        this.noObjectPolicy = noObjectPolicy;
         this.objectRegistry = objectRegistry;
 
         this.maxSize = maxSize;
@@ -146,7 +140,7 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
     }
 
     private KObtainedPoolableObject<T> obtain(boolean doNotExtend) {
-        if (this.unusedObjects.isEmpty() && !doNotExtend) {
+        if (this.unusedObjects.isEmpty() && !doNotExtend) { // todo: remove donotextend as timeout methods will be deleted
             this.extend();
         }
 

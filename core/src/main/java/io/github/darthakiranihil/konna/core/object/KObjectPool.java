@@ -43,7 +43,7 @@ public abstract sealed class KObjectPool<T extends KPoolable>
     extends KObject
     permits
         KFixedObjectPool,
-        KExtensibleObjectPool {
+        KExtensibleObjectPool, Fixedpo2 {
 
     /**
      * Creates a new pool based on {@link KAllocatePool }metadata.

@@ -50,7 +50,14 @@ public @interface KAllocatePool {
         /**
          * Throw an exception.
          */
-        THROW_EXCEPTION
+        THROW_EXCEPTION,
+        /**
+         * Wait until some object will be returned to the pool. Using this policy may
+         * cause serious performance bottlenecks since it guarantees that the
+         * object will be <i>eventually</i> acquired, so no exception will be thrown or no empty
+         * container will be returned.
+         */
+        WAIT
     }
 
     /**
