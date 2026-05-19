@@ -62,45 +62,26 @@ public abstract sealed class KObjectPool<T extends KPoolable>
         final KObjectRegistry objectRegistry,
         final KAllocatePool metadata
     ) {
-        if (metadata.extensible()) {
-            return switch (metadata.noObjectPolicy()) {
-                case THROW_EXCEPTION -> new KExtensibleObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    metadata.maxSize(),
-                    metadata.extensionFactor(),
-                    false
-                );
-                case RETURN_EMPTY -> new KExtensibleObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    metadata.maxSize(),
-                    metadata.extensionFactor(),
-                    true
-                );
-            };
-        } else {
-            return switch (metadata.noObjectPolicy()) {
-                case THROW_EXCEPTION -> new KFixedObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    false
-                );
-                case RETURN_EMPTY -> new KFixedObjectPool<>(
-                    clazz,
-                    activator,
-                    objectRegistry,
-                    metadata.initialSize(),
-                    true
-                );
-            };
-        }
+        KNoObjectPolicy noObjectPolicy = KNoObjectPolicy.fromAnnotationMetadata(
+            metadata.noObjectPolicy()
+        );
+
+        return metadata.extensible()
+            ? new KExtensibleObjectPool<>(
+                clazz,
+                activator,
+                objectRegistry,
+                metadata.initialSize(),
+                metadata.maxSize(),
+                metadata.extensionFactor(),
+                noObjectPolicy
+            ) : new KFixedObjectPool<>(
+                clazz,
+                activator,
+                objectRegistry,
+                noObjectPolicy,
+                metadata.initialSize()
+        );
     }
 
     /**

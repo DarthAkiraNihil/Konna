@@ -16,12 +16,11 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
-import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -42,7 +41,7 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
 
     private final Constructor<T> constructor;
     private final KObjectRegistry objectRegistry;
-    private final boolean allowObtainOnEmpty;
+    private final KNoObjectPolicy noObjectPolicy;
 
     private Queue<T> unusedObjects;
 
@@ -54,15 +53,15 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
         int initialSize,
         int maxSize,
         float extensionFactor,
-        boolean allowObtainOnEmpty
+        final KNoObjectPolicy noObjectPolicy
     ) {
         super(
-            allowObtainOnEmpty ? "ExtensibleForgivingPool" : "ExtensibleStrictPool",
+            String.format("Extensible%sPool", KNoObjectPolicy.getTypeQualifier(noObjectPolicy)),
             clazz,
             activator
         );
 
-        this.allowObtainOnEmpty = allowObtainOnEmpty;
+        this.noObjectPolicy = noObjectPolicy;
         this.objectRegistry = objectRegistry;
 
         this.maxSize = maxSize;
@@ -108,12 +107,27 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
 
     @Override
     public KObtainedPoolableObject<T> obtain() {
-        return this.obtain(false);
+        if (this.unusedObjects.isEmpty()) {
+            this.extend();
+        }
+
+        Optional<T> obtained = this.noObjectPolicy.obtainRawObject(this.unusedObjects, this.clazz);
+        return obtained
+            .map(this::prepareObject)
+            .orElseGet(() -> new KObtainedPoolableObject<>(this));
     }
 
     @Override
     public KObtainedPoolableObject<T> obtain(final KArgs args) {
-        return this.obtain(args, false);
+        if (this.unusedObjects.isEmpty()) {
+            this.extend();
+        }
+
+        Optional<T> obtained = this.noObjectPolicy.obtainRawObject(this.unusedObjects, this.clazz);
+        return obtained
+            .map((x) -> this.prepareObject(x, args))
+            .orElseGet(() -> new KObtainedPoolableObject<>(this));
+
     }
 
     @Override
@@ -122,40 +136,6 @@ final class KExtensibleObjectPool<T extends KPoolable> extends KObjectPool<T> {
         synchronized (this.extensionLock) {
             this.unusedObjects.add(object);
         }
-    }
-
-    private KObtainedPoolableObject<T> obtain(boolean doNotExtend) {
-        if (this.unusedObjects.isEmpty() && !doNotExtend) {
-            this.extend();
-        }
-
-        if (this.unusedObjects.isEmpty()) {
-            if (this.allowObtainOnEmpty) {
-                return new KObtainedPoolableObject<>(this);
-            }
-
-            throw new KEmptyObjectPoolException(this.clazz);
-        }
-
-        T obtained = this.unusedObjects.poll();
-        return this.prepareObject(obtained);
-    }
-
-    private KObtainedPoolableObject<T> obtain(final KArgs explicitArgs, boolean doNotExtend) {
-        if (this.unusedObjects.isEmpty() && !doNotExtend) {
-            this.extend();
-        }
-
-        if (this.unusedObjects.isEmpty()) {
-            if (this.allowObtainOnEmpty) {
-                return new KObtainedPoolableObject<>(this);
-            }
-
-            throw new KEmptyObjectPoolException(this.clazz);
-        }
-
-        T obtained = this.unusedObjects.poll();
-        return this.prepareObject(obtained, explicitArgs);
     }
 
 }
