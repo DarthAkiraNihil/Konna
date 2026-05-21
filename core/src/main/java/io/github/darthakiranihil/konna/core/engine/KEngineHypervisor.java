@@ -298,6 +298,7 @@ public class KEngineHypervisor extends KObject {
 
     /**
      * @return Runtime data for this hypervisor if it is launched, otherwise {@code null}.
+     * @since 0.6.0
      */
     public @Nullable KEngineHypervisorRuntime getRuntime() {
         return this.runtime;
