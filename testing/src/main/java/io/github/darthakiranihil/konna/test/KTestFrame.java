@@ -46,7 +46,7 @@ public final class KTestFrame implements KFrame {
                 0
             ),
             () -> {
-                KThreadUtils.sleepForSeconds(1);
+                KThreadUtils.sleepForSeconds(4);
                 this.setShouldClose(true);
             }
         );

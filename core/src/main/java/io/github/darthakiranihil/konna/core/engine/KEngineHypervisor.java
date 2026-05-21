@@ -652,8 +652,6 @@ public class KEngineHypervisor extends KObject {
         this.loadDebuggers(activator);
     }
 
-    // todo: make it return map when KRuntime will be added
-
     /**
      * Instantiates all found debug classes (annotated with {@link KDebugger}).
      * @param activator Activator to create debuggers with
