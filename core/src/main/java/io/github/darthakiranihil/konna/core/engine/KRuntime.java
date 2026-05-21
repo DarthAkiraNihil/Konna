@@ -84,7 +84,7 @@ public interface KRuntime {
     String @Nullable [] getCmdlineArgs();
 
     /**
-     * @return Runtime data of app's engine hypervisor if it is launched or {@link null} otherwise
+     * @return Runtime data of app's engine hypervisor if it is launched or {@code null} otherwise
      */
     @Nullable KEngineHypervisorRuntime getHypervisorRuntime();
 
