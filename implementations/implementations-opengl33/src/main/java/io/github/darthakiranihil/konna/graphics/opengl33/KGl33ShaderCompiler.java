@@ -162,7 +162,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
             throw new KShaderCompilationException(log);
         }
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             this.name,
             "Compiled shader id: %d", shaderId
         );
@@ -206,7 +206,7 @@ public final class KGl33ShaderCompiler extends KObject implements KShaderCompile
             throw new KShaderCompilationException(log);
         }
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             this.name,
             "Linked shader program id: %d, vertex: %s, fragment: %s",
             program,

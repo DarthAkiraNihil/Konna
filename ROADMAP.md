@@ -101,48 +101,61 @@ The foundation that is essential for the whole engine
 
 ### v. 0.6.0 - Valhalla - The Epic Refactoring
 
-- [ ] Rework frame events by replacing them with frame tasks
-  - [ ] Add support for scheduling persistent and temporal tasks
-  - [ ] Add task prioritization
-  - [ ] Add KFrameTaskScheduler interface
-- [ ] Split acquired events to EventSubscriber and EventInvoker
-- [ ] Rework component and service loading
-- [ ] Make bootstrap config a record so there can be more than one Konna instance
-- [ ] Add opportunity to start hypervisor in the first thread
-- [ ] Implement new container system that is Dagger-like
+- [x] Rework frame events by replacing them with frame tasks
+  - [x] Add support for scheduling persistent and temporal tasks
+  - [x] Add task prioritization
+  - [x] Add KFrameTaskScheduler interface
+- [x] Split acquired events to EventSubscriber and EventInvoker
+- [x] Rework component and service loading
+- [x] Make bootstrap config a record so there can be more than one Konna instance
+- [x] Add opportunity to start hypervisor in the first thread
+- [x] Implement new container system that is Dagger-like
 - [x] Eliminate KIndex and replace it to KClasspathSearchEngine
-- [ ] Add something-something to be used in Konna Editor 
-- [ ] Weaken log levels of some messages
-- [ ] Maybe more convenient way to handle native memory? (at least need to fix render memory leaking)
-- [ ] Brand new Object Registry
-- [ ] Improved object management model (object "deletion")
+- [x] Weaken log levels of some messages
+- [x] Brand new Object Registry
+- [x] Improved object management model (object "deletion")
 
-### v. 0.7.0 - Level - Part II
+### v. 0.7.0 - Gotta go Fast - Memory optimizations
+
+- [ ] Reduce usages of `new` operator as much as possible
+- [ ] Add Incubators - like pools, but they do not require returning a borrowed object
+- [ ] Add support for native memory handling (maybe it will require reworking some classes to be stored inside memory segments in off-heap memory)
+- [ ] Upgrade to a higher Java version (maybe)
+
+### v. 0.8.0 - The Beginning of Editor
+
+- [ ] Add a new project for Konna Editor using Konna itself
+- [ ] Improve debugging tools
+- [ ] Add other needed classes
+
+### v. 0.9.0 - Level - Part II
 
 - [ ] Add vararg support for generator nodes
 - [ ] Add flow nodes
 - [ ] Add support for rejecting generation result on some criteria
 - [ ] Make level structure flexible
 
-### v. 0.9.0 - Graphics - Part II
+### v. 0.10.0 - Graphics - Part II
 
 - [ ] Add support for framebuffers
 - [ ] Add support for instanced rendering
+- [ ] Rework renderable object model
+- [ ] Add support for batched rendering
+- [ ] Optimize
 
-### v. 0.8.0 - Monsters and Combat ???
+### v. 0.11.0 - Monsters and Combat ???
 
-### v. 0.9.0 - Item system
+### v. 0.12.0 - Item system
 
-### v. 0.10.0 - Kreaktive - the GUI component
+### v. 0.13.0 - Kreaktive - the GUI component
 
-### v. 0.11.0 - Saving
+### v. 0.14.0 - Saving
 
 ### v. 1.0.0 - To be continued...
 
 ### Not prioritized
 
-- [ ] Annotation processing at compile-time instead of run-time
-- [ ] More flexible object pools
+- [x] Annotation processing at compile-time instead of run-time
+- [x] More flexible object pools
 - [ ] Add support for TTF text rendering
 - [ ] Custom collections (including optimized for primitive types)
-- 

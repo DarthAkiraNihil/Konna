@@ -216,7 +216,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
         this.running = true;
         long deltaTime = 1;
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             "KHashMapBasedCache.cacheCleaner",
             "Cache cleaner thread has been started [host = %s]",
             this
@@ -255,7 +255,7 @@ public class KHashMapBasedCache extends KObject implements KCache {
             }
         }
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             "KHashMapBasedCache.cacheCleaner",
             "Cache cleaner thread has been stopped [host=%s]",
             this

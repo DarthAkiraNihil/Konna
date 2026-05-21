@@ -224,7 +224,7 @@ public class KEngineHypervisor extends KObject {
      *                 after parsing arguments
      */
     public void launch(final KApplicationFeatures features) {
-        KSystemLogger.info(this.name, "Launching hypervisor");
+        KSystemLogger.debug(this.name, "Launching hypervisor");
         KSystemFeatures systemFeatures = new KSystemFeatures(features);
         KLongReference nanosPerFrame = new KLongReference(-1);
         this.processSystemFeatures(systemFeatures, nanosPerFrame);
@@ -354,7 +354,7 @@ public class KEngineHypervisor extends KObject {
     ) {
 
         appFrame.show();
-        KSystemLogger.info(this.name, "Entering frame loop");
+        KSystemLogger.debug(this.name, "Entering frame loop");
 
         KUniversalMap fpsData = new KUniversalMap();
         DoubleSummaryStatistics fpsStats = new DoubleSummaryStatistics();
@@ -417,7 +417,7 @@ public class KEngineHypervisor extends KObject {
             }
         }
 
-        KSystemLogger.info(this.name, "Leaving frame loop");
+        KSystemLogger.debug(this.name, "Leaving frame loop");
         frameTaskExecutor.executeScheduledTasks(KFrameEvent.SHUTDOWN);
     }
 
@@ -472,7 +472,7 @@ public class KEngineHypervisor extends KObject {
             registerer.registerEvents(eventSystem);
         }
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             this.name,
             "%d additional event registerers have been executed",
             config.eventRegisterers().size()
@@ -632,7 +632,7 @@ public class KEngineHypervisor extends KObject {
             configurer.setupRoutes(messageSystem);
         }
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             this.name, "Executed %d message route configurers", configurers.size()
         );
     }
@@ -677,7 +677,7 @@ public class KEngineHypervisor extends KObject {
             );
 
             for (var debugger: debuggers) {
-                KSystemLogger.info(
+                KSystemLogger.debug(
                     this.name,
                     "Loading debugger %s",
                     debugger.getCanonicalName()
