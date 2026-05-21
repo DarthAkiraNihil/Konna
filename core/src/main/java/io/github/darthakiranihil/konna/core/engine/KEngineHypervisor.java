@@ -61,7 +61,7 @@ public class KEngineHypervisor extends KObject {
         private final KFrame frame;
 
 
-        public Runtime(
+        Runtime(
             final KEngineHypervisorConfig config,
             final KEngineHypervisor hypervisor,
             final KApplicationFeatures applicationFeatures,
@@ -296,6 +296,9 @@ public class KEngineHypervisor extends KObject {
         );
     }
 
+    /**
+     * @return Runtime data for this hypervisor if it is launched, otherwise {@code null}.
+     */
     public @Nullable KEngineHypervisorRuntime getRuntime() {
         return this.runtime;
     }

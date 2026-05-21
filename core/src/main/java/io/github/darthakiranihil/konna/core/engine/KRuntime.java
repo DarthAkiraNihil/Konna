@@ -21,22 +21,71 @@ import io.github.darthakiranihil.konna.core.app.KApplicationInfo;
 import io.github.darthakiranihil.konna.core.app.KVersion;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Interface for accessing Konna application's runtime information.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KRuntime {
 
     // always non-null
+
+    /**
+     * @return Konna version used to create launched application
+     */
     KVersion getKonnaVersion();
+
+    /**
+     * @return Application's information
+     */
     KApplicationInfo getApplicationInfo();
+
+    /**
+     * @return Application's bootstrap config
+     */
     KonnaBootstrapConfig getBootstrapConfig();
+
+    /**
+     * @return Whether the app is running or not
+     */
     boolean isRunning();
 
+    /**
+     * @return {@link Runtime} instance, attached to Konna application
+     */
     Runtime getRealRuntime();
 
+    /**
+     * @return Total memory size (in bytes) used by the application
+     */
     long getTotalMemorySize();
+
+    /**
+     * @return Used memory size (in bytes) of the application
+     */
     long getUsedMemorySize();
+
+    /**
+     * @return Available memory size inside currently consumed memory (total) (in bytes)
+     *         of the application
+     */
     long getFreeMemorySize();
 
+    /**
+     * @return Whether the app is running in debug mode or not. Always false if
+     *         the app is not started yet
+     */
     boolean isDebug();
+
+    /**
+     * @return Array of command-line args passed to the application
+     */
     String @Nullable [] getCmdlineArgs();
+
+    /**
+     * @return Runtime data of app's engine hypervisor if it is launched or {@link null} otherwise
+     */
     @Nullable KEngineHypervisorRuntime getHypervisorRuntime();
 
 }

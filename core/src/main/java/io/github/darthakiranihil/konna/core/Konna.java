@@ -50,7 +50,7 @@ public final class Konna extends KObject {
         private String @Nullable [] cmdlineArgs;
         private @Nullable KEngineHypervisor hypervisor;
 
-        public KonnaRuntime(
+        KonnaRuntime(
             final Runtime realRuntime,
             final KApplicationInfo applicationInfo,
             final KonnaBootstrapConfig bootstrapConfig
@@ -106,7 +106,7 @@ public final class Konna extends KObject {
             return this.bootstrapConfig;
         }
 
-        public void setHypervisor(@Nullable KEngineHypervisor runningHypervisor) {
+        public void setHypervisor(final @Nullable KEngineHypervisor runningHypervisor) {
             this.hypervisor = runningHypervisor;
         }
 
@@ -244,6 +244,10 @@ public final class Konna extends KObject {
 
     }
 
+    /**
+     * @return Runtime data of this Konna application
+     * @since 0.6.0
+     */
     public KRuntime getRuntime() {
         return this.runtime;
     }

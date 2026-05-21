@@ -24,19 +24,49 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Map;
 
+/**
+ * Interface for accessing engine hypervisor runtime information.
+ *
+ * @since 0.6.0
+ * @author Darth Akira Nihil
+ */
 public interface KEngineHypervisorRuntime {
 
+    /**
+     * @return Config used for launching this hypervisor
+     */
     KEngineHypervisorConfig getConfig();
 
+    /**
+     * @return Map of loaded engine components
+     */
     @Unmodifiable
     Map<String, KComponent> getLoadedComponents();
 
+    /**
+     * @return Map of loaded debuggers, that is empty if the app is started not in debug mode
+     */
     @Unmodifiable
     Map<String, Object> getLoadedDebuggers();
 
+    /**
+     * @return Parsed application features
+     */
     KApplicationFeatures getApplicationFeatures();
+
+    /**
+     * @return System features of running hypervisor
+     */
     KSystemFeatures getSystemFeatures();
+
+    /**
+     * @return Created engine module of running hypervisor
+     */
     KEngineModule getEngineModule();
+
+    /**
+     * @return Frame created by running hypervisor
+     */
     KFrame getFrame();
 
 }
