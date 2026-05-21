@@ -264,6 +264,7 @@ public class KStandardFrameTaskSystem
     /**
      * Standard constructor.
      * @param prioritizer Prioritizer to use to assign task priorities
+     * @param enableDebugMode Flag that defines if debug mode should be enabled
      */
     @KInject
     public KStandardFrameTaskSystem(
@@ -294,6 +295,8 @@ public class KStandardFrameTaskSystem
      * Creates a new task system with
      * {@link io.github.darthakiranihil.konna.core.app.KFrameTaskPrioritizer.LeaveAsIs}
      * prioritizer.
+     *
+     * @param enableDebugMode Flag that defines if debug mode should be enabled
      */
     public KStandardFrameTaskSystem(boolean enableDebugMode) {
         this(new KFrameTaskPrioritizer.LeaveAsIs(), enableDebugMode);
@@ -328,11 +331,6 @@ public class KStandardFrameTaskSystem
                 event
             );
         }
-    }
-
-    @Override
-    public void setIsDebug(boolean flag) {
-        // this.debug = flag;
     }
 
     @Override

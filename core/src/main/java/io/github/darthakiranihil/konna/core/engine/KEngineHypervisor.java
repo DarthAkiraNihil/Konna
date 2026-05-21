@@ -241,9 +241,7 @@ public class KEngineHypervisor extends KObject {
         KActivator activator = engineModule.activator();
         KEventSystem eventSystem = engineModule.eventSystem();
 
-        // todo: remove method and pass is debug to constructor through k system features
         KFrameTaskExecutor frameTaskExecutor = activator.createObject(KFrameTaskExecutor.class);
-        frameTaskExecutor.setIsDebug(systemFeatures.isDebugEnabled());
         KSystemLogger.debug(this.name, "Acquired frame task executor: %s", frameTaskExecutor);
 
         this.registerSystemEvents(eventSystem, activator, this.config.eventRegisterers());
