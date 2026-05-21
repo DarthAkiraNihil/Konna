@@ -16,12 +16,27 @@
 
 package io.github.darthakiranihil.konna.core.engine;
 
+import io.github.darthakiranihil.konna.core.KonnaBootstrapConfig;
 import io.github.darthakiranihil.konna.core.app.KApplicationInfo;
 import io.github.darthakiranihil.konna.core.app.KVersion;
+import org.jspecify.annotations.Nullable;
 
 public interface KRuntime {
 
+    // always non-null
     KVersion getKonnaVersion();
     KApplicationInfo getApplicationInfo();
+    KonnaBootstrapConfig getBootstrapConfig();
+    boolean isRunning();
+
+    Runtime getRealRuntime();
+
+    long getTotalMemorySize();
+    long getUsedMemorySize();
+    long getFreeMemorySize();
+
+    boolean isDebug();
+    String @Nullable [] getCmdlineArgs();
+    @Nullable KEngineHypervisorRuntime getHypervisorRuntime();
 
 }
