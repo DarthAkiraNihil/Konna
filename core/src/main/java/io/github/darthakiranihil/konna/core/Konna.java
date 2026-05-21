@@ -19,11 +19,14 @@ package io.github.darthakiranihil.konna.core;
 import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
+import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorRuntime;
+import io.github.darthakiranihil.konna.core.engine.KRuntime;
 import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +41,104 @@ import java.util.List;
  */
 public final class Konna extends KObject {
 
+    private static final class KonnaRuntime implements KRuntime {
+
+        private final Runtime realRuntime;
+        private final KApplicationInfo applicationInfo;
+        private final KonnaBootstrapConfig bootstrapConfig;
+
+        private String @Nullable [] cmdlineArgs;
+        private @Nullable KEngineHypervisor hypervisor;
+
+        KonnaRuntime(
+            final Runtime realRuntime,
+            final KApplicationInfo applicationInfo,
+            final KonnaBootstrapConfig bootstrapConfig
+        ) {
+            this.realRuntime = realRuntime;
+            this.applicationInfo = applicationInfo;
+            this.bootstrapConfig = bootstrapConfig;
+
+            this.cmdlineArgs = null;
+        }
+
+        @Override
+        public KVersion getKonnaVersion() {
+            return Konna.VERSION;
+        }
+
+        @Override
+        public KApplicationInfo getApplicationInfo() {
+            return this.applicationInfo;
+        }
+
+        @Override
+        public Runtime getRealRuntime() {
+            return this.realRuntime;
+        }
+
+        @Override
+        public long getTotalMemorySize() {
+            return this.realRuntime.totalMemory();
+        }
+
+        @Override
+        public long getUsedMemorySize() {
+            return this.getTotalMemorySize() - this.getFreeMemorySize();
+        }
+
+        @Override
+        public long getFreeMemorySize() {
+            return this.realRuntime.freeMemory();
+        }
+
+        @Override
+        public String @Nullable [] getCmdlineArgs() {
+            return this.cmdlineArgs;
+        }
+
+        void setCmdlineArgs(final String @Nullable[] args) {
+            this.cmdlineArgs = args;
+        }
+
+        @Override
+        public KonnaBootstrapConfig getBootstrapConfig() {
+            return this.bootstrapConfig;
+        }
+
+        public void setHypervisor(final @Nullable KEngineHypervisor runningHypervisor) {
+            this.hypervisor = runningHypervisor;
+        }
+
+        @Override
+        public @Nullable KEngineHypervisorRuntime getHypervisorRuntime() {
+
+            return this.hypervisor == null
+                ? null
+                : this.hypervisor.getRuntime();
+
+        }
+
+        @Override
+        public boolean isRunning() {
+            return this.hypervisor != null;
+        }
+
+        @Override
+        public boolean isDebug() {
+
+            if (this.hypervisor == null) {
+                return false;
+            }
+
+            KEngineHypervisorRuntime hypervisorRuntime = this.hypervisor.getRuntime();
+            return
+                    hypervisorRuntime != null
+                &&  hypervisorRuntime.getSystemFeatures().isDebugEnabled();
+
+        }
+    }
+
     /**
      * Konna's version.
      */
@@ -46,7 +147,7 @@ public final class Konna extends KObject {
     private final List<KApplicationArgument> applicationArgsOptions;
 
     private final KonnaBootstrapConfig bootstrapConfig;
-    private final KApplicationInfo applicationInfo;
+    private final KonnaRuntime runtime;
 
     private final Thread shutdownHook;
 
@@ -69,10 +170,13 @@ public final class Konna extends KObject {
         final KonnaBootstrapConfig bootstrap
     ) {
         super("Konna", Collections.singleton(KDefaultTags.SYSTEM));
+
         this.applicationArgsOptions = KApplicationArgument.DEFAULT_ARGS;
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
-        this.applicationInfo = applicationInfo;
+
+        Runtime realRuntime = Runtime.getRuntime();
+        this.runtime = new KonnaRuntime(realRuntime, applicationInfo, bootstrapConfig);
     }
 
     /**
@@ -92,7 +196,9 @@ public final class Konna extends KObject {
         this.applicationArgsOptions = Konna.defaultAndCustom(customArgs);
         this.shutdownHook = new Thread(this::delete);
         this.bootstrapConfig = bootstrap;
-        this.applicationInfo = applicationInfo;
+
+        Runtime realRuntime = Runtime.getRuntime();
+        this.runtime = new KonnaRuntime(realRuntime, applicationInfo, bootstrapConfig);
     }
 
     /**
@@ -116,11 +222,14 @@ public final class Konna extends KObject {
 
         KSystemLogger.info(this.name, "Starting Konna. Version: %s", VERSION);
 
+        this.runtime.setCmdlineArgs(args);
+
         KArgumentParser argParser = this.createArgumentParser();
         KApplicationFeatures features = argParser.parse(args, this.applicationArgsOptions);
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
 
         KEngineHypervisor hypervisor = this.createHypervisor();
+        this.runtime.setHypervisor(hypervisor);
         this.addChild(hypervisor);
 
         try {
@@ -132,6 +241,22 @@ public final class Konna extends KObject {
 
         // !! the only correct usage of self-destruction
         this.delete();
+
+    }
+
+    /**
+     * @return Runtime data of this Konna application
+     * @since 0.6.0
+     */
+    public KRuntime getRuntime() {
+        return this.runtime;
+    }
+
+    @Override
+    protected void deleteSelf() {
+
+        this.runtime.setCmdlineArgs(null);
+        this.runtime.setHypervisor(null);
 
     }
 

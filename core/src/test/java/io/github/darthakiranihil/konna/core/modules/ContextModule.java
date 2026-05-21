@@ -30,6 +30,8 @@ import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.object.KStandardActivator;
 import io.github.darthakiranihil.konna.core.object.KStandardObjectRegistry;
+import io.github.darthakiranihil.konna.core.util.KClassGraphClasspathSearchEngine;
+import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.test.KTestFrame;
 
 import java.util.List;
@@ -98,6 +100,11 @@ public class ContextModule extends KAbstractModule {
         return new KTestFrame(
             this.appContainer.getInstanceInferred(KFrameTaskScheduler.class)
         );
+    }
+
+    @KSingleton
+    public KClasspathSearchEngine classpathSearchEngine() {
+        return new KClassGraphClasspathSearchEngine();
     }
 
 }

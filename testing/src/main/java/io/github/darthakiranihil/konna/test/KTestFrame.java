@@ -32,6 +32,8 @@ import org.jetbrains.annotations.TestOnly;
 @TestOnly
 public final class KTestFrame implements KFrame {
 
+    private static final int SLEEP_TIME = 4;
+
     private boolean shouldClose;
 
     @KInject
@@ -46,7 +48,7 @@ public final class KTestFrame implements KFrame {
                 0
             ),
             () -> {
-                KThreadUtils.sleepForSeconds(1);
+                KThreadUtils.sleepForSeconds(SLEEP_TIME);
                 this.setShouldClose(true);
             }
         );

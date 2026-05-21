@@ -33,6 +33,7 @@ import io.github.darthakiranihil.konna.core.struct.ref.KLongReference;
 import io.github.darthakiranihil.konna.core.util.KClasspathSearchEngine;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
+import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
@@ -47,6 +48,73 @@ import java.util.*;
  * @author Darth Akira Nihil
  */
 public class KEngineHypervisor extends KObject {
+
+    private static final class Runtime implements KEngineHypervisorRuntime {
+
+        private final KEngineHypervisorConfig config;
+        private final Map<String, Object> loadedDebuggersView;
+        private final Map<String, KComponent> loadedComponentsView;
+
+        private final KApplicationFeatures applicationFeatures;
+        private final KSystemFeatures systemFeatures;
+        private final KEngineModule engineModule;
+        private final KFrame frame;
+
+
+        Runtime(
+            final KEngineHypervisorConfig config,
+            final KEngineHypervisor hypervisor,
+            final KApplicationFeatures applicationFeatures,
+            final KSystemFeatures systemFeatures,
+            final KEngineModule engineModule,
+            final KFrame frame
+        ) {
+            this.config = config;
+
+            this.loadedComponentsView = Collections.unmodifiableMap(hypervisor.engineComponents);
+            this.loadedDebuggersView = Collections.unmodifiableMap(hypervisor.loadedDebuggers);
+
+            this.applicationFeatures = applicationFeatures;
+            this.systemFeatures = systemFeatures;
+            this.engineModule = engineModule;
+            this.frame = frame;
+        }
+
+        @Override
+        public KEngineHypervisorConfig getConfig() {
+            return this.config;
+        }
+
+        @Override
+        public @Unmodifiable Map<String, KComponent> getLoadedComponents() {
+            return this.loadedComponentsView;
+        }
+
+        @Override
+        public @Unmodifiable Map<String, Object> getLoadedDebuggers() {
+            return this.loadedDebuggersView;
+        }
+
+        @Override
+        public KApplicationFeatures getApplicationFeatures() {
+            return this.applicationFeatures;
+        }
+
+        @Override
+        public KSystemFeatures getSystemFeatures() {
+            return this.systemFeatures;
+        }
+
+        @Override
+        public KEngineModule getEngineModule() {
+            return this.engineModule;
+        }
+
+        @Override
+        public KFrame getFrame() {
+            return this.frame;
+        }
+    }
 
     /**
      * Name of the event that is invoked when the hypervisor is ready.
@@ -76,6 +144,8 @@ public class KEngineHypervisor extends KObject {
      */
     protected @Nullable KFrame frame;
     private final KSimpleEvent ready;
+
+    private @Nullable KEngineHypervisorRuntime runtime;
 
     /**
      * Constructs hypervisor with provided config.
@@ -206,6 +276,16 @@ public class KEngineHypervisor extends KObject {
 
         this.frame = activator.createObject(KFrame.class);
         KSystemLogger.debug(this.name, "Acquired frame: %s", frame);
+
+        this.runtime = new Runtime(
+            this.config,
+            this,
+            features,
+            systemFeatures,
+            engineModule,
+            this.frame
+        );
+
         this.ready.invokeSync();
         this.frameLoop(
             systemFeatures,
@@ -214,6 +294,14 @@ public class KEngineHypervisor extends KObject {
             frameTaskExecutor,
             nanosPerFrame.get()
         );
+    }
+
+    /**
+     * @return Runtime data for this hypervisor if it is launched, otherwise {@code null}.
+     * @since 0.6.0
+     */
+    public @Nullable KEngineHypervisorRuntime getRuntime() {
+        return this.runtime;
     }
 
     /**
@@ -343,6 +431,8 @@ public class KEngineHypervisor extends KObject {
             this.frame.setShouldClose(true);
             this.frame = null;
         }
+
+        this.runtime = null;
     }
 
     /**
@@ -565,8 +655,6 @@ public class KEngineHypervisor extends KObject {
         KActivator activator = engineModule.activator();
         this.loadDebuggers(activator);
     }
-
-    // todo: make it return map when KRuntime will be added
 
     /**
      * Instantiates all found debug classes (annotated with {@link KDebugger}).
