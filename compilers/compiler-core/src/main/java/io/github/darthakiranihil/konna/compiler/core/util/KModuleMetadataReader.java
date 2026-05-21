@@ -78,7 +78,7 @@ public final class KModuleMetadataReader {
     /**
      * Reads module metadata for provided type element.
      * @param clazz Module's type element
-     * @return Read module metadata or {@link null} if it failed
+     * @return Read module metadata or {@code null} if it failed
      */
     public @Nullable KModuleMetadata read(final TypeElement clazz) {
 
