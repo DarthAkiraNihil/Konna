@@ -42,7 +42,7 @@ public class KStandardObjectRegistryTests extends KStandardTestClass {
     private final KObjectRegistry objectRegistry;
 
     public KStandardObjectRegistryTests() {
-        KFrameTaskSystem frameTaskSystem = new KStandardFrameTaskSystem();
+        KFrameTaskSystem frameTaskSystem = new KStandardFrameTaskSystem(false);
         this.objectRegistry = new KStandardObjectRegistry(frameTaskSystem);
     }
 

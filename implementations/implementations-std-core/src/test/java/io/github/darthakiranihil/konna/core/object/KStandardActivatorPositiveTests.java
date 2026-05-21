@@ -28,7 +28,7 @@ public class KStandardActivatorPositiveTests extends KStandardTestClass {
     private final KObjectRegistry objectRegistry;
     
     public KStandardActivatorPositiveTests() {
-        this.objectRegistry = new KStandardObjectRegistry(new KStandardFrameTaskSystem());
+        this.objectRegistry = new KStandardObjectRegistry(new KStandardFrameTaskSystem(false));
         this.activator = new KStandardActivator(new AppContainer(), this.objectRegistry);
     }
 

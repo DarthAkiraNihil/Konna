@@ -32,10 +32,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     @BeforeEach
     void setUp(final TestInfo testInfo) {
 
+        boolean enableDebug = testInfo.getTags().contains("enableDebug");
         if (testInfo.getTags().contains("runWithFifo")) {
-            this.taskSystem = new KStandardFrameTaskSystem(new KFrameTaskPrioritizer.Fifo());
+            this.taskSystem = new KStandardFrameTaskSystem(
+                new KFrameTaskPrioritizer.Fifo(), enableDebug
+            );
         } else {
-            this.taskSystem = new KStandardFrameTaskSystem();
+            this.taskSystem = new KStandardFrameTaskSystem(enableDebug);
         }
 
     }
@@ -119,13 +122,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     }
 
     @Test
+    @Tag("enableDebug")
     public void testScheduleDebugPersistent() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
             "pdt1", KFrameEvent.TICK, 0, 0, false, false, false, true
         );
 
-        this.taskSystem.setIsDebug(true);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
         Assertions.assertEquals(1, object.field);
@@ -291,12 +294,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
     }
 
     @Test
+    @Tag("enableDebug")
     public void testScheduleDebugTemporal() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
             "pt1", KFrameEvent.TICK, 0, 0, false, true, false, true
         );
-        this.taskSystem.setIsDebug(true);
+
         this.taskSystem.scheduleTask(
             description,
             () -> object.field++
@@ -431,13 +435,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
 
     @Test
     @Tag("runWithFifo")
+    @Tag("enableDebug")
     public void testScheduleDebugPersistentWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
             "pdt1", KFrameEvent.TICK, 0, 0, false, false, false, true
         );
 
-        this.taskSystem.setIsDebug(true);
         this.taskSystem.scheduleTask(description, () -> object.field++);
         this.taskSystem.executeScheduledTasks(KFrameEvent.TICK);
         Assertions.assertEquals(1, object.field);
@@ -610,12 +614,13 @@ public class KStandardFrameTaskSystemTests extends KStandardTestClass {
 
     @Test
     @Tag("runWithFifo")
+    @Tag("enableDebug")
     public void testScheduleDebugTemporalWithFifo() {
         TestObject object = new TestObject();
         KFrameTaskDescription description = new KFrameTaskDescription(
             "pt1", KFrameEvent.TICK, 0, 0, false, true, false, true
         );
-        this.taskSystem.setIsDebug(true);
+
         this.taskSystem.scheduleTask(
             description,
             () -> object.field++

@@ -257,8 +257,8 @@ public class KStandardFrameTaskSystem
 
     private final KFrameTaskPrioritizer prioritizer;
     private final Map<KFrameEvent, FrameTaskQueue> queues;
+    private final boolean debug;
 
-    private boolean debug;
     private boolean frameEntered;
 
     /**
@@ -267,13 +267,16 @@ public class KStandardFrameTaskSystem
      */
     @KInject
     public KStandardFrameTaskSystem(
-        final KFrameTaskPrioritizer prioritizer
+        final KFrameTaskPrioritizer prioritizer,
+        boolean enableDebugMode
     ) {
         super(
             "FrameTaskSystem",
             Set.of(KDefaultTags.STD, KDefaultTags.SYSTEM)
         );
+
         this.prioritizer = prioritizer;
+        this.debug = enableDebugMode;
 
         KFrameEvent[] frameEvents = KFrameEvent.values();
         this.queues = new HashMap<>(frameEvents.length);
@@ -292,8 +295,8 @@ public class KStandardFrameTaskSystem
      * {@link io.github.darthakiranihil.konna.core.app.KFrameTaskPrioritizer.LeaveAsIs}
      * prioritizer.
      */
-    public KStandardFrameTaskSystem() {
-        this(new KFrameTaskPrioritizer.LeaveAsIs());
+    public KStandardFrameTaskSystem(boolean enableDebugMode) {
+        this(new KFrameTaskPrioritizer.LeaveAsIs(), enableDebugMode);
     }
 
     @Override
@@ -329,7 +332,7 @@ public class KStandardFrameTaskSystem
 
     @Override
     public void setIsDebug(boolean flag) {
-        this.debug = flag;
+        // this.debug = flag;
     }
 
     @Override

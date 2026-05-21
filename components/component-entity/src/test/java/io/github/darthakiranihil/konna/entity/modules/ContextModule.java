@@ -102,7 +102,9 @@ public class ContextModule extends KAbstractModule {
     @KSingleton
     @KAlsoProvides({KFrameTaskExecutor.class, KFrameTaskScheduler.class})
     public KFrameTaskSystem frameTaskSystem() {
-        return new KStandardFrameTaskSystem();
+        return new KStandardFrameTaskSystem(
+            this.systemFeatures.isDebugEnabled()
+        );
     }
 
     @KSingleton
