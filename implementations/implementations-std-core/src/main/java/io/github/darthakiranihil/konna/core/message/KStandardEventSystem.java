@@ -163,7 +163,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
 
     private void watch() {
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             this.name,
             "Event watcher thread has been started. Now polling events [host = %s]",
             this
@@ -178,7 +178,7 @@ public class KStandardEventSystem extends KObject implements KQueueBasedEventSys
 
         }
 
-        KSystemLogger.info(
+        KSystemLogger.debug(
             this.name,
             "Event watcher thread has been stopped [host = %s]",
             this
