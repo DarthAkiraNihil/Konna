@@ -32,7 +32,7 @@ public class KStandardActivatorNegativeTests extends KStandardTestClass {
     protected KStandardActivatorNegativeTests() {
         super();
         this.activator = new KStandardActivator(new AppContainer(), new KStandardObjectRegistry(
-            new KStandardFrameTaskSystem()
+            new KStandardFrameTaskSystem(false)
         ));
     }
 

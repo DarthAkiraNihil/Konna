@@ -42,10 +42,4 @@ public interface KFrameTaskExecutor {
      */
     void executeScheduledTasks(KFrameEvent event);
 
-    /**
-     * Sets debug mode status for this executor.
-     * @param flag Flag of active debug mode
-     */
-    void setIsDebug(boolean flag);
-
 }
