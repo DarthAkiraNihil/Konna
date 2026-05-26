@@ -16,26 +16,31 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Representation of a 4d vector, which coordinates are represented with floats.
- * @param x X coordinate
- * @param y Y coordinate
- * @param z Z coordinate
- * @param w W coordinate
+ * Representation of a 4D vector, which coordinates are represented with floats.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public record KVector4f(
-    float x,
-    float y,
-    float z,
-    float w
-) {
+public final class KVector4f {
+
+    private final float x;
+    private final float y;
+    private final float z;
+    private final float w;
+
+    private KVector4f(float x, float y, float z, float w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
 
     // todo: soft references
     private static final Map<Integer, KVector4f> INSTANCES;
@@ -63,5 +68,57 @@ public record KVector4f(
         }
 
         return INSTANCES.get(hash);
+    }
+
+    /**
+     * @return X coordinate
+     */
+    public float x() {
+        return this.x;
+    }
+
+    /**
+     * @return Y coordinate
+     */
+    public float y() {
+        return this.y;
+    }
+
+    /**
+     * @return Z coordinate
+     */
+    public float z() {
+        return this.z;
+    }
+
+    /**
+     * @return W coordinate
+     */
+    public float w() {
+        return this.w;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if (object == null || this.getClass() != object.getClass()) {
+            return false;
+        }
+
+        KVector4f kVector4f = (KVector4f) object;
+        return
+                Float.compare(x, kVector4f.x) == 0
+            &&  Float.compare(y, kVector4f.y) == 0
+            &&  Float.compare(z, kVector4f.z) == 0
+            &&  Float.compare(w, kVector4f.w) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z, w);
+    }
+
+    @Override
+    public String toString() {
+        return "KVector4f{" + "x=" + x + ", y=" + y + ", z=" + z + ", w=" + w + '}';
     }
 }
