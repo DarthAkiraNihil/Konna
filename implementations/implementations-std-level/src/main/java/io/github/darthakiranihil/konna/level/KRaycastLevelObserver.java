@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.struct.KTriplet;
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.*;
 
 import java.util.*;
 
@@ -77,7 +74,7 @@ public final class KRaycastLevelObserver implements KLevelObserver {
                 new KTriplet<>(
                     sector,
                     visionRange * 2,
-                    new KVector2f(x + 0.5f, y + 0.5f)
+                    KVectors.new2f(x + 0.5f, y + 0.5f)
                 )
             );
 
@@ -122,7 +119,7 @@ public final class KRaycastLevelObserver implements KLevelObserver {
                             new KTriplet<>(
                                 linkData.linkedSector().name(),
                                 vision,
-                                new KVector2f(
+                                KVectors.new2f(
                                     linkData.destination().x(),
                                     linkData.destination().y()
                                 )

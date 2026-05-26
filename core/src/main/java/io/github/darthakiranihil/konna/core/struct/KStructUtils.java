@@ -45,7 +45,7 @@ public final class KStructUtils extends KUninstantiable {
         int count = x.length == y.length ? x.length : Math.min(x.length, y.length);
         KVector2i[] furled = new KVector2i[count];
         for (int i = 0; i < count; i++) {
-            furled[i] = new KVector2i(x[i], y[i]);
+            furled[i] = KVectors.new2i(x[i], y[i]);
         }
         return furled;
     }

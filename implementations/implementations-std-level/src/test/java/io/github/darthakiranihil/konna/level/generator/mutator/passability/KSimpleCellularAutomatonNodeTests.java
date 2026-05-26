@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
@@ -57,7 +58,7 @@ public class KSimpleCellularAutomatonNodeTests extends KStandardTestClass {
         Assertions.assertEquals(KPassabilityState.IMPASSABLE, layer.getOnPosition(2, 1));
         Assertions.assertEquals(KPassabilityState.IMPASSABLE, layer.getOnPosition(1, 2));
         Assertions.assertEquals(KPassabilityState.IMPASSABLE, layer.getOnPosition(2, 2));
-        Assertions.assertEquals(KPassabilityState.IMPASSABLE, layer.getOnPosition(new KVector2i(1, 3)));
+        Assertions.assertEquals(KPassabilityState.IMPASSABLE, layer.getOnPosition(KVectors.new2i(1, 3)));
 
 
     }

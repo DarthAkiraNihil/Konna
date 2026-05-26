@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelEntityLayerTool;
@@ -101,7 +102,7 @@ public final class KLevelEntityLayer
         public List<KLevelEntity> getOnPosition(int x, int y) {
             // todo: mark entity to remove and return here only unmarked
             // all marked entities must be deleted after an event or something
-            return List.copyOf(this.getOnPosition(new KVector2i(x, y)));
+            return List.copyOf(this.getOnPosition(KVectors.new2i(x, y)));
         }
 
         @Override
@@ -147,7 +148,7 @@ public final class KLevelEntityLayer
 
     @Override
     public List<KLevelEntity> getOnPosition(int x, int y) {
-        return this.getOnPosition(new KVector2i(x, y));
+        return this.getOnPosition(KVectors.new2i(x, y));
     }
 
     @Override

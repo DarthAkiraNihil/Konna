@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -62,11 +63,11 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(t00, tool.getOnPosition(0, 0));
         Assertions.assertEquals(t00, tool.getOnPosition(KVector2i.ZERO));
         Assertions.assertEquals(t01, tool.getOnPosition(0, 1));
-        Assertions.assertEquals(t01, tool.getOnPosition(new KVector2i(0, 1)));
+        Assertions.assertEquals(t01, tool.getOnPosition(KVectors.new2i(0, 1)));
         Assertions.assertEquals(t10, tool.getOnPosition(1, 0));
-        Assertions.assertEquals(t10, tool.getOnPosition(new KVector2i(1, 0)));
+        Assertions.assertEquals(t10, tool.getOnPosition(KVectors.new2i(1, 0)));
         Assertions.assertEquals(t11, tool.getOnPosition(1, 1));
-        Assertions.assertEquals(t11, tool.getOnPosition(new KVector2i(1, 1)));
+        Assertions.assertEquals(t11, tool.getOnPosition(KVectors.new2i(1, 1)));
     }
 
     @Test
@@ -97,16 +98,16 @@ public class KTileLayerPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(KSize.squared(2), layer.getSize());
 
         var tool = layer.getTool();
-        tool.placeTile(new KVector2i(0, 0), tileInfo);
-        tool.placeTile(new KVector2i(0, 0), tileInfo);
-        tool.placeTile(new KVector2i(0, 1), tileInfo);
-        tool.placeTile(new KVector2i(1, 0), tileInfo);
-        tool.placeTile(new KVector2i(1, 1), tileInfo);
+        tool.placeTile(KVectors.new2i(0, 0), tileInfo);
+        tool.placeTile(KVectors.new2i(0, 0), tileInfo);
+        tool.placeTile(KVectors.new2i(0, 1), tileInfo);
+        tool.placeTile(KVectors.new2i(1, 0), tileInfo);
+        tool.placeTile(KVectors.new2i(1, 1), tileInfo);
 
-        KTileInfo t00 = layer.getOnPosition(new KVector2i(0, 0));
-        KTileInfo t01 = layer.getOnPosition(new KVector2i(0, 1));
-        KTileInfo t10 = layer.getOnPosition(new KVector2i(1, 0));
-        KTileInfo t11 = layer.getOnPosition(new KVector2i(1, 1));
+        KTileInfo t00 = layer.getOnPosition(KVectors.new2i(0, 0));
+        KTileInfo t01 = layer.getOnPosition(KVectors.new2i(0, 1));
+        KTileInfo t10 = layer.getOnPosition(KVectors.new2i(1, 0));
+        KTileInfo t11 = layer.getOnPosition(KVectors.new2i(1, 1));
 
         Assertions.assertNotNull(t00);
         Assertions.assertNotNull(t01);

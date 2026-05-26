@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.impl.TestShaderProgram;
@@ -152,9 +153,9 @@ class KShapeTestClass extends KStandardTestClass {
         Assertions.assertEquals(4, rectanglePoints.length);
 
         Assertions.assertEquals(coordinates, rectanglePoints[0]);
-        Assertions.assertEquals(coordinates.add(new KVector2i(size.width(), 0)), rectanglePoints[1]);
+        Assertions.assertEquals(coordinates.add(KVectors.new2i(size.width(), 0)), rectanglePoints[1]);
         Assertions.assertEquals(coordinates.add(size.asIntVector()), rectanglePoints[2]);
-        Assertions.assertEquals(coordinates.add(new KVector2i(0, size.height())), rectanglePoints[3]);
+        Assertions.assertEquals(coordinates.add(KVectors.new2i(0, size.height())), rectanglePoints[3]);
 
         Assertions.assertEquals(size.width(), rectangle.width());
         Assertions.assertEquals(size.height(), rectangle.height());
@@ -177,9 +178,9 @@ class KShapeTestClass extends KStandardTestClass {
         Assertions.assertEquals(4, squarePoints.length);
 
         Assertions.assertEquals(coordinates, squarePoints[0]);
-        Assertions.assertEquals(coordinates.add(new KVector2i(side, 0)), squarePoints[1]);
-        Assertions.assertEquals(coordinates.add(new KVector2i(side, side)), squarePoints[2]);
-        Assertions.assertEquals(coordinates.add(new KVector2i(0, side)), squarePoints[3]);
+        Assertions.assertEquals(coordinates.add(KVectors.new2i(side, 0)), squarePoints[1]);
+        Assertions.assertEquals(coordinates.add(KVectors.new2i(side, side)), squarePoints[2]);
+        Assertions.assertEquals(coordinates.add(KVectors.new2i(0, side)), squarePoints[3]);
 
         Assertions.assertEquals(side, square.width());
         Assertions.assertEquals(side, square.height());

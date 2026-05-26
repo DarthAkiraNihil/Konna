@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.maker;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
@@ -52,7 +53,7 @@ public final class KRandomPointOnPassabilityLayerNode implements KGeneratorNode 
         KUniversalMap result = new KUniversalMap();
         result.put(
             "point",
-            new KVector2i(
+            KVectors.new2i(
                 rnd.nextInt(0, layer.getSize().width()),
                 rnd.nextInt(0, layer.getSize().height())
             )

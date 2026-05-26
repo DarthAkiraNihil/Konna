@@ -31,6 +31,7 @@ import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
@@ -231,16 +232,16 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 var id = (UUID)  controllables.keySet().toArray()[0];
                 body.clear();
                 body.put("entity_id", id);
-                body.put("direction", new KVector2i(0, 1));
+                body.put("direction", KVectors.new2i(0, 1));
                 messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
                 frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
-                Assertions.assertEquals(new KVector2i(2, 1),  controllables.get(id).getPosition().first());
+                Assertions.assertEquals(KVectors.new2i(2, 1),  controllables.get(id).getPosition().first());
 
                 var autoId = (UUID) autonomouses.keySet().toArray()[0];
-                Assertions.assertEquals(new KVector2i(1, 0),  autonomouses.get(autoId).getPosition().first());
+                Assertions.assertEquals(KVectors.new2i(1, 0),  autonomouses.get(autoId).getPosition().first());
                 var staticId = (UUID) statics.keySet().toArray()[0];
-                Assertions.assertEquals(new KVector2i(0, 1),  statics.get(staticId).getPosition().first());
+                Assertions.assertEquals(KVectors.new2i(0, 1),  statics.get(staticId).getPosition().first());
             }
         }
 
@@ -310,7 +311,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(2, 2));
+                body.put("position", KVectors.new2i(2, 2));
                 body.put("controller", TestController.class);
                 body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
@@ -323,7 +324,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                         .anyMatch(x -> {
                             var pos = x.getPosition();
                             return
-                                pos.first().equals(new KVector2i(2, 2))
+                                pos.first().equals(KVectors.new2i(2, 2))
                                     &&  pos.second().name().equals("mf1")
                                     &&  x.name().equals("synthetic")
                                     &&  x.getDescriptor().equals("synthetic");
@@ -398,7 +399,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(2, 2));
+                body.put("position", KVectors.new2i(2, 2));
                 body.put("controller", TestControllerWithoutValidator.class);
                 body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
@@ -411,7 +412,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                         .anyMatch(x -> {
                             var pos = x.getPosition();
                             return
-                                pos.first().equals(new KVector2i(2, 2))
+                                pos.first().equals(KVectors.new2i(2, 2))
                                     &&  pos.second().name().equals("mf1")
                                     &&  x.name().equals("synthetic")
                                     &&  x.getDescriptor().equals("synthetic");
@@ -485,7 +486,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(2, 2));
+                body.put("position", KVectors.new2i(2, 2));
                 body.put("controller", FalseValidatedController.class);
                 body.put("params", new KMapAssetDefinition(Map.of("test", 42069)));
 
@@ -498,7 +499,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                         .anyMatch(x -> {
                             var pos = x.getPosition();
                             return
-                                pos.first().equals(new KVector2i(2, 2))
+                                pos.first().equals(KVectors.new2i(2, 2))
                                     &&  pos.second().name().equals("mf1")
                                     &&  x.name().equals("synthetic")
                                     &&  x.getDescriptor().equals("synthetic");
@@ -571,7 +572,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(2, 2));
+                body.put("position", KVectors.new2i(2, 2));
                 body.put("controller", TestController.class);
                 body.put("params", new KMapAssetDefinition(Map.of("test2", 42069)));
 
@@ -722,7 +723,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(2, 2));
+                body.put("position", KVectors.new2i(2, 2));
 
                 messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
                 Assertions.assertEquals(2, controllables.size());
@@ -733,7 +734,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                         .anyMatch(x -> {
                             var pos = x.getPosition();
                             return
-                                pos.first().equals(new KVector2i(2, 2))
+                                pos.first().equals(KVectors.new2i(2, 2))
                                     &&  pos.second().name().equals("mf1")
                                     &&  x.name().equals("synthetic")
                                     &&  x.getDescriptor().equals("synthetic");
@@ -885,7 +886,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(2, 2));
+                body.put("position", KVectors.new2i(2, 2));
 
                 messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
                 Assertions.assertEquals(2, statics.size());
@@ -896,7 +897,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                         .anyMatch(x -> {
                             var pos = x.getPosition();
                             return
-                                pos.first().equals(new KVector2i(2, 2))
+                                pos.first().equals(KVectors.new2i(2, 2))
                                     &&  pos.second().name().equals("mf1")
                                     &&  x.name().equals("synthetic")
                                     &&  x.getDescriptor().equals("synthetic");
@@ -1048,7 +1049,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf1");
-                body.put("position", new KVector2i(999, 99));
+                body.put("position", KVectors.new2i(999, 99));
 
                 messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
@@ -1126,7 +1127,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf99");
-                body.put("position", new KVector2i(1, 1));
+                body.put("position", KVectors.new2i(1, 1));
 
                 messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));
@@ -1277,7 +1278,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 var previousPosition = controllables.get(id).getPosition();
 
                 body.put("entity_id", UUID.randomUUID());
-                body.put("direction", new KVector2i(0, 1));
+                body.put("direction", KVectors.new2i(0, 1));
                 messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
                 frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
@@ -1285,9 +1286,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 Assertions.assertEquals(previousPosition,  controllables.get(id).getPosition());
 
                 var autoId = (UUID) autonomouses.keySet().toArray()[0];
-                Assertions.assertEquals(new KVector2i(1, 0),  autonomouses.get(autoId).getPosition().first());
+                Assertions.assertEquals(KVectors.new2i(1, 0),  autonomouses.get(autoId).getPosition().first());
                 var staticId = (UUID) statics.keySet().toArray()[0];
-                Assertions.assertEquals(new KVector2i(0, 1),  statics.get(staticId).getPosition().first());
+                Assertions.assertEquals(KVectors.new2i(0, 1),  statics.get(staticId).getPosition().first());
             }
         }
 
@@ -1354,7 +1355,7 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 body.put("name", "synthetic");
                 body.put("descriptor", "synthetic");
                 body.put("sector_name", "mf99");
-                body.put("position", new KVector2i(1, 1));
+                body.put("position", KVectors.new2i(1, 1));
 
                 messageSystem.deliverMessageSync(KMessage.regular("createStaticEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("createControllableEntity", body));

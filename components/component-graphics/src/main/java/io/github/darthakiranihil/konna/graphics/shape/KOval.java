@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -119,7 +120,7 @@ public class KOval extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
-        this(new KVector2i(x, y), new KSize(width, height), outlineColor, fillColor);
+        this(KVectors.new2i(x, y), new KSize(width, height), outlineColor, fillColor);
     }
 
     /**
@@ -226,7 +227,7 @@ public class KOval extends KAbstractShape {
         final KColor outlineColor,
         final KColor fillColor
     ) {
-        this(new KVector2i(x, y), new KSize(width, height), shader, outlineColor, fillColor);
+        this(KVectors.new2i(x, y), new KSize(width, height), shader, outlineColor, fillColor);
     }
 
     /**

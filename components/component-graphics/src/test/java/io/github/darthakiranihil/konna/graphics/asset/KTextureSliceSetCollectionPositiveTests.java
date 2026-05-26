@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
@@ -69,20 +70,20 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(0, 0),
-                new KVector2i(16, 0),
-                new KVector2i(16, 16),
-                new KVector2i(0, 16)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(16, 0),
+                KVectors.new2i(16, 16),
+                KVectors.new2i(0, 16)
             },
             xy
         );
 
         Assertions.assertArrayEquals(
             new KVector2f[] {
-                new KVector2f(0.0f, 0.0f),
-                new KVector2f(1.0f, 0.0f),
-                new KVector2f(0.5f, 0.5f),
-                new KVector2f(0.0f, 0.5f)
+                KVectors.new2f(0.0f, 0.0f),
+                KVectors.new2f(1.0f, 0.0f),
+                KVectors.new2f(0.5f, 0.5f),
+                KVectors.new2f(0.0f, 0.5f)
             },
             uv
         );
@@ -125,7 +126,7 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
         KTextureSliceSet set = collection.getAsset("set_1");
         collection.getAsset("set_1");
 
-        KRenderableTexture tex = set.getTexture("sl1", new KVector2i(400, 400), 1);
+        KRenderableTexture tex = set.getTexture("sl1", KVectors.new2i(400, 400), 1);
         Assertions.assertEquals(1, tex.getUnit());
 
         KVector2i[] xy = tex.xy();
@@ -138,20 +139,20 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(400, 400),
-                new KVector2i(416, 400),
-                new KVector2i(416, 416),
-                new KVector2i(400, 416)
+                KVectors.new2i(400, 400),
+                KVectors.new2i(416, 400),
+                KVectors.new2i(416, 416),
+                KVectors.new2i(400, 416)
             },
             xy
         );
 
         Assertions.assertArrayEquals(
             new KVector2f[] {
-                new KVector2f(0.0f, 0.0f),
-                new KVector2f(1.0f, 0.0f),
-                new KVector2f(0.5f, 0.5f),
-                new KVector2f(0.0f, 0.5f)
+                KVectors.new2f(0.0f, 0.0f),
+                KVectors.new2f(1.0f, 0.0f),
+                KVectors.new2f(0.5f, 0.5f),
+                KVectors.new2f(0.0f, 0.5f)
             },
             uv
         );

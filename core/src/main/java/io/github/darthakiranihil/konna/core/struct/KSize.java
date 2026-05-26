@@ -47,14 +47,14 @@ public record KSize(
      * @return Int vector representation of the size
      */
     public KVector2i asIntVector() {
-        return new KVector2i(this.width, this.height);
+        return KVectors.new2i(this.width, this.height);
     }
 
     /**
      * @return Float vector representation of the size
      */
     public KVector2f asFloatVector() {
-        return new KVector2f(this.width, this.height);
+        return KVectors.new2f(this.width, this.height);
     }
 
     /**

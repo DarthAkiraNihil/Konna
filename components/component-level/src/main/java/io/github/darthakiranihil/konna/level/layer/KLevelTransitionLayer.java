@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.layer.tool.KLevelTransitionLayerTool;
 import org.jspecify.annotations.Nullable;
 
@@ -81,7 +82,7 @@ public final class KLevelTransitionLayer
 
     @Override
     public @Nullable KLevelTransitionData getOnPosition(int x, int y) {
-        return this.getOnPosition(new KVector2i(x, y));
+        return this.getOnPosition(KVectors.new2i(x, y));
     }
 
     @Override

@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.generator.constant.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
@@ -121,7 +122,7 @@ public class KConstantNodesTests extends KStandardTestClass {
         KVector2iConstantNode node = new KVector2iConstantNode(def);
         KUniversalMap result = node.process(new KUniversalMap(), new Random());
         Assertions.assertTrue(result.containsKey("value"));
-        Assertions.assertEquals(new KVector2i(1, 1), result.get("value"));
+        Assertions.assertEquals(KVectors.new2i(1, 1), result.get("value"));
 
     }
 

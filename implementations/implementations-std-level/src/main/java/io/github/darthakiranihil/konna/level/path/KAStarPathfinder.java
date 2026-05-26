@@ -16,10 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.path;
 
-import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KTriplet;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.KLevel;
@@ -274,7 +271,7 @@ public class KAStarPathfinder implements KPathfinder {
         AStarNode[][] pathGraph = new AStarNode[sectorSize.height()][sectorSize.width()];
         for (int i = 0; i < sectorSize.height(); i++) {
             for (int j = 0; j < sectorSize.width(); j++) {
-                pathGraph[i][j] = new AStarNode(new KVector2i(j, i));
+                pathGraph[i][j] = new AStarNode(KVectors.new2i(j, i));
             }
         }
         pathGraph[srcY][srcX].w = 0;
@@ -282,7 +279,7 @@ public class KAStarPathfinder implements KPathfinder {
         Queue<KVector2i> reachable = new LinkedList<>();
         Set<KVector2i> explored = new HashSet<>();
 
-        reachable.add(new KVector2i(srcX, srcY));
+        reachable.add(KVectors.new2i(srcX, srcY));
 
         while (!reachable.isEmpty()) {
             KVector2i node = this.chooseNode(reachable, pathGraph, dstX, dstY);
@@ -364,7 +361,7 @@ public class KAStarPathfinder implements KPathfinder {
         while (goal.previous != null) {
             KVector2i prevPosition = goal.previous.position;
             path.addFirst(
-                new KVector2i(
+                KVectors.new2i(
                     goal.position.x() - prevPosition.x(),
                     goal.position.y() - prevPosition.y()
                 )
@@ -449,7 +446,7 @@ public class KAStarPathfinder implements KPathfinder {
             var firstLinkTool = first.getTool(KSectorLinkLayerTool.class);
             var secondLinkTool = second.getTool(KSectorLinkLayerTool.class);
 
-            KVector2i source = i == 0 ? new KVector2i(srcX, srcY) : checkpoints.getLast().third();
+            KVector2i source = i == 0 ? KVectors.new2i(srcX, srcY) : checkpoints.getLast().third();
 
             var linksFromFirstToSecond = firstLinkTool.getToSector(secondSectorName);
             var linksFromSecondToThird = secondLinkTool.getToSector(thirdSectorName);
@@ -501,14 +498,14 @@ public class KAStarPathfinder implements KPathfinder {
         KLevelSector last = location.getSector(lastSectorName);
 
         KVector2i source = checkpoints.isEmpty()
-            ? new KVector2i(srcX, srcY)
+            ? KVectors.new2i(srcX, srcY)
             : checkpoints.getLast().third();
 
         var penultimateLinkTool = penultimate.getTool(KSectorLinkLayerTool.class);
         var linksFromPenultimateToLast = penultimateLinkTool.getToSector(lastSectorName);
 
         List<KVector2i> goodLinks = new ArrayList<>(linksFromPenultimateToLast.size());
-        KVector2i destination = new KVector2i(dstX, dstY);
+        KVector2i destination = KVectors.new2i(dstX, dstY);
 
         for (var linkFromPenultimateToLast: linksFromPenultimateToLast.entrySet()) {
             var lastReachabilityTool = last.getTool(KReachabilityAreaLayerTool.class);

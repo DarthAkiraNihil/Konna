@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         KTransform transform = new KTransform();
 
-        KVector2i vector = new KVector2i(320, 320);
+        KVector2i vector = KVectors.new2i(320, 320);
         transform.translate(vector);
 
         KVector2i translation = transform.getTranslation();
@@ -72,7 +73,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         KTransform transform = new KTransform();
 
-        KVector2f scale = new KVector2f(2.0f, 2.0f);
+        KVector2f scale = KVectors.new2f(2.0f, 2.0f);
         transform.scale(scale);
 
         KVector2f scaling = transform.getScaling();
@@ -90,7 +91,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         KTransform transform = new KTransform();
 
-        KVector2f scale = new KVector2f(2.0f, 2.0f);
+        KVector2f scale = KVectors.new2f(2.0f, 2.0f);
         transform.setScaling(scale);
 
         KVector2f scaling = transform.getScaling();
@@ -109,8 +110,8 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
         KTransform transform = new KTransform();
 
         double angle = Math.PI / 6;
-        KVector2i vector = new KVector2i(320, 320);
-        KVector2f scale = new KVector2f(2.0f, 2.0f);
+        KVector2i vector = KVectors.new2i(320, 320);
+        KVector2f scale = KVectors.new2f(2.0f, 2.0f);
 
         transform
             .rotate(angle)

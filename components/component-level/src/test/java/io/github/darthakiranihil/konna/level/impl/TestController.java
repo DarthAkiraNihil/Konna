@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.impl;
 
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityControllerParam;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
@@ -41,7 +42,7 @@ public class TestController extends KAutonomousEntityController {
 
     @Override
     public KVector2i getNextMoveDirection() {
-        return new KVector2i(1, 0);
+        return KVectors.new2i(1, 0);
     }
 
     public int getTest() {

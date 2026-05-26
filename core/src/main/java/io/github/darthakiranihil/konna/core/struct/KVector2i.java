@@ -16,18 +16,36 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
+import org.jspecify.annotations.Nullable;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * Representation of a 2d vector, which coordinates are represented with ints.
- * @param x X coordinate
- * @param y Y coordinate
+ * Representation of a 2D vector, which coordinates are represented with ints.
  *
  * @since 0.3.0
  * @author Darth Akira Nihil
  */
-public record KVector2i(
-    int x,
-    int y
-) {
+public final class KVector2i {
+
+    private final int x;
+    private final int y;
+
+    private KVector2i(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    private static int hash(int x, int y) {
+        int result = 1;
+        result = result * 31 + x;
+        result = result * 33 + y;
+        return result;
+    }
+
+    // todo: soft references
+    private static final Map<Integer, KVector2i> INSTANCES;
 
     /**
      * Zero vector - (0,0).
@@ -59,13 +77,51 @@ public record KVector2i(
      */
     public static final KVector2i DOWN = new KVector2i(0, -1);
 
+    static {
+        INSTANCES = new ConcurrentHashMap<>();
+
+        INSTANCES.put(ZERO.hashCode(), ZERO);
+        INSTANCES.put(ONE.hashCode(), ONE);
+        INSTANCES.put(MINUS_ONE.hashCode(), MINUS_ONE);
+        INSTANCES.put(RIGHT.hashCode(), RIGHT);
+        INSTANCES.put(LEFT.hashCode(), LEFT);
+        INSTANCES.put(UP.hashCode(), UP);
+        INSTANCES.put(DOWN.hashCode(), DOWN);
+    }
+
+    static KVector2i create(int x, int y) {
+        int hash = KVector2i.hash(x, y);
+        if (!INSTANCES.containsKey(hash)) {
+            INSTANCES.put(hash, new KVector2i(x, y));
+        }
+
+        KVector2i instance = INSTANCES.get(hash);
+        return instance.x == x && instance.y == y
+            ? instance
+            : new KVector2i(x, y);
+    }
+
+    /**
+     * @return X coordinate
+     */
+    public int x() {
+        return this.x;
+    }
+
+    /**
+     * @return Y coordinate
+     */
+    public int y() {
+        return this.y;
+    }
+
     /**
      * Adds a vector to this vector.
      * @param other Vector to add
      * @return Result vector
      */
     public KVector2i add(final KVector2i other) {
-        return new KVector2i(this.x + other.x(), this.y + other.y());
+        return KVector2i.create(this.x + other.x(), this.y + other.y());
     }
 
     /**
@@ -74,7 +130,7 @@ public record KVector2i(
      * @return Result vector
      */
     public KVector2i subtract(final KVector2i other) {
-        return new KVector2i(this.x - other.x(), this.y - other.y());
+        return KVector2i.create(this.x - other.x(), this.y - other.y());
     }
 
     /**
@@ -82,6 +138,26 @@ public record KVector2i(
      * @return A new vector with negated coordinates of this vector
      */
     public KVector2i negate() {
-        return new KVector2i(-this.x, -this.y);
+        return KVector2i.create(-this.x, -this.y);
     }
+
+    @Override
+    public boolean equals(final @Nullable Object object) {
+        if (object == null || this.getClass() != object.getClass()) {
+            return false;
+        }
+        KVector2i kVector2i = (KVector2i) object;
+        return this.x == kVector2i.x && this.y == kVector2i.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return KVector2i.hash(this.x, this.y);
+    }
+
+    @Override
+    public String toString() {
+        return "KVector2i{" + "x=" + this.x + ", y=" + this.y + '}';
+    }
+
 }

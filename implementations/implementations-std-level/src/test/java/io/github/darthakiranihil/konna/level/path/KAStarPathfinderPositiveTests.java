@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KTileInfo;
@@ -131,8 +132,8 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s1", 3, 1);
 
         KVector2i[] expected = new KVector2i[] {
-            new KVector2i(1, 0),
-            new KVector2i(1, 0)
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 0)
         };
 
         for (KVector2i el : expected) {
@@ -162,11 +163,11 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s2", 3, 1);
 
         KVector2i[] expected = new KVector2i[] {
-            new KVector2i(1, 0),
-            new KVector2i(1, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
         };
 
         for (KVector2i el : expected) {
@@ -197,17 +198,17 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s3", 3, 3);
 
         KVector2i[] expected = new KVector2i[] {
-            new KVector2i(1, 0),
-            new KVector2i(1, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(-1, 1),
-            new KVector2i(-1, 0),
-            new KVector2i(-1, 0),
-            new KVector2i(-1, 0),
-            // new KVector2i(-1, 0),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(-1, 1),
+            KVectors.new2i(-1, 0),
+            KVectors.new2i(-1, 0),
+            KVectors.new2i(-1, 0),
+            // KVectors.new2i(-1, 0),
         };
 
         for (KVector2i el : expected) {
@@ -238,21 +239,21 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPath mn = manhattan.findPath(this.level, "s1", 1, 1, "s4", 1, 3);
 
         KVector2i[] expected = new KVector2i[] {
-            new KVector2i(1, 0),
-            new KVector2i(1, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(0, 1),
-            new KVector2i(-1, 1),
-            new KVector2i(-1, 0),
-            new KVector2i(-1, 0),
-            new KVector2i(-1, 0),
-            new KVector2i(-1, 0),
-            new KVector2i(-1, -1),
-            new KVector2i(0, -1),
-            new KVector2i(0, -1),
-            new KVector2i(0, -1),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(0, 1),
+            KVectors.new2i(-1, 1),
+            KVectors.new2i(-1, 0),
+            KVectors.new2i(-1, 0),
+            KVectors.new2i(-1, 0),
+            KVectors.new2i(-1, 0),
+            KVectors.new2i(-1, -1),
+            KVectors.new2i(0, -1),
+            KVectors.new2i(0, -1),
+            KVectors.new2i(0, -1),
         };
 
         for (KVector2i el : expected) {
@@ -412,12 +413,12 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPath mn = manhattan.findPath(loc2, "s1", 3, 1, "s1", 1, 1);
 
         KVector2i[] expected = new KVector2i[] {
-            new KVector2i(1, 0),
-            new KVector2i(1, 0),
-            new KVector2i(1, 0),
-            new KVector2i(1, 0),
-            new KVector2i(1, 0),
-            new KVector2i(1, 0),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 0),
+            KVectors.new2i(1, 0),
         };
 
         for (KVector2i el : expected) {
@@ -677,7 +678,7 @@ public class KAStarPathfinderPositiveTests extends KStandardTestClass {
         KPathfinder naturalizedChebyshev = new KAStarPathfinder();
         KPathfinder manhattan = new KAStarPathfinder(KAStarPathfinder.Heuristic.MANHATTAN);
 
-        KPath ep = euclidean.findPath(loc2, new KPair<>("s1", new KVector2i(3, 1)), new KPair<>("s4", new KVector2i(3, 4)));
+        KPath ep = euclidean.findPath(loc2, new KPair<>("s1", KVectors.new2i(3, 1)), new KPair<>("s4", KVectors.new2i(3, 4)));
         KPath ch = chebyshev.findPath(loc2, "s1", 3, 1, "s4", 3, 4);
         KPath nch = naturalizedChebyshev.findPath(loc2, "s1", 3, 1, "s4", 3, 4);
         KPath mn = manhattan.findPath(loc2, "s1", 3, 1, "s4", 3, 4);

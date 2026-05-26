@@ -28,6 +28,7 @@ import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KLevelMetadata;
 import io.github.darthakiranihil.konna.level.KLevelSectorMetadata;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
@@ -185,7 +186,7 @@ public final class KLevelMetadataCollection
             KAssetDefinition[] rawControllables = data.getSubdefinitionArray("controllable");
             KAssetDefinition[] rawAutonomouses = data.getSubdefinitionArray("autonomous");
 
-            KVector2i position = new KVector2i(x, y);
+            KVector2i position = KVectors.new2i(x, y);
             statics.putIfAbsent(position, new ArrayList<>(rawStatics.length));
             controllables.putIfAbsent(position, new ArrayList<>(rawControllables.length));
             autonomouses.putIfAbsent(position, new ArrayList<>(rawAutonomouses.length));
@@ -275,9 +276,9 @@ public final class KLevelMetadataCollection
             }
 
             sectorLinkMetadata[link] = new KLevelSectorMetadata.SectorLinkMetadata(
-                new KVector2i(x, y),
+                KVectors.new2i(x, y),
                 linkedSector,
-                new KVector2i(destinationX, destinationY)
+                KVectors.new2i(destinationX, destinationY)
             );
             link++;
 
@@ -326,11 +327,11 @@ public final class KLevelMetadataCollection
             }
 
             levelTransitionMetadata[transition] = new KLevelSectorMetadata.LevelTransitionMetadata(
-                new KVector2i(x, y),
+                KVectors.new2i(x, y),
                 levelDescriptor,
                 levelType,
                 destinationSector,
-                new KVector2i(destinationX, destinationY)
+                KVectors.new2i(destinationX, destinationY)
             );
             transition++;
         }

@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.generator.KConstantNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
 
@@ -52,9 +53,9 @@ public final class KVector2iConstantNode implements KConstantNode {
             );
         }
 
-        this.object = new KVector2i(
+        this.object = KVectors.new2i(
             data.getInt("x"),
-            data.getInt("y")
+                                     data.getInt("y")
         );
     }
 

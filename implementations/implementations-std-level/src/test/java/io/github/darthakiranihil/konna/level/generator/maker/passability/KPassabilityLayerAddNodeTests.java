@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.generator.maker.passability;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
@@ -56,7 +57,7 @@ public class KPassabilityLayerAddNodeTests extends KStandardTestClass {
         KUniversalMap params = new KUniversalMap();
         params.put("first", p1);
         params.put("second", p2);
-        params.put("offset", new KVector2i(1, 0));
+        params.put("offset", KVectors.new2i(1, 0));
         KUniversalMap nodeResult = node.process(params, new Random());
 
         Assertions.assertNotNull(nodeResult.getSafe("result", KPassabilityLayer.class));

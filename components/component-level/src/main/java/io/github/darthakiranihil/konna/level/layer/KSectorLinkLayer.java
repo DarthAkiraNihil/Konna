@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
 import org.jspecify.annotations.Nullable;
@@ -52,9 +53,9 @@ public final class KSectorLinkLayer
             int destinationY
         ) {
             return this.link(
-                new KVector2i(x, y),
+                KVectors.new2i(x, y),
                 linkedSector,
-                new KVector2i(destinationX, destinationY)
+                KVectors.new2i(destinationX, destinationY)
             );
         }
 
@@ -103,7 +104,7 @@ public final class KSectorLinkLayer
 
     @Override
     public @Nullable KSectorLinkData getOnPosition(int x, int y) {
-        return this.getOnPosition(new KVector2i(x, y));
+        return this.getOnPosition(KVectors.new2i(x, y));
     }
 
     @Override

@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
 import io.github.darthakiranihil.konna.level.layer.tool.KSectorLinkLayerTool;
@@ -117,7 +118,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(tileInfo.getId(), sectorSlice.tile().getId());
         Assertions.assertNotNull(sectorSlice.sectorLink());
         Assertions.assertEquals(sector2.name(), sectorSlice.sectorLink().linkedSector().name());
-        Assertions.assertEquals(new KVector2i(1, 1), sectorSlice.sectorLink().destination());
+        Assertions.assertEquals(KVectors.new2i(1, 1), sectorSlice.sectorLink().destination());
         Assertions.assertEquals(sectorSlice, sector.getSlice(KVector2i.ZERO));
         var sectorLinkTool = sector.getTool(KSectorLinkLayerTool.class);
         Assertions.assertEquals(sectorSlice.sectorLink(), sectorLinkTool.getOnPosition(KVector2i.ZERO));
@@ -136,7 +137,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         KTileInfo tileInfo2 = new KTileInfo("tt", 2, false, 16, Map.of());
         layer
             .getTool()
-            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(KVectors.new2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
             .placeTile(1, 0, tileInfo2)
@@ -160,14 +161,14 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
 
         Assertions.assertTrue(
             reachTool.isReachable(
-                new KVector2i(0, 0),
-                new KVector2i(0, 2)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(0, 2)
             )
         );
         Assertions.assertTrue(
             reachTool.isReachable(
-                new KVector2i(2, 0),
-                new KVector2i(2, 2)
+                KVectors.new2i(2, 0),
+                KVectors.new2i(2, 2)
             )
         );
         Assertions.assertTrue(
@@ -195,7 +196,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
 
         layer
             .getTool()
-            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(KVectors.new2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
             .placeTile(1, 0, tileInfo2)
@@ -217,14 +218,14 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
             reachTool.isReachable(
-                new KVector2i(0, 0),
-                new KVector2i(2, 2)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(2, 2)
             )
         );
         Assertions.assertFalse(
             reachTool.isReachable(
-                new KVector2i(2, 0),
-                new KVector2i(0, 2)
+                KVectors.new2i(2, 0),
+                KVectors.new2i(0, 2)
             )
         );
         Assertions.assertFalse(
@@ -252,7 +253,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
 
         layer
             .getTool()
-            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(KVectors.new2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
             .placeTile(1, 0, tileInfo2)
@@ -273,29 +274,29 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         );
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(-1, 0), new KVector2i(0, 1))
+            reachTool.isReachable(KVectors.new2i(-1, 0), KVectors.new2i(0, 1))
         );
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(3, 0), new KVector2i(0, 1))
+            reachTool.isReachable(KVectors.new2i(3, 0), KVectors.new2i(0, 1))
         );
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, -1), new KVector2i(0, 1))
+            reachTool.isReachable(KVectors.new2i(0, -1), KVectors.new2i(0, 1))
         );
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, 3), new KVector2i(0, 1))
+            reachTool.isReachable(KVectors.new2i(0, 3), KVectors.new2i(0, 1))
         );
 
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(-1, 0))
+            reachTool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(-1, 0))
         );
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(3, 0))
+            reachTool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(3, 0))
         );
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(0, -1))
+            reachTool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(0, -1))
         );
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, 1), new KVector2i(0, 3))
+            reachTool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(0, 3))
         );
 
     }
@@ -312,7 +313,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
 
         layer
             .getTool()
-            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(KVectors.new2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
             .placeTile(1, 0, tileInfo2)
@@ -333,7 +334,7 @@ public class KLevelSectorPositiveTests extends KStandardTestClass {
         );
         var reachTool = sector.getTool(KReachabilityAreaLayerTool.class);
         Assertions.assertFalse(
-            reachTool.isReachable(new KVector2i(0, 0), new KVector2i(1, 1))
+            reachTool.isReachable(KVectors.new2i(0, 0), KVectors.new2i(1, 1))
         );
         Assertions.assertFalse(
             reachTool.isReachable(0, 0, 1, 1)

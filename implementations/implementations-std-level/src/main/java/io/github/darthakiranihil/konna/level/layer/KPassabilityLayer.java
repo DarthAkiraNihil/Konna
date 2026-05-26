@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 import org.jspecify.annotations.Nullable;
 
@@ -206,13 +207,13 @@ public final class KPassabilityLayer
                 return KVector2i.MINUS_ONE;
             }
 
-            KVector2i position = new KVector2i(
+            KVector2i position = KVectors.new2i(
                 rnd.nextInt(0, this.self.size.width()),
                 rnd.nextInt(0, this.self.size.height())
             );
 
             while (this.getOnPosition(position) != KPassabilityState.PASSABLE) {
-                position = new KVector2i(
+                position = KVectors.new2i(
                     rnd.nextInt(0, this.self.size.width()),
                     rnd.nextInt(0, this.self.size.height())
                 );
@@ -357,7 +358,7 @@ public final class KPassabilityLayer
 
                 KPassabilityState state = this.states[j][i];
                 if (state == KPassabilityState.PASSABLE && this.areas[j][i] == 0) {
-                    return new KVector2i(i, j);
+                    return KVectors.new2i(i, j);
                 }
 
             }
@@ -374,7 +375,7 @@ public final class KPassabilityLayer
     ) {
 
         KPassabilityState state = this.getOnPosition(x, y);
-        KVector2i pos = new KVector2i(x, y);
+        KVector2i pos = KVectors.new2i(x, y);
         if (
                 state == KPassabilityState.PASSABLE
             &&  this.areas[y][x] == 0
