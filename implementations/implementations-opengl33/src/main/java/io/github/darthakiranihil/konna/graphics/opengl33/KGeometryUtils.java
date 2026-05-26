@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jetbrains.annotations.ApiStatus;
 import org.poly2tri.Poly2Tri;
@@ -79,7 +80,7 @@ final class KGeometryUtils extends KUninstantiable {
         float x = 2.0f * ((float) v.x() / viewportSize.width()) - 1.0f;
         float y = -2.0f * ((float) v.y() / viewportSize.height()) + 1.0f;
 
-        return new KVector2f(x, y);
+        return KVectors.new2f(x, y);
     }
 
     /**
@@ -101,7 +102,7 @@ final class KGeometryUtils extends KUninstantiable {
         float x = 2.0f * ((float) pos.x() / viewportSize.width()) - 1.0f;
         float y = -2.0f * ((float) pos.y() / viewportSize.height()) + 1.0f;
 
-        return new KVector2f(x, y);
+        return KVectors.new2f(x, y);
     }
 
 }

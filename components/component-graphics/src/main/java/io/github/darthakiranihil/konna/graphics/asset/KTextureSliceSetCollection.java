@@ -27,6 +27,7 @@ import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceData;
@@ -109,7 +110,7 @@ public final class KTextureSliceSetCollection
 
             for (int i = 0; i < componentsCount; i++) {
 
-                uv[i] = new KVector2f(
+                uv[i] = KVectors.new2f(
                     rawUv[i].getFloat("u"),
                     rawUv[i].getFloat("v")
                 );

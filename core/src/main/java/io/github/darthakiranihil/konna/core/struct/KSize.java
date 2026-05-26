@@ -54,7 +54,7 @@ public record KSize(
      * @return Float vector representation of the size
      */
     public KVector2f asFloatVector() {
-        return new KVector2f(this.width, this.height);
+        return KVectors.new2f(this.width, this.height);
     }
 
     /**

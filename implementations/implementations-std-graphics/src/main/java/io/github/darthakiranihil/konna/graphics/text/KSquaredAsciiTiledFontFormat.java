@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.text;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 
 /**
  * Implementation of {@link KTiledFontFormat} representing a 16x16 characters
@@ -44,10 +45,10 @@ public class KSquaredAsciiTiledFontFormat extends KObject implements KTiledFontF
             int col = i % FACE_SHEET_SIDE;
             this.generatedGlyphs[row][col] = new KTiledFontGlyph(
                 new KVector2f[]{
-                    new KVector2f(UV_WIDTH * col, UV_WIDTH * row),
-                    new KVector2f(UV_WIDTH * (col + 1), UV_WIDTH * row),
-                    new KVector2f(UV_WIDTH * (col + 1), UV_WIDTH * (row + 1)),
-                    new KVector2f(UV_WIDTH * col, UV_WIDTH * (row + 1)),
+                    KVectors.new2f(UV_WIDTH * col, UV_WIDTH * row),
+                    KVectors.new2f(UV_WIDTH * (col + 1), UV_WIDTH * row),
+                    KVectors.new2f(UV_WIDTH * (col + 1), UV_WIDTH * (row + 1)),
+                    KVectors.new2f(UV_WIDTH * col, UV_WIDTH * (row + 1)),
                 }
             );
         }

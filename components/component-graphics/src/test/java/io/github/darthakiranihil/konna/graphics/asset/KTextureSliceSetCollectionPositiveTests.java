@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics.asset;
 import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
@@ -79,10 +80,10 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
 
         Assertions.assertArrayEquals(
             new KVector2f[] {
-                new KVector2f(0.0f, 0.0f),
-                new KVector2f(1.0f, 0.0f),
-                new KVector2f(0.5f, 0.5f),
-                new KVector2f(0.0f, 0.5f)
+                KVectors.new2f(0.0f, 0.0f),
+                KVectors.new2f(1.0f, 0.0f),
+                KVectors.new2f(0.5f, 0.5f),
+                KVectors.new2f(0.0f, 0.5f)
             },
             uv
         );
@@ -148,10 +149,10 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
 
         Assertions.assertArrayEquals(
             new KVector2f[] {
-                new KVector2f(0.0f, 0.0f),
-                new KVector2f(1.0f, 0.0f),
-                new KVector2f(0.5f, 0.5f),
-                new KVector2f(0.0f, 0.5f)
+                KVectors.new2f(0.0f, 0.0f),
+                KVectors.new2f(1.0f, 0.0f),
+                KVectors.new2f(0.5f, 0.5f),
+                KVectors.new2f(0.0f, 0.5f)
             },
             uv
         );

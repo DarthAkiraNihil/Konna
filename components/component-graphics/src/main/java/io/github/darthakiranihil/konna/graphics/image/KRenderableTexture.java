@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.image;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
@@ -36,10 +37,10 @@ import java.util.Objects;
 public class KRenderableTexture extends KAbstractShape {
 
     private static final KVector2f[] DEFAULT_UV = new KVector2f[] {
-        new KVector2f(0.0f, 0.0f),
-        new KVector2f(1.0f, 0.0f),
-        new KVector2f(1.0f, 1.0f),
-        new KVector2f(0.0f, 1.0f),
+        KVectors.new2f(0.0f, 0.0f),
+        KVectors.new2f(1.0f, 0.0f),
+        KVectors.new2f(1.0f, 1.0f),
+        KVectors.new2f(0.0f, 1.0f),
     };
 
     private static final KColor[] ALL_WHITES = new KColor[] {

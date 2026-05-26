@@ -33,7 +33,7 @@ final class KImGuiSpairUnwrapper extends KUninstantiable {
     }
 
     public static KVector2f wrap(final ImVec2 original) {
-        return new KVector2f(original.x, original.y);
+        return KVectors.new2f(original.x, original.y);
     }
 
     public static KVector4f wrap(final ImVec4 original) {

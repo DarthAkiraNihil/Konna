@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.graphics;
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -124,7 +125,7 @@ public final class KTransform {
      * @return This object (for method chaining)
      */
     public KTransform scale(final KVector2f factor) {
-        this.scaling = new KVector2f(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
+        this.scaling = KVectors.new2f(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
         this.invalidateCache();
         return this;
     }
