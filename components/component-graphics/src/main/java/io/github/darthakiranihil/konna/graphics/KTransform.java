@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import org.jspecify.annotations.Nullable;
 
@@ -47,7 +47,7 @@ public final class KTransform {
 
     private double rotation;
     private KVector2i translation;
-    private KVector2d scaling;
+    private KVector2f scaling;
 
     private @Nullable KTransform parent;
     private final Queue<KTransform> children;
@@ -67,7 +67,7 @@ public final class KTransform {
     public KTransform(
         double rotation,
         final KVector2i translation,
-        final KVector2d scaling,
+        final KVector2f scaling,
         final KVector2i center
     ) {
         this.rotation = rotation;
@@ -86,7 +86,7 @@ public final class KTransform {
      * 1.0 scaling for X and Y coordinates and zero as center coordinate.
      */
     public KTransform() {
-        this(0.0, KVector2i.ZERO, KVector2d.ONE, KVector2i.ZERO);
+        this(0.0, KVector2i.ZERO, KVector2f.ONE, KVector2i.ZERO);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class KTransform {
      * @param center Center of this transform
      */
     public KTransform(final KVector2i center) {
-        this(0.0, KVector2i.ZERO, KVector2d.ONE, center);
+        this(0.0, KVector2i.ZERO, KVector2f.ONE, center);
     }
 
     /**
@@ -123,8 +123,8 @@ public final class KTransform {
      * @param factor Scale factor
      * @return This object (for method chaining)
      */
-    public KTransform scale(final KVector2d factor) {
-        this.scaling = new KVector2d(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
+    public KTransform scale(final KVector2f factor) {
+        this.scaling = new KVector2f(this.scaling.x() * factor.x(), this.scaling.y() * factor.y());
         this.invalidateCache();
         return this;
     }
@@ -160,7 +160,7 @@ public final class KTransform {
      * Returns scaling of the object.
      * @return Scaling of this object
      */
-    public KVector2d getScaling() {
+    public KVector2f getScaling() {
         return this.scaling;
     }
 
@@ -169,7 +169,7 @@ public final class KTransform {
      * @param scale New object scaling.
      * @return This object (for method chaining)
      */
-    public KTransform setScaling(final KVector2d scale) {
+    public KTransform setScaling(final KVector2f scale) {
         this.scaling = scale;
         this.invalidateCache();
         return this;

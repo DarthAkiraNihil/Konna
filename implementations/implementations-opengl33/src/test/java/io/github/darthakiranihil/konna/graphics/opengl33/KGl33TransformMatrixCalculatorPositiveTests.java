@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import org.junit.jupiter.api.Assertions;
@@ -72,10 +72,10 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         KTransform transform = new KTransform();
 
-        KVector2d scale = new KVector2d(2.0, 2.0);
+        KVector2f scale = new KVector2f(2.0f, 2.0f);
         transform.scale(scale);
 
-        KVector2d scaling = transform.getScaling();
+        KVector2f scaling = transform.getScaling();
         Assertions.assertEquals(scale, scaling);
 
         float[] matrix = transform.getMatrix();
@@ -90,10 +90,10 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         KTransform transform = new KTransform();
 
-        KVector2d scale = new KVector2d(2.0, 2.0);
+        KVector2f scale = new KVector2f(2.0f, 2.0f);
         transform.setScaling(scale);
 
-        KVector2d scaling = transform.getScaling();
+        KVector2f scaling = transform.getScaling();
         Assertions.assertEquals(scale, scaling);
 
         float[] matrix = transform.getMatrix();
@@ -110,7 +110,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         double angle = Math.PI / 6;
         KVector2i vector = new KVector2i(320, 320);
-        KVector2d scale = new KVector2d(2.0, 2.0);
+        KVector2f scale = new KVector2f(2.0f, 2.0f);
 
         transform
             .rotate(angle)
@@ -118,7 +118,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
             .scale(scale);
 
         var rotation = transform.getRotation();
-        KVector2d scaling = transform.getScaling();
+        KVector2f scaling = transform.getScaling();
         KVector2i translation = transform.getTranslation();
 
         Assertions.assertEquals(angle, rotation);

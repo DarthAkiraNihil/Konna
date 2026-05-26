@@ -18,7 +18,6 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.KTransformMatrixCalculator;
@@ -62,7 +61,7 @@ public final class KGl33TransformMatrixCalculator
                 .identity();
         }
 
-        KVector2d scaling = transform.getScaling();
+        KVector2f scaling = transform.getScaling();
         KVector2f translation = KGeometryUtils.plainTranslationToGl(
             transform.getTranslation(),
             this.viewportSize
@@ -72,7 +71,7 @@ public final class KGl33TransformMatrixCalculator
             .translate(center.x(), center.y(), 0.0f)
             .rotate((float) transform.getRotation(), 0.0f, 0.0f, 1.0f)
             .translate(-center.x(), -center.y(), 0.0f)
-            .scaleXY((float) scaling.x(), (float) scaling.y())
+            .scaleXY(scaling.x(), scaling.y())
             .translate(translation.x(), translation.y(), 0.0f)
             .get(dst);
 
