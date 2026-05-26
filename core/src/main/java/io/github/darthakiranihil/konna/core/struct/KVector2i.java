@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.struct;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -153,7 +152,7 @@ public final class KVector2i {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.x, this.y);
+        return KVector2i.hash(this.x, this.y);
     }
 
     @Override

@@ -42,6 +42,15 @@ public final class KVector4f {
         this.w = w;
     }
 
+    private static int hash(float x, float y, float z, float w) {
+        int result = 1;
+        result = 31 * result + Float.floatToIntBits(x);
+        result = 33 * result + Float.floatToIntBits(y);
+        result = 37 * result + Float.floatToIntBits(z);
+        result = 41 * result + Float.floatToIntBits(w);
+        return result;
+    }
+
     // todo: soft references
     private static final Map<Integer, KVector4f> INSTANCES;
 
@@ -62,12 +71,15 @@ public final class KVector4f {
     }
 
     static KVector4f create(float x, float y, float z, float w) {
-        int hash = Objects.hash(x, y, z, w);
+        int hash = KVector4f.hash(x, y, z, w);
         if (!INSTANCES.containsKey(hash)) {
             INSTANCES.put(hash, new KVector4f(x, y, z, w));
         }
 
-        return INSTANCES.get(hash);
+        KVector4f instance = INSTANCES.get(hash);
+        return instance.x == x && instance.y == y && instance.z == z && instance.w == w
+            ? instance
+            : new KVector4f(x, y, z, w);
     }
 
     /**
@@ -99,26 +111,33 @@ public final class KVector4f {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(@Nullable final Object object) {
         if (object == null || this.getClass() != object.getClass()) {
             return false;
         }
 
         KVector4f kVector4f = (KVector4f) object;
         return
-                Float.compare(x, kVector4f.x) == 0
-            &&  Float.compare(y, kVector4f.y) == 0
-            &&  Float.compare(z, kVector4f.z) == 0
-            &&  Float.compare(w, kVector4f.w) == 0;
+                Float.compare(this.x, kVector4f.x) == 0
+            &&  Float.compare(this.y, kVector4f.y) == 0
+            &&  Float.compare(this.z, kVector4f.z) == 0
+            &&  Float.compare(this.w, kVector4f.w) == 0;
     }
 
+    // fixme: maybe this thing is not good, if needed - rework hash algorithm (as well as for other
+    //        vector types)
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z, w);
+        return KVector4f.hash(this.x, this.y, this.z, this.w);
     }
 
     @Override
     public String toString() {
-        return "KVector4f{" + "x=" + x + ", y=" + y + ", z=" + z + ", w=" + w + '}';
+        return
+                "KVector4f{"
+            +   "x=" + this.x
+            +   ", y=" + this.y
+            +   ", z=" + this.z
+            +   ", w=" + this.w + '}';
     }
 }
