@@ -92,7 +92,7 @@ public record KVector2i(
      * @return Result vector
      */
     public KVector2i add(final KVector2i other) {
-        return new KVector2i(this.x + other.x(), this.y + other.y());
+        return KVector2i.create(this.x + other.x(), this.y + other.y());
     }
 
     /**
@@ -101,7 +101,7 @@ public record KVector2i(
      * @return Result vector
      */
     public KVector2i subtract(final KVector2i other) {
-        return new KVector2i(this.x - other.x(), this.y - other.y());
+        return KVector2i.create(this.x - other.x(), this.y - other.y());
     }
 
     /**
@@ -109,6 +109,6 @@ public record KVector2i(
      * @return A new vector with negated coordinates of this vector
      */
     public KVector2i negate() {
-        return new KVector2i(-this.x, -this.y);
+        return KVector2i.create(-this.x, -this.y);
     }
 }
