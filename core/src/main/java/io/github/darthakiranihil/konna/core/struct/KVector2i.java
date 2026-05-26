@@ -16,6 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Representation of a 2d vector, which coordinates are represented with ints.
  * @param x X coordinate
@@ -28,6 +32,8 @@ public record KVector2i(
     int x,
     int y
 ) {
+    // todo: soft references
+    private static final Map<Integer, KVector2i> INSTANCES;
 
     /**
      * Zero vector - (0,0).
@@ -58,6 +64,27 @@ public record KVector2i(
      * Vector representation of down direction - (0, -1).
      */
     public static final KVector2i DOWN = new KVector2i(0, -1);
+
+    static {
+        INSTANCES = new ConcurrentHashMap<>();
+
+        INSTANCES.put(ZERO.hashCode(), ZERO);
+        INSTANCES.put(ONE.hashCode(), ONE);
+        INSTANCES.put(MINUS_ONE.hashCode(), MINUS_ONE);
+        INSTANCES.put(RIGHT.hashCode(), RIGHT);
+        INSTANCES.put(LEFT.hashCode(), LEFT);
+        INSTANCES.put(UP.hashCode(), UP);
+        INSTANCES.put(DOWN.hashCode(), DOWN);
+    }
+
+    static KVector2i create(int x, int y) {
+        int hash = Objects.hash(x, y);
+        if (!INSTANCES.containsKey(hash)) {
+            INSTANCES.put(hash, new KVector2i(x, y));
+        }
+
+        return INSTANCES.get(hash);
+    }
 
     /**
      * Adds a vector to this vector.

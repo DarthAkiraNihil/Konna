@@ -16,6 +16,10 @@
 
 package io.github.darthakiranihil.konna.core.struct;
 
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Representation of a 2d vector, which coordinates are represented with floats.
  * @param x X coordinate
@@ -29,6 +33,9 @@ public record KVector2f(
     float y
 ) {
 
+    // todo: soft references
+    private static final Map<Integer, KVector2f> INSTANCES;
+
     /**
      * Zero vector - (0,0).
      */
@@ -37,5 +44,21 @@ public record KVector2f(
      * Unit vector - (1,1).
      */
     public static final KVector2f ONE = new KVector2f(1.0f, 1.0f);
+
+    static {
+        INSTANCES = new ConcurrentHashMap<>();
+
+        INSTANCES.put(ZERO.hashCode(), ZERO);
+        INSTANCES.put(ONE.hashCode(), ONE);
+    }
+
+    static KVector2f create(float x, float y) {
+        int hash = Objects.hash(x, y);
+        if (!INSTANCES.containsKey(hash)) {
+            INSTANCES.put(hash, new KVector2f(x, y));
+        }
+
+        return INSTANCES.get(hash);
+    }
 
 }
