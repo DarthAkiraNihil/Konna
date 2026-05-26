@@ -97,6 +97,9 @@
     <suppress checks="MagicNumber" files="KGeometryUtils.java"/>
     <suppress checks="MagicNumber" files="KTextureMaker.java"/>
     <suppress checks="MagicNumber" files="KRaycastLevelObserver.java"/>
+    <suppress checks="MagicNumber" files="KVector2f.java"/>
+    <suppress checks="MagicNumber" files="KVector2i.java"/>
+    <suppress checks="MagicNumber" files="KVector4f.java"/>
 
 
     <suppress checks="ParameterName" files="KStbImageLwjgl.java"/>

@@ -18,20 +18,70 @@ package io.github.darthakiranihil.konna.core.struct;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 
+/**
+ * Factory class for creating vector objects.
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
 public final class KVectors extends KUninstantiable {
 
     private KVectors() {
         super();
     }
 
+    /**
+     * <p>
+     *     Creates a new 2D-int vector with specified coordinates.
+     * </p>
+     * <p>
+     *     If there is a vector
+     *     with those coordinates that is already allocated, the reference to it
+     *     will be returned instead of creating a new one.
+     * </p>
+     *
+     * @param x X coordinate of vector
+     * @param y Y coordinate of vector
+     * @return An instance of vector with specified coordinates
+     */
     public static KVector2i new2i(int x, int y) {
         return KVector2i.create(x, y);
     }
 
+    /**
+     * <p>
+     *     Creates a new 2D-float vector with specified coordinates.
+     * </p>
+     * <p>
+     *     If there is a vector
+     *     with those coordinates that is already allocated, the reference to it
+     *     will be returned instead of creating a new one.
+     * </p>
+     *
+     * @param x X coordinate of vector
+     * @param y Y coordinate of vector
+     * @return An instance of vector with specified coordinates
+     */
     public static KVector2f new2f(float x, float y) {
         return KVector2f.create(x, y);
     }
 
+    /**
+     * <p>
+     *     Creates a new 4D-float vector with specified coordinates.
+     * </p>
+     * <p>
+     *     If there is a vector
+     *     with those coordinates that is already allocated, the reference to it
+     *     will be returned instead of creating a new one.
+     * </p>
+     *
+     * @param x X coordinate of vector
+     * @param y Y coordinate of vector
+     * @param z Z coordinate of vector
+     * @param w W coordinate of vector
+     * @return An instance of vector with specified coordinates
+     */
     public static KVector4f new4f(float x, float y, float z, float w) {
         return KVector4f.create(x, y, z, w);
     }

@@ -142,7 +142,7 @@ public final class KVector2i {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(final @Nullable Object object) {
         if (object == null || this.getClass() != object.getClass()) {
             return false;
         }
