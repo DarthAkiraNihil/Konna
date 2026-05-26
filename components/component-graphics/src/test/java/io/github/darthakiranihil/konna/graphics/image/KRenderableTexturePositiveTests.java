@@ -56,7 +56,7 @@ public class KRenderableTexturePositiveTests extends KAssetCollectionTestClass {
 
         KRenderableTexture rtex = KRenderableTexture.wrapIntoRectangle(
             "tt",
-            new KVector2i(10, 10),
+            KVectors.new2i(10, 10),
             tex,
             0
         );
@@ -70,10 +70,10 @@ public class KRenderableTexturePositiveTests extends KAssetCollectionTestClass {
         };
 
         KVector2i[] points = new KVector2i[] {
-            new KVector2i(10, 10),
-            new KVector2i(410, 10),
-            new KVector2i(410, 517),
-            new KVector2i(10, 517),
+            KVectors.new2i(10, 10),
+            KVectors.new2i(410, 10),
+            KVectors.new2i(410, 517),
+            KVectors.new2i(10, 517),
         };
 
         KVector2f[] uvs = new KVector2f[] {

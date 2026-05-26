@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -95,10 +96,10 @@ public class KRectangle extends KPolygon {
     ) {
         super(
             new KVector2i[] {
-                new KVector2i(x, y),
-                new KVector2i(x + width, y),
-                new KVector2i(x + width, y + height),
-                new KVector2i(x, y + height),
+                KVectors.new2i(x, y),
+                KVectors.new2i(x + width, y),
+                KVectors.new2i(x + width, y + height),
+                KVectors.new2i(x, y + height),
             },
             outlineColor,
             fillColor
@@ -207,10 +208,10 @@ public class KRectangle extends KPolygon {
     ) {
         super(
             new KVector2i[] {
-                new KVector2i(x, y),
-                new KVector2i(x + width, y),
-                new KVector2i(x + width, y + height),
-                new KVector2i(x, y + height),
+                KVectors.new2i(x, y),
+                KVectors.new2i(x + width, y),
+                KVectors.new2i(x + width, y + height),
+                KVectors.new2i(x, y + height),
             },
             shader,
             outlineColor,

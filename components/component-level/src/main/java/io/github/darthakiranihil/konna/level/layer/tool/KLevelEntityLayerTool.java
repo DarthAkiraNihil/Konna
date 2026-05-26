@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 
@@ -39,7 +40,7 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @return This layer (for method chaining)
      */
     default KLevelEntityLayerTool placeEntity(int x, int y, final KLevelEntity entity) {
-        return this.placeEntity(new KVector2i(x, y), entity);
+        return this.placeEntity(KVectors.new2i(x, y), entity);
     }
 
     /**
@@ -58,7 +59,7 @@ public interface KLevelEntityLayerTool extends KReadableObjectLayerTool<List<KLe
      * @return This layer (for method chaining)
      */
     default KLevelEntityLayerTool removeEntity(int x, int y, final KLevelEntity entity) {
-        return this.removeEntity(new KVector2i(x, y), entity);
+        return this.removeEntity(KVectors.new2i(x, y), entity);
     }
 
     /**

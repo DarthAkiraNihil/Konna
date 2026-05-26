@@ -55,7 +55,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
 
         KTransform transform = new KTransform();
 
-        KVector2i vector = new KVector2i(320, 320);
+        KVector2i vector = KVectors.new2i(320, 320);
         transform.translate(vector);
 
         KVector2i translation = transform.getTranslation();
@@ -110,7 +110,7 @@ public class KGl33TransformMatrixCalculatorPositiveTests {
         KTransform transform = new KTransform();
 
         double angle = Math.PI / 6;
-        KVector2i vector = new KVector2i(320, 320);
+        KVector2i vector = KVectors.new2i(320, 320);
         KVector2f scale = KVectors.new2f(2.0f, 2.0f);
 
         transform

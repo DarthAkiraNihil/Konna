@@ -115,7 +115,7 @@ public final class KTextureSliceSetCollection
                     rawUv[i].getFloat("v")
                 );
 
-                xy[i] = new KVector2i(
+                xy[i] = KVectors.new2i(
                     rawXy[i].getInt("x"),
                     rawXy[i].getInt("y")
                 );

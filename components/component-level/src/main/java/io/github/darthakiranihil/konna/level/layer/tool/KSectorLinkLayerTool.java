@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.level.layer.tool;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.layer.KSectorLinkData;
 import org.jspecify.annotations.Nullable;
@@ -64,7 +65,7 @@ public interface KSectorLinkLayerTool extends KReadableObjectLayerTool<KSectorLi
 
     @Override
     default @Nullable KSectorLinkData getOnPosition(int x, int y) {
-        return this.getOnPosition(new KVector2i(x, y));
+        return this.getOnPosition(KVectors.new2i(x, y));
     }
 
     @Override

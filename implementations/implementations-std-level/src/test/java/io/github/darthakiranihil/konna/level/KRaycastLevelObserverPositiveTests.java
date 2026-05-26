@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.entity.KStaticEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -63,8 +64,8 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
 
         KLevel level = new KLevel("loc1", List.of(sector));
 
-        KFov fov = observer.observePointBlindly(level,"sector_1", new KVector2i(5, 5), 3);
-        KFov fov2 = observer.observePoint(level, "sector_1", new KVector2i(5, 5), 3);
+        KFov fov = observer.observePointBlindly(level,"sector_1", KVectors.new2i(5, 5), 3);
+        KFov fov2 = observer.observePoint(level, "sector_1", KVectors.new2i(5, 5), 3);
         Assertions.assertEquals(21, fov.getObservedSlices().size());
         Assertions.assertEquals(fov.getObservedSlices().size(), fov2.getObservedSlices().size());
         Assertions.assertEquals(1, fov.getEntitiesWithDescriptor("ste").size());
@@ -72,27 +73,27 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
-                    new KVector2i(3, 4),
-                    new KVector2i(3, 5),
-                    new KVector2i(3, 6),
-                    new KVector2i(4, 3),
-                    new KVector2i(4, 4),
-                    new KVector2i(4, 5),
-                    new KVector2i(4, 6),
-                    new KVector2i(4, 7),
-                    new KVector2i(5, 3),
-                    new KVector2i(5, 4),
-                    new KVector2i(5, 5),
-                    new KVector2i(5, 6),
-                    new KVector2i(5, 7),
-                    new KVector2i(6, 3),
-                    new KVector2i(6, 4),
-                    new KVector2i(6, 5),
-                    new KVector2i(6, 6),
-                    new KVector2i(6, 7),
-                    new KVector2i(7, 4),
-                    new KVector2i(7, 5),
-                    new KVector2i(7, 6)
+                    KVectors.new2i(3, 4),
+                    KVectors.new2i(3, 5),
+                    KVectors.new2i(3, 6),
+                    KVectors.new2i(4, 3),
+                    KVectors.new2i(4, 4),
+                    KVectors.new2i(4, 5),
+                    KVectors.new2i(4, 6),
+                    KVectors.new2i(4, 7),
+                    KVectors.new2i(5, 3),
+                    KVectors.new2i(5, 4),
+                    KVectors.new2i(5, 5),
+                    KVectors.new2i(5, 6),
+                    KVectors.new2i(5, 7),
+                    KVectors.new2i(6, 3),
+                    KVectors.new2i(6, 4),
+                    KVectors.new2i(6, 5),
+                    KVectors.new2i(6, 6),
+                    KVectors.new2i(6, 7),
+                    KVectors.new2i(7, 4),
+                    KVectors.new2i(7, 5),
+                    KVectors.new2i(7, 6)
                 )
             )
         );
@@ -149,32 +150,32 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
-                    new KVector2i(0, 6),
-                    new KVector2i(10, 7),
-                    new KVector2i(9, 3),
-                    new KVector2i(10, 3),
-                    new KVector2i(8, 4),
-                    new KVector2i(2, 6),
-                    new KVector2i(8, 5),
-                    new KVector2i(9, 5),
-                    new KVector2i(10, 4),
-                    new KVector2i(10, 5),
-                    new KVector2i(0, 4),
-                    new KVector2i(8, 3),
-                    new KVector2i(8, 6),
-                    new KVector2i(2, 5),
-                    new KVector2i(9, 4),
-                    new KVector2i(1, 4),
-                    new KVector2i(1, 3),
-                    new KVector2i(2, 4),
-                    new KVector2i(10, 6),
-                    new KVector2i(0, 3),
-                    new KVector2i(0, 7),
-                    new KVector2i(1, 5),
-                    new KVector2i(1, 7),
-                    new KVector2i(1, 6),
-                    new KVector2i(9, 6),
-                    new KVector2i(0, 5)
+                    KVectors.new2i(0, 6),
+                    KVectors.new2i(10, 7),
+                    KVectors.new2i(9, 3),
+                    KVectors.new2i(10, 3),
+                    KVectors.new2i(8, 4),
+                    KVectors.new2i(2, 6),
+                    KVectors.new2i(8, 5),
+                    KVectors.new2i(9, 5),
+                    KVectors.new2i(10, 4),
+                    KVectors.new2i(10, 5),
+                    KVectors.new2i(0, 4),
+                    KVectors.new2i(8, 3),
+                    KVectors.new2i(8, 6),
+                    KVectors.new2i(2, 5),
+                    KVectors.new2i(9, 4),
+                    KVectors.new2i(1, 4),
+                    KVectors.new2i(1, 3),
+                    KVectors.new2i(2, 4),
+                    KVectors.new2i(10, 6),
+                    KVectors.new2i(0, 3),
+                    KVectors.new2i(0, 7),
+                    KVectors.new2i(1, 5),
+                    KVectors.new2i(1, 7),
+                    KVectors.new2i(1, 6),
+                    KVectors.new2i(9, 6),
+                    KVectors.new2i(0, 5)
                 )
             )
         );
@@ -222,38 +223,38 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
-                    new KVector2i(7, 5),
-                    new KVector2i(7, 6),
-                    new KVector2i(6, 6),
-                    new KVector2i(4, 5),
-                    new KVector2i(6, 7),
-                    new KVector2i(6, 8),
-                    new KVector2i(4, 6),
-                    new KVector2i(6, 9),
-                    new KVector2i(4, 7),
-                    new KVector2i(6, 10),
-                    new KVector2i(4, 8),
-                    new KVector2i(2, 6),
-                    new KVector2i(4, 9),
-                    new KVector2i(2, 7),
-                    new KVector2i(4, 10),
-                    new KVector2i(8, 6),
-                    new KVector2i(6, 5),
-                    new KVector2i(8, 7),
-                    new KVector2i(5, 5),
-                    new KVector2i(7, 7),
-                    new KVector2i(7, 8),
-                    new KVector2i(5, 6),
-                    new KVector2i(7, 9),
-                    new KVector2i(3, 5),
-                    new KVector2i(5, 7),
-                    new KVector2i(5, 8),
-                    new KVector2i(3, 6),
-                    new KVector2i(5, 9),
-                    new KVector2i(3, 7),
-                    new KVector2i(5, 10),
-                    new KVector2i(3, 8),
-                    new KVector2i(3, 9)
+                    KVectors.new2i(7, 5),
+                    KVectors.new2i(7, 6),
+                    KVectors.new2i(6, 6),
+                    KVectors.new2i(4, 5),
+                    KVectors.new2i(6, 7),
+                    KVectors.new2i(6, 8),
+                    KVectors.new2i(4, 6),
+                    KVectors.new2i(6, 9),
+                    KVectors.new2i(4, 7),
+                    KVectors.new2i(6, 10),
+                    KVectors.new2i(4, 8),
+                    KVectors.new2i(2, 6),
+                    KVectors.new2i(4, 9),
+                    KVectors.new2i(2, 7),
+                    KVectors.new2i(4, 10),
+                    KVectors.new2i(8, 6),
+                    KVectors.new2i(6, 5),
+                    KVectors.new2i(8, 7),
+                    KVectors.new2i(5, 5),
+                    KVectors.new2i(7, 7),
+                    KVectors.new2i(7, 8),
+                    KVectors.new2i(5, 6),
+                    KVectors.new2i(7, 9),
+                    KVectors.new2i(3, 5),
+                    KVectors.new2i(5, 7),
+                    KVectors.new2i(5, 8),
+                    KVectors.new2i(3, 6),
+                    KVectors.new2i(5, 9),
+                    KVectors.new2i(3, 7),
+                    KVectors.new2i(5, 10),
+                    KVectors.new2i(3, 8),
+                    KVectors.new2i(3, 9)
                 )
             )
         );
@@ -301,24 +302,24 @@ public class KRaycastLevelObserverPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(
             positions.containsAll(
                 List.of(
-                    new KVector2i(6, 7),
-                    new KVector2i(7, 8),
-                    new KVector2i(7, 7),
-                    new KVector2i(6, 5),
-                    new KVector2i(5, 5),
-                    new KVector2i(7, 6),
-                    new KVector2i(6, 6),
-                    new KVector2i(6, 8),
-                    new KVector2i(4, 6),
-                    new KVector2i(4, 7),
-                    new KVector2i(3, 6),
-                    new KVector2i(4, 8),
-                    new KVector2i(3, 7),
-                    new KVector2i(3, 8),
-                    new KVector2i(5, 7),
-                    new KVector2i(5, 8),
-                    new KVector2i(5, 6),
-                    new KVector2i(4, 5)
+                    KVectors.new2i(6, 7),
+                    KVectors.new2i(7, 8),
+                    KVectors.new2i(7, 7),
+                    KVectors.new2i(6, 5),
+                    KVectors.new2i(5, 5),
+                    KVectors.new2i(7, 6),
+                    KVectors.new2i(6, 6),
+                    KVectors.new2i(6, 8),
+                    KVectors.new2i(4, 6),
+                    KVectors.new2i(4, 7),
+                    KVectors.new2i(3, 6),
+                    KVectors.new2i(4, 8),
+                    KVectors.new2i(3, 7),
+                    KVectors.new2i(3, 8),
+                    KVectors.new2i(5, 7),
+                    KVectors.new2i(5, 8),
+                    KVectors.new2i(5, 6),
+                    KVectors.new2i(4, 5)
                 )
             )
         );

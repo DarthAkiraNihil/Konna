@@ -100,7 +100,7 @@ public class KGraphicsComponentLoader implements KComponentLoader {
         (
             new KTransform(
                 0.0,
-                new KVector2i(1, 1),
+                KVectors.new2i(1, 1),
                 KVectors.new2f(0.0f, 0.0f),
                 KVector2i.ZERO
             )

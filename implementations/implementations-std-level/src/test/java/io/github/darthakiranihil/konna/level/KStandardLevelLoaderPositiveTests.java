@@ -31,6 +31,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
@@ -140,8 +141,8 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
 
         loaded.delete();
 
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), mf1), c1.get().getPosition());
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), mf1), s1.get().getPosition());
+        Assertions.assertEquals(new KPair<>(KVectors.new2i(0, 0), mf1), c1.get().getPosition());
+        Assertions.assertEquals(new KPair<>(KVectors.new2i(0, 0), mf1), s1.get().getPosition());
 
     }
 
@@ -195,9 +196,9 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         TestController tc = (TestController) controller;
         Assertions.assertEquals(42069, tc.getTest());
 
-        Assertions.assertEquals(new KVector2i(1, 0), controller.getNextMoveDirection());
+        Assertions.assertEquals(KVectors.new2i(1, 0), controller.getNextMoveDirection());
         entity.move();
-        Assertions.assertEquals(new KPair<>(new KVector2i(1, 0), sector), entity.getPosition());
+        Assertions.assertEquals(new KPair<>(KVectors.new2i(1, 0), sector), entity.getPosition());
 
     }
 
@@ -223,7 +224,7 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(FalseValidatedController.class, controller.getClass());
         Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
         entity.move();
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
+        Assertions.assertEquals(new KPair<>(KVectors.new2i(0, 0), sector), entity.getPosition());
 
     }
 
@@ -248,7 +249,7 @@ public class KStandardLevelLoaderPositiveTests extends KStandardTestClass {
         Assertions.assertEquals(TestControllerWithoutValidator.class, controller.getClass());
         Assertions.assertEquals(KVector2i.ZERO, controller.getNextMoveDirection());
         entity.move();
-        Assertions.assertEquals(new KPair<>(new KVector2i(0, 0), sector), entity.getPosition());
+        Assertions.assertEquals(new KPair<>(KVectors.new2i(0, 0), sector), entity.getPosition());
 
     }
 

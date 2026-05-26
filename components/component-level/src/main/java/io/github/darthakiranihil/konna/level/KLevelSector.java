@@ -24,6 +24,7 @@ import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.entity.KLevelEntity;
 import io.github.darthakiranihil.konna.level.layer.*;
 import io.github.darthakiranihil.konna.level.layer.tool.*;
@@ -156,7 +157,7 @@ public final class KLevelSector extends KObject {
 
         return new KLevelSectorSlice(
             this.name,
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             this.heightLayer.getOnPosition(x, y),
             this.tileLayer.getOnPosition(x, y),
             this.visitedPlacesLayer.getOnPosition(x, y),

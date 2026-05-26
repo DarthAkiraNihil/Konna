@@ -19,6 +19,7 @@ package io.github.darthakiranihil.konna.level.generator.maker.passability;
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
@@ -94,12 +95,12 @@ public final class KRandomRectangularCenteredRoomsInPartitionNode implements KGe
 
                 KSize diggingBoxSize = size.reduce(2, 2);
 
-                KVector2i newTopLeft = new KVector2i(
+                KVector2i newTopLeft = KVectors.new2i(
                     rnd.nextInt(topLeft.x(), center.x() + 1),
                     rnd.nextInt(topLeft.y(), center.y() + 1)
                 );
 
-                KVector2i newBottomRight = new KVector2i(
+                KVector2i newBottomRight = KVectors.new2i(
                     rnd.nextInt(center.x(), bottomRight.x() + 1),
                     rnd.nextInt(center.y(), bottomRight.y() + 1)
                 );

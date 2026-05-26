@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,9 @@ import org.junit.jupiter.api.Test;
 public class KPolylinePositiveTests extends KShapeTestClass {
 
     private final KVector2i[] points = new KVector2i[] {
-        new KVector2i(10, 10),
-        new KVector2i(10, 16),
-        new KVector2i(16, 16),
+        KVectors.new2i(10, 10),
+        KVectors.new2i(10, 16),
+        KVectors.new2i(16, 16),
     };
     private final int[] xs = new int[] {10, 10, 16};
     private final int[] ys = new int[] {10, 16, 16};
@@ -103,35 +104,35 @@ public class KPolylinePositiveTests extends KShapeTestClass {
 
         KPolyline primal = new KPolyline(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK
         );
 
         KPolyline diff1 = new KPolyline(
             new KVector2i[] {
-                new KVector2i(10, 11),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 11),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK
         );
         KPolyline diff2 = new KPolyline(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.GREEN
         );
 
         KPolyline equal = new KPolyline(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK
         );

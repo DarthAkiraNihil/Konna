@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -42,7 +43,7 @@ public class KLine extends KAbstractShape {
      * @param color Line's color
      */
     public KLine(final KVector2i start, final KVector2i end, final KColor color) {
-        super(new KVector2i(
+        super(KVectors.new2i(
             start.x() / 2,
             start.y() / 2
         ));
@@ -70,7 +71,7 @@ public class KLine extends KAbstractShape {
      * @param color Line's color
      */
     public KLine(int x1, int x2, int y1, int y2, final KColor color) {
-        this(new KVector2i(x1, y1), new KVector2i(x2, y2), color);
+        this(KVectors.new2i(x1, y1), KVectors.new2i(x2, y2), color);
     }
 
     /**
@@ -82,7 +83,7 @@ public class KLine extends KAbstractShape {
      * @param y2 Y coordinate of end of the line
      */
     public KLine(int x1, int x2, int y1, int y2) {
-        this(new KVector2i(x1, y1), new KVector2i(x2, y2), KColor.TRANSPARENT);
+        this(KVectors.new2i(x1, y1), KVectors.new2i(x2, y2), KColor.TRANSPARENT);
     }
 
     /**
@@ -99,7 +100,7 @@ public class KLine extends KAbstractShape {
         final KColor color
     ) {
         super(
-            new KVector2i(
+            KVectors.new2i(
                 start.x() / 2,
                 start.y() / 2
             ),
@@ -142,7 +143,7 @@ public class KLine extends KAbstractShape {
         final KShaderProgram shader,
         final KColor color
     ) {
-        this(new KVector2i(x1, y1), new KVector2i(x2, y2), shader, color);
+        this(KVectors.new2i(x1, y1), KVectors.new2i(x2, y2), shader, color);
     }
 
     /**
@@ -156,7 +157,7 @@ public class KLine extends KAbstractShape {
      * @param shader Specific shader used for its rendering
      */
     public KLine(int x1, int x2, int y1, int y2, final KShaderProgram shader) {
-        this(new KVector2i(x1, y1), new KVector2i(x2, y2), shader, KColor.TRANSPARENT);
+        this(KVectors.new2i(x1, y1), KVectors.new2i(x2, y2), shader, KColor.TRANSPARENT);
     }
 
     @Override

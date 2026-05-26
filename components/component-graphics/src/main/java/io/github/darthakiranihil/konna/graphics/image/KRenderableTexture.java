@@ -19,10 +19,10 @@ package io.github.darthakiranihil.konna.graphics.image;
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.KVectors;
-import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shape.KAbstractShape;
+import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -103,19 +103,19 @@ public class KRenderableTexture extends KAbstractShape {
 
         KImage sourceImage = texture.attachedImage();
         KVector2i[] xy = new KVector2i[] {
-            new KVector2i(
+            KVectors.new2i(
                 leftTopCorner.x(),
                 leftTopCorner.y()
             ),
-            new KVector2i(
+            KVectors.new2i(
                 leftTopCorner.x() + sourceImage.width(),
                 leftTopCorner.y()
             ),
-            new KVector2i(
+            KVectors.new2i(
                 leftTopCorner.x() + sourceImage.width(),
                 leftTopCorner.y() + sourceImage.height()
             ),
-            new KVector2i(
+            KVectors.new2i(
                 leftTopCorner.x(),
                 leftTopCorner.y() + sourceImage.height()
             ),

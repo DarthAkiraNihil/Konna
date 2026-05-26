@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -55,11 +56,11 @@ public class KHeightLayerPositiveTests extends KStandardTestClass {
             layer.getOnPosition(KVector2i.ZERO)
         );
 
-        layer.getTool().setHeight(new KVector2i(1, 1), 2);
+        layer.getTool().setHeight(KVectors.new2i(1, 1), 2);
         Assertions.assertEquals(2, layer.getOnPosition(1, 1));
         Assertions.assertEquals(
             layer.getOnPosition(1, 1),
-            layer.getOnPosition(new KVector2i(1, 1))
+            layer.getOnPosition(KVectors.new2i(1, 1))
         );
 
     }

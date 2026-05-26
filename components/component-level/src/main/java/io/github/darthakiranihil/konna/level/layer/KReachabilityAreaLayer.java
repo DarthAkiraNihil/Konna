@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
 import org.jspecify.annotations.Nullable;
@@ -224,7 +225,7 @@ public final class KReachabilityAreaLayer
 
                 KTileInfo tile = sourceTileLayer.getOnPosition(i, j);
                 if (tile != null && tile.isPassable() && this.areas[j][i] == 0) {
-                    return new KVector2i(i, j);
+                    return KVectors.new2i(i, j);
                 }
 
             }
@@ -245,7 +246,7 @@ public final class KReachabilityAreaLayer
 
         KTileInfo tileInfo = sourceTileLayer.getOnPosition(x, y);
         int height = sourceHeightLayer.getOnPosition(x, y);
-        KVector2i pos = new KVector2i(x, y);
+        KVector2i pos = KVectors.new2i(x, y);
         if (
                 tileInfo != null
             &&  tileInfo.isPassable()

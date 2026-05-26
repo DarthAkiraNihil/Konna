@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -97,7 +98,7 @@ public abstract class KAbstractShape implements KShape {
         x /= 6 * signedArea;
         y /= 6 * signedArea;
 
-        return new KVector2i((int) x, (int) y);
+        return KVectors.new2i((int) x, (int) y);
     }
 
 }

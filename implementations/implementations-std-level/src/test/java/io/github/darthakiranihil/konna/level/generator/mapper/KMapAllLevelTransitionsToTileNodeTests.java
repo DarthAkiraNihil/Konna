@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.KLevelTransitionLayer;
 import io.github.darthakiranihil.konna.level.layer.KTileLayer;
@@ -72,11 +73,11 @@ public class KMapAllLevelTransitionsToTileNodeTests extends KStandardTestClass {
         KLevelTransitionLayer levelTransitionLayer = new KLevelTransitionLayer();
         KLevelTransitionLayerTool ltt = levelTransitionLayer.getTool();
         ltt.makeTransition(
-            new KVector2i(1, 1),
+            KVectors.new2i(1, 1),
             "left 4 ded",
             KTransitionedLevelType.GENERATED,
             "ded",
-            new KVector2i(1, 0)
+            KVectors.new2i(1, 0)
         );
 
         KUniversalMap params = new KUniversalMap();

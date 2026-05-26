@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.tool.KReachabilityAreaLayerTool;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
@@ -38,7 +39,7 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
 
         layer
             .getTool()
-            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(KVectors.new2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
             .placeTile(1, 0, tileInfo2)
@@ -68,14 +69,14 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
 
         Assertions.assertTrue(
             this.tool.isReachable(
-                new KVector2i(0, 0),
-                new KVector2i(0, 2)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(0, 2)
             )
         );
         Assertions.assertTrue(
             this.tool.isReachable(
-                new KVector2i(2, 0),
-                new KVector2i(2, 2)
+                KVectors.new2i(2, 0),
+                KVectors.new2i(2, 2)
             )
         );
         Assertions.assertTrue(
@@ -96,14 +97,14 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
 
         Assertions.assertFalse(
             this.tool.isReachable(
-                new KVector2i(0, 0),
-                new KVector2i(2, 2)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(2, 2)
             )
         );
         Assertions.assertFalse(
             this.tool.isReachable(
-                new KVector2i(2, 0),
-                new KVector2i(0, 2)
+                KVectors.new2i(2, 0),
+                KVectors.new2i(0, 2)
             )
         );
         Assertions.assertFalse(
@@ -123,29 +124,29 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
     public void testUnreachableBecauseOfOutOfBounds() {
 
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(-1, 0), new KVector2i(0, 1))
+            this.tool.isReachable(KVectors.new2i(-1, 0), KVectors.new2i(0, 1))
         );
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(3, 0), new KVector2i(0, 1))
+            this.tool.isReachable(KVectors.new2i(3, 0), KVectors.new2i(0, 1))
         );
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, -1), new KVector2i(0, 1))
+            this.tool.isReachable(KVectors.new2i(0, -1), KVectors.new2i(0, 1))
         );
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, 3), new KVector2i(0, 1))
+            this.tool.isReachable(KVectors.new2i(0, 3), KVectors.new2i(0, 1))
         );
 
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, 1), new KVector2i(-1, 0))
+            this.tool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(-1, 0))
         );
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, 1), new KVector2i(3, 0))
+            this.tool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(3, 0))
         );
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, 1), new KVector2i(0, -1))
+            this.tool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(0, -1))
         );
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, 1), new KVector2i(0, 3))
+            this.tool.isReachable(KVectors.new2i(0, 1), KVectors.new2i(0, 3))
         );
 
     }
@@ -154,7 +155,7 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
     public void testUnreachableBecauseOfImpassableTile() {
 
         Assertions.assertFalse(
-            this.tool.isReachable(new KVector2i(0, 0), new KVector2i(1, 1))
+            this.tool.isReachable(KVectors.new2i(0, 0), KVectors.new2i(1, 1))
         );
         Assertions.assertFalse(
             this.tool.isReachable(0, 0, 1, 1)
@@ -170,7 +171,7 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
 
         layer
             .getTool()
-            .placeTile(new KVector2i(0, 0), tileInfo1)
+            .placeTile(KVectors.new2i(0, 0), tileInfo1)
             .placeTile(0, 1, tileInfo1)
             .placeTile(0, 2, tileInfo1)
             .placeTile(1, 0, tileInfo1)
@@ -190,7 +191,7 @@ public class KReachabilityLayerPositiveTests extends KStandardTestClass {
         var rl = new KReachabilityAreaLayer(layer, hl).getTool();
 
         Assertions.assertFalse(rl.isReachable(0, 0, 2, 2));
-        Assertions.assertFalse(rl.isReachable(new KVector2i(0, 0), new KVector2i(2, 2)));
+        Assertions.assertFalse(rl.isReachable(KVectors.new2i(0, 0), KVectors.new2i(2, 2)));
 
     }
 }

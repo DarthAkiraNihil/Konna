@@ -66,10 +66,10 @@ public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionT
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(0, 0),
-                new KVector2i(16, 0),
-                new KVector2i(16, 16),
-                new KVector2i(0, 16)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(16, 0),
+                KVectors.new2i(16, 16),
+                KVectors.new2i(0, 16)
             },
             tex.xy()
         );
@@ -126,14 +126,14 @@ public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionT
             textureSliceSetCollection
         );
 
-        KRenderableTexture tex = collection.getAsset("sl1", new KVector2i(400, 400));
+        KRenderableTexture tex = collection.getAsset("sl1", KVectors.new2i(400, 400));
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(400, 400),
-                new KVector2i(416, 400),
-                new KVector2i(416, 416),
-                new KVector2i(400, 416)
+                KVectors.new2i(400, 400),
+                KVectors.new2i(416, 400),
+                KVectors.new2i(416, 416),
+                KVectors.new2i(400, 416)
             },
             tex.xy()
         );
@@ -194,10 +194,10 @@ public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionT
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(0, 0),
-                new KVector2i(400, 0),
-                new KVector2i(400, 507),
-                new KVector2i(0, 507)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(400, 0),
+                KVectors.new2i(400, 507),
+                KVectors.new2i(0, 507)
             },
             tex.xy()
         );
@@ -254,14 +254,14 @@ public class KRenderableTextureCollectionPositiveTests extends KAssetCollectionT
             textureSliceSetCollection
         );
 
-        KRenderableTexture tex = collection.getAsset("slt2", new KVector2i(400, 400));
+        KRenderableTexture tex = collection.getAsset("slt2", KVectors.new2i(400, 400));
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(400, 400),
-                new KVector2i(800, 400),
-                new KVector2i(800, 907),
-                new KVector2i(400, 907)
+                KVectors.new2i(400, 400),
+                KVectors.new2i(800, 400),
+                KVectors.new2i(800, 907),
+                KVectors.new2i(400, 907)
             },
             tex.xy()
         );

@@ -70,10 +70,10 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(0, 0),
-                new KVector2i(16, 0),
-                new KVector2i(16, 16),
-                new KVector2i(0, 16)
+                KVectors.new2i(0, 0),
+                KVectors.new2i(16, 0),
+                KVectors.new2i(16, 16),
+                KVectors.new2i(0, 16)
             },
             xy
         );
@@ -126,7 +126,7 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
         KTextureSliceSet set = collection.getAsset("set_1");
         collection.getAsset("set_1");
 
-        KRenderableTexture tex = set.getTexture("sl1", new KVector2i(400, 400), 1);
+        KRenderableTexture tex = set.getTexture("sl1", KVectors.new2i(400, 400), 1);
         Assertions.assertEquals(1, tex.getUnit());
 
         KVector2i[] xy = tex.xy();
@@ -139,10 +139,10 @@ public class KTextureSliceSetCollectionPositiveTests extends KAssetCollectionTes
 
         Assertions.assertArrayEquals(
             new KVector2i[] {
-                new KVector2i(400, 400),
-                new KVector2i(416, 400),
-                new KVector2i(416, 416),
-                new KVector2i(400, 416)
+                KVectors.new2i(400, 400),
+                KVectors.new2i(416, 400),
+                KVectors.new2i(416, 416),
+                KVectors.new2i(400, 416)
             },
             xy
         );

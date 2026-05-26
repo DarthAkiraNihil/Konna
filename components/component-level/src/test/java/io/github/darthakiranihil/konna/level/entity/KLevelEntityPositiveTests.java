@@ -22,6 +22,7 @@ import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.KTileInfo;
@@ -105,12 +106,12 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
-        controllableEntity.setNextMoveDirection(new KVector2i(1, 0));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(1, 0));
         controllableEntity.move();
 
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(
-            new KPair<>(new KVector2i(1, 0), sector),
+            new KPair<>(KVectors.new2i(1, 0), sector),
             controllableEntity.getPosition()
         );
 
@@ -152,7 +153,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
-        controllableEntity.setNextMoveDirection(new KVector2i(1, 0));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(1, 0));
         controllableEntity.move();
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(
@@ -261,11 +262,11 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         controllableEntity.setPosition(sector, KVector2i.ZERO);
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
-        controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(-1, 0));
         controllableEntity.move();
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(
-            new KPair<>(new KVector2i(0, 1), sector2),
+            new KPair<>(KVectors.new2i(0, 1), sector2),
             controllableEntity.getPosition()
         );
 
@@ -329,7 +330,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
-        controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(-1, 0));
         controllableEntity.move();
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(
@@ -374,7 +375,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
-        controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(-1, 0));
         controllableEntity.move();
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(
@@ -424,7 +425,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
-        controllableEntity.setNextMoveDirection(new KVector2i(0, 1));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(0, 1));
         controllableEntity.move();
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(
@@ -499,7 +500,7 @@ public class KLevelEntityPositiveTests extends KStandardTestClass {
         mel.getTool().placeEntity(0, 0, controllableEntity);
 
         var previousPosition = controllableEntity.getPosition();
-        controllableEntity.setNextMoveDirection(new KVector2i(-1, 0));
+        controllableEntity.setNextMoveDirection(KVectors.new2i(-1, 0));
         controllableEntity.move();
         KThreadUtils.sleepForSeconds(1);
         Assertions.assertEquals(

@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.text;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.core.util.KStringUtils;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
@@ -241,28 +242,28 @@ public class KTiledText extends KAbstractShape {
             }
 
             KVector2f[] glyphUv = glyphs[i].uv();
-            xy[putChars * ELEMENTS_PER_GLYPH] = new KVector2i(
+            xy[putChars * ELEMENTS_PER_GLYPH] = KVectors.new2i(
                 this.startPos.x() + column * this.font.glyphSize().width(),
                 this.startPos.y() + line * this.font.glyphSize().height()
             );
             uv[putChars * ELEMENTS_PER_GLYPH] = glyphUv[0];
             colors[putChars * ELEMENTS_PER_GLYPH] = this.color;
 
-            xy[putChars * ELEMENTS_PER_GLYPH + 1] = new KVector2i(
+            xy[putChars * ELEMENTS_PER_GLYPH + 1] = KVectors.new2i(
                 this.startPos.x() + (column + 1) * this.font.glyphSize().width(),
                 this.startPos.y() + line * this.font.glyphSize().height()
             );
             uv[putChars * ELEMENTS_PER_GLYPH + 1] = glyphUv[1];
             colors[putChars * ELEMENTS_PER_GLYPH + 1] = this.color;
 
-            xy[putChars * ELEMENTS_PER_GLYPH + 2] = new KVector2i(
+            xy[putChars * ELEMENTS_PER_GLYPH + 2] = KVectors.new2i(
                 this.startPos.x() + (column + 1) * this.font.glyphSize().width(),
                 this.startPos.y() + (line + 1) * this.font.glyphSize().height()
             );
             uv[putChars * ELEMENTS_PER_GLYPH + 2] = glyphUv[2];
             colors[putChars * ELEMENTS_PER_GLYPH + 2] = this.color;
 
-            xy[putChars * ELEMENTS_PER_GLYPH + 3] = new KVector2i(
+            xy[putChars * ELEMENTS_PER_GLYPH + 3] = KVectors.new2i(
                 this.startPos.x() + column * this.font.glyphSize().width(),
                 this.startPos.y() + (line + 1) * this.font.glyphSize().height()
             );

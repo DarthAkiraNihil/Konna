@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
@@ -107,7 +108,7 @@ public class KArc extends KAbstractShape {
      */
     public KArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
         this(
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             new KSize(width, height),
             startAngle,
             arcAngle,
@@ -137,7 +138,7 @@ public class KArc extends KAbstractShape {
         final KColor outlineColor
     ) {
         this(
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             new KSize(width, height),
             startAngle,
             arcAngle,
@@ -168,7 +169,7 @@ public class KArc extends KAbstractShape {
         final KColor fillColor
     ) {
         this(
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             new KSize(width, height),
             startAngle,
             arcAngle,
@@ -273,7 +274,7 @@ public class KArc extends KAbstractShape {
         final KShaderProgram shader
     ) {
         this(
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             new KSize(width, height),
             startAngle,
             arcAngle,
@@ -307,7 +308,7 @@ public class KArc extends KAbstractShape {
         final KColor outlineColor
     ) {
         this(
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             new KSize(width, height),
             startAngle,
             arcAngle,
@@ -342,7 +343,7 @@ public class KArc extends KAbstractShape {
         final KColor fillColor
     ) {
         this(
-            new KVector2i(x, y),
+            KVectors.new2i(x, y),
             new KSize(width, height),
             startAngle,
             arcAngle,

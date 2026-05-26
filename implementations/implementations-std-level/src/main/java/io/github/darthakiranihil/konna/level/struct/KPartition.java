@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.struct;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,11 +54,11 @@ public final class KPartition {
         this.topLeft = topLeft;
         this.size = size;
         this.subpartitions = Collections.unmodifiableList(subpartitions);
-        this.center = new KVector2i(
+        this.center = KVectors.new2i(
             topLeft.x() + (int) (size.width() / 2.0f),
             topLeft.y() + (int) (size.height() / 2.0f)
         );
-        this.bottomRight = new KVector2i(
+        this.bottomRight = KVectors.new2i(
             topLeft.x() + size.width(),
             topLeft.y() + size.height()
         );

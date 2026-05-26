@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import io.github.darthakiranihil.konna.level.struct.KPartition;
@@ -36,25 +37,25 @@ public class KStraightPathsBetweenBinaryPartitionCentersNodeTests extends KStand
     public void testProcessSuccess() {
 
         KPartition partition = new KPartition(
-            new KVector2i(0, 0),
+            KVectors.new2i(0, 0),
             new KSize(120, 120),
             List.of(
                 new KPartition(
-                    new KVector2i(0, 0),
+                    KVectors.new2i(0, 0),
                     new KSize(60, 120),
                     List.of()
                 ),
                 new KPartition(
-                    new KVector2i(60, 0),
+                    KVectors.new2i(60, 0),
                     new KSize(60, 120),
                     List.of(
                         new KPartition(
-                            new KVector2i(60, 0),
+                            KVectors.new2i(60, 0),
                             new KSize(60, 60),
                             List.of()
                         ),
                         new KPartition(
-                            new KVector2i(60, 60),
+                            KVectors.new2i(60, 60),
                             new KSize(60, 60),
                             List.of()
                         )
@@ -85,21 +86,21 @@ public class KStraightPathsBetweenBinaryPartitionCentersNodeTests extends KStand
             KInvalidArgumentException.class,
             () -> {
                 KPartition partition = new KPartition(
-                    new KVector2i(0, 0),
+                    KVectors.new2i(0, 0),
                     new KSize(120, 120),
                     List.of(
                         new KPartition(
-                            new KVector2i(0, 0),
+                            KVectors.new2i(0, 0),
                             new KSize(60, 120),
                             List.of()
                         ),
                         new KPartition(
-                            new KVector2i(60, 0),
+                            KVectors.new2i(60, 0),
                             new KSize(60, 120),
                             List.of()
                         ),
                         new KPartition(
-                            new KVector2i(60, 0),
+                            KVectors.new2i(60, 0),
                             new KSize(60, 120),
                             List.of()
                         )
@@ -118,30 +119,30 @@ public class KStraightPathsBetweenBinaryPartitionCentersNodeTests extends KStand
             KInvalidArgumentException.class,
             () -> {
                 KPartition partition = new KPartition(
-                    new KVector2i(0, 0),
+                    KVectors.new2i(0, 0),
                     new KSize(120, 120),
                     List.of(
                         new KPartition(
-                            new KVector2i(0, 0),
+                            KVectors.new2i(0, 0),
                             new KSize(60, 120),
                             List.of()
                         ),
                         new KPartition(
-                            new KVector2i(60, 0),
+                            KVectors.new2i(60, 0),
                             new KSize(60, 120),
                             List.of(
                                 new KPartition(
-                                    new KVector2i(60, 0),
+                                    KVectors.new2i(60, 0),
                                     new KSize(60, 120),
                                     List.of()
                                 ),
                                 new KPartition(
-                                    new KVector2i(60, 0),
+                                    KVectors.new2i(60, 0),
                                     new KSize(60, 120),
                                     List.of()
                                 ),
                                 new KPartition(
-                                    new KVector2i(60, 0),
+                                    KVectors.new2i(60, 0),
                                     new KSize(60, 120),
                                     List.of()
                                 )

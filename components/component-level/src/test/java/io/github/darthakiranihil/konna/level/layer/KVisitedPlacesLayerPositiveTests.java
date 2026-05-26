@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class KVisitedPlacesLayerPositiveTests extends KStandardTestClass {
         Assertions.assertFalse(tool.isVisited(0, 0));
         Assertions.assertEquals(
             tool.isVisited(0, 0),
-            tool.isVisited(new KVector2i(0, 0))
+            tool.isVisited(KVectors.new2i(0, 0))
         );
 
 
@@ -52,14 +53,14 @@ public class KVisitedPlacesLayerPositiveTests extends KStandardTestClass {
         Assertions.assertTrue(tool.isVisited(0, 0));
         Assertions.assertEquals(
             tool.isVisited(0, 0),
-            tool.isVisited(new KVector2i(0, 0))
+            tool.isVisited(KVectors.new2i(0, 0))
         );
 
-        tool.visitPlace(new KVector2i(1, 1));
+        tool.visitPlace(KVectors.new2i(1, 1));
         Assertions.assertTrue(tool.isVisited(1, 1));
         Assertions.assertEquals(
             tool.isVisited(1, 1),
-            tool.isVisited(new KVector2i(1, 1))
+            tool.isVisited(KVectors.new2i(1, 1))
         );
 
     }

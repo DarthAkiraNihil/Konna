@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,9 @@ import org.junit.jupiter.api.Test;
 public class KPolygonPositiveTests extends KShapeTestClass {
 
     private final KVector2i[] points = new KVector2i[] {
-        new KVector2i(10, 10),
-        new KVector2i(10, 16),
-        new KVector2i(16, 16),
+        KVectors.new2i(10, 10),
+        KVectors.new2i(10, 16),
+        KVectors.new2i(16, 16),
     };
     private final int[] xs = new int[] {10, 10, 16};
     private final int[] ys = new int[] {10, 16, 16};
@@ -136,9 +137,9 @@ public class KPolygonPositiveTests extends KShapeTestClass {
 
         KPolygon primal = new KPolygon(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK,
             KColor.BLUE
@@ -146,27 +147,27 @@ public class KPolygonPositiveTests extends KShapeTestClass {
 
         KPolygon diff1 = new KPolygon(
             new KVector2i[] {
-                new KVector2i(10, 11),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 11),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK,
             KColor.BLUE
         );
         KPolygon diff2 = new KPolygon(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.GREEN,
             KColor.BLUE
         );
         KPolygon diff3 = new KPolygon(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK,
             KColor.RED
@@ -174,9 +175,9 @@ public class KPolygonPositiveTests extends KShapeTestClass {
 
         KPolygon equal = new KPolygon(
             new KVector2i[] {
-                new KVector2i(10, 10),
-                new KVector2i(10, 16),
-                new KVector2i(16, 16),
+                KVectors.new2i(10, 10),
+                KVectors.new2i(10, 16),
+                KVectors.new2i(16, 16),
             },
             KColor.PINK,
             KColor.BLUE

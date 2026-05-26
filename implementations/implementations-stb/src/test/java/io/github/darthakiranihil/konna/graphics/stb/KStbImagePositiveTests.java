@@ -21,6 +21,7 @@ import io.github.darthakiranihil.konna.core.io.KStandardResourceLoader;
 import io.github.darthakiranihil.konna.core.io.protocol.KClasspathProtocol;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KImage;
@@ -53,13 +54,13 @@ public class KStbImagePositiveTests extends KStandardTestClass {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assertions.assertEquals(KColor.RED, image.getPixelColor(new KVector2i(i, j)));
+                Assertions.assertEquals(KColor.RED, image.getPixelColor(KVectors.new2i(i, j)));
             }
         }
 
         for (int i = 4; i < 7; i++) {
             for (int j = 0; j < 4; j++) {
-                Assertions.assertEquals(KColor.GREEN, image.getPixelColor(new KVector2i(i, j)));
+                Assertions.assertEquals(KColor.GREEN, image.getPixelColor(KVectors.new2i(i, j)));
             }
         }
 
@@ -80,16 +81,16 @@ public class KStbImagePositiveTests extends KStandardTestClass {
         Assertions.assertEquals(4, slice.height());
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assertions.assertEquals(KColor.RED, slice.getPixelColor(new KVector2i(i, j)));
+                Assertions.assertEquals(KColor.RED, slice.getPixelColor(KVectors.new2i(i, j)));
             }
         }
 
-        KImage slice2 = image.slice(new KVector2i(4, 4), KSize.squared(4));
+        KImage slice2 = image.slice(KVectors.new2i(4, 4), KSize.squared(4));
         Assertions.assertEquals(4, slice2.width());
         Assertions.assertEquals(4, slice2.height());
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assertions.assertEquals(KColor.WHITE, slice2.getPixelColor(new KVector2i(i, j)));
+                Assertions.assertEquals(KColor.WHITE, slice2.getPixelColor(KVectors.new2i(i, j)));
             }
         }
 

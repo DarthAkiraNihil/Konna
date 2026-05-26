@@ -18,13 +18,14 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KOvalPositiveTests extends KShapeTestClass {
 
-    private final KVector2i center = new KVector2i(10, 10);
+    private final KVector2i center = KVectors.new2i(10, 10);
     private final KSize size = new KSize(10, 10);
     private final KColor outlineColor = KColor.RED;
     private final KColor fillColor = KColor.BLUE;

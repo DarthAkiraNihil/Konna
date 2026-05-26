@@ -18,6 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.mapper;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.KTileLayer;
 import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
@@ -83,7 +84,7 @@ public class KInjectTilesNodeTests extends KStandardTestClass {
         KUniversalMap params = new KUniversalMap();
         params.put("destination", l1);
         params.put("injected", l2);
-        params.put("offset", new KVector2i(1, 0));
+        params.put("offset", KVectors.new2i(1, 0));
 
         KInjectTilesNode node = new KInjectTilesNode();
         KUniversalMap nodeResult = node.process(params, new Random());

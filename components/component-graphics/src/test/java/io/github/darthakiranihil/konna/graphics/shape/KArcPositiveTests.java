@@ -18,13 +18,14 @@ package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KArcPositiveTests extends KShapeTestClass {
 
-    private final KVector2i coordinates = new KVector2i(10, 10);
+    private final KVector2i coordinates = KVectors.new2i(10, 10);
     private final KSize size = new KSize(10, 10);
     private final int startAngle = 30;
     private final int arcAngle = 60;

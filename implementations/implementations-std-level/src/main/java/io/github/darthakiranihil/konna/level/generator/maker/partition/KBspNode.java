@@ -20,6 +20,7 @@ import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KPair;
 import io.github.darthakiranihil.konna.core.struct.KSize;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;
@@ -182,7 +183,7 @@ public final class KBspNode implements KGeneratorNode {
 
             var first = new KPair<>(topLeft, new KSize(splitPoint, size.height()));
             var second = new KPair<>(
-                topLeft.add(new KVector2i(splitPoint, 0)),
+                topLeft.add(KVectors.new2i(splitPoint, 0)),
                 new KSize(
                 size.width() - splitPoint,
                     size.height()
@@ -202,7 +203,7 @@ public final class KBspNode implements KGeneratorNode {
 
             var first = new KPair<>(topLeft, new KSize(size.width(), splitPoint));
             var second = new KPair<>(
-                topLeft.add(new KVector2i(0, splitPoint)),
+                topLeft.add(KVectors.new2i(0, splitPoint)),
                 new KSize(
                     size.width(),
                     size.height() - splitPoint
