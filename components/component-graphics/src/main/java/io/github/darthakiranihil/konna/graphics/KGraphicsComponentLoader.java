@@ -29,7 +29,7 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.struct.KVector2d;
+import io.github.darthakiranihil.konna.core.struct.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
 
@@ -101,7 +101,7 @@ public class KGraphicsComponentLoader implements KComponentLoader {
             new KTransform(
                 0.0,
                 new KVector2i(1, 1),
-                new KVector2d(0.0, 0.0),
+                new KVector2f(0.0f, 0.0f),
                 KVector2i.ZERO
             )
         ).getMatrix();
