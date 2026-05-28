@@ -16,8 +16,17 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+/**
+ * Interface for all objects that can be identified with id.
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
 public interface KIdentifiable {
 
+    /**
+     * @return ID of this object
+     */
     long id();
 
 }

@@ -16,10 +16,19 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
+/**
+ * A simple utility class for "generating" new ids for identifiable objects.
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
 public final class KIdGen extends KUninstantiable {
 
     private static long generatedIds;
 
+    /**
+     * @return Next generated id
+     */
     public static long nextId() {
         return generatedIds++;
     }
