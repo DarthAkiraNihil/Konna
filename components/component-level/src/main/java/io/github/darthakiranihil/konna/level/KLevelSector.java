@@ -32,7 +32,6 @@ import io.github.darthakiranihil.konna.level.layer.tool.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * The elementary unit of a game level that provides all information
@@ -80,8 +79,8 @@ public final class KLevelSector extends KObject {
 
     private final Map<Class<? extends KLayerTool>, KLayerTool> tools;
 
-    private final UUID entityLeftSectorToken;
-    private final UUID entityMovedToken;
+    private final long entityLeftSectorToken;
+    private final long entityMovedToken;
 
     /**
      * Standard constructor.

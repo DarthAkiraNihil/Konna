@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-import java.util.UUID;
-
 /**
  * Interface encapsulation event subscription-unsubscription logic.
  * @param <T> Type of event argument
@@ -32,13 +30,13 @@ public interface KEventSubscriber<T> {
      * @param action Method reference to be called on event invocation
      * @return Subscription token (don't lose it, it's needed for unsubscription)
      */
-    UUID subscribe(KEventAction<T> action);
+    long subscribe(KEventAction<T> action);
 
     /**
      * Removes a subscriber from the event.
      * @param subscriptionToken Subscription token,
      *                          retrieved from {@link KEventSubscriber#subscribe(KEventAction)}
      */
-    void unsubscribe(UUID subscriptionToken);
+    void unsubscribe(long subscriptionToken);
 
 }

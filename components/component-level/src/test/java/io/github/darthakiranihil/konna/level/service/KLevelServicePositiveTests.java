@@ -40,7 +40,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.UUID;
 
 public class KLevelServicePositiveTests extends KStandardTestClass {
 
@@ -125,7 +124,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
         }
 
         KBooleanReference executed = new KBooleanReference();
-        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        long subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
 
         KonnaBootstrapConfig config = new KonnaBootstrapConfig(
             KStandardArgumentParser.class,
@@ -189,7 +188,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
         }
 
         KIntReference executions = new KIntReference();
-        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executions.set(executions.get() + 1));
+        long subToken = CAPTURE_THE_FLAG.subscribe(() -> executions.set(executions.get() + 1));
 
         KonnaBootstrapConfig config = new KonnaBootstrapConfig(
             KStandardArgumentParser.class,
@@ -253,7 +252,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
         }
 
         KBooleanReference executed = new KBooleanReference();
-        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        long subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
 
         KonnaBootstrapConfig config = new KonnaBootstrapConfig(
             KStandardArgumentParser.class,
@@ -318,7 +317,7 @@ public class KLevelServicePositiveTests extends KStandardTestClass {
         }
 
         KIntReference executions = new KIntReference();
-        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executions.set(executions.get() + 1));
+        long subToken = CAPTURE_THE_FLAG.subscribe(() -> executions.set(executions.get() + 1));
 
         KonnaBootstrapConfig config = new KonnaBootstrapConfig(
             KStandardArgumentParser.class,

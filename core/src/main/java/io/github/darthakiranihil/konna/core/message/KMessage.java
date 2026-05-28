@@ -17,8 +17,8 @@
 package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-
-import java.util.UUID;
+import io.github.darthakiranihil.konna.core.object.KIdGen;
+import io.github.darthakiranihil.konna.core.object.KIdentifiable;
 
 /**
  * Data structure representing a message to be delivered to other components
@@ -30,7 +30,7 @@ import java.util.UUID;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public final class KMessage {
+public final class KMessage implements KIdentifiable {
 
     /**
      * Globally unique instance that is used to indicate that the message has been
@@ -42,12 +42,12 @@ public final class KMessage {
      * @since 0.4.0
      */
     public static final KMessage DROP = new KMessage(
-        String.format("__drop_message_%s", UUID.randomUUID()),
+        String.format("__drop_message_%s", KIdGen.nextId()),
         new KUniversalMap(),
         KMessageType.SYSTEM
     );
 
-    private final UUID id;
+    private final long id;
     private final String messageId;
     private final KUniversalMap body;
     private final KMessageType type;
@@ -57,7 +57,7 @@ public final class KMessage {
         final KUniversalMap body,
         final KMessageType type
     ) {
-        this.id = UUID.randomUUID();
+        this.id = KIdGen.nextId();
         this.messageId = messageId;
         this.body = body;
         this.type = type;
@@ -107,7 +107,7 @@ public final class KMessage {
      * Returns the unique id of the message.
      * @return Unique ID of the message
      */
-    public UUID id() {
+    public long id() {
         return this.id;
     }
 

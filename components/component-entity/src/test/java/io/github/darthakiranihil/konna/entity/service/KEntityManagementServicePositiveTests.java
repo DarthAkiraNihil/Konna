@@ -44,7 +44,6 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class KEntityManagementServicePositiveTests extends KStandardTestClass {
@@ -120,7 +119,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEventSystem eventSystem = engineModule.eventSystem();
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
+        long subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
         class Asserter implements KTunnel {
 
@@ -185,7 +184,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEventSystem eventSystem = engineModule.eventSystem();
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
+        long subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
         class Asserter implements KTunnel {
 
@@ -275,7 +274,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEventSystem eventSystem = engineModule.eventSystem();
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
+        long subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
         class Asserter implements KTunnel {
 
@@ -364,7 +363,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEventSystem eventSystem = engineModule.eventSystem();
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
+        long subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
 
         class Asserter implements KTunnel {
@@ -435,7 +434,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEventSystem eventSystem = engineModule.eventSystem();
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
+        long subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
         class Asserter implements KTunnel {
 
@@ -510,7 +509,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
         KEventSystem eventSystem = engineModule.eventSystem();
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> executed.set(true));
+        long subToken = captureTheFlag.subscribe(() -> executed.set(true));
 
         class Asserter implements KTunnel {
 

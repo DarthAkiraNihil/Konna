@@ -43,7 +43,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.UUID;
 
 @NullMarked
 public class KRenderServicePositiveTests extends KStandardTestClass {
@@ -55,7 +54,7 @@ public class KRenderServicePositiveTests extends KStandardTestClass {
     public void testRenderObjects() {
 
         KBooleanReference executed = new KBooleanReference();
-        UUID subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
+        long subToken = CAPTURE_THE_FLAG.subscribe(() -> executed.set(true));
 
         class Asserter implements KMessageRoutesConfigurer {
 
