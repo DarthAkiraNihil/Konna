@@ -17,7 +17,6 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Representation of a registry record of {@link KObjectRegistry}.

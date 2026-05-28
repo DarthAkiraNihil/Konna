@@ -79,6 +79,10 @@ public class KObject implements KDeletable, Serializable {
         return createdObjects++;
     }
 
+    /**
+     * @param id Any id of an object
+     * @return Stringified object id
+     */
     public static String toStringId(long id) {
         return FORMAT.toHexDigits(id);
     }

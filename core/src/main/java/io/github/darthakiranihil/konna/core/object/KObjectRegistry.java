@@ -19,7 +19,6 @@ package io.github.darthakiranihil.konna.core.object;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Interface for utility class that stores records about all objects, created with
