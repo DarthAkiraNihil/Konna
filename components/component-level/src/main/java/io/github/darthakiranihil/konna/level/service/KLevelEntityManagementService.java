@@ -83,9 +83,9 @@ public class KLevelEntityManagementService extends KObject implements KService {
     private final KEventAction<KLevel> onLeveLoadedConsumer = this::onLevelLoaded;
     private final KSimpleEventAction onLevelUnloadedConsumer = this::onLevelUnloaded;
 
-    private final Map<UUID, KControllableEntity> controllables;
-    private final Map<UUID, KStaticEntity> statics;
-    private final Map<UUID, KAutonomousEntity> autonomouses;
+    private final Map<Long, KControllableEntity> controllables;
+    private final Map<Long, KStaticEntity> statics;
+    private final Map<Long, KAutonomousEntity> autonomouses;
 
     private final Queue<KLevelEntity> deletionQueue;
 
@@ -170,7 +170,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
      */
     @KServiceEndpoint(route = "setDirectionForControllableEntity")
     protected void setDirectionForControllableEntity(
-        @KBodyValue("entity_id") final UUID entityId,
+        @KBodyValue("entity_id") final long entityId,
         @KBodyValue("direction") final KVector2i direction
     ) {
 
@@ -298,7 +298,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
      */
     @KServiceEndpoint(route = "destroyAutonomousEntity")
     protected void destroyAutonomousEntity(
-        @KBodyValue("entity_id") final UUID entityId
+        @KBodyValue("entity_id") final long entityId
     ) {
         if (this.currentLevel == null) {
             KSystemLogger.warning(
@@ -379,7 +379,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
      */
     @KServiceEndpoint(route = "destroyStaticEntity")
     protected void destroyStaticEntity(
-        @KBodyValue("entity_id") final UUID entityId
+        @KBodyValue("entity_id") final long entityId
     ) {
         if (this.currentLevel == null) {
             KSystemLogger.warning(
@@ -463,7 +463,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
      */
     @KServiceEndpoint(route = "destroyControllableEntity")
     protected void destroyControllableEntity(
-        @KBodyValue("entity_id") final UUID entityId
+        @KBodyValue("entity_id") final long entityId
     ) {
         if (this.currentLevel == null) {
             KSystemLogger.warning(
@@ -631,7 +631,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
 
         KUniversalMap body = new KUniversalMap();
         body.put("moved_controllables", this.controllables.keySet());
-        Map<UUID, KLevelSectorSlice> controllableDestinations = new HashMap<>();
+        Map<Long, KLevelSectorSlice> controllableDestinations = new HashMap<>();
         for (var entry: this.controllables.entrySet()) {
             KLevelEntity entity = entry.getValue();
             KLevelSector sector = entity.getPosition().second();
@@ -643,7 +643,7 @@ public class KLevelEntityManagementService extends KObject implements KService {
         body.put("controllables_destinations", controllableDestinations);
 
         body.put("moved_autonomous", this.autonomouses.keySet());
-        Map<UUID, KLevelSectorSlice> autonomousesDestinations = new HashMap<>();
+        Map<Long, KLevelSectorSlice> autonomousesDestinations = new HashMap<>();
         for (var entry: this.autonomouses.entrySet()) {
             KLevelEntity entity = entry.getValue();
             KLevelSector sector = entity.getPosition().second();
