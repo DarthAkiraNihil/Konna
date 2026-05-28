@@ -99,7 +99,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of controllable entity to move
  *                     </li>
  *                     <li>
@@ -162,7 +162,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of destroyed entity
  *                     </li>
  *                 </ul>
@@ -209,7 +209,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of destroyed entity
  *                     </li>
  *                 </ul>
@@ -256,7 +256,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of destroyed entity
  *                     </li>
  *                 </ul>
@@ -321,23 +321,23 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code moved_controllables} -
- *                         {@link java.util.Set} of {@link java.util.UUID} -
+ *                         {@link java.util.Set} of {@code long} -
  *                         set of all moved controllable entities ids
  *                     </li>
  *                     <li>
  *                         {@code controllables_destinations} -
- *                         {@link java.util.Map} from {@link java.util.UUID} to
+ *                         {@link java.util.Map} from {@code long} to
  *                         {@link KLevelSectorSlice} - map of sector slices on controllable
  *                         entities destinations
  *                     </li>
  *                     <li>
  *                         {@code moved_autonomouses} -
- *                         {@link java.util.Set} of {@link java.util.UUID} -
+ *                         {@link java.util.Set} of {@code long} -
  *                         set of all moved autonomous entities ids
  *                     </li>
  *                     <li>
  *                         {@code autonomouses_destinations} -
- *                         {@link java.util.Map} from {@link java.util.UUID} to
+ *                         {@link java.util.Map} from {@code long} to
  *                         {@link KLevelSectorSlice} - map of sector slices on autonomous
  *                         entities destinations
  *                     </li>
@@ -353,7 +353,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of created entity
  *                     </li>
  *                     <li>
@@ -380,7 +380,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of created entity
  *                     </li>
  *                     <li>
@@ -407,7 +407,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of created entity
  *                     </li>
  *                     <li>

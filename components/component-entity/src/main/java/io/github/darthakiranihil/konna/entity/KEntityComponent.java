@@ -87,7 +87,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of entity to deactivate
  *                     </li>
  *                 </ul>
@@ -103,7 +103,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of entity to activate
  *                     </li>
  *                 </ul>
@@ -118,7 +118,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code entity_id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of entity to destroy
  *                     </li>
  *                 </ul>
@@ -138,7 +138,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of created entity
  *                     </li>
  *                     <li>
@@ -163,7 +163,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of activated entity
  *                     </li>
  *                     <li>
@@ -188,7 +188,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of deactivated entity
  *                     </li>
  *                     <li>
@@ -213,7 +213,7 @@ import io.github.darthakiranihil.konna.entity.type.KEntityMetadataTypedef;
  *                 <ul>
  *                     <li>
  *                         {@code id} -
- *                         {@link java.util.UUID} -
+ *                         {@code long} -
  *                         id of destroyed entity
  *                     </li>
  *                     <li>

@@ -43,7 +43,6 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class KEntityComponentPositiveTests extends KStandardTestClass {
 
@@ -101,7 +100,7 @@ public class KEntityComponentPositiveTests extends KStandardTestClass {
         eventSystem.registerEvent(CAPTURE_THE_FLAG);
 
         KSimpleEventSubscriber captureTheFlag = eventSystem.getSimpleEventSubscriber("captureTheFlag");
-        UUID subToken = captureTheFlag.subscribe(() -> checkerExecuted.set(true));
+        long subToken = captureTheFlag.subscribe(() -> checkerExecuted.set(true));
 
         hypervisor.launch(new KStandardApplicationFeatures(Map.of("log-level", "INFO", "max-fps", "-1")));
         Assertions.assertTrue(checkerExecuted.get());

@@ -22,7 +22,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @NullMarked
@@ -35,8 +34,8 @@ public class KStandardEventSystemPositiveTests extends KStandardTestClass {
 
     private int changeableField;
 
-    private final UUID action1token;
-    private final UUID action2token;
+    private final long action1token;
+    private final long action2token;
 
     public KStandardEventSystemPositiveTests() {
 

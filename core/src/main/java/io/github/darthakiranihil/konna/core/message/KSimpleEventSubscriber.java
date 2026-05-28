@@ -16,8 +16,6 @@
 
 package io.github.darthakiranihil.konna.core.message;
 
-import java.util.UUID;
-
 /**
  * Interface encapsulation simple event subscription-unsubscription logic.
  *
