@@ -28,7 +28,7 @@ import java.util.*;
  * @since 0.2.0
  * @author Darth Akira Nihil
  */
-public class KObject implements KDeletable, Serializable {
+public class KObject implements KIdentifiable, KDeletable, Serializable {
 
     private static final class KDeletableProxy extends KObject {
         private final Object object;
@@ -75,9 +75,6 @@ public class KObject implements KDeletable, Serializable {
     private static final String DEFAULT_OBJECT_NAME = "object@%d";
 
     private static long createdObjects = 0;
-    private static long newId() {
-        return createdObjects++;
-    }
 
     /**
      * @param id Any id of an object
@@ -112,7 +109,8 @@ public class KObject implements KDeletable, Serializable {
      * Creates an object with default name, empty tag list and without parent object.
      */
     public KObject() {
-        this.id = KObject.newId();
+        this.id = KIdGen.nextId();
+        KObject.createdObjects++;
 
         this.name = String.format(DEFAULT_OBJECT_NAME, KObject.createdObjects);
         this.tags = new HashSet<>();
@@ -125,7 +123,9 @@ public class KObject implements KDeletable, Serializable {
      * @param name Name of the object
      */
     public KObject(final String name) {
-        this.id = KObject.newId();
+        this.id = KIdGen.nextId();
+        KObject.createdObjects++;
+
         this.name = name;
         this.tags = new HashSet<>();
         this.parent = null;
@@ -138,7 +138,9 @@ public class KObject implements KDeletable, Serializable {
      * @param parent Parent object
      */
     public KObject(final String name, final KObject parent) {
-        this.id = KObject.newId();
+        this.id = KIdGen.nextId();
+        KObject.createdObjects++;
+
         this.name = name;
         this.tags = new HashSet<>();
         this.children = new HashSet<>();
@@ -152,7 +154,9 @@ public class KObject implements KDeletable, Serializable {
      * @param parent Parent object
      */
     public KObject(final String name, final Set<String> tags, final KObject parent) {
-        this.id = KObject.newId();
+        this.id = KIdGen.nextId();
+        KObject.createdObjects++;
+
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.children = new HashSet<>();
@@ -165,7 +169,9 @@ public class KObject implements KDeletable, Serializable {
      * @param tags List of object tags
      */
     public KObject(final String name, final Set<String> tags) {
-        this.id = KObject.newId();
+        this.id = KIdGen.nextId();
+        KObject.createdObjects++;
+
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.parent = null;

@@ -17,6 +17,7 @@
 package io.github.darthakiranihil.konna.core.message;
 
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
+import io.github.darthakiranihil.konna.core.object.KIdGen;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jspecify.annotations.Nullable;
@@ -24,7 +25,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Representation of an event - a simple message that should be delivered
@@ -40,7 +40,7 @@ public final class KSimpleEvent
     private static final int INITIAL_LISTENERS_CAPACITY = 4;
     private final Object lock = new Object();
 
-    private final Map<UUID, KSimpleEventAction> listeners;
+    private final Map<Long, KSimpleEventAction> listeners;
     private @Nullable KEventQueue eventQueue;
 
     /**
@@ -57,10 +57,10 @@ public final class KSimpleEvent
      * @param callable Method reference to be called on event invocation
      */
     @Override
-    public UUID subscribe(
+    public long subscribe(
         final KSimpleEventAction callable
     ) {
-        UUID subscriptionToken = UUID.randomUUID();
+        long subscriptionToken = KIdGen.nextId();
         synchronized (this.lock) {
             this.listeners.put(subscriptionToken, callable);
         }
@@ -69,7 +69,7 @@ public final class KSimpleEvent
 
     @Override
     public void unsubscribe(
-        final UUID subscriptionToken
+        final long subscriptionToken
     ) {
         synchronized (this.lock) {
             this.listeners.remove(subscriptionToken);
