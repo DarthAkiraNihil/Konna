@@ -43,16 +43,22 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
 
     private static final int INITIAL_CAPACITY = 64;
 
+    private static long recordsCount = 0;
+
+    private static long newRecordId() {
+        return recordsCount++;
+    }
+
     private abstract static sealed class RegistryRecord implements KObjectRegistryRecord {
 
-        private final UUID recordId;
-        private final UUID objectId;
+        private final long recordId;
+        private final long objectId;
         private final boolean isSynthetic;
         private final Class<?> objectClass;
         private final Set<String> objectTags;
 
         RegistryRecord(final Object object) {
-            this.recordId = UUID.randomUUID();
+            this.recordId = KStandardObjectRegistry.newRecordId();
 
             Class<?> objectClazz = object.getClass();
             if (KObject.class.isAssignableFrom(objectClazz)) {
@@ -69,12 +75,12 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         }
 
         @Override
-        public UUID recordId() {
+        public long recordId() {
             return this.recordId;
         }
 
         @Override
-        public UUID objectId() {
+        public long objectId() {
             return this.objectId;
         }
 
@@ -197,7 +203,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
         7200
     );
 
-    private final Map<UUID, KObjectRegistryRecord> records;
+    private final Map<Long, KObjectRegistryRecord> records;
     private final Queue<PhantomReference<?>> phantoms;
     private final ReferenceQueue<Object> referenceQueue;
 
@@ -242,12 +248,12 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
     }
 
     @Override
-    public @Nullable KObjectRegistryRecord getObject(final UUID objectId) {
+    public @Nullable KObjectRegistryRecord getObject(final long objectId) {
         return this.records.get(objectId);
     }
 
     @Override
-    public void removeObject(final UUID objectId) {
+    public void removeObject(final long objectId) {
         this.records.remove(objectId);
 
     }
@@ -276,7 +282,7 @@ public final class KStandardObjectRegistry extends KObject implements KObjectReg
     }
 
     private void postMortem() {
-        Set<UUID> eliminated = this.records
+        Set<Long> eliminated = this.records
             .entrySet()
             .stream()
             .filter(x -> !x.getValue().isPresent())

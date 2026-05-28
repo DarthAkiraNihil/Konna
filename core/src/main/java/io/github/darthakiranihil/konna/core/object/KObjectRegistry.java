@@ -60,7 +60,7 @@ public interface KObjectRegistry {
      *
      * @since 0.6.0
      */
-    @Nullable KObjectRegistryRecord getObject(UUID objectId);
+    @Nullable KObjectRegistryRecord getObject(long objectId);
 
     /**
      * Removes a registry record for specific object, if corresponding id is presented
@@ -69,7 +69,7 @@ public interface KObjectRegistry {
      *
      * @since 0.6.0
      */
-    void removeObject(UUID objectId);
+    void removeObject(long objectId);
 
     /**
      * @param tag Tag to be in found objects

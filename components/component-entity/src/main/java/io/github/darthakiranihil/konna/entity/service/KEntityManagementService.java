@@ -86,8 +86,8 @@ public class KEntityManagementService extends KObject implements KService {
 
     private final KEntityFactory entityFactory;
 
-    private final Map<UUID, KEntity> activeEntities;
-    private final Map<UUID, KEntity> inactiveEntities;
+    private final Map<Long, KEntity> activeEntities;
+    private final Map<Long, KEntity> inactiveEntities;
     private final Queue<BehaviourProcessingData> behaviourProcessingQueue;
 
     private final KFrameTaskScheduler frameTaskScheduler;
@@ -203,7 +203,7 @@ public class KEntityManagementService extends KObject implements KService {
         route = "deactivateEntity"
     )
     protected void deactivateEntity(
-        @KBodyValue(KInternals.ENTITY_ID_KEY) final UUID entityId
+        @KBodyValue(KInternals.ENTITY_ID_KEY) final long entityId
     ) {
 
         if (
@@ -238,7 +238,7 @@ public class KEntityManagementService extends KObject implements KService {
         route = "activateEntity"
     )
     protected void activateEntity(
-        @KBodyValue(KInternals.ENTITY_ID_KEY) final UUID entityId
+        @KBodyValue(KInternals.ENTITY_ID_KEY) final long entityId
     ) {
 
         if (
@@ -273,7 +273,7 @@ public class KEntityManagementService extends KObject implements KService {
         route = "destroyEntity"
     )
     protected void destroyEntity(
-        @KBodyValue(KInternals.ENTITY_ID_KEY) final UUID entityId
+        @KBodyValue(KInternals.ENTITY_ID_KEY) final long entityId
     ) {
 
         boolean flag = false;

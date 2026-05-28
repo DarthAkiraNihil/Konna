@@ -28,6 +28,7 @@ import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.message.*;
+import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
@@ -53,7 +54,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
     private static void assertMessage(KMessage message) {
         Assertions.assertEquals("Entity.entityCreated", message.messageId());
         KUniversalMap body = message.body();
-        Assertions.assertNotNull(body.getSafe("id", UUID.class));
+        Assertions.assertNotNull(body.getSafe("id", Long.class));
         Assertions.assertNotNull(body.getSafe("type", String.class));
         Assertions.assertEquals("Typpi3", body.get("type", String.class));
         Assertions.assertNotNull(body.getSafe("name", String.class));
@@ -136,8 +137,8 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 assertMessage(message);
                 KService service = assertService(this.objectRegistry);
 
-                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
-                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                var active = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
 
                 Assertions.assertNotNull(active);
                 Assertions.assertNotNull(inactive);
@@ -145,9 +146,10 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 Assertions.assertEquals(1, active.size());
                 Assertions.assertEquals(0, inactive.size());
 
-                UUID createdId = message.body().get("id", UUID.class);
+                long createdId = message.body().get("id", Long.class);
                 Assertions.assertEquals("E1", active.get(createdId).name());
                 Assertions.assertEquals("Typpi3", active.get(createdId).type());
+                Assertions.assertDoesNotThrow(() -> KObject.toStringId(active.get(createdId).id()));
 
                 CAPTURE_THE_FLAG.invokeSync();
 
@@ -200,8 +202,8 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 assertMessage(message);
                 KService service = assertService(this.objectRegistry);
 
-                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
-                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                var active = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
 
                 Assertions.assertNotNull(active);
                 Assertions.assertNotNull(inactive);
@@ -209,7 +211,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 Assertions.assertEquals(1, active.size());
                 Assertions.assertEquals(0, inactive.size());
 
-                UUID createdId = message.body().get("id", UUID.class);
+                long createdId = message.body().get("id", Long.class);
                 KEntity created = active.get(createdId);
                 Assertions.assertNotNull(created);
                 Assertions.assertEquals("E1", created.name());
@@ -295,15 +297,15 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 assertMessage(message);
                 KService service = assertService(this.objectRegistry);
 
-                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
-                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                var active = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
                 Assertions.assertNotNull(active);
                 Assertions.assertNotNull(inactive);
 
                 Assertions.assertEquals(1, active.size());
                 Assertions.assertEquals(0, inactive.size());
 
-                UUID createdId = message.body().get("id", UUID.class);
+                long createdId = message.body().get("id", Long.class);
                 KEntity created = active.get(createdId);
                 Assertions.assertNotNull(created);
                 Assertions.assertEquals("E1", created.name());
@@ -312,7 +314,7 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 KUniversalMap entityIdBody = new KUniversalMap();
                 entityIdBody.put("entity_id", createdId);
                 KUniversalMap nonExistentEntityIdBody = new KUniversalMap();
-                nonExistentEntityIdBody.put("entity_id", UUID.randomUUID());
+                nonExistentEntityIdBody.put("entity_id", 123456L);
 
                 this.messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", entityIdBody));
                 this.messageSystem.deliverMessageSync(KMessage.regular("deactivateEntity", nonExistentEntityIdBody));
@@ -381,15 +383,15 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 assertMessage(message);
                 KService service = assertService(this.objectRegistry);
 
-                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
-                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                var active = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
                 Assertions.assertNotNull(active);
                 Assertions.assertNotNull(inactive);
 
                 Assertions.assertEquals(1, active.size());
                 Assertions.assertEquals(0, inactive.size());
 
-                UUID createdId = message.body().get("id", UUID.class);
+                long createdId = message.body().get("id", Long.class);
                 KEntity created = active.get(createdId);
                 Assertions.assertNotNull(created);
                 Assertions.assertEquals("E1", created.name());
@@ -451,15 +453,15 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
                 assertMessage(message);
                 KService service = assertService(this.objectRegistry);
 
-                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
-                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                var active = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
                 Assertions.assertNotNull(active);
                 Assertions.assertNotNull(inactive);
 
                 Assertions.assertEquals(1, active.size());
                 Assertions.assertEquals(0, inactive.size());
 
-                UUID createdId = message.body().get("id", UUID.class);
+                long createdId = message.body().get("id", Long.class);
                 KEntity created = active.get(createdId);
                 Assertions.assertNotNull(created);
                 Assertions.assertEquals("E1", created.name());
@@ -525,13 +527,13 @@ public class KEntityManagementServicePositiveTests extends KStandardTestClass {
             public KMessage processMessage(KMessage message) {
                 KService service = assertService(this.objectRegistry);
 
-                var active = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
-                var inactive = (Map<UUID, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
+                var active = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(activeEntities, service);
+                var inactive = (Map<Long, KEntity>) KReflectionUtils.getFieldValue(inactiveEntities, service);
                 Assertions.assertNotNull(active);
                 Assertions.assertNotNull(inactive);
 
                 KUniversalMap entityIdBody = new KUniversalMap();
-                entityIdBody.put("entity_id", UUID.randomUUID());
+                entityIdBody.put("entity_id", 123456L);
 
                 this.messageSystem.deliverMessageSync(KMessage.regular("destroyEntity", entityIdBody));
                 Assertions.assertEquals(0, active.size());

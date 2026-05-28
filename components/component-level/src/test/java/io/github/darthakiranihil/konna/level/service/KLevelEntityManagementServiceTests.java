@@ -30,7 +30,6 @@ import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
 import io.github.darthakiranihil.konna.core.struct.KVectors;
 import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
@@ -95,19 +94,19 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 "currentLevel",
                 KLevel.class
             );
-            var controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(
+            var controllables = (Map<Long, KControllableEntity>) KReflectionUtils.getFieldValue(
                 KLevelEntityManagementService.class,
                 service,
                 "controllables",
                 Map.class
             );
-            var statics = (Map<UUID, KStaticEntity>) KReflectionUtils.getFieldValue(
+            var statics = (Map<Long, KStaticEntity>) KReflectionUtils.getFieldValue(
                 KLevelEntityManagementService.class,
                 service,
                 "statics",
                 Map.class
             );
-            var autonomouses = (Map<UUID, KAutonomousEntity>) KReflectionUtils.getFieldValue(
+            var autonomouses = (Map<Long, KAutonomousEntity>) KReflectionUtils.getFieldValue(
                 KLevelEntityManagementService.class,
                 service,
                 "autonomouses",
@@ -129,9 +128,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         protected abstract void check(
-            Map<UUID, KControllableEntity> controllables,
-            Map<UUID, KStaticEntity> statics,
-            Map<UUID, KAutonomousEntity> autonomouses,
+            Map<Long, KControllableEntity> controllables,
+            Map<Long, KStaticEntity> statics,
+            Map<Long, KAutonomousEntity> autonomouses,
             KMessageSystem messageSystem,
             KFrameTaskExecutor frameTaskExecutor
         );
@@ -164,19 +163,19 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 "currentLevel",
                 KLevel.class
             );
-            var controllables = (Map<UUID, KControllableEntity>) KReflectionUtils.getFieldValue(
+            var controllables = (Map<Long, KControllableEntity>) KReflectionUtils.getFieldValue(
                 KLevelEntityManagementService.class,
                 service,
                 "controllables",
                 Map.class
             );
-            var statics = (Map<UUID, KStaticEntity>) KReflectionUtils.getFieldValue(
+            var statics = (Map<Long, KStaticEntity>) KReflectionUtils.getFieldValue(
                 KLevelEntityManagementService.class,
                 service,
                 "statics",
                 Map.class
             );
-            var autonomouses = (Map<UUID, KAutonomousEntity>) KReflectionUtils.getFieldValue(
+            var autonomouses = (Map<Long, KAutonomousEntity>) KReflectionUtils.getFieldValue(
                 KLevelEntityManagementService.class,
                 service,
                 "autonomouses",
@@ -199,9 +198,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
         }
 
         protected abstract void check(
-            Map<UUID, KControllableEntity> controllables,
-            Map<UUID, KStaticEntity> statics,
-            Map<UUID, KAutonomousEntity> autonomouses,
+            Map<Long, KControllableEntity> controllables,
+            Map<Long, KStaticEntity> statics,
+            Map<Long, KAutonomousEntity> autonomouses,
             KMessageSystem messageSystem,
             KFrameTaskExecutor frameTaskExecutor
         );
@@ -222,14 +221,14 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
                 KUniversalMap body = new KUniversalMap();
-                var id = (UUID)  controllables.keySet().toArray()[0];
+                var id = (long)  controllables.keySet().toArray()[0];
                 body.clear();
                 body.put("entity_id", id);
                 body.put("direction", KVectors.new2i(0, 1));
@@ -238,9 +237,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 frameTaskExecutor.executeScheduledTasks(KFrameEvent.FRAME_FINISHED);
                 Assertions.assertEquals(KVectors.new2i(2, 1),  controllables.get(id).getPosition().first());
 
-                var autoId = (UUID) autonomouses.keySet().toArray()[0];
+                var autoId = (long) autonomouses.keySet().toArray()[0];
                 Assertions.assertEquals(KVectors.new2i(1, 0),  autonomouses.get(autoId).getPosition().first());
-                var staticId = (UUID) statics.keySet().toArray()[0];
+                var staticId = (long) statics.keySet().toArray()[0];
                 Assertions.assertEquals(KVectors.new2i(0, 1),  statics.get(staticId).getPosition().first());
             }
         }
@@ -300,9 +299,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -388,9 +387,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -475,9 +474,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -561,9 +560,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -634,13 +633,13 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
-                var deletedId = (UUID) autonomouses.keySet().toArray()[0];
+                var deletedId = (long) autonomouses.keySet().toArray()[0];
                 KUniversalMap body = new KUniversalMap();
                 body.clear();
                 body.put("entity_id", deletedId);
@@ -712,9 +711,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -796,13 +795,13 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
-                var deletedId = (UUID) controllables.keySet().toArray()[0];
+                var deletedId = (long) controllables.keySet().toArray()[0];
                 KUniversalMap body = new KUniversalMap();
                 body.clear();
                 body.put("entity_id", deletedId);
@@ -875,9 +874,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -959,13 +958,13 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
-                var deletedId = (UUID) statics.keySet().toArray()[0];
+                var deletedId = (long) statics.keySet().toArray()[0];
                 KUniversalMap body = new KUniversalMap();
                 body.clear();
                 body.put("entity_id", deletedId);
@@ -1038,9 +1037,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -1117,9 +1116,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -1195,14 +1194,14 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
                 KUniversalMap body = new KUniversalMap();
-                body.put("entity_id", UUID.randomUUID());
+                body.put("entity_id", 123456L);
 
                 messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));
@@ -1267,17 +1266,17 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
                 KUniversalMap body = new KUniversalMap();
-                var id = (UUID)  controllables.keySet().toArray()[0];
+                var id = (long)  controllables.keySet().toArray()[0];
                 var previousPosition = controllables.get(id).getPosition();
 
-                body.put("entity_id", UUID.randomUUID());
+                body.put("entity_id", 123456L);
                 body.put("direction", KVectors.new2i(0, 1));
                 messageSystem.deliverMessageSync(KMessage.regular("setDirectionForControllableEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("moveAllEntities", new KUniversalMap()));
@@ -1285,9 +1284,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
                 
                 Assertions.assertEquals(previousPosition,  controllables.get(id).getPosition());
 
-                var autoId = (UUID) autonomouses.keySet().toArray()[0];
+                var autoId = (long) autonomouses.keySet().toArray()[0];
                 Assertions.assertEquals(KVectors.new2i(1, 0),  autonomouses.get(autoId).getPosition().first());
-                var staticId = (UUID) statics.keySet().toArray()[0];
+                var staticId = (long) statics.keySet().toArray()[0];
                 Assertions.assertEquals(KVectors.new2i(0, 1),  statics.get(staticId).getPosition().first());
             }
         }
@@ -1345,9 +1344,9 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
@@ -1423,14 +1422,14 @@ public class KLevelEntityManagementServiceTests extends KStandardTestClass {
 
             @Override
             protected void check(
-                Map<UUID, KControllableEntity> controllables,
-                Map<UUID, KStaticEntity> statics,
-                Map<UUID, KAutonomousEntity> autonomouses,
+                Map<Long, KControllableEntity> controllables,
+                Map<Long, KStaticEntity> statics,
+                Map<Long, KAutonomousEntity> autonomouses,
                 KMessageSystem messageSystem,
                 KFrameTaskExecutor frameTaskExecutor
             ) {
                 KUniversalMap body = new KUniversalMap();
-                body.put("entity_id", UUID.randomUUID());
+                body.put("entity_id", 123456L);
 
                 messageSystem.deliverMessageSync(KMessage.regular("destroyStaticEntity", body));
                 messageSystem.deliverMessageSync(KMessage.regular("destroyControllableEntity", body));

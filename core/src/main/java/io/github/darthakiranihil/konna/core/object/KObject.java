@@ -71,15 +71,23 @@ public class KObject implements KDeletable, Serializable {
             : new KDeletableProxy(object);
     }
 
+    private static final HexFormat FORMAT = HexFormat.of();
     private static final String DEFAULT_OBJECT_NAME = "object@%d";
 
     private static long createdObjects = 0;
+    private static long newId() {
+        return createdObjects++;
+    }
+
+    public static String toStringId(long id) {
+        return FORMAT.toHexDigits(id);
+    }
 
     /**
      * Unique id of an object.
      * It is assigned when object is created, and it is final, so id cannot be changed
      */
-    protected final UUID id;
+    protected final long id;
 
     /**
      * Name of the object.
@@ -100,13 +108,12 @@ public class KObject implements KDeletable, Serializable {
      * Creates an object with default name, empty tag list and without parent object.
      */
     public KObject() {
-        this.id = UUID.randomUUID();
+        this.id = KObject.newId();
+
         this.name = String.format(DEFAULT_OBJECT_NAME, KObject.createdObjects);
         this.tags = new HashSet<>();
         this.parent = null;
         this.children = new HashSet<>();
-
-        KObject.createdObjects++;
     }
 
     /**
@@ -114,13 +121,11 @@ public class KObject implements KDeletable, Serializable {
      * @param name Name of the object
      */
     public KObject(final String name) {
-        this.id = UUID.randomUUID();
+        this.id = KObject.newId();
         this.name = name;
         this.tags = new HashSet<>();
         this.parent = null;
         this.children = new HashSet<>();
-
-        KObject.createdObjects++;
     }
 
     /**
@@ -129,12 +134,11 @@ public class KObject implements KDeletable, Serializable {
      * @param parent Parent object
      */
     public KObject(final String name, final KObject parent) {
-        this.id = UUID.randomUUID();
+        this.id = KObject.newId();
         this.name = name;
         this.tags = new HashSet<>();
         this.children = new HashSet<>();
         this.setParent(parent);
-        KObject.createdObjects++;
     }
 
     /**
@@ -144,12 +148,11 @@ public class KObject implements KDeletable, Serializable {
      * @param parent Parent object
      */
     public KObject(final String name, final Set<String> tags, final KObject parent) {
-        this.id = UUID.randomUUID();
+        this.id = KObject.newId();
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.children = new HashSet<>();
         this.setParent(parent);
-        KObject.createdObjects++;
     }
 
     /**
@@ -158,13 +161,11 @@ public class KObject implements KDeletable, Serializable {
      * @param tags List of object tags
      */
     public KObject(final String name, final Set<String> tags) {
-        this.id = UUID.randomUUID();
+        this.id = KObject.newId();
         this.name = name;
         this.tags = new HashSet<>(tags);
         this.parent = null;
         this.children = new HashSet<>();
-
-        KObject.createdObjects++;
     }
 
     /**
@@ -182,7 +183,7 @@ public class KObject implements KDeletable, Serializable {
     public final void setParent(final KObject parent) {
         if (this.parent != null) {
             this.parent.children
-                .removeIf(x -> x.id.equals(this.id));
+                .removeIf(x -> x.id == this.id);
         }
 
         this.parent = parent;
@@ -210,7 +211,7 @@ public class KObject implements KDeletable, Serializable {
     /**
      * @return ID of the object
      */
-    public final UUID id() {
+    public final long id() {
         return this.id;
     }
 
@@ -261,7 +262,7 @@ public class KObject implements KDeletable, Serializable {
     @Override
     public final void delete() {
         if (this.parent != null) {
-            this.parent.children.removeIf(x -> x.id.equals(this.id));
+            this.parent.children.removeIf(x -> x.id == this.id);
             this.parent = null;
         }
 
@@ -318,7 +319,7 @@ public class KObject implements KDeletable, Serializable {
         return String.format(
             "%s[%s][%s]",
             this.getClass().getSimpleName(),
-            this.id,
+            KObject.toStringId(this.id),
             this.name
         );
     }

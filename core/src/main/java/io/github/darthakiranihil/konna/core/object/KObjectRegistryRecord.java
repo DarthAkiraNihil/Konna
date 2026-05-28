@@ -30,14 +30,14 @@ public interface KObjectRegistryRecord {
     /**
      * @return ID of this record
      */
-    UUID recordId();
+    long recordId();
 
     /**
      * Returns ID of object contained by this record. If it is synthetic, it returns the same value
      * as {@link KObjectRegistryRecord#recordId()}
      * @return ID of registered object or its record ID
      */
-    UUID objectId();
+    long objectId();
 
     /**
      * @return Whether this record is synthetic (created for a non-KObject) or real.
