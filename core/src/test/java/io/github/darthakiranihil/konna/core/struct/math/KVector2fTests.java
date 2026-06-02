@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct;
+package io.github.darthakiranihil.konna.core.struct.math;
 
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
