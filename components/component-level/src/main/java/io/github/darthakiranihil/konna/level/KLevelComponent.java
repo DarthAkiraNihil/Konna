@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.level.service.KLevelEntityManagementService;
 import io.github.darthakiranihil.konna.level.service.KLevelService;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;
@@ -105,7 +104,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     </li>
  *                     <li>
  *                         {@code direction} -
- *                         {@link KVector2i} -
+ *                         {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i} -
  *                         next move direction to set
  *                     </li>
  *                 </ul>
@@ -136,7 +135,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     </li>
  *                     <li>
  *                         {@code position} -
- *                         {@link KVector2i} -
+ *                         {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i} -
  *                         position on deployment sector to place created entity on
  *                     </li>
  *                     <li>
@@ -194,7 +193,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     </li>
  *                     <li>
  *                         {@code position} -
- *                         {@link KVector2i} -
+ *                         {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i} -
  *                         position on deployment sector to place created entity on
  *                     </li>
  *                 </ul>
@@ -241,7 +240,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     </li>
  *                     <li>
  *                         {@code position} -
- *                         {@link KVector2i} -
+ *                         {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i} -
  *                         position on deployment sector to place created entity on
  *                     </li>
  *                 </ul>
@@ -360,7 +359,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     <li>
  *                         {@code position} -
  *                         {@link io.github.darthakiranihil.konna.core.struct.KPair}
- *                         of {@link KVector2i}
+ *                         of {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i}
  *                         and {@link KLevelSector} -
  *                         absolute position of created entity
  *                     </li>
@@ -387,7 +386,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     <li>
  *                         {@code position} -
  *                         {@link io.github.darthakiranihil.konna.core.struct.KPair}
- *                         of {@link KVector2i}
+ *                         of {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i}
  *                         and {@link KLevelSector} -
  *                         absolute position of created entity
  *                     </li>
@@ -414,7 +413,7 @@ import io.github.darthakiranihil.konna.level.type.KTileTypedef;
  *                     <li>
  *                         {@code position} -
  *                         {@link io.github.darthakiranihil.konna.core.struct.KPair}
- *                         of {@link KVector2i}
+ *                         of {@link io.github.darthakiranihil.konna.core.struct.math.KVector2i}
  *                         and {@link KLevelSector} -
  *                         absolute position of created entity
  *                     </li>
