@@ -22,7 +22,7 @@ import io.github.darthakiranihil.konna.core.io.KMapAssetDefinition;
 import io.github.darthakiranihil.konna.core.message.KEvent;
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntity;

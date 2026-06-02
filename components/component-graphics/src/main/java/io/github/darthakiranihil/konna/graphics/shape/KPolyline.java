@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.shape;
 
 import io.github.darthakiranihil.konna.core.struct.KStructUtils;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.render.KRenderFrontend;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;

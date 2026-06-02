@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.layer.tool;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 
 /**
  * Height layer tool interface, providing operations for height processing and manipulation.

@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.entity;
 
 import io.github.darthakiranihil.konna.core.message.KEventSystem;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 
 /**
  * Representation of a static entity that is not moved during its existence. It can be moved

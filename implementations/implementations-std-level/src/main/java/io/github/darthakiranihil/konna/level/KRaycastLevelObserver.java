@@ -17,6 +17,9 @@
 package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.struct.*;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVectors;
 
 import java.util.*;
 
