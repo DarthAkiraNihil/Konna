@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.graphics.shape;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.KVectors;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVectors;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.KTransform;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;

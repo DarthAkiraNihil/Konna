@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.graphics.image;
 import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.core.struct.KCopyable;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.graphics.KColor;
 
 import java.nio.ByteBuffer;

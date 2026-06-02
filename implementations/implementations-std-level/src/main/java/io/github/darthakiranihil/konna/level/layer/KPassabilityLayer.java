@@ -18,8 +18,8 @@ package io.github.darthakiranihil.konna.level.layer;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.KVectors;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVectors;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;
 import org.jspecify.annotations.Nullable;
 

@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.level.path;
 
 import io.github.darthakiranihil.konna.core.struct.*;
 import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVectors;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelSector;

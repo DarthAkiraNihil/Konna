@@ -20,7 +20,7 @@ import imgui.ImGuiPlatformIO;
 import imgui.ImGuiViewport;
 import imgui.ImVec2;
 import imgui.callback.*;
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
 import io.github.darthakiranihil.konna.core.struct.ref.KReference;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiPlatformIo;

@@ -17,15 +17,14 @@
 package io.github.darthakiranihil.konna.graphics.asset;
 
 import io.github.darthakiranihil.konna.backend.lwjgl.stbimage.KStbImageLwjgl;
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.KVectors;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVectors;
 import io.github.darthakiranihil.konna.graphics.KColor;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
 import io.github.darthakiranihil.konna.graphics.impl.TestShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.stb.KStbImageLoader;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

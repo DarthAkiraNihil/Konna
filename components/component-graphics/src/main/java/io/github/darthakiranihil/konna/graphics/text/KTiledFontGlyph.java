@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.text;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
 
 /**
  * Container for character information of a tiled font from its tilesheet.

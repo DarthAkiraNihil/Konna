@@ -1,6 +1,6 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2f;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
 
 /**
  * Interface representing ImGuiPlatformMonitor of Dear ImGui.

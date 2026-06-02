@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.level.generator.maker;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
 import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityLayer;
 import io.github.darthakiranihil.konna.level.layer.KPassabilityState;
 import io.github.darthakiranihil.konna.level.layer.tool.KPassabilityLayerTool;

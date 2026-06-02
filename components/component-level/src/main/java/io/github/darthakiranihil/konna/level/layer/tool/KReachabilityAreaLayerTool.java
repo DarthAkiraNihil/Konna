@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.layer.tool;
 
-import io.github.darthakiranihil.konna.core.struct.KVector2i;
+import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
 
 /**
  * Reachability area layer tool interface, providing methods for getting information
