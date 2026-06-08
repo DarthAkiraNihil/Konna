@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.struct;
 
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+
 import io.github.darthakiranihil.konna.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.struct.math.KVectors;
 

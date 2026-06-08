@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.struct.math;
 
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 
 /**
  * Factory class for creating vector objects.
