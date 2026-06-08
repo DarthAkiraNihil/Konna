@@ -16,7 +16,8 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
-public interface KMutableArray<T> extends KArray<T> {
+public sealed interface KMutableArray<T> extends KArray<T>
+    permits KStaticArray {
 
     void set(int idx, T value);
 

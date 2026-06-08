@@ -16,7 +16,21 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
-public interface KArray<T> extends KIterable<T> {
+public sealed interface KArray<T> extends KIterable<T> permits KMutableArray {
+
+    @SafeVarargs
+    static <T> KArray<T> of(T... values) {
+        return KArray.mutableOf(values);
+    }
+
+    @SafeVarargs
+    static <T> KMutableArray<T> mutableOf(T... values) {
+        KMutableArray<T> array = new KStaticArray<>(values.length);
+        for (int i = 0; i < values.length; i++) {
+            array.set(i, values[i]);
+        }
+        return array;
+    }
 
     int length();
     T get(int index);
