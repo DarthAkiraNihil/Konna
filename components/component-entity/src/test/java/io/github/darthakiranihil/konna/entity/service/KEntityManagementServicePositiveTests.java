@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.engine.KService;
 import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
+import io.github.darthakiranihil.konna.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.entity.KEntity;
 import io.github.darthakiranihil.konna.entity.KEntityComponentLoader;

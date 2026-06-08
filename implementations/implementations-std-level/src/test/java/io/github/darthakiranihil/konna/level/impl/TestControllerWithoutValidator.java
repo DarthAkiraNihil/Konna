@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.impl;
 
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.level.entity.KAutonomousEntityController;
 import org.jspecify.annotations.NullMarked;
 

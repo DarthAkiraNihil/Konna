@@ -29,8 +29,8 @@ import io.github.darthakiranihil.konna.core.engine.except.KComponentLoadingExcep
 import io.github.darthakiranihil.konna.core.io.KResource;
 import io.github.darthakiranihil.konna.core.io.KResourceLoader;
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.math.KVectors;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVectors;
 import io.github.darthakiranihil.konna.graphics.service.KRenderService;
 
 import java.io.InputStream;

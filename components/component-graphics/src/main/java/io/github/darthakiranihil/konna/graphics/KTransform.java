@@ -17,9 +17,9 @@
 package io.github.darthakiranihil.konna.graphics;
 
 import io.github.darthakiranihil.konna.core.except.KIllegalStateException;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.math.KVectors;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVectors;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;

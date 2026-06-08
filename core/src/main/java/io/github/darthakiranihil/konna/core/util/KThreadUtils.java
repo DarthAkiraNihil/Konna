@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;

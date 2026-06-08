@@ -18,9 +18,9 @@ package io.github.darthakiranihil.konna.level;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.graph.KHashMapIntWeightedGraph;
-import io.github.darthakiranihil.konna.core.struct.graph.KIntWeightedGraph;
+import io.github.darthakiranihil.konna.struct.KSize;
+import io.github.darthakiranihil.konna.struct.graph.KHashMapIntWeightedGraph;
+import io.github.darthakiranihil.konna.struct.graph.KIntWeightedGraph;
 
 import java.util.Collections;
 import java.util.HashMap;

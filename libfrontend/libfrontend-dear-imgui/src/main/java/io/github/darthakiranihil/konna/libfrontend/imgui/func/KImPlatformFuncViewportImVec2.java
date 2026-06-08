@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui.func;
 
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiViewport;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
 
 /**
  * Interface representing ImPlatformFuncViewportImVec2 of Dear ImGui.

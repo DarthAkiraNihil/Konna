@@ -20,6 +20,7 @@ ext {
         ||  it.name.startsWith("annotations-") // Konna annotations
 
         ||  it.name == "core" // Konna core
+        ||  it.name == "structs" // Konna structs
     }
     konnaModules = konnaTestedModules + subprojects.findAll {
             it.name.startsWith("compiler-") // Konna std annotation processors

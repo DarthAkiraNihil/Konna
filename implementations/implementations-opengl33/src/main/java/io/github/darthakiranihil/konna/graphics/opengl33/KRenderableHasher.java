@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.graphics.image.KRenderableTexture;
 import io.github.darthakiranihil.konna.graphics.render.KRenderable;

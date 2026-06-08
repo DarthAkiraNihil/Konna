@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.asset;
 
-import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.struct.KPair;
 import io.github.darthakiranihil.konna.level.generator.KLevelGeneratorMetadata;
 import io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode;
 import io.github.darthakiranihil.konna.level.impl.TestLevelNode;

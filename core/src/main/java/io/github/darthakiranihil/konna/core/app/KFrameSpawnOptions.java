@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.KJsonObjectValidatorBuilde
 import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValidator;
 import io.github.darthakiranihil.konna.core.data.json.KJsonValueType;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.struct.KSize;
 
 /**
  * Container for frame spawn options that are supposed to be used on its loading.

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 
 /**
  * Utility class that provides tags, specific for Level component's objects.

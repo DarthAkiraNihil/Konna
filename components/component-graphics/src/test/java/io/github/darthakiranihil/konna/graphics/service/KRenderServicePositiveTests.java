@@ -30,7 +30,7 @@ import io.github.darthakiranihil.konna.core.message.KMessageRoutesConfigurer;
 import io.github.darthakiranihil.konna.core.message.KMessageSystem;
 import io.github.darthakiranihil.konna.core.message.KSimpleEvent;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
-import io.github.darthakiranihil.konna.core.struct.ref.KBooleanReference;
+import io.github.darthakiranihil.konna.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
 import io.github.darthakiranihil.konna.graphics.KGraphicsComponentLoader;
 import io.github.darthakiranihil.konna.graphics.impl.TestMessageRouteConfigurer;

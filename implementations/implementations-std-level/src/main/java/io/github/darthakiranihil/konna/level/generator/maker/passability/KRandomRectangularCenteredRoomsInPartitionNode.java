@@ -17,9 +17,9 @@
 package io.github.darthakiranihil.konna.level.generator.maker.passability;
 
 import io.github.darthakiranihil.konna.core.data.KUniversalMap;
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.math.KVectors;
+import io.github.darthakiranihil.konna.struct.KSize;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVectors;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeInputParam;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNodeOutputParam;

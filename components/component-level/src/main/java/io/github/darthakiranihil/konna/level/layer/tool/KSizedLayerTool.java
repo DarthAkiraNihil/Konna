@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.layer.tool;
 
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.struct.KSize;
 
 /**
  * Interface for layer tools that provide information about size of assigned layer.

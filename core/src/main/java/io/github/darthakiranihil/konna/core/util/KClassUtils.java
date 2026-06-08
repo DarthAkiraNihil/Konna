@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.util;
 
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 import org.jspecify.annotations.Nullable;
 
 /**

@@ -8,6 +8,7 @@ pluginManagement {
 rootProject.name = 'Konna'
 
 include 'core'
+include 'structs'
 include 'testing'
 
 include 'component-graphics'

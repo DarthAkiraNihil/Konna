@@ -19,8 +19,8 @@ package io.github.darthakiranihil.konna.backend.spair.imgui;
 import imgui.ImGuiStyle;
 import imgui.ImVec4;
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.math.KVector4f;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVector4f;
 import io.github.darthakiranihil.konna.libfrontend.imgui.KImGuiStyle;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 

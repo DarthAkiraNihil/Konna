@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.level.generator;
 
 import io.github.darthakiranihil.konna.core.object.KActivator;
-import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.struct.KPair;
 import io.github.darthakiranihil.konna.level.except.KGenerationException;
 import io.github.darthakiranihil.konna.level.generator.constant.KStringConstantNode;
 import io.github.darthakiranihil.konna.level.impl.TestLevelNode;

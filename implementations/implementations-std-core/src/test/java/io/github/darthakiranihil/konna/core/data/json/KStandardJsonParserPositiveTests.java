@@ -18,8 +18,8 @@ package io.github.darthakiranihil.konna.core.data.json;
 
 import io.github.darthakiranihil.konna.core.data.json.except.KJsonParseException;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
-import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.struct.KTriplet;
+import io.github.darthakiranihil.konna.struct.KPair;
+import io.github.darthakiranihil.konna.struct.KTriplet;
 import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.math.KVector4f;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVector4f;
 
 /**
  * Interface representing ImDrawList of Dear ImGui.

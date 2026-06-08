@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.graphics.opengl33;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KBufferUtils;
+import io.github.darthakiranihil.konna.struct.KBufferUtils;
 import io.github.darthakiranihil.konna.graphics.shader.KShader;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.shader.KShaderProgram;
