@@ -16,7 +16,6 @@
           </compositeBuild>
         </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -43,6 +42,7 @@
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-stb" />
+            <option value="$PROJECT_DIR$/structs" />
             <option value="$PROJECT_DIR$/testing" />
           </set>
         </option>
