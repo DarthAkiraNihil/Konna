@@ -1,8 +1,8 @@
 package io.github.darthakiranihil.konna.libfrontend.imgui;
 
 import io.github.darthakiranihil.konna.core.object.KDeletable;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.ref.KIntReference;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.ref.KIntReference;
 
 import java.nio.ByteBuffer;
 

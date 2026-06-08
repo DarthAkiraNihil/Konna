@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.level.path;
 
-import io.github.darthakiranihil.konna.core.struct.KPair;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.KPair;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.level.KLevel;
 
 /**

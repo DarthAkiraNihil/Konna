@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.app;
 
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.struct.KSize;
 
 /**
  * Interface for application's frame that is usually the window

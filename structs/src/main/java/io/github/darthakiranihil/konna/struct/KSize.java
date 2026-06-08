@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct;
+package io.github.darthakiranihil.konna.struct;
 
 import io.github.darthakiranihil.konna.core.data.json.KJsonSerialized;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.math.KVectors;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVectors;
 
 /**
  * Representation of a size, that is basically {@link KVector2i}, but with other

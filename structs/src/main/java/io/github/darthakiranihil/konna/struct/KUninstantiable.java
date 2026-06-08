@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object;
-
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
+package io.github.darthakiranihil.konna.struct;
 
 /**
  * Utility class which purpose it to throw exception when a class is about
  * to be created, when it's forbidden. Generally used in utility classes
- * that have private constructor, so you cannot create it directly, but
- * it is still possible with {@link KActivator}
+ * that have private constructor, so you cannot create it straightforwardly, but if you can,
+ * a way still may be here.
  *
  * @since 0.2.0
  * @author Darth Akira Nihil
@@ -30,7 +28,7 @@ import io.github.darthakiranihil.konna.core.object.except.KInstantiationExceptio
 public abstract class KUninstantiable {
 
     protected KUninstantiable() {
-        throw new KInstantiationException(
+        throw new RuntimeException(
             String.format("Cannot instantiate a uninstantiable class %s", this.getClass())
         );
     }

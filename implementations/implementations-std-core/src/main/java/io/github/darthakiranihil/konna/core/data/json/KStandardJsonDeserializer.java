@@ -20,7 +20,7 @@ import io.github.darthakiranihil.konna.core.data.json.except.KJsonSerializationE
 import io.github.darthakiranihil.konna.core.except.KClassNotFoundException;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;

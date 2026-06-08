@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.struct.KSize;
 import io.github.darthakiranihil.konna.level.layer.tool.KNoiseLayerTool;
 
 /**

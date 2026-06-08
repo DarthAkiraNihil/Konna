@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.test;
 import io.github.darthakiranihil.konna.core.app.*;
 import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.io.control.KInputProcessor;
-import io.github.darthakiranihil.konna.core.struct.KSize;
+import io.github.darthakiranihil.konna.struct.KSize;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import org.jetbrains.annotations.TestOnly;
 

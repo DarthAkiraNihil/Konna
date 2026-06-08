@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level;
 
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
 
 /**
  * Interface providing methods to observe different levels

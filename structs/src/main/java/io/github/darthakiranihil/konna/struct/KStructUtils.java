@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct;
+package io.github.darthakiranihil.konna.struct;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
-import io.github.darthakiranihil.konna.core.struct.math.KVectors;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVectors;
 
 /**
  * Provides different useful methods, connected with data structures.

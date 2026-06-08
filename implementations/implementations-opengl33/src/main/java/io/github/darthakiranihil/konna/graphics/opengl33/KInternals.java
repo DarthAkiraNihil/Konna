@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.graphics.opengl33;
 
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

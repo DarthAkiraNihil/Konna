@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.entity.service;
 
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+import io.github.darthakiranihil.konna.struct.KUninstantiable;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import org.jetbrains.annotations.ApiStatus;
 

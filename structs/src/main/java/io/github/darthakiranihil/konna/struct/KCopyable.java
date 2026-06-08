@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct;
+package io.github.darthakiranihil.konna.struct;
 
 /**
  * Simple interface for objects that can be copied to a new one

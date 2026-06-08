@@ -18,8 +18,8 @@ package io.github.darthakiranihil.konna.graphics.text;
 
 import io.github.darthakiranihil.konna.core.object.KObject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
-import io.github.darthakiranihil.konna.core.struct.math.KVectors;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVectors;
 
 /**
  * Implementation of {@link KTiledFontFormat} representing a 16x16 characters

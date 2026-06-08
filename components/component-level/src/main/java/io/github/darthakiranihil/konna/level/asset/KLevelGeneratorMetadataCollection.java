@@ -23,7 +23,7 @@ import io.github.darthakiranihil.konna.core.io.KAsset;
 import io.github.darthakiranihil.konna.core.io.KAssetCollection;
 import io.github.darthakiranihil.konna.core.io.KAssetDefinition;
 import io.github.darthakiranihil.konna.core.io.KAssetLoader;
-import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.struct.KPair;
 import io.github.darthakiranihil.konna.level.generator.KGeneratorNode;
 import io.github.darthakiranihil.konna.level.generator.KLevelGeneratorMetadata;
 import io.github.darthakiranihil.konna.level.type.KLevelGeneratorMetadataTypedef;

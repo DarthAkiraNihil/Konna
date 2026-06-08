@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct.ref;
+package io.github.darthakiranihil.konna.struct.ref;
 
 /**
  * Represents a passed-by-reference string value.

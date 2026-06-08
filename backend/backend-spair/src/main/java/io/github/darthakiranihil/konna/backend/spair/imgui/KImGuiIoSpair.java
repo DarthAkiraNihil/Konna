@@ -21,7 +21,7 @@ import imgui.ImGuiKeyData;
 import imgui.ImVec2;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2f;
+import io.github.darthakiranihil.konna.struct.math.KVector2f;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 import io.github.darthakiranihil.konna.libfrontend.imgui.func.KImStrConsumer;

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.level.generator;
 
-import io.github.darthakiranihil.konna.core.struct.KPair;
+import io.github.darthakiranihil.konna.struct.KPair;
 
 import java.util.Map;
 import java.util.Set;

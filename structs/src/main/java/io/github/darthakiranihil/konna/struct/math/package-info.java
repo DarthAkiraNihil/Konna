@@ -5,6 +5,6 @@
  * @author Darth Akira Nihil
  */
 @NullMarked
-package io.github.darthakiranihil.konna.core.struct.math;
+package io.github.darthakiranihil.konna.struct.math;
 
 import org.jspecify.annotations.NullMarked;

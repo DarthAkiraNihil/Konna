@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.graphics.image;
 
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
 
 import java.util.Map;
 

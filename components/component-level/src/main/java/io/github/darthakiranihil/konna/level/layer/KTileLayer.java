@@ -16,8 +16,8 @@
 
 package io.github.darthakiranihil.konna.level.layer;
 
-import io.github.darthakiranihil.konna.core.struct.KSize;
-import io.github.darthakiranihil.konna.core.struct.math.KVector2i;
+import io.github.darthakiranihil.konna.struct.KSize;
+import io.github.darthakiranihil.konna.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.level.layer.tool.KTileLayerTool;
 import org.jspecify.annotations.Nullable;

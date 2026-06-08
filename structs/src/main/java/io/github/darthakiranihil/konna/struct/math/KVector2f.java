@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct.math;
+package io.github.darthakiranihil.konna.struct.math;
 
 import org.jspecify.annotations.Nullable;
 

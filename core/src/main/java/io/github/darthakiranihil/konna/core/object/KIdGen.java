@@ -22,7 +22,7 @@ package io.github.darthakiranihil.konna.core.object;
  * @since 0.7.0
  * @author Darth Akira Nihil
  */
-public final class KIdGen extends KUninstantiable {
+public final class KIdGen extends io.github.darthakiranihil.konna.struct.KUninstantiable {
 
     private static long generatedIds;
 

@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct;
-
-import io.github.darthakiranihil.konna.core.object.KUninstantiable;
+package io.github.darthakiranihil.konna.struct;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

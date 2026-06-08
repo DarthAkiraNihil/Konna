@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.struct.math;
+package io.github.darthakiranihil.konna.struct.math;
 
 import io.github.darthakiranihil.konna.core.object.KUninstantiable;
 

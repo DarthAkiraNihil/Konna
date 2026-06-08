@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
  * @author Darth Akira Nihil
  */
 // todo: add tags attaching in KObject registry
-public final class KDefaultTags extends KUninstantiable {
+public final class KDefaultTags extends io.github.darthakiranihil.konna.struct.KUninstantiable {
 
     @KExcludeFromGeneratedCoverageReport
     private KDefaultTags() {
