@@ -8,10 +8,10 @@ repositories {
 }
 
 ext {
-    artifactId = "konna.shared-structs"
+    artifactId = "konna.shared-exceptions"
 }
 
-description = "Konna engine structures (collections, vectors, etc.)"
+description = "Common exceptions of Konna engine"
 
 java {
     withSourcesJar()

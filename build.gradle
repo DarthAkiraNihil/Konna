@@ -18,9 +18,9 @@ ext {
         ||  it.name.startsWith("backend-") // Konna std backends
         ||  it.name.startsWith("implementations-") // Konna std implementations
         ||  it.name.startsWith("annotations-") // Konna annotations
+        ||  it.name.startsWith("shared-") // Konna annotations
 
         ||  it.name == "core" // Konna core
-        ||  it.name == "structs" // Konna structs
     }
     konnaModules = konnaTestedModules + subprojects.findAll {
             it.name.startsWith("compiler-") // Konna std annotation processors

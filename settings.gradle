@@ -8,7 +8,10 @@ pluginManagement {
 rootProject.name = 'Konna'
 
 include 'core'
-include 'structs'
+
+include 'shared-structs'
+include 'shared-exceptions'
+
 include 'testing'
 
 include 'component-graphics'
@@ -64,5 +67,8 @@ findProject(':annotations-level').projectDir = new File("annotations/annotations
 
 findProject(':compiler-core').projectDir = new File("compilers/compiler-core")
 findProject(':compiler-level').projectDir = new File("compilers/compiler-level")
+
+findProject(':shared-structs').projectDir = new File("shared/shared-structs")
+findProject(':shared-exceptions').projectDir = new File("shared/shared-exceptions")
 
 include 'konna-bom'
