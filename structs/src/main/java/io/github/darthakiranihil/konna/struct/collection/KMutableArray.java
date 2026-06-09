@@ -16,9 +16,28 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
-public sealed interface KMutableArray<T> extends KArray<T>
-    permits KStaticArray {
+/**
+ * <p>
+ *     Same as {@link KArray}, but its elements can be set as you desire (i.e. you change
+ *     factical element located by some index.
+ * </p>
+ * <p>
+ *     Despite the name of the interface, it is not a {@link KMutableIterable} as it is supposed
+ *     to change collection's size, which is not possible for array as its size is <i>fixed</i>
+ * </p>
+ *
+ * @param <T> Type of contained object
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
+public interface KMutableArray<T> extends KArray<T> {
 
+    /**
+     * Sets an element by specified index.
+     * @param idx Index of placed element
+     * @param value Value to set
+     */
     void set(int idx, T value);
 
 }

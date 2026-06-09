@@ -16,23 +16,27 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
-public sealed interface KArray<T> extends KIterable<T> permits KMutableArray {
+/**
+ * Interface for a collection of <i>fixed</i> size and same elements type that can be referenced
+ * with a numeric index (so this is basically an array). Its elements cannot be modified
+ * (i.e. you cannot change an element located by some index)
+ *
+ * @param <T> Type of contained element
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
+public interface KArray<T> extends KIterable<T> {
 
-    @SafeVarargs
-    static <T> KArray<T> of(T... values) {
-        return KArray.mutableOf(values);
-    }
-
-    @SafeVarargs
-    static <T> KMutableArray<T> mutableOf(T... values) {
-        KMutableArray<T> array = new KStaticArray<>(values.length);
-        for (int i = 0; i < values.length; i++) {
-            array.set(i, values[i]);
-        }
-        return array;
-    }
-
+    /**
+     * @return Length of this array
+     */
     int length();
+
+    /**
+     * @param index Index of the element
+     * @return Element located by specified index
+     */
     T get(int index);
 
 }

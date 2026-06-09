@@ -16,8 +16,20 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
+/**
+ * Represents an iterable object that can only be iterated on for read-only operations (basically
+ * providing only a read-only view).
+ *
+ * @param <T> Type of iterated object
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
 public interface KIterable<T> extends Iterable<T> {
 
+    /**
+     * @return Read-only iterator for this collection
+     */
     @Override
     KIterator<T> iterator();
 

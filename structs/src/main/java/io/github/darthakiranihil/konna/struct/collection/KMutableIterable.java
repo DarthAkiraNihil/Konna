@@ -16,8 +16,20 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
+/**
+ * Represents an iterable object that can be iterated on all operations (including operations
+ * that mutate underlying collection).
+ *
+ * @param <T> Type of iterated object
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
 public interface KMutableIterable<T> extends KIterable<T> {
 
+    /**
+     * @return Mutable iterator for this collection
+     */
     @Override
     KMutableIterator<T> iterator();
 

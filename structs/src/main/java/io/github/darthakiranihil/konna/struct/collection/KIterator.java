@@ -18,8 +18,29 @@ package io.github.darthakiranihil.konna.struct.collection;
 
 import java.util.Iterator;
 
+/**
+ * <p>
+ *     Standard iterator interface for read-only operations.
+ * </p>
+ * <p>
+ *     Despite the fact it provides {@link KIterator#remove()} method, its implementation must
+ *     throw an exception it is being called as this operation
+ *     mutates the assigned iterable object.
+ * </p>
+ *
+ * @param <T> Type of iterated object
+ *
+ * @since 0.7.0
+ * @author Darth Akira Nihil
+ */
 public interface KIterator<T> extends Iterator<T> {
 
-
+    /**
+     * Throws an {@link UnsupportedOperationException} since this iterator is read only.
+     */
+    @Override
+    default void remove() {
+        throw new UnsupportedOperationException("Cannot remove with read-only iterator");
+    }
 
 }
