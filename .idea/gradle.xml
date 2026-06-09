@@ -42,7 +42,8 @@
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-glfw" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-opengl" />
             <option value="$PROJECT_DIR$/libfrontend/libfrontend-stb" />
-            <option value="$PROJECT_DIR$/structs" />
+            <option value="$PROJECT_DIR$/shared/shared-exceptions" />
+            <option value="$PROJECT_DIR$/shared/shared-structs" />
             <option value="$PROJECT_DIR$/testing" />
           </set>
         </option>
