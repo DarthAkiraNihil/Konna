@@ -21,7 +21,6 @@ import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.graphics.image.KTextureSliceSet;
 import io.github.darthakiranihil.konna.graphics.impl.TestShaderCompiler;
 import io.github.darthakiranihil.konna.graphics.stb.KStbImageLoader;
-import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

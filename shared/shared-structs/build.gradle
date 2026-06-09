@@ -8,7 +8,7 @@ repositories {
 }
 
 ext {
-    artifactId = "konna.structs"
+    artifactId = "konna.shared-structs"
 }
 
 description = "Konna engine structures (collections, vectors, etc.)"

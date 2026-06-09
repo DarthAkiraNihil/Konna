@@ -10,7 +10,8 @@ dependencies {
 
     implementation project(":core")
     implementation project(":annotations-core")
-    implementation project(":structs")
+    implementation project(":shared-structs")
+    implementation project(":shared-exceptions")
 
     annotationProcessor project(":compiler-core")
     testAnnotationProcessor project(":compiler-core")
