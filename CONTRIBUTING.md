@@ -1,12 +1,5 @@
 # Contributing to Konna
 
-## ⚠️ Warning! ⚠️
-
-* All code that is about to be merged must be written according to the codestyle
-(see [CODESTYLE.md](CODESTYLE.md) for more information). Same for commit messages.
-* All features should fit project core principles and roadmap.
-* In case if the feature is not in the roadmap, then it should be discussed.
-
 ## No AI is allowed!
 
 * PRs written, even partially, with AI will be rejected if its author will not intend
@@ -28,6 +21,8 @@ does not have enough experience in maintaining public projects
 
 ## Pull requests
 
+* All code that is about to be merged must be written according to the codestyle
+  (see [CODESTYLE.md](CODESTYLE.md) for more information). Same for commit messages
 * Pull request title should match: ```[#<issue>] <keyword>: <PR summary>```. It is allowed to address multiple
   issues, so then need to be separated with a comma.
 * Pull request title example: ```[#4] Feat: add somethhing feature```
@@ -46,8 +41,9 @@ does not have enough experience in maintaining public projects
 * You want to offer a feature that would be nice in Konna,
 you need to contact the project owner first. Of course, you are not forced to do it,
 but it may save a lot of time on the PR discussion
-* The feature will be rejected if it doesn't meet the core principles (see above)
-
+* All features should fit project core principles and roadmap
+* In case if the feature is not in the roadmap, then it should be discussed
+* 
 ## Documentation
 
 * All added code must be documented with Javadoc comments, with some exceptions
