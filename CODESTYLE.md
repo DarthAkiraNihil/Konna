@@ -1,81 +1,60 @@
 # Codestyle of Konna
 
-## ⚠️ Warning! ⚠️
+## General statements
 
-All the statements listed below are not final and may change in the future depending
-on many aspects that might be unforeseen
+All the source code must fit Checkstyle rules, defined in [this file](config/checkstyle/checkstyle.xml). It is mostly based on standard
+(Sun) Java Code Conventions with own modifications. Note that the rules may not be satisfied in some source files
+due to the fact they are old.
 
-## Source file basis
+## Source files
 * Encoding of all source files must be only UTF-8
-* Indentation uses _spaces_ (not tabs)
+* Indentation uses 4 _spaces_ (not tabs)
 * All lines must be no more than or equal to 100 characters in length
+* A source file consists of the following, in this exact order:
+  * License - standard license preamble for Apache 2.0. Copyright must start with year 2025. (see example at the end of the guide)
+  * Package statement
+  * Import statements
+  * Exactly one top-level class
 
-## Source file structure
-A source file consists of the following, in this exact order:
+## Source code
 
-* License
-* Package statement
-* Import statements
-* Exactly one top-level class
+### Naming convention
 
-The license is located at the very top of the file and contains this content:
-```java
-/*
-* Copyright 2025-present the original author or authors.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      https://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-  */
-```
+* Class names
+  * All names of classes, records, enums, annotations and interfaces must begin with "K"
+  * The rest of the name use PascalCase (without separators)
+    ```java
+    class Foo { // incorrect
+    }
 
-## Codestyle basis
+    class KfooBar { // incorrect
+    }
 
-* Most of required codestyle statements can be read from [this file](config/checkstyle/checkstyle.xml), that is
-the config of Checkstyle tool
-* So all Checkstyle rules must be applied to all added code
-* It is based mostly of Sun conventions but also adapted according to some things. See the file for more information
+    class KFooBar { // correct!
+    }
+    ```
+  * Requirement of starting "K" may not be satisfied by nested classes
+  * All abbreviations in names should contain only the first letter as capital
+    ```java
+    class KFooAPI { // incorrect
+    }
 
-## Naming convention
+    class KFooApi { // correct!
+    }
+    ```
+  * Enumeration names use PascalCase. Enumeration members, however, use SCREAMING_CASE
+* Variables and fields
+  * Variables, fields and method parameters use camelCase
+  * Constants SCREAMING_CASE. Especially if it is a `static final` field. However, regular field names use camelCase instead
+  * Static fields use camelCase if they are not final
+* Methods
+  * Method names use camelCase
+  * Getters can be named either starting from `get` (like `getX`) or just with the field name itself (like `x`)
+    The second variant is preferred for readonly fields
+  * Setters should start their name with `set`. This rule may not cover `libfrontend`s in order to keep compatibility
 
-* All names of classes (except internal), annotations and interfaces must begin with "K". The rest of the name use PascalCase (without separators)
-```java
-class Foo { // incorrect
-}
+### Indentation, braces and line breaks
 
-class KfooBar { // incorrect
-}
-
-class KFooBar { // correct!
-}
-
-```
-* All abbreviations in names should contain only the first letter as capital
-```java
-class KFooAPI { // incorrect
-}
-
-class KFooApi { // correct!
-}
-```
-* Enumeration named use PascalCase. Enumeration members, however, use SCREAMING_CASE
-* Variables, fields and method parameters use camelCase
-* Constants SCREAMING_CASE. Especially if it is a static final field. However, regular field names use camelCase instead.
-* Static fields use camelCase if they are not final
-* Setters should start their name with *set*. Getters, on the other hand, should not start with *get* if the property is readonly, but it is not mandatory. Else it should.
-* The setter naming rule may not cover libfrontends in order to keep compatibility
-
-## Indentation, braces and line breaks
-
-* Indentation of the code is 4 space symbols, *not tab characters*
 * The open curly brace *must* be on the same line for *everything* (methods, loops, ifs etc.) and be followed with a space before it
 ```cpp
 if (condition) // incorrect
@@ -114,11 +93,14 @@ public void method(
 }
 ```
 
-## Other statements
+### Other rules
+
+* All method parameters of reference types must be `final`
+* No redundant imports
 * case-block in switch should be wrapped in braces:
 ```java
 public class Main {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         int condition = 1;
         switch(condition) {
             case 1: {
@@ -138,13 +120,15 @@ public class Main {
 ```
 * default block of switch have to be included if and only if condition
 variable does not belong to an enum, or it belongs to but cases does not cover all enum values
-* All methods parameters of non-primitive types should be final
-* Magic numbers are not allowed
+* Magic numbers are not allowed, except in `libfrontend`s, test classes, internal classes and some cases where
+  adding a constant is pointless
+* All rules are better to be followed in test classes, but it is not required there
+
 ## Commit messages
 
 * The first line of a message must match:
 ```
-[#<issue>] <keyword>: <details>
+[#<issue>] <keyword>[, <otherKeywords>]: <details>
 ```
 
 Where the keyword is from the following list:
@@ -160,5 +144,27 @@ Where the keyword is from the following list:
 | revert  | Reverting to previous commits                  |
 | style   | Codestyle fixing                               |
 | test    | Working with tests                             |
+| dev     | Changes that do not fit any category above     |
+
+* Only use multiple keywords if multiple aspects of editing changed (like, you fixed the codestyle by adding docs)
 * Only commits with keywords sec, feat, fix and ref are included in the changelog
 * Detailed commit message is not mandatory
+
+## Example of license preamble
+```java
+/*
+* Copyright 2025-present the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      https://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+  */
+```
