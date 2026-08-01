@@ -21,37 +21,41 @@ import io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.struct.object.KPoolable;
 import org.jspecify.annotations.Nullable;
 
+import java.lang.reflect.Constructor;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
 
-// todo: разделить массив на часть под массивы под одиночные объекты
-//       граница между ними двигается в зависимости от того, сколько выделено массивов и одиночных объектов
-//       чтобы полноценно использовать объекты массивов, выделенных раньше, необходимо, чтобы все перед ними были также освобождены
-//       возможно, какой-то другой способ контроля этого
-//       выделять также заранее массивы, которые вьюхи на массив объектов
-//       возможно, сделать отдельный класс вьюхи как массива
-final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
+final class KExtensibleObjectPool<T extends KPoolable> implements KObjectPool<T> {
 
     private final Class<T> clazz;
-    private final int size;
+
+    private final int maxSize;
+    private final float extensionFactor;
 
     private final KQueue<T> conveyor;
     private final KQueue<PoolableArray<T>> arrayConveyor;
     private final ReentrantLock acquisitionLock;
 
+    private final Constructor<T> constructor;
+
     @SuppressWarnings("unchecked")
-    KFixedObjectPool(
+    KExtensibleObjectPool(
         Class<T> clazz,
-        int size
+        int initialSize,
+        int maxSize,
+        float extensionFactor
     ) {
 
         this.clazz = clazz;
-        this.size = size;
+
+        this.maxSize = maxSize;
+        this.extensionFactor = extensionFactor;
+
         this.acquisitionLock = new ReentrantLock();
-        this.conveyor = KQueue.create(clazz, size);
+        this.conveyor = KQueue.create(clazz, initialSize, extensionFactor);
 
         var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(clazz));
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < initialSize; i++) {
             T object = KReflectionUtils.newInstance(constructor);
             this.conveyor.add(object);
         }
@@ -62,12 +66,18 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
         for (int i = 0; i < KObjectPool.ARRAY_INSTANTIATIONS; i++) {
             this.arrayConveyor.add(new PoolableArray<>(clazz, KObjectPool.PRE_ALLOCATED_ARRAY_SIZE));
         }
+
+        this.constructor = constructor;
     }
 
     @Override
     public T obtain() {
         this.acquisitionLock.lock();
         try {
+            if (this.conveyor.isEmpty()) {
+                this.extend();
+            }
+
             if (this.conveyor.isEmpty()) {
                 throw new KEmptyObjectPoolException(this.clazz);
             }
@@ -82,6 +92,10 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
     public @Nullable T obtainSafe() {
         this.acquisitionLock.lock();
         try {
+            if (this.conveyor.isEmpty()) {
+                this.extend();
+            }
+
             return this.conveyor.poll();
         } finally {
             this.acquisitionLock.unlock();
@@ -93,13 +107,18 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
         this.acquisitionLock.lock();
         try {
             if (this.conveyor.size() < count) {
+                // it actually just adds elements in order to extend queue but the fuck is this?
+                this.extend();
+            }
+
+            if (this.conveyor.size() < count) {
                 throw new KEmptyObjectPoolException(this.clazz);
             }
 
             if (count > KObjectPool.PRE_ALLOCATED_ARRAY_SIZE) {
                 var arr = new PoolableArray<>(this.clazz, count);
                 for (int i = 0; i < count; i++) {
-                    arr.set(i, Objects.requireNonNull(this.conveyor.poll()));
+                    arr.set(i, this.obtain());
                 }
                 return arr;
             }
@@ -110,7 +129,7 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
             ) : Objects.requireNonNull(this.arrayConveyor.poll());
             arr.setLimit(count);
             for (int i = 0; i < count; i++) {
-                arr.set(i, Objects.requireNonNull(this.conveyor.poll()));
+                arr.set(i, this.obtain());
             }
             return arr;
         } finally {
@@ -123,7 +142,7 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
         this.acquisitionLock.lock();
         try {
             object.reset();
-            if (this.conveyor.size() + 1 > this.size) {
+            if (this.conveyor.size() + 1 > this.maxSize) {
                 return;
             }
 
@@ -139,7 +158,7 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
         try {
             for (var obj: objects) {
                 obj.reset();
-                if (this.conveyor.size() + 1 > this.size) {
+                if (this.conveyor.size() + 1 > this.maxSize) {
                     return;
                 }
 
@@ -149,4 +168,24 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
             this.acquisitionLock.unlock();
         }
     }
+
+    private void extend() {
+        int currentSize = this.conveyor.size();
+        if (currentSize >= this.maxSize) {
+            return;
+        }
+
+        int newSize = Math.min(
+            (int) ((float) currentSize * this.extensionFactor),
+            this.maxSize
+        );
+
+        int diff = newSize - currentSize;
+        for (int i = 0; i < diff; i++) {
+            T object = KReflectionUtils.newInstance(this.constructor);
+
+            this.conveyor.add(object);
+        }
+    }
+
 }

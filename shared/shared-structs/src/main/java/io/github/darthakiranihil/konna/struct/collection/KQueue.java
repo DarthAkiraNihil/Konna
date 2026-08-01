@@ -26,11 +26,162 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public sealed interface KQueue<T> extends KCollection<T> {
 
+    float DEFAULT_EXTENSION_FACTOR = 1.5f;
+
+    static <T> KQueue<T> create(
+        final Class<T> clazz,
+        int initialCapacity,
+        float extensionFactor
+    ) {
+        return new Queue<>(clazz, initialCapacity, extensionFactor);
+    }
+
+    static <T> KQueue<T> create(
+        final Class<T> clazz,
+        int initialCapacity
+    ) {
+        return KQueue.create(clazz, initialCapacity, DEFAULT_EXTENSION_FACTOR);
+    }
+
     static <T> KQueue<T> createConcurrent(
         final Class<T> clazz,
         int initialCapacity
     ) {
         return new ConcurrentQueue<>(clazz, initialCapacity);
+    }
+
+    final class Queue<T> implements KQueue<T> {
+
+        private final class Iterator implements KIterator<T> {
+
+            private int current;
+
+            Iterator() {
+                this.current = Queue.this.tail;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return this.current != ( Queue.this.tail + 1) % Queue.this.elements.length;
+            }
+
+            @Override
+            public T next() {
+                T e = Objects.requireNonNull(Queue.this.elements[this.current]);
+                this.current = (this.current + 1) % Queue.this.elements.length;
+                return e;
+            }
+        }
+
+        private final float extensionFactor;
+
+        private @Nullable T[] elements;
+        private int head;
+        private int tail;
+
+        @SuppressWarnings("unchecked")
+        Queue(
+            final Class<T> clazz,
+            int initialCapacity,
+            float extensionFactor
+        ) {
+
+            this.elements = (T[]) Array.newInstance(clazz, initialCapacity);
+            this.head = 0;
+            this.tail = 0;
+
+            this.extensionFactor = extensionFactor;
+
+        }
+
+        @Override
+        public int size() {
+            if (this.isEmpty()) {
+                return 0;
+            }
+
+            return this.head <= this.tail
+                ? this.tail - this.head + 1
+                : this.tail + this.head;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return this.head == -1;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void add(T element) {
+            if (this.head == -1) {
+                this.head = 0;
+                this.elements[0] = element;
+                return;
+            }
+
+            if (( this.tail + 1 ) % this.elements.length == this.head) {
+
+                T[] newElements = (T[]) Array.newInstance(
+                    element.getClass(),
+                    (int) ( this.elements.length * extensionFactor)
+                );
+                System.arraycopy(this.elements, 0, newElements, 0, this.elements.length);
+
+                this.elements = newElements;
+            }
+
+            this.tail = ( this.tail + 1 ) % this.elements.length;
+            this.elements[this.tail] = element;
+        }
+
+        @Override
+        public @Nullable T poll() {
+            if (this.isEmpty()) {
+                return null;
+            }
+
+            if (this.head == this.tail) {
+                T e = this.elements[this.head];
+                this.elements[this.head] = null;
+                this.head = -1;
+                this.tail = 0;
+                return e;
+            }
+
+            T e = this.elements[this.head];
+            this.elements[this.head] = null;
+            this.head = (this.head + 1) % this.elements.length;
+            return e;
+        }
+
+        @Override
+        public @Nullable T head() {
+            return this.isEmpty()
+                ? null
+                : this.elements[this.head];
+
+        }
+
+        @Override
+        public boolean contains(T object) {
+            if (this.isEmpty()) {
+                return false;
+            }
+
+            int end = ( this.tail + 1 ) % this.elements.length;
+            for (int i = this.head; i != end; i = ( i + 1 ) % this.elements.length) {
+                if (object.equals(this.elements[i])) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        @Override
+        public KIterator<T> iterator() {
+            return new Iterator();
+        }
     }
 
     final class ConcurrentQueue<T> implements KQueue<T> {

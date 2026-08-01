@@ -21,6 +21,9 @@ import org.jspecify.annotations.Nullable;
 
 public interface KObjectPool<T extends KPoolable> {
 
+    static final int ARRAY_INSTANTIATIONS = 4;
+    static final int PRE_ALLOCATED_ARRAY_SIZE = 16;
+
     T obtain();
     @Nullable T obtainSafe();
     KArray<T> obtainMany(int count);
