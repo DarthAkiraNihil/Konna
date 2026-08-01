@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.engine.KComponent;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisor;
 import io.github.darthakiranihil.konna.core.engine.KEngineHypervisorConfig;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.test.KEmptyEventRegisterer;
 import io.github.darthakiranihil.konna.test.KEmptyRouteConfigurer;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;

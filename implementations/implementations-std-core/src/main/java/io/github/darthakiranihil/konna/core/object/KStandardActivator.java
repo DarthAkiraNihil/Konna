@@ -21,7 +21,7 @@ import io.github.darthakiranihil.konna.core.di.KInject;
 import io.github.darthakiranihil.konna.core.di.KSingleton;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
 import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;

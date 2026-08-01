@@ -34,7 +34,7 @@ import io.github.darthakiranihil.konna.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.struct.math.KVectors;
 import io.github.darthakiranihil.konna.struct.graph.KIntWeightedGraph;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
 import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;

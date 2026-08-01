@@ -32,7 +32,7 @@ import io.github.darthakiranihil.konna.core.message.KEventSystem;
 import io.github.darthakiranihil.konna.core.message.KStandardEventSystem;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.core.util.KHashMapBasedCache;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.asset.KLevelMetadataCollection;
 import io.github.darthakiranihil.konna.level.asset.KTileCollection;
 import io.github.darthakiranihil.konna.level.asset.KTilePropertyCollection;

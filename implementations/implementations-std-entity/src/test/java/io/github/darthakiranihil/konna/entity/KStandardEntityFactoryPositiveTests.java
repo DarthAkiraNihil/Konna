@@ -26,7 +26,7 @@ import io.github.darthakiranihil.konna.core.di.KAppContainer;
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.io.KAssetTypedef;
 import io.github.darthakiranihil.konna.core.io.KJsonAssetLoader;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.entity.asset.KEntityMetadataCollection;
 import io.github.darthakiranihil.konna.entity.impl.TestBehaviour;
 import io.github.darthakiranihil.konna.entity.impl.TestBehaviour2;

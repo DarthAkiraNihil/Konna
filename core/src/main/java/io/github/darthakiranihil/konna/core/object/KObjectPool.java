@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KInject;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jspecify.annotations.Nullable;
 
@@ -139,7 +139,7 @@ public abstract sealed class KObjectPool<T extends KPoolable>
      * </p>
      * <p>
      *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
-     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     {@link io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException}
      *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
      * </p>
      * @return Container of obtained poolable object
@@ -154,7 +154,7 @@ public abstract sealed class KObjectPool<T extends KPoolable>
      * </p>
      * <p>
      *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
-     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     {@link io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException}
      *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
      * </p>
      * @param explicitArgs Explicit args to pass to {@link KOnPoolableObjectObtain}-annotated

@@ -16,7 +16,7 @@
 
 package io.github.darthakiranihil.konna.core.object;
 
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;

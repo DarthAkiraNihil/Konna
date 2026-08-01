@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.object.except;
+package io.github.darthakiranihil.konna.struct.except;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 

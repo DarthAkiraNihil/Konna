@@ -18,7 +18,7 @@ package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.di.KEngineModule;
 import io.github.darthakiranihil.konna.core.except.KNoSuchElementException;
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
+import io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.core.util.KThreadUtils;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.jspecify.annotations.NullMarked;

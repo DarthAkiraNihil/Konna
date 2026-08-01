@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.darthakiranihil.konna.core.util;
+package io.github.darthakiranihil.konna.struct;
 
 import io.github.darthakiranihil.konna.core.except.KException;
 import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
-import io.github.darthakiranihil.konna.struct.KUninstantiable;
-import io.github.darthakiranihil.konna.core.object.except.KInstantiationException;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
@@ -286,9 +284,9 @@ public final class KReflectionUtils extends KUninstantiable {
         try {
             return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {
-            throw new KInstantiationException(e.getTargetException().getMessage());
+            throw new KException(e.getTargetException().getMessage());
         } catch (Exception e) {
-            throw new KInstantiationException(e.getMessage());
+            throw new KException(e.getMessage());
         }
     }
 

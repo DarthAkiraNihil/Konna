@@ -19,7 +19,7 @@ package io.github.darthakiranihil.konna.level.layer;
 import io.github.darthakiranihil.konna.struct.KSize;
 import io.github.darthakiranihil.konna.struct.math.KVector2i;
 import io.github.darthakiranihil.konna.struct.math.KVectors;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.KTileInfo;
 import io.github.darthakiranihil.konna.test.KStandardTestClass;
 import org.junit.jupiter.api.Assertions;

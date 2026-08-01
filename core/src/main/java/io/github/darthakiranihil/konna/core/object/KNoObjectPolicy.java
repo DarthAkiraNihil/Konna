@@ -17,7 +17,7 @@
 package io.github.darthakiranihil.konna.core.object;
 
 import io.github.darthakiranihil.konna.core.except.KException;
-import io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException;
+import io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;

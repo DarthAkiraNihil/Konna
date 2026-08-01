@@ -28,7 +28,7 @@ import io.github.darthakiranihil.konna.core.log.KSimpleLogFormatter;
 import io.github.darthakiranihil.konna.core.log.system.*;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import org.jetbrains.annotations.TestOnly;
 
 import java.util.Map;

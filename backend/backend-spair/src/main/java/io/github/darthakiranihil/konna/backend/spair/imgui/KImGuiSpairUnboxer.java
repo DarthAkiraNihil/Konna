@@ -20,7 +20,7 @@ import imgui.*;
 import io.github.darthakiranihil.konna.core.except.KBackendError;
 import io.github.darthakiranihil.konna.struct.KUninstantiable;
 import io.github.darthakiranihil.konna.test.KExcludeFromGeneratedCoverageReport;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.libfrontend.imgui.*;
 
 @KExcludeFromGeneratedCoverageReport

@@ -16,44 +16,124 @@
 
 package io.github.darthakiranihil.konna.struct.collection;
 
+import io.github.darthakiranihil.konna.core.except.KInvalidArgumentException;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException;
 import io.github.darthakiranihil.konna.struct.object.KPoolable;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
+// todo: разделить массив на часть под массивы под одиночные объекты
+//       граница между ними двигается в зависимости от того, сколько выделено массивов и одиночных объектов
+//       чтобы полноценно использовать объекты массивов, выделенных раньше, необходимо, чтобы все перед ними были также освобождены
+//       возможно, какой-то другой способ контроля этого
+//       выделять также заранее массивы, которые вьюхи на массив объектов
+//       возможно, сделать отдельный класс вьюхи как массива
 final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
 
-    private T[] objects;
+    private final class View implements KArray<T> {
+
+        private final class Iterator implements KIterator<T> {
+
+            private int offset;
+
+            @Override
+            public boolean hasNext() {
+                return this.offset < View.this.count;
+            }
+
+            @Override
+            public T next() {
+                return KFixedObjectPool.this.objects[View.this.start + this.offset++];
+            }
+
+        }
+
+        private int start;
+        private int count;
+
+        @Override
+        public int length() {
+            return this.count;
+        }
+
+        @Override
+        public T get(int index) {
+            if (index >= this.count) {
+                throw new KInvalidArgumentException("Out of bounds");
+            }
+
+            return KFixedObjectPool.this.objects[this.start + index];
+        }
+
+        @Override
+        public KIterator<T> iterator() {
+            return new Iterator();
+        }
+
+    }
+
+    private final Class<T> clazz;
+    private final KQueue<T> conveyor;
     private int nextAvailable;
-    private final boolean waitForObject;
+
+    private int arrayBorder;
+
+    private final ReentrantLock acquisitionLock;
 
     @SuppressWarnings("unchecked")
     KFixedObjectPool(
         Class<T> clazz,
-        int size,
-        boolean waitForObject
+        int size
     ) {
+        this.clazz = clazz;
         this.objects = (T[]) Array.newInstance(clazz, size);
 
+        var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(clazz));
         for (int i = 0; i < size; i++) {
-            var constructor = Objects.requireNonNull(KReflectionUtils.getConstructor(this.clazz));
-            T object = (T) KReflectionUtils.newInstance(constructor);
 
-            this.unusedObjects.add(object);
-            objectRegistry.pushObject(object);
+            T object = KReflectionUtils.newInstance(constructor);
+            this.objects[i] = object;
+
         }
+
+        this.nextAvailable = size - 1;
+        this.acquisitionLock = new ReentrantLock();
     }
 
     @Override
     public T obtain() {
-        return null;
+        this.acquisitionLock.lock();
+
+        try {
+            if (this.nextAvailable == this.arrayBorder) {
+                throw new KEmptyObjectPoolException(this.clazz);
+            }
+
+            return this.objects[this.nextAvailable--];
+        } finally {
+            this.acquisitionLock.unlock();
+        }
+
     }
 
     @Override
     public @Nullable T obtainSafe() {
-        return null;
+        this.acquisitionLock.lock();
+
+        try {
+
+            return this.nextAvailable == this.arrayBorder
+                ? null
+                : this.objects[this.nextAvailable--];
+
+        } finally {
+            this.acquisitionLock.unlock();
+        }
     }
 
     @Override
@@ -62,12 +142,12 @@ final class KFixedObjectPool<T extends KPoolable> implements KObjectPool<T> {
     }
 
     @Override
-    public void release(T object) {
+    public void release(final T object) {
 
     }
 
     @Override
-    public void releaseAll(KIterable<T> objects) {
+    public void releaseAll(final KIterable<T> objects) {
 
     }
 }

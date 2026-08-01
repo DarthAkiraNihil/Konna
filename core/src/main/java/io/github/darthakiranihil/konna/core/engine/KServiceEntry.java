@@ -24,7 +24,7 @@ import io.github.darthakiranihil.konna.core.message.KMessage;
 import io.github.darthakiranihil.konna.core.object.KActivator;
 import io.github.darthakiranihil.konna.struct.KPair;
 import io.github.darthakiranihil.konna.core.util.KClassUtils;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

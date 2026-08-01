@@ -31,7 +31,7 @@ public interface KObjectPoolRegistry {
      * </p>
      * <p>
      *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
-     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     {@link io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException}
      *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
      * </p>
      * @param clazz Class of object to obtain
@@ -49,7 +49,7 @@ public interface KObjectPoolRegistry {
      * </p>
      * <p>
      *     If pool's NoObjectPolicy is {@link KAllocatePool.NoObjectPolicy#THROW_EXCEPTION}, then
-     *     {@link io.github.darthakiranihil.konna.core.object.except.KEmptyObjectPoolException}
+     *     {@link io.github.darthakiranihil.konna.struct.except.KEmptyObjectPoolException}
      *     will be thrown, else empty instance of {@link KObtainedPoolableObject}.
      * </p>
      * @param clazz Class of object to obtain

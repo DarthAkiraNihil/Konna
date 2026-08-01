@@ -52,7 +52,7 @@ public class KReflectionUtilsTests extends KStandardTestClass {
         TestClass test = new TestClass(1);
         Assertions.assertEquals(
             1,
-            KReflectionUtils.getFieldValue(TestClass.class, test, "property", Integer.class)
+            io.github.darthakiranihil.konna.struct.KReflectionUtils.getFieldValue(TestClass.class, test, "property", Integer.class)
         );
     }
 
@@ -60,7 +60,7 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     public void testGetFieldValueOfAnotherClass() {
         TestClass test = new TestClass(1);
         Assertions.assertNull(
-            KReflectionUtils.getFieldValue(Konna.class, test, "property", int.class)
+            io.github.darthakiranihil.konna.struct.KReflectionUtils.getFieldValue(Konna.class, test, "property", int.class)
         );
     }
 
@@ -68,7 +68,7 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     public void testGetNonExistentField() {
         TestClass test = new TestClass(1);
         Assertions.assertNull(
-            KReflectionUtils.getFieldValue(TestClass.class, test, "property1", int.class)
+            io.github.darthakiranihil.konna.struct.KReflectionUtils.getFieldValue(TestClass.class, test, "property1", int.class)
         );
     }
 
@@ -76,9 +76,9 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     public void testGetMethod() {
 
         TestClass test = new TestClass(1);
-        Method setter = KReflectionUtils.getMethod(TestClass.class, "setProperty", int.class);
+        Method setter = io.github.darthakiranihil.konna.struct.KReflectionUtils.getMethod(TestClass.class, "setProperty", int.class);
         Assertions.assertNotNull(setter);
-        KReflectionUtils.invokeMethod(setter, test, 2);
+        io.github.darthakiranihil.konna.struct.KReflectionUtils.invokeMethod(setter, test, 2);
         Assertions.assertEquals(2, test.getProperty());
 
     }
@@ -90,7 +90,7 @@ public class KReflectionUtilsTests extends KStandardTestClass {
         try {
             Assertions.assertThrows(
                 KException.class,
-                () -> KReflectionUtils.invokeMethod(TestClass.class.getDeclaredMethod("unaccessible"), test)
+                () -> io.github.darthakiranihil.konna.struct.KReflectionUtils.invokeMethod(TestClass.class.getDeclaredMethod("unaccessible"), test)
             );
         } catch (Exception e) {
             Assertions.fail(e);
@@ -101,7 +101,7 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     @Test
     public void testGetNonExistentMethod() {
         Assertions.assertNull(
-            KReflectionUtils.getMethod(TestClass.class, "setProperty1", int.class)
+            io.github.darthakiranihil.konna.struct.KReflectionUtils.getMethod(TestClass.class, "setProperty1", int.class)
         );
     }
 
@@ -109,18 +109,18 @@ public class KReflectionUtilsTests extends KStandardTestClass {
     public void testGetGetter() {
 
         TestClass test = new TestClass(1);
-        Method getter = KReflectionUtils.getGetter(TestClass.class, "property");
+        Method getter = io.github.darthakiranihil.konna.struct.KReflectionUtils.getGetter(TestClass.class, "property");
         Assertions.assertNotNull(getter);
-        Assertions.assertEquals(1, KReflectionUtils.invokeMethod(getter, test));
+        Assertions.assertEquals(1, io.github.darthakiranihil.konna.struct.KReflectionUtils.invokeMethod(getter, test));
 
     }
 
     @Test
     public void testGetSetter() {
         TestClass test = new TestClass(1);
-        Method setter = KReflectionUtils.getSetter(TestClass.class, "property", int.class);
+        Method setter = io.github.darthakiranihil.konna.struct.KReflectionUtils.getSetter(TestClass.class, "property", int.class);
         Assertions.assertNotNull(setter);
-        KReflectionUtils.invokeMethod(setter, test, 2);
+        io.github.darthakiranihil.konna.struct.KReflectionUtils.invokeMethod(setter, test, 2);
         Assertions.assertEquals(2, test.getProperty());
     }
 }

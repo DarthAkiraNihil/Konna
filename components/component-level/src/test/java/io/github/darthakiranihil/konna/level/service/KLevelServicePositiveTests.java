@@ -29,7 +29,7 @@ import io.github.darthakiranihil.konna.core.message.*;
 import io.github.darthakiranihil.konna.core.object.KObjectRegistry;
 import io.github.darthakiranihil.konna.struct.ref.KBooleanReference;
 import io.github.darthakiranihil.konna.struct.ref.KIntReference;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import io.github.darthakiranihil.konna.level.KLevel;
 import io.github.darthakiranihil.konna.level.KLevelComponentLoader;
 import io.github.darthakiranihil.konna.level.KLevelSector;

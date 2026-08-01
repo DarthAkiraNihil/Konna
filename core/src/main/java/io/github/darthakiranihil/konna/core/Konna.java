@@ -25,7 +25,7 @@ import io.github.darthakiranihil.konna.core.except.KBootstrapException;
 import io.github.darthakiranihil.konna.core.log.system.KSystemLogger;
 import io.github.darthakiranihil.konna.core.object.KDefaultTags;
 import io.github.darthakiranihil.konna.core.object.KObject;
-import io.github.darthakiranihil.konna.core.util.KReflectionUtils;
+import io.github.darthakiranihil.konna.struct.KReflectionUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
