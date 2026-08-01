@@ -18,6 +18,8 @@ package io.github.darthakiranihil.konna.struct.collection;
 
 public interface KCollection<T> extends KIterable<T> {
 
+    float DEFAULT_EXTENSION_FACTOR = 1.5f;
+
     int size();
     boolean contains(T object);
     // boolean containsAll(KCollection<? extends T> collection);

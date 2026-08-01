@@ -21,8 +21,39 @@ import org.jspecify.annotations.Nullable;
 
 public interface KObjectPool<T extends KPoolable> {
 
-    static final int ARRAY_INSTANTIATIONS = 4;
-    static final int PRE_ALLOCATED_ARRAY_SIZE = 16;
+    int ARRAY_INSTANTIATIONS = 4;
+    int PRE_ALLOCATED_ARRAY_SIZE = 16;
+
+    static <T extends KPoolable> KObjectPool<T> createFixed(
+        final Class<T> clazz,
+        int size
+    ) {
+        return new KFixedObjectPool<>(clazz, size);
+    }
+
+    static <T extends KPoolable> KObjectPool<T> createExtensible(
+        final Class<T> clazz,
+        int initialSize,
+        int maxSize,
+        float extensionFactor
+    ) {
+        return new KExtensibleObjectPool<>(clazz, initialSize, maxSize, extensionFactor);
+    }
+
+    static <T extends KPoolable> KObjectPool<T> createExtensible(
+        final Class<T> clazz,
+        int initialSize,
+        int maxSize
+    ) {
+        return KObjectPool.createExtensible(clazz, initialSize, maxSize, KCollection.DEFAULT_EXTENSION_FACTOR);
+    }
+
+    static <T extends KPoolable> KObjectPool<T> createExtensible(
+        final Class<T> clazz,
+        int initialSize
+    ) {
+        return KObjectPool.createExtensible(clazz, initialSize, Integer.MAX_VALUE);
+    }
 
     T obtain();
     @Nullable T obtainSafe();

@@ -26,8 +26,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public sealed interface KQueue<T> extends KCollection<T> {
 
-    float DEFAULT_EXTENSION_FACTOR = 1.5f;
-
     static <T> KQueue<T> create(
         final Class<T> clazz,
         int initialCapacity,
