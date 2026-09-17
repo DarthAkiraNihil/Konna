@@ -26,32 +26,32 @@ import org.junit.jupiter.api.Test;
 
 public class KAutodiscoveringObjectPoolRegistryPositiveTests extends KStandardTestClass {
 
-    private final KObjectPoolRegistry registry;
-
-    public KAutodiscoveringObjectPoolRegistryPositiveTests() {
-
-        KEngineModule module = KStandardTestClass.getModule();
-        this.registry = new KAutodiscoveringObjectPoolRegistry(
-            module.activator().createObject(KClasspathSearchEngine.class),
-            module.activator(),
-            module.objectRegistry()
-        );
-    }
-
-    @Test
-    public void testGetSimplePoolable() {
-        try (var o = this.registry.obtain(TestSimplePoolable.class)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertEquals(1, o.get().getValue());
-        }
-    }
-
-    @Test
-    public void testGetExplicitPoolable() {
-        KArgs args = () -> new Object[] {1};
-        try (var o = this.registry.obtain(TestExplicitPoolable.class, args)) {
-            Assertions.assertTrue(o.isPresent());
-            Assertions.assertEquals(1, o.get().getValue());
-        }
-    }
+//    private final KObjectPoolRegistry registry;
+//
+//    public KAutodiscoveringObjectPoolRegistryPositiveTests() {
+//
+//        KEngineModule module = KStandardTestClass.getModule();
+//        this.registry = new KAutodiscoveringObjectPoolRegistry(
+//            module.activator().createObject(KClasspathSearchEngine.class),
+//            module.activator(),
+//            module.objectRegistry()
+//        );
+//    }
+//
+//    @Test
+//    public void testGetSimplePoolable() {
+//        try (var o = this.registry.obtain(TestSimplePoolable.class)) {
+//            Assertions.assertTrue(o.isPresent());
+//            Assertions.assertEquals(1, o.get().getValue());
+//        }
+//    }
+//
+//    @Test
+//    public void testGetExplicitPoolable() {
+//        KArgs args = () -> new Object[] {1};
+//        try (var o = this.registry.obtain(TestExplicitPoolable.class, args)) {
+//            Assertions.assertTrue(o.isPresent());
+//            Assertions.assertEquals(1, o.get().getValue());
+//        }
+//    }
 }

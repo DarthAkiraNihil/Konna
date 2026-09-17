@@ -51,10 +51,6 @@ public final class KDefaultTags extends io.github.darthakiranihil.konna.struct.K
      */
     public static final String TEST = "test";
     /**
-     * Marks that the object is {@link KObjectPool}.
-     */
-    public static final String POOL = "pool";
-    /**
      * Marks that the object is an event.
      * @see io.github.darthakiranihil.konna.core.message.KEvent
      * @see io.github.darthakiranihil.konna.core.message.KSimpleEvent

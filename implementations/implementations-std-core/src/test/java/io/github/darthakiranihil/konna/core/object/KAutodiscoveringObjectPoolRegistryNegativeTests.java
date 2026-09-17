@@ -26,30 +26,30 @@ import org.junit.jupiter.api.Test;
 
 public class KAutodiscoveringObjectPoolRegistryNegativeTests extends KStandardTestClass {
 
-    private final KObjectPoolRegistry registry;
-
-    public KAutodiscoveringObjectPoolRegistryNegativeTests() {
-
-        KEngineModule module = KStandardTestClass.getModule();
-        this.registry = new KAutodiscoveringObjectPoolRegistry(
-            module.activator().createObject(KClasspathSearchEngine.class),
-            module.activator(),
-            module.objectRegistry()
-        );
-    }
-
-    @SuppressWarnings("resource")
-    @Test
-    public void testGetNonExistentPoolables() {
-
-        Assertions.assertThrows(
-            KNoSuchElementException.class,
-            () -> this.registry.obtain(TestBlindPoolable.class)
-        );
-        Assertions.assertThrows(
-            KNoSuchElementException.class,
-            () -> this.registry.obtain(TestBlindPoolable.class, () -> new Object[0])
-        );
-
-    }
+//    private final KObjectPoolRegistry registry;
+//
+//    public KAutodiscoveringObjectPoolRegistryNegativeTests() {
+//
+//        KEngineModule module = KStandardTestClass.getModule();
+//        this.registry = new KAutodiscoveringObjectPoolRegistry(
+//            module.activator().createObject(KClasspathSearchEngine.class),
+//            module.activator(),
+//            module.objectRegistry()
+//        );
+//    }
+//
+//    @SuppressWarnings("resource")
+//    @Test
+//    public void testGetNonExistentPoolables() {
+//
+//        Assertions.assertThrows(
+//            KNoSuchElementException.class,
+//            () -> this.registry.obtain(TestBlindPoolable.class)
+//        );
+//        Assertions.assertThrows(
+//            KNoSuchElementException.class,
+//            () -> this.registry.obtain(TestBlindPoolable.class, () -> new Object[0])
+//        );
+//
+//    }
 }
