@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
 
 # Создаем динамическую библиотеку (DLL/Shared Object)
-add_library(Konna.core SHARED src/main.cpp)
+add_library(Konna.core SHARED src/main.cpp
+        src/type/PrimitiveTypes.h
+        src/Konna.h)
 
 # --- АВТОМАТИЗАЦИЯ ДЛЯ C# ---
 # После успешной сборки LLVM автоматически скопирует DLL в output-папку C#
