@@ -23,12 +23,17 @@
 
 namespace Konna::Core::Memory {
 
-    void* KAllocator::alloc(const ksize& size) {
+    inline void* KAllocator::alloc(const ksize& size) noexcept {
         return rpmalloc(size);
     }
 
-    void KAllocator::del(void*& ptr) {
+    inline void KAllocator::free(void*& ptr) noexcept{
         rpfree(ptr);
+    }
+
+    template<typename T>
+    T* KAllocator::allocObject() noexcept {
+        return static_cast<T*>(rpmalloc(sizeof(T)));
     }
 
 }
