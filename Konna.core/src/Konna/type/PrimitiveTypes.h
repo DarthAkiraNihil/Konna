@@ -9,6 +9,8 @@
 
 namespace Konna::Core {
 
+    using ksize = std::size_t;
+
     using ku8 = std::uint8_t;
     using ku16 = std::uint16_t;
     using ku32 = std::uint32_t;
