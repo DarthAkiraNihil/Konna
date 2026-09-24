@@ -4,17 +4,78 @@ project(Konna.core LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_compile_options(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
-
-# Создаем динамическую библиотеку (DLL/Shared Object)
-add_library(Konna.core SHARED src/main.cpp
-        src/type/PrimitiveTypes.h
-        src/Konna.h)
-
-# --- АВТОМАТИЗАЦИЯ ДЛЯ C# ---
-# После успешной сборки LLVM автоматически скопирует DLL в output-папку C#
-add_custom_command(TARGET Konna.core POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Konna.core>
-        "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net8.0/" # Путь к билду C#
+add_compile_options(
+    -DCMAKE_C_COMPILER=clang
+    -DCMAKE_CXX_COMPILER=clang++
 )
+
+add_library(
+    Konna.core SHARED src/main.cpp
+    src/type/PrimitiveTypes.h
+    src/Konna.h
+)
+
+# add_custom_command(
+#     TARGET Konna.core POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#     $<TARGET_FILE:Konna.core>
+#     "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net9.0/"
+# )
+
+set(DOTNET_INSTALL_DIR "${CMAKE_SOURCE_DIR}/../install/dotnet")
+set(DOTNET_VERSION "10.0.401")
+set(DOTNET_VERSION_PARENT "10.0.12")
+
+if(WIN32)
+
+    message(STATUS "Platform: Windows")
+
+    if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet.exe")
+        message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
+        return()
+    endif()
+
+    set(DOTNET_PLATFORM_SUFFIX "win-x64")
+    set(DOTNET_HOST_LIB_NAME "nethost.lib")
+
+elseif(APPLE)
+
+    message(STATUS "Platform: MacOS")
+
+    if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet")
+        message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
+        return()
+    endif()
+
+    set(DOTNET_PLATFORM_SUFFIX "osx-arm64")
+    set(DOTNET_HOST_LIB_NAME "libnethost.a")
+
+else()
+
+    message(STATUS "Platform: Linux")
+
+    if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet")
+        message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
+        return()
+    endif()
+
+    set(DOTNET_PLATFORM_SUFFIX "linux-x64")
+    set(DOTNET_HOST_LIB_NAME "libnethost.a")
+
+endif()
+
+message("${DOTNET_PLATFORM_SUFFIX}")
+
+set(DOTNET_NETHOST_PATH "${DOTNET_INSTALL_DIR}/packs/Microsoft.NETCore.App.Host.${DOTNET_PLATFORM_SUFFIX}")
+set(DOTNET_NETHOST_INCLUDE "${DOTNET_NETHOST_PATH}/${DOTNET_VERSION_PARENT}/runtimes/${DOTNET_PLATFORM_SUFFIX}/native")
+set(DOTNET_NETHOST_LIB "${DOTNET_NETHOST_INCLIDE}/${DOTNET_HOST_LIB_NAME}")
+
+if (NOT EXISTS "${DOTNET_NETHOST_PATH}")
+    message(FATAL_ERROR "Could not find NETHOST at ${DOTNET_NETHOST_PATH}")
+    return()
+endif()
+
+target_include_directories(Konna.core PRIVATE "${DOTNET_NETHOST_INCLUDE}")
+target_link_libraries(Konna.core PRIVATE "${NETHOST_LIB}")
+
+message(STATUS "NETHOST configuration finished. Version: ${DOTNET_VERSION}")

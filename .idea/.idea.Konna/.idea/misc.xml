@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/Konna.core" />
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/Konna.core">
+    <contentRoot DIR="$PROJECT_DIR$/Konna.core" />
+  </component>
 </project>

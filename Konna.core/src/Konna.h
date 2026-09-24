@@ -21,6 +21,10 @@
 #ifndef KONNA_CORE_KONNA_H
 #define KONNA_CORE_KONNA_H
 
+#include <nethost.h>
+#include <coreclr_delegates.h>
+#include <hostfxr.h>
+
 /**
  * Konna's core namespace
  */
