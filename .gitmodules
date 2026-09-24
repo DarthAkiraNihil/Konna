@@ -1,0 +1,3 @@
+[submodule "core.rpmalloc"]
+	path = Konna.core/extern/rpmalloc
+	url = https://github.com/mjansson/rpmalloc

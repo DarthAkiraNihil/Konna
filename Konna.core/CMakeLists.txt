@@ -10,9 +10,11 @@ add_compile_options(
 )
 
 add_library(
-    Konna.core SHARED src/main.cpp
-    src/type/PrimitiveTypes.h
-    src/Konna.h
+    Konna.core SHARED src/Konna/main.cpp
+        src/Konna/type/PrimitiveTypes.h
+        src/Konna/Konna.h
+        src/Konna/memory/KAllocator.cpp
+        src/Konna/memory/KAllocator.h
 )
 
 # add_custom_command(
@@ -64,8 +66,6 @@ else()
 
 endif()
 
-message("${DOTNET_PLATFORM_SUFFIX}")
-
 set(DOTNET_NETHOST_PATH "${DOTNET_INSTALL_DIR}/packs/Microsoft.NETCore.App.Host.${DOTNET_PLATFORM_SUFFIX}")
 set(DOTNET_NETHOST_INCLUDE "${DOTNET_NETHOST_PATH}/${DOTNET_VERSION_PARENT}/runtimes/${DOTNET_PLATFORM_SUFFIX}/native")
 set(DOTNET_NETHOST_LIB "${DOTNET_NETHOST_INCLIDE}/${DOTNET_HOST_LIB_NAME}")
@@ -76,6 +76,9 @@ if (NOT EXISTS "${DOTNET_NETHOST_PATH}")
 endif()
 
 target_include_directories(Konna.core PRIVATE "${DOTNET_NETHOST_INCLUDE}")
+target_include_directories(Konna.core PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
+target_include_directories(Konna.core PRIVATE "${CMAKE_SOURCE_DIR}/src")
+
 target_link_libraries(Konna.core PRIVATE "${NETHOST_LIB}")
 
 message(STATUS "NETHOST configuration finished. Version: ${DOTNET_VERSION}")
