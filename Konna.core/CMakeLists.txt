@@ -9,12 +9,26 @@ add_compile_options(
     -DCMAKE_CXX_COMPILER=clang++
 )
 
+file(
+    GLOB_RECURSE
+    SOURCE_FILES
+    CONFIGURE_DEPENDS
+    "src/*.cpp"
+    "src/*.h"
+)
+
+file(
+    GLOB_RECURSE
+    RPMALLOC_FILES
+    CONFIGURE_DEPENDS
+    "extern/rpmalloc/rpmalloc/*.h"
+    "extern/rpmalloc/rpmalloc/*.c"
+)
+
 add_library(
-    Konna.core SHARED src/Konna/main.cpp
-        src/Konna/type/PrimitiveTypes.h
-        src/Konna/Konna.h
-        src/Konna/memory/KAllocator.cpp
-        src/Konna/memory/KAllocator.h
+    Konna.core SHARED
+    ${SOURCE_FILES}
+    ${RPMALLOC_FILES}
 )
 
 # add_custom_command(
