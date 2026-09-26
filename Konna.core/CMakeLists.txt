@@ -140,18 +140,12 @@ target_include_directories(Tests PRIVATE "${CMAKE_SOURCE_DIR}/src")
 
 target_compile_definitions(Tests PRIVATE KONNA_CORE_EXPORTS)
 target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain)
-target_link_libraries(Tests PRIVATE Konna.core)
+target_link_libraries(Tests PRIVATE -Wl,-Bstatic Konna.core)
 
 #if(WIN32)
 #    # Ensure we use standard dynamic runtime libraries
 #    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
 #endif()
 
-if (WIN32)
-target_compile_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -O0 -g -static)
-target_link_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -static)
-else()
-    target_compile_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -O0 -g)
-    target_link_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-
-endif ()
+target_compile_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -O0 -g)
+target_link_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping)
