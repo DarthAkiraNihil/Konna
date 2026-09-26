@@ -72,7 +72,7 @@ dotnet_script_name = "dotnet-install.ps1" if project_os == "windows" else "dotne
 download_file(dotnet_script_url, dotnet_script_name)
 
 if project_os != "windows":
-    subprocess.run(["chmod", "+x", f"./{dotnet_script_name}"])
+    subprocess.run(["chmod", "+x", f'{SETUP_DIR}/{dotnet_script_name}'])
 
 message("Installing .NET")
 
