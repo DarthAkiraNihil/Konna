@@ -6,6 +6,8 @@ on:
 jobs:
     test-linux:
         runs-on: ubuntu-latest
+        env:
+            DOTNET_INSTALL_DIR: ${{ github.workspace }}/setup/dotnet
         permissions:
             pull-requests: write
             contents: read
