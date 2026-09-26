@@ -14,6 +14,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v4
+            -   name: Instal python
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.13.15'
             -   name: Install python
                 run: apt-get update && apt-get install python3 -y
             -   name: Set up project
