@@ -92,11 +92,18 @@ if project_os == "windows":
         shell=True
     ) 
 else:
+    print([
+        f"{SETUP_DIR}/{dotnet_script_name}",
+        "--channel", "LTS",
+        "--install-dir", f"{SETUP_DIR}/dotnet",
+        "--no-path",
+        "--version", f"{DOTNET_VERSION}"
+    ])
     subprocess.run(
         [
             f"{SETUP_DIR}/{dotnet_script_name}",
             "--channel", "LTS",
-            "--install-dir",f"{SETUP_DIR}/dotnet",
+            "--install-dir", f"{SETUP_DIR}/dotnet",
             "--no-path",
             "--version", f"{DOTNET_VERSION}"
         ],
