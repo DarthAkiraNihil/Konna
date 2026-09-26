@@ -1,0 +1,74 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "konna-core-llvm-base",
+      "displayName": "Konna Core (LLVM) (base)",
+      "hidden": true,
+      "generator": "Ninja",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "LLVM"
+        }
+      }
+    },
+    {
+      "name": "konna-core-llvm-base-win",
+      "displayName": "Konna Core (LLVM) (base, Windows)",
+      "inherits": "konna-core-llvm-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "${sourceDir}/../setup/llvm/bin/clang.exe",
+        "CMAKE_CXX_COMPILER": "${sourceDir}/../setup/llvm/bin/clang++.exe"
+      }
+    },
+    {
+      "name": "konna-core-llvm-base-linux",
+      "displayName": "Konna Core (LLVM) (base, Linux)",
+      "hidden": true,
+      "inherits": "konna-core-llvm-base",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "${sourceDir}/../setup/llvm/bin/clang",
+        "CMAKE_CXX_COMPILER": "${sourceDir}/../setup/llvm/bin/clang"
+      }
+    },
+    {
+      "name": "konna-core-llvm-debug-win",
+      "displayName": "Konna Core (LLVM, Windows, Debug)",
+      "inherits": "konna-core-llvm-base-win",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "konna-core-llvm-release-win",
+      "displayName": "Konna Core (LLVM, Windows, elease)",
+      "inherits": "konna-core-llvm-base-win",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "konna-core-llvm-debug-linux",
+      "displayName": "Konna Core (LLVM, Linux, Debug)",
+      "inherits": "konna-core-llvm-base-linux",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "konna-core-llvm-release-linux",
+      "displayName": "Konna Core (LLVM, Linux, Release)",
+      "inherits": "konna-core-llvm-base-linux",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}

@@ -486,5 +486,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-install/
+setup/
 cmake-build-debug/
+
+# VS Code is an auxiliary tool in this
+.vscode/

@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 
-#parse("C File Header.h")
 export module ${NAME};
