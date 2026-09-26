@@ -24,8 +24,8 @@ namespace Konna::Core {
     using kf32 = std::float_t;
     using kf64 = std::double_t;
 
-    static_assert(sizeof(ki32) == 4, "i32 must be 4 bytes!");
-    static_assert(sizeof(kf32) == 4, "f32 must be 4 bytes!");
+    static_assert(sizeof(ki32) == 4, "ki32 must be 4 bytes!");
+    static_assert(sizeof(kf32) == 4, "kf32 must be 4 bytes!");
 
 }
 

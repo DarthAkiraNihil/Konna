@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-//
-// Created by EgrZver on 24.09.2026.
-//
-
 #ifndef KONNA_CORE_KALLOCATOR_H
 #define KONNA_CORE_KALLOCATOR_H
 
+#include <rpmalloc.h>
+
+#include <Konna/KonnaExport.h>
 #include <Konna/type/PrimitiveTypes.h>
 
 namespace Konna::Core::Memory {
@@ -32,7 +31,7 @@ namespace Konna::Core::Memory {
      * @version 0.7.0
      * @author Darth Akira Nihil
      */
-    class KAllocator {
+    class KONNA_CORE_API KAllocator {
 
     public:
 
@@ -41,24 +40,30 @@ namespace Konna::Core::Memory {
          * @param size Size of allocated segment in bytes
          * @return Allocated memory segment
          */
-        inline static void* alloc(const ksize& size) noexcept;
+        static void* alloc(const ksize& size) noexcept {
+            return rpmalloc(size);
+        }
 
         /**
          * Frees previously allocated memory segment. Does not have any checks for invalid
          * or null address.
          * @param ptr Pointer of memory segment to delete
          */
-        inline static void free(void*& ptr) noexcept;
+        static void free(void* ptr) noexcept {
+            rpfree(ptr);
+        }
 
         /**
-         * Allocates an object. Same as @link KAllocator::alloc(const ksize&), but with automatic cast.
+         * Allocates an object. Same as @link KAllocator::alloc(const ksize&) \endlink, but with automatic cast.
          * Does not support allocating on a pre-allocated segment.
          *
          * @tparam T Type of allocated object
          * @return Raw pointer to allocated object
          */
         template <typename T>
-        static T* allocObject() noexcept;
+        static T* allocObject() noexcept {
+            return static_cast<T*>(rpmalloc(sizeof(T)));
+        }
 
     };
 
