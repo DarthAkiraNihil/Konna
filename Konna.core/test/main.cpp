@@ -14,7 +14,5 @@
  * limitations under the License.
  */
 
-#[[#include]]# "${HEADER_FILENAME}"
-
-${NAMESPACES_OPEN_CPP}
-${NAMESPACES_CLOSE_CPP}
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch_all.hpp>
