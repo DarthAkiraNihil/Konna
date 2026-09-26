@@ -31,13 +31,13 @@ jobs:
             -   name: Check coverage
                 uses: jannekem/run-python-script-action@v1
                 with:
-                script: |
-                    import json
-                    c = dict()
-                    with open("./coverage.json", "r", encoding="utf8") as f:
-                        c = json.load(f)
-                    
-                    total = c['totals']['lines']['percent']
-                    if total < 90.0:
-                        error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
-                        exit(1)
+                    script: |
+                        import json
+                        c = dict()
+                        with open("./coverage.json", "r", encoding="utf8") as f:
+                            c = json.load(f)
+                        
+                        total = c['totals']['lines']['percent']
+                        if total < 90.0:
+                            error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
+                            exit(1)
