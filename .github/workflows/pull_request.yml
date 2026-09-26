@@ -1,0 +1,43 @@
+name: Pull request checks
+on:
+    pull_request:
+        branches:
+            - master
+jobs:
+    test-linux:
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+            contents: read
+            checks: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Install python
+                run: apt-get update && apt-get install python3 -y
+            -   name: Set up project
+                run: python3 ./setup.py
+            -   name: Build Core and test
+                run: |
+                    cd Konna.core \
+                    && cmake --preset konna-core-llvm-release --build --target Tests \
+                    && ./Tests
+            -   name: Collect coverage
+                run: |
+                    .\..\..\setup\llvm\bin\llvm-profdata merge -sparse default.profraw -o coverage.profdata  \
+                    && .\..\..\setup\llvm\bin\llvm-cov export ./Tests.exe -instr-profile="./coverage.profdata" \
+                        -summary-only  --ignore-filename-regex="(extern|test|catch2|build)" > coverage.json
+            - name: Check coverage
+            - uses: jannekem/run-python-script-action@v1
+                with:
+                script: |
+                    import json
+                    c = dict()
+                    with open("./coverage.json", "r", encoding="utf8") as f:
+                        c = json.load(f)
+                    
+                    total = c['totals']['lines']['percent']
+                    if total < 90.0:
+                        error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
+                        exit(1)
