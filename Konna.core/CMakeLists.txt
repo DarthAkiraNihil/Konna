@@ -139,7 +139,7 @@ target_include_directories(Tests PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rp
 target_include_directories(Tests PRIVATE "${CMAKE_SOURCE_DIR}/src")
 
 target_compile_definitions(Tests PRIVATE KONNA_CORE_EXPORTS)
-target_link_libraries(Tests PRIVATE Konna.core Catch2::Catch2WithMain)
+target_link_libraries(Tests PRIVATE -Wl,-Bdynamic Konna.core -Wl,-Bstatic Catch2::Catch2WithMain)
 
 #if(WIN32)
 #    # Ensure we use standard dynamic runtime libraries
