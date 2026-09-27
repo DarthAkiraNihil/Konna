@@ -48,7 +48,7 @@ file(
 )
 
 add_library(
-    Konna.core SHARED
+    Konna.core STATIC
     ${SOURCE_FILES}
     ${RPMALLOC_FILES}
 )
