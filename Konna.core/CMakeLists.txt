@@ -4,8 +4,7 @@ project(Konna.core LANGUAGES C CXX)
 # This file is ugly, but I won't prettify it soon
 
 add_compile_options(
-    -DCMAKE_C_COMPILER=clang
-    -DCMAKE_CXX_COMPILER=clang++
+    -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain.cmake
 )
 
 Include(FetchContent)
