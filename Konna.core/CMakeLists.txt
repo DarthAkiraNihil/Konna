@@ -128,27 +128,31 @@ else()
     # --- LINUX / FREEBSD ---
     set(CMAKE_SYSTEM_NAME Linux)
 
-    # 1. Используем целевую обертку с префиксом архитектуры.
-    # Она знает относительные пути к родной libc++ внутри папки LLVM.
-    set(LINUX_TARGET "x86_64-unknown-linux-gnu")
-
-    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/${LINUX_TARGET}-clang")
-    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/${LINUX_TARGET}-clang++")
+    # 1. Указываем прямые бинарники из официального архива GitHub
+    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/clang")
+    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/clang++")
     set(CMAKE_LINKER       "${LLVM_ROOT}/bin/ld.lld")
 
-    # 2. Передаем флаги линковки
-    # -fuse-ld=lld принудительно включает быстрый LLVM линкер
-    # -lm явно подключает математическую библиотеку (критично для Linux-сборок Clang)
-    set(SYSROOT_FLAGS "-fuse-ld=lld -stdlib=libc++ -lm -pthread")
+    # 2. Формируем пути к внутреннейlibc++ самого LLVM
+    set(LLVM_INC_DIR "${LLVM_ROOT}/include/c++/v1")
+    set(LLVM_LIB_DIR "${LLVM_ROOT}/lib")
 
-    set(CMAKE_C_FLAGS               "${CMAKE_C_FLAGS} ${SYSROOT_FLAGS}")
-    set(CMAKE_CXX_FLAGS             "${CMAKE_CXX_FLAGS} ${SYSROOT_FLAGS}")
+    # 3. Флаги компиляции:
+    # -nostdinc++ отключает поиск системной библиотеки GCC (убирает конфликты ABI)
+    # -isystem насильно подключает инклюды libc++ из папки вашего LLVM
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -nostdinc++ -isystem \"${LLVM_INC_DIR}\" -stdlib=libc++")
 
-    # Изолируем поиск зависимостей рантайма через rpath относительно исполнимого файла
-    set(CMAKE_EXE_LINKER_FLAGS      "${CMAKE_EXE_LINKER_FLAGS} ${SYSROOT_FLAGS} -Wl,-rpath,'$ORIGIN/../lib'")
-    set(CMAKE_SHARED_LINKER_FLAGS   "${CMAKE_SHARED_LINKER_FLAGS} ${SYSROOT_FLAGS} -Wl,-rpath,'$ORIGIN/../lib'")
+    # 4. Флаги линковки:
+    # -fuse-ld=lld включает быстрый линкер из архива
+    # -L указывает линкеру искать libc++.a / .so внутри папки вашего LLVM
+    # -Wl,-rpath запекает этот путь в готовый бинарник, чтобы он работал на любой машине
+    # -lm -pthread подключают математику и потоки (обязательно для Linux)
+    set(LINKER_FLAGS "-fuse-ld=lld -L\"${LLVM_LIB_DIR}\" -Wl,-rpath,'$ORIGIN/../third_party/llvm23/lib' -lm -pthread")
 
-    # Изолируем CMake от системных библиотек (/usr/lib) хост-системы
+    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
+
+    # Изолируем CMake от системных путей хоста
     set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
     set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
