@@ -127,13 +127,28 @@ elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
 else()
     # --- LINUX / FREEBSD ---
     set(CMAKE_SYSTEM_NAME Linux)
-    set(CMAKE_LINKER "${LLVM_ROOT}/bin/ld.lld")
-    
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -Wl,-rpath,'$ORIGIN/../setup/llvm/lib'")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++ -Wl,-rpath,'$ORIGIN/../setup/llvm/lib'")
-    
-    # Полная изоляция поиска пакетов от хост-системы Linux
+
+    # 1. Используем целевую обертку с префиксом архитектуры.
+    # Она знает относительные пути к родной libc++ внутри папки LLVM.
+    set(LINUX_TARGET "x86_64-unknown-linux-gnu")
+
+    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/${LINUX_TARGET}-clang")
+    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/${LINUX_TARGET}-clang++")
+    set(CMAKE_LINKER       "${LLVM_ROOT}/bin/ld.lld")
+
+    # 2. Передаем флаги линковки
+    # -fuse-ld=lld принудительно включает быстрый LLVM линкер
+    # -lm явно подключает математическую библиотеку (критично для Linux-сборок Clang)
+    set(SYSROOT_FLAGS "-fuse-ld=lld -stdlib=libc++ -lm -pthread")
+
+    set(CMAKE_C_FLAGS               "${CMAKE_C_FLAGS} ${SYSROOT_FLAGS}")
+    set(CMAKE_CXX_FLAGS             "${CMAKE_CXX_FLAGS} ${SYSROOT_FLAGS}")
+
+    # Изолируем поиск зависимостей рантайма через rpath относительно исполнимого файла
+    set(CMAKE_EXE_LINKER_FLAGS      "${CMAKE_EXE_LINKER_FLAGS} ${SYSROOT_FLAGS} -Wl,-rpath,'$ORIGIN/../lib'")
+    set(CMAKE_SHARED_LINKER_FLAGS   "${CMAKE_SHARED_LINKER_FLAGS} ${SYSROOT_FLAGS} -Wl,-rpath,'$ORIGIN/../lib'")
+
+    # Изолируем CMake от системных библиотек (/usr/lib) хост-системы
     set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
     set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
