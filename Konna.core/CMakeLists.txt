@@ -5,15 +5,6 @@ project(Konna.core LANGUAGES C CXX)
 
 include("./CMakeDeps.cmake")
 
-add_compile_options(
-    -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain.cmake
-)
-
-
-
-#add_executable(tests test.cpp)
-#target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
-
 set(KONNA_ROOT_DIR "${CMAKE_SOURCE_DIR}/..")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -59,6 +50,12 @@ add_library(
 #     "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net9.0/"
 # )
 
+if(WIN32)
+    set(EXE_SUFFIX ".exe")
+else()
+    set(EXE_SUFFIX "")
+endif()
+
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
     set(IS_WIN TRUE)
     set(EXE_SUFFIX ".exe")
@@ -80,95 +77,39 @@ set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/clang++${EXE_SUFFIX}")
 # =============================================================================
 
 if(IS_WIN)
-    # --- WINDOWS (llvm-mingw) ---
+
     set(CMAKE_SYSTEM_NAME Windows)
 
-    # 1. Вместо сырого clang/ld.lld указываем на целевые обертки из llvm-mingw.
-    # Они автоматически знают пути к <iostream>, wchar, mbstate_t и UCRT.
-    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/x86_64-w64-mingw32-clang${EXE_SUFFIX}")
-    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/x86_64-w64-mingw32-clang++${EXE_SUFFIX}")
-    set(CMAKE_LINKER       "${LLVM_ROOT}/bin/x86_64-w64-mingw32-ld${EXE_SUFFIX}")
+    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/x86_64-w64-mingw32-clang.exe")
+    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/x86_64-w64-mingw32-clang++.exe")
+    set(CMAKE_LINKER       "${LLVM_ROOT}/bin/x86_64-w64-mingw32-ld.lld.exe")
 
-    # 2. Убираем ВСЕ ручные -isystem, --sysroot и -fuse-ld.
-    # Обертки от llvm-mingw сделают это за нас идеально и без ошибок компиляции libc++.
-    set(CMAKE_C_FLAGS               "${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS             "${CMAKE_CXX_FLAGS}")
-
-    # Позволяем Windows-бинарникам искать dll в своей папке
     set(CMAKE_EXE_LINKER_FLAGS      "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,'$ORIGIN'")
     set(CMAKE_SHARED_LINKER_FLAGS   "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-rpath,'$ORIGIN'")
-#    set(CMAKE_SYSTEM_NAME Windows)
-#
-#    # Задаем целевую архитектуру, которую ожидает llvm-mingw
-#    set(WIN_TARGET "x86_64-w64-mingw32")
-#    set(CMAKE_C_COMPILER_TARGET   ${WIN_TARGET})
-#    set(CMAKE_CXX_COMPILER_TARGET ${WIN_TARGET})
-#
-#    # В llvm-mingw в папке bin уже лежат готовые обертки x86_64-w64-mingw32-ld
-#    # Но мы можем явно форсировать использование ld.lld
-#    set(CMAKE_LINKER "${LLVM_ROOT}/bin/ld.lld${EXE_SUFFIX}")
-#
-#    # Указываем компилятору использовать lld и сообщаем, где лежат системные библиотеки MinGW
-#    set(SYSROOT_FLAGS "--sysroot=${LLVM_ROOT}/${WIN_TARGET} -fuse-ld=lld -isystem ${LLVM_ROOT}/include -isystem ${LLVM_ROOT}/include/c++/v1")
-#    set(CMAKE_C_FLAGS               "${CMAKE_C_FLAGS} ${SYSROOT_FLAGS}")
-#    set(CMAKE_CXX_FLAGS             "${CMAKE_CXX_FLAGS} ${SYSROOT_FLAGS}")
-#    set(CMAKE_EXE_LINKER_FLAGS      "${CMAKE_EXE_LINKER_FLAGS} ${SYSROOT_FLAGS}")
-#    set(CMAKE_SHARED_LINKER_FLAGS   "${CMAKE_SHARED_LINKER_FLAGS} ${SYSROOT_FLAGS}")
 
-elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
-    # --- macOS (Mac) ---
-    set(CMAKE_SYSTEM_NAME Darwin)
-    set(CMAKE_LINKER "${LLVM_ROOT}/bin/ld.lld")
-    
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -Wl,-rpath,'@loader_path/../setup/llvm/lib'")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++ -Wl,-rpath,'@loader_path/../setup/llvm/lib'")
-
-else()
-    # --- LINUX / FREEBSD ---
-    set(CMAKE_SYSTEM_NAME Linux)
-
-    # 1. Указываем прямые бинарники из официального архива GitHub
-    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/clang")
-    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/clang++")
-    set(CMAKE_LINKER       "${LLVM_ROOT}/bin/ld.lld")
-
-    # 2. Формируем пути к внутреннейlibc++ самого LLVM
-    set(LLVM_INC_DIR "${LLVM_ROOT}/include/c++/v1")
-    set(LLVM_LIB_DIR "${LLVM_ROOT}/lib")
-
-    # 3. Флаги компиляции:
-    # -nostdinc++ отключает поиск системной библиотеки GCC (убирает конфликты ABI)
-    # -isystem насильно подключает инклюды libc++ из папки вашего LLVM
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -nostdinc++ -isystem \"${LLVM_INC_DIR}\" -stdlib=libc++")
-
-    # 4. Флаги линковки:
-    # -fuse-ld=lld включает быстрый линкер из архива
-    # -L указывает линкеру искать libc++.a / .so внутри папки вашего LLVM
-    # -Wl,-rpath запекает этот путь в готовый бинарник, чтобы он работал на любой машине
-    # -lm -pthread подключают математику и потоки (обязательно для Linux)
-    set(LINKER_FLAGS "-fuse-ld=lld -L\"${LLVM_LIB_DIR}\" -Wl,-rpath,'$ORIGIN/../third_party/llvm23/lib' -lm -pthread")
-
-    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
-
-    # Изолируем CMake от системных путей хоста
-    set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-    set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-    set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-endif()
-
-if(WIN32)
     include("cmake/win.cmake")
-elseif(APPLE)
 
+elseif(APPLE)
     message(STATUS "Platform: MacOS")
+
+    set(CMAKE_SYSTEM_NAME Darwin)
+
+    set(CMAKE_C_COMPILER   "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_LINKER       "ld.lld")
+
     include("cmake/unix.cmake")
     set(DOTNET_PLATFORM_SUFFIX "osx-arm64")
 
 else()
-
     message(STATUS "Platform: Linux")
+
+    set(CMAKE_SYSTEM_NAME Linux)
+
+    set(CMAKE_C_COMPILER   "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_LINKER       "ld.lld")
+
     include("cmake/unix.cmake")
     set(DOTNET_PLATFORM_SUFFIX "linux-x64")
 

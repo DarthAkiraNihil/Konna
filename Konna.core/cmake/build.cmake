@@ -7,7 +7,7 @@ foreach (prime_target IN LISTS Konna.core.static Konna.core.shared)
     target_include_directories(prime_target PRIVATE "${CMAKE_SOURCE_DIR}/src")
 
     target_compile_definitions(prime_target PRIVATE KONNA_CORE_EXPORTS)
-    target_compile_options(prime_target PRIVATE -02 -stdlib=libc++)
+    target_compile_options(prime_target PRIVATE -02)
 
     target_link_libraries(prime_target PRIVATE "${NETHOST_LIB}")
 
@@ -38,5 +38,5 @@ target_link_libraries(Tests PRIVATE -Wl,-Bdynamic Konna.core.static -Wl,-Bstatic
 #    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
 #endif()
 
-target_compile_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -O0 -g -static -stdlib=libc++)
-target_link_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -static -stdlib=libc++)
+target_compile_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -O0 -g -static)
+target_link_options(Tests PRIVATE -fprofile-instr-generate -fcoverage-mapping -static)
