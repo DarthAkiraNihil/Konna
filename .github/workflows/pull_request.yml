@@ -45,7 +45,7 @@ jobs:
             -   name: Collect coverage
                 run: |
                     llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
-                    llvm-cov-20 export ./Tests.exe -instr-profile="./coverage.profdata" \
+                    && llvm-cov-20 export ./Tests.exe -instr-profile="./coverage.profdata" \
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build)" > coverage.json
             -   name: Check coverage
                 uses: jannekem/run-python-script-action@v1
