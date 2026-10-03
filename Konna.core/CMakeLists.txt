@@ -106,9 +106,9 @@ else()
 
     set(CMAKE_SYSTEM_NAME Linux)
 
-    set(CMAKE_C_COMPILER   "clang")
-    set(CMAKE_CXX_COMPILER "clang++")
-    set(CMAKE_LINKER       "ld.lld")
+    set(CMAKE_C_COMPILER   "clang-20")
+    set(CMAKE_CXX_COMPILER "clang++-20")
+    set(CMAKE_LINKER       "ld.lld-20")
 
     include("cmake/unix.cmake")
     set(DOTNET_PLATFORM_SUFFIX "linux-x64")
