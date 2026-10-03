@@ -55,7 +55,7 @@ jobs:
                     script: |
                         import json
                         c = dict()
-                        with open("./coverage.json", "r", encoding="utf8") as f:
+                        with open("./Konna.core/build-konna-core-llvm-release-linux/coverage.json", "r", encoding="utf8") as f:
                             c = json.load(f)
                         
                         total = c['totals']['lines']['percent']
