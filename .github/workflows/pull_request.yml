@@ -41,7 +41,7 @@ jobs:
                     cd Konna.core \
                     && cmake --preset konna-core-llvm-release-linux \
                     && cmake --build build-konna-core-llvm-release-linux --clean-first --target Tests \
-                    && cd build-konna-core-llvm-release-linux
+                    && cd build-konna-core-llvm-release-linux \
                     && ./Tests
             -   name: Collect coverage
                 run: |
