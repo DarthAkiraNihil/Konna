@@ -60,7 +60,7 @@ jobs:
                         
                         print(c)
                         
-                        total = c['data']['totals']['lines']['percent']
+                        total = c['data'][0]['totals']['lines']['percent']
                         if total < 90.0:
                             error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
                             exit(1)
