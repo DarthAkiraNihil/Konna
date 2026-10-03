@@ -30,8 +30,8 @@
       "inherits": "konna-core-llvm-base",
       "generator": "Ninja",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "${sourceDir}/../setup/llvm/bin/clang",
-        "CMAKE_CXX_COMPILER": "${sourceDir}/../setup/llvm/bin/clang"
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
       }
     },
     {
