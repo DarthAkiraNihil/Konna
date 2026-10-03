@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-//
-// Created by EgrZver on 24.09.2026.
-//
+#ifndef KONNA_CORE_KONNAEXPORT_H
+#define KONNA_CORE_KONNAEXPORT_H
 
-#include "KAllocator.h"
-#include <rpmalloc.h>
+#if defined(_WIN32) || defined(__CYGWIN__)
+    #ifdef KONNA_CORE_EXPORTS
+        #define KONNA_CORE_API __declspec(dllexport)
+    #else
+        #define KONNA_CORE_API __declspec(dllimport)
+    #endif
+#else
+    #if __GNUC__ >= 4
+        #define KONNA_CORE_API __attribute__((visibility("default")))
+    #else
+        #define KONNA_CORE_API
+    #endif
+#endif
 
-namespace Konna::Core::Memory {
-
-    inline void* KAllocator::alloc(const ksize& size) noexcept {
-        return rpmalloc(size);
-    }
-
-    inline void KAllocator::free(void*& ptr) noexcept{
-        rpfree(ptr);
-    }
-
-    template<typename T>
-    T* KAllocator::allocObject() noexcept {
-        return static_cast<T*>(rpmalloc(sizeof(T)));
-    }
-
-}
+#endif //KONNA_CORE_KONNAEXPORT_H

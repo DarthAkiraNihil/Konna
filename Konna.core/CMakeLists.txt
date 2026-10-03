@@ -1,20 +1,46 @@
 ﻿cmake_minimum_required(VERSION 3.20)
-project(Konna.core LANGUAGES CXX)
+project(Konna.core LANGUAGES C CXX)
 
+# This file is ugly, but I won't prettify it soon
+
+include("./CMakeDeps.cmake")
+
+set(KONNA_ROOT_DIR "${CMAKE_SOURCE_DIR}/..")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_compile_options(
-    -DCMAKE_C_COMPILER=clang
-    -DCMAKE_CXX_COMPILER=clang++
+file(
+    GLOB_RECURSE
+    SOURCE_FILES CONFIGURE_DEPENDS
+    "src/*.cpp" "src/*.h"
+)
+
+file(
+    GLOB_RECURSE
+    RPMALLOC_FILES CONFIGURE_DEPENDS
+    "extern/rpmalloc/rpmalloc/*.h" "extern/rpmalloc/rpmalloc/*.c"
+)
+
+
+set(
+    SOURCES
+    ${SOURCE_FILES} ${RPMALLOC_FILES}
+)
+
+# .NET Variables
+
+set(DOTNET_INSTALL_DIR "${CMAKE_SOURCE_DIR}/../setup/dotnet")
+set(DOTNET_VERSION "10.0.401")
+set(DOTNET_VERSION_PARENT "10.0.12")
+
+add_library(
+    Konna.core.static STATIC
+    ${SOURCES}
 )
 
 add_library(
-    Konna.core SHARED src/Konna/main.cpp
-        src/Konna/type/PrimitiveTypes.h
-        src/Konna/Konna.h
-        src/Konna/memory/KAllocator.cpp
-        src/Konna/memory/KAllocator.h
+    Konna.core.shared SHARED
+    ${SOURCES}
 )
 
 # add_custom_command(
@@ -24,45 +50,68 @@ add_library(
 #     "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net9.0/"
 # )
 
-set(DOTNET_INSTALL_DIR "${CMAKE_SOURCE_DIR}/../install/dotnet")
-set(DOTNET_VERSION "10.0.401")
-set(DOTNET_VERSION_PARENT "10.0.12")
-
 if(WIN32)
+    set(EXE_SUFFIX ".exe")
+else()
+    set(EXE_SUFFIX "")
+endif()
 
-    message(STATUS "Platform: Windows")
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+    set(IS_WIN TRUE)
+    set(EXE_SUFFIX ".exe")
+else()
+    set(EXE_SUFFIX "")
+endif()
 
-    if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet.exe")
-        message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
-        return()
-    endif()
+# =============================================================================
+# 2. БАЗОВЫЕ ПУТИ К ВАШЕМУ LLVM (в third_party/llvm23)
+# =============================================================================
+set(LLVM_ROOT "${KONNA_ROOT_DIR}/setup/llvm")
 
-    set(DOTNET_PLATFORM_SUFFIX "win-x64")
-    set(DOTNET_HOST_LIB_NAME "nethost.lib")
+# Передаем пути к компиляторам
+set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/clang${EXE_SUFFIX}")
+set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/clang++${EXE_SUFFIX}")
+
+# =============================================================================
+# 3. НАСТРОЙКИ СИСТЕМЫ И ЛИНКЕРА
+# =============================================================================
+
+if(IS_WIN)
+
+    set(CMAKE_SYSTEM_NAME Windows)
+
+    set(CMAKE_C_COMPILER   "${LLVM_ROOT}/bin/x86_64-w64-mingw32-clang.exe")
+    set(CMAKE_CXX_COMPILER "${LLVM_ROOT}/bin/x86_64-w64-mingw32-clang++.exe")
+    set(CMAKE_LINKER       "${LLVM_ROOT}/bin/x86_64-w64-mingw32-ld.lld.exe")
+
+    set(CMAKE_EXE_LINKER_FLAGS      "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,'$ORIGIN'")
+    set(CMAKE_SHARED_LINKER_FLAGS   "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-rpath,'$ORIGIN'")
+
+    include("cmake/win.cmake")
 
 elseif(APPLE)
-
     message(STATUS "Platform: MacOS")
 
-    if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet")
-        message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
-        return()
-    endif()
+    set(CMAKE_SYSTEM_NAME Darwin)
 
+    set(CMAKE_C_COMPILER   "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_LINKER       "ld.lld")
+
+    include("cmake/unix.cmake")
     set(DOTNET_PLATFORM_SUFFIX "osx-arm64")
-    set(DOTNET_HOST_LIB_NAME "libnethost.a")
 
 else()
-
     message(STATUS "Platform: Linux")
 
-    if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet")
-        message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
-        return()
-    endif()
+    set(CMAKE_SYSTEM_NAME Linux)
 
+    set(CMAKE_C_COMPILER   "clang-20")
+    set(CMAKE_CXX_COMPILER "clang++-20")
+    set(CMAKE_LINKER       "ld.lld-20")
+
+    include("cmake/unix.cmake")
     set(DOTNET_PLATFORM_SUFFIX "linux-x64")
-    set(DOTNET_HOST_LIB_NAME "libnethost.a")
 
 endif()
 
@@ -75,10 +124,4 @@ if (NOT EXISTS "${DOTNET_NETHOST_PATH}")
     return()
 endif()
 
-target_include_directories(Konna.core PRIVATE "${DOTNET_NETHOST_INCLUDE}")
-target_include_directories(Konna.core PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
-target_include_directories(Konna.core PRIVATE "${CMAKE_SOURCE_DIR}/src")
-
-target_link_libraries(Konna.core PRIVATE "${NETHOST_LIB}")
-
-message(STATUS "NETHOST configuration finished. Version: ${DOTNET_VERSION}")
+include("cmake/build.cmake")

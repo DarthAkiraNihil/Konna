@@ -1,0 +1,66 @@
+name: Pull Request Check Pipeline
+on:
+    pull_request:
+        branches:
+            - master
+jobs:
+    test-linux:
+        runs-on: ubuntu-latest
+        env:
+            DOTNET_INSTALL_DIR: ${{ github.workspace }}/setup/dotnet
+        permissions:
+            pull-requests: write
+            contents: read
+            checks: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Initialize submodules
+                uses: snickerbockers/submodules-init@v4
+            -   name: Install python
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.13.15'
+            -   name: Install requests
+                run: pip3 install requests
+            -   name: Set up project
+                run: |
+                    mkdir setup \
+                    && cd setup \
+                    && wget https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh \
+                    && chmod +x ./dotnet-install.sh \
+                    && ./dotnet-install.sh --channel LTS --version 10.0.401 --no-path --install-dir ./dotnet \
+                    && sudo apt-get update && sudo apt-get upgrade -y \
+                    && wget https://apt.llvm.org/llvm.sh \
+                    && chmod +x llvm.sh \
+                    && sudo ./llvm.sh 20 all \
+                    && cd ..
+            -   name: Build Core and test
+                run: |
+                    cd Konna.core \
+                    && cmake --preset konna-core-llvm-release-linux \
+                    && cmake --build build-konna-core-llvm-release-linux --clean-first --target Tests \
+                    && cd build-konna-core-llvm-release-linux \
+                    && ./Tests
+            -   name: Collect coverage
+                run: |
+                    cd Konna.core/build-konna-core-llvm-release-linux \
+                    && llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
+                    && llvm-cov-20 export ./Tests -instr-profile="./coverage.profdata" \
+                        -summary-only  --ignore-filename-regex="(extern|test|catch2|build)" > coverage.json
+            -   name: Check coverage
+                uses: jannekem/run-python-script-action@v1
+                with:
+                    script: |
+                        import json
+                        c = dict()
+                        with open("./Konna.core/build-konna-core-llvm-release-linux/coverage.json", "r", encoding="utf8") as f:
+                            c = json.load(f)
+                        
+                        print(c)
+                        
+                        total = c['data'][0]['totals']['lines']['percent']
+                        if total < 90.0:
+                            error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
+                            exit(1)
