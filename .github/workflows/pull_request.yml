@@ -27,14 +27,14 @@ jobs:
             -   name: Set up project
                 run: |
                         mkdir setup \
-                    &&  cd setup
-                    &&  wget https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh
-                    &&  chmod +x ./dotnet-install.sh
-                    &&  ./dotnet-install.sh --channel LTS --version 10.0.401 --no-path --install-dir ./dotnet
-                    && sudo apt-get update && sudo apt-get upgrade -y
-                    && wget https://apt.llvm.org/llvm.sh
-                    && chmod +x llvm.sh
-                    && sudo ./llvm.sh 23 all
+                    &&  cd setup \
+                    &&  wget https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh \
+                    &&  chmod +x ./dotnet-install.sh \
+                    &&  ./dotnet-install.sh --channel LTS --version 10.0.401 --no-path --install-dir ./dotnet \
+                    && sudo apt-get update && sudo apt-get upgrade -y \
+                    && wget https://apt.llvm.org/llvm.sh \
+                    && chmod +x llvm.sh \
+                    && sudo ./llvm.sh 23 all \
                     && cd ..
             -   name: Build Core and test
                 run: |
