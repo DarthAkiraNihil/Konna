@@ -41,7 +41,8 @@ jobs:
                     cd Konna.core \
                     && cmake --preset konna-core-llvm-release-linux \
                     && cmake --build build-konna-core-llvm-release-linux --clean-first --target Tests \
-                    && ./build-konna-core-llvm-release-linux/Tests
+                    && cd build-konna-core-llvm-release-linux
+                    && ./Tests
             -   name: Collect coverage
                 run: |
                     llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
