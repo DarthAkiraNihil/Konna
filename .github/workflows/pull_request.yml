@@ -26,11 +26,11 @@ jobs:
                 run: pip3 install requests
             -   name: Set up project
                 run: |
-                        mkdir setup \
-                    &&  cd setup \
-                    &&  wget https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh \
-                    &&  chmod +x ./dotnet-install.sh \
-                    &&  ./dotnet-install.sh --channel LTS --version 10.0.401 --no-path --install-dir ./dotnet \
+                    mkdir setup \
+                    && cd setup \
+                    && wget https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh \
+                    && chmod +x ./dotnet-install.sh \
+                    && ./dotnet-install.sh --channel LTS --version 10.0.401 --no-path --install-dir ./dotnet \
                     && sudo apt-get update && sudo apt-get upgrade -y \
                     && wget https://apt.llvm.org/llvm.sh \
                     && chmod +x llvm.sh \
@@ -44,8 +44,8 @@ jobs:
                     && ./Tests
             -   name: Collect coverage
                 run: |
-                    .\..\..\setup\llvm\bin\llvm-profdata merge -sparse default.profraw -o coverage.profdata  \
-                    && .\..\..\setup\llvm\bin\llvm-cov export ./Tests.exe -instr-profile="./coverage.profdata" \
+                    llvm-profdata merge -sparse default.profraw -o coverage.profdata  \
+                    llvm-cov export ./Tests.exe -instr-profile="./coverage.profdata" \
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build)" > coverage.json
             -   name: Check coverage
                 uses: jannekem/run-python-script-action@v1
