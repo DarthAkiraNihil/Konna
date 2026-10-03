@@ -58,7 +58,9 @@ jobs:
                         with open("./Konna.core/build-konna-core-llvm-release-linux/coverage.json", "r", encoding="utf8") as f:
                             c = json.load(f)
                         
-                        total = c['totals']['lines']['percent']
+                        print(c)
+                        
+                        total = c['data']['totals']['lines']['percent']
                         if total < 90.0:
                             error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
                             exit(1)
