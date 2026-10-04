@@ -1,0 +1,96 @@
+name: Pull Request Check Pipeline
+on:
+    pull_request:
+        branches:
+            - master
+jobs:
+    test-linux:
+        name: Test (Linux)
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+            contents: read
+            checks: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Initialize submodules
+                uses: snickerbockers/submodules-init@v4
+            -   name: Set up project
+                run: chmod +x ./setup.sh && ./setup.sh
+            -   name: Build Core and test
+                run: |
+                    cd Konna.core \
+                    && cmake --preset konna-core-llvm-release-linux \
+                    && cmake --build build-konna-core-llvm-release-linux --clean-first --target Tests \
+                    && cd build-konna-core-llvm-release-linux \
+                    && ./Tests
+            -   name: Collect coverage
+                run: |
+                    cd Konna.core/build-konna-core-llvm-release-linux \
+                    && llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
+                    && llvm-cov-20 export ./Tests -instr-profile="./coverage.profdata" \
+                        -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
+            -   name: Check coverage
+                uses: jannekem/run-python-script-action@v1
+                with:
+                    script: |
+                        import json
+                        c = dict()
+                        with open("./Konna.core/build-konna-core-llvm-release-linux/coverage.json", "r", encoding="utf8") as f:
+                            c = json.load(f)
+                        
+                        print(c)
+                        
+                        total = c['data'][0]['totals']['lines']['percent']
+                        if total < 90.0:
+                            error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
+                            exit(1)
+    test-windows:
+        name: Test (Windows)
+        runs-on: windows-latest
+        permissions:
+            pull-requests: write
+            contents: read
+            checks: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Initialize submodules
+                uses: snickerbockers/submodules-init@v4
+            -   name: Setup cmake
+                uses: jwlawson/actions-setup-cmake@v2
+                with:
+                    cmake-version: '4.3.1'
+            -   name: Set up project
+                run: ./setup.ps1
+            -   name: Build Core and test
+                run: |
+                    cd Konna.core `
+                    ; cmake --preset konna-core-llvm-release-win `
+                    ; cmake --build build-konna-core-llvm-release-win --clean-first --target Tests `
+                    ; cd build-konna-core-llvm-release-win `
+                    ; ./Tests
+            -   name: Collect coverage
+                run: |
+                    cd Konna.core/build-konna-core-llvm-release-win `
+                    ; ./../../setup/llvm/bin/llvm-profdata.exe merge -sparse default.profraw -o coverage.profdata  `
+                    ; ./../../setup/llvm/bin/llvm-cov.exe export ./Tests.exe -instr-profile="./coverage.profdata" `
+                        -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
+            -   name: Check coverage
+                uses: jannekem/run-python-script-action@v1
+                with:
+                    script: |
+                        import json
+                        c = dict()
+                        with open("./Konna.core/build-konna-core-llvm-release-win/coverage.json", "r", encoding="utf8") as f:
+                            c = json.load(f)
+                        
+                        print(c)
+                        
+                        total = c['data'][0]['totals']['lines']['percent']
+                        if total < 90.0:
+                            error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
+                            exit(1)

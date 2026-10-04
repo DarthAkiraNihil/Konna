@@ -1,0 +1,5 @@
+if(NOT EXISTS "${DOTNET_INSTALL_DIR}/dotnet")
+    message(FATAL_ERROR "Could not find project-wise installed .NET. Please check if you have run the install script")
+    return()
+endif()
+set(DOTNET_HOST_LIB_NAME "libnethost.a")
