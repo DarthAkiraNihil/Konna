@@ -68,16 +68,16 @@ jobs:
                 run: ./setup.ps1
             -   name: Build Core and test
                 run: |
-                    cd Konna.core \
-                    ; cmake --preset konna-core-llvm-release-win \
-                    ; cmake --build build-konna-core-llvm-release-win --clean-first --target Tests \
-                    ; cd build-konna-core-llvm-release-win \
+                    cd Konna.core `
+                    ; cmake --preset konna-core-llvm-release-win `
+                    ; cmake --build build-konna-core-llvm-release-win --clean-first --target Tests `
+                    ; cd build-konna-core-llvm-release-win `
                     ; ./Tests
             -   name: Collect coverage
                 run: |
-                    cd Konna.core/build-konna-core-llvm-release-win \
-                    ; ./setup/llvm/llvm-profdata merge -sparse default.profraw -o coverage.profdata  \
-                    ; ./setup/llvmllvm-cov export ./Tests -instr-profile="./coverage.profdata" \
+                    cd Konna.core/build-konna-core-llvm-release-win `
+                    ; ./setup/llvm/llvm-profdata merge -sparse default.profraw -o coverage.profdata  `
+                    ; ./setup/llvmllvm-cov export ./Tests -instr-profile="./coverage.profdata" `
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
             -   name: Check coverage
                 uses: jannekem/run-python-script-action@v1
