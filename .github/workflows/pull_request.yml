@@ -77,7 +77,7 @@ jobs:
                 run: |
                     cd Konna.core/build-konna-core-llvm-release-win `
                     ; ./../../setup/llvm/bin/llvm-profdata.exe merge -sparse default.profraw -o coverage.profdata  `
-                    ; ./../../setup/llvm/bin/llvm-cov.exe export ./Tests -instr-profile="./coverage.profdata" `
+                    ; ./../../setup/llvm/bin/llvm-cov.exe export ./Tests.exe -instr-profile="./coverage.profdata" `
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
             -   name: Check coverage
                 uses: jannekem/run-python-script-action@v1
