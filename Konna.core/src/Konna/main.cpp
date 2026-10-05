@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 
-void foo()
-{
-    std::cout << "Hello World!" << std::endl;
+void foo() {
+    std::cout << "Hello World!" << '\n';
 }

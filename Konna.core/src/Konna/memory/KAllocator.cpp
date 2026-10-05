@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-//
-// Created by EgrZver on 22.09.2026.
-//
+#include <Konna/memory/KAllocator.h>
 
-#ifndef KONNA_CORE_KONNA_H
-#define KONNA_CORE_KONNA_H
+namespace Konna::Core::Memory {
 
-#include <coreclr_delegates.h>
-#include <hostfxr.h>
-#include <nethost.h>
+    void* KAllocator::alloc(const ksize& size) noexcept {
+        return rpmalloc(size);
+    }
 
-/**
- * Konna's core namespace
- */
-namespace Konna::Core {}
+    void KAllocator::free(void* ptr) noexcept {
+        rpfree(ptr);
+    }
 
-#endif // KONNA_CORE_KONNA_H
+} // namespace Konna::Core::Memory

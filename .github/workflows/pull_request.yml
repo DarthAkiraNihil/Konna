@@ -22,13 +22,13 @@ jobs:
             -   name: Build Core and test
                 run: |
                     cd Konna.core \
-                    && cmake --preset konna-core-llvm-release-linux \
-                    && cmake --build build-konna-core-llvm-release-linux --clean-first --target Tests \
-                    && cd build-konna-core-llvm-release-linux \
+                    && cmake --preset konna-core-release-linux \
+                    && cmake --build build/linux/release --clean-first --target Tests \
+                    && cd build/linux/release \
                     && ./Tests
             -   name: Collect coverage
                 run: |
-                    cd Konna.core/build-konna-core-llvm-release-linux \
+                    cd Konna.core/build/linux/release \
                     && llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
                     && llvm-cov-20 export ./Tests -instr-profile="./coverage.profdata" \
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
@@ -38,15 +38,18 @@ jobs:
                     script: |
                         import json
                         c = dict()
-                        with open("./Konna.core/build-konna-core-llvm-release-linux/coverage.json", "r", encoding="utf8") as f:
+                        with open("./Konna.core/build/linux/release/coverage.json", "r", encoding="utf8") as f:
                             c = json.load(f)
                         
                         print(c)
                         
                         total = c['data'][0]['totals']['lines']['percent']
+                        print(f"Total coverage is {total}")
                         if total < 90.0:
                             error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
                             exit(1)
+                        else:
+                            print("OK")
     test-windows:
         name: Test (Windows)
         runs-on: windows-latest
@@ -69,15 +72,15 @@ jobs:
             -   name: Build Core and test
                 run: |
                     cd Konna.core `
-                    ; cmake --preset konna-core-llvm-release-win `
-                    ; cmake --build build-konna-core-llvm-release-win --clean-first --target Tests `
-                    ; cd build-konna-core-llvm-release-win `
+                    ; cmake --preset konna-core-release-win `
+                    ; cmake --build build/win/release --clean-first --target Tests `
+                    ; cd build/win/release `
                     ; ./Tests
             -   name: Collect coverage
                 run: |
-                    cd Konna.core/build-konna-core-llvm-release-win `
-                    ; ./../../setup/llvm/bin/llvm-profdata.exe merge -sparse default.profraw -o coverage.profdata  `
-                    ; ./../../setup/llvm/bin/llvm-cov.exe export ./Tests.exe -instr-profile="./coverage.profdata" `
+                    cd Konna.core/build/win/release `
+                    ; ./../../../../setup/llvm/bin/llvm-profdata.exe merge -sparse default.profraw -o coverage.profdata  `
+                    ; ./../../../../setup/llvm/bin/llvm-cov.exe export ./Tests.exe -instr-profile="./coverage.profdata" `
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
             -   name: Check coverage
                 uses: jannekem/run-python-script-action@v1
@@ -85,12 +88,75 @@ jobs:
                     script: |
                         import json
                         c = dict()
-                        with open("./Konna.core/build-konna-core-llvm-release-win/coverage.json", "r", encoding="utf8") as f:
+                        with open("./Konna.core/build/win/release/coverage.json", "r", encoding="utf8") as f:
                             c = json.load(f)
                         
                         print(c)
                         
                         total = c['data'][0]['totals']['lines']['percent']
+                        print(f"Total coverage is {total}")
                         if total < 90.0:
                             error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
                             exit(1)
+                        else:
+                            print("OK")
+    codestyle:
+        name: Check codestyle
+        runs-on: windows-latest
+        permissions:
+            pull-requests: write
+            contents: read
+            checks: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Initialize submodules
+                uses: snickerbockers/submodules-init@v4
+            -   name: Setup cmake
+                uses: jwlawson/actions-setup-cmake@v2
+                with:
+                    cmake-version: '4.3.1'
+            -   name: Set up project
+                run: ./setup.ps1
+            -   name: Configure project
+                run: |
+                    cd Konna.core `
+                    ; cmake --preset konna-core-release-win
+            -   name: Run clang-format
+                run: |
+                    cd Konna.core `
+                    ; Get-ChildItem -Path .\src\Konna\ -Recurse -File | Where-Object { $_.FullName -match '\.(cpp|h)$' } | ` 
+                    ForEach-Object { .\..\setup\llvm\bin\clang-format.exe -i --style=file $_.FullName --dry-run --Werror}    
+    lint:
+        name: Check lint
+        runs-on: windows-latest
+        permissions:
+            pull-requests: write
+            contents: read
+            checks: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Initialize submodules
+                uses: snickerbockers/submodules-init@v4
+            -   name: Setup cmake
+                uses: jwlawson/actions-setup-cmake@v2
+                with:
+                    cmake-version: '4.3.1'
+            -   name: Set up Python
+                uses: actions/setup-python@v7
+                with:
+                    python-version: '3.13' 
+            -   name: Set up project
+                run: ./setup.ps1
+            -   name: Configure project
+                run: |
+                    cd Konna.core `
+                    ; cmake --preset konna-core-release-win
+            -   name: Run clang-tidy
+                run: |
+                    cd Konna.core `
+                    ; python .\..\setup\llvm\bin\run-clang-tidy -clang-tidy-binary .\..\setup\llvm\bin\clang-tidy.exe `
+                        -p build\win\release ".*\\(test|src)\\Konna\\.*\.(c|cpp|h|hpp)$"   

@@ -31,4 +31,4 @@
     #endif
 #endif
 
-#endif //KONNA_CORE_KONNAEXPORT_H
+#endif // KONNA_CORE_KONNAEXPORT_H

@@ -1,17 +1,25 @@
-foreach (prime_target IN LISTS Konna.core.static Konna.core.shared)
+set_target_properties(Konna.core.static PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-    set_target_properties(prime_target PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_include_directories(Konna.core.static SYSTEM PRIVATE "${DOTNET_NETHOST_INCLUDE}")
+target_include_directories(Konna.core.static SYSTEM PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
+target_include_directories(Konna.core.static PUBLIC "${CMAKE_SOURCE_DIR}/src")
 
-    target_include_directories(prime_target PRIVATE "${DOTNET_NETHOST_INCLUDE}")
-    target_include_directories(prime_target PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
-    target_include_directories(prime_target PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_definitions(Konna.core.static PRIVATE KONNA_CORE_EXPORTS)
+target_compile_options(Konna.core.static PRIVATE -O2)
 
-    target_compile_definitions(prime_target PRIVATE KONNA_CORE_EXPORTS)
-    target_compile_options(prime_target PRIVATE -02)
+target_link_libraries(Konna.core.static PRIVATE "${NETHOST_LIB}")
 
-    target_link_libraries(prime_target PRIVATE "${NETHOST_LIB}")
 
-endforeach ()
+set_target_properties(Konna.core.shared PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+target_include_directories(Konna.core.shared SYSTEM PRIVATE "${DOTNET_NETHOST_INCLUDE}")
+target_include_directories(Konna.core.shared SYSTEM PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
+target_include_directories(Konna.core.shared PUBLIC "${CMAKE_SOURCE_DIR}/src")
+
+target_compile_definitions(Konna.core.shared PRIVATE KONNA_CORE_EXPORTS)
+target_compile_options(Konna.core.shared PRIVATE -O2)
+
+target_link_libraries(Konna.core.shared PRIVATE "${NETHOST_LIB}")
 
 message(STATUS "NETHOST configuration finished. Version: ${DOTNET_VERSION}")
 
@@ -20,7 +28,6 @@ add_executable(
     test/main.cpp
     test/Konna/memory/KAllocator_tests.cpp
     ${SOURCE_FILES}
-    ${RPMALLOC_FILES}
 )
 
 #add_compile_definitions(RPMALLOC_FIRST_CLASS_THREAD=1)

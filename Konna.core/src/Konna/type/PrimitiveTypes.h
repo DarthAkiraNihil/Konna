@@ -27,6 +27,6 @@ namespace Konna::Core {
     static_assert(sizeof(ki32) == 4, "ki32 must be 4 bytes!");
     static_assert(sizeof(kf32) == 4, "kf32 must be 4 bytes!");
 
-}
+} // namespace Konna::Core
 
-#endif //KONNA_CORE_PRIMITIVETYPES_H
+#endif // KONNA_CORE_PRIMITIVETYPES_H

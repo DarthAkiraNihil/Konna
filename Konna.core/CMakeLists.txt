@@ -3,22 +3,25 @@ project(Konna.core LANGUAGES C CXX)
 
 # This file is ugly, but I won't prettify it soon
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include("./CMakeDeps.cmake")
 
-set(KONNA_ROOT_DIR "${CMAKE_SOURCE_DIR}/..")
+cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH KONNA_ROOT_DIR)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(
     GLOB_RECURSE
     SOURCE_FILES CONFIGURE_DEPENDS
-    "src/*.cpp" "src/*.h"
+    "${CMAKE_SOURCE_DIR}/src/*.cpp" "${CMAKE_SOURCE_DIR}/src/*.h"
 )
 
 file(
     GLOB_RECURSE
     RPMALLOC_FILES CONFIGURE_DEPENDS
-    "extern/rpmalloc/rpmalloc/*.h" "extern/rpmalloc/rpmalloc/*.c"
+    "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc/*.h" "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc/*.c"
 )
 
 
@@ -29,7 +32,7 @@ set(
 
 # .NET Variables
 
-set(DOTNET_INSTALL_DIR "${CMAKE_SOURCE_DIR}/../setup/dotnet")
+set(DOTNET_INSTALL_DIR "${KONNA_ROOT_DIR}/setup/dotnet")
 set(DOTNET_VERSION "10.0.401")
 set(DOTNET_VERSION_PARENT "10.0.12")
 
