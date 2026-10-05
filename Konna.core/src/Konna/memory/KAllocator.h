@@ -40,18 +40,14 @@ namespace Konna::Core::Memory {
          * @param size Size of allocated segment in bytes
          * @return Allocated memory segment
          */
-        static void* alloc(const ksize& size) noexcept {
-            return rpmalloc(size);
-        }
+        static void* alloc(const ksize& size) noexcept;
 
         /**
          * Frees previously allocated memory segment. Does not have any checks for invalid
          * or null address.
          * @param ptr Pointer of memory segment to delete
          */
-        static void free(void* ptr) noexcept {
-            rpfree(ptr);
-        }
+        static void free(void* ptr) noexcept;
 
         /**
          * Allocates an object. Same as @link KAllocator::alloc(const ksize&) \endlink, but with automatic cast.
