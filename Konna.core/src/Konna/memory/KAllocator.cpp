@@ -26,4 +26,4 @@ namespace Konna::Core::Memory {
         rpfree(ptr);
     }
 
-}
+} // namespace Konna::Core::Memory
