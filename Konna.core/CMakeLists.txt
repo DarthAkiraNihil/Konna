@@ -28,6 +28,11 @@ file(
 set(
     SOURCES
     ${SOURCE_FILES} ${RPMALLOC_FILES}
+        src/Konna/system/KLogger.cpp
+        src/Konna/system/KLogger.h
+        src/Konna/system/KLogHandler.h
+        src/Konna/system/KLogLevel.h
+        src/Konna/system/KLogFormatter.h
 )
 
 # .NET Variables

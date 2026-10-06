@@ -6,6 +6,7 @@
 #define KONNA_CORE_PRIMITIVETYPES_H
 #include <cmath>
 #include <cstdint>
+#include <vector>
 
 namespace Konna::Core {
 
@@ -23,6 +24,12 @@ namespace Konna::Core {
 
     using kf32 = std::float_t;
     using kf64 = std::double_t;
+
+    template<typename T>
+    using kptr = T*;
+
+    template<typename T>
+    using klist = std::vector<T>; // for internal purposes only
 
     static_assert(sizeof(ki32) == 4, "ki32 must be 4 bytes!");
     static_assert(sizeof(kf32) == 4, "kf32 must be 4 bytes!");
