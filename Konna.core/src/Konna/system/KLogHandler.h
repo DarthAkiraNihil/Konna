@@ -21,11 +21,30 @@
 
 namespace Konna::Core::System {
 
+    /**
+     * Interface for a log handler that writes result log line to
+     * a source, provided by its implementation.
+     *
+     * @version 0.2.0
+     * @author Darth Akira Nihil
+     */
     class KLogHandler {
         public:
             virtual ~KLogHandler() = default;
 
+            /**
+             * Handles log in its own way.
+             * @param logLevel Log message level
+             * @param tag Log message tag
+             * @param formattedMessage Log message itself
+             */
             virtual void handleLog(const KLogLevel& logLevel, const std::string& tag, const std::string& formattedMessage) = 0;
+
+            /**
+             * Return state of custom {@link KLogFormatter} containment inside implementation
+             * of the handler.
+             * @return {@code true} if handler contains inside it custom {@link KLogFormatter}
+             */
             virtual bool hasFormatter() = 0;
     };
 

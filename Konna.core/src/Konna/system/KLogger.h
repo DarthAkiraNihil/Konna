@@ -23,20 +23,62 @@
 
 namespace Konna::Core::System {
 
-    class KLogger {
+    /**
+     * Convenience class that is basically a just a static service for logging everything from everywhere.
+     *
+     * @since 0.2.0
+     * @author Darth Akira Nihil
+     */
+    class KLogger final {
 
         public:
 
+            /**
+             * Logs a message with @link KLogLevel::FATAL \endlink level.
+             * @param tag Log message tag
+             * @param format Message format
+             * @param args Format args
+             */
             template<typename... Args>
             static void fatal(const std::string& tag, const std::string& format, const Args&... args);
+            /**
+             * Logs a message with @link KLogLevel::ERROR \endlink level.
+             * @param tag Log message tag
+             * @param format Message format
+             * @param args Format args
+             */
             template<typename... Args>
             static void error(const std::string& tag, const std::string& format, const Args&... args);
+            /**
+             * Logs a message with @link KLogLevel::WARNING \endlink level.
+             * @param tag Log message tag
+             * @param format Message format
+             * @param args Format args
+             */
             template<typename... Args>
             static void warning(const std::string& tag, const std::string& format, const Args&... args);
+            /**
+             * Logs a message with @link KLogLevel::INFO \endlink level.
+             * @param tag Log message tag
+             * @param format Message format
+             * @param args Format args
+             */
             template<typename... Args>
             static void info(const std::string& tag, const std::string& format, const Args&... args);
+            /**
+             * Logs a message with @link KLogLevel::DEBUG \endlink level.
+             * @param tag Log message tag
+             * @param format Message format
+             * @param args Format args
+             */
             template<typename... Args>
             static void debug(const std::string& tag, const std::string& format, const Args&... args);
+            /**
+             * Logs a message with @link KLogLevel::TRACE \endlink level.
+             * @param tag Log message tag
+             * @param format Message format
+             * @param args Format args
+             */
             template<typename... Args>
             static void trace(const std::string& tag, const std::string& format, const Args&... args);
 

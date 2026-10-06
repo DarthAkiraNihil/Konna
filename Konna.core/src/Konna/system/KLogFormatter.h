@@ -20,10 +20,26 @@
 
 namespace Konna::Core::System {
 
+    /**
+     * Interface for a log formatter that is designed to prepare log messages
+     * to be handled by @link KLogHandler \endlink in specified format.
+     *
+     * @version 0.2.0
+     * @author Darth Akira Nihil
+     */
     class KLogFormatter {
 
         public:
             virtual ~KLogFormatter() = default;
+
+            /**
+             * Formats a log message with additional information in addition with the base formatted message.
+             *
+             * @param level Log message level
+             * @param tag Log message tag
+             * @param formattedMessage MEssage that has been previously formatted by KLogger
+             * @return Formatted log message
+             */
             virtual const char* format(KLogLevel level, const std::string& tag, const std::string& formattedMessage) = 0;
 
     };
