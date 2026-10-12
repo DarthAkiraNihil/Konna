@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef KONNA_CORE_KONNAEXPORT_H
-#define KONNA_CORE_KONNAEXPORT_H
+#ifndef KONNA_KERNEL_KONNAEXPORT_H
+#define KONNA_KERNEL_KONNAEXPORT_H
 
 #if defined(_WIN32) || defined(__CYGWIN__)
-    #ifdef KONNA_CORE_EXPORTS
-        #define KONNA_CORE_API __declspec(dllexport)
+    #ifdef KONNA_KERNEL_EXPORTS
+        #define KONNA_KERNEL_API __declspec(dllexport)
     #else
-        #define KONNA_CORE_API __declspec(dllimport)
+        #define KONNA_KERNEL_API __declspec(dllimport)
     #endif
 #else
     #if __GNUC__ >= 4
-        #define KONNA_CORE_API __attribute__((visibility("default")))
+        #define KONNA_KERNEL_API __attribute__((visibility("default")))
     #else
-        #define KONNA_CORE_API
+        #define KONNA_KERNEL_API
     #endif
 #endif
 
-#endif // KONNA_CORE_KONNAEXPORT_H
+#endif // KONNA_KERNEL_KONNAEXPORT_H

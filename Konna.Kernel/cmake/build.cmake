@@ -4,7 +4,7 @@ target_include_directories(Konna.Kernel.static SYSTEM PRIVATE "${DOTNET_NETHOST_
 target_include_directories(Konna.Kernel.static SYSTEM PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
 target_include_directories(Konna.Kernel.static PUBLIC "${CMAKE_SOURCE_DIR}/src")
 
-target_compile_definitions(Konna.Kernel.static PRIVATE KONNA_CORE_EXPORTS)
+target_compile_definitions(Konna.Kernel.static PRIVATE KONNA_KERNEL_EXPORTS)
 target_compile_options(Konna.Kernel.static PRIVATE -O2)
 
 target_link_libraries(Konna.Kernel.static PRIVATE "${NETHOST_LIB}")
@@ -16,7 +16,7 @@ target_include_directories(Konna.Kernel.shared SYSTEM PRIVATE "${DOTNET_NETHOST_
 target_include_directories(Konna.Kernel.shared SYSTEM PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
 target_include_directories(Konna.Kernel.shared PUBLIC "${CMAKE_SOURCE_DIR}/src")
 
-target_compile_definitions(Konna.Kernel.shared PRIVATE KONNA_CORE_EXPORTS)
+target_compile_definitions(Konna.Kernel.shared PRIVATE KONNA_KERNEL_EXPORTS)
 target_compile_options(Konna.Kernel.shared PRIVATE -O2)
 
 target_link_libraries(Konna.Kernel.shared PRIVATE "${NETHOST_LIB}")
@@ -37,7 +37,7 @@ target_include_directories(Tests PRIVATE "${DOTNET_NETHOST_INCLUDE}")
 target_include_directories(Tests PRIVATE "${CMAKE_SOURCE_DIR}/extern/rpmalloc/rpmalloc")
 target_include_directories(Tests PRIVATE "${CMAKE_SOURCE_DIR}/src")
 
-target_compile_definitions(Tests PRIVATE KONNA_CORE_EXPORTS)
+target_compile_definitions(Tests PRIVATE KONNA_KERNEL_EXPORTS)
 target_link_libraries(Tests PRIVATE -Wl,-Bdynamic Konna.Kernel.static -Wl,-Bstatic Catch2::Catch2WithMain)
 
 #if(WIN32)

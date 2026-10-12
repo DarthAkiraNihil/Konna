@@ -18,8 +18,8 @@
 // Created by EgrZver on 22.09.2026.
 //
 
-#ifndef KONNA_CORE_KONNA_H
-#define KONNA_CORE_KONNA_H
+#ifndef KONNA_KERNEL_KONNA_H
+#define KONNA_KERNEL_KONNA_H
 
 #include <coreclr_delegates.h>
 #include <hostfxr.h>
@@ -28,6 +28,6 @@
 /**
  * Konna's core namespace
  */
-namespace Konna::Core {}
+namespace Konna::Kernel {}
 
-#endif // KONNA_CORE_KONNA_H
+#endif // KONNA_KERNEL_KONNA_H

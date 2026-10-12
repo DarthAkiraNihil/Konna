@@ -2,12 +2,12 @@
 // Created by EgrZver on 22.09.2026.
 //
 
-#ifndef KONNA_CORE_PRIMITIVETYPES_H
-#define KONNA_CORE_PRIMITIVETYPES_H
+#ifndef KONNA_KERNEL_PRIMITIVETYPES_H
+#define KONNA_KERNEL_PRIMITIVETYPES_H
 #include <cmath>
 #include <cstdint>
 
-namespace Konna::Core {
+namespace Konna::Kernel {
 
     using ksize = std::size_t;
 
@@ -29,4 +29,4 @@ namespace Konna::Core {
 
 } // namespace Konna::Core
 
-#endif // KONNA_CORE_PRIMITIVETYPES_H
+#endif // KONNA_KERNEL_PRIMITIVETYPES_H
