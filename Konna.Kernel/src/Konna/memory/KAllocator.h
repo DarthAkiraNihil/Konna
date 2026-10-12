@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef KONNA_CORE_KALLOCATOR_H
-#define KONNA_CORE_KALLOCATOR_H
+#ifndef KONNA_KERNEL_KALLOCATOR_H
+#define KONNA_KERNEL_KALLOCATOR_H
 
 #include <rpmalloc.h>
 
 #include <Konna/KonnaExport.h>
 #include <Konna/type/PrimitiveTypes.h>
 
-namespace Konna::Core::Memory {
+namespace Konna::Kernel::Memory {
 
     /**
      * Standard memory allocator that does not have any specific functions. Just allocates memory
@@ -31,7 +31,7 @@ namespace Konna::Core::Memory {
      * @version 0.7.0
      * @author Darth Akira Nihil
      */
-    class KONNA_CORE_API KAllocator {
+    class KONNA_KERNEL_API KAllocator {
 
         public:
             /**
@@ -61,6 +61,6 @@ namespace Konna::Core::Memory {
             }
     };
 
-} // namespace Konna::Core::Memory
+} // namespace Konna::Kernel::Memory
 
-#endif // KONNA_CORE_KALLOCATOR_H
+#endif // KONNA_KERNEL_KALLOCATOR_H

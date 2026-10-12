@@ -19,16 +19,16 @@ jobs:
                 uses: snickerbockers/submodules-init@v4
             -   name: Set up project
                 run: chmod +x ./setup.sh && ./setup.sh
-            -   name: Build Core and test
+            -   name: Build Kernel and test
                 run: |
-                    cd Konna.core \
-                    && cmake --preset konna-core-release-linux \
+                    cd Konna.Kernel \
+                    && cmake --preset konna-kernel-release-linux \
                     && cmake --build build/linux/release --clean-first --target Tests \
                     && cd build/linux/release \
                     && ./Tests
             -   name: Collect coverage
                 run: |
-                    cd Konna.core/build/linux/release \
+                    cd Konna.Kernel/build/linux/release \
                     && llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
                     && llvm-cov-20 export ./Tests -instr-profile="./coverage.profdata" \
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
@@ -38,7 +38,7 @@ jobs:
                     script: |
                         import json
                         c = dict()
-                        with open("./Konna.core/build/linux/release/coverage.json", "r", encoding="utf8") as f:
+                        with open("./Konna.Kernel/build/linux/release/coverage.json", "r", encoding="utf8") as f:
                             c = json.load(f)
                         
                         print(c)
@@ -69,16 +69,16 @@ jobs:
                     cmake-version: '4.3.1'
             -   name: Set up project
                 run: ./setup.ps1
-            -   name: Build Core and test
+            -   name: Build Kernel and test
                 run: |
-                    cd Konna.core `
-                    ; cmake --preset konna-core-release-win `
+                    cd Konna.Kernel `
+                    ; cmake --preset konna-kernel-release-win `
                     ; cmake --build build/win/release --clean-first --target Tests `
                     ; cd build/win/release `
                     ; ./Tests
             -   name: Collect coverage
                 run: |
-                    cd Konna.core/build/win/release `
+                    cd Konna.Kernel/build/win/release `
                     ; ./../../../../setup/llvm/bin/llvm-profdata.exe merge -sparse default.profraw -o coverage.profdata  `
                     ; ./../../../../setup/llvm/bin/llvm-cov.exe export ./Tests.exe -instr-profile="./coverage.profdata" `
                         -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
@@ -88,7 +88,7 @@ jobs:
                     script: |
                         import json
                         c = dict()
-                        with open("./Konna.core/build/win/release/coverage.json", "r", encoding="utf8") as f:
+                        with open("./Konna.Kernel/build/win/release/coverage.json", "r", encoding="utf8") as f:
                             c = json.load(f)
                         
                         print(c)
@@ -121,11 +121,11 @@ jobs:
                 run: ./setup.ps1
             -   name: Configure project
                 run: |
-                    cd Konna.core `
-                    ; cmake --preset konna-core-release-win
+                    cd Konna.Kernel `
+                    ; cmake --preset konna-kernel-release-win
             -   name: Run clang-format
                 run: |
-                    cd Konna.core `
+                    cd Konna.Kernel `
                     ; Get-ChildItem -Path .\src\Konna\ -Recurse -File | Where-Object { $_.FullName -match '\.(cpp|h)$' } | ` 
                     ForEach-Object { .\..\setup\llvm\bin\clang-format.exe -i --style=file $_.FullName --dry-run --Werror}    
     lint:
@@ -153,10 +153,10 @@ jobs:
                 run: ./setup.ps1
             -   name: Configure project
                 run: |
-                    cd Konna.core `
-                    ; cmake --preset konna-core-release-win
+                    cd Konna.Kernel `
+                    ; cmake --preset konna-kernel-release-win
             -   name: Run clang-tidy
                 run: |
-                    cd Konna.core `
+                    cd Konna.Kernel `
                     ; python .\..\setup\llvm\bin\run-clang-tidy -clang-tidy-binary .\..\setup\llvm\bin\clang-tidy.exe `
                         -p build\win\release ".*\\(test|src)\\Konna\\.*\.(c|cpp|h|hpp)$"   

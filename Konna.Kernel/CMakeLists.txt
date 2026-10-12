@@ -1,5 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.20)
-project(Konna.core LANGUAGES C CXX)
+project(Konna.Kernel LANGUAGES C CXX)
 
 # This file is ugly, but I won't prettify it soon
 
@@ -37,19 +37,19 @@ set(DOTNET_VERSION "10.0.401")
 set(DOTNET_VERSION_PARENT "10.0.12")
 
 add_library(
-    Konna.core.static STATIC
+    Konna.Kernel.static STATIC
     ${SOURCES}
 )
 
 add_library(
-    Konna.core.shared SHARED
+    Konna.Kernel.shared SHARED
     ${SOURCES}
 )
 
 # add_custom_command(
-#     TARGET Konna.core POST_BUILD
+#     TARGET Konna.Kernel POST_BUILD
 #     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#     $<TARGET_FILE:Konna.core>
+#     $<TARGET_FILE:Konna.Kernel>
 #     "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net9.0/"
 # )
 

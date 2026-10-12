@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Konna.core.iml" filepath="$PROJECT_DIR$/.idea/Konna.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Konna.Kernel.iml" filepath="$PROJECT_DIR$/.idea/Konna.Kernel.iml" />
     </modules>
   </component>
 </project>

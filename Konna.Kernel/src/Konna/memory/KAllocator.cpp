@@ -16,7 +16,7 @@
 
 #include <Konna/memory/KAllocator.h>
 
-namespace Konna::Core::Memory {
+namespace Konna::Kernel::Memory {
 
     void* KAllocator::alloc(const ksize& size) noexcept {
         return rpmalloc(size);
@@ -26,4 +26,4 @@ namespace Konna::Core::Memory {
         rpfree(ptr);
     }
 
-} // namespace Konna::Core::Memory
+} // namespace Konna::Kernel::Memory

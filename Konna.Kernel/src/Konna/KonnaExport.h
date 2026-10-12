@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-//
-// Created by EgrZver on 22.09.2026.
-//
+#ifndef KONNA_KERNEL_KONNAEXPORT_H
+#define KONNA_KERNEL_KONNAEXPORT_H
 
-#ifndef KONNA_CORE_KONNA_H
-#define KONNA_CORE_KONNA_H
+#if defined(_WIN32) || defined(__CYGWIN__)
+    #ifdef KONNA_KERNEL_EXPORTS
+        #define KONNA_KERNEL_API __declspec(dllexport)
+    #else
+        #define KONNA_KERNEL_API __declspec(dllimport)
+    #endif
+#else
+    #if __GNUC__ >= 4
+        #define KONNA_KERNEL_API __attribute__((visibility("default")))
+    #else
+        #define KONNA_KERNEL_API
+    #endif
+#endif
 
-#include <coreclr_delegates.h>
-#include <hostfxr.h>
-#include <nethost.h>
-
-/**
- * Konna's core namespace
- */
-namespace Konna::Core {}
-
-#endif // KONNA_CORE_KONNA_H
+#endif // KONNA_KERNEL_KONNAEXPORT_H

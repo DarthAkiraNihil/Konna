@@ -19,7 +19,7 @@
 
 
 
-namespace Konna::Core {
+namespace Konna::Kernel {
 
     using KAllocator = Memory::KAllocator;
 
