@@ -61,6 +61,6 @@ namespace Konna::Kernel::Memory {
             }
     };
 
-} // namespace Konna::Core::Memory
+} // namespace Konna::Kernel::Memory
 
 #endif // KONNA_KERNEL_KALLOCATOR_H
