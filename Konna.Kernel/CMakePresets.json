@@ -2,8 +2,8 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "konna-core-base",
-      "displayName": "Konna Core (LLVM) (base)",
+      "name": "konna-kernel-base",
+      "displayName": "Konna Kernel (LLVM) (base)",
       "hidden": true,
       "generator": "Ninja",
       "vendor": {
@@ -13,9 +13,9 @@
       }
     },
     {
-      "name": "konna-core-base-win",
-      "displayName": "Konna Core (LLVM) (base, Windows)",
-      "inherits": "konna-core-base",
+      "name": "konna-kernel-base-win",
+      "displayName": "Konna Kernel (LLVM) (base, Windows)",
+      "inherits": "konna-kernel-base",
       "hidden": true,
       "generator": "Ninja",
       "cacheVariables": {
@@ -24,10 +24,10 @@
       }
     },
     {
-      "name": "konna-core-base-linux",
-      "displayName": "Konna Core (LLVM) (base, Linux)",
+      "name": "konna-kernel-base-linux",
+      "displayName": "Konna Kernel (LLVM) (base, Linux)",
       "hidden": true,
-      "inherits": "konna-core-base",
+      "inherits": "konna-kernel-base",
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang-20",
@@ -35,36 +35,36 @@
       }
     },
     {
-      "name": "konna-core-debug-win",
-      "displayName": "Konna Core (LLVM, Windows, Debug)",
-      "inherits": "konna-core-base-win",
+      "name": "konna-kernel-debug-win",
+      "displayName": "Konna Kernel (LLVM, Windows, Debug)",
+      "inherits": "konna-kernel-base-win",
       "binaryDir": "${sourceDir}/build/win/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "konna-core-release-win",
-      "displayName": "Konna Core (LLVM, Windows, elease)",
-      "inherits": "konna-core-base-win",
+      "name": "konna-kernel-release-win",
+      "displayName": "Konna Kernel (LLVM, Windows, Release)",
+      "inherits": "konna-kernel-base-win",
       "binaryDir": "${sourceDir}/build/win/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "name": "konna-core-debug-linux",
-      "displayName": "Konna Core (LLVM, Linux, Debug)",
-      "inherits": "konna-core-base-linux",
+      "name": "konna-kernel-debug-linux",
+      "displayName": "Konna Kernel (LLVM, Linux, Debug)",
+      "inherits": "konna-kernel-base-linux",
       "binaryDir": "${sourceDir}/build/linux/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "konna-core-release-linux",
-      "displayName": "Konna Core (LLVM, Linux, Release)",
-      "inherits": "konna-core-base-linux",
+      "name": "konna-kernel-release-linux",
+      "displayName": "Konna Kernel (LLVM, Linux, Release)",
+      "inherits": "konna-kernel-base-linux",
       "binaryDir": "${sourceDir}/build/linux/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
