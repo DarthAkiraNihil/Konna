@@ -20,7 +20,7 @@
 #include <rpmalloc.h>
 
 #include <Konna/KonnaExport.h>
-#include <Konna/type/PrimitiveTypes.h>
+#include <Konna/type/KonnaPrimitiveTypes.h>
 
 namespace Konna::Kernel::Memory {
 
@@ -31,7 +31,7 @@ namespace Konna::Kernel::Memory {
      * @version 0.7.0
      * @author Darth Akira Nihil
      */
-    class KONNA_KERNEL_API KAllocator {
+    class KAllocator {
 
         public:
             /**
@@ -58,6 +58,10 @@ namespace Konna::Kernel::Memory {
             template<typename T>
             static T* allocObject() noexcept {
                 return static_cast<T*>(rpmalloc(sizeof(T)));
+            }
+
+            static void* align(const void* ptr, const ksize alignment) noexcept {
+                return (void*) ((reinterpret_cast<ksize>(ptr) + (alignment - 1)) & (~(alignment - 1))); // NOLINT
             }
     };
 
