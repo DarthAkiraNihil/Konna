@@ -123,6 +123,13 @@ namespace Konna::Kernel::Memory {
             }
     };
 
+    extern "C" {
+
+        KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize& size) noexcept;
+        void KonnaKernel_Memory_free(const KMemorySegment& segment) noexcept;
+
+    }
+
 } // namespace Konna::Kernel::Memory
 
 #endif // KONNA_KERNEL_KALLOCATOR_H
