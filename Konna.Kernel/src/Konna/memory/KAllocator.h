@@ -125,8 +125,8 @@ namespace Konna::Kernel::Memory {
 
     extern "C" {
 
-        KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize& size) noexcept;
-        void KonnaKernel_Memory_free(const KMemorySegment& segment) noexcept;
+        KONNA_KERNEL_API KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize& size) noexcept;
+        KONNA_KERNEL_API void KonnaKernel_Memory_free(const KMemorySegment& segment) noexcept;
 
     }
 
