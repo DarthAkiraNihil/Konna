@@ -28,9 +28,8 @@ file(
 set(
     SOURCES
     ${SOURCE_FILES} ${RPMALLOC_FILES}
-        src/Konna/memory/KRingBuffer.cpp
-        src/Konna/memory/KRingBuffer.h
         src/Konna/memory/KMemorySegment.h
+        src/Konna/memory/KonnaMemoryUtils.h
 )
 
 # .NET Variables

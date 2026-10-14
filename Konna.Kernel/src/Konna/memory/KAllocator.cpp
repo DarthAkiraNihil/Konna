@@ -18,12 +18,4 @@
 
 namespace Konna::Kernel::Memory {
 
-    void* KAllocator::alloc(const ksize& size) noexcept {
-        return rpmalloc(size);
-    }
-
-    void KAllocator::free(void* ptr) noexcept {
-        rpfree(ptr);
-    }
-
 } // namespace Konna::Kernel::Memory
