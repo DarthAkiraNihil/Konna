@@ -12,6 +12,9 @@ public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
 
     public nint start => this._start;
     public nint end => this._end;
+    
+    public nuint startUnsigned => (nuint) this._start;
+    public nuint endUnsigned => (nuint) this._end;
 
     public nuint size => (nuint) (this._end - this._start);
     
