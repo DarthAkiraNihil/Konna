@@ -2,6 +2,12 @@
 
 namespace Konna.Core.Memory;
 
+/// <summary>
+///     Aboba
+/// </summary>
+/// <remarks>
+///     Version: 0.7.0, Author: Darth Akira Nihil
+/// </remarks>
 public sealed partial class KAllocator {
 
     public static KMemorySegment allocateNativeAligned(nuint size) {
