@@ -4,10 +4,16 @@ public sealed class KBumpAllocator {
 
     private readonly KMemorySegment _segment;
     private nint _ptr;
-    
-    public KBumpAllocator(KMemorySegment segment) {
-        _segment = segment;
-        _ptr = segment.start;
+
+    public string areaName { get; }
+
+    internal KBumpAllocator(
+        KMemorySegment segment,
+        string areaName
+    ) {
+        this.areaName = areaName;
+        this._segment = segment;
+        this._ptr = segment.start;
     }
 
     public KMemorySegment allocate(nuint size) {

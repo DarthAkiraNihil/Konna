@@ -3,11 +3,17 @@
 public sealed class KStackAllocator {
 
     private readonly KMemorySegment _segment;
+    public string areaName { get; }
+    
     private nint _ptr;
     
-    public KStackAllocator(KMemorySegment segment) {
-        _segment = segment;
-        _ptr = segment.start;
+    internal KStackAllocator(
+        KMemorySegment segment,
+        string areaName
+    ) {
+        this._segment = segment;
+        this.areaName = areaName;
+        this._ptr = segment.start;
     }
 
     public KMemorySegment allocate(nuint size) {

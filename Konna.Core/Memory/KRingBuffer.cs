@@ -5,13 +5,18 @@ namespace Konna.Core.Memory;
 public sealed class KRingBuffer {
 
     private readonly KMemorySegment _segment;
-
+    public string areaName { get; }
+    
     private nuint _head;
     private nuint _tail;
     private bool _full;
 
-    public KRingBuffer(KMemorySegment segment) {
+    internal KRingBuffer(
+        KMemorySegment segment,
+        string areaName
+    ) {
         this._segment = segment;
+        this.areaName = areaName;
         
         this._head = (nuint) segment.start;
         this._tail = 0;
