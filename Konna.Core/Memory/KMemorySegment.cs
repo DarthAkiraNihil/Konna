@@ -28,6 +28,14 @@ public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
         this._end = end;
     }
 
+    public bool contains(KMemorySegment other) {
+        return
+                this._start <= other.start
+            &&  other.start < this._end
+            &&  this._start <= other.end
+            &&  other.end < this._end;
+    }
+
     public bool Equals(KMemorySegment other) {
         return this._start == other._start && this._end == other._end;
     }
