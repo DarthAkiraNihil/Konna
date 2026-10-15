@@ -89,6 +89,9 @@ namespace Konna::Kernel::Memory {
              * @return Raw address of allocated memory segment
              */
             static void* allocateAlignedFast(const ksize& size) noexcept {
+                if (!rpmalloc_is_thread_initialized()) {
+                    rpmalloc_thread_initialize();
+                }
                 return rpaligned_alloc(KONNA_DEFAULT_ALIGN, size);
             }
 
@@ -125,7 +128,7 @@ namespace Konna::Kernel::Memory {
 
     extern "C" {
 
-        KONNA_KERNEL_API KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize& size) noexcept;
+        KONNA_KERNEL_API KMemorySegment KonnaKernel_Memory_allocateAligned(ksize size) noexcept;
         KONNA_KERNEL_API void KonnaKernel_Memory_free(const KMemorySegment& segment) noexcept;
 
     }

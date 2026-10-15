@@ -28,8 +28,6 @@ file(
 set(
     SOURCES
     ${SOURCE_FILES} ${RPMALLOC_FILES}
-        src/Konna/memory/KMemorySegment.h
-        src/Konna/memory/KonnaMemoryUtils.h
 )
 
 # .NET Variables
@@ -47,13 +45,6 @@ add_library(
     Konna.Kernel.shared SHARED
     ${SOURCES}
 )
-
-# add_custom_command(
-#     TARGET Konna.Kernel POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#     $<TARGET_FILE:Konna.Kernel>
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net9.0/"
-# )
 
 if(WIN32)
     set(EXE_SUFFIX ".exe")
@@ -130,3 +121,4 @@ if (NOT EXISTS "${DOTNET_NETHOST_PATH}")
 endif()
 
 include("cmake/build.cmake")
+include("cmake/postbuild.cmake")

@@ -1,1 +1,3 @@
-<Solution />
+<Solution>
+  <Project Path="Konna.Core/Konna.Core.csproj" />
+</Solution>

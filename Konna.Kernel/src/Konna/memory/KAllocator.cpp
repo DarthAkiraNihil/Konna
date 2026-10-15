@@ -18,7 +18,7 @@
 
 namespace Konna::Kernel::Memory {
 
-    KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize& size) noexcept {
+    KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize size) noexcept {
         return KAllocator::allocateAligned(size);
     }
 

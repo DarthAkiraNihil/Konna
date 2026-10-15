@@ -6,6 +6,7 @@ target_include_directories(Konna.Kernel.static PUBLIC "${CMAKE_SOURCE_DIR}/src")
 
 target_compile_definitions(Konna.Kernel.static PRIVATE KONNA_KERNEL_EXPORTS)
 target_compile_options(Konna.Kernel.static PRIVATE -O2)
+target_link_options(Konna.Kernel.static PRIVATE -static-libgcc -static-libstdc++)
 
 target_link_libraries(Konna.Kernel.static PRIVATE "${NETHOST_LIB}")
 
@@ -18,6 +19,7 @@ target_include_directories(Konna.Kernel.shared PUBLIC "${CMAKE_SOURCE_DIR}/src")
 
 target_compile_definitions(Konna.Kernel.shared PRIVATE KONNA_KERNEL_EXPORTS)
 target_compile_options(Konna.Kernel.shared PRIVATE -O2)
+target_link_options(Konna.Kernel.shared PRIVATE -static-libgcc -static-libstdc++)
 
 target_link_libraries(Konna.Kernel.shared PRIVATE "${NETHOST_LIB}")
 
