@@ -129,10 +129,5 @@ public static class KMemory {
     public static KBumpAllocator CreateBumpAllocator(nuint size, string areaName) {
         return new KBumpAllocator(KMemory.Allocate(size), areaName);
     }
-
-    public static KBumpAllocator CreateBumpAllocator(nuint size) {
-        return KMemory.CreateBumpAllocator(size, KMemory.DEFAULT_AREA_NAME);
-    }
-
-
+    
 }

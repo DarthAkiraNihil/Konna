@@ -23,7 +23,7 @@ public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
         return !(lhs == rhs);
     }
     
-    internal KMemorySegment(nint start, nint end) {
+    public KMemorySegment(nint start, nint end) {
         this._start = start;
         this._end = end;
     }
