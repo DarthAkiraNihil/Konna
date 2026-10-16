@@ -5,16 +5,13 @@ namespace Konna.Core.Memory;
 [StructLayout((LayoutKind.Sequential))]
 public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
 
-    public static KMemorySegment NULL = new(0, 0);
+    public static readonly KMemorySegment NULL = new(0, 0);
 
     private readonly nint _start;
     private readonly nint _end;
 
     public nint Start => this._start;
     public nint End => this._end;
-    
-    public nuint StartUnsigned => (nuint) this._start;
-    public nuint EndUnsigned => (nuint) this._end;
 
     public nuint Size => (nuint) (this._end - this._start);
     
@@ -29,14 +26,6 @@ public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
     internal KMemorySegment(nint start, nint end) {
         this._start = start;
         this._end = end;
-    }
-
-    public bool Contains(KMemorySegment other) {
-        return
-                this._start <= other.Start
-            &&  other.Start < this._end
-            &&  this._start <= other.End
-            &&  other.End < this._end;
     }
 
     public bool Equals(KMemorySegment other) {

@@ -30,6 +30,16 @@ public sealed class KBumpAllocator {
         return seg;
     }
 
+    public T Allocate<T>() where T : unmanaged {
+
+        unsafe {
+            KMemorySegment seg = this.Allocate((nuint) sizeof(T));
+
+            return *((T*) seg.Start);
+        }
+        
+    }
+
     public void Free() {
         this._ptr = this._segment.Start;
     }
