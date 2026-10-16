@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/Tests/">
+    <Project Path="CSharpTests/Konna.Core.Tests/Konna.Core.Tests.csproj" />
+  </Folder>
   <Project Path="Konna.Core/Konna.Core.csproj" />
 </Solution>

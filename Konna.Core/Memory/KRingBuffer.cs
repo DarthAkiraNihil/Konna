@@ -5,7 +5,7 @@ namespace Konna.Core.Memory;
 public sealed class KRingBuffer {
 
     private readonly KMemorySegment _segment;
-    public string areaName { get; }
+    public string AreaName { get; }
     
     private nuint _head;
     private nuint _tail;
@@ -16,15 +16,15 @@ public sealed class KRingBuffer {
         string areaName
     ) {
         this._segment = segment;
-        this.areaName = areaName;
+        this.AreaName = areaName;
         
-        this._head = (nuint) segment.start;
+        this._head = (nuint) segment.Start;
         this._tail = 0;
         this._full = false;
     }
 
     // okay... this should work
-    public KMemorySegment allocate(nuint size) {
+    public KMemorySegment Allocate(nuint size) {
 
         if (this._full) {
             return KMemorySegment.NULL;
@@ -34,7 +34,7 @@ public sealed class KRingBuffer {
             KMemorySegment result;
             
             nuint resultSize = size + (nuint) sizeof(nuint);
-            bool enoughPlaceWithoutJump = (this._segment.endUnsigned - this._head) >= resultSize;
+            bool enoughPlaceWithoutJump = (this._segment.EndUnsigned - this._head) >= resultSize;
             if (enoughPlaceWithoutJump) {
                 nint startAddress = (nint) (this._head + (nuint) sizeof(nuint));
                 Unsafe.WriteUnaligned((void*) this._head, size);
@@ -47,9 +47,9 @@ public sealed class KRingBuffer {
                     return KMemorySegment.NULL;
                 }
 
-                nint startAddress = (nint) (this._segment.startUnsigned + (nuint) sizeof(nuint));
-                Unsafe.WriteUnaligned((void*) this._segment.start, size);
-                Unsafe.WriteUnaligned((void*) this._head, this._segment.endUnsigned - this._head);
+                nint startAddress = (nint) (this._segment.StartUnsigned + (nuint) sizeof(nuint));
+                Unsafe.WriteUnaligned((void*) this._segment.Start, size);
+                Unsafe.WriteUnaligned((void*) this._head, this._segment.EndUnsigned - this._head);
                 result = new KMemorySegment(
                     startAddress,
                     startAddress + (nint) size
@@ -60,7 +60,7 @@ public sealed class KRingBuffer {
                 this._tail = this._head;
             }
 
-            this._head = result.endUnsigned;
+            this._head = result.EndUnsigned;
             if (this._head == this._tail) {
                 this._full = true;
             }
@@ -70,7 +70,7 @@ public sealed class KRingBuffer {
 
     }
 
-    public void free() {
+    public void Free() {
         if (this._tail == 0) {
             return;
         }
@@ -79,10 +79,14 @@ public sealed class KRingBuffer {
             var sizeToFree = Unsafe.ReadUnaligned<nuint>((void*) this._tail);
             Unsafe.WriteUnaligned<nuint>((void*) this._tail, 0);
             this._tail += sizeToFree + (nuint) sizeof(nuint);
-            if (this._tail == this._segment.endUnsigned) {
-                this._tail = this._segment.startUnsigned;
+            if (this._tail == this._segment.EndUnsigned) {
+                this._tail = this._segment.StartUnsigned;
             }
         }
+    }
+    
+    public void Flush() {
+        KMemory.Free(this._segment);
     }
     
 }

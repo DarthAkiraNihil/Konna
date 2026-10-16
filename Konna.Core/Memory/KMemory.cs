@@ -42,24 +42,24 @@ public sealed class KMemory {
     //     }
     // }
 
-    public static KMemorySegment allocate(nuint size) {
-        return KAllocator.allocateNativeAligned(size); // TODO: use chunking
+    public static KMemorySegment Allocate(nuint size) {
+        return KAllocator.AllocateNativeAligned(size); // TODO: use chunking
     }
 
-    public static void free(KMemorySegment segment) {
-        
+    public static void Free(KMemorySegment segment) {
+        KAllocator.FreeNative(segment);
     }
 
-    public static KRingBuffer createRingBuffer(nuint size, string areaName) {
-        return new KRingBuffer(KMemory.allocate(size), areaName);
+    public static KRingBuffer CreateRingBuffer(nuint size, string areaName) {
+        return new KRingBuffer(KMemory.Allocate(size), areaName);
     }
 
-    public static KStackAllocator createStackAllocator(nuint size, string areaName) {
-        return new KStackAllocator(KMemory.allocate(size), areaName);
+    public static KStackAllocator CreateStackAllocator(nuint size, string areaName) {
+        return new KStackAllocator(KMemory.Allocate(size), areaName);
     }
 
-    public static KBumpAllocator createBumpAllocator(nuint size, string areaName) {
-        return new KBumpAllocator(KMemory.allocate(size), areaName);
+    public static KBumpAllocator CreateBumpAllocator(nuint size, string areaName) {
+        return new KBumpAllocator(KMemory.Allocate(size), areaName);
     }
 
 

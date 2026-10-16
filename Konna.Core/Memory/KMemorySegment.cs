@@ -10,16 +10,16 @@ public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
     private readonly nint _start;
     private readonly nint _end;
 
-    public nint start => this._start;
-    public nint end => this._end;
+    public nint Start => this._start;
+    public nint End => this._end;
     
-    public nuint startUnsigned => (nuint) this._start;
-    public nuint endUnsigned => (nuint) this._end;
+    public nuint StartUnsigned => (nuint) this._start;
+    public nuint EndUnsigned => (nuint) this._end;
 
-    public nuint size => (nuint) (this._end - this._start);
+    public nuint Size => (nuint) (this._end - this._start);
     
     public static bool operator ==(KMemorySegment lhs, KMemorySegment rhs) {
-        return lhs.start == rhs.start && lhs.end == rhs.end;
+        return lhs.Start == rhs.Start && lhs.End == rhs.End;
     }
     
     public static bool operator !=(KMemorySegment lhs, KMemorySegment rhs) {
@@ -31,12 +31,12 @@ public readonly struct KMemorySegment: IEquatable<KMemorySegment> {
         this._end = end;
     }
 
-    public bool contains(KMemorySegment other) {
+    public bool Contains(KMemorySegment other) {
         return
-                this._start <= other.start
-            &&  other.start < this._end
-            &&  this._start <= other.end
-            &&  other.end < this._end;
+                this._start <= other.Start
+            &&  other.Start < this._end
+            &&  this._start <= other.End
+            &&  other.End < this._end;
     }
 
     public bool Equals(KMemorySegment other) {

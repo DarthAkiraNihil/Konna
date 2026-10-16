@@ -8,13 +8,13 @@ namespace Konna.Core.Memory;
 /// <remarks>
 ///     Version: 0.7.0, Author: Darth Akira Nihil
 /// </remarks>
-public sealed partial class KAllocator {
+public static partial class KAllocator {
 
-    public static KMemorySegment allocateNativeAligned(nuint size) {
+    public static KMemorySegment AllocateNativeAligned(nuint size) {
         return KAllocator.KonnaKernel_Memory_allocateAligned(size);
     }
 
-    public static void freeNative(KMemorySegment segment) {
+    public static void FreeNative(KMemorySegment segment) {
         KAllocator.KonnaKernel_Memory_free(segment);
     }
 
