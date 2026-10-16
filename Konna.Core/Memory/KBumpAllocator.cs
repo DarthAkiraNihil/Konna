@@ -5,32 +5,37 @@ public sealed class KBumpAllocator {
     private readonly KMemorySegment _segment;
     private nint _ptr;
 
-    public string areaName { get; }
+    public string AreaName { get; }
 
     internal KBumpAllocator(
         KMemorySegment segment,
         string areaName
     ) {
-        this.areaName = areaName;
+        this.AreaName = areaName;
         this._segment = segment;
-        this._ptr = segment.start;
+        this._ptr = segment.Start;
     }
 
-    public KMemorySegment allocate(nuint size) {
+    public KMemorySegment Allocate(nuint size) {
         nuint end = (nuint) this._ptr + size;
-        if (end >= (nuint) this._segment.end) {
+        if (end >= (nuint) this._segment.End) {
             return KMemorySegment.NULL;
         }
-
-        this._ptr = (nint) end;
-
-        return new KMemorySegment(
+        
+        var seg =  new KMemorySegment(
             this._ptr, (nint) end
         );
+        this._ptr = (nint) end;
+
+        return seg;
     }
 
-    public void free() {
-        this._ptr = this._segment.start;
+    public void Free() {
+        this._ptr = this._segment.Start;
+    }
+
+    public void Flush() {
+        KMemory.Free(this._segment);
     }
 
 }

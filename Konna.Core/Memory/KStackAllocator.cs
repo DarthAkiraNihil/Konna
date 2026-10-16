@@ -3,7 +3,7 @@
 public sealed class KStackAllocator {
 
     private readonly KMemorySegment _segment;
-    public string areaName { get; }
+    public string AreaName { get; }
     
     private nint _ptr;
     
@@ -12,13 +12,13 @@ public sealed class KStackAllocator {
         string areaName
     ) {
         this._segment = segment;
-        this.areaName = areaName;
-        this._ptr = segment.start;
+        this.AreaName = areaName;
+        this._ptr = segment.Start;
     }
 
-    public KMemorySegment allocate(nuint size) {
+    public KMemorySegment Allocate(nuint size) {
         nuint end = (nuint) this._ptr + size;
-        if (end >= (nuint) this._segment.end) {
+        if (end >= (nuint) this._segment.End) {
             return KMemorySegment.NULL;
         }
 
@@ -29,14 +29,19 @@ public sealed class KStackAllocator {
         );
     }
 
-    public void free(KMemorySegment to) {
-        if (this._segment.contains(to)) {
-            this._ptr = to.start;
+    public void Free(KMemorySegment to) {
+        if (this._segment.Contains(to)) {
+            this._ptr = to.Start;
         }
     }
 
-    public void clear() {
-        this._ptr = this._segment.start;
+    public void Clear() {
+        this._ptr = this._segment.Start;
     }
+    
+    public void Flush() {
+        KMemory.Free(this._segment);
+    }
+    
 
 }
