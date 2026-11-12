@@ -6,6 +6,21 @@ using Konna.Core.Memory;
 
 public class KBumpAllocatorTests: IDisposable, IClassFixture<KBumpAllocatorFixture> {
     
+    private readonly struct KAllocationTestStruct {
+
+        private readonly int _a;
+        private readonly int _b;
+        
+        public int A => this._a;
+        public int B => this._b;
+
+        public KAllocationTestStruct(int a, int b) {
+            this._a = a;
+            this._b = b;
+        }
+
+    }
+    
     private readonly KBumpAllocatorFixture _fixture;
 
     public KBumpAllocatorTests(KBumpAllocatorFixture fixture) {
@@ -41,6 +56,15 @@ public class KBumpAllocatorTests: IDisposable, IClassFixture<KBumpAllocatorFixtu
         this._fixture.Allocator.Free();
         Assert.Equal(KMemorySegment.NULL, this._fixture.Allocator.Allocate(KMemory.Kilobytes(2)));
         
+    }
+
+    [Fact]
+    public void TestAllocateUnmanaged() {
+        this._fixture.Allocator.Allocate<KAllocationTestStruct>();
+        KMemorySegment seg = this._fixture.Allocator.Allocate(1);
+        unsafe {
+            Assert.NotEqual((nuint) sizeof(KAllocationTestStruct), seg.Size);
+        }
     }
 
     public void Dispose() {

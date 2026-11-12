@@ -48,7 +48,7 @@ public static class KMemory {
         }
         
         if (KMemory.CHUNKS.Count == 0) {
-            KMemorySegment rawChunk = KAllocator.AllocateNativeAligned(size);
+            KMemorySegment rawChunk = KAllocator.AllocateNativeAligned(KMemory.DEFAULT_CHUNK_SIZE);
             var first = new KChunk(rawChunk.Start, rawChunk.Start + (nint) size);
             first.InUse = true;
             var second = new KChunk(first.End, rawChunk.End);
@@ -68,16 +68,16 @@ public static class KMemory {
                 continue;
             }
             
-            KChunk borrowed = new KChunk(chunk.Start, chunk.Start + (nint) chunk.Size);
+            KChunk borrowed = new KChunk(chunk.Start, chunk.Start + (nint) size);
             borrowed.InUse = true;
-            chunk.Start += (nint) chunk.Size;
+            chunk.Start += (nint) size;
             KMemory.CHUNKS[i] = chunk;
             KMemory.CHUNKS.Insert(i, borrowed);
 
             return borrowed.AsMemorySegment();
         }
         
-        KMemorySegment newChunk = KAllocator.AllocateNativeAligned(size);
+        KMemorySegment newChunk = KAllocator.AllocateNativeAligned(KMemory.DEFAULT_CHUNK_SIZE);
         KChunk firstC = new KChunk(newChunk.Start, newChunk.Start + (nint) size);
         firstC.InUse = true;
         KChunk secondC = new KChunk(firstC.End, newChunk.End);
@@ -88,6 +88,10 @@ public static class KMemory {
     }
 
     public static void Free(KMemorySegment segment) {
+        if (segment == KMemorySegment.NULL) {
+            return;
+        }
+        
         if (segment.Size > KMemory.DEFAULT_CHUNK_SIZE) {
             for (var i = 0; i < KMemory.HUGE_CHUNKS.Count; i++) {
                 if (KMemory.HUGE_CHUNKS[i] != segment) {
@@ -121,6 +125,7 @@ public static class KMemory {
             }
 
             thisChunk.End = nextChunk.End;
+            KMemory.CHUNKS[i] = thisChunk;
             KMemory.CHUNKS.RemoveAt(i + 1);
             i--;
         }
