@@ -492,3 +492,4 @@ cmake-build-debug/
 # VS Code is an auxiliary tool in this
 .vscode/
 coverage-report/
+coverage*/
