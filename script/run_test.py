@@ -116,6 +116,7 @@ def create_runner(env: str) -> Callable[[bool, bool], int]:
                     ["cmake", "--preset", runner_env[Env.CMakePreset]],
                     ["cmake", "--build", runner_env[Env.KernelBuildDir], "--clean-first", "--target", "Tests"] \
                         if clean else ["cmake", "--build", runner_env[Env.KernelBuildDir] , "--target", "Tests"],
+                    ["cmake", "--build", runner_env[Env.KernelBuildDir], "--target", "Konna.Kernel.shared"]
                 ],
                 cwd="./Konna.Kernel"
             ),
