@@ -19,37 +19,14 @@ jobs:
                 uses: snickerbockers/submodules-init@v4
             -   name: Set up project
                 run: chmod +x ./setup.sh && ./setup.sh
-            -   name: Build Kernel and test
-                run: |
-                    cd Konna.Kernel \
-                    && cmake --preset konna-kernel-release-linux \
-                    && cmake --build build/linux/release --clean-first --target Tests \
-                    && cd build/linux/release \
-                    && ./Tests
-            -   name: Collect coverage
-                run: |
-                    cd Konna.Kernel/build/linux/release \
-                    && llvm-profdata-20 merge -sparse default.profraw -o coverage.profdata  \
-                    && llvm-cov-20 export ./Tests -instr-profile="./coverage.profdata" \
-                        -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
-            -   name: Check coverage
-                uses: jannekem/run-python-script-action@v1
+            -   name: Set up Python
+                uses: actions/setup-python@v7
                 with:
-                    script: |
-                        import json
-                        c = dict()
-                        with open("./Konna.Kernel/build/linux/release/coverage.json", "r", encoding="utf8") as f:
-                            c = json.load(f)
-                        
-                        print(c)
-                        
-                        total = c['data'][0]['totals']['lines']['percent']
-                        print(f"Total coverage is {total}")
-                        if total < 90.0:
-                            error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
-                            exit(1)
-                        else:
-                            print("OK")
+                    python-version: '3.12' 
+            -   name: Install report generator
+                run: dotnet tool install --global dotnet-reportgenerator-globaltool
+            -   name: Run tests and verify coverage
+                run: python script/run_test.py -e linux -c
     test-windows:
         name: Test (Windows)
         runs-on: windows-latest
@@ -69,37 +46,14 @@ jobs:
                     cmake-version: '4.3.1'
             -   name: Set up project
                 run: ./setup.ps1
-            -   name: Build Kernel and test
-                run: |
-                    cd Konna.Kernel `
-                    ; cmake --preset konna-kernel-release-win `
-                    ; cmake --build build/win/release --clean-first --target Tests `
-                    ; cd build/win/release `
-                    ; ./Tests
-            -   name: Collect coverage
-                run: |
-                    cd Konna.Kernel/build/win/release `
-                    ; ./../../../../setup/llvm/bin/llvm-profdata.exe merge -sparse default.profraw -o coverage.profdata  `
-                    ; ./../../../../setup/llvm/bin/llvm-cov.exe export ./Tests.exe -instr-profile="./coverage.profdata" `
-                        -summary-only  --ignore-filename-regex="(extern|test|catch2|build|main)" > coverage.json
-            -   name: Check coverage
-                uses: jannekem/run-python-script-action@v1
+            -   name: Set up Python
+                uses: actions/setup-python@v7
                 with:
-                    script: |
-                        import json
-                        c = dict()
-                        with open("./Konna.Kernel/build/win/release/coverage.json", "r", encoding="utf8") as f:
-                            c = json.load(f)
-                        
-                        print(c)
-                        
-                        total = c['data'][0]['totals']['lines']['percent']
-                        print(f"Total coverage is {total}")
-                        if total < 90.0:
-                            error(f"Coverage requirement is not passed. Expected at least 90.0, got {total}")
-                            exit(1)
-                        else:
-                            print("OK")
+                    python-version: '3.12' 
+            -   name: Install report generator
+                run: dotnet tool install --global dotnet-reportgenerator-globaltool
+            -   name: Run tests and verify coverage
+                run: python script/run_test.py -e linux -c
     codestyle:
         name: Check codestyle
         runs-on: windows-latest
