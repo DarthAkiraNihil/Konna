@@ -53,7 +53,7 @@ jobs:
             -   name: Install report generator
                 run: dotnet tool install --global dotnet-reportgenerator-globaltool
             -   name: Run tests and verify coverage
-                run: python script/run_test.py -e linux -c
+                run: python script/run_test.py -e win -c
     codestyle:
         name: Check codestyle
         runs-on: windows-latest
