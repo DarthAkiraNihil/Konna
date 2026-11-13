@@ -15,20 +15,46 @@
  */
 
 #include <Konna/memory/KAllocator.h>
-#include <catch2/catch_all.hpp> // Or "catch.hpp" for v2
+#include <catch2/catch_all.hpp>
 
-
-
-namespace Konna::Kernel {
-
-    using KAllocator = Memory::KAllocator;
+namespace Konna::Kernel::Memory {
 
     TEST_CASE("Allocator allocates successfully", "[memory]") {
 
-        void* m = KAllocator::alloc(16);
+        void* m = KAllocator::allocateFast(16);
         REQUIRE(m != nullptr);
-        KAllocator::free(m);
 
+        KMemorySegment seg = KAllocator::allocate(16);
+        REQUIRE(static_cast<void*>(seg) != nullptr);
+        REQUIRE(seg.start != nullptr);
+        REQUIRE(seg.end != nullptr);
+        REQUIRE(seg.size() == 16);
+
+        KAllocator::free(m);
+        KAllocator::free(seg);
+
+    }
+
+    TEST_CASE("Allocator allocates with default alignment successfully", "[memory]") {
+
+        void* m = KAllocator::allocateAlignedFast(16);
+        REQUIRE(m != nullptr);
+
+        KMemorySegment seg = KAllocator::allocateAligned(16);
+        REQUIRE(static_cast<void*>(seg) != nullptr);
+        REQUIRE(seg.start != nullptr);
+        REQUIRE(seg.end != nullptr);
+        REQUIRE(seg.size() == 16);
+
+        KMemorySegment cseg = KonnaKernel_Memory_allocateAligned(16);
+        REQUIRE(static_cast<void*>(cseg) != nullptr);
+        REQUIRE(cseg.start != nullptr);
+        REQUIRE(cseg.end != nullptr);
+        REQUIRE(cseg.size() == 16);
+
+        KAllocator::free(m);
+        KAllocator::free(seg);
+        KonnaKernel_Memory_free(cseg);
     }
 
     TEST_CASE("Allocator allocates object successfully", "[memory]") {
@@ -55,4 +81,5 @@ namespace Konna::Kernel {
         KAllocator::free(p);
 
     }
+
 }

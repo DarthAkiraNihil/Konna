@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="10.1.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.12.0" />
+        <PackageReference Include="xunit" Version="2.9.3"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Konna.Core\Konna.Core.csproj" />
+    </ItemGroup>
+
+    <Target Name="CopyKernel" BeforeTargets="BeforeBuild">
+        <ItemGroup>
+            <NativeLibs Include="..\..\Konna.Kernel\build\win\release\Konna.Kernel.shared.dll"
+                        Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+            <NativeLibs Include="..\..\Konna.Kernel\build\linux\release\libKonna.Kernel.shared.so"
+                        Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
+            <!-- <NativeLibs Include="..\Konna.Kernel\build\osx\*.dylib"-->
+            <!--             Condition="$([MSBuild]::IsOSPlatform('OSX'))" />-->
+        </ItemGroup>
+
+        <Copy SourceFiles="@(NativeLibs)"
+              DestinationFolder="$(TargetDir)"
+              SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

@@ -46,13 +46,6 @@ add_library(
     ${SOURCES}
 )
 
-# add_custom_command(
-#     TARGET Konna.Kernel POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#     $<TARGET_FILE:Konna.Kernel>
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../Tete/bin/Debug/net9.0/"
-# )
-
 if(WIN32)
     set(EXE_SUFFIX ".exe")
 else()
@@ -128,3 +121,4 @@ if (NOT EXISTS "${DOTNET_NETHOST_PATH}")
 endif()
 
 include("cmake/build.cmake")
+include("cmake/postbuild.cmake")
