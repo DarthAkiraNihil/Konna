@@ -34,4 +34,19 @@
       <ProjectReference Include="..\..\Konna.Core\Konna.Core.csproj" />
     </ItemGroup>
 
+    <Target Name="CopyKernel" BeforeTargets="BeforeBuild">
+        <ItemGroup>
+            <NativeLibs Include="..\..\Konna.Kernel\build\win\release\Konna.Kernel.shared.dll"
+                        Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+            <NativeLibs Include="..\..\Konna.Kernel\build\linux\release\libKonna.Kernel.shared.so"
+                        Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
+            <!-- <NativeLibs Include="..\Konna.Kernel\build\osx\*.dylib"-->
+            <!--             Condition="$([MSBuild]::IsOSPlatform('OSX'))" />-->
+        </ItemGroup>
+
+        <Copy SourceFiles="@(NativeLibs)"
+              DestinationFolder="$(TargetDir)"
+              SkipUnchangedFiles="true" />
+    </Target>
+
 </Project>
