@@ -58,6 +58,21 @@ namespace Konna::Kernel::Memory {
             }
 
             /**
+             * Allocates a continous, non-initialized memory segment object, whose start address
+             * is aligned to the corresponding alignment.
+             * @param size Size of allocated segment in bytes
+             * @param alignment Segment alignment
+             * @return Allocated and aligned memory segment object
+             */
+            static KMemorySegment allocate(const ksize& size, const ksize& alignment) noexcept {
+                void* ptr = KAllocator::allocateFast(size, alignment);
+                return {
+                    .start = ptr,
+                    .end = MemUtils::ptradd(ptr, size)
+                };
+            }
+
+            /**
              * Allocates a continuous, non-initialized memory segment object using
              * default alignment, specified by @link KONNA_DEFAULT_ALIGN \endlink
              * @param size Size of allocated segment in bytes
@@ -79,6 +94,18 @@ namespace Konna::Kernel::Memory {
              */
             static void* allocateFast(const ksize& size) noexcept {
                 return rpmalloc(size);
+            }
+
+            /**
+             * Allocates a continuous, non-initialized memory segment object, whose start address
+             * is aligned to the corresponding alignment.
+             * Only use if you don't need memory segment wrapper because of reasons.
+             * @param size Size of allocated segment in bytes
+             * @param alignment Segment alignment
+             * @return Raw address of allocated memory segment (with alignment)
+             */
+            static void* allocateFast(const ksize& size, const ksize& alignment) noexcept {
+                return rpaligned_alloc(alignment, size);
             }
 
             /**
@@ -128,7 +155,26 @@ namespace Konna::Kernel::Memory {
 
     extern "C" {
 
+        /**
+         * Allocates a continuous, non-initialized memory segment object, whose start address
+         * is aligned to the corresponding alignment.
+         * @param size Size of allocated segment in bytes
+         * @param alignment Segment alignment
+         * @return Allocated and aligned memory segment object
+         */
+        KONNA_KERNEL_API KMemorySegment KonnaKernel_Memory_allocate(ksize size, ksize alignment) noexcept;
+        /**
+         * Allocates a continuous, non-initialized memory segment object using
+         * default alignment, specified by @link KONNA_DEFAULT_ALIGN \endlink
+         * @param size Size of allocated segment in bytes
+         * @return Allocated memory segment object
+         */
         KONNA_KERNEL_API KMemorySegment KonnaKernel_Memory_allocateAligned(ksize size) noexcept;
+        /**
+         * Frees previously allocated memory segment. Does not have any checks for invalid
+         * or null address.
+         * @param segment Memory segment to delete
+         */
         KONNA_KERNEL_API void KonnaKernel_Memory_free(const KMemorySegment& segment) noexcept;
 
     }

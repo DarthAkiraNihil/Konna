@@ -148,7 +148,10 @@ def create_runner(env: str) -> Callable[[bool, bool], int]:
             return stat
         
         csharp_test_chain = [[
-            'dotnet', 'test', '--collect:XPlat Code Coverage', '--results-directory', '.\\coverage'
+            'dotnet', 'test',
+            '-c', 'Release',
+            '--collect:XPlat Code Coverage',
+            '--results-directory', '.\\coverage',
         ]]
         
         if make_report:

@@ -57,6 +57,28 @@ namespace Konna::Kernel::Memory {
         KonnaKernel_Memory_free(cseg);
     }
 
+    TEST_CASE("Allocator allocates with alignment successfully", "[memory]") {
+
+        void* m = KAllocator::allocateFast(16, 32);
+        REQUIRE(m != nullptr);
+
+        KMemorySegment seg = KAllocator::allocate(16, 32);
+        REQUIRE(static_cast<void*>(seg) != nullptr);
+        REQUIRE(seg.start != nullptr);
+        REQUIRE(seg.end != nullptr);
+        REQUIRE(seg.size() == 16);
+
+        KMemorySegment cseg = KonnaKernel_Memory_allocate(16, 32);
+        REQUIRE(static_cast<void*>(cseg) != nullptr);
+        REQUIRE(cseg.start != nullptr);
+        REQUIRE(cseg.end != nullptr);
+        REQUIRE(cseg.size() == 16);
+
+        KAllocator::free(m);
+        KAllocator::free(seg);
+        KonnaKernel_Memory_free(cseg);
+    }
+
     TEST_CASE("Allocator allocates object successfully", "[memory]") {
 
         ki32* a = KAllocator::allocObject<ki32>();

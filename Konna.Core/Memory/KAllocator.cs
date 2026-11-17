@@ -10,6 +10,10 @@ namespace Konna.Core.Memory;
 ///     Version: 0.7.0, Author: Darth Akira Nihil
 /// </remarks>
 public static partial class KAllocator { // todo: maybe internal
+
+    public static KMemorySegment AllocateNative(nuint size, nuint alignment) {
+        return KAllocator.KonnaKernel_Memory_allocate(size, alignment);
+    }
     
     /// <summary>
     ///     Allocates a native memory segment with default alignment, provided by Konna.Kernel.
@@ -27,6 +31,9 @@ public static partial class KAllocator { // todo: maybe internal
     public static void FreeNative(KMemorySegment segment) {
         KAllocator.KonnaKernel_Memory_free(segment);
     }
+    
+    [LibraryImport("Konna.Kernel.shared")]
+    private static partial KMemorySegment KonnaKernel_Memory_allocate(nuint size, nuint alignment);
 
     [LibraryImport("Konna.Kernel.shared")]
     private static partial KMemorySegment KonnaKernel_Memory_allocateAligned(nuint size);

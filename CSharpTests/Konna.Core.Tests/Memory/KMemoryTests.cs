@@ -128,5 +128,54 @@ public class KMemoryTests {
         KMemory.Free(seg1);
         KMemory.Free(seg2);
     }
+    
+    [Fact]
+    public void TestAllocateChunkThatExceedsSecond() {
+        KMemorySegment seg1 = KMemory.Allocate(KMemory.Megabytes(256));
+        KMemorySegment seg2 = KMemory.Allocate(16);
+        KMemorySegment seg3 = KMemory.Allocate(KMemory.Megabytes(256));
+        
+        Assert.Equal(KMemory.Megabytes(256), seg1.Size);
+        Assert.Equal(KMemory.Megabytes(256), seg3.Size);
+        Assert.Equal((nuint) 16, seg2.Size);
+        
+        Assert.NotEqual(seg2.Start, seg1.Start);
+        Assert.NotEqual(seg2.End, seg1.End);
+        Assert.NotEqual(seg3.End, seg1.End);
+        
+        KMemory.Free(seg1);
+        KMemory.Free(seg2);
+        KMemory.Free(seg3);
+    }
+    
+    [Fact]
+    public void TestAllocateChunkThatExceedsSecondButItLeavesSomeFreeSpace() {
+        KMemorySegment seg1 = KMemory.Allocate(KMemory.Megabytes(256));
+        KMemorySegment seg2 = KMemory.Allocate(KMemory.Megabytes(2));
+        KMemorySegment seg3 = KMemory.Allocate(KMemory.Megabytes(255));
+        
+        Assert.Equal(KMemory.Megabytes(256), seg1.Size);
+        Assert.Equal(KMemory.Megabytes(255), seg3.Size);
+        Assert.Equal(KMemory.Megabytes(2), seg2.Size);
+        
+        Assert.NotEqual(seg2.Start, seg1.Start);
+        Assert.NotEqual(seg2.End, seg1.End);
+        Assert.NotEqual(seg3.End, seg1.End);
+        
+        KMemory.Free(seg1);
+        KMemory.Free(seg2);
+        KMemory.Free(seg3);
+    }
+    
+    [Fact]
+    public void TestAllocateAlignedChunk() {
+        KMemorySegment seg1 = KMemory.AllocateAligned(16, 16);
+        KMemorySegment nullseg = KMemory.AllocateAligned(0, 16);
+        
+        Assert.Equal((nuint) 16, seg1.Size);
+        Assert.Equal(KMemorySegment.NULL, nullseg);
+        
+        KMemory.Free(seg1);
+    }
 
 }

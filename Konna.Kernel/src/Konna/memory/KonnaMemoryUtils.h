@@ -8,9 +8,9 @@
 
 namespace Konna::Kernel::Memory::MemUtils {
 
-    inline void* align(const void* ptr, const ksize alignment) noexcept {
+    /*inline void* align(const void* ptr, const ksize alignment) noexcept {
         return (void*) ((reinterpret_cast<ksize>(ptr) + (alignment - 1)) & (~(alignment - 1))); // NOLINT
-    }
+    }*/ // todo: bring it to life when needed
 
     inline void* ptradd(const void* ptr, const ksize offset) noexcept {
         return (void*) ((reinterpret_cast<ksize>(ptr) + offset)); // NOLINT
