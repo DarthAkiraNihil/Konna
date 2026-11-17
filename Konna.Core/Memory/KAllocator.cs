@@ -11,6 +11,12 @@ namespace Konna.Core.Memory;
 /// </remarks>
 public static partial class KAllocator { // todo: maybe internal
 
+    /// <summary>
+    ///     Allocates a native memory segment with specific alignment.
+    /// </summary>
+    /// <param name="size">Size of allocated segment</param>
+    /// <param name="alignment">Segment alignment</param>
+    /// <returns>Data of allocated memory segment</returns>
     public static KMemorySegment AllocateNative(nuint size, nuint alignment) {
         return KAllocator.KonnaKernel_Memory_allocate(size, alignment);
     }

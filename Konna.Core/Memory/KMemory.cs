@@ -1,11 +1,29 @@
 ﻿namespace Konna.Core.Memory;
 
+/// <summary>
+///     The general-purpose low-level memory manager of Konna Engine.
+///     Works like an arena allocator. It allocates 256-megabyte chunks that are sliced
+///     into segments of size requested by a user or other consumer.
+/// </summary>
+/// <remarks>
+///     Version: 0.7.0, Author: Darth Akira Nihil
+/// </remarks>
 public static class KMemory {
 
+    /// <summary>
+    ///     Convenience method to make size in bytes from specific megabytes value.
+    /// </summary>
+    /// <param name="mb">Size in megabytes</param>
+    /// <returns>Size in bytes</returns>
     public static nuint Megabytes(nuint mb) {
         return mb * 1024 * 1024;
     }
 
+    /// <summary>
+    ///     Convenience method to make size in bytes from specific kilobytes value.
+    /// </summary>
+    /// <param name="kb">Size in kilobytes</param>
+    /// <returns>Size in bytes</returns>
     public static nuint Kilobytes(nuint kb) {
         return kb * 1024;
     }
@@ -39,6 +57,12 @@ public static class KMemory {
         KMemory.DEFAULT_HUGE_CHUNK_STORAGE_CAPACITY
     );
     
+    /// <summary>
+    ///     Allocates a memory segment of specific size. Returns <see cref="KMemorySegment.NULL"/>
+    ///     if size is zero.
+    /// </summary>
+    /// <param name="size">Size of allocated memory segment</param>
+    /// <returns>Data of allocated memory segment</returns>
     public static KMemorySegment Allocate(nuint size) {
         switch (size) {
             case 0:
@@ -103,6 +127,16 @@ public static class KMemory {
         }
     }
     
+    /// <summary>
+    ///     Allocates a memory segment of specific size and alignment. Returns <see cref="KMemorySegment.NULL"/>
+    ///     if size is zero.
+    ///
+    ///     Warning: the allocated memory segment is handled separately from basic chunks, so it would be preferred
+    ///     not to allocate very small chunks to deallocate them quite soon, because it may be slow.
+    /// </summary>
+    /// <param name="size">Size of allocated chunk</param>
+    /// <param name="alignment">Alignment of allocated chunk</param>
+    /// <returns>Data of allocated and aligned chunk</returns>
     public static KMemorySegment AllocateAligned(nuint size, nuint alignment) {
         if (size == 0) {
             return KMemorySegment.NULL;
@@ -167,8 +201,25 @@ public static class KMemory {
         }
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="KBumpAllocator"/> on basic chunks.
+    /// </summary>
+    /// <param name="size">Size of memory consumed by the allocator</param>
+    /// <param name="areaName">Consumed area name</param>
+    /// <returns>Bump allocator on the borrowed are</returns>
     public static KBumpAllocator CreateBumpAllocator(nuint size, string areaName) {
         return new KBumpAllocator(KMemory.Allocate(size), areaName);
+    }
+    
+    /// <summary>
+    ///     Creates a new <see cref="KBumpAllocator"/> on an aligned basic chunk.
+    /// </summary>
+    /// <param name="size">Size of memory consumed by the allocator</param>
+    /// <param name="alignment">Alignment of consumed chunk</param>
+    /// <param name="areaName">Consumed area name</param>
+    /// <returns>Bump allocator on the borrowed are</returns>
+    public static KBumpAllocator CreateBumpAllocator(nuint size, nuint alignment, string areaName) {
+        return new KBumpAllocator(KMemory.AllocateAligned(size, alignment), areaName);
     }
     
 }
