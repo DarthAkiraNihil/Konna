@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <Target Name="CopyKernel" BeforeTargets="BeforeBuild">
+        <ItemGroup>
+            <NativeLibs Include="..\Konna.Kernel\build\win\release\*.dll"
+                        Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+            <NativeLibs Include="..\Konna.Kernel\build\linux\release\*.so"
+                        Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
+            <!-- <NativeLibs Include="..\Konna.Kernel\build\osx\*.dylib"-->
+            <!--             Condition="$([MSBuild]::IsOSPlatform('OSX'))" />-->
+        </ItemGroup>
+
+        <Copy SourceFiles="@(NativeLibs)"
+              DestinationFolder="$(TargetDir)"
+              SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

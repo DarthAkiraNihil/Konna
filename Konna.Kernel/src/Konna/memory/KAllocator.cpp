@@ -18,12 +18,17 @@
 
 namespace Konna::Kernel::Memory {
 
-    void* KAllocator::alloc(const ksize& size) noexcept {
-        return rpmalloc(size);
+    KMemorySegment KonnaKernel_Memory_allocateAligned(const ksize size) noexcept {
+        return KAllocator::allocateAligned(size);
     }
 
-    void KAllocator::free(void* ptr) noexcept {
-        rpfree(ptr);
+    KMemorySegment KonnaKernel_Memory_allocate(const ksize size, const ksize alignment) noexcept {
+        return KAllocator::allocate(size, alignment);
     }
+
+    void KonnaKernel_Memory_free(const KMemorySegment& segment) noexcept {
+        KAllocator::free(segment);
+    }
+
 
 } // namespace Konna::Kernel::Memory
