@@ -147,6 +147,15 @@ public static class KMemory {
         return alignedChunk;
     }
 
+    /// <summary>
+    ///     Frees a memory segment and returns it to the memory manager.
+    ///     It should be noted that it is not always that a memory segment will be freed for real.
+    ///     If allocated segment is huge or aligned, then the free operation will always be executed,
+    ///     otherwise it will just return it to the chunk list and mark as free, performing
+    ///     coalescing.
+    ///     This operation won't have any effect if a segment was not allocated with this class.
+    /// </summary>
+    /// <param name="segment">Segment to free</param>
     public static void Free(KMemorySegment segment) {
         if (segment == KMemorySegment.NULL) {
             return;

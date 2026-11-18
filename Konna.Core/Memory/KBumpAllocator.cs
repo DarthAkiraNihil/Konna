@@ -9,7 +9,7 @@
 /// <remarks>
 ///     Version: 0.7.0, Author: Darth Akira Nihil
 /// </remarks>
-public sealed class KBumpAllocator {
+public sealed class KBumpAllocator: IDisposable {
 
     private readonly KMemorySegment _segment;
     private nint _ptr;
@@ -79,6 +79,14 @@ public sealed class KBumpAllocator {
     /// </summary>
     public void Flush() {
         KMemory.Free(this._segment);
+    }
+
+    /// <summary>
+    ///     Frees the assigned buffer and returns it to the <see cref="KMemory"/>.
+    ///     May be used for using-clauses
+    /// </summary>
+    public void Dispose() {
+        this.Flush();
     }
 
 }

@@ -12,6 +12,15 @@ namespace Konna::Kernel::Memory::MemUtils {
         return (void*) ((reinterpret_cast<ksize>(ptr) + (alignment - 1)) & (~(alignment - 1))); // NOLINT
     }*/ // todo: bring it to life when needed
 
+    /**
+     * Convenience inline function to calculate a new address after specific offset.
+     * @param ptr Start pointer
+     * @param offset Offset of the address
+     * @return New address with offset
+     *
+     * @version 0.7.0
+     * @author Darth Akira Nihil
+     */
     inline void* ptradd(const void* ptr, const ksize offset) noexcept {
         return (void*) ((reinterpret_cast<ksize>(ptr) + offset)); // NOLINT
     }

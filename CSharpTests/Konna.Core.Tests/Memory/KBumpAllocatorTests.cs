@@ -107,6 +107,25 @@ public class KBumpAllocatorTests: IDisposable, IClassFixture<KBumpAllocatorFixtu
         }
     }
 
+    [Fact]
+    public void TestAllocateWithUsing() {
+        using KBumpAllocator allocator = KMemory.CreateBumpAllocator(KMemory.Kilobytes(1), "using");
+        
+        KMemorySegment seg1 = allocator.Allocate(16);
+        Assert.Equal((nuint) 16, seg1.Size);
+        
+        KMemorySegment seg2 = allocator.Allocate(16);
+        Assert.NotEqual(seg1.Start, seg2.Start);
+        Assert.NotEqual(seg1.End, seg2.End);
+        Assert.Equal(seg1.Size, seg2.Size);
+        
+        allocator.Free();
+        KMemorySegment seg3 = allocator.Allocate(16);
+        Assert.Equal(seg1.Start, seg3.Start);
+        Assert.Equal(seg1.End, seg3.End);
+        Assert.Equal(seg1.Size, seg3.Size);
+    }
+
     public void Dispose() {
         this._fixture.Allocator.Free();
         GC.SuppressFinalize(this);
